@@ -26,7 +26,7 @@ class SumRef extends SumEntry {
 const toInt = function(str) {
     const number = parseInt(str);
     if (number === NaN) {
-        throw `Bad numeric value: ${str}`;
+        throw `Bad int: ${str}`;
     }
     return number;
 }
