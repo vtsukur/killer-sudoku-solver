@@ -1,4 +1,4 @@
-import { Problem, InputSum, Cell, SIZE } from './problem';
+import { Problem } from './problem';
 
 export class Solver {
 

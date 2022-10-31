@@ -2,8 +2,8 @@ import _ from 'lodash';
 
 export const SIZE = 9;
 export const LINE_OR_SECTION_SUM = 45;
-export const WHOLE_SUM = SIZE * LINE_OR_SECTION_SUM;
-export const MAX_CELLS = SIZE * SIZE;
+export const FIELD_SUM = SIZE * LINE_OR_SECTION_SUM;
+export const CELLS_ON_THE_FIELD = SIZE * SIZE;
 
 export class Problem {
     constructor(inputSums) {
@@ -11,19 +11,30 @@ export class Problem {
     }
     
     checkCorrectness() {
-        const overallSumMatches = this.inputSums.reduce((prev, current) => prev + current.value, 0) === WHOLE_SUM;
-
-        const allCells = this.inputSums.flatMap(sum => sum.cells);
-        const cellCountMatches = allCells.length === MAX_CELLS;
-        let cellUniquePresenceMatch = true;
-
-        for (var i = 1; i <= SIZE; i++) {
-            for (var j = 1; j <= SIZE; j++) {
-                cellUniquePresenceMatch = cellUniquePresenceMatch && allCells.filter(cell => cell.x === i && cell.y === j).length === 1;
-            }
+        const cells = this.inputSums.flatMap(sum => sum.cells);
+        if (cells.length !== CELLS_ON_THE_FIELD) {
+            this.#throwValidationError(`Expected cell count: ${CELLS_ON_THE_FIELD}. Actual: ${cells.length}`);
         }
 
-        return overallSumMatches && cellCountMatches && cellUniquePresenceMatch;
+        const cellSet = new Set();
+        cells.forEach(cell => {
+            if (!cell.isWithinRange()) {
+                this.#throwValidationError(`Expected cell to be within the field. Actual cell: ${cell}`);
+            }
+            if (cellSet.has(cell.toString())) {
+                this.#throwValidationError(`Found cell duplicate: ${cell}`);
+            }
+            cellSet.add(cell.toString());
+        });
+
+        const actualFieldSum = this.inputSums.reduce((prev, current) => prev + current.value, 0);
+        if (actualFieldSum !== FIELD_SUM) {
+           this.#throwValidationError(`Expected field sum: ${FIELD_SUM}. Actual: ${actualFieldSum}`);
+        }
+    }
+
+    #throwValidationError(detailedMessage) {
+        throw `Invalid problem definiton. ${detailedMessage}`;
     }
 }
 
@@ -42,5 +53,17 @@ export class Cell {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+    }
+
+    isWithinRange() {
+        return this.#coordWithinRange(this.x) && this.#coordWithinRange(this.y);
+    }
+
+    #coordWithinRange(i) {
+        return i >= 1 && i <= SIZE;
+    }
+
+    toString() {
+        return `(${this.x}, ${this.y})`;
     }
 }
