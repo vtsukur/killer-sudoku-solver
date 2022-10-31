@@ -14,7 +14,7 @@ describe('Reader tests', () => {
     test('Full read', () => {
         const problem = reader('./problems/1.txt');
         expect(problem).toEqual(new Problem([
-            // big row 1
+            // upper row
             new Sum(17, [ new Cell(1, 1), new Cell(2, 1), new Cell(2, 2) ]),
             new Sum(7, [ new Cell(1, 2) ]),
             new Sum(7, [ new Cell(1, 3), new Cell(1, 4) ]),
@@ -28,7 +28,7 @@ describe('Reader tests', () => {
             new Sum(9, [ new Cell(3, 3) ]),
             new Sum(13, [ new Cell(3, 6), new Cell(3, 7) ]),
 
-            // big row 2
+            // middle row
             new Sum(17, [ new Cell(4, 1), new Cell(5, 1), new Cell(5, 2) ]),
             new Sum(14, [ new Cell(4, 3), new Cell(4, 4) ]),
             new Sum(23, [ new Cell(4, 5), new Cell(5, 5), new Cell(5, 6), new Cell(5, 7) ]),
@@ -43,7 +43,7 @@ describe('Reader tests', () => {
             new Sum(25, [ new Cell(6, 7), new Cell(7, 7), new Cell(7, 8), new Cell(8, 8) ]),
             new Sum(6, [ new Cell(6, 8) ]),
 
-            // big row 3
+            // lower row
             new Sum(3, [ new Cell(7, 1), new Cell(8, 1) ]),
             new Sum(8, [ new Cell(7, 9), new Cell(8, 9) ]),
             new Sum(27, [ new Cell(8, 2), new Cell(8, 3), new Cell(8, 4), new Cell(9, 3), new Cell(9, 4) ]),
