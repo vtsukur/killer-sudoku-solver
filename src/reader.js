@@ -1,29 +1,29 @@
 import { readFileSync } from 'fs';
 import { InputSum, Problem, Cell } from './meta';
 
+const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
+const SUM_VALUE_REGEX = /^([0-9]+)$/;
+
 export default function problemReader(path) {
     const raw = readFileSync(path, 'utf8');
-    const map = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
-    const sumDefOrRefRegex = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
-    const sumRegex = /^([0-9]+)$/;
-    const sums = {};
-    const sumsArr = [];
+    const entries = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
+    const sums = new Map();
 
-    map.forEach((value, index) => {
-        const sumRefOrDefMatch = value.match(sumDefOrRefRegex);
+    entries.forEach((value, index) => {
+        const sumRefOrDefMatch = value.match(SUM_DEF_OR_REF_REGEX);
         let sum;
         if (sumRefOrDefMatch) {
             const sumRef = sumRefOrDefMatch[1];
             const sumValue = sumRefOrDefMatch[3];
             if (sumValue) {
-                sumsArr.push(sums[sumRef] = new InputSum(parseInt(sumValue)));
+                sums.set(sumRef, new InputSum(parseInt(sumValue)))
             }
-            sum = sums[sumRef];
+            sum = sums.get(sumRef);
         } else {
-            const sumMatch = value.match(sumRegex);
+            const sumMatch = value.match(SUM_VALUE_REGEX);
             if (sumMatch) {
                 const sumValue = parseInt(sumMatch[0]);
-                sumsArr.push(sum = (sums[`${sumValue}_${index}`] = new InputSum(sumValue)));
+                sums.set(`${sumValue}_${index}`, sum = new InputSum(sumValue));
             } else {
                 throw `Unknown input ${value}`;
             }
@@ -34,5 +34,5 @@ export default function problemReader(path) {
         ));
     });
 
-    return new Problem(sumsArr);
+    return new Problem(sums.values());
 }

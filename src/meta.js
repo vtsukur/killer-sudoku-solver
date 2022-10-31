@@ -1,10 +1,12 @@
+import _ from 'lodash';
+
 export class Problem {
     constructor(inputSums) {
         this.inputSums = [...inputSums];
     }
     
     equals(a) {
-        return this.inputSums.every(v => a.inputSums.find(v));
+        return _.isEqual(this, a);
     }
 }
 
@@ -19,7 +21,7 @@ export class InputSum {
     }
 
     equals(a) {
-        return this.value === value && this.cells.every(v => a.cells.find(v));
+        return _.isEqual(this, a);
     }
 }
 
@@ -30,6 +32,6 @@ export class Cell {
     }
 
     equals(a) {
-        return this.x === x && this.y === this.y;
+        return _.isEqual(this, a);
     }
 }
