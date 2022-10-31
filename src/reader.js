@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Problem, InputSum, Cell, SIZE } from './problem';
+import { Problem, Sum, Cell, SIZE } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
@@ -55,7 +55,7 @@ export default function reader(path) {
             if (!sumEntry.value) {
                 throw `Sum def without value: ${value}`;
             }
-            sums.set(sumEntry.ref, new InputSum(sumEntry.value));
+            sums.set(sumEntry.ref, new Sum(sumEntry.value));
         }
         sums.get(sumEntry.ref).addCell(new Cell(
             Math.floor(index / SIZE) + 1,

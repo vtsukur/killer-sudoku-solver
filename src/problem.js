@@ -6,12 +6,12 @@ export const FIELD_SUM = SIZE * LINE_OR_SECTION_SUM;
 export const CELLS_ON_THE_FIELD = SIZE * SIZE;
 
 export class Problem {
-    constructor(inputSums) {
-        this.inputSums = [...inputSums];
+    constructor(sums) {
+        this.sums = [...sums];
     }
     
     checkCorrectness() {
-        const cells = this.inputSums.flatMap(sum => sum.cells);
+        const cells = this.sums.flatMap(sum => sum.cells);
         if (cells.length !== CELLS_ON_THE_FIELD) {
             this.#throwValidationError(`Expected cell count: ${CELLS_ON_THE_FIELD}. Actual: ${cells.length}`);
         }
@@ -27,7 +27,7 @@ export class Problem {
             cellSet.add(cell.toString());
         });
 
-        const actualFieldSum = this.inputSums.reduce((prev, current) => prev + current.value, 0);
+        const actualFieldSum = this.sums.reduce((prev, current) => prev + current.value, 0);
         if (actualFieldSum !== FIELD_SUM) {
            this.#throwValidationError(`Expected field sum: ${FIELD_SUM}. Actual: ${actualFieldSum}`);
         }
@@ -38,7 +38,7 @@ export class Problem {
     }
 }
 
-export class InputSum {
+export class Sum {
     constructor(value, cells = []) {
         this.value = value;
         this.cells = [...cells];
