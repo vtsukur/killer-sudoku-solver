@@ -1,7 +1,7 @@
-export const SIZE = 9;
-export const LINE_OR_SECTION_SUM = 45;
-export const FIELD_SUM = SIZE * LINE_OR_SECTION_SUM;
-export const CELLS_ON_THE_FIELD = SIZE * SIZE;
+export const GRID_SIDE_LENGTH = 9;
+export const ROW_OR_COLUMN_OR_SUBGRID_SUM = 45;
+export const GRID_SUM = GRID_SIDE_LENGTH * ROW_OR_COLUMN_OR_SUBGRID_SUM;
+export const GRID_CELL_COUNT = GRID_SIDE_LENGTH * GRID_SIDE_LENGTH;
 
 export class Problem {
     constructor(sums) {
@@ -10,8 +10,8 @@ export class Problem {
     
     checkCorrectness() {
         const cells = this.sums.flatMap(sum => sum.cells);
-        if (cells.length !== CELLS_ON_THE_FIELD) {
-            this.#throwValidationError(`Expected cell count: ${CELLS_ON_THE_FIELD}. Actual: ${cells.length}`);
+        if (cells.length !== GRID_CELL_COUNT) {
+            this.#throwValidationError(`Expected cell count: ${GRID_CELL_COUNT}. Actual: ${cells.length}`);
         }
 
         const cellSet = new Set();
@@ -26,8 +26,8 @@ export class Problem {
         });
 
         const actualFieldSum = this.sums.reduce((prev, current) => prev + current.value, 0);
-        if (actualFieldSum !== FIELD_SUM) {
-           this.#throwValidationError(`Expected field sum: ${FIELD_SUM}. Actual: ${actualFieldSum}`);
+        if (actualFieldSum !== GRID_SUM) {
+           this.#throwValidationError(`Expected field sum: ${GRID_SUM}. Actual: ${actualFieldSum}`);
         }
     }
 
@@ -59,7 +59,7 @@ export class Cell {
     }
 
     #coordWithinRange(i) {
-        return i >= 1 && i <= SIZE;
+        return i >= 1 && i <= GRID_SIDE_LENGTH;
     }
 
     toString() {

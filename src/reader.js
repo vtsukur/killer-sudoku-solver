@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Problem, Sum, Cell, SIZE } from './problem';
+import { Problem, Sum, Cell, GRID_SIDE_LENGTH } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
@@ -58,8 +58,8 @@ export default function reader(path) {
             sums.set(sumEntry.ref, new Sum(sumEntry.value));
         }
         sums.get(sumEntry.ref).addCell(new Cell(
-            Math.floor(index / SIZE) + 1,
-            index % SIZE + 1
+            Math.floor(index / GRID_SIDE_LENGTH) + 1,
+            index % GRID_SIDE_LENGTH + 1
         ));
     });
 
