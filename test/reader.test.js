@@ -52,7 +52,7 @@ describe('Reader tests', () => {
             new InputSum(12, [ new Cell(9, 1), new Cell(9, 2) ]),
             new InputSum(16, [ new Cell(9, 7), new Cell(9, 8), new Cell(9, 9) ])
         ]));
-        problem.validateSevere();
+        problem.checkCorrectness();
     });
 
     test('Unknown entry', () => {

@@ -10,7 +10,7 @@ export class Problem {
         this.inputSums = [...inputSums];
     }
     
-    validateSevere() {
+    checkCorrectness() {
         const overallSumMatches = this.inputSums.reduce((prev, current) => prev + current.value, 0) === WHOLE_SUM;
 
         const allCells = this.inputSums.flatMap(sum => sum.cells);
