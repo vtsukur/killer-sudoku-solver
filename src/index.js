@@ -22,4 +22,4 @@ new Field({
     ]
 }).solve();
 
-console.log(problemReader('./problem_1.txt'));
+console.log(problemReader('./problems/1.txt'));
