@@ -1,9 +1,9 @@
-import problemReader from '../src/reader.js';
+import reader from '../src/reader.js';
 import { Problem, InputSum, Cell } from '../src/problem.js';
 
 describe('Reader tests', () => {
     test('Basic read', () => {
-        const problem = problemReader('./test/readerBaseTest.txt');
+        const problem = reader('./test/readerBaseTest.txt');
         expect(problem).toEqual(new Problem([
             new InputSum(17, [ new Cell(1, 1), new Cell(1, 2), new Cell(1, 3) ]),
             new InputSum(7, [ new Cell(1, 4) ]),
@@ -12,7 +12,7 @@ describe('Reader tests', () => {
     });
 
     test('Full read', () => {
-        const problem = problemReader('./problems/1.txt');
+        const problem = reader('./problems/1.txt');
         expect(problem).toEqual(new Problem([
             // big row 1
             new InputSum(17, [ new Cell(1, 1), new Cell(2, 1), new Cell(2, 2) ]),
@@ -55,10 +55,10 @@ describe('Reader tests', () => {
     });
 
     test('Unknown entry', () => {
-        expect(() => problemReader('./test/readerUnknownEntry.txt')).toThrow('Unknown entry: a:a');
+        expect(() => reader('./test/readerUnknownEntry.txt')).toThrow('Unknown entry: a:a');
     });
     
     test('Sum def without value', () => {
-        expect(() => problemReader('./test/readerSumDefWithoutValue.txt')).toThrow('Sum def without value: a');
+        expect(() => reader('./test/readerSumDefWithoutValue.txt')).toThrow('Sum def without value: a');
     });
 });

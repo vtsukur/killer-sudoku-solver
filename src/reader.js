@@ -52,7 +52,7 @@ const readEntry = function(entry, index) {
     }
 }
 
-export default function problemReader(path) {
+export default function reader(path) {
     const raw = readFileSync(path, 'utf8');
     const entries = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
 
