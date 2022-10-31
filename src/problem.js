@@ -7,8 +7,8 @@ export class Problem {
         this.inputSums = [...inputSums];
     }
     
-    equals(a) {
-        return _.isEqual(this, a);
+    validate() {
+        return true;
     }
 }
 
@@ -21,19 +21,11 @@ export class InputSum {
     addCell(cell) {
         this.cells.push(cell);
     }
-
-    equals(a) {
-        return _.isEqual(this, a);
-    }
 }
 
 export class Cell {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-    }
-
-    equals(a) {
-        return _.isEqual(this, a);
     }
 }

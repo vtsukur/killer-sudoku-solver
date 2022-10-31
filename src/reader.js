@@ -23,29 +23,21 @@ class SumRef extends SumEntry {
     }
 }
 
-const toInt = function(str) {
-    const number = parseInt(str);
-    if (number === NaN) {
-        throw `Bad int: ${str}`;
-    }
-    return number;
-}
-
 const readEntry = function(entry, index) {
     const sumRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
     if (sumRefOrDefMatch) {
         const key = sumRefOrDefMatch[1];
         const value = sumRefOrDefMatch[3];
         if (value) {
-            return new SumDef(key, toInt(value))
+            return new SumDef(key, parseInt(value))
         } else {
             return new SumRef(key);
         }
     } else {
         const sumMatch = entry.match(SUM_VALUE_REGEX);
         if (sumMatch) {
-            const value = toInt(sumMatch[0]);
-            return new SumDef(`${value}_${index}`, toInt(value));
+            const value = parseInt(sumMatch[0]);
+            return new SumDef(`${value}_${index}`, value);
         } else {
             throw `Unknown entry: ${entry}`;
         }
