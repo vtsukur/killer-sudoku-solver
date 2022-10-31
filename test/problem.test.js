@@ -72,7 +72,7 @@ describe('Problem tests', () => {
     test('Check incorrect problem in which at least one of the cells is duplicated / not filled', () => {
         expect(() =>
             modifyCorrectProblem(
-                new Sum(16, [ new Cell(9, 7), new Cell(9, 7) /* deplicate */, new Cell(9, 9) ])
+                new Sum(16, [ new Cell(9, 7), /* here comes the duplicate */ new Cell(9, 7), new Cell(9, 9) ])
             ).checkCorrectness()
         ).toThrow(`Invalid problem definiton. Found cell duplicate: (9, 7)`);
     });
@@ -80,7 +80,7 @@ describe('Problem tests', () => {
     test('Check incorrect problem in which overall sum does not match', () => {
         expect(() =>
             modifyCorrectProblem(
-                // abnormal sum on the field
+                // abnormal sum on the field: 116 instead of 16
                 new Sum(116, [ new Cell(9, 7), new Cell(9, 8), new Cell(9, 9) ])
             ).checkCorrectness()
         ).toThrow(`Invalid problem definiton. Expected field sum: 405. Actual: 505`);
