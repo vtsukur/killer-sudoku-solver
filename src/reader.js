@@ -1,36 +1,73 @@
 import { readFileSync } from 'fs';
-import { InputSum, Problem, Cell } from './meta';
+import { Problem, InputSum, Cell, SIZE } from './meta';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
 
+class SumEntry {
+    constructor(ref) {
+        this.ref = ref;
+    }
+}
+
+class SumDef extends SumEntry {
+    constructor(ref, value) {
+        super(ref);
+        this.value = value;
+    }
+}
+
+class SumRef extends SumEntry {
+    constructor(ref) {
+        super(ref)
+    }
+}
+
+const toInt = function(str) {
+    const number = parseInt(str);
+    if (number === NaN) {
+        throw `Bad numeric value: ${str}`;
+    }
+    return number;
+}
+
+const readEntry = function(entry, index) {
+    const sumRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
+    if (sumRefOrDefMatch) {
+        const key = sumRefOrDefMatch[1];
+        const value = sumRefOrDefMatch[3];
+        if (value) {
+            return new SumDef(key, toInt(value))
+        } else {
+            return new SumRef(key);
+        }
+    } else {
+        const sumMatch = entry.match(SUM_VALUE_REGEX);
+        if (sumMatch) {
+            const value = parseInt(sumMatch[0]);
+            return new SumDef(`${value}_${index}`, toInt(value));
+        } else {
+            throw `Unknown entry: ${entry}`;
+        }
+    }
+}
+
 export default function problemReader(path) {
     const raw = readFileSync(path, 'utf8');
     const entries = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
-    const sums = new Map();
 
+    const sums = new Map();
     entries.forEach((value, index) => {
-        const sumRefOrDefMatch = value.match(SUM_DEF_OR_REF_REGEX);
-        let sum;
-        if (sumRefOrDefMatch) {
-            const sumRef = sumRefOrDefMatch[1];
-            const sumValue = sumRefOrDefMatch[3];
-            if (sumValue) {
-                sums.set(sumRef, new InputSum(parseInt(sumValue)))
+        const sumEntry = readEntry(value, index);
+        if (!sums.has(sumEntry.ref)) {
+            if (!sumEntry.value) {
+                throw `Sum def without value: ${value}`;
             }
-            sum = sums.get(sumRef);
-        } else {
-            const sumMatch = value.match(SUM_VALUE_REGEX);
-            if (sumMatch) {
-                const sumValue = parseInt(sumMatch[0]);
-                sums.set(`${sumValue}_${index}`, sum = new InputSum(sumValue));
-            } else {
-                throw `Unknown input ${value}`;
-            }
+            sums.set(sumEntry.ref, new InputSum(sumEntry.value));
         }
-        sum.addCell(new Cell(
-            Math.floor(index / 9) + 1,
-            index % 9 + 1
+        sums.get(sumEntry.ref).addCell(new Cell(
+            Math.floor(index / SIZE) + 1,
+            index % SIZE + 1
         ));
     });
 

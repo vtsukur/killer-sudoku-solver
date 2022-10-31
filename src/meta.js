@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+export const SIZE = 9;
+
 export class Problem {
     constructor(inputSums) {
         this.inputSums = [...inputSums];
