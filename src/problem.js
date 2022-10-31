@@ -48,14 +48,14 @@ export class Sum {
 }
 
 export class Cell {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.subgridIndex = Math.floor((x - 1) / 3) * 3 + Math.floor((y - 1) / 3);
+    constructor(row, col) {
+        this.row = row;
+        this.col = col;
+        this.subgridIndex = Math.floor((row - 1) / 3) * 3 + Math.floor((col - 1) / 3);
     }
 
     isWithinRange() {
-        return this.#coordWithinRange(this.x) && this.#coordWithinRange(this.y);
+        return this.#coordWithinRange(this.row) && this.#coordWithinRange(this.col);
     }
 
     #coordWithinRange(i) {
@@ -63,6 +63,6 @@ export class Cell {
     }
 
     toString() {
-        return `(${this.x}, ${this.y})`;
+        return `(${this.row}, ${this.col})`;
     }
 }

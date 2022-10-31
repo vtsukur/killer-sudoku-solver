@@ -1,19 +1,16 @@
 import { Problem } from './problem';
 
-// export class Area {
-//     constructor(cells) {
-//         this.cells = cells;
-//         this.subgrids = [];
+export class SummedArea {
+    constructor(sum, cells) {
+        this.sum = sum;
+        this.cells = cells;
+        this.subgridsIndices = new Set(cells.collect(cell => cell.subgridIndex));
+    }
 
-//         cells.forEach(cell => {
-//             cell.subgridIndex
-//         });
-//     }
+    reduceOptions() {
 
-//     reduceOptions() {
-
-//     }
-// }
+    }
+}
 
 export class Solver {
 
