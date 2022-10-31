@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { InputSum, Problem, Cell } from './meta';
 
 export default function problemReader(path) {
     const raw = readFileSync(path, 'utf8');
@@ -6,6 +7,7 @@ export default function problemReader(path) {
     const sumDefOrRefRegex = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
     const sumRegex = /^([0-9]+)$/;
     const sums = {};
+    const sumsArr = [];
 
     map.forEach((value, index) => {
         const sumRefOrDefMatch = value.match(sumDefOrRefRegex);
@@ -14,26 +16,23 @@ export default function problemReader(path) {
             const sumRef = sumRefOrDefMatch[1];
             const sumValue = sumRefOrDefMatch[3];
             if (sumValue) {
-                sums[sumRef] = { value: sumValue, cells: [] };
+                sumsArr.push(sums[sumRef] = new InputSum(parseInt(sumValue)));
             }
             sum = sums[sumRef];
         } else {
             const sumMatch = value.match(sumRegex);
             if (sumMatch) {
-                const sumValue = sumMatch[0];
-                sum = (sums[`${sumValue}_${index}`] = { value: sumValue, cells: [] });
+                const sumValue = parseInt(sumMatch[0]);
+                sumsArr.push(sum = (sums[`${sumValue}_${index}`] = new InputSum(sumValue)));
             } else {
                 throw `Unknown input ${value}`;
             }
         }
-        sum.cells.push({
-            x: Math.floor(index / 9) + 1,
-            y: index % 9 + 1
-        });
+        sum.addCell(new Cell(
+            Math.floor(index / 9) + 1,
+            index % 9 + 1
+        ));
     });
 
-    return raw;
+    return new Problem(sumsArr);
 }
-
-// module.exports = { problemReader };
-// exports.problemReader = problemReader;
