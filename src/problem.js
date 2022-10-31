@@ -1,6 +1,8 @@
 import _ from 'lodash';
 
 export const SIZE = 9;
+export const LINE_OR_SECTION_SUM = 45;
+export const WHOLE_SUM = SIZE * LINE_OR_SECTION_SUM;
 
 export class Problem {
     constructor(inputSums) {
@@ -8,7 +10,7 @@ export class Problem {
     }
     
     validate() {
-        return true;
+        return this.inputSums.reduce((prev, current) => prev + current.value, 0) === WHOLE_SUM;
     }
 }
 
