@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Problem, Sum, Cell } from '../src/problem';
 
 const correctProblem = new Problem([
@@ -83,5 +84,70 @@ describe('Problem tests', () => {
                 new Sum(116, [ new Cell(9, 7), new Cell(9, 8), new Cell(9, 9) ])
             ).checkCorrectness()
         ).toThrow(`Invalid problem definiton. Expected field sum: 405. Actual: 505`);
+    });
+
+    test('Subgrid indices for cells', () => {
+        // north-west subgrid (0)
+        _.range(1, 3).forEach(r => {
+            _.range(1, 3).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(0);
+            })
+        })
+
+        // north subgrid (1)
+        _.range(1, 3).forEach(r => {
+            _.range(4, 6).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(1);
+            })
+        })
+
+        // north-east subgrid (2)
+        _.range(1, 3).forEach(r => {
+            _.range(7, 9).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(2);
+            })
+        })
+
+        // east subgrid (3)
+        _.range(4, 6).forEach(r => {
+            _.range(1, 3).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(3);
+            })
+        })
+
+        // center subgrid (4)
+        _.range(4, 6).forEach(r => {
+            _.range(4, 6).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(4);
+            })
+        })
+
+        // west subgrid (5)
+        _.range(4, 6).forEach(r => {
+            _.range(7, 9).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(5);
+            })
+        })
+
+        // south-west subgrid (6)
+        _.range(7, 9).forEach(r => {
+            _.range(1, 3).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(6);
+            })
+        })
+
+        // south subgrid (7)
+        _.range(7, 9).forEach(r => {
+            _.range(4, 6).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(7);
+            })
+        })
+
+        // south-east subgrid (8)
+        _.range(7, 9).forEach(r => {
+            _.range(7, 9).forEach(c => {
+                expect(new Cell(r, c).subgridIndex).toBe(8);
+            })
+        })
     });
 });
