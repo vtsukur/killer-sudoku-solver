@@ -44,7 +44,7 @@ const readEntry = function(entry, index) {
     } else {
         const sumMatch = entry.match(SUM_VALUE_REGEX);
         if (sumMatch) {
-            const value = parseInt(sumMatch[0]);
+            const value = toInt(sumMatch[0]);
             return new SumDef(`${value}_${index}`, toInt(value));
         } else {
             throw `Unknown entry: ${entry}`;
