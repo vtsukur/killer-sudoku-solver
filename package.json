@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "name": "killer-sudoku-solver",
+  "description": "",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "collectCoverage": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vtsukur/killer-sudoku-solver.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vtsukur/killer-sudoku-solver/issues"
+  },
+  "homepage": "https://github.com/vtsukur/killer-sudoku-solver#readme",
+  "dependencies": {
+    "jest": "^29.2.2",
+    "save-dev": "^0.0.1-security"
+  }
+}
