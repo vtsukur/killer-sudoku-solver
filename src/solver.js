@@ -1,42 +1,32 @@
 import { GRID_SIDE_LENGTH } from './problem';
 
 export function digitSetsForSum(sum, count) {
-	const allCombinations = new Set();
+    const sets = [];
+    const digits = new Array(count);
+    let currentSum = 0;
 
-	const wipState = [];
-	wipState.length = count;
+    function combinationsRecursive(level, nextStartingDigit) {
+        if (level > count) {
+            if (currentSum === sum) {
+                sets.push(new Set(digits));
+            }
+        } else {
+            for (let i = nextStartingDigit; i <= GRID_SIDE_LENGTH; ++i) {
+                if (currentSum + i > sum) {
+                    return;
+                } else {
+                    digits[level - 1] = i;
+                    currentSum += i;
+                    combinationsRecursive(level + 1, i + 1);
+                    currentSum -= i;
+                }
+            }
+        }
+    }
 
-	function hasUniqueNumbers() {
-		return new Set(wipState).size === wipState.length;
-	}
+    combinationsRecursive(1, 1);
 
-	function currentSum() {
-		return wipState.reduce((partialSum, a) => partialSum + a, 0);
-	}
-
-	function normalizeAndAddPerm() {
-		allCombinations.add([...wipState].sort().join(""));
-	}
-
-	function combinationsRecursive(level, nextStartingDigit) {
-		if (level > count) {
-			if (hasUniqueNumbers() && currentSum() === sum) {
-				normalizeAndAddPerm();
-			}
-		} else {
-			for (let i = nextStartingDigit; i <= GRID_SIDE_LENGTH; ++i) {
-				wipState[level - 1] = i;
-				combinationsRecursive(level + 1, i + 1);
-			}
-		}
-	}
-
-	combinationsRecursive(1, 1);
-
-	return Array.from(allCombinations.values()).map(comboStr => {
-        console.log(comboStr);
-        return new Set(comboStr.split('').map(s => parseInt(s)))
-    });
+    return sets;
 }
 
 export class SummedArea {
