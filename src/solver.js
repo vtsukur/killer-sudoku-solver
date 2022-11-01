@@ -1,6 +1,6 @@
 import { GRID_SIDE_LENGTH } from './problem';
 
-export function uniqueDigitsForSum(sum, count) {
+export function digitSetsForSum(sum, count) {
 	const allCombinations = new Set();
 
 	const wipState = [];
