@@ -57,6 +57,9 @@ export default function reader(path) {
             }
             sums.set(sumEntry.ref, new Sum(sumEntry.value));
         }
+        else if (sums.has(sumEntry.ref) && sumEntry.value) {
+            throw `Sum def duplicate: ${sumEntry.ref}`;
+        }
         sums.get(sumEntry.ref).addCell(new Cell(
             Math.floor(index / GRID_SIDE_LENGTH) + 1,
             index % GRID_SIDE_LENGTH + 1

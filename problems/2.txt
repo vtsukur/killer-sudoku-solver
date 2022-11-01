@@ -1,0 +1,9 @@
+a:15	a	b:10	c:17	d:13	d	e:7	e	f:11
+g:7	g	b	c	d	h:10	h	h	f
+i:13	i	i	j:11	j	k:8	l:16	m:9	m
+n:4	n	2	o:14	o	k	l	p:5	q:19
+r:27	r	s:14	t:10	t	u:20	u	p	q
+r	r	s	s	u	u	v:22	v	q
+w:19	x:14	y:15	y	z:6	z	v	v	x5:14
+w	x	y	x1:6	x2:22	8	x3:10	x3	x5
+w	x	x	x1	x2	x2	x4:7	x4	x5
