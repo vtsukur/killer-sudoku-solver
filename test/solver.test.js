@@ -338,7 +338,32 @@ describe('Solver tests', () => {
         expect(digitSetsForSum(40, 6)).toEqual([]);
     });
 
+    test('Sets of digits to form a sum in 7 cells (shallow coverage)', () => {
+        expect(digitSetsForSum(27, 7)).toEqual([]);
+        expect(digitSetsForSum(28, 7)).toEqual([ new Set([1, 2, 3, 4, 5, 6, 7]) ]);
+        expect(digitSetsForSum(36, 7)).toEqual(
+            [
+                new Set([1, 2, 3, 6, 7, 8, 9]),
+                new Set([1, 2, 4, 5, 7, 8, 9]),
+                new Set([1, 3, 4, 5, 6, 8, 9]),
+                new Set([2, 3, 4, 5, 6, 7, 9])
+            ]
+        );
+        expect(digitSetsForSum(42, 7)).toEqual([ new Set([3, 4, 5, 6, 7, 8, 9]) ]);
+        expect(digitSetsForSum(43, 7)).toEqual([]);
+    });
+
+    test('Sets of digits to form a sum in 8 cells (shallow coverage)', () => {
+        expect(digitSetsForSum(35, 8)).toEqual([]);
+        expect(digitSetsForSum(36, 8)).toEqual([ new Set([1, 2, 3, 4, 5, 6, 7, 8]) ]);
+        expect(digitSetsForSum(40, 8)).toEqual([ new Set([1, 2, 3, 4, 6, 7, 8, 9]) ]);
+        expect(digitSetsForSum(44, 8)).toEqual([ new Set([2, 3, 4, 5, 6, 7, 8, 9]) ]);
+        expect(digitSetsForSum(45, 8)).toEqual([]);
+    });
+
     test('Sets of digits to form a sum in 9 cells', () => {
+        expect(digitSetsForSum(44, 9)).toEqual([]);
         expect(digitSetsForSum(45, 9)).toEqual([ new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]) ]);
+        expect(digitSetsForSum(46, 9)).toEqual([]);
     });
 });
