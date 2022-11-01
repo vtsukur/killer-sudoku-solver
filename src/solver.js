@@ -18,20 +18,20 @@ export function digitSetsForSum(sum, count) {
 		allCombinations.add([...wipState].sort().join(""));
 	}
 
-	function combinationsRecursive(level) {
+	function combinationsRecursive(level, nextStartingDigit) {
 		if (level > count) {
 			if (hasUniqueNumbers() && currentSum() === sum) {
 				normalizeAndAddPerm();
 			}
 		} else {
-			for (let i = 1; i <= GRID_SIDE_LENGTH; ++i) {
+			for (let i = nextStartingDigit; i <= GRID_SIDE_LENGTH; ++i) {
 				wipState[level - 1] = i;
-				combinationsRecursive(level + 1);
+				combinationsRecursive(level + 1, i + 1);
 			}
 		}
 	}
 
-	combinationsRecursive(1);
+	combinationsRecursive(1, 1);
 
 	return Array.from(allCombinations.values()).map(comboStr => {
         console.log(comboStr);
