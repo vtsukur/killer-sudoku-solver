@@ -1,6 +1,20 @@
+import _ from 'lodash';
 import { GRID_SIDE_LENGTH } from './problem';
 
+const MAX_SUMS_PER_COUNT = new Array(GRID_SIDE_LENGTH);
+_.range(0, GRID_SIDE_LENGTH).forEach(count => {
+    if (count == 0) {
+        MAX_SUMS_PER_COUNT[count] = GRID_SIDE_LENGTH;
+    } else {
+        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (GRID_SIDE_LENGTH - count);
+    }
+})
+
 export function digitSetsForSum(sum, count) {
+    if (sum <= 0 || count <= 0 || sum > MAX_SUMS_PER_COUNT[count]) {
+        return [];
+    }
+
     const sets = [];
     const digits = new Array(count);
     let currentSum = 0;
