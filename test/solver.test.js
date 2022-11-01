@@ -143,4 +143,158 @@ describe('Solver tests', () => {
         expect(digitSetsForSum(24, 3)).toEqual([ new Set([7, 8, 9]) ]);
         expect(digitSetsForSum(25, 3)).toEqual([]);
     });
+
+    test('Digits sets for a sum within 4 cells', () => {
+        _.range(1, 9).forEach(sum => {
+            expect(digitSetsForSum(sum, 4)).toEqual([]);
+        })
+        expect(digitSetsForSum(10, 4)).toEqual([ new Set([1, 2, 3, 4]) ]);
+        expect(digitSetsForSum(11, 4)).toEqual([ new Set([1, 2, 3, 5]) ]);
+        expect(digitSetsForSum(12, 4)).toEqual([ new Set([1, 2, 3, 6]), new Set([1, 2, 4, 5]) ]);
+        expect(digitSetsForSum(13, 4)).toEqual(
+            [ new Set([1, 2, 3, 7]), new Set([1, 2, 4, 6]), new Set([1, 3, 4, 5]) ]
+        );
+        expect(digitSetsForSum(14, 4)).toEqual(
+            [
+                new Set([1, 2, 3, 8]), new Set([1, 2, 4, 7]), new Set([1, 2, 5, 6]),
+                new Set([1, 3, 4, 6]),
+                new Set([2, 3, 4, 5])
+            ]
+        );
+        expect(digitSetsForSum(15, 4)).toEqual(
+            [
+                new Set([1, 2, 3, 9]), new Set([1, 2, 4, 8]), new Set([1, 2, 5, 7]),
+                new Set([1, 3, 4, 7]), new Set([1, 3, 5, 6]),
+                new Set([2, 3, 4, 6])
+            ]
+        );
+        expect(digitSetsForSum(16, 4)).toEqual(
+            [
+                new Set([1, 2, 4, 9]), new Set([1, 2, 5, 8]), new Set([1, 2, 6, 7]),
+                new Set([1, 3, 4, 8]), new Set([1, 3, 5, 7]),
+                new Set([1, 4, 5, 6]),
+                new Set([2, 3, 4, 7]), new Set([2, 3, 5, 6])
+            ]
+        );
+        expect(digitSetsForSum(17, 4)).toEqual(
+            [
+                new Set([1, 2, 5, 9]), new Set([1, 2, 6, 8]),
+                new Set([1, 3, 4, 9]), new Set([1, 3, 5, 8]), new Set([1, 3, 6, 7]),
+                new Set([1, 4, 5, 7]),
+                new Set([2, 3, 4, 8]), new Set([2, 3, 5, 7]),
+                new Set([2, 4, 5, 6])
+            ]
+        );
+        expect(digitSetsForSum(18, 4)).toEqual(
+            [
+                new Set([1, 2, 6, 9]), new Set([1, 2, 7, 8]),
+                new Set([1, 3, 5, 9]), new Set([1, 3, 6, 8]),
+                new Set([1, 4, 5, 8]), new Set([1, 4, 6, 7]),
+                new Set([2, 3, 4, 9]), new Set([2, 3, 5, 8]), new Set([2, 3, 6, 7]),
+                new Set([2, 4, 5, 7]),
+                new Set([3, 4, 5, 6])
+            ]
+        );
+        expect(digitSetsForSum(19, 4)).toEqual(
+            [
+                new Set([1, 2, 7, 9]),
+                new Set([1, 3, 6, 9]), new Set([1, 3, 7, 8]),
+                new Set([1, 4, 5, 9]), new Set([1, 4, 6, 8]),
+                new Set([1, 5, 6, 7]),
+                new Set([2, 3, 5, 9]), new Set([2, 3, 6, 8]),
+                new Set([2, 4, 5, 8]), new Set([2, 4, 6, 7]),
+                new Set([3, 4, 5, 7])
+            ]
+        );
+        expect(digitSetsForSum(20, 4)).toEqual(
+            [
+                new Set([1, 2, 8, 9]),
+                new Set([1, 3, 7, 9]),
+                new Set([1, 4, 6, 9]), new Set([1, 4, 7, 8]),
+                new Set([1, 5, 6, 8]),
+                new Set([2, 3, 6, 9]), new Set([2, 3, 7, 8]),
+                new Set([2, 4, 5, 9]), new Set([2, 4, 6, 8]),
+                new Set([2, 5, 6, 7]),
+                new Set([3, 4, 5, 8]), new Set([3, 4, 6, 7])
+            ]
+        );
+        expect(digitSetsForSum(21, 4)).toEqual(
+            [
+                new Set([1, 3, 8, 9]),
+                new Set([1, 4, 7, 9]),
+                new Set([1, 5, 6, 9]), new Set([1, 5, 7, 8]),
+                new Set([2, 3, 7, 9]),
+                new Set([2, 4, 6, 9]), new Set([2, 4, 7, 8]),
+                new Set([2, 5, 6, 8]),
+                new Set([3, 4, 5, 9]), new Set([3, 4, 6, 8]),
+                new Set([3, 5, 6, 7])
+            ]
+        );
+        expect(digitSetsForSum(22, 4)).toEqual(
+            [
+                new Set([1, 4, 8, 9]),
+                new Set([1, 5, 7, 9]),
+                new Set([1, 6, 7, 8]),
+                new Set([2, 3, 8, 9]),
+                new Set([2, 4, 7, 9]),
+                new Set([2, 5, 6, 9]), new Set([2, 5, 7, 8]),
+                new Set([3, 4, 6, 9]), new Set([3, 4, 7, 8]),
+                new Set([3, 5, 6, 8]),
+                new Set([4, 5, 6, 7])
+            ]
+        );
+        expect(digitSetsForSum(23, 4)).toEqual(
+            [
+                new Set([1, 5, 8, 9]),
+                new Set([1, 6, 7, 9]),
+                new Set([2, 4, 8, 9]),
+                new Set([2, 5, 7, 9]),
+                new Set([2, 6, 7, 8]),
+                new Set([3, 4, 7, 9]),
+                new Set([3, 5, 6, 9]), new Set([3, 5, 7, 8]),
+                new Set([4, 5, 6, 8])
+            ]
+        );
+        expect(digitSetsForSum(24, 4)).toEqual(
+            [
+                new Set([1, 6, 8, 9]),
+                new Set([2, 5, 8, 9]),
+                new Set([2, 6, 7, 9]),
+                new Set([3, 4, 8, 9]),
+                new Set([3, 5, 7, 9]),
+                new Set([3, 6, 7, 8]),
+                new Set([4, 5, 6, 9]), new Set([4, 5, 7, 8])
+            ]
+        );
+        expect(digitSetsForSum(25, 4)).toEqual(
+            [
+                new Set([1, 7, 8, 9]),
+                new Set([2, 6, 8, 9]),
+                new Set([3, 5, 8, 9]),
+                new Set([3, 6, 7, 9]),
+                new Set([4, 5, 7, 9]),
+                new Set([4, 6, 7, 8])
+            ]
+        );
+        expect(digitSetsForSum(26, 4)).toEqual(
+            [
+                new Set([2, 7, 8, 9]),
+                new Set([3, 6, 8, 9]),
+                new Set([4, 5, 8, 9]),
+                new Set([4, 6, 7, 9]),
+                new Set([5, 6, 7, 8])
+            ]
+        );
+        expect(digitSetsForSum(27, 4)).toEqual(
+            [
+                new Set([3, 7, 8, 9]),
+                new Set([4, 6, 8, 9]),
+                new Set([5, 6, 7, 9])
+            ]
+        );
+        expect(digitSetsForSum(28, 4)).toEqual([ new Set([4, 7, 8, 9]), new Set([5, 6, 8, 9]) ]);
+        expect(digitSetsForSum(29, 4)).toEqual([ new Set([5, 7, 8, 9]) ]);
+        expect(digitSetsForSum(30, 4)).toEqual([ new Set([6, 7, 8, 9]) ]);
+        expect(digitSetsForSum(31, 4)).toEqual([]);
+    });
 });
