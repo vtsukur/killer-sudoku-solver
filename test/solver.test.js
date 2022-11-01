@@ -366,4 +366,22 @@ describe('Solver tests', () => {
         expect(digitSetsForSum(45, 9)).toEqual([ new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]) ]);
         expect(digitSetsForSum(46, 9)).toEqual([]);
     });
+
+    test('Invalid sum', () => {
+        expect(() => digitSetsForSum(0, 2)).toThrow('Invalid sum: 0');
+        expect(() => digitSetsForSum(-1, 2)).toThrow('Invalid sum: -1');
+        expect(() => digitSetsForSum("3", 2)).toThrow('Invalid sum: 3');
+        expect(() => digitSetsForSum({}, 2)).toThrow('Invalid sum: [object Object]');
+        expect(() => digitSetsForSum(undefined, 2)).toThrow('Invalid sum: undefined');
+        expect(() => digitSetsForSum(null, 2)).toThrow('Invalid sum: null');
+    });
+
+    test('Invalid count', () => {
+        expect(() => digitSetsForSum(3, 0)).toThrow('Invalid count: 0');
+        expect(() => digitSetsForSum(3, -1)).toThrow('Invalid count: -1');
+        expect(() => digitSetsForSum(3, "2")).toThrow('Invalid count: 2');
+        expect(() => digitSetsForSum(3, {})).toThrow('Invalid count: [object Object]');
+        expect(() => digitSetsForSum(3, null)).toThrow('Invalid count: null');
+        expect(() => digitSetsForSum(3, undefined)).toThrow('Invalid count: undefined');
+    });
 });
