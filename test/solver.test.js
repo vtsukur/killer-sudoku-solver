@@ -337,4 +337,8 @@ describe('Solver tests', () => {
         expect(digitSetsForSum(39, 6)).toEqual([ new Set([4, 5, 6, 7, 8, 9]) ]);
         expect(digitSetsForSum(40, 6)).toEqual([]);
     });
+
+    // test('Sets of digits to form a sum in 9 cells', () => {
+    //     expect(digitSetsForSum(45, 9)).toEqual([ new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]) ]);
+    // });
 });
