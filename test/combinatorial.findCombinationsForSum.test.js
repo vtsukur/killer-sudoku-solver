@@ -3,13 +3,13 @@ import { findCombinationsForSum } from '../src/combinatorial';
 
 describe('Tests for the finder of digit combinations to form a sum', () => {
     test('Digit combinations to form a sum in 1 cell', () => {
-        _.range(1, 9).forEach(sum => {
+        _.range(1, 10).forEach(sum => {
             expect(findCombinationsForSum(sum, 1)).toEqual([ new Set([sum]) ]);
         })
     });
 
     test('Digit combinations to form a sum in 2 cells', () => {
-        _.range(1, 2).forEach(sum => {
+        _.range(1, 3).forEach(sum => {
             expect(findCombinationsForSum(sum, 2)).toEqual([]);
         })
         expect(findCombinationsForSum(3, 2)).toEqual([ new Set([1, 2]) ]);
@@ -45,7 +45,7 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
     });
 
     test('Digit combinations to form a sum in 3 cells', () => {
-        _.range(1, 5).forEach(sum => {
+        _.range(1, 6).forEach(sum => {
             expect(findCombinationsForSum(sum, 3)).toEqual([]);
         })
         expect(findCombinationsForSum(6, 3)).toEqual([ new Set([1, 2, 3]) ]);
@@ -140,7 +140,7 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
     });
 
     test('Digit combinations to form a sum in 4 cells', () => {
-        _.range(1, 9).forEach(sum => {
+        _.range(1, 10).forEach(sum => {
             expect(findCombinationsForSum(sum, 4)).toEqual([]);
         })
         expect(findCombinationsForSum(10, 4)).toEqual([ new Set([1, 2, 3, 4]) ]);
@@ -294,7 +294,7 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
     });
 
     test('Digit combinations to form a sum in 5 cells (shallow coverage)', () => {
-        _.range(1, 14).forEach(sum => {
+        _.range(1, 15).forEach(sum => {
             expect(findCombinationsForSum(sum, 5)).toEqual([]);
         })
         expect(findCombinationsForSum(15, 5)).toEqual([ new Set([1, 2, 3, 4, 5]) ]);
@@ -313,7 +313,7 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
     });
 
     test('Digit combinations to form a sum in 6 cells (shallow coverage)', () => {
-        _.range(1, 20).forEach(sum => {
+        _.range(1, 21).forEach(sum => {
             expect(findCombinationsForSum(sum, 6)).toEqual([]);
         })
         expect(findCombinationsForSum(21, 6)).toEqual([ new Set([1, 2, 3, 4, 5, 6]) ]);

@@ -3,7 +3,7 @@ import { GRID_SIDE_LENGTH, ROW_OR_COLUMN_OR_SUBGRID_SUM } from './problem';
 
 const MIN_SUMS_PER_COUNT = new Array(GRID_SIDE_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(GRID_SIDE_LENGTH);
-_.range(0, GRID_SIDE_LENGTH).forEach(count => {
+_.range(GRID_SIDE_LENGTH).forEach(count => {
     if (count == 0) {
         MIN_SUMS_PER_COUNT[count] = 1;
         MAX_SUMS_PER_COUNT[count] = GRID_SIDE_LENGTH;
