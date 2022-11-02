@@ -61,13 +61,9 @@ export function findCombinationsForSegment(sums) {
 
     const stack = [];
     stack.length = sums.length;
-    // let masterSet = new Set();
 
     function recursiveCombos(step) {
         if (step === sums.length) {
-            // if (hasUniqueNumbers()) {
-                // combos.push([...stack]);
-            // }
             const uniqueDigits = new Set(stack.map(set => Array.from(set)).flatMap(digit => digit));
             if (uniqueDigits.size === uniqueDigitsCount) {
                 combos.push([...stack]);
@@ -75,12 +71,6 @@ export function findCombinationsForSegment(sums) {
         } else {
             const combinationsForSum = combinationsForSums[step];
             for (const combinationForSum of combinationsForSum) {
-                // const nextMasterSet = new Set([...masterSet, ...combinationForSum]);
-                // if (nextMasterSet.length !== masterSet.length + combinationForSum.length) {
-                //     continue;
-                // }
-
-                // masterSet = nextMasterSet;
                 stack[step] = combinationForSum;
                 recursiveCombos(step + 1);
             }
