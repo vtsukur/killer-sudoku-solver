@@ -18,7 +18,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         ]);
     });
 
-    test('Single combination of digit to form a segment', () => {
+    test('Single combination of digits to form a segment', () => {
         expect(findCombinationsForSegment([
             new Sum(4, [ new Cell(1, 1), new Cell(1, 2)]),
             new Sum(24, [ new Cell(1, 3), new Cell(1, 4), new Cell(1, 5)]),
