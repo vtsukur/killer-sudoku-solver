@@ -14,10 +14,10 @@ _.range(0, GRID_SIDE_LENGTH).forEach(count => {
 })
 
 export function digitSetsForSum(sum, count) {
-    if (typeof(sum) !== "number" || !sum || sum <= 0) {
+    if (typeof (sum) !== "number" || !sum || sum <= 0) {
         throw `Invalid sum: ${sum}`;
     }
-    if (typeof(count) !== "number" || !count || count <= 0) {
+    if (typeof (count) !== "number" || !count || count <= 0) {
         throw `Invalid count: ${count}`;
     }
     if (sum < MIN_SUMS_PER_COUNT[count - 1] || sum > MAX_SUMS_PER_COUNT[count - 1]) {
@@ -50,20 +50,4 @@ export function digitSetsForSum(sum, count) {
     combinationsRecursive(1, 1);
 
     return sets;
-}
-
-export class SummedArea {
-    constructor(sum, cells) {
-        this.sum = sum;
-        this.cells = cells;
-        this.subgridsIndices = new Set(cells.collect(cell => cell.subgridIndex));
-    }
-
-    reduceOptions() {
-
-    }
-}
-
-export class Solver {
-
 }
