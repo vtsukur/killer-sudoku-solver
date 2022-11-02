@@ -1,12 +1,7 @@
 import _ from 'lodash';
-import reader from '../src/reader.js';
 import { digitSetsForSum as digitSetsForSum } from '../src/solver';
 
 describe('Solver tests', () => {
-    test('Solve full', () => {
-        const problem = reader('./problems/1.txt');
-    });
-
     test('Sets of digits to form a sum in 1 cell', () => {
         _.range(1, 9).forEach(sum => {
             expect(digitSetsForSum(sum, 1)).toEqual([ new Set([sum]) ]);
