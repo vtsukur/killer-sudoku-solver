@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { findDigitCombinations } from '../src/solver';
+import { findDigitCombinations } from '../src/combinatorial';
 
 describe('Tests for finder of digit combinations to form a sum', () => {
     test('Digit combinations to form a sum in 1 cell', () => {
