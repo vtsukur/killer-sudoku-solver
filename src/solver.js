@@ -13,7 +13,7 @@ _.range(0, GRID_SIDE_LENGTH).forEach(count => {
     }
 })
 
-export function digitSetsForSum(sum, count) {
+export function findDigitCombinations(sum, count) {
     if (typeof (sum) !== "number" || !sum || sum <= 0) {
         throw `Invalid sum: ${sum}`;
     }
