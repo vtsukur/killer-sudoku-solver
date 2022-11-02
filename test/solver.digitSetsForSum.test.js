@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { digitSetsForSum as digitSetsForSum } from '../src/solver';
 
-describe('Solver tests', () => {
+describe('Tests for sets of digits to form a sum', () => {
     test('Sets of digits to form a sum in 1 cell', () => {
         _.range(1, 9).forEach(sum => {
             expect(digitSetsForSum(sum, 1)).toEqual([ new Set([sum]) ]);
