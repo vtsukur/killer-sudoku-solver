@@ -53,6 +53,14 @@ export function findCombinationsForSum(sum, count) {
 }
 
 export function findCombinationsForSegment(sums) {
+    if (!Array.isArray(sums)) {
+        throw `Invalid sums: ${sums}`;
+    }
+
+    if (sums.length == 0) {
+        return [];
+    }
+
     const combos = [];
     const combosForSums = sums.map(sum => findCombinationsForSum(sum.value, sum.cellCount));
     const stack = new Array(sums.length);

@@ -38,4 +38,16 @@ describe('Tests for the finder of digit combinations to form a segment out of su
             [ new Set([1, 3]), new Set([4, 5]) ]
         ]);
     });
+
+    test('Combinations of digits to form a segment out of no sums', () => {
+        expect(findCombinationsForSegment([])).toEqual([]);
+    });
+
+    test('Combinations of digits to form a segment out of invalid sums', () => {
+        expect(() => findCombinationsForSegment(undefined)).toThrow('Invalid sums: undefined');
+        expect(() => findCombinationsForSegment(null)).toThrow('Invalid sums: null');
+        expect(() => findCombinationsForSegment({})).toThrow('Invalid sums: [object Object]');
+        expect(() => findCombinationsForSegment(3)).toThrow('Invalid sums: 3');
+        expect(() => findCombinationsForSegment("3")).toThrow('Invalid sums: 3');
+    });
 });
