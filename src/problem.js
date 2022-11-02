@@ -42,6 +42,10 @@ export class Sum {
         this.cells = [...cells];
     }
 
+    get cellCount() {
+        return this.cells.length
+    }
+
     addCell(cell) {
         this.cells.push(cell);
     }
