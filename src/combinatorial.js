@@ -24,14 +24,14 @@ export function findCombinationsForSum(sum, count) {
         return [];
     }
 
-    const sets = [];
+    const combos = [];
     const digits = new Array(count);
     let currentSum = 0;
 
-    function combinationsRecursive(level, startWith) {
+    function combosRecursive(level, startWith) {
         if (level > count) {
             if (currentSum === sum) {
-                sets.push(new Set(digits));
+                combos.push(new Set(digits));
             }
         } else {
             for (let i = startWith; i <= GRID_SIDE_LENGTH; ++i) {
@@ -40,44 +40,43 @@ export function findCombinationsForSum(sum, count) {
                 } else {
                     digits[level - 1] = i;
                     currentSum += i;
-                    combinationsRecursive(level + 1, i + 1);
+                    combosRecursive(level + 1, i + 1);
                     currentSum -= i;
                 }
             }
         }
     }
 
-    combinationsRecursive(1, 1);
+    combosRecursive(1, 1);
 
-    return sets;
+    return combos;
 }
 
 export function findCombinationsForSegment(sums) {
     const combos = [];
-    const combinationsForSums = sums.map(
-        sum => findCombinationsForSum(sum.value, sum.cellCount));
-    const uniqueDigitsCount = sums.reduce(
-        (partialSum, a) => partialSum + a.cellCount, 0);
+    const combosForSums = sums.map(sum => findCombinationsForSum(sum.value, sum.cellCount));
+    const stack = new Array(sums.length);
+    const checkingSet = new Set();
 
-    const stack = [];
-    stack.length = sums.length;
-
-    function recursiveCombos(step) {
+    function combosRecursive(step) {
         if (step === sums.length) {
-            const uniqueDigits = new Set(stack.map(set => Array.from(set)).flatMap(digit => digit));
-            if (uniqueDigits.size === uniqueDigitsCount) {
-                combos.push([...stack]);
-            }
+            combos.push([...stack]);
         } else {
-            const combinationsForSum = combinationsForSums[step];
-            for (const combinationForSum of combinationsForSum) {
-                stack[step] = combinationForSum;
-                recursiveCombos(step + 1);
+            const combosForSum = combosForSums[step];
+            for (const comboForSum of combosForSum) {
+                const comboForSumArr = [...comboForSum];
+                if (comboForSumArr.every(digit => !checkingSet.has(digit))) {
+                    stack[step] = comboForSum;
+
+                    comboForSumArr.forEach(digit => checkingSet.add(digit));
+                    combosRecursive(step + 1);    
+                    comboForSumArr.forEach(digit => checkingSet.delete(digit));
+                }
             }
         }
     }
 
-    recursiveCombos(0);
+    combosRecursive(0);
 
     return combos;
 }
