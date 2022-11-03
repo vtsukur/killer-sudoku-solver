@@ -7,7 +7,7 @@ export class Problem {
     constructor(sums) {
         this.sums = [...sums];
     }
-    
+
     checkCorrectness() {
         const cells = this.sums.flatMap(sum => sum.cells);
         if (cells.length !== GRID_CELL_COUNT) {
@@ -27,7 +27,7 @@ export class Problem {
 
         const actualFieldSum = this.sums.reduce((prev, current) => prev + current.value, 0);
         if (actualFieldSum !== GRID_SUM) {
-           this.#throwValidationError(`Expected field sum: ${GRID_SUM}. Actual: ${actualFieldSum}`);
+            this.#throwValidationError(`Expected field sum: ${GRID_SUM}. Actual: ${actualFieldSum}`);
         }
     }
 
