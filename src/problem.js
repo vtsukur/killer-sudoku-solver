@@ -36,7 +36,7 @@ export class Problem {
     }
 }
 
-export class Sum {
+export class InputSum {
     constructor(value, cells = []) {
         this.value = value;
         this.cells = [...cells];
@@ -51,7 +51,7 @@ export class Sum {
     }
 }
 
-export class Cell {
+export class InputCell {
     constructor(row, col) {
         this.row = row;
         this.col = col;

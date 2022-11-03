@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { findCombinationsForSegment } from '../src/combinatorial';
-import { Cell, GRID_SIDE_LENGTH, Sum } from '../src/problem';
+import { InputSum as Sum, InputCell as Cell } from '../src/problem';
 
 describe('Tests for the finder of digit combinations to form a segment out of sums', () => {
     test('Multiple combinations of digits to form a complete segment', () => {

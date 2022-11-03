@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Problem, Sum, Cell, GRID_SIDE_LENGTH } from './problem';
+import { Problem, InputSum as Sum, InputCell as Cell, GRID_SIDE_LENGTH } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
