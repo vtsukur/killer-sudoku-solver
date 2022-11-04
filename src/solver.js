@@ -32,9 +32,7 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     let leftoverSumValue = UNIQUE_SEGMENT_SUM;
     const leftoverSumCells = [];
     const processedSums = new Set();
-    let next = iterator.next();
-    while (!next.done) {
-        const i = next.value;
+    for (const i of iterator) {
         const sum = model.sumAt(i.rowNum, i.colNum);
         if (!processedSums.has(sum)) {
             if (isContained(sum)) {
@@ -46,11 +44,26 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
                 leftoverSumCells.push(cell);
             }    
         }
-        next = iterator.next();
     }
     sums.push(new Sum(leftoverSumValue, leftoverSumCells));
     return sums;
 };
+
+const newRowOrColumnIterator = (of) => {
+    let i = 0;
+    return {
+        [Symbol.iterator]() { return this; },
+        next() {
+            if (i < GRID_SIDE_LENGTH) {
+                ++i;
+                const value = of(i);
+                return { value, done: false };
+            } else {
+                return { value: GRID_SIDE_LENGTH, done: true };
+            }
+        }
+    }
+}
 
 export class Row {
     constructor(rowNum, sums) {
@@ -60,21 +73,9 @@ export class Row {
 
     static createWithLeftoverSum(rowNum, model) {
         return new Row(rowNum, collectSegmentSumsWithLeftover(
-            this.#newColIterator(rowNum), model, sum => sum.isRowOnlySum));
-    }
-
-    static #newColIterator(rowNum) {
-        let colNum = 0;
-        return {
-            next() {
-                if (colNum < GRID_SIDE_LENGTH) {
-                    ++colNum;
-                    return { value: { rowNum, colNum }, done: false };
-                } else {
-                    return { value: GRID_SIDE_LENGTH, done: true };
-                }
-            }
-        }
+            newRowOrColumnIterator(colNum => {
+                return { rowNum, colNum };
+            }), model, sum => sum.isRowOnlySum));
     }
 }
 
@@ -86,21 +87,9 @@ export class Column {
 
     static createWithLeftoverSum(colNum, model) {
         return new Column(colNum, collectSegmentSumsWithLeftover(
-            this.#newRowIterator(colNum), model, sum => sum.isColumnOnlySum));
-    }
-
-    static #newRowIterator(colNum) {
-        let rowNum = 0;
-        return {
-            next() {
-                if (rowNum < GRID_SIDE_LENGTH) {
-                    ++rowNum;
-                    return { value: { rowNum, colNum }, done: false };
-                } else {
-                    return { value: GRID_SIDE_LENGTH, done: true };
-                }
-            }
-        }
+            newRowOrColumnIterator(rowNum => {
+                return { rowNum, colNum };
+            }), model, sum => sum.isColumnOnlySum));
     }
 }
 
