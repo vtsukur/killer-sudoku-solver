@@ -62,7 +62,7 @@ export class InputCell {
     }
 
     #coordWithinRange(i) {
-        return i >= 1 && i <= GRID_SIDE_LENGTH;
+        return i >= 0 && i < GRID_SIDE_LENGTH;
     }
 
     toString() {
