@@ -7,6 +7,7 @@ export class Cell {
     constructor(row, col) {
         this.row = row;
         this.col = col;
+        this.subgridNum = Math.floor((row - 1) / 3) * 3 + Math.floor((col - 1) / 3) + 1;
     }
 
     static fromInput(inputCell) {
@@ -20,6 +21,7 @@ export class Sum {
         this.cells = cells;
         this.isRowOnlySum = (new Set(cells.map(cell => cell.row)).size === 1);
         this.isColumnOnlySum = (new Set(cells.map(cell => cell.col)).size === 1);
+        this.isSubgridOnlySum = (new Set(cells.map(cell => cell.subgridNum)).size === 1);
     }
 
     static fromInput(inputSum) {
@@ -45,19 +47,20 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
             }    
         }
     }
-    sums.push(new Sum(leftoverSumValue, leftoverSumCells));
+    if (leftoverSumCells.length !== 0) {
+        sums.push(new Sum(leftoverSumValue, leftoverSumCells));
+    }
     return sums;
 };
 
-const newRowOrColumnIterator = (of) => {
+const newRowOrColumnIterator = (valueOf) => {
     let i = 0;
     return {
         [Symbol.iterator]() { return this; },
         next() {
             if (i < GRID_SIDE_LENGTH) {
                 ++i;
-                const value = of(i);
-                return { value, done: false };
+                return { value: valueOf(i), done: false };
             } else {
                 return { value: GRID_SIDE_LENGTH, done: true };
             }
@@ -93,6 +96,36 @@ export class Column {
     }
 }
 
+export class Subgrid {
+    constructor(subgridNum, sums) {
+        this.subgridNum = subgridNum;
+        this.sums = sums;
+    }
+
+    static createWithLeftoverSum(subgridNum, model) {
+        return new Subgrid(subgridNum, collectSegmentSumsWithLeftover(
+            this.#newIterator(subgridNum), model, sum => sum.isSubgridOnlySum));
+    }
+
+    static #newIterator(subgridNum) {
+        let i = 0;
+        return {
+            [Symbol.iterator]() { return this; },
+            next() {
+                if (i < GRID_SIDE_LENGTH) {
+                    const subgridStartingRowNum = Math.floor((subgridNum - 1) / 3) * 3 + 1;
+                    const subgridStartingColNum = ((subgridNum - 1) % 3) * 3 + 1;
+                    const rowNum = subgridStartingRowNum + Math.floor(i / 3);
+                    const colNum = subgridStartingColNum + i % 3;
+                    ++i;
+                    return { value: { rowNum, colNum }, done: false };
+                } else {
+                    return { value: GRID_SIDE_LENGTH, done: true };
+                }
+            }
+        }    
+    }
+}
 export class MutableSolverModel {
     constructor(problem) {
         this.problem = problem;

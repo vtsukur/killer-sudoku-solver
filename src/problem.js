@@ -55,7 +55,6 @@ export class InputCell {
     constructor(row, col) {
         this.row = row;
         this.col = col;
-        this.subgridIndex = Math.floor((row - 1) / 3) * 3 + Math.floor((col - 1) / 3);
     }
 
     isWithinRange() {

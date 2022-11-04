@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Problem, InputSum, InputCell, GRID_SIDE_LENGTH } from '../src/problem';
-import { Cell, Sum, Row, Column, MutableSolverModel } from '../src/solver';
+import { Cell, Sum, Row, Column, Subgrid, MutableSolverModel } from '../src/solver';
 
 export const correctProblem = new Problem([
     // upper subgrids
@@ -44,6 +44,71 @@ export const correctProblem = new Problem([
 ]);
 
 describe('Tests for solver steps', () => {
+    test('Subgrid numbers for cells', () => {
+        // north-west subgrid (0)
+        _.range(1, 4).forEach(r => {
+            _.range(1, 4).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(1);
+            })
+        })
+
+        // north subgrid (1)
+        _.range(1, 4).forEach(r => {
+            _.range(4, 7).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(2);
+            })
+        })
+
+        // north-east subgrid (2)
+        _.range(1, 4).forEach(r => {
+            _.range(7, 10).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(3);
+            })
+        })
+
+        // east subgrid (3)
+        _.range(4, 7).forEach(r => {
+            _.range(1, 4).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(4);
+            })
+        })
+
+        // center subgrid (4)
+        _.range(4, 7).forEach(r => {
+            _.range(4, 7).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(5);
+            })
+        })
+
+        // west subgrid (5)
+        _.range(4, 7).forEach(r => {
+            _.range(7, 10).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(6);
+            })
+        })
+
+        // south-west subgrid (6)
+        _.range(7, 10).forEach(r => {
+            _.range(1, 4).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(7);
+            })
+        })
+
+        // south subgrid (7)
+        _.range(7, 10).forEach(r => {
+            _.range(4, 7).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(8);
+            })
+        })
+
+        // south-east subgrid (8)
+        _.range(7, 10).forEach(r => {
+            _.range(7, 10).forEach(c => {
+                expect(new Cell(r, c).subgridNum).toBe(9);
+            })
+        })
+    });
+    
     test('Initialize rows with leftover sums', () => {
         const solverModel = new MutableSolverModel(correctProblem);
         expect(Row.createWithLeftoverSum(1, solverModel)).toEqual(new Row(
@@ -169,6 +234,18 @@ describe('Tests for solver steps', () => {
                 new Sum(19, [ new Cell(4, 9), new Cell(5, 9), new Cell(6, 9) ]),
                 new Sum(14, [ new Cell(7, 9), new Cell(8, 9), new Cell(9, 9) ]),
                 new Sum(1, [ new Cell(3, 9) ])
+            ]
+        ));
+    });
+
+    test('Initialize subgrids with leftover sums', () => {
+        const solverModel = new MutableSolverModel(correctProblem);
+        expect(Subgrid.createWithLeftoverSum(1, solverModel)).toEqual(new Subgrid(
+            1, [
+                new Sum(15, [ new Cell(1, 1), new Cell(1, 2) ]),
+                new Sum(10, [ new Cell(1, 3), new Cell(2, 3) ]),
+                new Sum(7, [ new Cell(2, 1), new Cell(2, 2) ]),
+                new Sum(13, [ new Cell(3, 1), new Cell(3, 2), new Cell(3, 3) ])
             ]
         ));
     });
