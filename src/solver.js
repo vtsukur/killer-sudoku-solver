@@ -19,6 +19,7 @@ export class Sum {
         this.value = value;
         this.cells = cells;
         this.isRowOnlySum = (new Set(cells.map(cell => cell.row)).size === 1);
+        this.isColumnOnlySum = (new Set(cells.map(cell => cell.col)).size === 1);
     }
 
     static fromInput(inputSum) {
@@ -55,6 +56,34 @@ export class Row {
         }
         sums.push(new Sum(leftoverSumValue, leftoverSumCells));
         return new Row(row, sums);
+    }
+}
+
+export class Column {
+    constructor(col, sums) {
+        this.index = col;
+        this.sums = sums;
+    }
+
+    static createWithLeftoverSum(col, solver) {
+        const sums = [];
+        let leftoverSumValue = ROW_OR_COLUMN_OR_SUBGRID_SUM;
+        const leftoverSumCells = [];
+        let row = 1;
+        while (row <= GRID_SIDE_LENGTH) {
+            const sum = solver.sumAt(row, col);
+            if (sum.isColumnOnlySum) {
+                sums.push(sum);
+                leftoverSumValue -= sum.value;
+                row += sum.cellCount;
+            } else {
+                const cell = solver.cellAt(row, col);
+                leftoverSumCells.push(cell);
+                row++;
+            }
+        }
+        sums.push(new Sum(leftoverSumValue, leftoverSumCells));
+        return new Column(col, sums);
     }
 }
 
