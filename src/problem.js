@@ -1,7 +1,8 @@
-export const GRID_SIDE_LENGTH = 9;
+export const UNIQUE_SEGMENT_LENGTH = 9;
+export const SUBGRID_SIDE_LENGTH = 3;
 export const UNIQUE_SEGMENT_SUM = 45;
-export const GRID_SUM = GRID_SIDE_LENGTH * UNIQUE_SEGMENT_SUM;
-export const GRID_CELL_COUNT = GRID_SIDE_LENGTH * GRID_SIDE_LENGTH;
+export const GRID_SUM = UNIQUE_SEGMENT_LENGTH * UNIQUE_SEGMENT_SUM;
+export const GRID_CELL_COUNT = UNIQUE_SEGMENT_LENGTH * UNIQUE_SEGMENT_LENGTH;
 
 export class Problem {
     constructor(sums) {
@@ -62,7 +63,7 @@ export class InputCell {
     }
 
     #coordWithinRange(i) {
-        return i >= 0 && i < GRID_SIDE_LENGTH;
+        return i >= 0 && i < UNIQUE_SEGMENT_LENGTH;
     }
 
     toString() {

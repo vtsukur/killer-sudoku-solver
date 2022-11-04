@@ -1,13 +1,13 @@
 import _ from "lodash";
-import { GRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM } from "./problem";
+import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH } from "./problem";
 
-const newMatrix = () => new Array(GRID_SIDE_LENGTH).fill().map(() => new Array(GRID_SIDE_LENGTH));
+const newMatrix = () => new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
 
 export class Cell {
     constructor(rowIdx, colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.subgridIdx = Math.floor(rowIdx / 3) * 3 + Math.floor(colIdx / 3);
+        this.subgridIdx = Math.floor(rowIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH + Math.floor(colIdx / SUBGRID_SIDE_LENGTH);
     }
 
     static fromInput(inputCell) {
@@ -58,10 +58,10 @@ const newUniqueSegmentIterator = (valueOf) => {
     return {
         [Symbol.iterator]() { return this; },
         next() {
-            if (i < GRID_SIDE_LENGTH) {
+            if (i < UNIQUE_SEGMENT_LENGTH) {
                 return { value: valueOf(i++), done: false };
             } else {
-                return { value: GRID_SIDE_LENGTH, done: true };
+                return { value: UNIQUE_SEGMENT_LENGTH, done: true };
             }
         }
     }
@@ -104,10 +104,10 @@ export class Subgrid {
     static createWithLeftoverSum(subgridIdx, model) {
         return new Subgrid(subgridIdx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(i => {
-                const subgridStartingrowIdx = Math.floor(subgridIdx / 3) * 3;
-                const subgridStartingcolIdx = (subgridIdx % 3) * 3;
-                const rowIdx = subgridStartingrowIdx + Math.floor(i / 3);
-                const colIdx = subgridStartingcolIdx + i % 3;
+                const subgridStartingRowIdx = Math.floor(subgridIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+                const subgridStartingColIdx = (subgridIdx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+                const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
+                const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
                 return { rowIdx, colIdx };
             }
         ), model, sum => sum.isSubgridOnlySum));

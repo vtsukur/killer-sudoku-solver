@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Problem, InputSum as Sum, InputCell as Cell, GRID_SIDE_LENGTH } from './problem';
+import { Problem, InputSum as Sum, InputCell as Cell, UNIQUE_SEGMENT_LENGTH } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
@@ -61,8 +61,8 @@ export default function reader(path) {
             throw `Sum def duplicate: ${sumEntry.ref}`;
         }
         sums.get(sumEntry.ref).addCell(new Cell(
-            Math.floor(index / GRID_SIDE_LENGTH),
-            index % GRID_SIDE_LENGTH
+            Math.floor(index / UNIQUE_SEGMENT_LENGTH),
+            index % UNIQUE_SEGMENT_LENGTH
         ));
     });
 

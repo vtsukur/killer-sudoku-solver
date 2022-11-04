@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Problem, InputSum, InputCell, GRID_SIDE_LENGTH } from '../src/problem';
+import { Problem, InputSum, InputCell, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Cell, Sum, Row, Column, Subgrid, MutableSolverModel } from '../src/solver';
 
 export const correctProblem = new Problem([
@@ -149,7 +149,7 @@ describe('Tests for solver steps', () => {
             ]
         ));
         expect(Row.createWithLeftoverSum(5, solverModel)).toEqual(new Row(
-            5, [ new Sum(45, _.range(GRID_SIDE_LENGTH).map(colIdx => new Cell(5, colIdx))) ]
+            5, [ new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))) ]
         ));
         expect(Row.createWithLeftoverSum(6, solverModel)).toEqual(new Row(
             6, [
@@ -185,7 +185,7 @@ describe('Tests for solver steps', () => {
             ]
         ));
         expect(Column.createWithLeftoverSum(1, solverModel)).toEqual(new Column(
-            1, [ new Sum(45, _.range(GRID_SIDE_LENGTH).map(rowIdx => new Cell(rowIdx, 1))) ]
+            1, [ new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1))) ]
         ));
         expect(Column.createWithLeftoverSum(2, solverModel)).toEqual(new Column(
             2, [
@@ -204,7 +204,7 @@ describe('Tests for solver steps', () => {
             ]
         ));
         expect(Column.createWithLeftoverSum(4, solverModel)).toEqual(new Column(
-            4, [ new Sum(45, _.range(GRID_SIDE_LENGTH).map(row => new Cell(row, 4))) ]
+            4, [ new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(row => new Cell(row, 4))) ]
         ));
         expect(Column.createWithLeftoverSum(5, solverModel)).toEqual(new Column(
             5, [
