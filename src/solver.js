@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { GRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM } from "./problem";
 
-const newMatrix = () => new Array(GRID_SIDE_LENGTH + 1).fill(undefined).map(() => new Array(GRID_SIDE_LENGTH + 1));
+const newMatrix = () => new Array(GRID_SIDE_LENGTH + 1).fill().map(() => new Array(GRID_SIDE_LENGTH + 1));
 
 export class Cell {
     constructor(row, col) {
@@ -53,7 +53,7 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     return sums;
 };
 
-const newRowOrColumnIterator = (valueOf) => {
+const newUniqueSegmentIterator = (valueOf) => {
     let i = 0;
     return {
         [Symbol.iterator]() { return this; },
@@ -76,7 +76,7 @@ export class Row {
 
     static createWithLeftoverSum(rowNum, model) {
         return new Row(rowNum, collectSegmentSumsWithLeftover(
-            newRowOrColumnIterator(colNum => {
+            newUniqueSegmentIterator(colNum => {
                 return { rowNum, colNum };
             }), model, sum => sum.isRowOnlySum));
     }
@@ -90,7 +90,7 @@ export class Column {
 
     static createWithLeftoverSum(colNum, model) {
         return new Column(colNum, collectSegmentSumsWithLeftover(
-            newRowOrColumnIterator(rowNum => {
+            newUniqueSegmentIterator(rowNum => {
                 return { rowNum, colNum };
             }), model, sum => sum.isColumnOnlySum));
     }
@@ -104,28 +104,18 @@ export class Subgrid {
 
     static createWithLeftoverSum(subgridNum, model) {
         return new Subgrid(subgridNum, collectSegmentSumsWithLeftover(
-            this.#newIterator(subgridNum), model, sum => sum.isSubgridOnlySum));
-    }
-
-    static #newIterator(subgridNum) {
-        let i = 0;
-        return {
-            [Symbol.iterator]() { return this; },
-            next() {
-                if (i < GRID_SIDE_LENGTH) {
-                    const subgridStartingRowNum = Math.floor((subgridNum - 1) / 3) * 3 + 1;
-                    const subgridStartingColNum = ((subgridNum - 1) % 3) * 3 + 1;
-                    const rowNum = subgridStartingRowNum + Math.floor(i / 3);
-                    const colNum = subgridStartingColNum + i % 3;
-                    ++i;
-                    return { value: { rowNum, colNum }, done: false };
-                } else {
-                    return { value: GRID_SIDE_LENGTH, done: true };
-                }
+            newUniqueSegmentIterator((i) => {
+                const index = i - 1;
+                const subgridStartingRowNum = Math.floor((subgridNum - 1) / 3) * 3 + 1;
+                const subgridStartingColNum = ((subgridNum - 1) % 3) * 3 + 1;
+                const rowNum = subgridStartingRowNum + Math.floor(index / 3);
+                const colNum = subgridStartingColNum + index % 3;
+                return { rowNum, colNum };
             }
-        }    
+        ), model, sum => sum.isSubgridOnlySum));
     }
 }
+
 export class MutableSolverModel {
     constructor(problem) {
         this.problem = problem;
