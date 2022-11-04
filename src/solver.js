@@ -31,6 +31,27 @@ export class Sum {
     }
 }
 
+const collectSumsWithLeftover = (sumAt, cellAt, isContained) => {
+    const sums = [];
+    let leftoverSumValue = ROW_OR_COLUMN_OR_SUBGRID_SUM;
+    const leftoverSumCells = [];
+    let i = 1;
+    while (i <= GRID_SIDE_LENGTH) {
+        const sum = sumAt(i);
+        if (isContained(sum)) {
+            sums.push(sum);
+            leftoverSumValue -= sum.value;
+            i += sum.cellCount;
+        } else {
+            const cell = cellAt(i);
+            leftoverSumCells.push(cell);
+            i++;
+        }
+    }
+    sums.push(new Sum(leftoverSumValue, leftoverSumCells));
+    return sums;
+};
+
 export class Row {
     constructor(row, sums) {
         this.index = row;
@@ -38,24 +59,8 @@ export class Row {
     }
 
     static createWithLeftoverSum(row, solver) {
-        const sums = [];
-        let leftoverSumValue = ROW_OR_COLUMN_OR_SUBGRID_SUM;
-        const leftoverSumCells = [];
-        let col = 1;
-        while (col <= GRID_SIDE_LENGTH) {
-            const sum = solver.sumAt(row, col);
-            if (sum.isRowOnlySum) {
-                sums.push(sum);
-                leftoverSumValue -= sum.value;
-                col += sum.cellCount;
-            } else {
-                const cell = solver.cellAt(row, col);
-                leftoverSumCells.push(cell);
-                col++;
-            }
-        }
-        sums.push(new Sum(leftoverSumValue, leftoverSumCells));
-        return new Row(row, sums);
+        return new Row(row, collectSumsWithLeftover(
+            col => solver.sumAt(row, col), col => solver.cellAt(row, col), sum => sum.isRowOnlySum));
     }
 }
 
@@ -66,24 +71,8 @@ export class Column {
     }
 
     static createWithLeftoverSum(col, solver) {
-        const sums = [];
-        let leftoverSumValue = ROW_OR_COLUMN_OR_SUBGRID_SUM;
-        const leftoverSumCells = [];
-        let row = 1;
-        while (row <= GRID_SIDE_LENGTH) {
-            const sum = solver.sumAt(row, col);
-            if (sum.isColumnOnlySum) {
-                sums.push(sum);
-                leftoverSumValue -= sum.value;
-                row += sum.cellCount;
-            } else {
-                const cell = solver.cellAt(row, col);
-                leftoverSumCells.push(cell);
-                row++;
-            }
-        }
-        sums.push(new Sum(leftoverSumValue, leftoverSumCells));
-        return new Column(col, sums);
+        return new Column(col, collectSumsWithLeftover(
+            row => solver.sumAt(row, col), row => solver.cellAt(row, col), sum => sum.isColumnOnlySum));
     }
 }
 
