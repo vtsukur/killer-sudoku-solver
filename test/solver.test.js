@@ -112,17 +112,17 @@ describe('Tests for solver steps', () => {
 
     test('Initialize columns with leftover sums', () => {
         const solverModel = new MutableSolverModel(correctProblem);
-        expect(Column.createWithLeftoverSum(1, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(1, solverModel)).toEqual(new Column(
             1, [
                 new Sum(19, [ new Cell(7, 1), new Cell(8, 1), new Cell(9, 1) ]),
                 new Sum(26, [ new Cell(1, 1), new Cell(2, 1), new Cell(3, 1),
                     new Cell(4, 1), new Cell(5, 1), new Cell(6, 1) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(2, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(2, solverModel)).toEqual(new Column(
             2, [ new Sum(45, _.range(GRID_SIDE_LENGTH).map(row => new Cell(row + 1, 2))) ]
         ));
-        expect(Column.createWithLeftoverSum(3, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(3, solverModel)).toEqual(new Column(
             3, [
                 new Sum(10, [ new Cell(1, 3), new Cell(2, 3) ]),
                 new Sum(2, [ new Cell(4, 3) ]),
@@ -130,7 +130,7 @@ describe('Tests for solver steps', () => {
                     new Cell(7, 3), new Cell(8, 3), new Cell(9, 3) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(4, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(4, solverModel)).toEqual(new Column(
             4, [
                 new Sum(17, [ new Cell(1, 4), new Cell(2, 4) ]),
                 new Sum(6, [ new Cell(8, 4), new Cell(9, 4) ]),
@@ -138,10 +138,10 @@ describe('Tests for solver steps', () => {
                     new Cell(6, 4), new Cell(7, 4) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(5, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(5, solverModel)).toEqual(new Column(
             5, [ new Sum(45, _.range(GRID_SIDE_LENGTH).map(row => new Cell(row + 1, 5))) ]
         ));
-        expect(Column.createWithLeftoverSum(6, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(6, solverModel)).toEqual(new Column(
             6, [
                 new Sum(8, [ new Cell(3, 6), new Cell(4, 6) ]),
                 new Sum(8, [ new Cell(8, 6) ]),
@@ -149,21 +149,21 @@ describe('Tests for solver steps', () => {
                     new Cell(6, 6), new Cell(7, 6), new Cell(9, 6) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(7, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(7, solverModel)).toEqual(new Column(
             7, [
                 new Sum(16, [ new Cell(3, 7), new Cell(4, 7) ]),
                 new Sum(29, [ new Cell(1, 7), new Cell(2, 7), new Cell(5, 7),
                     new Cell(6, 7), new Cell(7, 7), new Cell(8, 7), new Cell(9, 7) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(8, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(8, solverModel)).toEqual(new Column(
             8, [
                 new Sum(5, [ new Cell(4, 8), new Cell(5, 8) ]),
                 new Sum(40, [ new Cell(1, 8), new Cell(2, 8), new Cell(3, 8),
                     new Cell(6, 8), new Cell(7, 8), new Cell(8, 8), new Cell(9, 8) ])
             ]
         ));
-        expect(Column.createWithLeftoverSum(9, solverModel)).toEqual(new Row(
+        expect(Column.createWithLeftoverSum(9, solverModel)).toEqual(new Column(
             9, [
                 new Sum(11, [ new Cell(1, 9), new Cell(2, 9) ]),
                 new Sum(19, [ new Cell(4, 9), new Cell(5, 9), new Cell(6, 9) ]),

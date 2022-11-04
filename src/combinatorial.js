@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { GRID_SIDE_LENGTH, ROW_OR_COLUMN_OR_SUBGRID_SUM } from './problem';
+import { GRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM } from './problem';
 
 const MIN_SUMS_PER_COUNT = new Array(GRID_SIDE_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(GRID_SIDE_LENGTH);
@@ -60,8 +60,8 @@ export function findCombinationsForSegment(sums) {
         throw `Too many sums. Expected no more than ${GRID_SIDE_LENGTH} sums. Actual: ${sums.length})`;
     }
     const totalSum = sums.reduce((partialSum, a) => partialSum + a.value, 0);
-    if (totalSum > ROW_OR_COLUMN_OR_SUBGRID_SUM) {
-        throw `Total sum should be <= ${ROW_OR_COLUMN_OR_SUBGRID_SUM}. Actual: ${totalSum})`;
+    if (totalSum > UNIQUE_SEGMENT_SUM) {
+        throw `Total sum should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum})`;
     }
     const cellCount = sums.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > GRID_SIDE_LENGTH) {

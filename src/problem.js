@@ -1,6 +1,6 @@
 export const GRID_SIDE_LENGTH = 9;
-export const ROW_OR_COLUMN_OR_SUBGRID_SUM = 45;
-export const GRID_SUM = GRID_SIDE_LENGTH * ROW_OR_COLUMN_OR_SUBGRID_SUM;
+export const UNIQUE_SEGMENT_SUM = 45;
+export const GRID_SUM = GRID_SIDE_LENGTH * UNIQUE_SEGMENT_SUM;
 export const GRID_CELL_COUNT = GRID_SIDE_LENGTH * GRID_SIDE_LENGTH;
 
 export class Problem {

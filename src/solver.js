@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { GRID_SIDE_LENGTH, ROW_OR_COLUMN_OR_SUBGRID_SUM } from "./problem";
+import { GRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM } from "./problem";
 
 const newMatrix = () => new Array(GRID_SIDE_LENGTH + 1).fill(undefined).map(() => new Array(GRID_SIDE_LENGTH + 1));
 
@@ -33,7 +33,7 @@ export class Sum {
 
 const collectSumsWithLeftover = (sumAt, cellAt, isContained) => {
     const sums = [];
-    let leftoverSumValue = ROW_OR_COLUMN_OR_SUBGRID_SUM;
+    let leftoverSumValue = UNIQUE_SEGMENT_SUM;
     const leftoverSumCells = [];
     let i = 1;
     while (i <= GRID_SIDE_LENGTH) {
@@ -53,26 +53,30 @@ const collectSumsWithLeftover = (sumAt, cellAt, isContained) => {
 };
 
 export class Row {
-    constructor(row, sums) {
-        this.index = row;
+    constructor(rowNum, sums) {
+        this.rowNum = rowNum;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(row, solver) {
-        return new Row(row, collectSumsWithLeftover(
-            col => solver.sumAt(row, col), col => solver.cellAt(row, col), sum => sum.isRowOnlySum));
+    static createWithLeftoverSum(rowNum, model) {
+        return new Row(rowNum, collectSumsWithLeftover(
+            colNum => model.sumAt(rowNum, colNum),
+            colNum => model.cellAt(rowNum, colNum),
+            sum => sum.isRowOnlySum));
     }
 }
 
 export class Column {
-    constructor(col, sums) {
-        this.index = col;
+    constructor(colNum, sums) {
+        this.colNum = colNum;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(col, solver) {
-        return new Column(col, collectSumsWithLeftover(
-            row => solver.sumAt(row, col), row => solver.cellAt(row, col), sum => sum.isColumnOnlySum));
+    static createWithLeftoverSum(colNum, model) {
+        return new Column(colNum, collectSumsWithLeftover(
+            rowNum => model.sumAt(rowNum, colNum),
+            rowNum => model.cellAt(rowNum, colNum),
+            sum => sum.isColumnOnlySum));
     }
 }
 
