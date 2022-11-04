@@ -1,13 +1,13 @@
 import _ from "lodash";
 import { GRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM } from "./problem";
 
-const newMatrix = () => new Array(GRID_SIDE_LENGTH + 1).fill().map(() => new Array(GRID_SIDE_LENGTH + 1));
+const newMatrix = () => new Array(GRID_SIDE_LENGTH).fill().map(() => new Array(GRID_SIDE_LENGTH));
 
 export class Cell {
-    constructor(row, col) {
-        this.row = row;
-        this.col = col;
-        this.subgridNum = Math.floor((row - 1) / 3) * 3 + Math.floor((col - 1) / 3) + 1;
+    constructor(rowIdx, colIdx) {
+        this.rowIdx = rowIdx;
+        this.colIdx = colIdx;
+        this.subgridIdx = Math.floor(rowIdx / 3) * 3 + Math.floor(colIdx / 3);
     }
 
     static fromInput(inputCell) {
@@ -19,9 +19,9 @@ export class Sum {
     constructor(value, cells) {
         this.value = value;
         this.cells = cells;
-        this.isRowOnlySum = (new Set(cells.map(cell => cell.row)).size === 1);
-        this.isColumnOnlySum = (new Set(cells.map(cell => cell.col)).size === 1);
-        this.isSubgridOnlySum = (new Set(cells.map(cell => cell.subgridNum)).size === 1);
+        this.isRowOnlySum = (new Set(cells.map(cell => cell.rowIdx)).size === 1);
+        this.isColumnOnlySum = (new Set(cells.map(cell => cell.colIdx)).size === 1);
+        this.isSubgridOnlySum = (new Set(cells.map(cell => cell.subgridIdx)).size === 1);
     }
 
     static fromInput(inputSum) {
@@ -35,14 +35,14 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     const leftoverSumCells = [];
     const processedSums = new Set();
     for (const i of iterator) {
-        const sum = model.sumAt(i.rowNum, i.colNum);
+        const sum = model.sumAt(i.rowIdx, i.colIdx);
         if (!processedSums.has(sum)) {
             if (isContained(sum)) {
                 sums.push(sum);
                 processedSums.add(sum);
                 leftoverSumValue -= sum.value;
             } else {
-                const cell = model.cellAt(i.rowNum, i.colNum);
+                const cell = model.cellAt(i.rowIdx, i.colIdx);
                 leftoverSumCells.push(cell);
             }    
         }
@@ -59,8 +59,7 @@ const newUniqueSegmentIterator = (valueOf) => {
         [Symbol.iterator]() { return this; },
         next() {
             if (i < GRID_SIDE_LENGTH) {
-                ++i;
-                return { value: valueOf(i), done: false };
+                return { value: valueOf(i++), done: false };
             } else {
                 return { value: GRID_SIDE_LENGTH, done: true };
             }
@@ -69,48 +68,47 @@ const newUniqueSegmentIterator = (valueOf) => {
 }
 
 export class Row {
-    constructor(rowNum, sums) {
-        this.rowNum = rowNum;
+    constructor(rowIdx, sums) {
+        this.rowIdx = rowIdx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(rowNum, model) {
-        return new Row(rowNum, collectSegmentSumsWithLeftover(
-            newUniqueSegmentIterator(colNum => {
-                return { rowNum, colNum };
+    static createWithLeftoverSum(rowIdx, model) {
+        return new Row(rowIdx, collectSegmentSumsWithLeftover(
+            newUniqueSegmentIterator(colIdx => {
+                return { rowIdx, colIdx };
             }), model, sum => sum.isRowOnlySum));
     }
 }
 
 export class Column {
-    constructor(colNum, sums) {
-        this.colNum = colNum;
+    constructor(colIdx, sums) {
+        this.colIdx = colIdx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(colNum, model) {
-        return new Column(colNum, collectSegmentSumsWithLeftover(
-            newUniqueSegmentIterator(rowNum => {
-                return { rowNum, colNum };
+    static createWithLeftoverSum(colIdx, model) {
+        return new Column(colIdx, collectSegmentSumsWithLeftover(
+            newUniqueSegmentIterator(rowIdx => {
+                return { rowIdx, colIdx };
             }), model, sum => sum.isColumnOnlySum));
     }
 }
 
 export class Subgrid {
-    constructor(subgridNum, sums) {
-        this.subgridNum = subgridNum;
+    constructor(subgridIdx, sums) {
+        this.subgridIdx = subgridIdx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(subgridNum, model) {
-        return new Subgrid(subgridNum, collectSegmentSumsWithLeftover(
-            newUniqueSegmentIterator((i) => {
-                const index = i - 1;
-                const subgridStartingRowNum = Math.floor((subgridNum - 1) / 3) * 3 + 1;
-                const subgridStartingColNum = ((subgridNum - 1) % 3) * 3 + 1;
-                const rowNum = subgridStartingRowNum + Math.floor(index / 3);
-                const colNum = subgridStartingColNum + index % 3;
-                return { rowNum, colNum };
+    static createWithLeftoverSum(subgridIdx, model) {
+        return new Subgrid(subgridIdx, collectSegmentSumsWithLeftover(
+            newUniqueSegmentIterator(i => {
+                const subgridStartingrowIdx = Math.floor(subgridIdx / 3) * 3;
+                const subgridStartingcolIdx = (subgridIdx % 3) * 3;
+                const rowIdx = subgridStartingrowIdx + Math.floor(i / 3);
+                const colIdx = subgridStartingcolIdx + i % 3;
+                return { rowIdx, colIdx };
             }
         ), model, sum => sum.isSubgridOnlySum));
     }
@@ -125,18 +123,18 @@ export class MutableSolverModel {
         problem.sums.forEach(inputSum => {
             const sum = Sum.fromInput(inputSum);
             sum.cells.forEach(cell => {
-                this.sumMatrix[cell.row][cell.col] = sum;
-                this.cellMatrix[cell.row][cell.col] = cell;
+                this.sumMatrix[cell.rowIdx][cell.colIdx] = sum;
+                this.cellMatrix[cell.rowIdx][cell.colIdx] = cell;
             }, this);
             this.sums.push(sum);
         }, this);        
     }
 
-    sumAt(row, col) {
-        return this.sumMatrix[row][col];
+    sumAt(rowIdx, colIdx) {
+        return this.sumMatrix[rowIdx][colIdx];
     }
 
-    cellAt(row, col) {
-        return this.cellMatrix[row][col];
+    cellAt(rowIds, colIdx) {
+        return this.cellMatrix[rowIds][colIdx];
     }
 }
