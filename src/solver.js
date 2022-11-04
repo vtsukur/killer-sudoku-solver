@@ -109,15 +109,6 @@ export class MutableSolverModel {
         }, this);        
     }
 
-    #prepare() {
-        this.rows = _.range(GRID_SIDE_LENGTH).map(rowIndex => Row.createWithLeftoverSum(rowIndex + 1, this));
-        this.columns = _.range(GRID_SIDE_LENGTH).map(colIndex => Column.createWithLeftoverSum(colIndex + 1, this));
-    }
-
-    solve() {
-        this.#prepare();
-    }
-
     sumAt(row, col) {
         return this.sumMatrix[row][col];
     }
