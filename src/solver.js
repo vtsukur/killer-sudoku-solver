@@ -19,9 +19,13 @@ export class Sum {
     constructor(value, cells) {
         this.value = value;
         this.cells = cells;
-        this.isRowOnlySum = (new Set(cells.map(cell => cell.rowIdx)).size === 1);
-        this.isColumnOnlySum = (new Set(cells.map(cell => cell.colIdx)).size === 1);
-        this.isSubgridOnlySum = (new Set(cells.map(cell => cell.subgridIdx)).size === 1);
+        this.isWithinRow = this.constructor.#isSameForAll(cells, cell => cell.rowIdx);
+        this.isWithinColumn = this.constructor.#isSameForAll(cells, cell => cell.colIdx);
+        this.isWithinSubgrid = this.constructor.#isSameForAll(cells, cell => cell.subgridIdx);
+    }
+
+    static #isSameForAll(cells, whatFn) {
+        return new Set(cells.map(whatFn)).size === 1;
     }
 
     static fromInput(inputSum) {
@@ -29,7 +33,7 @@ export class Sum {
     }
 }
 
-const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
+const collectSegmentSumsWithLeftover = (iterator, model, isContainedFn) => {
     const sums = [];
     let leftoverSumValue = UNIQUE_SEGMENT_SUM;
     const leftoverSumCells = [];
@@ -37,7 +41,7 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     for (const i of iterator) {
         const sum = model.sumAt(i.rowIdx, i.colIdx);
         if (!processedSums.has(sum)) {
-            if (isContained(sum)) {
+            if (isContainedFn(sum)) {
                 sums.push(sum);
                 processedSums.add(sum);
                 leftoverSumValue -= sum.value;
@@ -53,13 +57,13 @@ const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     return sums;
 };
 
-const newUniqueSegmentIterator = (valueOf) => {
+const newUniqueSegmentIterator = (valueOfFn) => {
     let i = 0;
     return {
         [Symbol.iterator]() { return this; },
         next() {
             if (i < UNIQUE_SEGMENT_LENGTH) {
-                return { value: valueOf(i++), done: false };
+                return { value: valueOfFn(i++), done: false };
             } else {
                 return { value: UNIQUE_SEGMENT_LENGTH, done: true };
             }
@@ -77,7 +81,7 @@ export class Row {
         return new Row(rowIdx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(colIdx => {
                 return { rowIdx, colIdx };
-            }), model, sum => sum.isRowOnlySum));
+            }), model, sum => sum.isWithinRow));
     }
 }
 
@@ -91,7 +95,7 @@ export class Column {
         return new Column(colIdx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(rowIdx => {
                 return { rowIdx, colIdx };
-            }), model, sum => sum.isColumnOnlySum));
+            }), model, sum => sum.isWithinColumn));
     }
 }
 
@@ -110,7 +114,7 @@ export class Subgrid {
                 const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
                 return { rowIdx, colIdx };
             }
-        ), model, sum => sum.isSubgridOnlySum));
+        ), model, sum => sum.isWithinSubgrid));
     }
 }
 
