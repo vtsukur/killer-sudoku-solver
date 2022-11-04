@@ -97,7 +97,8 @@ export class MutableSolverModel {
     }
 
     #prepare() {
-        this.rows = _.range(GRID_SIDE_LENGTH).map(row => Row.createWithLeftoverSum(row + 1, this));
+        this.rows = _.range(GRID_SIDE_LENGTH).map(rowNum => Row.createWithLeftoverSum(rowNum + 1, this));
+        this.columns = _.range(GRID_SIDE_LENGTH).map(colNum => Column.createWithLeftoverSum(colNum + 1, this));
     }
 
     solve() {
