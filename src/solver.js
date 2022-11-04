@@ -25,28 +25,28 @@ export class Sum {
     static fromInput(inputSum) {
         return new Sum(inputSum.value, inputSum.cells.map(inputCell => Cell.fromInput(inputCell)));
     }
-
-    get cellCount() {
-        return this.cells.length;
-    }
 }
 
-const collectSumsWithLeftover = (sumAt, cellAt, isContained) => {
+const collectSegmentSumsWithLeftover = (iterator, model, isContained) => {
     const sums = [];
     let leftoverSumValue = UNIQUE_SEGMENT_SUM;
     const leftoverSumCells = [];
-    let i = 1;
-    while (i <= GRID_SIDE_LENGTH) {
-        const sum = sumAt(i);
-        if (isContained(sum)) {
-            sums.push(sum);
-            leftoverSumValue -= sum.value;
-            i += sum.cellCount;
-        } else {
-            const cell = cellAt(i);
-            leftoverSumCells.push(cell);
-            i++;
+    const processedSums = new Set();
+    let next = iterator.next();
+    while (!next.done) {
+        const i = next.value;
+        const sum = model.sumAt(i.rowNum, i.colNum);
+        if (!processedSums.has(sum)) {
+            if (isContained(sum)) {
+                sums.push(sum);
+                processedSums.add(sum);
+                leftoverSumValue -= sum.value;
+            } else {
+                const cell = model.cellAt(i.rowNum, i.colNum);
+                leftoverSumCells.push(cell);
+            }    
         }
+        next = iterator.next();
     }
     sums.push(new Sum(leftoverSumValue, leftoverSumCells));
     return sums;
@@ -59,10 +59,22 @@ export class Row {
     }
 
     static createWithLeftoverSum(rowNum, model) {
-        return new Row(rowNum, collectSumsWithLeftover(
-            colNum => model.sumAt(rowNum, colNum),
-            colNum => model.cellAt(rowNum, colNum),
-            sum => sum.isRowOnlySum));
+        return new Row(rowNum, collectSegmentSumsWithLeftover(
+            this.#newColIterator(rowNum), model, sum => sum.isRowOnlySum));
+    }
+
+    static #newColIterator(rowNum) {
+        let colNum = 0;
+        return {
+            next() {
+                if (colNum < GRID_SIDE_LENGTH) {
+                    ++colNum;
+                    return { value: { rowNum, colNum }, done: false };
+                } else {
+                    return { value: GRID_SIDE_LENGTH, done: true };
+                }
+            }
+        }
     }
 }
 
@@ -73,10 +85,22 @@ export class Column {
     }
 
     static createWithLeftoverSum(colNum, model) {
-        return new Column(colNum, collectSumsWithLeftover(
-            rowNum => model.sumAt(rowNum, colNum),
-            rowNum => model.cellAt(rowNum, colNum),
-            sum => sum.isColumnOnlySum));
+        return new Column(colNum, collectSegmentSumsWithLeftover(
+            this.#newRowIterator(colNum), model, sum => sum.isColumnOnlySum));
+    }
+
+    static #newRowIterator(colNum) {
+        let rowNum = 0;
+        return {
+            next() {
+                if (rowNum < GRID_SIDE_LENGTH) {
+                    ++rowNum;
+                    return { value: { rowNum, colNum }, done: false };
+                } else {
+                    return { value: GRID_SIDE_LENGTH, done: true };
+                }
+            }
+        }
     }
 }
 
@@ -97,8 +121,8 @@ export class MutableSolverModel {
     }
 
     #prepare() {
-        this.rows = _.range(GRID_SIDE_LENGTH).map(rowNum => Row.createWithLeftoverSum(rowNum + 1, this));
-        this.columns = _.range(GRID_SIDE_LENGTH).map(colNum => Column.createWithLeftoverSum(colNum + 1, this));
+        this.rows = _.range(GRID_SIDE_LENGTH).map(rowIndex => Row.createWithLeftoverSum(rowIndex + 1, this));
+        this.columns = _.range(GRID_SIDE_LENGTH).map(colIndex => Column.createWithLeftoverSum(colIndex + 1, this));
     }
 
     solve() {
