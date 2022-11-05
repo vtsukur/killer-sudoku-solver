@@ -3,7 +3,7 @@ import { UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import testProblem from './testProblem';
 import { Cell, Sum, Row, Column, Subgrid, MutableSolverModel } from '../src/solver';
 
-describe('Tests for solver steps', () => {
+describe('Basic tests for cells, rows, columns and subgrids', () => {
     test('Subgrid index for cells', () => {
         // north-west subgrid (0)
         _.range(0, 3).forEach(r => {
