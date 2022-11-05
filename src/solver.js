@@ -145,21 +145,21 @@ export class MutableSolverModel {
 
     initRow(idx) {
         return new Row(idx, this.#collectSegmentOnlySums(
-            this.#newUniqueSegmentIterator(colIdx => {
+            this.constructor.#newUniqueSegmentIterator(colIdx => {
                 return { rowIdx: idx, colIdx };
             }), sum => sum.isWithinRow));
     }
 
     initColumn(idx) {
         return new Column(idx, this.#collectSegmentOnlySums(
-            this.#newUniqueSegmentIterator(rowIdx => {
+            this.constructor.#newUniqueSegmentIterator(rowIdx => {
                 return { rowIdx, colIdx: idx };
             }), sum => sum.isWithinColumn));
     }
 
     initSubgrid(idx) {
         return new Subgrid(idx, this.#collectSegmentOnlySums(
-            this.#newUniqueSegmentIterator(i => {
+            this.constructor.#newUniqueSegmentIterator(i => {
                 const subgridStartingRowIdx = Math.floor(idx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
                 const subgridStartingColIdx = (idx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
                 const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
@@ -184,7 +184,7 @@ export class MutableSolverModel {
         return sums;
     };
 
-    #newUniqueSegmentIterator(valueOfFn) {
+    static #newUniqueSegmentIterator(valueOfFn) {
         let i = 0;
         return {
             [Symbol.iterator]() { return this; },
