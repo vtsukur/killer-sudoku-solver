@@ -113,25 +113,17 @@ export class MutableSolverModel {
             this.inputSums.push(sum);
         }, this);
 
-        // defer filling up of these to initialization stage
         this.rows = [];
         this.columns = [];
         this.subgrids = [];
-        this.cellsDeterminators = this.constructor.#newMatrix();
-        // ... as well as this.allSumsMatrix should be filled
-    }
 
-    static #newMatrix() {
-        return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
-    }
-
-    init() {
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
             this.rows.push(this.initRow(i));
             this.columns.push(this.initColumn(i));
             this.subgrids.push(this.initSubgrid(i));
         }, this);
 
+        this.cellsDeterminators = this.constructor.#newMatrix();
         this.cells.forEach(cell => {
             this.cellsDeterminators[cell.rowIdx][cell.colIdx] = new CellDeterminator({
                 cell,
@@ -141,6 +133,10 @@ export class MutableSolverModel {
                 withinSums: [ this.inputSumAt(cell.rowIdx, cell.colIdx) ]
             });
         }, this);
+    }
+
+    static #newMatrix() {
+        return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
     }
 
     initRow(idx) {

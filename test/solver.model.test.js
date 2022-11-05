@@ -5,7 +5,6 @@ import testProblem from './testProblem';
 describe('Tests for solver model', () => {
     test('Initialize (shallow coverage) - whitebox', () => {
         const solverModel = new MutableSolverModel(testProblem);
-        solverModel.init();
 
         expect(solverModel.cells.length).toBe(GRID_CELL_COUNT);
         expect(solverModel.cells[21]).toEqual(new Cell(2, 3));
