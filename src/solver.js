@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH } from "./problem";
+import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH, GRID_CELL_COUNT } from "./problem";
 
 export class Cell {
     constructor(rowIdx, colIdx) {
@@ -120,27 +120,44 @@ export class MutableSolverModel {
     constructor(problem) {
         this.problem = problem;
         this.sums = [];
-        this.sumMatrix = this.constructor.#newMatrix();
-        this.cellMatrix = this.constructor.#newMatrix();
+        this.sumsMatrix = this.constructor.#newMatrix();
+        this.cells = [];
+        this.cellsMatrix = this.constructor.#newMatrix();
         problem.sums.forEach(inputSum => {
             const sum = Sum.fromInput(inputSum);
             sum.cells.forEach(cell => {
-                this.sumMatrix[cell.rowIdx][cell.colIdx] = sum;
-                this.cellMatrix[cell.rowIdx][cell.colIdx] = cell;
+                this.sumsMatrix[cell.rowIdx][cell.colIdx] = sum;
+                this.cells.push(cell);
+                this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
             }, this);
             this.sums.push(sum);
-        }, this);        
+        }, this);    
+        this.rows = [];
+        this.columns = [];
+        this.subgrids = [];
     }
 
     static #newMatrix() {
         return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
     }
 
+    init() {
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
+            this.rows.push(Row.createWithLeftoverSum(i, this));
+            this.columns.push(Column.createWithLeftoverSum(i, this));
+            this.subgrids.push(Subgrid.createWithLeftoverSum(i, this));
+        }, this);
+
+        _.range(GRID_CELL_COUNT).forEach(cell => {
+
+        }, this);
+    }
+
     sumAt(rowIdx, colIdx) {
-        return this.sumMatrix[rowIdx][colIdx];
+        return this.sumsMatrix[rowIdx][colIdx];
     }
 
     cellAt(rowIds, colIdx) {
-        return this.cellMatrix[rowIds][colIdx];
+        return this.cellsMatrix[rowIds][colIdx];
     }
 }
