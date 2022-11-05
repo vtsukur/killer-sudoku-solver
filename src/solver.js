@@ -1,17 +1,5 @@
 import _ from "lodash";
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH } from "./problem";
-
-export class Cell {
-    constructor(rowIdx, colIdx) {
-        this.rowIdx = rowIdx;
-        this.colIdx = colIdx;
-        this.subgridIdx = Math.floor(rowIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH + Math.floor(colIdx / SUBGRID_SIDE_LENGTH);
-    }
-
-    static fromInput(inputCell) {
-        return new Cell(inputCell.row, inputCell.col);
-    }
-}
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH } from "./problem";
 
 export class CellDeterminator {
     constructor({ cell, row, column, subgrid, withinSums }) {
@@ -44,7 +32,7 @@ export class Sum {
     }
 
     static fromInput(inputSum) {
-        return new Sum(inputSum.value, inputSum.cells.map(inputCell => Cell.fromInput(inputCell)));
+        return new Sum(inputSum.value, inputSum.cells);
     }
 }
 

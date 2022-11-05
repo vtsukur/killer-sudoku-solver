@@ -53,14 +53,15 @@ export class InputSum {
     }
 }
 
-export class InputCell {
-    constructor(row, col) {
-        this.row = row;
-        this.col = col;
+export class Cell {
+    constructor(rowIdx, colIdx) {
+        this.rowIdx = rowIdx;
+        this.colIdx = colIdx;
+        this.subgridIdx = Math.floor(rowIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH + Math.floor(colIdx / SUBGRID_SIDE_LENGTH);
     }
 
     isWithinRange() {
-        return this.#coordWithinRange(this.row) && this.#coordWithinRange(this.col);
+        return this.#coordWithinRange(this.rowIdx) && this.#coordWithinRange(this.colIdx);
     }
 
     #coordWithinRange(i) {
@@ -68,6 +69,6 @@ export class InputCell {
     }
 
     toString() {
-        return `(${this.row}, ${this.col})`;
+        return `(${this.rowIdx}, ${this.colIdx})`;
     }
 }
