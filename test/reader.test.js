@@ -1,5 +1,5 @@
 import reader from '../src/reader.js';
-import { Problem, InputSum as Sum, Cell } from '../src/problem.js';
+import { Problem, Sum, Cell } from '../src/problem.js';
 
 describe('Reader tests', () => {
     test('Basic read', () => {

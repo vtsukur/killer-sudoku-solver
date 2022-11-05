@@ -38,18 +38,30 @@ export class Problem {
     }
 }
 
-export class InputSum {
+export class Sum {
     constructor(value, cells = []) {
         this.value = value;
-        this.cells = [...cells];
+        this.cells = cells;
+        this.#recomputeIsWithinSegments();
+    }
+
+    static #isSameForAll(cells, whatFn) {
+        return new Set(cells.map(whatFn)).size === 1;
     }
 
     get cellCount() {
-        return this.cells.length
+        return this.cells.length;
     }
 
     addCell(cell) {
         this.cells.push(cell);
+        this.#recomputeIsWithinSegments();
+    }
+
+    #recomputeIsWithinSegments() {
+        this.isWithinRow = this.constructor.#isSameForAll(this.cells, cell => cell.rowIdx);
+        this.isWithinColumn = this.constructor.#isSameForAll(this.cells, cell => cell.colIdx);
+        this.isWithinSubgrid = this.constructor.#isSameForAll(this.cells, cell => cell.subgridIdx);        
     }
 }
 

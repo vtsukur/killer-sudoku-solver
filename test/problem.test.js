@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Problem, InputSum as Sum, Cell } from '../src/problem';
+import { Problem, Sum as Sum, Cell } from '../src/problem';
 
 const correctProblem = new Problem([
     // upper subgrids

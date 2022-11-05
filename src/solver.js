@@ -18,24 +18,6 @@ export class CellDeterminator {
     }
 }
 
-export class Sum {
-    constructor(value, cells) {
-        this.value = value;
-        this.cells = cells;
-        this.isWithinRow = this.constructor.#isSameForAll(cells, cell => cell.rowIdx);
-        this.isWithinColumn = this.constructor.#isSameForAll(cells, cell => cell.colIdx);
-        this.isWithinSubgrid = this.constructor.#isSameForAll(cells, cell => cell.subgridIdx);
-    }
-
-    static #isSameForAll(cells, whatFn) {
-        return new Set(cells.map(whatFn)).size === 1;
-    }
-
-    static fromInput(inputSum) {
-        return new Sum(inputSum.value, inputSum.cells);
-    }
-}
-
 // const collectSegmentSumsWithLeftover = (iterator, model, isContainedFn) => {
 //     const sums = [];
 //     let leftoverSumValue = UNIQUE_SEGMENT_SUM;
@@ -90,8 +72,7 @@ export class Solver {
         this.allSumsMatrix = this.constructor.#newMatrix();
         this.cells = [];
         this.cellsMatrix = this.constructor.#newMatrix();
-        problem.sums.forEach(inputSum => {
-            const sum = Sum.fromInput(inputSum);
+        problem.sums.forEach(sum => {
             sum.cells.forEach(cell => {
                 this.inputSumsMatrix[cell.rowIdx][cell.colIdx] = sum;
                 this.allSumsMatrix[cell.rowIdx][cell.colIdx] = new Set([sum]);

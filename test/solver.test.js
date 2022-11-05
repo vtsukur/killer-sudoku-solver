@@ -1,5 +1,5 @@
-import { Cell, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT } from '../src/problem';
-import { Solver, Sum } from '../src/solver';
+import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT } from '../src/problem';
+import { Solver } from '../src/solver';
 import testProblem from './testProblem';
 
 describe('Tests for solver', () => {
