@@ -10,9 +10,11 @@ describe('Tests for solver model', () => {
         expect(solverModel.cells.length).toBe(GRID_CELL_COUNT);
         expect(solverModel.cells[21]).toEqual(new Cell(2, 3));
         expect(solverModel.cellAt(2, 3)).toEqual(new Cell(2, 3));
-        expect(solverModel.sums.length).toBe(33);
-        expect(solverModel.sums[9]).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
-        expect(solverModel.sumAt(2, 3)).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
+        expect(solverModel.inputSums.length).toBe(33);
+        expect(solverModel.inputSums[9]).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
+        expect(solverModel.inputSumAt(2, 3)).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
+        expect(solverModel.allSumsMatrix[2][3]).toEqual(
+            new Set([ new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]) ]));
         expect(solverModel.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solverModel.rows[2].sums[1]).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
         expect(solverModel.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
@@ -27,5 +29,6 @@ describe('Tests for solver model', () => {
         expect(aCellDeterminator.subgrid.idx).toEqual(1);
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numberOptions).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        expect(aCellDeterminator.withinSums).toEqual(new Set([ solverModel.inputSumAt(2, 3) ]));
     });
 });
