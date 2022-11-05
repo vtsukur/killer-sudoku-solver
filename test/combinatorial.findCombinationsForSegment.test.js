@@ -63,7 +63,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         expect(() => findCombinationsForSegment(null)).toThrow('Invalid sums: null');
         expect(() => findCombinationsForSegment({})).toThrow('Invalid sums: [object Object]');
         expect(() => findCombinationsForSegment(3)).toThrow('Invalid sums: 3');
-        expect(() => findCombinationsForSegment("3")).toThrow('Invalid sums: 3');
+        expect(() => findCombinationsForSegment('3')).toThrow('Invalid sums: 3');
     });
 
     test('Combinations of digits to form a segment out of sums with too many cells', () => {

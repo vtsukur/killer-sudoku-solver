@@ -14,10 +14,10 @@ _.range(UNIQUE_SEGMENT_LENGTH).forEach(count => {
 })
 
 export function findCombinationsForSum(sum, count) {
-    if (typeof (sum) !== "number" || !sum || sum <= 0) {
+    if (typeof (sum) !== 'number' || !sum || sum <= 0) {
         throw `Invalid sum: ${sum}`;
     }
-    if (typeof (count) !== "number" || !count || count <= 0) {
+    if (typeof (count) !== 'number' || !count || count <= 0) {
         throw `Invalid count: ${count}`;
     }
     if (sum < MIN_SUMS_PER_COUNT[count - 1] || sum > MAX_SUMS_PER_COUNT[count - 1]) {
