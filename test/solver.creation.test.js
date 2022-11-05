@@ -8,66 +8,66 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
         expect(solver.initRow(0)).toEqual(new Row(
             0, [
-                new Sum(15, [ new Cell(0, 0), new Cell(0, 1) ]),
-                new Sum(7, [ new Cell(0, 6), new Cell(0, 7) ]),
-                // new Sum(23, [ new Cell(0, 2), new Cell(0, 3), new Cell(0, 4), new Cell(0, 5), new Cell(0, 8)])
+                Sum.of(15).in(0, 0).in(0, 1).mk(),
+                Sum.of(7).in(0, 6).in(0, 7).mk(),
+                // Sum.of(23).in(0, 2).in(0, 3).in(0, 4).in(0, 5).in(0, 8)])
             ]
         ));
         expect(solver.initRow(1)).toEqual(new Row(
             1, [
-                new Sum(7, [ new Cell(1, 0), new Cell(1, 1) ]),
-                new Sum(10, [ new Cell(1, 5), new Cell(1, 6), new Cell(1, 7) ]),
-                // new Sum(28, [ new Cell(1, 2), new Cell(1, 3), new Cell(1, 4), new Cell(1, 8) ])
+                Sum.of(7).in(1, 0).in(1, 1).mk(),
+                Sum.of(10).in(1, 5).in(1, 6).in(1, 7).mk(),
+                // Sum.of(28).in(1, 2).in(1, 3).in(1, 4).in(1, 8).mk()
             ]
         ));
         expect(solver.initRow(2)).toEqual(new Row(
             2, [
-                new Sum(13, [ new Cell(2, 0), new Cell(2, 1), new Cell(2, 2) ]),
-                new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]),
-                new Sum(9, [ new Cell(2, 7), new Cell(2, 8) ]),
-                // new Sum(12, [ new Cell(2, 5), new Cell(2, 6) ])
+                Sum.of(13).in(2, 0).in(2, 1).in(2, 2).mk(),
+                Sum.of(11).in(2, 3).in(2, 4).mk(),
+                Sum.of(9).in(2, 7).in(2, 8).mk(),
+                // Sum.of(12).in(2, 5).in(2, 6).mk()
             ]
         ));
         expect(solver.initRow(3)).toEqual(new Row(
             3, [
-                new Sum(4, [ new Cell(3, 0), new Cell(3, 1) ]),
-                new Sum(2, [ new Cell(3, 2) ]),
-                new Sum(14, [ new Cell(3, 3), new Cell(3, 4) ]),
-                // new Sum(25, [ new Cell(3, 5), new Cell(3, 6), new Cell(3, 7), new Cell(3, 8) ])
+                Sum.of(4).in(3, 0).in(3, 1).mk(),
+                Sum.of(2).in(3, 2).mk(),
+                Sum.of(14).in(3, 3).in(3, 4).mk(),
+                // Sum.of(25).in(3, 5).in(3, 6).in(3, 7).in(3, 8).mk()
             ]
         ));
         expect(solver.initRow(4)).toEqual(new Row(
             4, [
-                new Sum(10, [ new Cell(4, 3), new Cell(4, 4) ]),
-                // new Sum(35, [ new Cell(4, 0), new Cell(4, 1), new Cell(4, 2), new Cell(4, 5),
-                //     new Cell(4, 6), new Cell(4, 7), new Cell(4, 8) ])
+                Sum.of(10).in(4, 3).in(4, 4).mk(),
+                // Sum.of(35).in(4, 0).in(4, 1).in(4, 2).in(4, 5),
+                //     in(4, 6).in(4, 7).in(4, 8).mk()
             ]
         ));
         expect(solver.initRow(5)).toEqual(new Row(
             5, [
-                // new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx)))
+                // Sum.of(45, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => in(5, colIdx)))
             ]
         ));
         expect(solver.initRow(6)).toEqual(new Row(
             6, [
-                new Sum(6, [ new Cell(6, 4), new Cell(6, 5) ]),
-                // new Sum(39, [ new Cell(6, 0), new Cell(6, 1), new Cell(6, 2), new Cell(6, 3),
-                //     new Cell(6, 6), new Cell(6, 7), new Cell(6, 8) ])
+                Sum.of(6).in(6, 4).in(6, 5).mk(),
+                // Sum.of(39).in(6, 0).in(6, 1).in(6, 2).in(6, 3),
+                //     in(6, 6).in(6, 7).in(6, 8).mk()
             ]
         ));
         expect(solver.initRow(7)).toEqual(new Row(
             7, [
-                new Sum(8, [ new Cell(7, 5) ]),
-                new Sum(10, [ new Cell(7, 6), new Cell(7, 7) ]),
-                // new Sum(27, [ new Cell(7, 0), new Cell(7, 1), new Cell(7, 2), new Cell(7, 3),
-                //     new Cell(7, 4), new Cell(7, 8) ])
+                Sum.of(8).in(7, 5).mk(),
+                Sum.of(10).in(7, 6).in(7, 7).mk(),
+                // Sum.of(27).in(7, 0).in(7, 1).in(7, 2).in(7, 3),
+                //     in(7, 4).in(7, 8).mk()
             ]
         ));
         expect(solver.initRow(8)).toEqual(new Row(
             8, [
-                new Sum(7, [ new Cell(8, 6), new Cell(8, 7) ]),
-                // new Sum(38, [ new Cell(8, 0), new Cell(8, 1), new Cell(8, 2), new Cell(8, 3),
-                //     new Cell(8, 4), new Cell(8, 5), new Cell(8, 8) ])
+                Sum.of(7).in(8, 6).in(8, 7).mk(),
+                // Sum.of(38).in(8, 0).in(8, 1).in(8, 2).in(8, 3),
+                //     in(8, 4).in(8, 5).in(8, 8).mk()
             ]
         ));
     });
@@ -76,65 +76,65 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
         expect(solver.initColumn(0)).toEqual(new Column(
             0, [
-                new Sum(19, [ new Cell(6, 0), new Cell(7, 0), new Cell(8, 0) ]),
-                // new Sum(26, [ new Cell(0, 0), new Cell(1, 0), new Cell(2, 0),
-                //     new Cell(3, 0), new Cell(4, 0), new Cell(5, 0) ])
+                Sum.of(19).in(6, 0).in(7, 0).in(8, 0).mk(),
+                // Sum.of(26).in(0, 0).in(1, 0).in(2, 0),
+                //     in(3, 0).in(4, 0).in(5, 0).mk()
             ]
         ));
         expect(solver.initColumn(1)).toEqual(new Column(
             1, [
-                // new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1)))
+                // Sum.of(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => in(rowIdx, 1)))
             ]
         ));
         expect(solver.initColumn(2)).toEqual(new Column(
             2, [
-                new Sum(10, [ new Cell(0, 2), new Cell(1, 2) ]),
-                new Sum(2, [ new Cell(3, 2) ]),
-                // new Sum(33, [ new Cell(2, 2), new Cell(4, 2), new Cell(5, 2),
-                //     new Cell(6, 2), new Cell(7, 2), new Cell(8, 2) ])
+                Sum.of(10).in(0, 2).in(1, 2).mk(),
+                Sum.of(2).in(3, 2).mk(),
+                // Sum.of(33).in(2, 2).in(4, 2).in(5, 2),
+                //     in(6, 2).in(7, 2).in(8, 2).mk()
             ]
         ));
         expect(solver.initColumn(3)).toEqual(new Column(
             3, [
-                new Sum(17, [ new Cell(0, 3), new Cell(1, 3) ]),
-                new Sum(6, [ new Cell(7, 3), new Cell(8, 3) ]),
-                // new Sum(22, [ new Cell(2, 3), new Cell(3, 3), new Cell(4, 3),
-                //     new Cell(5, 3), new Cell(6, 3) ])
+                Sum.of(17).in(0, 3).in(1, 3).mk(),
+                Sum.of(6).in(7, 3).in(8, 3).mk(),
+                // Sum.of(22).in(2, 3).in(3, 3).in(4, 3),
+                //     in(5, 3).in(6, 3).mk()
             ]
         ));
         expect(solver.initColumn(4)).toEqual(new Column(
             4, [
-                // new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(row => new Cell(row, 4)))
+                // Sum.of(45, _.range(UNIQUE_SEGMENT_LENGTH).map(row => in(row, 4)))
             ]
         ));
         expect(solver.initColumn(5)).toEqual(new Column(
             5, [
-                new Sum(8, [ new Cell(2, 5), new Cell(3, 5) ]),
-                new Sum(8, [ new Cell(7, 5) ]),
-                // new Sum(29, [ new Cell(0, 5), new Cell(1, 5), new Cell(4, 5),
-                //     new Cell(5, 5), new Cell(6, 5), new Cell(8, 5) ])
+                Sum.of(8).in(2, 5).in(3, 5).mk(),
+                Sum.of(8).in(7, 5).mk(),
+                // Sum.of(29).in(0, 5).in(1, 5).in(4, 5),
+                //     in(5, 5).in(6, 5).in(8, 5).mk()
             ]
         ));
         expect(solver.initColumn(6)).toEqual(new Column(
             6, [
-                new Sum(16, [ new Cell(2, 6), new Cell(3, 6) ]),
-                // new Sum(29, [ new Cell(0, 6), new Cell(1, 6), new Cell(4, 6),
-                //     new Cell(5, 6), new Cell(6, 6), new Cell(7, 6), new Cell(8, 6) ])
+                Sum.of(16).in(2, 6).in(3, 6).mk(),
+                // Sum.of(29).in(0, 6).in(1, 6).in(4, 6),
+                //     in(5, 6).in(6, 6).in(7, 6).in(8, 6).mk()
             ]
         ));
         expect(solver.initColumn(7)).toEqual(new Column(
             7, [
-                new Sum(5, [ new Cell(3, 7), new Cell(4, 7) ]),
-                // new Sum(40, [ new Cell(0, 7), new Cell(1, 7), new Cell(2, 7),
-                //     new Cell(5, 7), new Cell(6, 7), new Cell(7, 7), new Cell(8, 7) ])
+                Sum.of(5).in(3, 7).in(4, 7).mk(),
+                // Sum.of(40).in(0, 7).in(1, 7).in(2, 7),
+                //     in(5, 7).in(6, 7).in(7, 7).in(8, 7).mk()
             ]
         ));
         expect(solver.initColumn(8)).toEqual(new Column(
             8, [
-                new Sum(11, [ new Cell(0, 8), new Cell(1, 8) ]),
-                new Sum(19, [ new Cell(3, 8), new Cell(4, 8), new Cell(5, 8) ]),
-                new Sum(14, [ new Cell(6, 8), new Cell(7, 8), new Cell(8, 8) ]),
-                // new Sum(1, [ new Cell(2, 8) ])
+                Sum.of(11).in(0, 8).in(1, 8).mk(),
+                Sum.of(19).in(3, 8).in(4, 8).in(5, 8).mk(),
+                Sum.of(14).in(6, 8).in(7, 8).in(8, 8).mk(),
+                // Sum.of(1).in(2, 8).mk()
             ]
         ));
     });
@@ -143,74 +143,74 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
         expect(solver.initSubgrid(0)).toEqual(new Subgrid(
             0, [
-                new Sum(15, [ new Cell(0, 0), new Cell(0, 1) ]),
-                new Sum(10, [ new Cell(0, 2), new Cell(1, 2) ]),
-                new Sum(7, [ new Cell(1, 0), new Cell(1, 1) ]),
-                new Sum(13, [ new Cell(2, 0), new Cell(2, 1), new Cell(2, 2) ])
+                Sum.of(15).in(0, 0).in(0, 1).mk(),
+                Sum.of(10).in(0, 2).in(1, 2).mk(),
+                Sum.of(7).in(1, 0).in(1, 1).mk(),
+                Sum.of(13).in(2, 0).in(2, 1).in(2, 2).mk()
             ]
         ));
         expect(solver.initSubgrid(1)).toEqual(new Subgrid(
             1, [
-                new Sum(17, [ new Cell(0, 3), new Cell(1, 3) ]),
-                new Sum(13, [ new Cell(0, 4), new Cell(0, 5), new Cell(1, 4) ]),
-                new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]),
-                // new Sum(4, [ new Cell(1, 5), new Cell(2, 5) ])
+                Sum.of(17).in(0, 3).in(1, 3).mk(),
+                Sum.of(13).in(0, 4).in(0, 5).in(1, 4).mk(),
+                Sum.of(11).in(2, 3).in(2, 4).mk(),
+                // Sum.of(4).in(1, 5).in(2, 5).mk()
             ]
         ));
         expect(solver.initSubgrid(2)).toEqual(new Subgrid(
             2, [
-                new Sum(7, [ new Cell(0, 6), new Cell(0, 7) ]),
-                new Sum(11, [ new Cell(0, 8), new Cell(1, 8) ]),
-                new Sum(9, [ new Cell(2, 7), new Cell(2, 8) ]),
-                // new Sum(18, [ new Cell(1, 6), new Cell(1, 7), new Cell(2, 6) ])
+                Sum.of(7).in(0, 6).in(0, 7).mk(),
+                Sum.of(11).in(0, 8).in(1, 8).mk(),
+                Sum.of(9).in(2, 7).in(2, 8).mk(),
+                // Sum.of(18).in(1, 6).in(1, 7).in(2, 6).mk()
             ]
         ));
         expect(solver.initSubgrid(3)).toEqual(new Subgrid(
             3, [
-                new Sum(4, [ new Cell(3, 0), new Cell(3, 1) ]),
-                new Sum(2, [ new Cell(3, 2) ]),
-                new Sum(27, [ new Cell(4, 0), new Cell(4, 1), new Cell(5, 0), new Cell(5, 1) ]),
-                // new Sum(12, [ new Cell(4, 2), new Cell(5, 2) ])
+                Sum.of(4).in(3, 0).in(3, 1).mk(),
+                Sum.of(2).in(3, 2).mk(),
+                Sum.of(27).in(4, 0).in(4, 1).in(5, 0).in(5, 1).mk(),
+                // Sum.of(12).in(4, 2).in(5, 2).mk()
             ]
         ));
         expect(solver.initSubgrid(4)).toEqual(new Subgrid(
             4, [
-                new Sum(14, [ new Cell(3, 3), new Cell(3, 4) ]),
-                new Sum(10, [ new Cell(4, 3), new Cell(4, 4) ]),
-                // new Sum(21, [ new Cell(3, 5), new Cell(4, 5),
-                //     new Cell(5, 3), new Cell(5, 4), new Cell(5, 5) ])
+                Sum.of(14).in(3, 3).in(3, 4).mk(),
+                Sum.of(10).in(4, 3).in(4, 4).mk(),
+                // Sum.of(21).in(3, 5).in(4, 5),
+                //     in(5, 3).in(5, 4).in(5, 5).mk()
             ]
         ));
         expect(solver.initSubgrid(5)).toEqual(new Subgrid(
             5, [
-                new Sum(5, [ new Cell(3, 7), new Cell(4, 7) ]),
-                new Sum(19, [ new Cell(3, 8), new Cell(4, 8), new Cell(5, 8) ]),
-                // new Sum(21, [ new Cell(3, 6), new Cell(4, 6),
-                //     new Cell(5, 6), new Cell(5, 7) ])
+                Sum.of(5).in(3, 7).in(4, 7).mk(),
+                Sum.of(19).in(3, 8).in(4, 8).in(5, 8).mk(),
+                // Sum.of(21).in(3, 6).in(4, 6),
+                //     in(5, 6).in(5, 7).mk()
             ]
         ));
         expect(solver.initSubgrid(6)).toEqual(new Subgrid(
             6, [
-                new Sum(19, [ new Cell(6, 0), new Cell(7, 0), new Cell(8, 0) ]),
-                new Sum(14, [ new Cell(6, 1), new Cell(7, 1), new Cell(8, 1), new Cell(8, 2) ]),
-                // new Sum(12, [ new Cell(6, 2), new Cell(7, 2) ])
+                Sum.of(19).in(6, 0).in(7, 0).in(8, 0).mk(),
+                Sum.of(14).in(6, 1).in(7, 1).in(8, 1).in(8, 2).mk(),
+                // Sum.of(12).in(6, 2).in(7, 2).mk()
             ]
         ));
         expect(solver.initSubgrid(7)).toEqual(new Subgrid(
             7, [
-                new Sum(6, [ new Cell(6, 4), new Cell(6, 5) ]),
-                new Sum(6, [ new Cell(7, 3), new Cell(8, 3) ]),
-                new Sum(22, [ new Cell(7, 4), new Cell(8, 4), new Cell(8, 5) ]),
-                new Sum(8, [ new Cell(7, 5) ]),
-                // new Sum(3, [ new Cell(6, 3) ])
+                Sum.of(6).in(6, 4).in(6, 5).mk(),
+                Sum.of(6).in(7, 3).in(8, 3).mk(),
+                Sum.of(22).in(7, 4).in(8, 4).in(8, 5).mk(),
+                Sum.of(8).in(7, 5).mk(),
+                // Sum.of(3).in(6, 3).mk()
             ]
         ));
         expect(solver.initSubgrid(8)).toEqual(new Subgrid(
             8, [
-                new Sum(14, [ new Cell(6, 8), new Cell(7, 8), new Cell(8, 8) ]),
-                new Sum(10, [ new Cell(7, 6), new Cell(7, 7) ]),
-                new Sum(7, [ new Cell(8, 6), new Cell(8, 7) ]),
-                // new Sum(14, [ new Cell(6, 6), new Cell(6, 7) ])
+                Sum.of(14).in(6, 8).in(7, 8).in(8, 8).mk(),
+                Sum.of(10).in(7, 6).in(7, 7).mk(),
+                Sum.of(7).in(8, 6).in(8, 7).mk(),
+                // Sum.of(14).in(6, 6).in(6, 7).mk()
             ]
         ));
     });
