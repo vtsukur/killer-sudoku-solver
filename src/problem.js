@@ -42,7 +42,10 @@ export class Sum {
     constructor(value, cells = []) {
         this.value = value;
         this.cells = cells;
-        this.#recomputeIsWithinSegments();
+
+        this.isWithinRow = this.constructor.#isSameForAll(this.cells, cell => cell.rowIdx);
+        this.isWithinColumn = this.constructor.#isSameForAll(this.cells, cell => cell.colIdx);
+        this.isWithinSubgrid = this.constructor.#isSameForAll(this.cells, cell => cell.subgridIdx);        
     }
 
     static #isSameForAll(cells, whatFn) {
@@ -51,17 +54,6 @@ export class Sum {
 
     get cellCount() {
         return this.cells.length;
-    }
-
-    addCell(cell) {
-        this.cells.push(cell);
-        this.#recomputeIsWithinSegments();
-    }
-
-    #recomputeIsWithinSegments() {
-        this.isWithinRow = this.constructor.#isSameForAll(this.cells, cell => cell.rowIdx);
-        this.isWithinColumn = this.constructor.#isSameForAll(this.cells, cell => cell.colIdx);
-        this.isWithinSubgrid = this.constructor.#isSameForAll(this.cells, cell => cell.subgridIdx);        
     }
 }
 

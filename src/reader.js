@@ -23,6 +23,21 @@ class SumRef extends SumEntry {
     }
 }
 
+class SumData {
+    constructor(value) {
+        this.value = value;
+        this.cells = [];
+    }
+
+    addCell(cell) {
+        this.cells.push(cell);
+    }
+
+    toSum() {
+        return new Sum(this.value, this.cells);
+    }
+}
+
 const readEntry = function(entry, index) {
     const sumRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
     if (sumRefOrDefMatch) {
@@ -55,7 +70,7 @@ export default function reader(path) {
             if (!sumEntry.value) {
                 throw `Sum def without value: ${value}`;
             }
-            sums.set(sumEntry.ref, new Sum(sumEntry.value));
+            sums.set(sumEntry.ref, new SumData(sumEntry.value));
         }
         else if (sums.has(sumEntry.ref) && sumEntry.value) {
             throw `Sum def duplicate: ${sumEntry.ref}`;
@@ -66,5 +81,5 @@ export default function reader(path) {
         ));
     });
 
-    return new Problem(sums.values());
+    return new Problem(Array.from(sums.values()).map(sumData => sumData.toSum()));
 }
