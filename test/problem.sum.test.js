@@ -2,6 +2,13 @@ import _ from 'lodash';
 import { Sum, Cell } from '../src/problem';
 
 describe('Sum tests', () => {
+    test('Sum creatiom', () => {
+        const sum = new Sum(10, [ new Cell(4, 4), new Cell(4, 5) ]);
+        expect(sum.value).toBe(10);
+        expect(sum.cellCount).toBe(2);
+        expect(sum.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
+    });
+
     test('Sum within row', () => {
         expect(new Sum(10, [ new Cell(4, 4) ]).isWithinRow).toBe(true);
         expect(new Sum(10, [ new Cell(4, 4), new Cell(4, 5) ]).isWithinRow).toBe(true);

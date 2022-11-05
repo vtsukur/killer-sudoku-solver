@@ -2,6 +2,12 @@ import _ from 'lodash';
 import { Cell } from '../src/problem';
 
 describe('Cell tests', () => {
+    test('Cell creatiom', () => {
+        const cell = new Cell(4, 4);
+        expect(cell.rowIdx).toBe(4);
+        expect(cell.colIdx).toBe(4);
+    });
+
     test('Subgrid index for cells', () => {
         // north-west subgrid (0)
         _.range(0, 3).forEach(r => {
