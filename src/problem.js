@@ -39,7 +39,7 @@ export class Problem {
 }
 
 export class Sum {
-    constructor(value, cells = []) {
+    constructor(value, cells) {
         this.value = value;
         this.cells = cells;
 
