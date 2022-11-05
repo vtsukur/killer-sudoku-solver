@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Problem, Sum, Cell, UNIQUE_SEGMENT_LENGTH } from './problem';
+import { Problem, Sum, UNIQUE_SEGMENT_LENGTH } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
@@ -20,21 +20,6 @@ class SumDef extends SumEntry {
 class SumRef extends SumEntry {
     constructor(ref) {
         super(ref)
-    }
-}
-
-class SumData {
-    constructor(value) {
-        this.value = value;
-        this.cells = [];
-    }
-
-    addCell(cell) {
-        this.cells.push(cell);
-    }
-
-    toSum() {
-        return new Sum(this.value, this.cells);
     }
 }
 
@@ -70,16 +55,16 @@ export default function reader(path) {
             if (!sumEntry.value) {
                 throw `Sum def without value: ${value}`;
             }
-            sums.set(sumEntry.ref, new SumData(sumEntry.value));
+            sums.set(sumEntry.ref, Sum.of(sumEntry.value));
         }
         else if (sums.has(sumEntry.ref) && sumEntry.value) {
             throw `Sum def duplicate: ${sumEntry.ref}`;
         }
-        sums.get(sumEntry.ref).addCell(new Cell(
+        sums.get(sumEntry.ref).in(
             Math.floor(index / UNIQUE_SEGMENT_LENGTH),
             index % UNIQUE_SEGMENT_LENGTH
-        ));
+        );
     });
 
-    return new Problem(Array.from(sums.values()).map(sumData => sumData.toSum()));
+    return new Problem(Array.from(sums.values()).map(sumBuilder => sumBuilder.mk()));
 }

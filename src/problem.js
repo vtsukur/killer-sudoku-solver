@@ -55,6 +55,26 @@ export class Sum {
     get cellCount() {
         return this.cells.length;
     }
+
+    static Builder = class {
+        constructor(value) {
+            this.value = value;
+            this.cells = [];
+        }
+
+        in(rowIdx, cellIdx) {
+            this.cells.push(new Cell(rowIdx, cellIdx));
+            return this;
+        }
+
+        mk() {
+            return new Sum(this.value, this.cells);
+        }
+    }
+
+    static of(value) {
+        return new this.Builder(value);
+    }
 }
 
 export class Cell {
