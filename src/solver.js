@@ -94,7 +94,7 @@ export class Subgrid {
     }
 }
 
-export class MutableSolverModel {
+export class Solver {
     constructor(problem) {
         this.problem = problem;
         this.inputSums = [];
