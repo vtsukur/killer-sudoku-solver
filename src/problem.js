@@ -62,7 +62,7 @@ export class Sum {
             this.cells = [];
         }
 
-        in(rowIdx, cellIdx) {
+        cell(rowIdx, cellIdx) {
             this.cells.push(new Cell(rowIdx, cellIdx));
             return this;
         }

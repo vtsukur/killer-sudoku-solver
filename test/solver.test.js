@@ -10,16 +10,16 @@ describe('Tests for solver', () => {
         expect(solver.cells[21]).toEqual(new Cell(2, 3));
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputSums.length).toBe(33);
-        expect(solver.inputSums[9]).toEqual(Sum.of(11).in(2, 3).in(2, 4).mk());
-        expect(solver.inputSumAt(2, 3)).toEqual(Sum.of(11).in(2, 3).in(2, 4).mk());
+        expect(solver.inputSums[9]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.inputSumAt(2, 3)).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.allSumsMatrix[2][3]).toEqual(
-            new Set([ Sum.of(11).in(2, 3).in(2, 4).mk() ]));
+            new Set([ Sum.of(11).cell(2, 3).cell(2, 4).mk() ]));
         expect(solver.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.rows[2].sums[1]).toEqual(Sum.of(11).in(2, 3).in(2, 4).mk());
+        expect(solver.rows[2].sums[1]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.columns[2].sums[1]).toEqual(Sum.of(2).in(3, 2).mk());
+        expect(solver.columns[2].sums[1]).toEqual(Sum.of(2).cell(3, 2).mk());
         expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.subgrids[1].sums[2]).toEqual(Sum.of(11).in(2, 3).in(2, 4).mk());
+        expect(solver.subgrids[1].sums[2]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellsDeterminatorsMatrix[2][3];
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));

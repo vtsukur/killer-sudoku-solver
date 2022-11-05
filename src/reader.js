@@ -60,7 +60,7 @@ export default function reader(path) {
         else if (sums.has(sumEntry.ref) && sumEntry.value) {
             throw `Sum def duplicate: ${sumEntry.ref}`;
         }
-        sums.get(sumEntry.ref).in(
+        sums.get(sumEntry.ref).cell(
             Math.floor(index / UNIQUE_SEGMENT_LENGTH),
             index % UNIQUE_SEGMENT_LENGTH
         );

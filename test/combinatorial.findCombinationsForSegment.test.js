@@ -5,10 +5,10 @@ import { Sum } from '../src/problem';
 describe('Tests for the finder of digit combinations to form a segment out of sums', () => {
     test('Multiple combinations of digits to form a complete segment', () => {
         expect(findCombinationsForSegment([
-            Sum.of(15).in(1, 1).in(1, 2).mk(),
-            Sum.of(10).in(1, 3).in(2, 3).mk(),
-            Sum.of(7).in(2, 1).in(2, 2).mk(),
-            Sum.of(13).in(3, 1).in(3, 2).in(3, 3).mk()
+            Sum.of(15).cell(1, 1).cell(1, 2).mk(),
+            Sum.of(10).cell(1, 3).cell(2, 3).mk(),
+            Sum.of(7).cell(2, 1).cell(2, 2).mk(),
+            Sum.of(13).cell(3, 1).cell(3, 2).cell(3, 3).mk()
         ])).toEqual([
             [ new Set([6, 9]), new Set([2, 8]), new Set([3, 4]), new Set([1, 5, 7]) ],
             [ new Set([6, 9]), new Set([3, 7]), new Set([2, 5]), new Set([1, 4, 8]) ],
@@ -20,10 +20,10 @@ describe('Tests for the finder of digit combinations to form a segment out of su
 
     test('Single combination of digits to form a complete segment', () => {
         expect(findCombinationsForSegment([
-            Sum.of(4).in(1, 1).in(1, 2).mk(),
-            Sum.of(24).in(1, 3).in(1, 4).in(1, 5).mk(),
-            Sum.of(7).in(1, 6).in(1, 7).mk(),
-            Sum.of(10).in(1, 8).in(1, 9).mk()
+            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
+            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
+            Sum.of(10).cell(1, 8).cell(1, 9).mk()
         ])).toEqual([
             [ new Set([1, 3]), new Set([7, 8, 9]), new Set([2, 5]), new Set([4, 6]) ]
         ]);
@@ -31,8 +31,8 @@ describe('Tests for the finder of digit combinations to form a segment out of su
 
     test('Combinations of digits to form an incomplete segment', () => {
         expect(findCombinationsForSegment([
-            Sum.of(4).in(1, 1).in(1, 2).mk(),
-            Sum.of(9).in(1, 6).in(1, 7).mk()
+            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
+            Sum.of(9).cell(1, 6).cell(1, 7).mk()
         ])).toEqual([
             [ new Set([1, 3]), new Set([2, 7]) ],
             [ new Set([1, 3]), new Set([4, 5]) ]
@@ -50,10 +50,10 @@ describe('Tests for the finder of digit combinations to form a segment out of su
 
     test('Combinations of digits to form a segment out of sums whose total sum is greater than segments max', () => {
         expect(() => findCombinationsForSegment([
-            Sum.of(4).in(1, 1).in(1, 2).mk(),
-            Sum.of(24).in(1, 3).in(1, 4).in(1, 5).mk(),
-            Sum.of(7).in(1, 6).in(1, 7).mk(),
-            Sum.of(100).in(1, 8).in(1, 9).mk()
+            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
+            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
+            Sum.of(100).cell(1, 8).cell(1, 9).mk()
         ])).toThrow(
             'Total sum should be <= 45. Actual: 135');
     });
@@ -68,10 +68,10 @@ describe('Tests for the finder of digit combinations to form a segment out of su
 
     test('Combinations of digits to form a segment out of sums with too many cells', () => {
         expect(() => findCombinationsForSegment([
-            Sum.of(4).in(1, 1).in(1, 2).mk(),
-            Sum.of(24).in(1, 3).in(1, 4).in(1, 5).mk(),
-            Sum.of(7).in(1, 6).in(1, 7).mk(),
-            Sum.of(10).in(1, 8).in(1, 9).in(2, 9).mk()
+            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
+            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
+            Sum.of(10).cell(1, 8).cell(1, 9).cell(2, 9).mk()
         ])).toThrow(
             'Too many cells in sums. Expected no more than 9 cells. Actual: 10');
     });
