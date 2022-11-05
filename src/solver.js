@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH } from "./problem";
 
-const newMatrix = () => new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
-
 export class Cell {
     constructor(rowIdx, colIdx) {
         this.rowIdx = rowIdx;
@@ -122,8 +120,8 @@ export class MutableSolverModel {
     constructor(problem) {
         this.problem = problem;
         this.sums = [];
-        this.sumMatrix = newMatrix();
-        this.cellMatrix = newMatrix();
+        this.sumMatrix = this.constructor.#newMatrix();
+        this.cellMatrix = this.constructor.#newMatrix();
         problem.sums.forEach(inputSum => {
             const sum = Sum.fromInput(inputSum);
             sum.cells.forEach(cell => {
@@ -132,6 +130,10 @@ export class MutableSolverModel {
             }, this);
             this.sums.push(sum);
         }, this);        
+    }
+
+    static #newMatrix() {
+        return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
     }
 
     sumAt(rowIdx, colIdx) {
