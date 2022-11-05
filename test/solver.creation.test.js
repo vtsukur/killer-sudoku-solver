@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 import testProblem from './testProblem';
 import { Sum } from '../src/problem';
 import { Row, Column, Subgrid, Solver } from '../src/solver';

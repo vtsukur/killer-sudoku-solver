@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH } from "./problem";
+import _ from 'lodash';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH } from './problem';
 
 export class CellDeterminator {
     constructor({ cell, row, column, subgrid, withinSums }) {
