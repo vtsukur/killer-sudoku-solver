@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH, GRID_CELL_COUNT } from "./problem";
+import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM, SUBGRID_SIDE_LENGTH } from "./problem";
 
 export class Cell {
     constructor(rowIdx, colIdx) {
@@ -10,6 +10,22 @@ export class Cell {
 
     static fromInput(inputCell) {
         return new Cell(inputCell.row, inputCell.col);
+    }
+}
+
+export class CellDeterminator {
+    constructor({ cell, row, column, subgrid }) {
+        this.cell = cell;
+        this.row = row;
+        this.column = column;
+        this.subgrid = subgrid;
+
+        this.numberOptions = this.constructor.#newAllNumbers();
+        this.placedNumber = undefined;
+    }
+
+    static #newAllNumbers() {
+        return new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
     }
 }
 
@@ -70,44 +86,44 @@ const newUniqueSegmentIterator = (valueOfFn) => {
 }
 
 export class Row {
-    constructor(rowIdx, sums) {
-        this.rowIdx = rowIdx;
+    constructor(idx, sums) {
+        this.idx = idx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(rowIdx, model) {
-        return new Row(rowIdx, collectSegmentSumsWithLeftover(
+    static createWithLeftoverSum(idx, model) {
+        return new Row(idx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(colIdx => {
-                return { rowIdx, colIdx };
+                return { rowIdx: idx, colIdx };
             }), model, sum => sum.isWithinRow));
     }
 }
 
 export class Column {
-    constructor(colIdx, sums) {
-        this.colIdx = colIdx;
+    constructor(idx, sums) {
+        this.idx = idx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(colIdx, model) {
-        return new Column(colIdx, collectSegmentSumsWithLeftover(
+    static createWithLeftoverSum(idx, model) {
+        return new Column(idx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(rowIdx => {
-                return { rowIdx, colIdx };
+                return { rowIdx, colIdx: idx };
             }), model, sum => sum.isWithinColumn));
     }
 }
 
 export class Subgrid {
-    constructor(subgridIdx, sums) {
-        this.subgridIdx = subgridIdx;
+    constructor(idx, sums) {
+        this.idx = idx;
         this.sums = sums;
     }
 
-    static createWithLeftoverSum(subgridIdx, model) {
-        return new Subgrid(subgridIdx, collectSegmentSumsWithLeftover(
+    static createWithLeftoverSum(idx, model) {
+        return new Subgrid(idx, collectSegmentSumsWithLeftover(
             newUniqueSegmentIterator(i => {
-                const subgridStartingRowIdx = Math.floor(subgridIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
-                const subgridStartingColIdx = (subgridIdx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+                const subgridStartingRowIdx = Math.floor(idx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+                const subgridStartingColIdx = (idx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
                 const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
                 const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
                 return { rowIdx, colIdx };
@@ -131,10 +147,13 @@ export class MutableSolverModel {
                 this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
             }, this);
             this.sums.push(sum);
-        }, this);    
+        }, this);
+
+        // defer filling up of these to initialization stage
         this.rows = [];
         this.columns = [];
         this.subgrids = [];
+        this.cellsDeterminators = this.constructor.#newMatrix();
     }
 
     static #newMatrix() {
@@ -148,8 +167,13 @@ export class MutableSolverModel {
             this.subgrids.push(Subgrid.createWithLeftoverSum(i, this));
         }, this);
 
-        _.range(GRID_CELL_COUNT).forEach(cell => {
-
+        this.cells.forEach(cell => {
+            this.cellsDeterminators[cell.rowIdx][cell.colIdx] = new CellDeterminator({
+                cell,
+                row: this.rows[cell.rowIdx],
+                column: this.columns[cell.colIdx],
+                subgrid: this.subgrids[cell.subgridIdx]
+            });
         }, this);
     }
 
