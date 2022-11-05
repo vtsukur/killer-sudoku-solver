@@ -21,7 +21,7 @@ describe('Tests for solver model', () => {
         expect(solverModel.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solverModel.subgrids[1].sums[2]).toEqual(new Sum(11, [ new Cell(2, 3), new Cell(2, 4) ]));
 
-        const aCellDeterminator = solverModel.cellsDeterminators[2][3];
+        const aCellDeterminator = solverModel.cellsDeterminatorsMatrix[2][3];
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
         expect(aCellDeterminator.row.idx).toEqual(2);
         expect(aCellDeterminator.column.idx).toEqual(3);

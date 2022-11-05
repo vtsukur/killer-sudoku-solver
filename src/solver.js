@@ -123,9 +123,9 @@ export class MutableSolverModel {
             this.subgrids.push(this.initSubgrid(i));
         }, this);
 
-        this.cellsDeterminators = this.constructor.#newMatrix();
+        this.cellsDeterminatorsMatrix = this.constructor.#newMatrix();
         this.cells.forEach(cell => {
-            this.cellsDeterminators[cell.rowIdx][cell.colIdx] = new CellDeterminator({
+            this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellDeterminator({
                 cell,
                 row: this.rows[cell.rowIdx],
                 column: this.columns[cell.colIdx],
