@@ -1,6 +1,6 @@
 import _ from "lodash";
 import testProblem from './testProblem';
-import { Cell, Sum } from '../src/problem';
+import { Sum } from '../src/problem';
 import { Row, Column, Subgrid, Solver } from '../src/solver';
 
 describe('Tests for creation and initialization of rows, columns and subgrids', () => {    
