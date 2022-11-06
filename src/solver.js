@@ -135,13 +135,11 @@ export class Solver {
         this.problem = problem;
         this.inputSums = [];
         this.inputSumsMatrix = this.constructor.#newMatrix();
-        this.allSumsMatrix = this.constructor.#newMatrix();
         this.cells = [];
         this.cellsMatrix = this.constructor.#newMatrix();
         problem.sums.forEach(sum => {
             sum.cells.forEach(cell => {
                 this.inputSumsMatrix[cell.rowIdx][cell.colIdx] = sum;
-                this.allSumsMatrix[cell.rowIdx][cell.colIdx] = new Set([sum]);
                 this.cells.push(cell);
                 this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
             }, this);

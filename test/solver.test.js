@@ -13,8 +13,6 @@ describe('Tests for solver', () => {
         expect(solver.inputSums.length).toBe(33);
         expect(solver.inputSums[9]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.inputSumAt(2, 3)).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.allSumsMatrix[2][3]).toEqual(
-            new Set([ Sum.of(11).cell(2, 3).cell(2, 4).mk() ]));
         expect(solver.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solver.rows[2].sums[1]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
