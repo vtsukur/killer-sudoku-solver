@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH } from './problem';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
 
 const newUniqueSegmentIterator = (valueOfFn) => {
     let i = 0;
@@ -28,11 +28,55 @@ export class CellDeterminator {
     }
 }
 
-export class Row {
+class SumsArea {
+    constructor(sums) {
+        this.sums = sums;
+        this.cellsSet = new Set();
+        this.totalValue = 0;
+        sums.forEach(sum => {
+            this.totalValue += sum.value;
+            sum.cells.forEach(cell => {
+                this.cellsSet.add(cell);
+            }, this);
+        }, this);
+    }
+
+    has(cell) {
+        return this.cellsSet.has(cell);
+    }
+}
+
+class Segment {
+    #sumsArea;    
+
     constructor(idx, cells, inputSums) {
         this.idx = idx;
         this.cells = cells;
         this.sums = inputSums;
+        this.#sumsArea = new SumsArea(this.sums);
+    }
+
+    determineResidualSum() {
+        if (this.#sumsArea.totalValue === UNIQUE_SEGMENT_SUM) {
+            return;
+        }
+
+        const residualSumCells = [];
+        this.cells.forEach(cell => {
+            if (!this.#sumsArea.has(cell)) {
+                residualSumCells.push(cell);
+            }
+        }, this);
+
+        const residualSum = new Sum(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
+        this.sums.push(residualSum);
+        return residualSum;
+    }
+}
+
+export class Row extends Segment {
+    constructor(idx, cells, inputSums) {
+        super(idx, cells, inputSums);
     }
 
     static iteratorFor(idx) {
@@ -46,11 +90,9 @@ export class Row {
     }
 }
 
-export class Column {
+export class Column extends Segment {
     constructor(idx, cells, inputSums) {
-        this.idx = idx;
-        this.cells = cells;
-        this.sums = inputSums;
+        super(idx, cells, inputSums);
     }
 
     static iteratorFor(idx) {
@@ -64,11 +106,9 @@ export class Column {
     }
 }
 
-export class Subgrid {
+export class Subgrid extends Segment {
     constructor(idx, cells, inputSums) {
-        this.idx = idx;
-        this.cells = cells;
-        this.sums = inputSums;
+        super(idx, cells, inputSums);
     }
 
     static iteratorFor(idx) {
