@@ -62,20 +62,14 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
 
         const row0 = solver.initRow(0);
-        const row0OriginalSumCount = row0.sums.length;
         const residualSum0 = row0.determineResidualSum();
-        expect(row0.sums.length).toBe(row0OriginalSumCount + 1);
         expect(residualSum0).toEqual(
             Sum.of(23).cell(0, 2).cell(0, 3).cell(0, 4).cell(0, 5).cell(0, 8).mk());
-        expect(row0.sums.findIndex(sum => sum === residualSum0)).toBe(2);
         
         const row5 = solver.initRow(5);
-        const row5OriginalSumCount = row5.sums.length;
         const residualSum5 = row5.determineResidualSum();
-        expect(row5.sums.length).toBe(row5OriginalSumCount + 1);
         expect(residualSum5).toEqual(
             new Sum(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))));
-        expect(row5.sums.findIndex(sum => sum === residualSum5)).toBe(0);
     });
 
     test('Initialize columns', () => {
@@ -132,21 +126,15 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
 
         const column0 = solver.initColumn(0);
-        const column0OriginalSumCount = column0.sums.length;
         const residualSum0 = column0.determineResidualSum();
-        expect(column0.sums.length).toBe(column0OriginalSumCount + 1);
         expect(residualSum0).toEqual(
             Sum.of(26).cell(0, 0).cell(1, 0).cell(2, 0).cell(3, 0).cell(4, 0).cell(5, 0).mk()
         );
-        expect(column0.sums.findIndex(sum => sum === residualSum0)).toBe(1);
         
         const column1 = solver.initColumn(1);
-        const column1OriginalSumCount = column1.sums.length;
         const residualSum1 = column1.determineResidualSum();
-        expect(column1.sums.length).toBe(column1OriginalSumCount + 1);
         expect(residualSum1).toEqual(
             new Sum(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1))));
-        expect(column1.sums.findIndex(sum => sum === residualSum1)).toBe(0);
     });
 
     test('Initialize subgrids', () => {
@@ -256,16 +244,11 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(testProblem);
 
         const subgrid0 = solver.initSubgrid(0);
-        const subgrid0OriginalSumCount = subgrid0.sums.length;
         const residualSum0 = subgrid0.determineResidualSum();
         expect(residualSum0).toBe(undefined);
-        expect(subgrid0.sums.length).toBe(subgrid0OriginalSumCount);
         
         const subgrid1 = solver.initSubgrid(1);
-        const subgrid1OriginalSumCount = subgrid1.sums.length;
         const residualSum1 = subgrid1.determineResidualSum();
-        expect(subgrid1.sums.length).toBe(subgrid1OriginalSumCount + 1);
         expect(residualSum1).toEqual(Sum.of(4).cell(1, 5).cell(2, 5).mk());
-        expect(subgrid1.sums.findIndex(sum => sum === residualSum1)).toBe(3);
     });
 });

@@ -83,9 +83,11 @@ class Segment {
             }
         }, this);
 
-        const residualSum = new Sum(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
-        this.sums.push(residualSum);
-        return residualSum;
+        return new Sum(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
+    }
+
+    addSum(sum) {
+        this.sums.push(sum);
     }
 }
 
@@ -226,6 +228,7 @@ export class Solver {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
+                segment.addSum(residualSum);
                 this.sumsDeterminatorsMap.set(residualSum, new SumDeterminator(residualSum));
                 residualSum.cells.forEach(cell => {
                     const cellDeterminator = this.cellDeterminatorOf(cell);
@@ -233,6 +236,10 @@ export class Solver {
                 }, this);    
             }
         }, this);
+    }
+
+    inputSumOf(cell) {
+        return this.inputSumAt(cell.rowIdx, cell.colIdx);
     }
 
     inputSumAt(rowIdx, colIdx) {
