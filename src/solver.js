@@ -58,8 +58,6 @@ class SumsArea {
 class SumDeterminator {
     constructor(sum) {
         this.sum = sum;
-        this.combinationsOptions = findCombinationsForSum(sum.value, sum.cells.length);
-        this.placedCombination = undefined;
     }
 }
 
