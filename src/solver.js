@@ -1,19 +1,24 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
+import { findCombinationsForSum } from './combinatorial';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum, GRID_CELL_COUNT } from './problem';
 
-const newUniqueSegmentIterator = (valueOfFn) => {
+const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
     return {
         [Symbol.iterator]() { return this; },
         next() {
-            if (i < UNIQUE_SEGMENT_LENGTH) {
+            if (i < max) {
                 return { value: valueOfFn(i++), done: false };
             } else {
-                return { value: UNIQUE_SEGMENT_LENGTH, done: true };
+                return { value: max, done: true };
             }
         }
     }
-}
+};
+
+const newSegmentIterator = (valueOfFn) => {
+    return newAreaIterator(valueOfFn, UNIQUE_SEGMENT_LENGTH);
+};
 
 export class CellDeterminator {
     constructor({ cell, row, column, subgrid, withinSums }) {
@@ -47,6 +52,14 @@ class SumsArea {
 
     has(cell) {
         return this.cellsSet.has(cell);
+    }
+}
+
+class SumDeterminator {
+    constructor(sum) {
+        this.sum = sum;
+        this.combinationsOptions = findCombinationsForSum(sum.value, sum.cells.length);
+        this.placedCombination = undefined;
     }
 }
 
@@ -84,7 +97,7 @@ export class Row extends Segment {
     }
 
     static iteratorFor(idx) {
-        return newUniqueSegmentIterator(colIdx => {
+        return newSegmentIterator(colIdx => {
             return { rowIdx: idx, colIdx };
         });
     }
@@ -100,7 +113,7 @@ export class Column extends Segment {
     }
 
     static iteratorFor(idx) {
-        return newUniqueSegmentIterator(rowIdx => {
+        return newSegmentIterator(rowIdx => {
             return { rowIdx, colIdx: idx };
         });
     }
@@ -116,7 +129,7 @@ export class Subgrid extends Segment {
     }
 
     static iteratorFor(idx) {
-        return newUniqueSegmentIterator(i => {
+        return newSegmentIterator(i => {
             const subgridStartingRowIdx = Math.floor(idx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
             const subgridStartingColIdx = (idx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
             const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
@@ -135,9 +148,11 @@ export class Solver {
         this.problem = problem;
         this.inputSums = [];
         this.inputSumsMatrix = this.constructor.#newMatrix();
+        this.sumsDeterminatorsMap = new Map();
         this.cells = [];
         this.cellsMatrix = this.constructor.#newMatrix();
         problem.sums.forEach(sum => {
+            this.sumsDeterminatorsMap.set(sum, new SumDeterminator(sum));
             sum.cells.forEach(cell => {
                 this.inputSumsMatrix[cell.rowIdx][cell.colIdx] = sum;
                 this.cells.push(cell);
@@ -213,6 +228,7 @@ export class Solver {
         this.segments.forEach(row => {
             const residualSum = row.determineResidualSum();
             if (residualSum) {
+                this.sumsDeterminatorsMap.set(residualSum, new SumDeterminator(residualSum));
                 residualSum.cells.forEach(cell => {
                     const cellDeterminator = this.cellDeterminatorOf(cell);
                     cellDeterminator.addWithinSum(residualSum);
