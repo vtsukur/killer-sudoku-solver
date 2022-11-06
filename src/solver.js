@@ -1,6 +1,20 @@
 import _ from 'lodash';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH } from './problem';
 
+const newUniqueSegmentIterator = (valueOfFn) => {
+    let i = 0;
+    return {
+        [Symbol.iterator]() { return this; },
+        next() {
+            if (i < UNIQUE_SEGMENT_LENGTH) {
+                return { value: valueOfFn(i++), done: false };
+            } else {
+                return { value: UNIQUE_SEGMENT_LENGTH, done: true };
+            }
+        }
+    }
+}
+
 export class CellDeterminator {
     constructor({ cell, row, column, subgrid, withinSums }) {
         this.cell = cell;
@@ -9,44 +23,26 @@ export class CellDeterminator {
         this.subgrid = subgrid;
         this.withinSums = new Set(withinSums);
 
-        this.numberOptions = this.constructor.#newAllNumbers();
+        this.numberOptions = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
         this.placedNumber = undefined;
-    }
-
-    static #newAllNumbers() {
-        return new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
     }
 }
 
-// const collectSegmentSumsWithLeftover = (iterator, model, isContainedFn) => {
-//     const sums = [];
-//     let leftoverSumValue = UNIQUE_SEGMENT_SUM;
-//     const leftoverSumCells = [];
-//     const processedSums = new Set();
-//     for (const i of iterator) {
-//         const sum = model.inputSumAt(i.rowIdx, i.colIdx);
-//         if (!processedSums.has(sum)) {
-//             if (isContainedFn(sum)) {
-//                 sums.push(sum);
-//                 processedSums.add(sum);
-//                 leftoverSumValue -= sum.value;
-//             } else {
-//                 const cell = model.cellAt(i.rowIdx, i.colIdx);
-//                 leftoverSumCells.push(cell);
-//             }    
-//         }
-//     }
-//     let leftoverSum;
-//     if (leftoverSumCells.length !== 0) {
-//         sums.push(leftoverSum = new Sum(leftoverSumValue, leftoverSumCells));
-//     }
-//     return { sums, leftoverSum };
-// };
-
 export class Row {
-    constructor(idx, sums) {
+    constructor(idx, inputSums, cells) {
         this.idx = idx;
-        this.sums = sums;
+        this.sums = inputSums;
+        this.cells = cells;
+    }
+
+    static iteratorFor(idx) {
+        return newUniqueSegmentIterator(colIdx => {
+            return { rowIdx: idx, colIdx };
+        });
+    }
+
+    static isWithinSegment(sum) {
+        return sum.isWithinRow;
     }
 }
 
@@ -55,12 +51,36 @@ export class Column {
         this.idx = idx;
         this.sums = sums;
     }
+
+    static iteratorFor(idx) {
+        return newUniqueSegmentIterator(rowIdx => {
+            return { rowIdx, colIdx: idx };
+        });
+    }
+
+    static isWithinSegment(sum) {
+        return sum.isWithinColumn;
+    }
 }
 
 export class Subgrid {
     constructor(idx, sums) {
         this.idx = idx;
         this.sums = sums;
+    }
+
+    static iteratorFor(idx) {
+        return newUniqueSegmentIterator(i => {
+            const subgridStartingRowIdx = Math.floor(idx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+            const subgridStartingColIdx = (idx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
+            const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
+            const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
+            return { rowIdx, colIdx };
+        });
+    }
+
+    static isWithinSegment(sum) {
+        return sum.isWithinSubgrid;
     }
 }
 
@@ -109,30 +129,26 @@ export class Solver {
     }
 
     initRow(idx) {
-        return new Row(idx, this.#collectSegmentOnlySums(
-            this.constructor.#newUniqueSegmentIterator(colIdx => {
-                return { rowIdx: idx, colIdx };
-            }), sum => sum.isWithinRow));
+        return new Row(idx,
+            this.#collectSegmentOnlySums(Row.iteratorFor(idx), Row.isWithinSegment),
+            this.#collectSegmentCells(Row.iteratorFor(idx)));
     }
 
     initColumn(idx) {
-        return new Column(idx, this.#collectSegmentOnlySums(
-            this.constructor.#newUniqueSegmentIterator(rowIdx => {
-                return { rowIdx, colIdx: idx };
-            }), sum => sum.isWithinColumn));
+        return new Column(idx, this.#collectSegmentOnlySums(Column.iteratorFor(idx), Column.isWithinSegment));
     }
 
     initSubgrid(idx) {
-        return new Subgrid(idx, this.#collectSegmentOnlySums(
-            this.constructor.#newUniqueSegmentIterator(i => {
-                const subgridStartingRowIdx = Math.floor(idx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
-                const subgridStartingColIdx = (idx % SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH;
-                const rowIdx = subgridStartingRowIdx + Math.floor(i / SUBGRID_SIDE_LENGTH);
-                const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
-                return { rowIdx, colIdx };
-            }
-        ), sum => sum.isWithinSubgrid));
+        return new Subgrid(idx, this.#collectSegmentOnlySums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
     }
+
+    #collectSegmentCells(iterator) {
+        const cells = [];
+        for (const i of iterator) {
+            cells.push(this.cellAt(i.rowIdx, i.colIdx));
+        }
+        return cells;
+    };
 
     #collectSegmentOnlySums(iterator, isWithinSegmentFn) {
         const sums = [];
@@ -149,20 +165,6 @@ export class Solver {
         return sums;
     };
 
-    static #newUniqueSegmentIterator(valueOfFn) {
-        let i = 0;
-        return {
-            [Symbol.iterator]() { return this; },
-            next() {
-                if (i < UNIQUE_SEGMENT_LENGTH) {
-                    return { value: valueOfFn(i++), done: false };
-                } else {
-                    return { value: UNIQUE_SEGMENT_LENGTH, done: true };
-                }
-            }
-        }
-    }
-    
     inputSumAt(rowIdx, colIdx) {
         return this.inputSumsMatrix[rowIdx][colIdx];
     }

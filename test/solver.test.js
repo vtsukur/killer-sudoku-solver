@@ -3,7 +3,7 @@ import { Solver } from '../src/solver';
 import testProblem from './testProblem';
 
 describe('Tests for solver', () => {
-    test('Initialize (shallow coverage) - whitebox', () => {
+    test('Create solver (shallow coverage)', () => {
         const solver = new Solver(testProblem);
 
         expect(solver.cells.length).toBe(GRID_CELL_COUNT);
