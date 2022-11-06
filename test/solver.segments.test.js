@@ -139,10 +139,15 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Initialize subgrids with leftover sums', () => {
+    test('Initialize subgrids', () => {
         const solver = new Solver(testProblem);
+
         expect(solver.initSubgrid(0)).toEqual(new Subgrid(
             0, [
+                new Cell(0, 0), new Cell(0, 1), new Cell(0, 2),
+                new Cell(1, 0), new Cell(1, 1), new Cell(1, 2),
+                new Cell(2, 0), new Cell(2, 1), new Cell(2, 2)
+            ], [
                 Sum.of(15).cell(0, 0).cell(0, 1).mk(),
                 Sum.of(10).cell(0, 2).cell(1, 2).mk(),
                 Sum.of(7).cell(1, 0).cell(1, 1).mk(),
@@ -151,6 +156,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(1)).toEqual(new Subgrid(
             1, [
+                new Cell(0, 3), new Cell(0, 4), new Cell(0, 5),
+                new Cell(1, 3), new Cell(1, 4), new Cell(1, 5),
+                new Cell(2, 3), new Cell(2, 4), new Cell(2, 5)
+            ], [
                 Sum.of(17).cell(0, 3).cell(1, 3).mk(),
                 Sum.of(13).cell(0, 4).cell(0, 5).cell(1, 4).mk(),
                 Sum.of(11).cell(2, 3).cell(2, 4).mk(),
@@ -159,6 +168,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(2)).toEqual(new Subgrid(
             2, [
+                new Cell(0, 6), new Cell(0, 7), new Cell(0, 8),
+                new Cell(1, 6), new Cell(1, 7), new Cell(1, 8),
+                new Cell(2, 6), new Cell(2, 7), new Cell(2, 8)
+            ], [
                 Sum.of(7).cell(0, 6).cell(0, 7).mk(),
                 Sum.of(11).cell(0, 8).cell(1, 8).mk(),
                 Sum.of(9).cell(2, 7).cell(2, 8).mk(),
@@ -167,6 +180,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(3)).toEqual(new Subgrid(
             3, [
+                new Cell(3, 0), new Cell(3, 1), new Cell(3, 2),
+                new Cell(4, 0), new Cell(4, 1), new Cell(4, 2),
+                new Cell(5, 0), new Cell(5, 1), new Cell(5, 2)
+            ], [
                 Sum.of(4).cell(3, 0).cell(3, 1).mk(),
                 Sum.of(2).cell(3, 2).mk(),
                 Sum.of(27).cell(4, 0).cell(4, 1).cell(5, 0).cell(5, 1).mk(),
@@ -175,6 +192,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(4)).toEqual(new Subgrid(
             4, [
+                new Cell(3, 3), new Cell(3, 4), new Cell(3, 5),
+                new Cell(4, 3), new Cell(4, 4), new Cell(4, 5),
+                new Cell(5, 3), new Cell(5, 4), new Cell(5, 5)
+            ], [
                 Sum.of(14).cell(3, 3).cell(3, 4).mk(),
                 Sum.of(10).cell(4, 3).cell(4, 4).mk(),
                 // Sum.of(21).cell(3, 5).cell(4, 5),
@@ -183,6 +204,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(5)).toEqual(new Subgrid(
             5, [
+                new Cell(3, 6), new Cell(3, 7), new Cell(3, 8),
+                new Cell(4, 6), new Cell(4, 7), new Cell(4, 8),
+                new Cell(5, 6), new Cell(5, 7), new Cell(5, 8)
+            ], [
                 Sum.of(5).cell(3, 7).cell(4, 7).mk(),
                 Sum.of(19).cell(3, 8).cell(4, 8).cell(5, 8).mk(),
                 // Sum.of(21).cell(3, 6).cell(4, 6),
@@ -191,6 +216,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(6)).toEqual(new Subgrid(
             6, [
+                new Cell(6, 0), new Cell(6, 1), new Cell(6, 2),
+                new Cell(7, 0), new Cell(7, 1), new Cell(7, 2),
+                new Cell(8, 0), new Cell(8, 1), new Cell(8, 2)
+            ], [
                 Sum.of(19).cell(6, 0).cell(7, 0).cell(8, 0).mk(),
                 Sum.of(14).cell(6, 1).cell(7, 1).cell(8, 1).cell(8, 2).mk(),
                 // Sum.of(12).cell(6, 2).cell(7, 2).mk()
@@ -198,6 +227,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(7)).toEqual(new Subgrid(
             7, [
+                new Cell(6, 3), new Cell(6, 4), new Cell(6, 5),
+                new Cell(7, 3), new Cell(7, 4), new Cell(7, 5),
+                new Cell(8, 3), new Cell(8, 4), new Cell(8, 5)
+            ], [
                 Sum.of(6).cell(6, 4).cell(6, 5).mk(),
                 Sum.of(6).cell(7, 3).cell(8, 3).mk(),
                 Sum.of(22).cell(7, 4).cell(8, 4).cell(8, 5).mk(),
@@ -207,6 +240,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
         expect(solver.initSubgrid(8)).toEqual(new Subgrid(
             8, [
+                new Cell(6, 6), new Cell(6, 7), new Cell(6, 8),
+                new Cell(7, 6), new Cell(7, 7), new Cell(7, 8),
+                new Cell(8, 6), new Cell(8, 7), new Cell(8, 8)
+            ], [
                 Sum.of(14).cell(6, 8).cell(7, 8).cell(8, 8).mk(),
                 Sum.of(10).cell(7, 6).cell(7, 7).mk(),
                 Sum.of(7).cell(8, 6).cell(8, 7).mk(),

@@ -65,9 +65,10 @@ export class Column {
 }
 
 export class Subgrid {
-    constructor(idx, sums) {
+    constructor(idx, cells, inputSums) {
         this.idx = idx;
-        this.sums = sums;
+        this.cells = cells;
+        this.sums = inputSums;
     }
 
     static iteratorFor(idx) {
@@ -142,7 +143,9 @@ export class Solver {
     }
 
     initSubgrid(idx) {
-        return new Subgrid(idx, this.#collectSegmentSums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
+        return new Subgrid(idx,
+            this.#collectSegmentCells(Subgrid.iteratorFor(idx)),
+            this.#collectSegmentSums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
     }
 
     #collectSegmentCells(iterator) {
