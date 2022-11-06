@@ -21,7 +21,7 @@ describe('Tests for solver', () => {
         expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solver.subgrids[1].sums[2]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
 
-        const aCellDeterminator = solver.cellsDeterminatorsMatrix[2][3];
+        const aCellDeterminator = solver.cellDeterminatorAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
         expect(aCellDeterminator.row.idx).toEqual(2);
         expect(aCellDeterminator.column.idx).toEqual(3);
@@ -29,5 +29,27 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numberOptions).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         expect(aCellDeterminator.withinSums).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
+    });
+
+    test('Determine residuals sums in segments (shallow coverage)', () => {
+        const solver = new Solver(testProblem);
+
+        solver.determineResidualSumsInSegments();
+
+        const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
+        expect(cell_0_0_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(0, 0),
+            // residual sum of column 0
+            Sum.of(26).cell(0, 0).cell(1, 0).cell(2, 0).cell(3, 0).cell(4, 0).cell(5, 0).mk()
+        ]));
+
+        const cell_1_5_Determinator = solver.cellDeterminatorAt(1, 5);
+        expect(cell_1_5_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(1, 5),
+            // residual sum of column 1
+            Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk(),
+            // residual sum of subgrid 1
+            Sum.of(4).cell(1, 5).cell(2, 5).mk()
+        ]));
     });
 });

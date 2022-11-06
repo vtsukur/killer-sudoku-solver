@@ -26,6 +26,10 @@ export class CellDeterminator {
         this.numberOptions = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
         this.placedNumber = undefined;
     }
+
+    addWithinSum(withinSum) {
+        this.withinSums.add(withinSum);
+    }
 }
 
 class SumsArea {
@@ -147,12 +151,12 @@ export class Solver {
         this.rows = [];
         this.columns = [];
         this.subgrids = [];
-
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
             this.rows.push(this.initRow(i));
             this.columns.push(this.initColumn(i));
             this.subgrids.push(this.initSubgrid(i));
         }, this);
+        this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
 
         this.cellsDeterminatorsMatrix = this.constructor.#newMatrix();
         this.cells.forEach(cell => {
@@ -207,11 +211,31 @@ export class Solver {
         return sums;
     };
 
+    determineResidualSumsInSegments() {
+        this.segments.forEach(row => {
+            const residualSum = row.determineResidualSum();
+            if (residualSum) {
+                residualSum.cells.forEach(cell => {
+                    const cellDeterminator = this.cellDeterminatorOf(cell);
+                    cellDeterminator.addWithinSum(residualSum);
+                }, this);    
+            }
+        }, this);
+    }
+
     inputSumAt(rowIdx, colIdx) {
         return this.inputSumsMatrix[rowIdx][colIdx];
     }
 
     cellAt(rowIds, colIdx) {
         return this.cellsMatrix[rowIds][colIdx];
+    }
+
+    cellDeterminatorOf(cell) {
+        return this.cellDeterminatorAt(cell.rowIdx, cell.colIdx);
+    }
+
+    cellDeterminatorAt(rowIdx, colIdx) {
+        return this.cellsDeterminatorsMatrix[rowIdx][colIdx];
     }
 }
