@@ -1,4 +1,5 @@
-import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT } from '../src/problem';
+import _ from 'lodash';
+import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
 import testProblem from './testProblem';
 
@@ -50,6 +51,38 @@ describe('Tests for solver', () => {
             Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk(),
             // residual sum of subgrid 1
             Sum.of(4).cell(1, 5).cell(2, 5).mk()
+        ]));
+
+        const cell_0_2_Determinator = solver.cellDeterminatorAt(0, 2);
+        expect(cell_0_2_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(0, 2),
+            // residual sum of row 0
+            Sum.of(23).cell(0, 2).cell(0, 3).cell(0, 4).cell(0, 5).cell(0, 8).mk()
+        ]));
+
+        const cell_2_6_Determinator = solver.cellDeterminatorAt(2, 6);
+        expect(cell_2_6_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(2, 6),
+            // residual sum of row 2
+            Sum.of(12).cell(2, 5).cell(2, 6).mk(),
+            // residual sum of subgrid 2
+            Sum.of(18).cell(1, 6).cell(1, 7).cell(2, 6).mk()
+        ]));
+
+        const cell_5_6_Determinator = solver.cellDeterminatorAt(5, 6);
+        expect(cell_5_6_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(5, 6),
+            // residual sum of row 5
+            new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))),
+            // residual sum of column 6
+            Sum.of(29).cell(0, 6).cell(1, 6).cell(4, 6).cell(5, 6).cell(6, 6).cell(7, 6).cell(8, 6).mk(),
+            // residual sum of subgrid 5
+            Sum.of(21).cell(3, 6).cell(4, 6).cell(5, 6).cell(5, 7).mk()
+        ]));
+
+        const cell_3_2_Determinator = solver.cellDeterminatorAt(3, 2);
+        expect(cell_3_2_Determinator.withinSums).toEqual(new Set([
+            solver.inputSumAt(3, 2)
         ]));
     });
 });
