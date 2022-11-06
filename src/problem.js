@@ -8,6 +8,7 @@ export const GRID_CELL_COUNT = UNIQUE_SEGMENT_COUNT * UNIQUE_SEGMENT_LENGTH;
 export class Problem {
     constructor(sums) {
         this.sums = [...sums];
+        this.cells = this.sums.map(sum => sum.cells).flat();
     }
 
     checkCorrectness() {
@@ -39,21 +40,29 @@ export class Problem {
 }
 
 export class Sum {
+    #cellsSet;
+
     constructor(value, cells) {
         this.value = value;
         this.cells = cells;
+        this.#cellsSet = new Set(cells.map(cell => cell.toString()));
 
-        this.isWithinRow = this.constructor.#isSameForAll(this.cells, cell => cell.rowIdx);
-        this.isWithinColumn = this.constructor.#isSameForAll(this.cells, cell => cell.colIdx);
-        this.isWithinSubgrid = this.constructor.#isSameForAll(this.cells, cell => cell.subgridIdx);        
+        this.isSingleCellSum = this.cellCount === 1;
+        this.isWithinRow = this.isSingleCellSum || this.#isSameForAll(cell => cell.rowIdx);
+        this.isWithinColumn = this.isSingleCellSum || this.#isSameForAll(cell => cell.colIdx);
+        this.isWithinSubgrid = this.isSingleCellSum || this.#isSameForAll(cell => cell.subgridIdx);
     }
 
-    static #isSameForAll(cells, whatFn) {
-        return new Set(cells.map(whatFn)).size === 1;
+    #isSameForAll(whatFn) {
+        return new Set(this.cells.map(whatFn)).size === 1;
     }
 
     get cellCount() {
         return this.cells.length;
+    }
+
+    has(cell) {
+        return this.#cellsSet.has(cell.toString());
     }
 
     static Builder = class {

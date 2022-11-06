@@ -149,13 +149,11 @@ export class Solver {
         this.inputSums = [];
         this.inputSumsMatrix = this.constructor.#newMatrix();
         this.sumsDeterminatorsMap = new Map();
-        this.cells = [];
         this.cellsMatrix = this.constructor.#newMatrix();
         problem.sums.forEach(sum => {
             this.sumsDeterminatorsMap.set(sum, new SumDeterminator(sum));
             sum.cells.forEach(cell => {
                 this.inputSumsMatrix[cell.rowIdx][cell.colIdx] = sum;
-                this.cells.push(cell);
                 this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
             }, this);
             this.inputSums.push(sum);
@@ -172,7 +170,7 @@ export class Solver {
         this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
 
         this.cellsDeterminatorsMatrix = this.constructor.#newMatrix();
-        this.cells.forEach(cell => {
+        this.problem.cells.forEach(cell => {
             this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellDeterminator({
                 cell,
                 row: this.rows[cell.rowIdx],

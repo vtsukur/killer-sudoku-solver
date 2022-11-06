@@ -7,8 +7,8 @@ describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
         const solver = new Solver(testProblem);
 
-        expect(solver.cells.length).toBe(GRID_CELL_COUNT);
-        expect(solver.cells[21]).toEqual(new Cell(2, 3));
+        expect(solver.problem.cells.length).toBe(GRID_CELL_COUNT);
+        expect(solver.problem.cells[21]).toEqual(new Cell(2, 3));
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputSums.length).toBe(33);
         expect(solver.inputSums[9]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
