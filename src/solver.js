@@ -62,7 +62,7 @@ class SumDeterminator {
 }
 
 class Segment {
-    #sumsArea;    
+    #sumsArea;
 
     constructor(idx, cells, inputSums) {
         this.idx = idx;
