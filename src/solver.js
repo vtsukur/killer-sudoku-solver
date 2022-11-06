@@ -223,8 +223,8 @@ export class Solver {
     };
 
     determineResidualSumsInSegments() {
-        this.segments.forEach(row => {
-            const residualSum = row.determineResidualSum();
+        this.segments.forEach(segment => {
+            const residualSum = segment.determineResidualSum();
             if (residualSum) {
                 this.sumsDeterminatorsMap.set(residualSum, new SumDeterminator(residualSum));
                 residualSum.cells.forEach(cell => {
