@@ -29,10 +29,10 @@ export class CellDeterminator {
 }
 
 export class Row {
-    constructor(idx, inputSums, cells) {
+    constructor(idx, cells, inputSums) {
         this.idx = idx;
-        this.sums = inputSums;
         this.cells = cells;
+        this.sums = inputSums;
     }
 
     static iteratorFor(idx) {
@@ -47,9 +47,10 @@ export class Row {
 }
 
 export class Column {
-    constructor(idx, sums) {
+    constructor(idx, cells, inputSums) {
         this.idx = idx;
-        this.sums = sums;
+        this.cells = cells;
+        this.sums = inputSums;
     }
 
     static iteratorFor(idx) {
@@ -130,27 +131,25 @@ export class Solver {
 
     initRow(idx) {
         return new Row(idx,
-            this.#collectSegmentOnlySums(Row.iteratorFor(idx), Row.isWithinSegment),
-            this.#collectSegmentCells(Row.iteratorFor(idx)));
+            this.#collectSegmentCells(Row.iteratorFor(idx)),
+            this.#collectSegmentSums(Row.iteratorFor(idx), Row.isWithinSegment));
     }
 
     initColumn(idx) {
-        return new Column(idx, this.#collectSegmentOnlySums(Column.iteratorFor(idx), Column.isWithinSegment));
+        return new Column(idx,
+            this.#collectSegmentCells(Column.iteratorFor(idx)),
+            this.#collectSegmentSums(Column.iteratorFor(idx), Column.isWithinSegment));
     }
 
     initSubgrid(idx) {
-        return new Subgrid(idx, this.#collectSegmentOnlySums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
+        return new Subgrid(idx, this.#collectSegmentSums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
     }
 
     #collectSegmentCells(iterator) {
-        const cells = [];
-        for (const i of iterator) {
-            cells.push(this.cellAt(i.rowIdx, i.colIdx));
-        }
-        return cells;
+        return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
     };
 
-    #collectSegmentOnlySums(iterator, isWithinSegmentFn) {
+    #collectSegmentSums(iterator, isWithinSegmentFn) {
         const sums = [];
         const processedSums = new Set();
         for (const i of iterator) {
