@@ -63,7 +63,7 @@ class SumDeterminator {
 class Segment {
     #sumsArea;
 
-    constructor(idx, cells, inputSums) {
+    constructor(idx, cells, inputSums = []) {
         this.idx = idx;
         this.cells = cells;
         this.sums = inputSums;
@@ -92,7 +92,7 @@ class Segment {
 }
 
 export class Row extends Segment {
-    constructor(idx, cells, inputSums = []) {
+    constructor(idx, cells, inputSums) {
         super(idx, cells, inputSums);
     }
 
@@ -108,7 +108,7 @@ export class Row extends Segment {
 }
 
 export class Column extends Segment {
-    constructor(idx, cells, inputSums = []) {
+    constructor(idx, cells, inputSums) {
         super(idx, cells, inputSums);
     }
 
@@ -124,7 +124,7 @@ export class Column extends Segment {
 }
 
 export class Subgrid extends Segment {
-    constructor(idx, cells, inputSums = []) {
+    constructor(idx, cells, inputSums) {
         super(idx, cells, inputSums);
     }
 
@@ -201,21 +201,6 @@ export class Solver {
 
     #collectSegmentCells(iterator) {
         return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
-    };
-
-    #collectSegmentSums(iterator, isWithinSegmentFn) {
-        const sums = [];
-        const processedSums = new Set();
-        for (const i of iterator) {
-            const sum = this.inputSumAt(i.rowIdx, i.colIdx);
-            if (!processedSums.has(sum)) {
-                if (isWithinSegmentFn(sum)) {
-                    sums.push(sum);
-                }
-                processedSums.add(sum);
-            }
-        }
-        return sums;
     };
 
     determineResidualSumsInSegments() {
