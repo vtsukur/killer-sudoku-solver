@@ -67,22 +67,13 @@ describe('Tests for solver', () => {
             Sum.of(18).cell(1, 6).cell(1, 7).cell(2, 6).mk()
         ]));
 
-        // const cell_5_6_Determinator = solver.cellDeterminatorAt(5, 6);
-        // expect(cell_5_6_Determinator.withinSumsSet).toEqual(new Set([
-        //     // sliced sum
-        //     Sum.of(8).cell(5, 6).cell(5, 7),
-        //     // residual sum of column 6
-        //     Sum.of(29).cell(0, 6).cell(1, 6).cell(4, 6).cell(5, 6).cell(6, 6).cell(7, 6).cell(8, 6).mk()
-        // ]));
-        // // expect(cell_5_6_Determinator.withinSumsSet).toEqual(new Set([
-        // //     solver.inputSumAt(5, 6),
-        // //     // residual sum of row 5
-        // //     new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))),
-        // //     // residual sum of column 6
-        // //     Sum.of(29).cell(0, 6).cell(1, 6).cell(4, 6).cell(5, 6).cell(6, 6).cell(7, 6).cell(8, 6).mk(),
-        // //     // residual sum of subgrid 5
-        // //     Sum.of(21).cell(3, 6).cell(4, 6).cell(5, 6).cell(5, 7).mk()
-        // // ]));
+        const cell_5_6_Determinator = solver.cellDeterminatorAt(5, 6);
+        expect(cell_5_6_Determinator.withinSumsSet).toEqual(new Set([
+            // sliced sum
+            Sum.of(8).cell(5, 6).cell(5, 7).mk(),
+            // residual sum of column 6
+            Sum.of(29).cell(0, 6).cell(1, 6).cell(4, 6).cell(5, 6).cell(6, 6).cell(7, 6).cell(8, 6).mk()
+        ]));
 
         const cell_3_2_Determinator = solver.cellDeterminatorAt(3, 2);
         expect(cell_3_2_Determinator.withinSumsSet).toEqual(new Set([

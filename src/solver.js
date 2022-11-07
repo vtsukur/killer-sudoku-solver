@@ -209,22 +209,47 @@ export class Solver {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
-                const inputSumsForResidualSum = this.#getInputSumsForResidualSum(residualSum);
-                if (inputSumsForResidualSum.size === 1) {
-                    const inputSum = inputSumsForResidualSum.values().next().value;
-                    const secondChunkSum = this.#sliceSum(inputSum, residualSum);
-                    this.#unregisterSum(inputSum);
-                    this.#registerSum(residualSum);
-                    this.#registerSum(secondChunkSum);
-                } else {
+                if (!this.#tryRecursiveSlice(residualSum)) {
                     this.#registerSum(residualSum);    
                 }
             }
         }, this);
     }
 
-    #getInputSumsForResidualSum(sum) {
-        return new Set(sum.cells.map(cell => this.inputSumOf(cell), this));
+    #tryRecursiveSlice(residualSum) {
+        const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
+        if (sumsForResidualSum.length > 0) {
+            sumsForResidualSum.forEach(sum => {
+                const secondChunkSum = this.#sliceSum(sum, residualSum);
+                this.#unregisterSum(sum);
+                this.#registerSum(residualSum);
+                this.#registerSum(secondChunkSum);
+                this.#tryRecursiveSlice(secondChunkSum);
+            }, this);
+            return true;
+        }
+
+        return false;
+    }
+
+    #getSumsFullyContainingResidualSum(residualSum) {
+        let allAssociatedSumsSet = new Set();
+        residualSum.cells.forEach(cell => {
+            allAssociatedSumsSet = new Set([...allAssociatedSumsSet, ...this.cellDeterminatorOf(cell).withinSumsSet]);
+        }, this);
+
+        const result = [];
+        for (const associatedSum of allAssociatedSumsSet.values()) {
+            const associatedSumFullyContainsResidualSum = residualSum.cells.every(cell => {
+                return this.cellDeterminatorOf(cell).withinSumsSet.has(associatedSum);
+            }, this);
+            if (associatedSumFullyContainsResidualSum) {
+                result.push(associatedSum);
+            }
+            [].every(() => {}, )
+        }
+
+        return result;
     }
 
     #sliceSum(sumToSlice, firstChunkSum) {
