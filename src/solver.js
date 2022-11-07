@@ -296,10 +296,6 @@ export class Solver {
         this.sumsDeterminatorsMap.delete(sum.key());
     }
 
-    inputSumOf(cell) {
-        return this.inputSumAt(cell.rowIdx, cell.colIdx);
-    }
-
     inputSumAt(rowIdx, colIdx) {
         return this.inputSumsMatrix[rowIdx][colIdx];
     }
