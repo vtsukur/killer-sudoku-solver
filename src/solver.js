@@ -209,31 +209,20 @@ export class Solver {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
-                if (!this.#tryRecursiveSlice(residualSum)) {
-                    this.#registerSum(residualSum);    
-                }
+                this.#addAndSliceResidualSumRecursively(residualSum);
             }
         }, this);
     }
 
-    #tryRecursiveSlice(residualSum) {
-        const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
-        if (sumsForResidualSum.length > 0) {
-            let registeredResidualSum = false;
-            sumsForResidualSum.forEach(sum => {
-                const secondChunkSum = this.#sliceSum(sum, residualSum);
-                this.#unregisterSum(sum);
-                if (!registeredResidualSum) {
-                    this.#registerSum(residualSum);
-                    registeredResidualSum = true;
-                }
-                this.#registerSum(secondChunkSum);
-                this.#tryRecursiveSlice(secondChunkSum);
-            }, this);
-            return true;
-        }
+    #addAndSliceResidualSumRecursively(residualSum) {
+        this.#registerSum(residualSum);
 
-        return false;
+        const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
+        sumsForResidualSum.forEach(sum => {
+            const secondChunkSum = this.#sliceSum(sum, residualSum);
+            this.#unregisterSum(sum);
+            this.#addAndSliceResidualSumRecursively(secondChunkSum);
+        }, this);
     }
 
     #getSumsFullyContainingResidualSum(residualSum) {
@@ -267,9 +256,6 @@ export class Solver {
     }
 
     #registerSum(sum) {
-        if (this.sumsDeterminatorsMap.has(sum.key())) {
-            return;
-        }
         const sumDeterminator = new SumDeterminator(sum);
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.getUniqueRowIdx()].addSum(sum);
