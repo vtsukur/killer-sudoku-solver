@@ -193,6 +193,25 @@ describe('Tests for solver', () => {
             new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 4)))
         ]));
 
+        const column5 = solver.column(5);
+        expect(column5.sums.length).toEqual(4);
+        expect(new Set(column5.sums)).toEqual(new Set([
+            Sum.of(8).cell(2, 5).cell(3, 5).mk(),
+            Sum.of(8).cell(7, 5).mk(),
+            Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk(),
+            // overlapping sum
+            Sum.of(4).cell(1, 5).cell(2, 5).mk()
+        ]));
+
+        const column6 = solver.column(6);
+        expect(column6.sums.length).toEqual(3);
+        expect(new Set(column6.sums)).toEqual(new Set([
+            Sum.of(16).cell(2, 6).cell(3, 6).mk(),
+            Sum.of(29).cell(0, 6).cell(1, 6).cell(4, 6).cell(5, 6).cell(6, 6).cell(7, 6).cell(8, 6).mk(),
+            // overlapping sum
+            Sum.of(13).cell(3, 6).cell(4, 6).mk()
+        ]));
+
         const column7 = solver.column(7);
         expect(column7.sums.length).toEqual(3);
         expect(new Set(column7.sums)).toEqual(new Set([
