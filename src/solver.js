@@ -21,19 +21,23 @@ const newSegmentIterator = (valueOfFn) => {
 };
 
 export class CellDeterminator {
-    constructor({ cell, row, column, subgrid, withinSums }) {
+    constructor({ cell, row, column, subgrid }) {
         this.cell = cell;
         this.row = row;
         this.column = column;
         this.subgrid = subgrid;
-        this.withinSums = new Set(withinSums);
+        this.withinSumsSet = new Set();
 
         this.numberOptions = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
         this.placedNumber = undefined;
     }
 
     addWithinSum(withinSum) {
-        this.withinSums.add(withinSum);
+        this.withinSumsSet.add(withinSum);
+    }
+
+    removeWithinSum(withinSum) {
+        this.withinSumsSet.delete(withinSum);
     }
 }
 
@@ -104,8 +108,13 @@ class Segment {
         return new Sum(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
     }
 
-    addSum(sum) {
-        this.sums.push(sum);
+    addSum(newSum) {
+        this.sums.push(newSum);
+        this.#sumsArea = new SumsArea(this.sums);
+    }
+
+    removeSum(sumToRemove) {
+        this.sums = this.sums.filter(sum => sum !== sumToRemove);
         this.#sumsArea = new SumsArea(this.sums);
     }
 }
@@ -175,22 +184,21 @@ export class Solver {
             this.subgrids.push(new Subgrid(i, this.#collectSegmentCells(Subgrid.iteratorFor(i))));
         }, this);
 
-        problem.sums.forEach(sum => {
-            this.#registerSum(sum);
-        }, this);
-
-        this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
-
         this.cellsDeterminatorsMatrix = newGridMatrix();
         this.problem.cells.forEach(cell => {
             this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellDeterminator({
                 cell,
                 row: this.rows[cell.rowIdx],
                 column: this.columns[cell.colIdx],
-                subgrid: this.subgrids[cell.subgridIdx],
-                withinSums: [ this.inputSumAt(cell.rowIdx, cell.colIdx) ]
+                subgrid: this.subgrids[cell.subgridIdx]
             });
         }, this);
+
+        problem.sums.forEach(sum => {
+            this.#registerSum(sum);
+        }, this);
+
+        this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
     }
 
     #collectSegmentCells(iterator) {
@@ -201,14 +209,32 @@ export class Solver {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
-                segment.addSum(residualSum);
-                this.sumsDeterminatorsMap.set(residualSum, new SumDeterminator(residualSum));
-                residualSum.cells.forEach(cell => {
-                    const cellDeterminator = this.cellDeterminatorOf(cell);
-                    cellDeterminator.addWithinSum(residualSum);
-                }, this);    
+                const inputSumsForResidualSum = this.#getInputSumsForResidualSum(residualSum);
+                if (inputSumsForResidualSum.size === 1) {
+                    const inputSum = inputSumsForResidualSum.values().next().value;
+                    const secondChunkSum = this.#sliceSum(inputSum, residualSum);
+                    this.#unregisterSum(inputSum);
+                    this.#registerSum(residualSum);
+                    this.#registerSum(secondChunkSum);
+                } else {
+                    this.#registerSum(residualSum);    
+                }
             }
         }, this);
+    }
+
+    #getInputSumsForResidualSum(sum) {
+        return new Set(sum.cells.map(cell => this.inputSumOf(cell), this));
+    }
+
+    #sliceSum(sumToSlice, firstChunkSum) {
+        const secondChunkSumCells = [];
+        sumToSlice.cells.forEach(cell => {
+            if (!firstChunkSum.has(cell)) {
+                secondChunkSumCells.push(cell);
+            }
+        });
+        return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
     #registerSum(sum) {
@@ -222,7 +248,27 @@ export class Solver {
         if (sum.isWithinSubgrid) {
             this.subgrids[sumDeterminator.getUniqueSubgridIdx()].addSum(sum);
         }
+        sum.cells.forEach(cell => {
+            this.cellDeterminatorOf(cell).addWithinSum(sum);
+        }, this);
         this.sumsDeterminatorsMap.set(sum.key(), sumDeterminator);
+    }
+
+    #unregisterSum(sum) {
+        const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+        if (sum.isWithinRow) {
+            this.rows[sumDeterminator.getUniqueRowIdx()].removeSum(sum);
+        }
+        if (sum.isWithinColumn) {
+            this.columns[sumDeterminator.getUniqueColumnIdx()].removeSum(sum);
+        }
+        if (sum.isWithinSubgrid) {
+            this.subgrids[sumDeterminator.getUniqueSubgridIdx()].removeSum(sum);
+        }
+        sum.cells.forEach(cell => {
+            this.cellDeterminatorOf(cell).removeWithinSum(sum);
+        }, this);
+        this.sumsDeterminatorsMap.delete(sum.key());
     }
 
     inputSumOf(cell) {
