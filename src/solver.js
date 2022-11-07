@@ -124,7 +124,7 @@ export class Column extends Segment {
 }
 
 export class Subgrid extends Segment {
-    constructor(idx, cells, inputSums) {
+    constructor(idx, cells, inputSums = []) {
         super(idx, cells, inputSums);
     }
 
@@ -166,6 +166,7 @@ export class Solver {
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
             this.rows.push(new Row(i, this.#collectSegmentCells(Row.iteratorFor(i))));
             this.columns.push(new Column(i, this.#collectSegmentCells(Column.iteratorFor(i))));
+            this.subgrids.push(new Subgrid(i, this.#collectSegmentCells(Subgrid.iteratorFor(i))));
         }, this);
 
         problem.sums.forEach(sum => {
@@ -175,11 +176,11 @@ export class Solver {
             if (sum.isWithinColumn) {
                 this.columns[sum.cells[0].colIdx].addSum(sum);
             }
+            if (sum.isWithinSubgrid) {
+                this.subgrids[sum.cells[0].subgridIdx].addSum(sum);
+            }
         }, this);
 
-        _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
-            this.subgrids.push(this.initSubgrid(i));
-        }, this);
         this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
 
         this.cellsDeterminatorsMatrix = this.constructor.#newMatrix();
@@ -196,12 +197,6 @@ export class Solver {
 
     static #newMatrix() {
         return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
-    }
-
-    initSubgrid(idx) {
-        return new Subgrid(idx,
-            this.#collectSegmentCells(Subgrid.iteratorFor(idx)),
-            this.#collectSegmentSums(Subgrid.iteratorFor(idx), Subgrid.isWithinSegment));
     }
 
     #collectSegmentCells(iterator) {
