@@ -219,10 +219,14 @@ export class Solver {
     #tryRecursiveSlice(residualSum) {
         const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
         if (sumsForResidualSum.length > 0) {
+            let registeredResidualSum = false;
             sumsForResidualSum.forEach(sum => {
                 const secondChunkSum = this.#sliceSum(sum, residualSum);
                 this.#unregisterSum(sum);
-                this.#registerSum(residualSum);
+                if (!registeredResidualSum) {
+                    this.#registerSum(residualSum);
+                    registeredResidualSum = true;
+                }
                 this.#registerSum(secondChunkSum);
                 this.#tryRecursiveSlice(secondChunkSum);
             }, this);
@@ -237,6 +241,7 @@ export class Solver {
         residualSum.cells.forEach(cell => {
             allAssociatedSumsSet = new Set([...allAssociatedSumsSet, ...this.cellDeterminatorOf(cell).withinSumsSet]);
         }, this);
+        allAssociatedSumsSet.delete(residualSum);
 
         const result = [];
         for (const associatedSum of allAssociatedSumsSet.values()) {
@@ -246,7 +251,6 @@ export class Solver {
             if (associatedSumFullyContainsResidualSum) {
                 result.push(associatedSum);
             }
-            [].every(() => {}, )
         }
 
         return result;
@@ -263,6 +267,9 @@ export class Solver {
     }
 
     #registerSum(sum) {
+        if (this.sumsDeterminatorsMap.has(sum.key())) {
+            return;
+        }
         const sumDeterminator = new SumDeterminator(sum);
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.getUniqueRowIdx()].addSum(sum);
