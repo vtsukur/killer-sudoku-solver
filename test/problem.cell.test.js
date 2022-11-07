@@ -72,4 +72,12 @@ describe('Cell tests', () => {
             })
         })
     });
+
+    test('Cell key', () => {
+        expect(new Cell(4, 5).key()).toBe("(4, 5)");
+    });
+
+    test('Cell toString', () => {
+        expect(new Cell(4, 5).toString()).toBe("(4, 5)");
+    });
 });

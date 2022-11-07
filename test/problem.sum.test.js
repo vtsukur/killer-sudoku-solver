@@ -49,4 +49,14 @@ describe('Sum tests', () => {
         expect(sum.isWithinColumn).toBe(false);
         expect(sum.isWithinSubgrid).toBe(false);
     });
+
+    test('Sum key', () => {
+        expect(new Sum(10, [ new Cell(4, 4), new Cell(4, 5) ]).key()).toBe(
+            "10 [(4, 4), (4, 5)]");
+    });
+
+    test('Sum toString', () => {
+        expect(new Sum(10, [ new Cell(4, 4), new Cell(4, 5) ]).toString()).toBe(
+            "10 [(4, 4), (4, 5)]");
+    });
 });
