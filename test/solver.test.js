@@ -30,10 +30,10 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.withinSums).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
     });
 
-    test('Determine residual sums in segments (shallow coverage)', () => {
+    test('Determine and slice residual sums in segments (shallow coverage)', () => {
         const solver = new Solver(testProblem);
 
-        solver.determineResidualSumsInSegments();
+        solver.determineAndSliceResidualSumsInSegments();
 
         const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
         expect(cell_0_0_Determinator.withinSums).toEqual(new Set([

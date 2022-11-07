@@ -59,6 +59,24 @@ class SumDeterminator {
     constructor(sum) {
         this.sum = sum;
     }
+
+    getUniqueRowIdx() {
+        if (this.sum.isWithinRow) {
+            return this.sum.cells[0].rowIdx;
+        }
+    }
+
+    getUniqueColumnIdx() {
+        if (this.sum.isWithinColumn) {
+            return this.sum.cells[0].colIdx;
+        }
+    }
+
+    getUniqueSubgridIdx() {
+        if (this.sum.isWithinSubgrid) {
+            return this.sum.cells[0].subgridIdx;
+        }
+    }
 }
 
 class Segment {
@@ -141,7 +159,6 @@ export class Solver {
         this.cellsMatrix = newGridMatrix();
 
         problem.sums.forEach(sum => {
-            this.sumsDeterminatorsMap.set(sum, new SumDeterminator(sum));
             sum.cells.forEach(cell => {
                 this.inputSumsMatrix[cell.rowIdx][cell.colIdx] = sum;
                 this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
@@ -159,15 +176,7 @@ export class Solver {
         }, this);
 
         problem.sums.forEach(sum => {
-            if (sum.isWithinRow) {
-                this.rows[sum.cells[0].rowIdx].addSum(sum);
-            }
-            if (sum.isWithinColumn) {
-                this.columns[sum.cells[0].colIdx].addSum(sum);
-            }
-            if (sum.isWithinSubgrid) {
-                this.subgrids[sum.cells[0].subgridIdx].addSum(sum);
-            }
+            this.#registerSum(sum);
         }, this);
 
         this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
@@ -188,7 +197,7 @@ export class Solver {
         return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
     };
 
-    determineResidualSumsInSegments() {
+    determineAndSliceResidualSumsInSegments() {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
@@ -200,6 +209,24 @@ export class Solver {
                 }, this);    
             }
         }, this);
+    }
+
+    #registerSum(sum) {
+        const sumDeterminator = new SumDeterminator(sum);
+        if (sum.isWithinRow) {
+            this.rows[sumDeterminator.getUniqueRowIdx()].addSum(sum);
+        }
+        if (sum.isWithinColumn) {
+            this.columns[sumDeterminator.getUniqueColumnIdx()].addSum(sum);
+        }
+        if (sum.isWithinSubgrid) {
+            this.subgrids[sumDeterminator.getUniqueSubgridIdx()].addSum(sum);
+        }
+        this.sumsDeterminatorsMap.set(sum.key(), sumDeterminator);
+    }
+
+    inputSumOf(cell) {
+        return this.inputSumAt(cell.rowIdx, cell.colIdx);
     }
 
     inputSumAt(rowIdx, colIdx) {
