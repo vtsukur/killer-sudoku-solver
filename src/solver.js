@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { newMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
 
 const newAreaIterator = (valueOfFn, max) => {
@@ -135,9 +136,9 @@ export class Solver {
     constructor(problem) {
         this.problem = problem;
         this.inputSums = [];
-        this.inputSumsMatrix = this.constructor.#newMatrix();
+        this.inputSumsMatrix = newMatrix();
         this.sumsDeterminatorsMap = new Map();
-        this.cellsMatrix = this.constructor.#newMatrix();
+        this.cellsMatrix = newMatrix();
 
         problem.sums.forEach(sum => {
             this.sumsDeterminatorsMap.set(sum, new SumDeterminator(sum));
@@ -171,7 +172,7 @@ export class Solver {
 
         this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
 
-        this.cellsDeterminatorsMatrix = this.constructor.#newMatrix();
+        this.cellsDeterminatorsMatrix = newMatrix();
         this.problem.cells.forEach(cell => {
             this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellDeterminator({
                 cell,
@@ -181,10 +182,6 @@ export class Solver {
                 withinSums: [ this.inputSumAt(cell.rowIdx, cell.colIdx) ]
             });
         }, this);
-    }
-
-    static #newMatrix() {
-        return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
     }
 
     #collectSegmentCells(iterator) {
