@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { findCombinationsForSum } from './combinatorial';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum, GRID_CELL_COUNT } from './problem';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -88,11 +87,12 @@ class Segment {
 
     addSum(sum) {
         this.sums.push(sum);
+        this.#sumsArea = new SumsArea(this.sums);
     }
 }
 
 export class Row extends Segment {
-    constructor(idx, cells, inputSums) {
+    constructor(idx, cells, inputSums = []) {
         super(idx, cells, inputSums);
     }
 
@@ -150,6 +150,7 @@ export class Solver {
         this.inputSumsMatrix = this.constructor.#newMatrix();
         this.sumsDeterminatorsMap = new Map();
         this.cellsMatrix = this.constructor.#newMatrix();
+
         problem.sums.forEach(sum => {
             this.sumsDeterminatorsMap.set(sum, new SumDeterminator(sum));
             sum.cells.forEach(cell => {
@@ -163,7 +164,16 @@ export class Solver {
         this.columns = [];
         this.subgrids = [];
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
-            this.rows.push(this.initRow(i));
+            this.rows.push(new Row(i, this.#collectSegmentCells(Row.iteratorFor(i))));
+        }, this);
+
+        problem.sums.forEach(sum => {
+            if (sum.isWithinRow) {
+                this.rows[sum.cells[0].rowIdx].addSum(sum);
+            }
+        }, this);
+
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
             this.columns.push(this.initColumn(i));
             this.subgrids.push(this.initSubgrid(i));
         }, this);
@@ -254,5 +264,17 @@ export class Solver {
 
     cellDeterminatorAt(rowIdx, colIdx) {
         return this.cellsDeterminatorsMatrix[rowIdx][colIdx];
+    }
+
+    row(idx) {
+        return this.rows[idx];
+    }
+
+    column(idx) {
+        return this.columns[idx];
+    }
+
+    subgrid(idx) {
+        return this.subgrids[idx];
     }
 }
