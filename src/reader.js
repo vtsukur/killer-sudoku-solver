@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from './matrix';
 import { Problem, Sum, UNIQUE_SEGMENT_LENGTH } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
@@ -49,8 +50,8 @@ export default function reader(path) {
     const entries = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
 
     const sums = new Map();
-    entries.forEach((value, index) => {
-        const sumEntry = readEntry(value, index);
+    entries.forEach((value, idx) => {
+        const sumEntry = readEntry(value, idx);
         if (!sums.has(sumEntry.ref)) {
             if (!sumEntry.value) {
                 throw `Sum def without value: ${value}`;
@@ -61,8 +62,8 @@ export default function reader(path) {
             throw `Sum def duplicate: ${sumEntry.ref}`;
         }
         sums.get(sumEntry.ref).cell(
-            Math.floor(index / UNIQUE_SEGMENT_LENGTH),
-            index % UNIQUE_SEGMENT_LENGTH
+            rowIdxInGridMatrixByAbsolute(idx),
+            columnIdxInGridMatrixFromAbsloute(idx)
         );
     });
 
