@@ -101,10 +101,6 @@ export class Row extends Segment {
             return { rowIdx: idx, colIdx };
         });
     }
-
-    static isWithinSegment(sum) {
-        return sum.isWithinRow;
-    }
 }
 
 export class Column extends Segment {
@@ -116,10 +112,6 @@ export class Column extends Segment {
         return newSegmentIterator(rowIdx => {
             return { rowIdx, colIdx: idx };
         });
-    }
-
-    static isWithinSegment(sum) {
-        return sum.isWithinColumn;
     }
 }
 
@@ -136,10 +128,6 @@ export class Subgrid extends Segment {
             const colIdx = subgridStartingColIdx + i % SUBGRID_SIDE_LENGTH;
             return { rowIdx, colIdx };
         });
-    }
-
-    static isWithinSegment(sum) {
-        return sum.isWithinSubgrid;
     }
 }
 
@@ -215,10 +203,6 @@ export class Solver {
                 }, this);    
             }
         }, this);
-    }
-
-    inputSumOf(cell) {
-        return this.inputSumAt(cell.rowIdx, cell.colIdx);
     }
 
     inputSumAt(rowIdx, colIdx) {
