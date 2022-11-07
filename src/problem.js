@@ -22,10 +22,10 @@ export class Problem {
             if (!cell.isWithinRange()) {
                 this.#throwValidationError(`Expected cell to be within the field. Actual cell: ${cell}`);
             }
-            if (cellSet.has(cell.toString())) {
+            if (cellSet.has(cell.key())) {
                 this.#throwValidationError(`Found cell duplicate: ${cell}`);
             }
-            cellSet.add(cell.toString());
+            cellSet.add(cell.key());
         });
 
         const actualFieldSum = this.sums.reduce((prev, current) => prev + current.value, 0);
@@ -45,7 +45,7 @@ export class Sum {
     constructor(value, cells) {
         this.value = value;
         this.cells = cells;
-        this.#cellsSet = new Set(cells.map(cell => cell.toString()));
+        this.#cellsSet = new Set(cells.map(cell => cell.key()));
 
         this.isSingleCellSum = this.cellCount === 1;
         this.isWithinRow = this.isSingleCellSum || this.#isSameForAll(cell => cell.rowIdx);
@@ -62,7 +62,15 @@ export class Sum {
     }
 
     has(cell) {
-        return this.#cellsSet.has(cell.toString());
+        return this.#cellsSet.has(cell.key());
+    }
+
+    key() {
+        return `${this.value} [${this.cells.join(', ')}]`;
+    }
+
+    toString() {
+        return this.key();
     }
 
     static Builder = class {
@@ -101,7 +109,11 @@ export class Cell {
         return i >= 0 && i < UNIQUE_SEGMENT_LENGTH;
     }
 
-    toString() {
+    key() {
         return `(${this.rowIdx}, ${this.colIdx})`;
+    }
+
+    toString() {
+        return this.key();
     }
 }
