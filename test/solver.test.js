@@ -79,5 +79,52 @@ describe('Tests for solver', () => {
         expect(cell_3_2_Determinator.withinSumsSet).toEqual(new Set([
             solver.inputSumAt(3, 2)
         ]));
+
+        const column2 = solver.column(2);
+        expect(new Set(column2.sums)).toEqual(new Set([
+            Sum.of(10).cell(0, 2).cell(1, 2).mk(),
+            Sum.of(2).cell(3, 2).mk(),
+            Sum.of(12).cell(4, 2).cell(5, 2).mk(),
+            Sum.of(12).cell(6, 2).cell(7, 2).mk(),
+            Sum.of(9).cell(2, 2).cell(8, 2).mk()
+        ]));
+
+        const column3 = solver.column(3);
+        expect(new Set(column3.sums)).toEqual(new Set([
+            Sum.of(17).cell(0, 3).cell(1, 3).mk(),
+            Sum.of(2).cell(5, 3).mk(),
+            Sum.of(3).cell(6, 3).mk(),
+            Sum.of(6).cell(7, 3).cell(8, 3).mk(),
+            Sum.of(17).cell(2, 3).cell(3, 3).cell(4, 3).mk()
+        ]));
+
+        const column4 = solver.column(4);
+        expect(new Set(column4.sums)).toEqual(new Set([
+            new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 4)))
+        ]));
+
+        const column7 = solver.column(7);
+        expect(new Set(column7.sums)).toEqual(new Set([
+            Sum.of(8).cell(2, 7).mk(),
+            Sum.of(5).cell(3, 7).cell(4, 7).mk(),
+            Sum.of(32).cell(0, 7).cell(1, 7).cell(5, 7).cell(6, 7).cell(7, 7).cell(8, 7).mk()
+        ]));
+
+        const column8 = solver.column(8);
+        expect(new Set(column8.sums)).toEqual(new Set([
+            Sum.of(11).cell(0, 8).cell(1, 8).mk(),
+            Sum.of(1).cell(2, 8).mk(),
+            Sum.of(19).cell(3, 8).cell(4, 8).cell(5, 8).mk(),
+            Sum.of(14).cell(6, 8).cell(7, 8).cell(8, 8).mk()
+        ]));
+
+        const subgrid2 = solver.subgrid(2);
+        expect(new Set(subgrid2.sums)).toEqual(new Set([
+            Sum.of(7).cell(0, 6).cell(0, 7).mk(),
+            Sum.of(11).cell(0, 8).cell(1, 8).mk(),
+            Sum.of(18).cell(1, 6).cell(1, 7).cell(2, 6).mk(),
+            Sum.of(1).cell(2, 8).mk(),
+            Sum.of(8).cell(2, 7).mk()
+        ]));
     });
 });
