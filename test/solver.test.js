@@ -80,6 +80,82 @@ describe('Tests for solver', () => {
             solver.inputSumAt(3, 2)
         ]));
 
+        const row0 = solver.row(0);
+        expect(new Set(row0.sums)).toEqual(new Set([
+            Sum.of(15).cell(0, 0).cell(0, 1).mk(),
+            Sum.of(7).cell(0, 6).cell(0, 7).mk(),
+            Sum.of(23).cell(0, 2).cell(0, 3).cell(0, 4).cell(0, 5).cell(0, 8).mk()
+        ]));
+
+        const row1 = solver.row(1);
+        expect(new Set(row1.sums)).toEqual(new Set([
+            Sum.of(7).cell(1, 0).cell(1, 1).mk(),
+            Sum.of(10).cell(1, 5).cell(1, 6).cell(1, 7).mk(),
+            Sum.of(28).cell(1, 2).cell(1, 3).cell(1, 4).cell(1, 8).mk()
+        ]));
+
+        const row2 = solver.row(2);
+        expect(new Set(row2.sums)).toEqual(new Set([
+            Sum.of(13).cell(2, 0).cell(2, 1).cell(2, 2).mk(),
+            Sum.of(11).cell(2, 3).cell(2, 4).mk(),
+            Sum.of(8).cell(2, 7).mk(),
+            Sum.of(1).cell(2, 8).mk(),
+            Sum.of(12).cell(2, 5).cell(2, 6).mk()
+        ]));
+
+        const row3 = solver.row(3);
+        expect(new Set(row3.sums)).toEqual(new Set([
+            Sum.of(4).cell(3, 0).cell(3, 1).mk(),
+            Sum.of(2).cell(3, 2).mk(),
+            Sum.of(14).cell(3, 3).cell(3, 4).mk(),
+            Sum.of(25).cell(3, 5).cell(3, 6).cell(3, 7).cell(3, 8).mk()
+        ]));
+
+        const row4 = solver.row(4);
+        expect(new Set(row4.sums)).toEqual(new Set([
+            Sum.of(10).cell(4, 3).cell(4, 4).mk(),
+            Sum.of(35).cell(4, 0).cell(4, 1).cell(4, 2).cell(4, 5).cell(4, 6).cell(4, 7).cell(4, 8).mk()
+        ]));
+
+        const row5 = solver.row(5);
+        expect(new Set(row5.sums)).toEqual(new Set([
+            Sum.of(2).cell(5, 3).mk(),
+            Sum.of(8).cell(5, 6).cell(5, 7).mk(),
+            Sum.of(35).cell(5, 0).cell(5, 1).cell(5, 2).cell(5, 4).cell(5, 5).cell(5, 8).mk()
+        ]));
+
+        const row6 = solver.row(6);
+        expect(new Set(row6.sums)).toEqual(new Set([
+            Sum.of(3).cell(6, 3).mk(),
+            Sum.of(6).cell(6, 4).cell(6, 5).mk(),
+            Sum.of(14).cell(6, 6).cell(6, 7).mk(),
+            Sum.of(22).cell(6, 0).cell(6, 1).cell(6, 2).cell(6, 8).mk()
+        ]));
+
+        const row7 = solver.row(7);
+        expect(new Set(row7.sums)).toEqual(new Set([
+            Sum.of(8).cell(7, 5).mk(),
+            Sum.of(10).cell(7, 6).cell(7, 7).mk(),
+            Sum.of(27).cell(7, 0).cell(7, 1).cell(7, 2).cell(7, 3).cell(7, 4).cell(7, 8).mk()
+        ]));
+
+        const row8 = solver.row(8);
+        expect(new Set(row8.sums)).toEqual(new Set([
+            Sum.of(7).cell(8, 6).cell(8, 7).mk(),
+            Sum.of(38).cell(8, 0).cell(8, 1).cell(8, 2).cell(8, 3).cell(8, 4).cell(8, 5).cell(8, 8).mk()
+        ]));
+
+        const column0 = solver.column(0);
+        expect(new Set(column0.sums)).toEqual(new Set([
+            Sum.of(19).cell(6, 0).cell(7, 0).cell(8, 0).mk(),
+            Sum.of(26).cell(0, 0).cell(1, 0).cell(2, 0).cell(3, 0).cell(4, 0).cell(5, 0).mk()
+        ]));
+
+        const column1 = solver.column(1);
+        expect(new Set(column1.sums)).toEqual(new Set([
+            new Sum(45, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1)))
+        ]));
+
         const column2 = solver.column(2);
         expect(new Set(column2.sums)).toEqual(new Set([
             Sum.of(10).cell(0, 2).cell(1, 2).mk(),
@@ -116,6 +192,22 @@ describe('Tests for solver', () => {
             Sum.of(1).cell(2, 8).mk(),
             Sum.of(19).cell(3, 8).cell(4, 8).cell(5, 8).mk(),
             Sum.of(14).cell(6, 8).cell(7, 8).cell(8, 8).mk()
+        ]));
+
+        const subgrid0 = solver.subgrid(0);
+        expect(new Set(subgrid0.sums)).toEqual(new Set([
+            Sum.of(15).cell(0, 0).cell(0, 1).mk(),
+            Sum.of(10).cell(0, 2).cell(1, 2).mk(),
+            Sum.of(7).cell(1, 0).cell(1, 1).mk(),
+            Sum.of(13).cell(2, 0).cell(2, 1).cell(2, 2).mk()
+        ]));
+
+        const subgrid1 = solver.subgrid(1);
+        expect(new Set(subgrid1.sums)).toEqual(new Set([
+            Sum.of(17).cell(0, 3).cell(1, 3).mk(),
+            Sum.of(13).cell(0, 4).cell(0, 5).cell(1, 4).mk(),
+            Sum.of(11).cell(2, 3).cell(2, 4).mk(),
+            Sum.of(4).cell(1, 5).cell(2, 5).mk()
         ]));
 
         const subgrid2 = solver.subgrid(2);
