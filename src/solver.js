@@ -108,7 +108,7 @@ export class Row extends Segment {
 }
 
 export class Column extends Segment {
-    constructor(idx, cells, inputSums) {
+    constructor(idx, cells, inputSums = []) {
         super(idx, cells, inputSums);
     }
 
@@ -165,16 +165,19 @@ export class Solver {
         this.subgrids = [];
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
             this.rows.push(new Row(i, this.#collectSegmentCells(Row.iteratorFor(i))));
+            this.columns.push(new Column(i, this.#collectSegmentCells(Column.iteratorFor(i))));
         }, this);
 
         problem.sums.forEach(sum => {
             if (sum.isWithinRow) {
                 this.rows[sum.cells[0].rowIdx].addSum(sum);
             }
+            if (sum.isWithinColumn) {
+                this.columns[sum.cells[0].colIdx].addSum(sum);
+            }
         }, this);
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(i => {
-            this.columns.push(this.initColumn(i));
             this.subgrids.push(this.initSubgrid(i));
         }, this);
         this.segments = [[...this.rows], [...this.columns], [...this.subgrids]].flat();
@@ -195,18 +198,6 @@ export class Solver {
         return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
     }
 
-    initRow(idx) {
-        return new Row(idx,
-            this.#collectSegmentCells(Row.iteratorFor(idx)),
-            this.#collectSegmentSums(Row.iteratorFor(idx), Row.isWithinSegment));
-    }
-
-    initColumn(idx) {
-        return new Column(idx,
-            this.#collectSegmentCells(Column.iteratorFor(idx)),
-            this.#collectSegmentSums(Column.iteratorFor(idx), Column.isWithinSegment));
-    }
-
     initSubgrid(idx) {
         return new Subgrid(idx,
             this.#collectSegmentCells(Subgrid.iteratorFor(idx)),
@@ -225,7 +216,7 @@ export class Solver {
             if (!processedSums.has(sum)) {
                 if (isWithinSegmentFn(sum)) {
                     sums.push(sum);
-                }    
+                }
                 processedSums.add(sum);
             }
         }
