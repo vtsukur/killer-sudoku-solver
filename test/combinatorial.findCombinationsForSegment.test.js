@@ -55,7 +55,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
             Sum.of(7).cell(1, 6).cell(1, 7).mk(),
             Sum.of(100).cell(1, 8).cell(1, 9).mk()
         ])).toThrow(
-            'Total sum should be <= 45. Actual: 135');
+            "Total sum should be <= 45. Actual: 135. Sums: ");
     });
 
     test('Combinations of digits to form a segment out of invalid sums', () => {
