@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/vtsukur/killer-sudoku-solver#readme",
   "dependencies": {
-    "jest": "^29.2.2",
     "lodash": "^4.17.21",
     "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "jest": "^29.3.0"
   }
 }
