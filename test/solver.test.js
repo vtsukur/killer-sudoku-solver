@@ -311,4 +311,11 @@ describe('Tests for solver', () => {
             Sum.of(7).cell(8, 6).cell(8, 7).mk()
         ]));
     });
+
+    test('Fill up combinations for sums within segments (shallow coverage)', () => {
+        const solver = new Solver(testProblem);
+
+        solver.determineAndSliceResidualSumsInSegments();
+        solver.fillUpCombinationsForSums();
+    });
 });

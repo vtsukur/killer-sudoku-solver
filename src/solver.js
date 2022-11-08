@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
+import { findCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -65,21 +66,15 @@ class SumDeterminator {
     }
 
     getUniqueRowIdx() {
-        if (this.sum.isWithinRow) {
-            return this.sum.cells[0].rowIdx;
-        }
+        return this.sum.isWithinRow ? this.sum.cells[0].rowIdx : undefined;
     }
 
     getUniqueColumnIdx() {
-        if (this.sum.isWithinColumn) {
-            return this.sum.cells[0].colIdx;
-        }
+        return this.sum.isWithinColumn ? this.sum.cells[0].colIdx : undefined;
     }
 
     getUniqueSubgridIdx() {
-        if (this.sum.isWithinSubgrid) {
-            return this.sum.cells[0].subgridIdx;
-        }
+        return this.sum.isWithinSubgrid ? this.sum.cells[0].subgridIdx : undefined;
     }
 }
 
@@ -287,6 +282,28 @@ export class Solver {
             this.cellDeterminatorOf(cell).removeWithinSum(sum);
         }, this);
         this.sumsDeterminatorsMap.delete(sum.key());
+    }
+
+    fillUpCombinationsForSums() {
+        this.segments.forEach(segment => {
+            const withinSegmentSums = new Map();
+            segment.cells.forEach(cell => {
+                withinSegmentSums.set(cell.key(), new Set());
+            })
+            segment.sums.forEach(sum => {
+                sum.cells.forEach(cell => {
+                    withinSegmentSums.get(cell.key()).add(sum);
+                });
+            });
+            const nonOverlappingSums = [];
+            segment.sums.forEach(sum => {
+                const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => withinSegmentSums.get(cell.key()).size > 1);
+                if (!allCellsAreWithinMoreThan1Sum) {
+                    nonOverlappingSums.push(sum);
+                }
+            });
+            findCombinationsForSegment(nonOverlappingSums);
+        }, this);
     }
 
     inputSumAt(rowIdx, colIdx) {
