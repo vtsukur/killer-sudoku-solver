@@ -61,7 +61,7 @@ export function findCombinationsForSegment(sums) {
     }
     const totalSum = sums.reduce((partialSum, a) => partialSum + a.value, 0);
     if (totalSum > UNIQUE_SEGMENT_SUM) {
-        throw `Total sum should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}`;
+        throw `Total sum should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Sums: {${sums.join(', ')}}`;
     }
     const cellCount = sums.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > UNIQUE_SEGMENT_LENGTH) {
