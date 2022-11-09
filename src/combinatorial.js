@@ -83,7 +83,7 @@ export function findCombinationsForSegment(segment) {
 
 function findCombinationsForSegmentNonOverlapping(sums) {
     if (sums.length > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many sums. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
+        throw `Too many sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
     }
     const totalSum = sums.reduce((partialSum, a) => partialSum + a.value, 0);
     if (totalSum > UNIQUE_SEGMENT_SUM) {
@@ -91,7 +91,7 @@ function findCombinationsForSegmentNonOverlapping(sums) {
     }
     const cellCount = sums.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many cells in sums. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cells. Actual: ${cellCount})`;
+        throw `Too many cells in sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cells. Actual: ${cellCount})`;
     }
     if (sums.length == 0) {
         return [];

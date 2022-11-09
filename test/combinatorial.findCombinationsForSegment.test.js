@@ -51,7 +51,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         ]);
     });
 
-    test('Combinations of digits to form a segment out of undefined segment or segment which is not object', () => {
+    test('Combinations of digits to form a segment out of invalid segment', () => {
         expect(() => findCombinationsForSegment(undefined)).toThrow('Invalid segment: undefined');
         expect(() => findCombinationsForSegment(null)).toThrow('Invalid segment: null');
         expect(() => findCombinationsForSegment(1)).toThrow('Invalid segment: 1');
@@ -65,10 +65,10 @@ describe('Tests for the finder of digit combinations to form a segment out of su
 
     test('Combinations of digits to form a segment out of too many sums', () => {
         expect(() => findCombinationsForSegment(segmentOf(_.range(10).map(i => Sum.of(5).cell(i, 0).mk())))).toThrow(
-            'Too many sums. Expected no more than 9 sums. Actual: 10');
+            'Too many sums with non-overlapping cells. Expected no more than 9 sums. Actual: 10');
     });
 
-    test('Combinations of digits to form a segment out of sums whose total sum is greater than segments max (sums with non-overlapping cells)', () => {
+    test('Combinations of digits to form a segment out of sums with non-overlapping cells whose total sum is greater than segments max', () => {
         expect(() => findCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
@@ -86,13 +86,13 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         expect(() => findCombinationsForSegment(segmentOf('3'))).toThrow('Invalid sums: 3');
     });
 
-    test('Combinations of digits to form a segment out of sums with too many cells', () => {
+    test('Combinations of digits to form a segment out of sums with too many non-overlapping cells', () => {
         expect(() => findCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Sum.of(7).cell(1, 6).cell(1, 7).mk(),
             Sum.of(10).cell(1, 8).cell(1, 9).cell(2, 9).mk()
         ]))).toThrow(
-            'Too many cells in sums. Expected no more than 9 cells. Actual: 10');
+            'Too many cells in sums with non-overlapping cells. Expected no more than 9 cells. Actual: 10');
     });
 });
