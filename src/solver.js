@@ -286,23 +286,7 @@ export class Solver {
 
     fillUpCombinationsForSums() {
         this.segments.forEach(segment => {
-            const withinSegmentSums = new Map();
-            segment.cells.forEach(cell => {
-                withinSegmentSums.set(cell.key(), new Set());
-            })
-            segment.sums.forEach(sum => {
-                sum.cells.forEach(cell => {
-                    withinSegmentSums.get(cell.key()).add(sum);
-                });
-            });
-            const nonOverlappingSums = [];
-            segment.sums.forEach(sum => {
-                const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => withinSegmentSums.get(cell.key()).size > 1);
-                if (!allCellsAreWithinMoreThan1Sum) {
-                    nonOverlappingSums.push(sum);
-                }
-            });
-            findCombinationsForSegment(nonOverlappingSums);
+            findCombinationsForSegment(segment);
         }, this);
     }
 

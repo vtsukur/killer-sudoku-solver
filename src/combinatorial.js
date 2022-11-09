@@ -52,16 +52,42 @@ export function findCombinationsForSum(sum, count) {
     return combos;
 }
 
-export function findCombinationsForSegment(sums) {
+export function findCombinationsForSegment(segment) {
+    if (typeof(segment) !== 'object' || !segment) {
+        throw `Invalid segment: ${segment}`;
+    }
+
+    const sums = segment.sums;
     if (!Array.isArray(sums)) {
         throw `Invalid sums: ${sums}`;
     }
+
+    const withinSegmentSums = new Map();
+    segment.cells.forEach(cell => {
+        withinSegmentSums.set(cell.key(), new Set());
+    })
+    sums.forEach(sum => {
+        sum.cells.forEach(cell => {
+            withinSegmentSums.get(cell.key()).add(sum);
+        });
+    });
+    const nonOverlappingSums = [];
+    const overlappingSums = [];
+    sums.forEach(sum => {
+        const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => withinSegmentSums.get(cell.key()).size > 1);
+        (allCellsAreWithinMoreThan1Sum ? overlappingSums : nonOverlappingSums).push(sum);
+    });
+
+    return findCombinationsForSegmentNonOverlapping(nonOverlappingSums);
+}
+
+function findCombinationsForSegmentNonOverlapping(sums) {
     if (sums.length > UNIQUE_SEGMENT_LENGTH) {
         throw `Too many sums. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
     }
     const totalSum = sums.reduce((partialSum, a) => partialSum + a.value, 0);
     if (totalSum > UNIQUE_SEGMENT_SUM) {
-        throw `Total sum should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Sums: {${sums.join(', ')}}`;
+        throw `Total sum with non-overlapping cells should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Sums: {${sums.join(', ')}}`;
     }
     const cellCount = sums.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > UNIQUE_SEGMENT_LENGTH) {
