@@ -52,7 +52,7 @@ export function findCombinationsForSum(sum, count) {
     return combos;
 }
 
-export function findCombinationsForSegment(segment) {
+export function findSumCombinationsForSegment(segment) {
     if (typeof(segment) !== 'object' || !segment) {
         throw `Invalid segment: ${segment}`;
     }
@@ -83,10 +83,10 @@ export function findCombinationsForSegment(segment) {
         (allCellsAreWithinMoreThan1Sum ? overlappingSums : nonOverlappingSums).push(sum);
     });
 
-    return findCombinationsForSegmentNonOverlapping(nonOverlappingSums);
+    return findSumCombinationsForSegmentNonOverlapping(nonOverlappingSums);
 }
 
-function findCombinationsForSegmentNonOverlapping(sums) {
+function findSumCombinationsForSegmentNonOverlapping(sums) {
     if (sums.length > UNIQUE_SEGMENT_LENGTH) {
         throw `Too many sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
     }

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
-import { findCombinationsForSegment } from './combinatorial';
+import { findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -286,7 +286,7 @@ export class Solver {
 
     fillUpCombinationsForSums() {
         this.segments.forEach(segment => {
-            findCombinationsForSegment(segment);
+            findSumCombinationsForSegment(segment);
         }, this);
     }
 

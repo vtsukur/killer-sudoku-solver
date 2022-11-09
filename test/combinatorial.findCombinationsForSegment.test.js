@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { findCombinationsForSegment } from '../src/combinatorial';
+import { findSumCombinationsForSegment } from '../src/combinatorial';
 import { Sum } from '../src/problem';
 
 const segmentOf = (sums) => {
@@ -16,7 +16,7 @@ const segmentOf = (sums) => {
 
 describe('Tests for the finder of digit combinations to form a segment out of sums', () => {
     test('Multiple combinations of digits to form a complete segment', () => {
-        expect(findCombinationsForSegment(segmentOf([
+        expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(15).cell(1, 1).cell(1, 2).mk(),
             Sum.of(10).cell(1, 3).cell(2, 3).mk(),
             Sum.of(7).cell(2, 1).cell(2, 2).mk(),
@@ -31,7 +31,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
     });
 
     test('Single combination of digits to form a complete segment', () => {
-        expect(findCombinationsForSegment(segmentOf([
+        expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Sum.of(7).cell(1, 6).cell(1, 7).mk(),
@@ -42,7 +42,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
     });
 
     test('Combinations of digits to form an incomplete segment', () => {
-        expect(findCombinationsForSegment(segmentOf([
+        expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(9).cell(1, 6).cell(1, 7).mk()
         ]))).toEqual([
@@ -52,42 +52,42 @@ describe('Tests for the finder of digit combinations to form a segment out of su
     });
 
     test('Combinations of digits to form a segment out of invalid segment', () => {
-        expect(() => findCombinationsForSegment(undefined)).toThrow('Invalid segment: undefined');
-        expect(() => findCombinationsForSegment(null)).toThrow('Invalid segment: null');
-        expect(() => findCombinationsForSegment(1)).toThrow('Invalid segment: 1');
-        expect(() => findCombinationsForSegment('string')).toThrow('Invalid segment: string');
-        expect(() => findCombinationsForSegment(() => {})).toThrow('Invalid segment: () => {}');
+        expect(() => findSumCombinationsForSegment(undefined)).toThrow('Invalid segment: undefined');
+        expect(() => findSumCombinationsForSegment(null)).toThrow('Invalid segment: null');
+        expect(() => findSumCombinationsForSegment(1)).toThrow('Invalid segment: 1');
+        expect(() => findSumCombinationsForSegment('string')).toThrow('Invalid segment: string');
+        expect(() => findSumCombinationsForSegment(() => {})).toThrow('Invalid segment: () => {}');
     });
 
     test('Combinations of digits to form a segment out of no sums', () => {
-        expect(findCombinationsForSegment(segmentOf([]))).toEqual([]);
+        expect(findSumCombinationsForSegment(segmentOf([]))).toEqual([]);
     });
 
     test('Combinations of digits to form a segment out of invalid segment sums', () => {
-        expect(() => findCombinationsForSegment(segmentOf(undefined))).toThrow('Invalid sums: undefined');
-        expect(() => findCombinationsForSegment(segmentOf(null))).toThrow('Invalid sums: null');
-        expect(() => findCombinationsForSegment(segmentOf({}))).toThrow('Invalid sums: [object Object]');
-        expect(() => findCombinationsForSegment(segmentOf(3))).toThrow('Invalid sums: 3');
-        expect(() => findCombinationsForSegment(segmentOf('string'))).toThrow('Invalid sums: string');
-        expect(() => findCombinationsForSegment(segmentOf(() => {}))).toThrow('Invalid sums: () => {}');
+        expect(() => findSumCombinationsForSegment(segmentOf(undefined))).toThrow('Invalid sums: undefined');
+        expect(() => findSumCombinationsForSegment(segmentOf(null))).toThrow('Invalid sums: null');
+        expect(() => findSumCombinationsForSegment(segmentOf({}))).toThrow('Invalid sums: [object Object]');
+        expect(() => findSumCombinationsForSegment(segmentOf(3))).toThrow('Invalid sums: 3');
+        expect(() => findSumCombinationsForSegment(segmentOf('string'))).toThrow('Invalid sums: string');
+        expect(() => findSumCombinationsForSegment(segmentOf(() => {}))).toThrow('Invalid sums: () => {}');
     });
 
     test('Combinations of digits to form a segment out of invalid segment cells', () => {
-        expect(() => findCombinationsForSegment({ sums: [], cells: undefined })).toThrow('Invalid cells: undefined');
-        expect(() => findCombinationsForSegment({ sums: [], cells: null })).toThrow('Invalid cells: null');
-        expect(() => findCombinationsForSegment({ sums: [], cells: {} })).toThrow('Invalid cells: [object Object]');
-        expect(() => findCombinationsForSegment({ sums: [], cells: 3 })).toThrow('Invalid cells: 3');
-        expect(() => findCombinationsForSegment({ sums: [], cells: 'string' })).toThrow('Invalid cells: string');
-        expect(() => findCombinationsForSegment({ sums: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: undefined })).toThrow('Invalid cells: undefined');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: null })).toThrow('Invalid cells: null');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: {} })).toThrow('Invalid cells: [object Object]');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: 3 })).toThrow('Invalid cells: 3');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: 'string' })).toThrow('Invalid cells: string');
+        expect(() => findSumCombinationsForSegment({ sums: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
     });
 
     test('Combinations of digits to form a segment out of too many sums with non-overlapping cells', () => {
-        expect(() => findCombinationsForSegment(segmentOf(_.range(10).map(i => Sum.of(5).cell(i, 0).mk())))).toThrow(
+        expect(() => findSumCombinationsForSegment(segmentOf(_.range(10).map(i => Sum.of(5).cell(i, 0).mk())))).toThrow(
             'Too many sums with non-overlapping cells. Expected no more than 9 sums. Actual: 10');
     });
 
     test('Combinations of digits to form a segment out of sums with non-overlapping cells whose total sum is greater than segments max', () => {
-        expect(() => findCombinationsForSegment(segmentOf([
+        expect(() => findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Sum.of(7).cell(1, 6).cell(1, 7).mk(),
@@ -97,7 +97,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
     });
 
     test('Combinations of digits to form a segment out of sums with too many non-overlapping cells', () => {
-        expect(() => findCombinationsForSegment(segmentOf([
+        expect(() => findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Sum.of(7).cell(1, 6).cell(1, 7).mk(),
