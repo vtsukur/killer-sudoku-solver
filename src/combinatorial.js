@@ -62,8 +62,13 @@ export function findCombinationsForSegment(segment) {
         throw `Invalid sums: ${sums}`;
     }
 
+    const cells = segment.cells;
+    if (!Array.isArray(cells)) {
+        throw `Invalid cells: ${cells}`;
+    }
+
     const withinSegmentSums = new Map();
-    segment.cells.forEach(cell => {
+    cells.forEach(cell => {
         withinSegmentSums.set(cell.key(), new Set());
     })
     sums.forEach(sum => {
