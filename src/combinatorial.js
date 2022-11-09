@@ -25,20 +25,20 @@ export function findNumberCombinationsForSum(sum, count) {
     }
 
     const combos = [];
-    const digits = new Array(count);
+    const numbers = new Array(count);
     let currentSum = 0;
 
     function combosRecursive(level, startWith) {
         if (level > count) {
             if (currentSum === sum) {
-                combos.push(new Set(digits));
+                combos.push(new Set(numbers));
             }
         } else {
             for (let i = startWith; i <= UNIQUE_SEGMENT_LENGTH; ++i) {
                 if (currentSum + i > sum) {
                     return;
                 } else {
-                    digits[level - 1] = i;
+                    numbers[level - 1] = i;
                     currentSum += i;
                     combosRecursive(level + 1, i + 1);
                     currentSum -= i;
@@ -114,12 +114,12 @@ function findSumCombinationsForSegmentNonOverlapping(sums) {
             const combosForSum = combosForSums[step];
             for (const comboForSum of combosForSum) {
                 const comboForSumArr = [...comboForSum];
-                if (comboForSumArr.every(digit => !checkingSet.has(digit))) {
+                if (comboForSumArr.every(number => !checkingSet.has(number))) {
                     stack[step] = comboForSum;
 
-                    comboForSumArr.forEach(digit => checkingSet.add(digit));
+                    comboForSumArr.forEach(number => checkingSet.add(number));
                     combosRecursive(step + 1);    
-                    comboForSumArr.forEach(digit => checkingSet.delete(digit));
+                    comboForSumArr.forEach(number => checkingSet.delete(number));
                 }
             }
         }
