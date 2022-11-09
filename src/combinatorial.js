@@ -13,7 +13,7 @@ _.range(UNIQUE_SEGMENT_LENGTH).forEach(count => {
     }
 })
 
-export function findCombinationsForSum(sum, count) {
+export function findNumberCombinationsForSum(sum, count) {
     if (typeof (sum) !== 'number' || !sum || sum <= 0) {
         throw `Invalid sum: ${sum}`;
     }
@@ -103,7 +103,7 @@ function findSumCombinationsForSegmentNonOverlapping(sums) {
     }
 
     const combos = [];
-    const combosForSums = sums.map(sum => findCombinationsForSum(sum.value, sum.cellCount));
+    const combosForSums = sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
     const stack = new Array(sums.length);
     const checkingSet = new Set();
 
