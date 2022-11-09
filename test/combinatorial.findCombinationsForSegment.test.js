@@ -63,7 +63,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         expect(findCombinationsForSegment(segmentOf([]))).toEqual([]);
     });
 
-    test('Combinations of digits to form a segment out of too many sums', () => {
+    test('Combinations of digits to form a segment out of too many sums with non-overlapping cells', () => {
         expect(() => findCombinationsForSegment(segmentOf(_.range(10).map(i => Sum.of(5).cell(i, 0).mk())))).toThrow(
             'Too many sums with non-overlapping cells. Expected no more than 9 sums. Actual: 10');
     });
