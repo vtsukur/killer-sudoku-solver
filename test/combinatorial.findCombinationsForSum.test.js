@@ -369,6 +369,7 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
         expect(() => findCombinationsForSum({}, 2)).toThrow('Invalid sum: [object Object]');
         expect(() => findCombinationsForSum(undefined, 2)).toThrow('Invalid sum: undefined');
         expect(() => findCombinationsForSum(null, 2)).toThrow('Invalid sum: null');
+        expect(() => findCombinationsForSum(() => {}, 2)).toThrow('Invalid sum: () => {}');
     });
 
     test('Invalid count', () => {
@@ -378,5 +379,6 @@ describe('Tests for the finder of digit combinations to form a sum', () => {
         expect(() => findCombinationsForSum(3, {})).toThrow('Invalid count: [object Object]');
         expect(() => findCombinationsForSum(3, null)).toThrow('Invalid count: null');
         expect(() => findCombinationsForSum(3, undefined)).toThrow('Invalid count: undefined');
+        expect(() => findCombinationsForSum(3, () => {})).toThrow('Invalid count: () => {}');
     });
 });
