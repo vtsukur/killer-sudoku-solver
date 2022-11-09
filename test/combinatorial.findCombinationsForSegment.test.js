@@ -15,7 +15,7 @@ const segmentOf = (sums) => {
 }
 
 describe('Tests for the finder of digit combinations to form a segment out of sums', () => {
-    test('Multiple combinations of digits to form a complete segment', () => {
+    test('Multiple combinations of digits to form a complete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(15).cell(1, 1).cell(1, 2).mk(),
             Sum.of(10).cell(1, 3).cell(2, 3).mk(),
@@ -30,7 +30,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         ]);
     });
 
-    test('Single combination of digits to form a complete segment', () => {
+    test('Single combination of digits to form a complete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
@@ -41,7 +41,7 @@ describe('Tests for the finder of digit combinations to form a segment out of su
         ]);
     });
 
-    test('Combinations of digits to form an incomplete segment', () => {
+    test('Combinations of digits to form an incomplete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(4).cell(1, 1).cell(1, 2).mk(),
             Sum.of(9).cell(1, 6).cell(1, 7).mk()
