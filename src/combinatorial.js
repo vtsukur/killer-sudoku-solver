@@ -83,10 +83,14 @@ export function findSumCombinationsForSegment(segment) {
         (allCellsAreWithinMoreThan1Sum ? overlappingSums : nonOverlappingSums).push(sum);
     });
 
-    return findSumCombinationsForSegmentNonOverlapping(nonOverlappingSums);
+    const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
+    const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
+    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums);
+
+    return combinedCombos;
 }
 
-function findSumCombinationsForSegmentNonOverlapping(sums) {
+function doFindForNonOverlappingSums(sums) {
     if (sums.length > UNIQUE_SEGMENT_LENGTH) {
         throw `Too many sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
     }
@@ -128,4 +132,12 @@ function findSumCombinationsForSegmentNonOverlapping(sums) {
     combosRecursive(0);
 
     return combos;
+}
+
+function doFindForOverlappingSums(sums) {
+    return [];
+}
+
+function merge(nonOverlappingSums, overlappingSums) {
+    return nonOverlappingSums;
 }
