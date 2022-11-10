@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
-import { Solver, SolverCallbacks } from '../src/solver';
+import { Solver } from '../src/solver';
 import testProblem from './testProblem';
 
 describe('Tests for solver', () => {
@@ -32,7 +32,7 @@ describe('Tests for solver', () => {
 
     test('[Whitebox] Determine and slice residual sums in segments shallow coverage)', () => {
         const solver = new Solver(testProblem, {
-            onInitialResidualSumsDeterminedAndSliced() {
+            onAfterResidualSumsDeterminedAndSliced() {
                 const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
                 expect(cell_0_0_Determinator.withinSumsSet).toEqual(new Set([
                     solver.inputSumAt(0, 0),
