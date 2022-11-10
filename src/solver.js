@@ -315,8 +315,9 @@ export class Solver {
         const rowIdx = cell.rowIdx;
         const colIdx = cell.colIdx;
         const subgridIdx = cell.subgridIdx;
+        const cellDeterminator = this.cellDeterminatorOf(cell);
 
-        this.cellDeterminatorOf(cell).placeNumber(number);
+        cellDeterminator.placeNumber(number);
 
         this.rows[rowIdx].placedNumbers.add(number);
         this.columns[colIdx].placedNumbers.add(number);
