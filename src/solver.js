@@ -61,8 +61,9 @@ class SumsArea {
 }
 
 class SumDeterminator {
-    constructor(sum) {
+    constructor(sum, cellsDeterminators) {
         this.sum = sum;
+        this.cellsDeterminators = cellsDeterminators;
     }
 
     getUniqueRowIdx() {
@@ -251,7 +252,7 @@ export class Solver {
     }
 
     #registerSum(sum) {
-        const sumDeterminator = new SumDeterminator(sum);
+        const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.getUniqueRowIdx()].addSum(sum);
         }
@@ -286,7 +287,16 @@ export class Solver {
 
     fillUpCombinationsForSums() {
         this.segments.forEach(segment => {
-            findSumCombinationsForSegment(segment);
+            const combosForSegment = findSumCombinationsForSegment(segment);
+            // segment.sums.forEach(sum => {
+
+            // }, this);
+
+            // combosForSegment.forEach((numbersSet, idx) => {
+            //     const sum = segment.sums[idx];
+            //     const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+
+            // });
         }, this);
     }
 
