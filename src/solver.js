@@ -236,8 +236,8 @@ export class Solver {
 
     solve() {
         this.determineAndSliceResidualSumsInSegments();
-        this.#determineSingleCellSums();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
+        this.#determineSingleCellSums();
         return this.#solution;
     }
 
@@ -291,6 +291,34 @@ export class Solver {
         return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
+    #determineSingleCellSums() {
+        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
+            const sum = sumDeterminator.sum;
+            if (sum.isSingleCellSum) {
+                this.#placeNumber(sum.cells[0], sum.value);
+            }
+        }
+    }
+
+    #fillUpCombinationsForSumsAndMakeInitialReduce() {
+        this.segments.forEach(segment => {
+            const combosForSegment = findSumCombinationsForSegment(segment);
+            segment.sums.forEach((sum, idx) => {
+                const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+                const combos = combosForSegment.map(combo => combo[idx]);
+                sumDeterminator.updateCombinations(combos);
+            }, this);
+        }, this);
+    }
+
+    #placeNumber(cell, number) {
+        const rowIdx = cell.rowIdx;
+        const colIdx = cell.colIdx;
+        this.#solution[rowIdx][colIdx] = number;
+        this.#placedNumbersCount++;
+        this.cellDeterminatorOf(cell).placeNumber(number);
+    }
+
     #registerSum(sum) {
         const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (sum.isWithinRow) {
@@ -323,34 +351,6 @@ export class Solver {
             this.cellDeterminatorOf(cell).removeWithinSum(sum);
         }, this);
         this.sumsDeterminatorsMap.delete(sum.key());
-    }
-
-    #determineSingleCellSums() {
-        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
-            const sum = sumDeterminator.sum;
-            if (sum.isSingleCellSum) {
-                this.#placeNumber(sum.cells[0], sum.value);
-            }
-        }
-    }
-
-    #fillUpCombinationsForSumsAndMakeInitialReduce() {
-        this.segments.forEach(segment => {
-            const combosForSegment = findSumCombinationsForSegment(segment);
-            segment.sums.forEach((sum, idx) => {
-                const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-                const combos = combosForSegment.map(combo => combo[idx]);
-                sumDeterminator.updateCombinations(combos);
-            }, this);
-        }, this);
-    }
-
-    #placeNumber(cell, number) {
-        const rowIdx = cell.rowIdx;
-        const colIdx = cell.colIdx;
-        this.#solution[rowIdx][colIdx] = number;
-        this.#placedNumbersCount++;
-        this.cellDeterminatorOf(cell).placeNumber(number);
     }
 
     inputSumAt(rowIdx, colIdx) {
