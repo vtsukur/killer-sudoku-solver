@@ -95,8 +95,9 @@ export function findSumCombinationsForSegment(segment) {
     const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
     const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
     const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap);
+    const preservedSumOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingSums);
 
-    return combinedCombos;
+    return preservedSumOrderCombos;
 }
 
 function doFindForNonOverlappingSums(sums) {
@@ -159,6 +160,32 @@ function merge(combosForNonOverlappingSums, combosForOverlappingSums) {
             });
         });    
         return merged;
+    }
+}
+
+function preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingSums) {
+    if (overlappingSums.length === 0) {
+        return combinedCombos;
+    }
+    else {
+        const orderPreservedCombos = [];
+
+        const sumIndexResolvers = new Array(segment.sums.length);
+        nonOverlappingSums.forEach((sum, idx) => {
+            sumIndexResolvers[segment.sums.findIndex(originalSum => originalSum === sum)] = idx;
+        });
+        overlappingSums.forEach((sum, idx) => {
+            sumIndexResolvers[segment.sums.findIndex(originalSum => originalSum === sum)] = nonOverlappingSums.length + idx;
+        });
+        combinedCombos.forEach(comboSets => {
+            const preservedOrderCombo = new Array(comboSets.length);
+            comboSets.forEach((numbersSet, idx) => {
+                preservedOrderCombo[sumIndexResolvers[idx]] = numbersSet;
+            });
+            orderPreservedCombos.push(preservedOrderCombo);
+        });
+        
+        return orderPreservedCombos;
     }
 }
 

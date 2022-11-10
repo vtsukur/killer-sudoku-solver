@@ -55,13 +55,13 @@ describe('Tests for the finder of number combinations to form a segment out of s
         expect(findSumCombinationsForSegment(segmentOf([
             Sum.of(8).cell(2, 5).cell(3, 5).mk(),
             Sum.of(8).cell(7, 5).mk(),
-            Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk(),
             // overlapping sum
-            Sum.of(4).cell(1, 5).cell(2, 5).mk()
+            Sum.of(4).cell(1, 5).cell(2, 5).mk(),
+            Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk()
         ]))).toEqual([
-            [ new Set([1, 7]), new Set([8]), new Set([2, 3, 4, 5, 6, 9]), new Set([1, 3]) ],
-            [ new Set([2, 6]), new Set([8]), new Set([1, 3, 4, 5, 7, 9]), new Set([1, 3]) ],
-            [ new Set([3, 5]), new Set([8]), new Set([1, 2, 4, 6, 7, 9]), new Set([1, 3]) ]
+            [ new Set([1, 7]), new Set([8]), new Set([1, 3]), new Set([2, 3, 4, 5, 6, 9]) ],
+            [ new Set([2, 6]), new Set([8]), new Set([1, 3]), new Set([1, 3, 4, 5, 7, 9]) ],
+            [ new Set([3, 5]), new Set([8]), new Set([1, 3]), new Set([1, 2, 4, 6, 7, 9]) ]
         ]);
     });
 
