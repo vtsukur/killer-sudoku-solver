@@ -67,27 +67,36 @@ export function findSumCombinationsForSegment(segment) {
         throw `Invalid cells: ${cells}`;
     }
 
-    const withinSegmentSums = new Map();
+    const cellsToSumsMap = new Map();
     cells.forEach(cell => {
-        withinSegmentSums.set(cell.key(), new Set());
+        cellsToSumsMap.set(cell.key(), { allSums: new Set(), nonOverlappingSum: undefined, nonOverlappingSumIdx: undefined } );
     })
     sums.forEach(sum => {
         sum.cells.forEach(cell => {
-            withinSegmentSums.get(cell.key()).add(sum);
+            cellsToSumsMap.get(cell.key()).allSums.add(sum);
         });
     });
     const nonOverlappingSums = [];
-    const overlappingSums = [];
-    sums.forEach(sum => {
-        const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => withinSegmentSums.get(cell.key()).size > 1);
-        (allCellsAreWithinMoreThan1Sum ? overlappingSums : nonOverlappingSums).push(sum);
+    // const overlappingSums = [];
+    sums.forEach((sum, idx) => {
+        const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => cellsToSumsMap.get(cell.key()).allSums.size > 1);
+        if (allCellsAreWithinMoreThan1Sum) {
+            // overlappingSums.push(sum);
+        } else {
+            nonOverlappingSums.push(sum);
+            // sum.cells.forEach(cell => {
+            //     const mapValue = cellsToSumsMap.get(cell.key());
+            //     mapValue.nonOverlappingSum = sum;
+            //     mapValue.nonOverlappingSumIdx = idx;
+            // });
+        }
     });
 
     const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
-    const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
-    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums);
+    // const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
+    // const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap);
 
-    return combinedCombos;
+    return combosForNonOverlappingSums;
 }
 
 function doFindForNonOverlappingSums(sums) {
@@ -134,10 +143,39 @@ function doFindForNonOverlappingSums(sums) {
     return combos;
 }
 
-function doFindForOverlappingSums(sums) {
-    return [];
-}
+// function doFindForOverlappingSums(sums) {
+//     return sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
+// }
 
-function merge(nonOverlappingSums, overlappingSums) {
-    return nonOverlappingSums;
-}
+// function merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap) {
+//     if (combosForOverlappingSums.length === 0) {
+//         return combosForNonOverlappingSums;
+//     }
+
+//     const merged = [];
+
+//     function mergeCombosRecursively(idx) {
+//         const overlappingSum = sums[combosForNonOverlappingSums.length + idx];
+//         const overlappingSumCombo = combosForOverlappingSums[idx];
+
+//         const nonOverlappingSumsToCellsMap = new Map();
+//         overlappingSum.cells.forEach(cell => {
+//             const nonOverlappingSum = cellsToSumsMap.get(cell.key()).nonOverlappingSum;
+//             if (!nonOverlappingSumsToCellsMap.has(nonOverlappingSum)) {
+//                 nonOverlappingSumsToCellsMap.set(nonOverlappingSum, []);
+//             }
+//             nonOverlappingSumsToCellsMap.get(nonOverlappingSum).push(cell);
+//         });
+
+//         determinePlacementsRecursively();
+
+//         overlappingSum.cells.forEach(cell => {
+//             const nonOverlappingSumIdx = cellsToSumsMap.get(cell.key()).nonOverlappingSumIdx;
+//             const nonOverlappingSumCombos = combosForNonOverlappingSums[nonOverlappingSumIdx];
+
+//         });
+//     }
+//     mergeCombosRecursively(0);
+
+//     return combosForNonOverlappingSums;
+// }
