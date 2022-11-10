@@ -316,6 +316,11 @@ describe('Tests for solver', () => {
         const solver = new Solver(testProblem);
 
         const solution = solver.solve();
-        expect(solution[0][0]).toBe(undefined);
+        expect(solution[2][7]).toBe(8);
+        expect(solution[2][8]).toBe(1);
+        expect(solution[3][2]).toBe(2);
+        expect(solution[5][3]).toBe(2);
+        expect(solution[6][3]).toBe(3);
+        expect(solution[7][5]).toBe(8);
     });
 });

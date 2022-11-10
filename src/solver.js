@@ -28,6 +28,7 @@ export class CellDeterminator {
         this.column = column;
         this.subgrid = subgrid;
         this.withinSumsSet = new Set();
+        this.solved = false;
 
         this.numberOptions = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
         this.placedNumber = undefined;
@@ -49,6 +50,11 @@ export class CellDeterminator {
             }
         }
         this.numberOptions = newSet;
+    }
+
+    placeNumber(number) {
+        this.numberOptions = new Set([number]);
+        this.solved = true;
     }
 }
 
@@ -101,6 +107,7 @@ class Segment {
         this.cells = cells;
         this.sums = inputSums;
         this.#sumsArea = new SumsArea(this.sums);
+        this.solvedNumbers = new Set();
     }
 
     determineResidualSum() {
@@ -171,7 +178,7 @@ export class Subgrid extends Segment {
 
 export class Solver {
     #solution;
-    #solvedCount;
+    #placedNumbersCount;
 
     constructor(problem) {
         this.problem = problem;
@@ -180,7 +187,7 @@ export class Solver {
         this.sumsDeterminatorsMap = new Map();
         this.cellsMatrix = newGridMatrix();
         this.#solution = newGridMatrix();
-        this.#solvedCount = 0;
+        this.#placedNumbersCount = 0;
 
         problem.sums.forEach(sum => {
             sum.cells.forEach(cell => {
@@ -314,14 +321,26 @@ export class Solver {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
             segment.sums.forEach((sum, idx) => {
-                const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-                let sumNumberOptions = new Set();
-                combosForSegment.forEach(combo => {
-                    sumNumberOptions = new Set([...sumNumberOptions, ...combo[idx]]);
-                });
-                sumDeterminator.reduceNumberOptionsForCells(sumNumberOptions);
+                if (sum.isSingleCellSum) {
+                    this.#placeNumber(sum.cells[0], sum.value);
+                } else {
+                    const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+                    let sumNumberOptions = new Set();
+                    combosForSegment.forEach(combo => {
+                        sumNumberOptions = new Set([...sumNumberOptions, ...combo[idx]]);
+                    });
+                    sumDeterminator.reduceNumberOptionsForCells(sumNumberOptions);    
+                }
             }, this);
         }, this);
+    }
+
+    #placeNumber(cell, number) {
+        const rowIdx = cell.rowIdx;
+        const colIdx = cell.colIdx;
+        this.#solution[rowIdx][colIdx] = number;
+        this.#placedNumbersCount++;
+        this.cellDeterminatorOf(cell).placeNumber(number);
     }
 
     inputSumAt(rowIdx, colIdx) {
