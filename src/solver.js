@@ -76,15 +76,15 @@ class SumDeterminator {
         this.cellsDeterminators = cellsDeterminators;
     }
 
-    getUniqueRowIdx() {
+    uniqueRowIdx() {
         return this.sum.isWithinRow ? this.sum.cells[0].rowIdx : undefined;
     }
 
-    getUniqueColumnIdx() {
+    uniqueColumnIdx() {
         return this.sum.isWithinColumn ? this.sum.cells[0].colIdx : undefined;
     }
 
-    getUniqueSubgridIdx() {
+    uniqueSubgridIdx() {
         return this.sum.isWithinSubgrid ? this.sum.cells[0].subgridIdx : undefined;
     }
 
@@ -215,6 +215,11 @@ export class Solver {
         return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
     };
 
+    solve() {
+        this.determineAndSliceResidualSumsInSegments();
+        this.#fillUpCombinationsForSumsAndMakeInitialReduce();
+    }
+
     determineAndSliceResidualSumsInSegments() {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
@@ -268,13 +273,13 @@ export class Solver {
     #registerSum(sum) {
         const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (sum.isWithinRow) {
-            this.rows[sumDeterminator.getUniqueRowIdx()].addSum(sum);
+            this.rows[sumDeterminator.uniqueRowIdx()].addSum(sum);
         }
         if (sum.isWithinColumn) {
-            this.columns[sumDeterminator.getUniqueColumnIdx()].addSum(sum);
+            this.columns[sumDeterminator.uniqueColumnIdx()].addSum(sum);
         }
         if (sum.isWithinSubgrid) {
-            this.subgrids[sumDeterminator.getUniqueSubgridIdx()].addSum(sum);
+            this.subgrids[sumDeterminator.uniqueSubgridIdx()].addSum(sum);
         }
         sum.cells.forEach(cell => {
             this.cellDeterminatorOf(cell).addWithinSum(sum);
@@ -285,13 +290,13 @@ export class Solver {
     #unregisterSum(sum) {
         const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
         if (sum.isWithinRow) {
-            this.rows[sumDeterminator.getUniqueRowIdx()].removeSum(sum);
+            this.rows[sumDeterminator.uniqueRowIdx()].removeSum(sum);
         }
         if (sum.isWithinColumn) {
-            this.columns[sumDeterminator.getUniqueColumnIdx()].removeSum(sum);
+            this.columns[sumDeterminator.uniqueColumnIdx()].removeSum(sum);
         }
         if (sum.isWithinSubgrid) {
-            this.subgrids[sumDeterminator.getUniqueSubgridIdx()].removeSum(sum);
+            this.subgrids[sumDeterminator.uniqueSubgridIdx()].removeSum(sum);
         }
         sum.cells.forEach(cell => {
             this.cellDeterminatorOf(cell).removeWithinSum(sum);
@@ -299,7 +304,7 @@ export class Solver {
         this.sumsDeterminatorsMap.delete(sum.key());
     }
 
-    fillUpCombinationsForSums() {
+    #fillUpCombinationsForSumsAndMakeInitialReduce() {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
             segment.sums.forEach((sum, idx) => {
