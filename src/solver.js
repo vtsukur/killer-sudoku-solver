@@ -77,23 +77,25 @@ class SumsArea {
 }
 
 class SumDeterminator {
+    #firstCell;
     #combos;
 
     constructor(sum, cellsDeterminators) {
         this.sum = sum;
+        this.#firstCell = sum.cells[0];
         this.cellsDeterminators = cellsDeterminators;
     }
 
-    uniqueRowIdx() {
-        return this.sum.isWithinRow ? this.sum.cells[0].rowIdx : undefined;
+    anyRowIdx() {
+        return this.#firstCell.rowIdx;
     }
 
-    uniqueColumnIdx() {
-        return this.sum.isWithinColumn ? this.sum.cells[0].colIdx : undefined;
+    anyColumnIdx() {
+        return this.#firstCell.colIdx;
     }
 
-    uniqueSubgridIdx() {
-        return this.sum.isWithinSubgrid ? this.sum.cells[0].subgridIdx : undefined;
+    anySubgridIdx() {
+        return this.#firstCell.subgridIdx;
     }
 
     updateCombinations(combos) {
@@ -292,13 +294,13 @@ export class Solver {
     #registerSum(sum) {
         const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (sum.isWithinRow) {
-            this.rows[sumDeterminator.uniqueRowIdx()].addSum(sum);
+            this.rows[sumDeterminator.anyRowIdx()].addSum(sum);
         }
         if (sum.isWithinColumn) {
-            this.columns[sumDeterminator.uniqueColumnIdx()].addSum(sum);
+            this.columns[sumDeterminator.anyColumnIdx()].addSum(sum);
         }
         if (sum.isWithinSubgrid) {
-            this.subgrids[sumDeterminator.uniqueSubgridIdx()].addSum(sum);
+            this.subgrids[sumDeterminator.anySubgridIdx()].addSum(sum);
         }
         sum.cells.forEach(cell => {
             this.cellDeterminatorOf(cell).addWithinSum(sum);
@@ -309,13 +311,13 @@ export class Solver {
     #unregisterSum(sum) {
         const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
         if (sum.isWithinRow) {
-            this.rows[sumDeterminator.uniqueRowIdx()].removeSum(sum);
+            this.rows[sumDeterminator.anyRowIdx()].removeSum(sum);
         }
         if (sum.isWithinColumn) {
-            this.columns[sumDeterminator.uniqueColumnIdx()].removeSum(sum);
+            this.columns[sumDeterminator.anyColumnIdx()].removeSum(sum);
         }
         if (sum.isWithinSubgrid) {
-            this.subgrids[sumDeterminator.uniqueSubgridIdx()].removeSum(sum);
+            this.subgrids[sumDeterminator.anySubgridIdx()].removeSum(sum);
         }
         sum.cells.forEach(cell => {
             this.cellDeterminatorOf(cell).removeWithinSum(sum);
