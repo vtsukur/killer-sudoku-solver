@@ -183,12 +183,17 @@ export class Subgrid extends Segment {
     }
 }
 
+export class SolverCallbacks {
+    onInitialResidualSumsDeterminedAndSliced() {}
+}
+
 export class Solver {
     #solution;
     #placedNumbersCount;
 
-    constructor(problem) {
+    constructor(problem, callbacks = new SolverCallbacks()) {
         this.problem = problem;
+        this.callbacks = callbacks;
         this.inputSums = [];
         this.inputSumsMatrix = newGridMatrix();
         this.sumsDeterminatorsMap = new Map();
@@ -235,19 +240,20 @@ export class Solver {
     };
 
     solve() {
-        this.determineAndSliceResidualSumsInSegments();
+        this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         this.#determineSingleCellSums();
         return this.#solution;
     }
 
-    determineAndSliceResidualSumsInSegments() {
+    #determineAndSliceResidualSumsInSegments() {
         this.segments.forEach(segment => {
             const residualSum = segment.determineResidualSum();
             if (residualSum) {
                 this.#addAndSliceResidualSumRecursively(residualSum);
             }
         }, this);
+        this.callbacks.onInitialResidualSumsDeterminedAndSliced();
     }
 
     #addAndSliceResidualSumRecursively(residualSum) {
