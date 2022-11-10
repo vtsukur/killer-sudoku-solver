@@ -315,6 +315,7 @@ describe('Tests for solver', () => {
     test('Fill up combinations for sums within segments (shallow coverage)', () => {
         const solver = new Solver(testProblem);
 
-        solver.solve();
+        const solution = solver.solve();
+        expect(solution[0][0]).toBe(undefined);
     });
 });

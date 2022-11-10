@@ -170,12 +170,17 @@ export class Subgrid extends Segment {
 }
 
 export class Solver {
+    #solution;
+    #solvedCount;
+
     constructor(problem) {
         this.problem = problem;
         this.inputSums = [];
         this.inputSumsMatrix = newGridMatrix();
         this.sumsDeterminatorsMap = new Map();
         this.cellsMatrix = newGridMatrix();
+        this.#solution = newGridMatrix();
+        this.#solvedCount = 0;
 
         problem.sums.forEach(sum => {
             sum.cells.forEach(cell => {
@@ -218,6 +223,7 @@ export class Solver {
     solve() {
         this.determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
+        return this.#solution;
     }
 
     determineAndSliceResidualSumsInSegments() {
