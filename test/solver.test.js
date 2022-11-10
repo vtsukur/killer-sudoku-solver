@@ -312,7 +312,7 @@ describe('Tests for solver', () => {
         ]));
     });
 
-    test('Fill up combinations for sums within segments (shallow coverage)', () => {
+    test('Find solution', () => {
         const solver = new Solver(testProblem);
 
         const solution = solver.solve();
