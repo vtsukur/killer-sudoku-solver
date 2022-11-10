@@ -234,6 +234,7 @@ export class Solver {
 
     solve() {
         this.determineAndSliceResidualSumsInSegments();
+        this.#determineSingleCellSums();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         return this.#solution;
     }
@@ -322,17 +323,22 @@ export class Solver {
         this.sumsDeterminatorsMap.delete(sum.key());
     }
 
+    #determineSingleCellSums() {
+        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
+            const sum = sumDeterminator.sum;
+            if (sum.isSingleCellSum) {
+                this.#placeNumber(sum.cells[0], sum.value);
+            }
+        }
+    }
+
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
             segment.sums.forEach((sum, idx) => {
-                if (sum.isSingleCellSum) {
-                    this.#placeNumber(sum.cells[0], sum.value);
-                } else {
-                    const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-                    const combos = combosForSegment.map(combo => combo[idx]);
-                    sumDeterminator.updateCombinations(combos);
-                }
+                const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+                const combos = combosForSegment.map(combo => combo[idx]);
+                sumDeterminator.updateCombinations(combos);
             }, this);
         }, this);
     }
