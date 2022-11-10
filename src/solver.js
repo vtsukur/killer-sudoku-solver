@@ -114,7 +114,7 @@ class Segment {
         this.cells = cells;
         this.sums = inputSums;
         this.#sumsArea = new SumsArea(this.sums);
-        this.solvedNumbers = new Set();
+        this.placedNumbers = new Set();
     }
 
     determineResidualSum() {
@@ -314,9 +314,16 @@ export class Solver {
     #placeNumber(cell, number) {
         const rowIdx = cell.rowIdx;
         const colIdx = cell.colIdx;
+        const subgridIdx = cell.subgridIdx;
+
+        this.cellDeterminatorOf(cell).placeNumber(number);
+
+        this.rows[rowIdx].placedNumbers.add(number);
+        this.columns[colIdx].placedNumbers.add(number);
+        this.subgrids[subgridIdx].placedNumbers.add(number);
+
         this.#solution[rowIdx][colIdx] = number;
         this.#placedNumbersCount++;
-        this.cellDeterminatorOf(cell).placeNumber(number);
     }
 
     #registerSum(sum) {
