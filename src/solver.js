@@ -40,6 +40,16 @@ export class CellDeterminator {
     removeWithinSum(withinSum) {
         this.withinSumsSet.delete(withinSum);
     }
+
+    reduceNumberOptions(numberOptions) {
+        const newSet = new Set();
+        for (const existingNumberOption of this.numberOptions) {
+            if (numberOptions.has(existingNumberOption)) {
+                newSet.add(existingNumberOption);
+            }
+        }
+        this.numberOptions = newSet;
+    }
 }
 
 class SumsArea {
@@ -76,6 +86,10 @@ class SumDeterminator {
 
     getUniqueSubgridIdx() {
         return this.sum.isWithinSubgrid ? this.sum.cells[0].subgridIdx : undefined;
+    }
+
+    reduceNumberOptionsForCells(numberOptions) {
+        this.cellsDeterminators.forEach(det => det.reduceNumberOptions(numberOptions));
     }
 }
 
@@ -288,15 +302,14 @@ export class Solver {
     fillUpCombinationsForSums() {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
-            // segment.sums.forEach(sum => {
-
-            // }, this);
-
-            // combosForSegment.forEach((numbersSet, idx) => {
-            //     const sum = segment.sums[idx];
-            //     const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-
-            // });
+            segment.sums.forEach((sum, idx) => {
+                const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+                let sumNumberOptions = new Set();
+                combosForSegment.forEach(combo => {
+                    sumNumberOptions = new Set([...sumNumberOptions, ...combo[idx]]);
+                });
+                sumDeterminator.reduceNumberOptionsForCells(sumNumberOptions);
+            }, this);
         }, this);
     }
 
