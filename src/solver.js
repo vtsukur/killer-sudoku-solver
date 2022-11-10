@@ -77,6 +77,8 @@ class SumsArea {
 }
 
 class SumDeterminator {
+    #combos;
+
     constructor(sum, cellsDeterminators) {
         this.sum = sum;
         this.cellsDeterminators = cellsDeterminators;
@@ -94,8 +96,11 @@ class SumDeterminator {
         return this.sum.isWithinSubgrid ? this.sum.cells[0].subgridIdx : undefined;
     }
 
-    reduceNumberOptionsForCells(numberOptions) {
-        this.cellsDeterminators.forEach(det => det.reduceNumberOptions(numberOptions));
+    updateCombinations(combos) {
+        this.#combos = combos;
+
+        const numberOptions = new Set(...combos);
+        this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
     }
 }
 
@@ -325,11 +330,8 @@ export class Solver {
                     this.#placeNumber(sum.cells[0], sum.value);
                 } else {
                     const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-                    let sumNumberOptions = new Set();
-                    combosForSegment.forEach(combo => {
-                        sumNumberOptions = new Set([...sumNumberOptions, ...combo[idx]]);
-                    });
-                    sumDeterminator.reduceNumberOptionsForCells(sumNumberOptions);    
+                    const combos = combosForSegment.map(combo => combo[idx]);
+                    sumDeterminator.updateCombinations(combos);
                 }
             }, this);
         }, this);
