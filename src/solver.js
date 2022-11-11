@@ -167,20 +167,20 @@ class SumDeterminator {
             return lastCellDet.numberOptions.has(lastNum);
         }
 
-        let hasAllMatchingPermutations = true;
+        let hasSumMatchingPermutation = false;
 
         this.cellsDeterminators.forEach(cellDet => {
             context.tryCell(cellDet, step, () => {
                 for (const number of cellDet.numberOptions.values()) {
                     context.tryNumber(number, step, () => {
-                        const hasMatchingPermutations = this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
-                        hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
+                        const hasSumMatchingPermutations = this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
+                        hasSumMatchingPermutation = hasSumMatchingPermutation || hasSumMatchingPermutations;
                     });
                 }
             });
         }, this);
 
-        return hasAllMatchingPermutations;
+        return hasSumMatchingPermutation;
     }
 }
 
