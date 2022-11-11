@@ -115,54 +115,69 @@ class SumDeterminator {
 
     reduce() {
         if (this.#cellCount > 1 && this.#cellCount < 4 && this.sum.isWithinSegment) {
-            this.#reduceByCellPermutationsRecursively(0, 0, {
-                processedCellDeterminators: new Set(),
-                processedNumbers: new Set(),
-                numbersStack: new Array(this.#cellCount),
-                cellsDeterminatorsStack: new Array(this.#cellCount),
-                tryCell: function(cellDet, step, fn) {
-                    if (this.processedCellDeterminators.has(cellDet)) return;
-                    this.processedCellDeterminators.add(cellDet);
-                    this.cellsDeterminatorsStack[step] = cellDet;
-                    fn();
-                    this.cellsDeterminatorsStack[step] = undefined;
-                    this.processedCellDeterminators.delete(cellDet);
-                },
-                tryNumber: function(num, step, fn) {
-                    if (this.processedNumbers.has(num)) return;
-                    this.processedNumbers.add(num);
-                    this.numbersStack[step] = num;
-                    fn();
-                    this.numbersStack[step] = undefined;
-                    this.processedNumbers.delete(num);
-                }
-            });
+            this.#reduceByCellPermutations();
         }
     }
 
-    #reduceByCellPermutationsRecursively(sumValue, step, context) {
+    #reduceByCellPermutations() {
+        const context = {
+            processedCellDeterminators: new Set(),
+            remainingCellDeterminators: new Set(this.cellsDeterminators),
+            processedNumbers: new Set(),
+            numbersStack: new Array(this.#cellCount),
+            cellsDeterminatorsStack: new Array(this.#cellCount),
+            tryCell: function(cellDet, step, fn) {
+                if (this.processedCellDeterminators.has(cellDet)) return;
+                this.processedCellDeterminators.add(cellDet); this.remainingCellDeterminators.delete(cellDet);
+                this.cellsDeterminatorsStack[step] = cellDet;
+                fn();
+                this.cellsDeterminatorsStack[step] = undefined;
+                this.processedCellDeterminators.delete(cellDet); this.remainingCellDeterminators.add(cellDet);
+            },
+            tryNumber: function(num, step, fn) {
+                if (this.processedNumbers.has(num)) return;
+                this.processedNumbers.add(num);
+                this.numbersStack[step] = num;
+                fn();
+                this.numbersStack[step] = undefined;
+                this.processedNumbers.delete(num);
+            },
+            remainingCellDeterminator: function() {
+                return context.remainingCellDeterminators.values().next().value;
+            }
+        };
+
+        this.cellsDeterminators.forEach(cellDeterminator => {
+            context.tryCell(cellDeterminator, 0, () => {
+                for (const number of cellDeterminator.numberOptions.values()) {
+                    context.tryNumber(number, 0, () => {
+                        if (!this.#hasSumMatchingPermutationsRecursive(number, 1, context)) {
+                            cellDeterminator.numberOptions.delete(number);
+                        }
+                    });
+                }
+            });
+        });
+    } 
+
+    #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
         if (step === (this.#cellCount - 1)) {
-            const lastNumber = this.sum.value - sumValue;
-            const lastCellDeterminator = this.cellsDeterminators.find(cellDeterminator => !context.processedCellDeterminators.has(cellDeterminator));
-            return lastCellDeterminator.numberOptions.has(lastNumber);
+            const lastNum = this.sum.value - currentSumVal;
+            const lastCellDeterminator = context.remainingCellDeterminator();
+            return lastCellDeterminator.numberOptions.has(lastNum);
         }
 
         let hasAllMatchingPermutations = true;
 
-        this.cellsDeterminators.some(cellDeterminator => {
+        this.cellsDeterminators.forEach(cellDeterminator => {
             context.tryCell(cellDeterminator, step, () => {
                 for (const number of cellDeterminator.numberOptions.values()) {
                     context.tryNumber(number, step, () => {
-                        const hasMatchingPermutations = this.#reduceByCellPermutationsRecursively(sumValue + number, step + 1, context);
-                        if (!hasMatchingPermutations && step === 0) {
-                            cellDeterminator.numberOptions.delete(number);
-                        }
+                        const hasMatchingPermutations = this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
                         hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
                     });
                 }    
             });
-
-            return !hasAllMatchingPermutations && step > 0;
         }, this);
 
         return hasAllMatchingPermutations;
