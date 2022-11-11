@@ -317,8 +317,25 @@ describe('Tests for solver', () => {
     test('[Whitebox] After initial reduce (shallow coverage)', () => {
         const solver = new Solver(testProblem, {
             onAfterInitialReduce() {
+                // subgrid 0
+
                 const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
                 expect(cell_0_0_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
+
+                const cell_0_1_Determinator = solver.cellDeterminatorAt(0, 1);
+                expect(cell_0_1_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
+
+                const cell_0_2_Determinator = solver.cellDeterminatorAt(0, 2);
+                expect(cell_0_2_Determinator.numberOptions).toEqual(new Set([ 1, 4, 6, 9 ])); // reduced by column combos
+
+                const cell_1_2_Determinator = solver.cellDeterminatorAt(1, 2);
+                expect(cell_1_2_Determinator.numberOptions).toEqual(new Set([ 4, 6, 9 ])); // reduced by column combos
+
+                const cell_1_0_Determinator = solver.cellDeterminatorAt(1, 0);
+                expect(cell_1_0_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5 ])); // reduced by subgrid combos
+
+                const cell_1_1_Determinator = solver.cellDeterminatorAt(1, 1);
+                expect(cell_1_1_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5 ])); // reduced by subgrid combos
             }
         });
 

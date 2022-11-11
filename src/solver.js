@@ -106,7 +106,7 @@ class SumDeterminator {
             [...comboSet].forEach(number => {
                 numberOptions.add(number);
             })
-        })
+        });
 
         this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
     }
@@ -317,6 +317,7 @@ export class Solver {
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
+            segment.debugCombosForSegment = combosForSegment;
             segment.sums.forEach((sum, idx) => {
                 const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
                 const combosKeySet = new Set();
