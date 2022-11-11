@@ -30,7 +30,7 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.withinSumsSet).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
     });
 
-    test('[Whitebox] Determine and slice residual sums in segments shallow coverage)', () => {
+    test('[Whitebox] Determine and slice residual sums in segments (shallow coverage)', () => {
         const solver = new Solver(testProblem, {
             onAfterResidualSumsDeterminedAndSliced() {
                 const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
@@ -308,6 +308,17 @@ describe('Tests for solver', () => {
                     Sum.of(10).cell(7, 6).cell(7, 7).mk(),
                     Sum.of(7).cell(8, 6).cell(8, 7).mk()
                 ]));        
+            }
+        });
+
+        solver.solve();
+    });
+
+    test('[Whitebox] After initial reduce (shallow coverage)', () => {
+        const solver = new Solver(testProblem, {
+            onAfterInitialReduce() {
+                const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
+                expect(cell_0_0_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
             }
         });
 

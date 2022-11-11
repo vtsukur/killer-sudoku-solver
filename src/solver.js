@@ -101,7 +101,13 @@ class SumDeterminator {
     updateCombinations(combos) {
         this.#combos = combos;
 
-        const numberOptions = new Set(...combos);
+        const numberOptions = new Set();
+        [...combos].forEach(comboSet => {
+            [...comboSet].forEach(number => {
+                numberOptions.add(number);
+            })
+        })
+
         this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
     }
 }
@@ -313,7 +319,16 @@ export class Solver {
             const combosForSegment = findSumCombinationsForSegment(segment);
             segment.sums.forEach((sum, idx) => {
                 const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-                const combos = combosForSegment.map(combo => combo[idx]);
+                const combosKeySet = new Set();
+                const combos = [];
+                combosForSegment.forEach(combo => {
+                    const comboSet = combo[idx];
+                    const key = Array.from(combo[idx]).join();
+                    if (!combosKeySet.has(key)) {
+                        combos.push(comboSet);
+                        combosKeySet.add(key);
+                    }
+                });
                 sumDeterminator.updateCombinations(combos);
             }, this);
         }, this);
