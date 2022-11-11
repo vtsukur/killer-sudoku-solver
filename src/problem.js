@@ -51,6 +51,7 @@ export class Sum {
         this.isWithinRow = this.isSingleCellSum || this.#isSameForAll(cell => cell.rowIdx);
         this.isWithinColumn = this.isSingleCellSum || this.#isSameForAll(cell => cell.colIdx);
         this.isWithinSubgrid = this.isSingleCellSum || this.#isSameForAll(cell => cell.subgridIdx);
+        this.isWithinSegment = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
     }
 
     #isSameForAll(whatFn) {

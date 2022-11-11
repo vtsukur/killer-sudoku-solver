@@ -79,11 +79,13 @@ class SumsArea {
 class SumDeterminator {
     #firstCell;
     #combos;
+    #cellCount;
 
     constructor(sum, cellsDeterminators) {
         this.sum = sum;
         this.#firstCell = sum.cells[0];
         this.cellsDeterminators = cellsDeterminators;
+        this.#cellCount = sum.cellCount;
     }
 
     anyRowIdx() {
@@ -105,10 +107,60 @@ class SumDeterminator {
         [...combos].forEach(comboSet => {
             [...comboSet].forEach(number => {
                 numberOptions.add(number);
-            })
+            });
         });
 
         this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
+    }
+
+    reReduce() {
+        if (this.#cellCount > 1 && this.#cellCount < 4 && this.sum.isWithinSegment) {
+            this.#recursiveReReduce(0, 0, {
+                processedCellDeterminators: new Set(),
+                processedNumbers: new Set(),
+                numbersStack: new Array(this.#cellCount),
+                cellsDeterminatorsStack: new Array(this.#cellCount)
+            });
+        }
+    }
+
+    #recursiveReReduce(sumValue, step, { cellsDeterminatorsStack, numbersStack, processedCellDeterminators, processedNumbers }) {
+        if (step === (this.#cellCount - 1)) {
+            const lastNumber = this.sum.value - sumValue;
+            const lastCellDeterminator = this.cellsDeterminators.find(cellDeterminator => !processedCellDeterminators.has(cellDeterminator));
+            if (!lastCellDeterminator.numberOptions.has(lastNumber)) {
+                cellsDeterminatorsStack[0].numberOptions.delete(numbersStack[0]);
+            }
+            return;
+        }
+
+        this.cellsDeterminators.forEach(cellDeterminator => {
+            if (processedCellDeterminators.has(cellDeterminator)) {
+                return;
+            }
+
+            cellsDeterminatorsStack[step] = cellDeterminator;
+            processedCellDeterminators.add(cellDeterminator);
+
+            const numberOptionsArr = Array.from(cellDeterminator.numberOptions.values());
+            for (const number of numberOptionsArr) {
+                if (!processedNumbers.has(number)) {
+                    processedNumbers.add(number);
+                    numbersStack[step] = number;
+                    this.#recursiveReReduce(sumValue + number, step + 1, {
+                        cellsDeterminatorsStack,
+                        numbersStack,
+                        processedCellDeterminators,
+                        processedNumbers
+                    });
+                    numbersStack[step] = undefined;
+                    processedNumbers.delete(number);
+                }
+            }
+
+            cellsDeterminatorsStack[step] = undefined;
+            processedCellDeterminators.delete(cellDeterminator);
+        }, this);
     }
 }
 
@@ -333,6 +385,11 @@ export class Solver {
                 sumDeterminator.updateCombinations(combos);
             }, this);
         }, this);
+
+        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
+            sumDeterminator.reReduce();
+        }
+
         this.#runCallback('onAfterInitialReduce');
     }
 

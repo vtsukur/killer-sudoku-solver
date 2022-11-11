@@ -326,7 +326,7 @@ describe('Tests for solver', () => {
                 expect(cell_0_1_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
 
                 const cell_0_2_Determinator = solver.cellDeterminatorAt(0, 2);
-                expect(cell_0_2_Determinator.numberOptions).toEqual(new Set([ 1, 4, 6, 9 ])); // reduced by column combos
+                expect(cell_0_2_Determinator.numberOptions).toEqual(new Set([ 1, 4, 6 ])); // reduced by column combos
 
                 const cell_1_2_Determinator = solver.cellDeterminatorAt(1, 2);
                 expect(cell_1_2_Determinator.numberOptions).toEqual(new Set([ 4, 6, 9 ])); // reduced by column combos
