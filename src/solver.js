@@ -119,52 +119,48 @@ class SumDeterminator {
                 processedCellDeterminators: new Set(),
                 processedNumbers: new Set(),
                 numbersStack: new Array(this.#cellCount),
-                cellsDeterminatorsStack: new Array(this.#cellCount)
+                cellsDeterminatorsStack: new Array(this.#cellCount),
+                tryCell: function(cellDet, step, fn) {
+                    if (this.processedCellDeterminators.has(cellDet)) return;
+                    this.processedCellDeterminators.add(cellDet);
+                    this.cellsDeterminatorsStack[step] = cellDet;
+                    fn();
+                    this.cellsDeterminatorsStack[step] = undefined;
+                    this.processedCellDeterminators.delete(cellDet);
+                },
+                tryNumber: function(num, step, fn) {
+                    if (this.processedNumbers.has(num)) return;
+                    this.processedNumbers.add(num);
+                    this.numbersStack[step] = num;
+                    fn();
+                    this.numbersStack[step] = undefined;
+                    this.processedNumbers.delete(num);
+                }
             });
         }
     }
 
-    #reduceByCellPermutationsRecursively(sumValue, step, { cellsDeterminatorsStack, numbersStack, processedCellDeterminators, processedNumbers }) {
+    #reduceByCellPermutationsRecursively(sumValue, step, context) {
         if (step === (this.#cellCount - 1)) {
             const lastNumber = this.sum.value - sumValue;
-            const lastCellDeterminator = this.cellsDeterminators.find(cellDeterminator => !processedCellDeterminators.has(cellDeterminator));
+            const lastCellDeterminator = this.cellsDeterminators.find(cellDeterminator => !context.processedCellDeterminators.has(cellDeterminator));
             return lastCellDeterminator.numberOptions.has(lastNumber);
         }
 
         let hasAllMatchingPermutations = true;
 
         this.cellsDeterminators.some(cellDeterminator => {
-            if (processedCellDeterminators.has(cellDeterminator)) return;
-
-            cellsDeterminatorsStack[step] = cellDeterminator;
-            processedCellDeterminators.add(cellDeterminator);
-
-            for (const number of cellDeterminator.numberOptions.values()) {
-                if (!processedNumbers.has(number)) {
-                    processedNumbers.add(number);
-                    numbersStack[step] = number;
-                    const hasMatchingPermutations = this.#reduceByCellPermutationsRecursively(sumValue + number, step + 1, {
-                        cellsDeterminatorsStack,
-                        numbersStack,
-                        processedCellDeterminators,
-                        processedNumbers
-                    });
-                    numbersStack[step] = undefined;
-                    processedNumbers.delete(number);
-
-                    hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
-                    if (!hasMatchingPermutations) {
-                        if (step === 0) {
+            context.tryCell(cellDeterminator, step, () => {
+                for (const number of cellDeterminator.numberOptions.values()) {
+                    context.tryNumber(number, step, () => {
+                        const hasMatchingPermutations = this.#reduceByCellPermutationsRecursively(sumValue + number, step + 1, context);
+                        if (!hasMatchingPermutations && step === 0) {
                             cellDeterminator.numberOptions.delete(number);
-                        } else {
-                            break;
                         }
-                    }
-                }
-            }
-
-            cellsDeterminatorsStack[step] = undefined;
-            processedCellDeterminators.delete(cellDeterminator);
+                        hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
+                    });
+                }    
+            });
 
             return !hasAllMatchingPermutations && step > 0;
         }, this);
