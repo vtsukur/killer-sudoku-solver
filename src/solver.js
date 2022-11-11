@@ -138,9 +138,10 @@ class SumDeterminator {
                 if (this.processedNumbers.has(num)) return;
                 this.processedNumbers.add(num);
                 this.numbersStack[step] = num;
-                fn();
+                const retVal = fn();
                 this.numbersStack[step] = undefined;
                 this.processedNumbers.delete(num);
+                return retVal;
             },
             remainingCellDet: function() {
                 return context.remainingCellDets.values().next().value;
@@ -171,10 +172,10 @@ class SumDeterminator {
         return this.cellsDeterminators.some(cellDet => {
             context.tryCell(cellDet, step, () => {
                 for (const number of cellDet.numberOptions.values()) {
-                    context.tryNumber(number, step, () => {
-                        const hasSumMatchingPermutations = this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
-                        hasSumMatchingPermutation = hasSumMatchingPermutation || hasSumMatchingPermutations;
-                    });
+                    hasSumMatchingPermutation = hasSumMatchingPermutation || (context.tryNumber(number, step, () => {
+                        return this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
+                    }));
+                    if (hasSumMatchingPermutation) break;
                 }
             });
 
