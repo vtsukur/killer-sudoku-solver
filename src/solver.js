@@ -113,9 +113,9 @@ class SumDeterminator {
         this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
     }
 
-    reReduce() {
+    reduce() {
         if (this.#cellCount > 1 && this.#cellCount < 4 && this.sum.isWithinSegment) {
-            this.#recursiveReReduce(0, 0, {
+            this.#reduceByCellPermutationsRecursively(0, 0, {
                 processedCellDeterminators: new Set(),
                 processedNumbers: new Set(),
                 numbersStack: new Array(this.#cellCount),
@@ -124,30 +124,26 @@ class SumDeterminator {
         }
     }
 
-    #recursiveReReduce(sumValue, step, { cellsDeterminatorsStack, numbersStack, processedCellDeterminators, processedNumbers }) {
+    #reduceByCellPermutationsRecursively(sumValue, step, { cellsDeterminatorsStack, numbersStack, processedCellDeterminators, processedNumbers }) {
         if (step === (this.#cellCount - 1)) {
             const lastNumber = this.sum.value - sumValue;
             const lastCellDeterminator = this.cellsDeterminators.find(cellDeterminator => !processedCellDeterminators.has(cellDeterminator));
-            if (!lastCellDeterminator.numberOptions.has(lastNumber)) {
-                cellsDeterminatorsStack[0].numberOptions.delete(numbersStack[0]);
-            }
-            return;
+            return lastCellDeterminator.numberOptions.has(lastNumber);
         }
 
-        this.cellsDeterminators.forEach(cellDeterminator => {
-            if (processedCellDeterminators.has(cellDeterminator)) {
-                return;
-            }
+        let hasAllMatchingPermutations = true;
+
+        this.cellsDeterminators.some(cellDeterminator => {
+            if (processedCellDeterminators.has(cellDeterminator)) return;
 
             cellsDeterminatorsStack[step] = cellDeterminator;
             processedCellDeterminators.add(cellDeterminator);
 
-            const numberOptionsArr = Array.from(cellDeterminator.numberOptions.values());
-            for (const number of numberOptionsArr) {
+            for (const number of cellDeterminator.numberOptions.values()) {
                 if (!processedNumbers.has(number)) {
                     processedNumbers.add(number);
                     numbersStack[step] = number;
-                    this.#recursiveReReduce(sumValue + number, step + 1, {
+                    const hasMatchingPermutations = this.#reduceByCellPermutationsRecursively(sumValue + number, step + 1, {
                         cellsDeterminatorsStack,
                         numbersStack,
                         processedCellDeterminators,
@@ -155,12 +151,25 @@ class SumDeterminator {
                     });
                     numbersStack[step] = undefined;
                     processedNumbers.delete(number);
+
+                    hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
+                    if (!hasMatchingPermutations) {
+                        if (step === 0) {
+                            cellDeterminator.numberOptions.delete(number);
+                        } else {
+                            break;
+                        }
+                    }
                 }
             }
 
             cellsDeterminatorsStack[step] = undefined;
             processedCellDeterminators.delete(cellDeterminator);
+
+            return !hasAllMatchingPermutations && step > 0;
         }, this);
+
+        return hasAllMatchingPermutations;
     }
 }
 
@@ -386,9 +395,7 @@ export class Solver {
             }, this);
         }, this);
 
-        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
-            sumDeterminator.reReduce();
-        }
+        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) sumDeterminator.reduce();
 
         this.#runCallback('onAfterInitialReduce');
     }
