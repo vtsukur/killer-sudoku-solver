@@ -121,18 +121,18 @@ class SumDeterminator {
 
     #reduceByCellPermutations() {
         const context = {
-            processedCellDeterminators: new Set(),
-            remainingCellDeterminators: new Set(this.cellsDeterminators),
+            processedCellDets: new Set(),
+            remainingCellDets: new Set(this.cellsDeterminators),
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
-            cellsDeterminatorsStack: new Array(this.#cellCount),
+            cellsDetsStack: new Array(this.#cellCount),
             tryCell: function(cellDet, step, fn) {
-                if (this.processedCellDeterminators.has(cellDet)) return;
-                this.processedCellDeterminators.add(cellDet); this.remainingCellDeterminators.delete(cellDet);
-                this.cellsDeterminatorsStack[step] = cellDet;
+                if (this.processedCellDets.has(cellDet)) return;
+                this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
+                this.cellsDetsStack[step] = cellDet;
                 fn();
-                this.cellsDeterminatorsStack[step] = undefined;
-                this.processedCellDeterminators.delete(cellDet); this.remainingCellDeterminators.add(cellDet);
+                this.cellsDetsStack[step] = undefined;
+                this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);
             },
             tryNumber: function(num, step, fn) {
                 if (this.processedNumbers.has(num)) return;
@@ -142,17 +142,17 @@ class SumDeterminator {
                 this.numbersStack[step] = undefined;
                 this.processedNumbers.delete(num);
             },
-            remainingCellDeterminator: function() {
-                return context.remainingCellDeterminators.values().next().value;
+            remainingCellDet: function() {
+                return context.remainingCellDets.values().next().value;
             }
         };
 
-        this.cellsDeterminators.forEach(cellDeterminator => {
-            context.tryCell(cellDeterminator, 0, () => {
-                for (const number of cellDeterminator.numberOptions.values()) {
+        this.cellsDeterminators.forEach(cellDet => {
+            context.tryCell(cellDet, 0, () => {
+                for (const number of cellDet.numberOptions.values()) {
                     context.tryNumber(number, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(number, 1, context)) {
-                            cellDeterminator.numberOptions.delete(number);
+                            cellDet.numberOptions.delete(number);
                         }
                     });
                 }
@@ -163,20 +163,20 @@ class SumDeterminator {
     #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
         if (step === (this.#cellCount - 1)) {
             const lastNum = this.sum.value - currentSumVal;
-            const lastCellDeterminator = context.remainingCellDeterminator();
-            return lastCellDeterminator.numberOptions.has(lastNum);
+            const lastCellDet = context.remainingCellDet();
+            return lastCellDet.numberOptions.has(lastNum);
         }
 
         let hasAllMatchingPermutations = true;
 
-        this.cellsDeterminators.forEach(cellDeterminator => {
-            context.tryCell(cellDeterminator, step, () => {
-                for (const number of cellDeterminator.numberOptions.values()) {
+        this.cellsDeterminators.forEach(cellDet => {
+            context.tryCell(cellDet, step, () => {
+                for (const number of cellDet.numberOptions.values()) {
                     context.tryNumber(number, step, () => {
                         const hasMatchingPermutations = this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
                         hasAllMatchingPermutations = hasAllMatchingPermutations && hasMatchingPermutations;
                     });
-                }    
+                }
             });
         }, this);
 
