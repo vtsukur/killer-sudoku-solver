@@ -114,7 +114,7 @@ class SumDeterminator {
     }
 
     reduce() {
-        if (this.#cellCount > 1 && this.#cellCount < 4 && this.sum.isWithinSegment) {
+        if (this.#cellCount > 1 && this.#cellCount < 5 && this.sum.isWithinSegment) {
             this.#reduceByCellPermutations();
         }
     }
@@ -168,8 +168,7 @@ class SumDeterminator {
         }
 
         let hasSumMatchingPermutation = false;
-
-        this.cellsDeterminators.forEach(cellDet => {
+        return this.cellsDeterminators.some(cellDet => {
             context.tryCell(cellDet, step, () => {
                 for (const number of cellDet.numberOptions.values()) {
                     context.tryNumber(number, step, () => {
@@ -178,9 +177,9 @@ class SumDeterminator {
                     });
                 }
             });
-        }, this);
 
-        return hasSumMatchingPermutation;
+            return hasSumMatchingPermutation;
+        }, this);
     }
 }
 
