@@ -121,41 +121,43 @@ class SumDeterminator {
 
     #reduceByCellPermutations() {
         const context = {
+            cellDets: this.cellsDeterminators,
             processedCellDets: new Set(),
             remainingCellDets: new Set(this.cellsDeterminators),
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellsDetsStack: new Array(this.#cellCount),
-            tryCell: function(cellDet, step, fn) {
-                if (this.processedCellDets.has(cellDet)) return;
-                this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
-                this.cellsDetsStack[step] = cellDet;
-                fn();
-                this.cellsDetsStack[step] = undefined;
-                this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);
+            someCell: function(step, fn) {
+                return this.cellDets.some(cellDet => {
+                    if (this.processedCellDets.has(cellDet)) return;
+                    this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
+                    this.cellsDetsStack[step] = cellDet;
+                    const retVal = fn(cellDet);
+                    this.cellsDetsStack[step] = undefined;
+                    this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);    
+                    return retVal === undefined ? false : retVal;
+                });
             },
-            tryNumber: function(num, step, fn) {
-                if (this.processedNumbers.has(num)) return;
-                this.processedNumbers.add(num);
-                this.numbersStack[step] = num;
-                const retVal = fn();
-                this.numbersStack[step] = undefined;
-                this.processedNumbers.delete(num);
-                return retVal;
+            someNumber: function(cellDet, step, fn) {
+                return Array.from(cellDet.numberOptions).some(num => {
+                    if (this.processedNumbers.has(num)) return;
+                    this.processedNumbers.add(num);
+                    this.numbersStack[step] = num;
+                    const retVal = fn(num);
+                    this.numbersStack[step] = undefined;
+                    this.processedNumbers.delete(num);
+                    return retVal;
+                });
             },
             remainingCellDet: function() {
                 return context.remainingCellDets.values().next().value;
             }
         };
 
-        this.cellsDeterminators.forEach(cellDet => {
-            context.tryCell(cellDet, 0, () => {
-                for (const number of cellDet.numberOptions.values()) {
-                    context.tryNumber(number, 0, () => {
-                        if (!this.#hasSumMatchingPermutationsRecursive(number, 1, context)) {
-                            cellDet.numberOptions.delete(number);
-                        }
-                    });
+        context.someCell(0, cellDet => {
+            context.someNumber(cellDet, 0, (num) => {
+                if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
+                    cellDet.numberOptions.delete(num);
                 }
             });
         });
@@ -168,19 +170,11 @@ class SumDeterminator {
             return lastCellDet.numberOptions.has(lastNum);
         }
 
-        let hasSumMatchingPermutation = false;
-        return this.cellsDeterminators.some(cellDet => {
-            context.tryCell(cellDet, step, () => {
-                for (const number of cellDet.numberOptions.values()) {
-                    hasSumMatchingPermutation = hasSumMatchingPermutation || (context.tryNumber(number, step, () => {
-                        return this.#hasSumMatchingPermutationsRecursive(currentSumVal + number, step + 1, context);
-                    }));
-                    if (hasSumMatchingPermutation) break;
-                }
+        return context.someCell(step, cellDet => {
+            return context.someNumber(cellDet, step, (num) => {
+                return this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context);
             });
-
-            return hasSumMatchingPermutation;
-        }, this);
+        });
     }
 }
 
