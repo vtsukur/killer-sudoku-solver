@@ -370,7 +370,7 @@ describe('Tests for solver', () => {
             [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
         ]);
 
-        // whitebox verification
+        // white box verification
         expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
         expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
     });
