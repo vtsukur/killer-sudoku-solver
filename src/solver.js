@@ -327,8 +327,7 @@ export class Solver {
     solve() {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
-        this.#determineSingleCellSums();
-        this.#determineCellWithSingleOption();
+        this.#reduceSumsRecursively(this.sumsDeterminatorsMap.values());
 
         return this.#solution;
     }
@@ -384,15 +383,6 @@ export class Solver {
         return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
-    #determineSingleCellSums() {
-        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) {
-            const sum = sumDeterminator.sum;
-            if (sum.isSingleCellSum) {
-                this.#placeNumber(sum.cells[0], sum.value);
-            }
-        }
-    }
-
     #determineCellWithSingleOption() {
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
@@ -424,14 +414,16 @@ export class Solver {
             }, this);
         }, this);
 
-        this.#reduceSumsRecursively(this.sumsDeterminatorsMap.values());
-
         this.#runCallback('onAfterInitialReduce');
     }
 
     #reduceSumsRecursively(sumDets) {
         let sumDetsIterable = sumDets;
         let iterate = true;
+
+        if (this.#placedNumbersCount >= 81) {
+            return;
+        }
 
         while (iterate) {
             let modifiedCellDets = new Set();
@@ -449,6 +441,8 @@ export class Solver {
             sumDetsIterable = sumDetsToReduce.values();
             iterate = sumDetsToReduce.size > 0;
         }
+
+        this.#determineCellWithSingleOption();
     }
 
     #placeNumber(cell, number) {
