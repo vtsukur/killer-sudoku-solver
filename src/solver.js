@@ -187,12 +187,13 @@ class SumDeterminator {
 class Segment {
     #sumsArea;
 
-    constructor(idx, cells, inputSums = []) {
+    constructor(idx, cells, inputSums = [], cellIteratorFn) {
         this.idx = idx;
         this.cells = cells;
         this.sums = inputSums;
         this.#sumsArea = new SumsArea(this.sums);
         this.placedNumbers = new Set();
+        this.cellIteratorFn = cellIteratorFn;
     }
 
     determineResidualSum() {
@@ -219,11 +220,15 @@ class Segment {
         this.sums = this.sums.filter(sum => sum !== sumToRemove);
         this.#sumsArea = new SumsArea(this.sums);
     }
+
+    cellIterator() {
+        return this.cellIteratorFn(this.idx);
+    }
 }
 
 export class Row extends Segment {
     constructor(idx, cells, inputSums) {
-        super(idx, cells, inputSums);
+        super(idx, cells, inputSums, Row.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -235,7 +240,7 @@ export class Row extends Segment {
 
 export class Column extends Segment {
     constructor(idx, cells, inputSums) {
-        super(idx, cells, inputSums);
+        super(idx, cells, inputSums, Column.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -247,7 +252,7 @@ export class Column extends Segment {
 
 export class Subgrid extends Segment {
     constructor(idx, cells, inputSums) {
-        super(idx, cells, inputSums);
+        super(idx, cells, inputSums, Subgrid.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -427,6 +432,7 @@ export class Solver {
     #reduceSumsRecursively(sumDets) {
         let sumDetsIterable = sumDets;
         let iterate = true;
+
         while (iterate) {
             let modifiedCellDets = new Set();
             for (const sumDeterminator of sumDetsIterable) {
@@ -453,7 +459,7 @@ export class Solver {
 
         cellDeterminator.placeNumber(number);
 
-        this.#placeNumberInRow(cell, number);
+        this.#placeNumberInSegment(this.rows[rowIdx], cell, number);
         this.columns[colIdx].placedNumbers.add(number);
         this.subgrids[subgridIdx].placedNumbers.add(number);
 
@@ -461,21 +467,21 @@ export class Solver {
         this.#placedNumbersCount++;
     }
 
-    #placeNumberInRow(cell, number) {
+    #placeNumberInSegment(segment, cell, number) {
         const row = this.rows[cell.rowIdx];
         row.placedNumbers.add(number);
 
         let sumsToReduce = new Set();
 
-        _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
-            if (colIdx === cell.colIdx) return;
+        for (const { rowIdx, colIdx } of segment.cellIterator()) {
+            if (rowIdx === cell.rowIdx && colIdx === cell.colIdx) continue;
 
-            const cellDet = this.cellDeterminatorAt(cell.rowIdx, colIdx);
+            const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
             if (cellDet.numberOptions.has(number)) {
                 cellDet.numberOptions.delete(number);
                 sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
             }
-        });
+        }
 
         const sumDetsToReduce = new Set(Array.from(sumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
         this.#reduceSumsRecursively(sumDetsToReduce.values());
