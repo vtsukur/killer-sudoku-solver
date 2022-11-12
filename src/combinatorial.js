@@ -145,7 +145,27 @@ function doFindForNonOverlappingSums(sums) {
 }
 
 function doFindForOverlappingSums(sums) {
-    return sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
+    if (sums.length === 0) return [];
+
+    const combos = [];
+    const combosForSums = sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
+    const stack = new Array(sums.length);
+
+    function combosRecursive(step) {
+        if (step === sums.length) {
+            combos.push([...stack]);
+        } else {
+            const combosForSum = combosForSums[step];
+            for (const comboForSum of combosForSum) {
+                stack[step] = comboForSum;
+                combosRecursive(step + 1);    
+            }
+        }
+    }
+
+    combosRecursive(0);
+
+    return combos;
 }
 
 function merge(combosForNonOverlappingSums, combosForOverlappingSums) {
@@ -188,36 +208,3 @@ function preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingS
         return orderPreservedCombos;
     }
 }
-
-// function merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap) {
-//     if (combosForOverlappingSums.length === 0) {
-//         return combosForNonOverlappingSums;
-//     }
-
-//     const merged = [];
-
-//     function mergeCombosRecursively(idx) {
-//         const overlappingSum = sums[combosForNonOverlappingSums.length + idx];
-//         const overlappingSumCombo = combosForOverlappingSums[idx];
-
-//         const nonOverlappingSumsToCellsMap = new Map();
-//         overlappingSum.cells.forEach(cell => {
-//             const nonOverlappingSum = cellsToSumsMap.get(cell.key()).nonOverlappingSum;
-//             if (!nonOverlappingSumsToCellsMap.has(nonOverlappingSum)) {
-//                 nonOverlappingSumsToCellsMap.set(nonOverlappingSum, []);
-//             }
-//             nonOverlappingSumsToCellsMap.get(nonOverlappingSum).push(cell);
-//         });
-
-//         determinePlacementsRecursively();
-
-//         overlappingSum.cells.forEach(cell => {
-//             const nonOverlappingSumIdx = cellsToSumsMap.get(cell.key()).nonOverlappingSumIdx;
-//             const nonOverlappingSumCombos = combosForNonOverlappingSums[nonOverlappingSumIdx];
-
-//         });
-//     }
-//     mergeCombosRecursively(0);
-
-//     return combosForNonOverlappingSums;
-// }
