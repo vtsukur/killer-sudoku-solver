@@ -361,5 +361,9 @@ describe('Tests for solver', () => {
         expect(solution[5][3]).toBe(2);
         expect(solution[6][3]).toBe(3);
         expect(solution[7][5]).toBe(8);
+
+        // whitebox test verification
+        expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
+        expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
     });
 });

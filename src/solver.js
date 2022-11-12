@@ -54,6 +54,7 @@ export class CellDeterminator {
 
     placeNumber(number) {
         this.numberOptions = new Set([number]);
+        this.placedNumber = number;
         this.solved = true;
     }
 }
