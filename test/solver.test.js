@@ -355,22 +355,22 @@ describe('Tests for solver', () => {
         const solver = new Solver(testProblem);
 
         const solution = solver.solve();
-        expect(solution[1][5]).toBe(1);
-        expect(solution[2][5]).toBe(3);
-        expect(solution[2][6]).toBe(9);
-        expect(solution[2][7]).toBe(8);
-        expect(solution[2][8]).toBe(1);
-        expect(solution[3][2]).toBe(2);
-        expect(solution[3][3]).toBe(6);
-        expect(solution[3][4]).toBe(8);
-        expect(solution[3][5]).toBe(5);
-        expect(solution[3][7]).toBe(4);
-        expect(solution[4][7]).toBe(1);
-        expect(solution[5][3]).toBe(2);
-        expect(solution[6][3]).toBe(3);
-        expect(solution[7][5]).toBe(8);
 
-        // whitebox test verification
+        // black box verification
+        const NA = undefined;
+        expect(solution).toEqual([
+            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
+            [ NA, NA, NA, NA, NA,  1, NA, NA, NA ],
+            [ NA, NA, NA, NA, NA,  3,  9,  8,  1 ],
+            [ NA, NA,  2,  6,  8,  5, NA,  4, NA ],
+            [ NA, NA, NA, NA, NA, NA, NA,  1, NA ],
+            [ NA, NA, NA, 2,  NA, NA, NA, NA, NA ],
+            [ NA, NA, NA, 3,  NA, NA, NA, NA, NA ],
+            [ NA, NA, NA, NA, NA,  8, NA, NA, NA ],
+            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
+        ]);
+
+        // whitebox verification
         expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
         expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
     });
