@@ -460,8 +460,8 @@ export class Solver {
         cellDeterminator.placeNumber(number);
 
         this.#placeNumberInSegment(this.rows[rowIdx], cell, number);
-        this.columns[colIdx].placedNumbers.add(number);
-        this.subgrids[subgridIdx].placedNumbers.add(number);
+        this.#placeNumberInSegment(this.columns[colIdx], cell, number);
+        this.#placeNumberInSegment(this.subgrids[subgridIdx], cell, number);
 
         this.#solution[rowIdx][colIdx] = number;
         this.#placedNumbersCount++;

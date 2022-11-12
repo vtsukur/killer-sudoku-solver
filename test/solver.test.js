@@ -363,9 +363,9 @@ describe('Tests for solver', () => {
             [ NA, NA, NA, NA, NA,  1, NA, NA, NA ],
             [ NA, NA, NA, NA, NA,  3,  9,  8,  1 ],
             [ NA, NA,  2,  6,  8,  5,  7,  4,  9 ],
-            [ NA, NA, NA, NA, NA, NA,  6,  1, NA ],
-            [ NA, NA, NA, 2,  NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, 3,  NA, NA, NA, NA, NA ],
+            [ NA, NA, NA,  7,  3, NA,  6,  1, NA ],
+            [ NA, NA, NA,  2,  1, NA, NA, NA, NA ],
+            [ NA, NA, NA,  3, NA, NA, NA, NA, NA ],
             [ NA, NA, NA, NA, NA,  8, NA, NA, NA ],
             [ NA, NA,  3, NA, NA, NA, NA, NA, NA ],
         ]);
