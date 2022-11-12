@@ -419,11 +419,17 @@ export class Solver {
             }, this);
         }, this);
 
-        let sumDetsToReduceIterable = this.sumsDeterminatorsMap.values();
+        this.#reduceSumsRecursively(this.sumsDeterminatorsMap.values());
+
+        this.#runCallback('onAfterInitialReduce');
+    }
+
+    #reduceSumsRecursively(sumDets) {
+        let sumDetsIterable = sumDets;
         let iterate = true;
         while (iterate) {
             let modifiedCellDets = new Set();
-            for (const sumDeterminator of sumDetsToReduceIterable) {
+            for (const sumDeterminator of sumDetsIterable) {
                 const currentlyModifiedCellDets = sumDeterminator.reduce();
                 modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
             }
@@ -434,11 +440,9 @@ export class Solver {
             }
 
             const sumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
-            sumDetsToReduceIterable = sumDetsToReduce.values();
+            sumDetsIterable = sumDetsToReduce.values();
             iterate = sumDetsToReduce.size > 0;
         }
-
-        this.#runCallback('onAfterInitialReduce');
     }
 
     #placeNumber(cell, number) {
@@ -449,12 +453,32 @@ export class Solver {
 
         cellDeterminator.placeNumber(number);
 
-        this.rows[rowIdx].placedNumbers.add(number);
+        this.#placeNumberInRow(cell, number);
         this.columns[colIdx].placedNumbers.add(number);
         this.subgrids[subgridIdx].placedNumbers.add(number);
 
         this.#solution[rowIdx][colIdx] = number;
         this.#placedNumbersCount++;
+    }
+
+    #placeNumberInRow(cell, number) {
+        const row = this.rows[cell.rowIdx];
+        row.placedNumbers.add(number);
+
+        let sumsToReduce = new Set();
+
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
+            if (colIdx === cell.colIdx) return;
+
+            const cellDet = this.cellDeterminatorAt(cell.rowIdx, colIdx);
+            if (cellDet.numberOptions.has(number)) {
+                cellDet.numberOptions.delete(number);
+                sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
+            }
+        });
+
+        const sumDetsToReduce = new Set(Array.from(sumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
+        this.#reduceSumsRecursively(sumDetsToReduce.values());
     }
 
     #registerSum(sum) {

@@ -367,7 +367,7 @@ describe('Tests for solver', () => {
             [ NA, NA, NA, 2,  NA, NA, NA, NA, NA ],
             [ NA, NA, NA, 3,  NA, NA, NA, NA, NA ],
             [ NA, NA, NA, NA, NA,  8, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
+            [ NA, NA,  3, NA, NA, NA, NA, NA, NA ],
         ]);
 
         // white box verification
