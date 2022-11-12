@@ -116,7 +116,9 @@ class SumDeterminator {
 
     reduce() {
         if (this.#cellCount > 1 && this.#cellCount < 5 && this.sum.isWithinSegment) {
-            this.#reduceByCellPermutations();
+            return this.#reduceByCellPermutations();
+        } else {
+            return [];
         }
     }
 
@@ -155,13 +157,16 @@ class SumDeterminator {
             }
         };
 
+        const modifiedCellDets = [];
         context.someCell(0, cellDet => {
             context.someNumber(cellDet, 0, (num) => {
                 if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                     cellDet.numberOptions.delete(num);
+                    modifiedCellDets.push(cellDet);
                 }
             });
         });
+        return modifiedCellDets;
     } 
 
     #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
@@ -414,7 +419,24 @@ export class Solver {
             }, this);
         }, this);
 
-        for (const sumDeterminator of this.sumsDeterminatorsMap.values()) sumDeterminator.reduce();
+        let sumDetsToReduceIterable = this.sumsDeterminatorsMap.values();
+        let iterate = true;
+        while (iterate) {
+            let modifiedCellDets = new Set();
+            for (const sumDeterminator of sumDetsToReduceIterable) {
+                const currentlyModifiedCellDets = sumDeterminator.reduce();
+                modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
+            }
+
+            let moreSumsToReduce = new Set();
+            for (const modifiedCellDet of modifiedCellDets.values()) {
+                moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
+            }
+
+            const sumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
+            sumDetsToReduceIterable = sumDetsToReduce.values();
+            iterate = sumDetsToReduce.size > 0;
+        }
 
         this.#runCallback('onAfterInitialReduce');
     }
