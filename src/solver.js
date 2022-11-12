@@ -318,6 +318,8 @@ export class Solver {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         this.#determineSingleCellSums();
+        this.#determineCellWithSingleOption();
+
         return this.#solution;
     }
 
@@ -379,6 +381,17 @@ export class Solver {
                 this.#placeNumber(sum.cells[0], sum.value);
             }
         }
+    }
+
+    #determineCellWithSingleOption() {
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
+            _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
+                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                if (cellDet.numberOptions.size === 1 && !cellDet.solved) {
+                    this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
+                }
+            });
+        });
     }
 
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
