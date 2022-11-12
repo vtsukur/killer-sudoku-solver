@@ -314,43 +314,6 @@ describe('Tests for solver', () => {
         solver.solve();
     });
 
-    // test('[Whitebox] After initial reduce (shallow coverage: cells within subgrid 0 only)', () => {
-    //     const solver = new Solver(testProblem, {
-    //         onAfterInitialReduce() {
-    //             // subgrid 0
-
-    //             const cell_0_0_Determinator = solver.cellDeterminatorAt(0, 0);
-    //             expect(cell_0_0_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
-
-    //             const cell_0_1_Determinator = solver.cellDeterminatorAt(0, 1);
-    //             expect(cell_0_1_Determinator.numberOptions).toEqual(new Set([ 6, 7, 8, 9 ]));
-
-    //             const cell_0_2_Determinator = solver.cellDeterminatorAt(0, 2);
-    //             expect(cell_0_2_Determinator.numberOptions).toEqual(new Set([ 1, 4, 6 ])); // reduced by column combos
-
-    //             const cell_1_2_Determinator = solver.cellDeterminatorAt(1, 2);
-    //             expect(cell_1_2_Determinator.numberOptions).toEqual(new Set([ 4, 6, 9 ])); // reduced by column combos
-
-    //             const cell_1_0_Determinator = solver.cellDeterminatorAt(1, 0);
-    //             expect(cell_1_0_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5 ])); // reduced by subgrid combos
-
-    //             const cell_1_1_Determinator = solver.cellDeterminatorAt(1, 1);
-    //             expect(cell_1_1_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5 ])); // reduced by subgrid combos
-
-    //             const cell_2_0_Determinator = solver.cellDeterminatorAt(2, 0);
-    //             expect(cell_2_0_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5, 6, 7 ])); // reduced by row combos
-
-    //             const cell_2_1_Determinator = solver.cellDeterminatorAt(2, 1);
-    //             expect(cell_2_1_Determinator.numberOptions).toEqual(new Set([ 2, 3, 4, 5, 6, 7 ])); // reduced by row combos
-
-    //             const cell_2_2_Determinator = solver.cellDeterminatorAt(2, 2);
-    //             expect(cell_2_2_Determinator.numberOptions).toEqual(new Set([ 3, 6 ])); // reduced by row and column combos
-    //         }
-    //     });
-
-    //     solver.solve();
-    // });
-
     test('Find solution', () => {
         const solver = new Solver(testProblem);
 
