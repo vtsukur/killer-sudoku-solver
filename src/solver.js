@@ -449,14 +449,24 @@ export class Solver {
     #doReduceSegment(cellDets) {
         let sumsToReduceSet = new Set();
         cellDets.forEach(cellDet => {
-            const nextNextSet = this.#placeNumberInSegments([
+            const number = cellDet.placedNumber;
+            [
                 this.rows[cellDet.cell.rowIdx],
                 this.columns[cellDet.cell.colIdx],
                 this.subgrids[cellDet.cell.subgridIdx]
-            ], cellDet.cell, cellDet.placedNumber);
-            sumsToReduceSet = new Set([...sumsToReduceSet, ...nextNextSet]);
+            ].forEach(segment => {
+                for (const { rowIdx, colIdx } of segment.cellIterator()) {
+                    if (rowIdx === cellDet.cell.rowIdx && colIdx === cellDet.cell.colIdx) continue;
+        
+                    const aCellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                    if (aCellDet.numberOptions.has(number)) {
+                        aCellDet.numberOptions.delete(number);
+                        sumsToReduceSet = new Set([...sumsToReduceSet, ...aCellDet.withinSumsSet]);
+                    }
+                }    
+            });
         });
-        return sumsToReduceSet;
+        return new Set(Array.from(sumsToReduceSet).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
     }
 
     #determineCellsWithSingleOption() {
@@ -481,24 +491,6 @@ export class Solver {
 
         this.#solution[cell.rowIdx][cell.colIdx] = number;
         this.#placedNumbersCount++;
-    }
-
-    #placeNumberInSegments(segments, cell, number) {
-        let sumsToReduce = new Set();
-
-        segments.forEach(segment => {
-            for (const { rowIdx, colIdx } of segment.cellIterator()) {
-                if (rowIdx === cell.rowIdx && colIdx === cell.colIdx) continue;
-    
-                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
-                if (cellDet.numberOptions.has(number)) {
-                    cellDet.numberOptions.delete(number);
-                    sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
-                }
-            }    
-        });
-
-        return new Set(Array.from(sumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
     }
 
     #registerSum(sum) {
