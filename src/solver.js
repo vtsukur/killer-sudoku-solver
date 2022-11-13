@@ -192,7 +192,6 @@ class Segment {
         this.cells = cells;
         this.sums = inputSums;
         this.#sumsArea = new SumsArea(this.sums);
-        this.placedNumbers = new Set();
         this.cellIteratorFn = cellIteratorFn;
     }
 
@@ -462,9 +461,6 @@ export class Solver {
     }
 
     #placeNumberInSegment(segment, cell, number) {
-        const row = this.rows[cell.rowIdx];
-        row.placedNumbers.add(number);
-
         let sumsToReduce = new Set();
 
         for (const { rowIdx, colIdx } of segment.cellIterator()) {
