@@ -383,7 +383,7 @@ export class Solver {
         return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
-    #determineCellWithSingleOption() {
+    #determineCellsWithSingleOption() {
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
                 const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
@@ -442,7 +442,7 @@ export class Solver {
             iterate = sumDetsToReduce.size > 0;
         }
 
-        this.#determineCellWithSingleOption();
+        this.#determineCellsWithSingleOption();
     }
 
     #placeNumber(cell, number) {
