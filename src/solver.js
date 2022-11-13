@@ -383,19 +383,19 @@ export class Solver {
     }
 
     #determineCellsWithSingleOption() {
-        let sumDetsToReduce = new Set();
+        const cellDets = [];
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
                 const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
                 if (cellDet.numberOptions.size === 1 && !cellDet.solved) {
-                    const currentSumDetsToReduce = this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
-                    sumDetsToReduce = new Set([...sumDetsToReduce, ...currentSumDetsToReduce]);
+                    this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
+                    cellDets.push(cellDet);
                 }
             });
         });
 
-        return sumDetsToReduce;
+        return cellDets;
     }
 
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
@@ -432,10 +432,25 @@ export class Solver {
     
             this.#doReduceSums(sumDetsIterable);
     
-            const next = this.#determineCellsWithSingleOption();
-            sumDetsIterable = next.values();
-            iterate = next.size > 0;
+            const solvedCellDets = this.#determineCellsWithSingleOption();
+            const nextSumsSet = this.#doReduceSegment(solvedCellDets);
+
+            sumDetsIterable = nextSumsSet.values();
+            iterate = nextSumsSet.size > 0;
         }
+    }
+
+    #doReduceSegment(cellDets) {
+        let sumsToReduceSet = new Set();
+        cellDets.forEach(cellDet => {
+            const nextNextSet = this.#placeNumberInSegments([
+                this.rows[cellDet.cell.rowIdx],
+                this.columns[cellDet.cell.colIdx],
+                this.subgrids[cellDet.cell.subgridIdx]
+            ], cellDet.cell, cellDet.placedNumber);
+            sumsToReduceSet = new Set([...sumsToReduceSet, ...nextNextSet]);
+        });
+        return sumsToReduceSet;
     }
 
     #doReduceSums(sumDetsIterable) {
@@ -461,21 +476,11 @@ export class Solver {
     }
 
     #placeNumber(cell, number) {
-        const rowIdx = cell.rowIdx;
-        const colIdx = cell.colIdx;
-        const subgridIdx = cell.subgridIdx;
         const cellDeterminator = this.cellDeterminatorOf(cell);
-
         cellDeterminator.placeNumber(number);
 
-        const sumDetsToReduce = this.#placeNumberInSegments([
-            this.rows[rowIdx], this.columns[colIdx], this.subgrids[subgridIdx]
-        ], cell, number);
-
-        this.#solution[rowIdx][colIdx] = number;
+        this.#solution[cell.rowIdx][cell.colIdx] = number;
         this.#placedNumbersCount++;
-
-        return sumDetsToReduce;
     }
 
     #placeNumberInSegments(segments, cell, number) {
