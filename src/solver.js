@@ -112,7 +112,7 @@ class SumDeterminator {
     }
 
     reduce() {
-        if (this.#cellCount > 1 && this.#cellCount < 5 && this.sum.isWithinSegment) {
+        if (this.#cellCount > 1 && this.#cellCount < 6 && this.sum.isWithinSegment) {
             return this.#reduceByCellPermutations();
         } else {
             return [];
