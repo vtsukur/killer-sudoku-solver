@@ -430,11 +430,7 @@ export class Solver {
                 return;
             }
     
-            while (iterate) {
-                const nextSumDetsToReduce = this.#doReduceSums(sumDetsIterable);
-                sumDetsIterable = nextSumDetsToReduce.values();
-                iterate = nextSumDetsToReduce.size > 0;
-            }
+            this.#doReduceSums(sumDetsIterable);
     
             const next = this.#determineCellsWithSingleOption();
             sumDetsIterable = next.values();
@@ -443,19 +439,25 @@ export class Solver {
     }
 
     #doReduceSums(sumDetsIterable) {
-        let modifiedCellDets = new Set();
-        for (const sumDeterminator of sumDetsIterable) {
-            const currentlyModifiedCellDets = sumDeterminator.reduce();
-            modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
-        }
+        let iterate = true;
 
-        let moreSumsToReduce = new Set();
-        for (const modifiedCellDet of modifiedCellDets.values()) {
-            moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
-        }
+        while (iterate) {
+            let modifiedCellDets = new Set();
 
-        const sumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
-        return sumDetsToReduce;
+            for (const sumDeterminator of sumDetsIterable) {
+                const currentlyModifiedCellDets = sumDeterminator.reduce();
+                modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
+            }
+
+            let moreSumsToReduce = new Set();
+            for (const modifiedCellDet of modifiedCellDets.values()) {
+                moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
+            }
+
+            const nextSumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
+            sumDetsIterable = nextSumDetsToReduce.values();
+            iterate = nextSumDetsToReduce.size > 0;
+        }
     }
 
     #placeNumber(cell, number) {
