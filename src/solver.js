@@ -382,22 +382,6 @@ export class Solver {
         return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
-    #determineCellsWithSingleOption() {
-        const cellDets = [];
-
-        _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
-            _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
-                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
-                if (cellDet.numberOptions.size === 1 && !cellDet.solved) {
-                    this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
-                    cellDets.push(cellDet);
-                }
-            });
-        });
-
-        return cellDets;
-    }
-
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
         this.segments.forEach(segment => {
             const combosForSegment = findSumCombinationsForSegment(segment);
@@ -440,19 +424,6 @@ export class Solver {
         }
     }
 
-    #doReduceSegment(cellDets) {
-        let sumsToReduceSet = new Set();
-        cellDets.forEach(cellDet => {
-            const nextNextSet = this.#placeNumberInSegments([
-                this.rows[cellDet.cell.rowIdx],
-                this.columns[cellDet.cell.colIdx],
-                this.subgrids[cellDet.cell.subgridIdx]
-            ], cellDet.cell, cellDet.placedNumber);
-            sumsToReduceSet = new Set([...sumsToReduceSet, ...nextNextSet]);
-        });
-        return sumsToReduceSet;
-    }
-
     #doReduceSums(sumDetsIterable) {
         let iterate = true;
 
@@ -473,6 +444,35 @@ export class Solver {
             sumDetsIterable = nextSumDetsToReduce.values();
             iterate = nextSumDetsToReduce.size > 0;
         }
+    }
+
+    #doReduceSegment(cellDets) {
+        let sumsToReduceSet = new Set();
+        cellDets.forEach(cellDet => {
+            const nextNextSet = this.#placeNumberInSegments([
+                this.rows[cellDet.cell.rowIdx],
+                this.columns[cellDet.cell.colIdx],
+                this.subgrids[cellDet.cell.subgridIdx]
+            ], cellDet.cell, cellDet.placedNumber);
+            sumsToReduceSet = new Set([...sumsToReduceSet, ...nextNextSet]);
+        });
+        return sumsToReduceSet;
+    }
+
+    #determineCellsWithSingleOption() {
+        const cellDets = [];
+
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
+            _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
+                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                if (cellDet.numberOptions.size === 1 && !cellDet.solved) {
+                    this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
+                    cellDets.push(cellDet);
+                }
+            });
+        });
+
+        return cellDets;
     }
 
     #placeNumber(cell, number) {
