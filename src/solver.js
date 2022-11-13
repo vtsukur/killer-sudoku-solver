@@ -79,7 +79,6 @@ class SumsArea {
 
 class SumDeterminator {
     #firstCell;
-    #combos;
     #cellCount;
 
     constructor(sum, cellsDeterminators) {
@@ -102,8 +101,6 @@ class SumDeterminator {
     }
 
     updateCombinations(combos) {
-        this.#combos = combos;
-
         const numberOptions = new Set();
         [...combos].forEach(comboSet => {
             [...comboSet].forEach(number => {
@@ -269,9 +266,8 @@ export class Solver {
     #solution;
     #placedNumbersCount;
 
-    constructor(problem, callbacks = {}) {
+    constructor(problem) {
         this.problem = problem;
-        this.callbacks = callbacks;
         this.inputSums = [];
         this.inputSumsMatrix = newGridMatrix();
         this.sumsDeterminatorsMap = new Map();
@@ -317,12 +313,6 @@ export class Solver {
         return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
     }
 
-    #runCallback(eventName) {
-        if (this.callbacks.hasOwnProperty(eventName)) {
-            this.callbacks[eventName]();
-        }
-    }
-
     solve() {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
@@ -338,7 +328,6 @@ export class Solver {
                 this.#addAndSliceResidualSumRecursively(residualSum);
             }
         }, this);
-        this.#runCallback('onAfterResidualSumsDeterminedAndSliced');
     }
 
     #addAndSliceResidualSumRecursively(residualSum) {
@@ -401,8 +390,6 @@ export class Solver {
                 sumDeterminator.updateCombinations(combos);
             }, this);
         }, this);
-
-        this.#runCallback('onAfterInitialReduce');
     }
 
     #mainReduce(sumDets) {
