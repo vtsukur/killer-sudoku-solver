@@ -330,15 +330,27 @@ export class Solver {
         }, this);
     }
 
-    #addAndSliceResidualSumRecursively(residualSum) {
-        this.#registerSum(residualSum);
+    #addAndSliceResidualSumRecursively(initialResidualSum) {
+        let residualSums = [ initialResidualSum ];
 
-        const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
-        sumsForResidualSum.forEach(sum => {
-            const secondChunkSum = this.#sliceSum(sum, residualSum);
-            this.#unregisterSum(sum);
-            this.#addAndSliceResidualSumRecursively(secondChunkSum);
-        }, this);
+        while (residualSums.length > 0) {
+            const nextResidualSums = [];
+
+            residualSums.forEach(residualSum => {
+                this.#registerSum(residualSum);
+
+                const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
+                const sumsToUnregister = sumsForResidualSum.map(firstChunkSum => {
+                    const secondChunkSum = this.#sliceSum(firstChunkSum, residualSum);
+                    nextResidualSums.push(secondChunkSum);
+                    return firstChunkSum;
+                }, this);
+
+                sumsToUnregister.forEach(sum => this.#unregisterSum(sum));
+            });
+
+            residualSums = nextResidualSums;
+        }
     }
 
     #getSumsFullyContainingResidualSum(residualSum) {
@@ -395,6 +407,7 @@ export class Solver {
     #mainReduce(sumDets) {
         let sumDetsIterable = sumDets;
         let iterate = true;
+        let newlySolvedCellDets = [];
 
         while (iterate) {
             if (this.#placedNumbersCount >= 81) {
@@ -406,7 +419,21 @@ export class Solver {
             const solvedCellDets = this.#determineCellsWithSingleOption();
             const nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
 
+            newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
+
             sumDetsIterable = nextSumsSet.values();
+
+            if (nextSumsSet.size === 0) {
+                newlySolvedCellDets.forEach(cellDet => {
+                    const withinSumsSet = cellDet.withinSumsSet;
+                    if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellSum)) {
+                        const firstChunkSum = Sum.of(cellDet.placedNumber).cell(cellDet.cell.rowIdx, cellDet.cell.colIdx).mk();
+                        this.#addAndSliceResidualSumRecursively(firstChunkSum);
+                    }
+                });
+                newlySolvedCellDets = [];
+            }
+
             iterate = nextSumsSet.size > 0;
         }
     }
