@@ -316,7 +316,7 @@ export class Solver {
     solve() {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
-        this.#mainReduce(this.sumsDeterminatorsMap.values());
+        this.#mainReduce();
 
         return this.#solution;
     }
@@ -404,8 +404,8 @@ export class Solver {
         }, this);
     }
 
-    #mainReduce(sumDets) {
-        let sumDetsIterable = sumDets;
+    #mainReduce() {
+        let sumDetsIterable = this.sumsDeterminatorsMap.values();
         let iterate = true;
         let newlySolvedCellDets = [];
 
@@ -417,13 +417,13 @@ export class Solver {
             this.#reduceSums(sumDetsIterable);
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
-            const nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
+            let nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
-            sumDetsIterable = nextSumsSet.values();
-
-            if (nextSumsSet.size === 0) {
+            if (nextSumsSet.size > 0) {
+                sumDetsIterable = nextSumsSet.values();
+            } else if (newlySolvedCellDets.length > 0) {
                 newlySolvedCellDets.forEach(cellDet => {
                     const withinSumsSet = cellDet.withinSumsSet;
                     if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellSum)) {
@@ -432,6 +432,8 @@ export class Solver {
                     }
                 });
                 newlySolvedCellDets = [];
+                sumDetsIterable = this.sumsDeterminatorsMap.values();
+                nextSumsSet = new Set(sumDetsIterable);
             }
 
             iterate = nextSumsSet.size > 0;
