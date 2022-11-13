@@ -452,26 +452,28 @@ export class Solver {
 
         cellDeterminator.placeNumber(number);
 
-        this.#placeNumberInSegment(this.rows[rowIdx], cell, number);
-        this.#placeNumberInSegment(this.columns[colIdx], cell, number);
-        this.#placeNumberInSegment(this.subgrids[subgridIdx], cell, number);
+        this.#placeNumberInSegments([
+            this.rows[rowIdx], this.columns[colIdx], this.subgrids[subgridIdx]
+        ], cell, number);
 
         this.#solution[rowIdx][colIdx] = number;
         this.#placedNumbersCount++;
     }
 
-    #placeNumberInSegment(segment, cell, number) {
+    #placeNumberInSegments(segments, cell, number) {
         let sumsToReduce = new Set();
 
-        for (const { rowIdx, colIdx } of segment.cellIterator()) {
-            if (rowIdx === cell.rowIdx && colIdx === cell.colIdx) continue;
-
-            const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
-            if (cellDet.numberOptions.has(number)) {
-                cellDet.numberOptions.delete(number);
-                sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
-            }
-        }
+        segments.forEach(segment => {
+            for (const { rowIdx, colIdx } of segment.cellIterator()) {
+                if (rowIdx === cell.rowIdx && colIdx === cell.colIdx) continue;
+    
+                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                if (cellDet.numberOptions.has(number)) {
+                    cellDet.numberOptions.delete(number);
+                    sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
+                }
+            }    
+        });
 
         const sumDetsToReduce = new Set(Array.from(sumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
         this.#reduceSumsRecursively(sumDetsToReduce.values());
