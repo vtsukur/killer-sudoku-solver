@@ -326,7 +326,7 @@ export class Solver {
     solve() {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
-        this.#reduceSums(this.sumsDeterminatorsMap.values());
+        this.#mainReduce(this.sumsDeterminatorsMap.values());
 
         return this.#solution;
     }
@@ -405,7 +405,7 @@ export class Solver {
         this.#runCallback('onAfterInitialReduce');
     }
 
-    #reduceSums(sumDets) {
+    #mainReduce(sumDets) {
         let sumDetsIterable = sumDets;
         let iterate = true;
 
@@ -414,17 +414,17 @@ export class Solver {
                 return;
             }
     
-            this.#doReduceSums(sumDetsIterable);
+            this.#reduceSums(sumDetsIterable);
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
-            const nextSumsSet = this.#doReduceSegment(solvedCellDets);
+            const nextSumsSet = this.#reduceSegment(solvedCellDets);
 
             sumDetsIterable = nextSumsSet.values();
             iterate = nextSumsSet.size > 0;
         }
     }
 
-    #doReduceSums(sumDetsIterable) {
+    #reduceSums(sumDetsIterable) {
         let iterate = true;
 
         while (iterate) {
@@ -446,7 +446,7 @@ export class Solver {
         }
     }
 
-    #doReduceSegment(cellDets) {
+    #reduceSegment(cellDets) {
         let sumsToReduceSet = new Set();
         cellDets.forEach(cellDet => {
             const number = cellDet.placedNumber;
