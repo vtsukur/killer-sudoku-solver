@@ -326,7 +326,7 @@ export class Solver {
     solve() {
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
-        this.#reduceSumsRecursively(this.sumsDeterminatorsMap.values());
+        this.#reduceSums(this.sumsDeterminatorsMap.values());
 
         return this.#solution;
     }
@@ -421,7 +421,7 @@ export class Solver {
         this.#runCallback('onAfterInitialReduce');
     }
 
-    #reduceSumsRecursively(sumDets) {
+    #reduceSums(sumDets) {
         let sumDetsIterable = sumDets;
         let iterate = true;
 
@@ -431,26 +431,31 @@ export class Solver {
             }
     
             while (iterate) {
-                let modifiedCellDets = new Set();
-                for (const sumDeterminator of sumDetsIterable) {
-                    const currentlyModifiedCellDets = sumDeterminator.reduce();
-                    modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
-                }
-    
-                let moreSumsToReduce = new Set();
-                for (const modifiedCellDet of modifiedCellDets.values()) {
-                    moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
-                }
-    
-                const sumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
-                sumDetsIterable = sumDetsToReduce.values();
-                iterate = sumDetsToReduce.size > 0;
+                const nextSumDetsToReduce = this.#doReduceSums(sumDetsIterable);
+                sumDetsIterable = nextSumDetsToReduce.values();
+                iterate = nextSumDetsToReduce.size > 0;
             }
     
             const next = this.#determineCellsWithSingleOption();
             sumDetsIterable = next.values();
             iterate = next.size > 0;
         }
+    }
+
+    #doReduceSums(sumDetsIterable) {
+        let modifiedCellDets = new Set();
+        for (const sumDeterminator of sumDetsIterable) {
+            const currentlyModifiedCellDets = sumDeterminator.reduce();
+            modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
+        }
+
+        let moreSumsToReduce = new Set();
+        for (const modifiedCellDet of modifiedCellDets.values()) {
+            moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
+        }
+
+        const sumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
+        return sumDetsToReduce;
     }
 
     #placeNumber(cell, number) {
