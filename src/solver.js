@@ -417,7 +417,7 @@ export class Solver {
             this.#reduceSums(sumDetsIterable);
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
-            const nextSumsSet = this.#reduceSegment(solvedCellDets);
+            const nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
 
             sumDetsIterable = nextSumsSet.values();
             iterate = nextSumsSet.size > 0;
@@ -446,7 +446,7 @@ export class Solver {
         }
     }
 
-    #reduceSegment(cellDets) {
+    #reduceSegmentsBySolvedCells(cellDets) {
         let sumsToReduceSet = new Set();
         cellDets.forEach(cellDet => {
             const number = cellDet.placedNumber;
