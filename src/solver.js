@@ -353,6 +353,8 @@ export class Solver {
             const nextResidualSums = [];
 
             residualSums.forEach(residualSum => {
+                if (this.sumsDeterminatorsMap.has(residualSum.key())) return;
+
                 this.#registerSum(residualSum);
 
                 const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
@@ -438,10 +440,6 @@ export class Solver {
             let nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
-
-            if (this.#placedNumbersCount >= 81) {
-                // return;
-            }
 
             if (nextSumsSet.size > 0) {
                 sumDetsIterable = nextSumsSet.values();
@@ -566,7 +564,6 @@ export class Solver {
 
     #unregisterSum(sum) {
         const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
-        if (!sumDeterminator) return;
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.anyRowIdx()].removeSum(sum);
         }
