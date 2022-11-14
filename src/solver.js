@@ -192,9 +192,9 @@ class SumDeterminator {
         });
     }
 
-    hasSingleCombination() {
-        return this.#combosMap.size === 1;
-    }
+    // hasSingleCombination() {
+    //     return this.#combosMap.size === 1;
+    // }
 }
 
 class Segment {
