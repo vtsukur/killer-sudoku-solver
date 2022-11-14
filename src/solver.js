@@ -361,7 +361,6 @@ export class Solver {
                 const sumsToUnregister = [];
                 sumsForResidualSum.forEach(firstChunkSum => {
                     const secondChunkSum = this.#sliceSum(firstChunkSum, residualSum);
-                    if (this.sumsDeterminatorsMap.has(secondChunkSum.key())) return;
                     sumsToUnregister.push(firstChunkSum);
                     nextResidualSums.push(secondChunkSum);
                 }, this);
