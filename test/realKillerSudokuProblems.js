@@ -1,6 +1,6 @@
 import { Problem, Sum } from '../src/problem';
 
-const testProblem = new Problem([
+const killerSudokuBySudokuDotCom_2022_11_01 = new Problem([
     // upper subgrids
     Sum.of(15).cell(0, 0).cell(0, 1).mk(),
     Sum.of(10).cell(0, 2).cell(1, 2).mk(),
@@ -41,4 +41,4 @@ const testProblem = new Problem([
     Sum.of(7).cell(8, 6).cell(8, 7).mk()
 ]);
 
-export default testProblem;
+export default killerSudokuBySudokuDotCom_2022_11_01;

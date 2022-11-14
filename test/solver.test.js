@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
-import testProblem from './realKillerSudokuProblems';
+import killerSudokuBySudokuDotCom_2022_11_01 from './realKillerSudokuProblems';
 
 describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
-        const solver = new Solver(testProblem);
+        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
 
         expect(solver.problem.cells.length).toBe(GRID_CELL_COUNT);
         expect(solver.problem.cells[21]).toEqual(new Cell(2, 3));
@@ -31,7 +31,7 @@ describe('Tests for solver', () => {
     });
 
     test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-11-01)', () => {
-        const solver = new Solver(testProblem);
+        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
         const solution = solver.solve();
 
         expect(solution).toEqual([
@@ -48,7 +48,7 @@ describe('Tests for solver', () => {
     });
 
     test('Find solution (whitebox verification)', () => {
-        const solver = new Solver(testProblem);
+        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
         solver.solve();
 
         expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
