@@ -80,12 +80,14 @@ class SumsArea {
 class SumDeterminator {
     #firstCell;
     #cellCount;
+    #combosMap;
 
     constructor(sum, cellsDeterminators) {
         this.sum = sum;
         this.#firstCell = sum.cells[0];
         this.cellsDeterminators = cellsDeterminators;
         this.#cellCount = sum.cellCount;
+        this.#combosMap = new Map();
     }
 
     anyRowIdx() {
@@ -154,6 +156,8 @@ class SumDeterminator {
             }
         };
 
+        this.#combosMap = new Map();
+
         const modifiedCellDets = [];
         context.someCell(0, cellDet => {
             context.someNumber(cellDet, 0, (num) => {
@@ -170,7 +174,15 @@ class SumDeterminator {
         if (step === (this.#cellCount - 1)) {
             const lastNum = this.sum.value - currentSumVal;
             const lastCellDet = context.remainingCellDet();
-            return lastCellDet.numberOptions.has(lastNum);
+            const has = lastCellDet.numberOptions.has(lastNum);
+            if (has) {
+                const sortedNumbers = [...context.numbersStack];
+                sortedNumbers[this.#cellCount - 1] = lastNum;
+                sortedNumbers.sort();
+                const comboKey = sortedNumbers.join();
+                this.#combosMap.set(comboKey, sortedNumbers);
+            }
+            return has;
         }
 
         return context.someCell(step, cellDet => {
@@ -178,6 +190,10 @@ class SumDeterminator {
                 return this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context);
             });
         });
+    }
+
+    hasSingleCombination() {
+        return this.#combosMap.size === 1;
     }
 }
 
@@ -337,13 +353,18 @@ export class Solver {
             const nextResidualSums = [];
 
             residualSums.forEach(residualSum => {
+                if (residualSum.cells.length === 0) return;
+
                 this.#registerSum(residualSum);
 
                 const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
-                const sumsToUnregister = sumsForResidualSum.map(firstChunkSum => {
+                const sumsToUnregister = [];
+                sumsForResidualSum.forEach(firstChunkSum => {
+                    if (firstChunkSum.cells.length === 0) return;
+
                     const secondChunkSum = this.#sliceSum(firstChunkSum, residualSum);
                     nextResidualSums.push(secondChunkSum);
-                    return firstChunkSum;
+                    sumsToUnregister.push(firstChunkSum);
                 }, this);
 
                 sumsToUnregister.forEach(sum => this.#unregisterSum(sum));
@@ -421,6 +442,10 @@ export class Solver {
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
+            if (this.#placedNumbersCount >= 81) {
+                return;
+            }
+
             if (nextSumsSet.size > 0) {
                 sumDetsIterable = nextSumsSet.values();
             } else if (newlySolvedCellDets.length > 0) {
@@ -432,9 +457,12 @@ export class Solver {
                     }
                 });
                 newlySolvedCellDets = [];
-                sumDetsIterable = this.sumsDeterminatorsMap.values();
-                nextSumsSet = new Set(sumDetsIterable);
+                nextSumsSet = new Set(this.sumsDeterminatorsMap.values());
+                sumDetsIterable = nextSumsSet.values();
             }
+            // else {
+            //     nextSumsSet = this.#reduceSumsBySegments();
+            // }
 
             iterate = nextSumsSet.size > 0;
         }
@@ -485,6 +513,19 @@ export class Solver {
         return new Set(Array.from(sumsToReduceSet).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
     }
 
+    // #reduceSumsBySegments() {
+    //     for (const sumDet of this.sumsDeterminatorsMap.values()) {
+    //         sumDet.reduce();
+    //         const sum = sumDet.sum;
+    //         if (!sum.isSingleCellSum) {
+    //             if (sum.isWithinRow && sumDet.hasSingleCombination()) {
+
+    //             }
+    //         }
+    //     }
+    //     return new Set();
+    // }
+
     #determineCellsWithSingleOption() {
         const cellDets = [];
 
@@ -528,6 +569,7 @@ export class Solver {
 
     #unregisterSum(sum) {
         const sumDeterminator = this.sumsDeterminatorsMap.get(sum.key());
+        if (!sumDeterminator) return;
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.anyRowIdx()].removeSum(sum);
         }
