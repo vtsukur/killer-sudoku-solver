@@ -38,15 +38,15 @@ describe('Tests for solver', () => {
         // black box verification
         const NA = undefined;
         expect(solution).toEqual([
-            [ NA, NA,  1,  9, NA, NA, NA, NA, NA ],
-            [ NA, NA,  9,  8, NA,  1, NA, NA, NA ],
-            [ NA, NA,  6,  4,  7,  3,  9,  8,  1 ],
-            [ NA, NA,  2,  6,  8,  5,  7,  4,  9 ],
-            [ NA, NA, NA,  7,  3, NA,  6,  1, NA ],
-            [ NA, NA, NA,  2,  1, NA, NA, NA, NA ],
-            [ NA, NA, NA,  3, NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA,  8, NA, NA, NA ],
-            [ NA, NA,  3, NA, NA,  7, NA, NA, NA ],
+            [ 8, 7, 1, 9, 2, 6, 4, 3, 5 ],
+            [ 3, 4, 9, 8, 5, 1, 2, 7, 6 ],
+            [ 2, 5, 6, 4, 7, 3, 9, 8, 1 ],
+            [ 1, 3, 2, 6, 8, 5, 7, 4, 9 ],
+            [ 5, 9, 8, 7, 3, 4, 6, 1, 2 ],
+            [ 7, 6, 4, 2, 1, 9, 3, 5, 8 ],
+            [ 9, 1, 5, 3, 4, 2, 8, 6, 7 ],
+            [ 4, 2, 7, 5, 6, 8, 1, 9, 3 ],
+            [ 6, 8, 3, 1, 9, 7, 5, 2, 4 ],
         ]);
 
         // white box verification
