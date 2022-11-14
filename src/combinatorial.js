@@ -67,6 +67,17 @@ export function findSumCombinationsForSegment(segment) {
         throw `Invalid cells: ${cells}`;
     }
 
+    const { nonOverlappingSums, overlappingSums, cellsToSumsMap} = clusterSumsByOverlap(sums, cells);
+
+    const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
+    const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
+    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap);
+    const preservedSumOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingSums);
+
+    return preservedSumOrderCombos;
+}
+
+export function clusterSumsByOverlap(sums, cells) {
     const cellsToSumsMap = new Map();
     cells.forEach(cell => {
         cellsToSumsMap.set(cell.key(), { allSums: new Set(), nonOverlappingSum: undefined, nonOverlappingSumIdx: undefined } );
@@ -92,12 +103,11 @@ export function findSumCombinationsForSegment(segment) {
         }
     });
 
-    const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
-    const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
-    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap);
-    const preservedSumOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingSums);
-
-    return preservedSumOrderCombos;
+    return {
+        nonOverlappingSums,
+        overlappingSums,
+        cellsToSumsMap
+    };
 }
 
 function doFindForNonOverlappingSums(sums) {

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
-import { findSumCombinationsForSegment } from './combinatorial';
+import { clusterSumsByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -65,11 +65,13 @@ class SumsArea {
         this.cellsSet = new Set();
         this.totalValue = 0;
         sums.forEach(sum => {
-            this.totalValue += sum.value;
             sum.cells.forEach(cell => {
                 this.cellsSet.add(cell);
             }, this);
         }, this);
+
+        const { nonOverlappingSums } = clusterSumsByOverlap(sums, new Set(this.cellsSet));
+        nonOverlappingSums.forEach(sum => this.totalValue += sum.value);
     }
 
     has(cell) {
