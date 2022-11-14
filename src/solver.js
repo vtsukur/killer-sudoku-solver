@@ -353,18 +353,15 @@ export class Solver {
             const nextResidualSums = [];
 
             residualSums.forEach(residualSum => {
-                if (residualSum.cells.length === 0) return;
-
                 this.#registerSum(residualSum);
 
                 const sumsForResidualSum = this.#getSumsFullyContainingResidualSum(residualSum);
                 const sumsToUnregister = [];
                 sumsForResidualSum.forEach(firstChunkSum => {
-                    if (firstChunkSum.cells.length === 0) return;
-
                     const secondChunkSum = this.#sliceSum(firstChunkSum, residualSum);
-                    nextResidualSums.push(secondChunkSum);
+                    if (this.sumsDeterminatorsMap.has(secondChunkSum.key())) return;
                     sumsToUnregister.push(firstChunkSum);
+                    nextResidualSums.push(secondChunkSum);
                 }, this);
 
                 sumsToUnregister.forEach(sum => this.#unregisterSum(sum));
@@ -443,7 +440,7 @@ export class Solver {
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
             if (this.#placedNumbersCount >= 81) {
-                return;
+                // return;
             }
 
             if (nextSumsSet.size > 0) {
