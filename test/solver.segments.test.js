@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import testProblem from './testProblem';
+import testProblem from './testProblems';
 import { Cell, Sum, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../src/problem';
 import { Row, Column, Subgrid, Solver } from '../src/solver';
 

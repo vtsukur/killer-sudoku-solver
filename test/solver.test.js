@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
-import testProblem from './testProblem';
+import testProblem from './testProblems';
 
 describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
@@ -30,7 +30,7 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.withinSumsSet).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
     });
 
-    test('Find solution', () => {
+    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-11-01)', () => {
         const solver = new Solver(testProblem);
         const solution = solver.solve();
 

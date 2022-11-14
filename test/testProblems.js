@@ -1,4 +1,4 @@
-import { Problem, Sum, Cell } from '../src/problem';
+import { Problem, Sum } from '../src/problem';
 
 const testProblem = new Problem([
     // upper subgrids
