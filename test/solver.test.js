@@ -32,11 +32,8 @@ describe('Tests for solver', () => {
 
     test('Find solution', () => {
         const solver = new Solver(testProblem);
-
         const solution = solver.solve();
 
-        // black box verification
-        const NA = undefined;
         expect(solution).toEqual([
             [ 8, 7, 1, 9, 2, 6, 4, 3, 5 ],
             [ 3, 4, 9, 8, 5, 1, 2, 7, 6 ],
@@ -48,9 +45,19 @@ describe('Tests for solver', () => {
             [ 4, 2, 7, 5, 6, 8, 1, 9, 3 ],
             [ 6, 8, 3, 1, 9, 7, 5, 2, 4 ],
         ]);
+    });
 
-        // white box verification
+    test('Find solution (whitebox verification)', () => {
+        const solver = new Solver(testProblem);
+        solver.solve();
+
         expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
         expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
+
+        _.range(UNIQUE_SEGMENT_LENGTH).forEach(idx => {
+            expect(solver.rows[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
+            expect(solver.columns[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
+            expect(solver.subgrids[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
+        });
     });
 });
