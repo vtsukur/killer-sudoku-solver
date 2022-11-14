@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
-import testProblem from './testProblems';
+import testProblem from './realKillerSudokuProblems';
 
 describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
