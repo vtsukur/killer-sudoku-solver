@@ -199,7 +199,7 @@ class SumDeterminator {
         });
     }
 
-    reduceToCombinationsContaining(containingNum) {
+    reduceToCombinationsContaining(withNum) {
         if (this.#hasSingleCombination() || !this.#combosMap.size) return [];
 
         const newCombosMap = new Map();
@@ -210,7 +210,7 @@ class SumDeterminator {
             const key = comboEntry[0];
             const value = comboEntry[1];
             const numSet = new Set(value);
-            if (numSet.has(containingNum)) {
+            if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
                 newNumOptions = new Set([...newNumOptions, ...numSet]);
             } else {
