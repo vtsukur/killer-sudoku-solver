@@ -549,6 +549,8 @@ export class Solver {
     }
 
     #determineUniqueSumsInSegments() {
+        let sumsToReduce = new Set();
+
         this.segments.forEach(segment => {
             _.range(1, UNIQUE_SEGMENT_LENGTH + 1).forEach(num => {
                 const sumDetsWithNum = [];
@@ -564,21 +566,16 @@ export class Solver {
                 if (sumDetsWithNum.length !== 1) return;
 
                 const sumDetToReDefine = sumDetsWithNum[0];
-                const numOptionsToRemove = sumDetToReDefine.reduceToCombinationsContaining(num);
+                const reducedCellDets = sumDetToReDefine.reduceToCombinationsContaining(num);
                 
-                if (!numOptionsToRemove.length) return;
-
-                segment.sums.forEach(sum => {
-                    if (sum.isSingleCellSum) return;
-                    const sumDet = this.sumsDeterminatorsMap.get(sum.key());
-                    if (sumDet === sumDetToReDefine) return;
-
-
+                if (!reducedCellDets.length) return;
+                reducedCellDets.forEach(cellDet => {
+                    sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
                 });
             });
         });
 
-        return new Set();
+        return new Set(Array.from(sumsToReduce).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
     }
 
     #determineCellsWithSingleOption() {

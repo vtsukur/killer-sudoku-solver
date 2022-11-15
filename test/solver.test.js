@@ -36,15 +36,15 @@ describe('Tests for solver', () => {
 
         const NA = undefined;
         expect(solution).toEqual([
-            [ NA, NA, NA, NA, NA,  9, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [  3, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [  1, NA, NA, NA, NA, NA, NA,  3, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
-            [ NA, NA, NA, NA, NA, NA, NA, NA, NA ],
+            [  6,  5,  8,  4,  7,  9,  1,  2,  3 ],
+            [  7,  4,  3,  1,  6,  2,  5,  8,  9 ],
+            [  2,  9,  1, NA, NA, NA,  7, NA, NA ],
+            [  5, NA,  6, NA, NA, NA,  4,  7, NA ],
+            [  3, NA,  4,  6, NA, NA,  9,  5, NA ],
+            [  1,  7,  9, NA, NA, NA,  6,  3, NA ],
+            [  9,  6,  2,  3,  4,  5,  8,  1,  7 ],
+            [ NA,  1,  5, NA,  2, NA,  3,  9, NA ],
+            [ NA,  3,  7, NA, NA, NA,  2, NA,  5 ],
         ]);
     });
 
