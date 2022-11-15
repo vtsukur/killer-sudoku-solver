@@ -194,9 +194,40 @@ class SumDeterminator {
         });
     }
 
-    // hasSingleCombination() {
-    //     return this.#combosMap.size === 1;
-    // }
+    reduceToCombinationsContaining(containingNum) {
+        if (this.#hasSingleCombination() || !this.#combosMap.size) return [];
+
+        const newCombosMap = new Map();
+        const removedCombos = [];
+        let newNumOptions = new Set();
+
+        for (const comboEntry of this.#combosMap.entries()) {
+            const key = comboEntry[0];
+            const value = comboEntry[1];
+            const numSet = new Set(value);
+            if (numSet.has(containingNum)) {
+                newCombosMap.set(key, value);
+                newNumOptions = new Set([...newNumOptions, ...numSet]);
+            } else {
+                removedCombos.push(value);
+            }
+        }
+
+        if (removedCombos.length > 0) {
+            this.#combosMap = newCombosMap;
+            this.cellsDeterminators.forEach(cellDet => {
+                cellDet.reduceNumberOptions(newNumOptions);
+            });
+            return this.cellsDeterminators;
+        }
+        else {
+            return [];            
+        }
+    }
+
+    #hasSingleCombination() {
+        return this.#combosMap.size === 1;
+    }
 }
 
 class Segment {
@@ -456,9 +487,9 @@ export class Solver {
                 nextSumsSet = new Set(this.sumsDeterminatorsMap.values());
                 sumDetsIterable = nextSumsSet.values();
             }
-            // else {
-            //     nextSumsSet = this.#reduceSumsBySegments();
-            // }
+            else {
+                nextSumsSet = this.#determineUniqueSumsInSegments();
+            }
 
             iterate = nextSumsSet.size > 0;
         }
@@ -509,18 +540,38 @@ export class Solver {
         return new Set(Array.from(sumsToReduceSet).map(sum => this.sumsDeterminatorsMap.get(sum.key())));
     }
 
-    // #reduceSumsBySegments() {
-    //     for (const sumDet of this.sumsDeterminatorsMap.values()) {
-    //         sumDet.reduce();
-    //         const sum = sumDet.sum;
-    //         if (!sum.isSingleCellSum) {
-    //             if (sum.isWithinRow && sumDet.hasSingleCombination()) {
+    #determineUniqueSumsInSegments() {
+        this.segments.forEach(segment => {
+            _.range(1, UNIQUE_SEGMENT_LENGTH + 1).forEach(num => {
+                const sumDetsWithNum = [];
+                // consider overlapping vs non-overlapping sums
+                segment.sums.forEach(sum => {
+                    if (sum.isSingleCellSum) return;
+                    const sumDet = this.sumsDeterminatorsMap.get(sum.key());
+                    const hasNumInCells = sumDet.cellsDeterminators.some(cellDet => cellDet.numberOptions.has(num));
+                    if (hasNumInCells) {
+                        sumDetsWithNum.push(sumDet);
+                    }
+                });
+                if (sumDetsWithNum.length !== 1) return;
 
-    //             }
-    //         }
-    //     }
-    //     return new Set();
-    // }
+                const sumDetToReDefine = sumDetsWithNum[0];
+                const numOptionsToRemove = sumDetToReDefine.reduceToCombinationsContaining(num);
+                
+                if (!numOptionsToRemove.length) return;
+
+                segment.sums.forEach(sum => {
+                    if (sum.isSingleCellSum) return;
+                    const sumDet = this.sumsDeterminatorsMap.get(sum.key());
+                    if (sumDet === sumDetToReDefine) return;
+
+
+                });
+            });
+        });
+
+        return new Set();
+    }
 
     #determineCellsWithSingleOption() {
         const cellDets = [];
