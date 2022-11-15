@@ -43,13 +43,17 @@ export class CellDeterminator {
     }
 
     reduceNumberOptions(numberOptions) {
+        const removedNumOptions = new Set();
         const newSet = new Set();
         for (const existingNumberOption of this.numberOptions) {
             if (numberOptions.has(existingNumberOption)) {
                 newSet.add(existingNumberOption);
+            } else {
+                removedNumOptions.add(existingNumberOption);
             }
         }
         this.numberOptions = newSet;
+        return removedNumOptions;
     }
 
     placeNumber(number) {
@@ -175,6 +179,7 @@ class SumDeterminator {
     #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
         if (step === (this.#cellCount - 1)) {
             const lastNum = this.sum.value - currentSumVal;
+            if (context.processedNumbers.has(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
             const has = lastCellDet.numberOptions.has(lastNum);
             if (has) {
@@ -215,10 +220,13 @@ class SumDeterminator {
 
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
+            const reducedCellDets = [];
             this.cellsDeterminators.forEach(cellDet => {
-                cellDet.reduceNumberOptions(newNumOptions);
+                if (cellDet.reduceNumberOptions(newNumOptions).size > 0) {
+                    reducedCellDets.push(cellDet);
+                }
             });
-            return this.cellsDeterminators;
+            return reducedCellDets;
         }
         else {
             return [];            
