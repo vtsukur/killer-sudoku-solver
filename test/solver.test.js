@@ -34,17 +34,16 @@ describe('Tests for solver', () => {
         const solver = new Solver(killerSudokuBySudokuDotCom_2022_10_25);
         const solution = solver.solve();
 
-        const NA = undefined;
         expect(solution).toEqual([
-            [  6,  5,  8,  4,  7,  9,  1,  2,  3 ],
-            [  7,  4,  3,  1,  6,  2,  5,  8,  9 ],
-            [  2,  9,  1, NA, NA, NA,  7, NA, NA ],
-            [  5, NA,  6, NA, NA, NA,  4,  7, NA ],
-            [  3, NA,  4,  6, NA, NA,  9,  5, NA ],
-            [  1,  7,  9, NA, NA, NA,  6,  3, NA ],
-            [  9,  6,  2,  3,  4,  5,  8,  1,  7 ],
-            [ NA,  1,  5, NA,  2, NA,  3,  9, NA ],
-            [ NA,  3,  7, NA, NA, NA,  2, NA,  5 ],
+            [ 6, 5, 8, 4, 7, 9, 1, 2, 3 ],
+            [ 7, 4, 3, 1, 6, 2, 5, 8, 9 ],
+            [ 2, 9, 1, 5, 3, 8, 7, 4, 6 ],
+            [ 5, 8, 6, 9, 1, 3, 4, 7, 2 ],
+            [ 3, 2, 4, 6, 8, 7, 9, 5, 1 ],
+            [ 1, 7, 9, 2, 5, 4, 6, 3, 8 ],
+            [ 9, 6, 2, 3, 4, 5, 8, 1, 7 ],
+            [ 8, 1, 5, 7, 2, 6, 3, 9, 4 ],
+            [ 4, 3, 7, 8, 9, 1, 2, 6, 5 ]
         ]);
     });
 
