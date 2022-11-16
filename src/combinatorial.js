@@ -105,8 +105,7 @@ export function clusterSumsByOverlap(sums, cells) {
 
     return {
         nonOverlappingSums,
-        overlappingSums,
-        cellsToSumsMap
+        overlappingSums
     };
 }
 
