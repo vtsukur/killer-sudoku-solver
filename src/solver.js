@@ -129,6 +129,7 @@ class SumDeterminator {
 
     #reduceByCellPermutations() {
         const context = {
+            i: 0,
             cellDets: this.cellsDeterminators,
             processedCellDets: new Set(),
             remainingCellDets: new Set(this.cellsDeterminators),
@@ -145,6 +146,7 @@ class SumDeterminator {
                 return retVal;
             },
             processNumber: function(num, step, fn) {
+                this.i++;
                 if (this.processedNumbers.has(num)) return;
                 this.processedNumbers.add(num);
                 this.numbersStack[step] = num;
@@ -161,11 +163,12 @@ class SumDeterminator {
         this.#combosMap = new Map();
 
         const modifiedCellDets = [];
-        this.cellsDeterminators.some(cellDet => {
+        this.cellsDeterminators.forEach(cellDet => {
             context.processCell(cellDet, 0, () => {
-                Array.from(cellDet.numberOptions).some(num => {
+                Array.from(cellDet.numberOptions).forEach(num => {
                     context.processNumber(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
+                            // move to modification after looping
                             cellDet.numberOptions.delete(num);
                             modifiedCellDets.push(cellDet);
                         }    
@@ -173,15 +176,19 @@ class SumDeterminator {
                 });
             });
         });
+
         return modifiedCellDets;
     } 
 
     #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
+        let has = false;
+
         if (step === (this.#cellCount - 1)) {
+            context.i++;
             const lastNum = this.sum.value - currentSumVal;
             if (context.processedNumbers.has(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
-            const has = lastCellDet.numberOptions.has(lastNum);
+            has = lastCellDet.numberOptions.has(lastNum);
             if (has) {
                 const sortedNumbers = [...context.numbersStack];
                 sortedNumbers[this.#cellCount - 1] = lastNum;
@@ -189,18 +196,19 @@ class SumDeterminator {
                 const comboKey = sortedNumbers.join();
                 this.#combosMap.set(comboKey, sortedNumbers);
             }
-            return has;
-        }
-
-        return this.cellsDeterminators.some(cellDet => {
-            return context.processCell(cellDet, step, () => {
-                return Array.from(cellDet.numberOptions).some(num => {
-                    return context.processNumber(num, step, () => {
-                        return this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context);
+        } else {
+            this.cellsDeterminators.forEach(cellDet => {
+                context.processCell(cellDet, step, () => {
+                    Array.from(cellDet.numberOptions).forEach(num => {
+                        context.processNumber(num, step, () => {
+                            has = this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context) || has;
+                        });
                     });
                 });
-            });
-        });
+            });    
+        }
+
+        return has;
     }
 
     reduceToCombinationsContaining(withNum) {
