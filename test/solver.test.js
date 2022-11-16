@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
-import { killerSudokuBySudokuDotCom_2022_10_22, killerSudokuBySudokuDotCom_2022_10_25, killerSudokuBySudokuDotCom_2022_11_01, killerSudokuBySudokuDotCom_2022_11_10 } from './realKillerSudokuProblems';
+import { killerSudokuBySudokuDotCom_2022_10_19, killerSudokuBySudokuDotCom_2022_10_22, killerSudokuBySudokuDotCom_2022_10_25, killerSudokuBySudokuDotCom_2022_11_01, killerSudokuBySudokuDotCom_2022_11_10 } from './realKillerSudokuProblems';
 
 describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
@@ -28,6 +28,23 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numberOptions).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         expect(aCellDeterminator.withinSumsSet).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
+    });
+
+    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-19)', () => {
+        const solver = new Solver(killerSudokuBySudokuDotCom_2022_10_19);
+        const solution = solver.solve();
+
+        expect(solution).toEqual([
+            [ 5, 6, 1, 3, 7, 4, 8, 2, 9 ],
+            [ 3, 7, 8, 9, 6, 2, 5, 1, 4 ],
+            [ 4, 2, 9, 1, 8, 5, 3, 6, 7 ],
+            [ 1, 9, 6, 7, 5, 3, 4, 8, 2 ],
+            [ 7, 4, 5, 2, 1, 8, 6, 9, 3 ],
+            [ 8, 3, 2, 4, 9, 6, 7, 5, 1 ],
+            [ 9, 8, 4, 5, 3, 1, 2, 7, 6 ],
+            [ 2, 5, 7, 6, 4, 9, 1, 3, 8 ],
+            [ 6, 1, 3, 8, 2, 7, 9, 4, 5 ]
+        ]);
     });
 
     test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-22)', () => {
