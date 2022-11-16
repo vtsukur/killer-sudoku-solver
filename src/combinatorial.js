@@ -67,11 +67,11 @@ export function findSumCombinationsForSegment(segment) {
         throw `Invalid cells: ${cells}`;
     }
 
-    const { nonOverlappingSums, overlappingSums, cellsToSumsMap} = clusterSumsByOverlap(sums, cells);
+    const { nonOverlappingSums, overlappingSums } = clusterSumsByOverlap(sums, cells);
 
     const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
     const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
-    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums, sums, cellsToSumsMap);
+    const combinedCombos = merge(combosForNonOverlappingSums, combosForOverlappingSums);
     const preservedSumOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingSums);
 
     return preservedSumOrderCombos;
