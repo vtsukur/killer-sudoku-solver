@@ -135,24 +135,22 @@ class SumDeterminator {
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellsDetsStack: new Array(this.#cellCount),
-            someNumber: function(cellDet, step, fn) {
-                return Array.from(cellDet.numberOptions).some(num => {
-                    if (this.processedNumbers.has(num)) return;
-                    this.processedNumbers.add(num);
-                    this.numbersStack[step] = num;
-                    const retVal = fn(num);
-                    this.numbersStack[step] = undefined;
-                    this.processedNumbers.delete(num);
-                    return retVal;
-                });
-            },
             processCell: function(cellDet, step, fn) {
                 if (this.processedCellDets.has(cellDet)) return;
                 this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
                 this.cellsDetsStack[step] = cellDet;
-                const retVal = fn(cellDet);
+                const retVal = fn();
                 this.cellsDetsStack[step] = undefined;
                 this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);    
+                return retVal;
+            },
+            processNumber: function(num, step, fn) {
+                if (this.processedNumbers.has(num)) return;
+                this.processedNumbers.add(num);
+                this.numbersStack[step] = num;
+                const retVal = fn();
+                this.numbersStack[step] = undefined;
+                this.processedNumbers.delete(num);
                 return retVal;
             },
             remainingCellDet: function() {
@@ -165,11 +163,13 @@ class SumDeterminator {
         const modifiedCellDets = [];
         this.cellsDeterminators.some(cellDet => {
             context.processCell(cellDet, 0, () => {
-                context.someNumber(cellDet, 0, (num) => {
-                    if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                        cellDet.numberOptions.delete(num);
-                        modifiedCellDets.push(cellDet);
-                    }
+                Array.from(cellDet.numberOptions).some(num => {
+                    context.processNumber(num, 0, () => {
+                        if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
+                            cellDet.numberOptions.delete(num);
+                            modifiedCellDets.push(cellDet);
+                        }    
+                    });
                 });
             });
         });
@@ -194,8 +194,10 @@ class SumDeterminator {
 
         return this.cellsDeterminators.some(cellDet => {
             return context.processCell(cellDet, step, () => {
-                return context.someNumber(cellDet, step, (num) => {
-                    return this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context);
+                return Array.from(cellDet.numberOptions).some(num => {
+                    return context.processNumber(num, step, () => {
+                        return this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context);
+                    });
                 });
             });
         });
