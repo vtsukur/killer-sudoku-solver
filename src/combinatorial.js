@@ -78,35 +78,84 @@ export function findSumCombinationsForSegment(segment) {
 }
 
 export function clusterSumsByOverlap(sums, cells) {
+    let nonOverlappingSums = [];
+    const overlappingSums = [];
+
     const cellsToSumsMap = new Map();
     cells.forEach(cell => {
-        cellsToSumsMap.set(cell.key(), { allSums: new Set(), nonOverlappingSum: undefined, nonOverlappingSumIdx: undefined } );
+        cellsToSumsMap.set(cell.key(), new Set());
     })
     sums.forEach(sum => {
         sum.cells.forEach(cell => {
-            cellsToSumsMap.get(cell.key()).allSums.add(sum);
+            cellsToSumsMap.get(cell.key()).add(sum);
         });
     });
-    const nonOverlappingSums = [];
-    const overlappingSums = [];
-    sums.forEach((sum, idx) => {
-        const allCellsAreWithinMoreThan1Sum = sum.cells.every(cell => cellsToSumsMap.get(cell.key()).allSums.size > 1);
-        if (allCellsAreWithinMoreThan1Sum) {
-            overlappingSums.push(sum);
-        } else {
-            nonOverlappingSums.push(sum);
-            sum.cells.forEach(cell => {
-                const mapValue = cellsToSumsMap.get(cell.key());
-                mapValue.nonOverlappingSum = sum;
-                mapValue.nonOverlappingSumIdx = idx;
-            });
-        }
-    });
+
+    const allSumsAreNonOverlapping = Array.from(cellsToSumsMap.values()).every(sumSet => sumSet.size === 1);
+    if (allSumsAreNonOverlapping) {
+        nonOverlappingSums = [...sums];
+    } else {
+        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(sums);
+        sums.forEach(sum => {
+            if (maxNonOverlappingSumAreaSet.has(sum)) {
+                nonOverlappingSums.push(sum);
+            } else {
+                overlappingSums.push(sum);
+            }
+        });    
+    }
 
     return {
         nonOverlappingSums,
         overlappingSums
     };
+}
+
+function findMaxNonOverlappingSumArea(sums) {
+    const context = {
+        allSumsSet: new Set(sums),
+        maxAreaSet: new Set(),
+        maxAreaCellCount: 0,
+        cellCount: 0,
+        sumsStack: new Set(),
+        remainingSumsStack: new Set(sums),
+        overlappingSumsStack: new Set(),
+        areaCellKeysStack: new Set()
+    };
+
+    sums.forEach(sum => {
+        findBiggestNonOverlappingSumAreaRecursive(sum, context);
+    });
+
+    return context.maxAreaSet;
+}
+
+function findBiggestNonOverlappingSumAreaRecursive(sum, context) {
+    if (context.maxAreaCellCount >= UNIQUE_SEGMENT_LENGTH || !sum) {
+        return;
+    }
+
+    const noOverlap = sum.cells.every(cell => !context.areaCellKeysStack.has(cell.key()));
+    if (!noOverlap) return;
+
+    context.sumsStack.add(sum);
+    context.remainingSumsStack.delete(sum);
+    sum.cells.forEach(cell => context.areaCellKeysStack.add(cell.key()));
+    context.cellCount += sum.cellCount;
+
+    if (context.cellCount >= UNIQUE_SEGMENT_LENGTH ||
+        (context.cellCount <= UNIQUE_SEGMENT_LENGTH && context.cellCount > context.maxAreaCellCount)) {
+        context.maxAreaSet = new Set(context.sumsStack);
+        context.maxAreaCellCount = context.cellCount;
+    }
+
+    const nextSum = context.remainingSumsStack.values().next().value;
+    findBiggestNonOverlappingSumAreaRecursive(nextSum, context);
+
+    context.cellCount -= sum.cellCount;
+    sum.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key()));
+    context.remainingSumsStack.add(sum);
+    context.sumsStack.delete(sum);
 }
 
 function doFindForNonOverlappingSums(sums) {
