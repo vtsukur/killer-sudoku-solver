@@ -138,14 +138,18 @@ class SumDeterminator {
     }
 
     reduce() {
-        if (this.#cellCount > 1 && this.#cellCount < 6 && this.sum.isWithinSegment) {
-            return this.#reduceByCellPermutations();
+        if (this.#cellCount > 1 && this.#cellCount < 6) {
+            if (this.sum.isWithinSegment) {
+                return this.#reduceByCellPermutations(false);
+            } else {
+                return this.#reduceByCellPermutations(true);
+            }
         } else {
             return [];
         }
     }
 
-    #reduceByCellPermutations() {
+    #reduceByCellPermutations(canHaveNumberDuplicates) {
         const context = {
             i: 0,
             cellDets: this.cellsDeterminators,
@@ -163,9 +167,12 @@ class SumDeterminator {
                 this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);    
                 return retVal;
             },
+            mayNotProceedWithNumber: function(num) {
+                return canHaveNumberDuplicates ? false : this.processedNumbers.has(num);
+            },
             processNumber: function(num, step, fn) {
                 this.i++;
-                if (this.processedNumbers.has(num)) return;
+                if (this.mayNotProceedWithNumber(num)) return;
                 this.processedNumbers.add(num);
                 this.numbersStack[step] = num;
                 const retVal = fn();

@@ -36,14 +36,14 @@ describe('Tests for solver', () => {
 
         expect(solution).toEqual([
             [ 2, 6, 9, 3, 7, 8, 4, 1, 5 ],
-            [ 5, 8, 1, 4, 2, 9, undefined, undefined, 3 ],
-            [ 4, 7, 3, 5, 6, 1, 9, undefined, undefined ],
-            [ 1, 3, 5, 9, 8, 4, undefined, undefined, undefined ],
-            [ undefined, 2, 8, 6, 1, undefined, 5, undefined, undefined ],
-            [ undefined, 4, 6, 2, 5, undefined, 8, undefined, 1 ],
+            [ 5, 8, 1, 4, 2, 9, 7, 6, 3 ],
+            [ 4, 7, 3, 5, 6, 1, 9, 2, 8 ],
+            [ 1, 3, 5, 9, 8, 4, 6, 7, 2 ],
+            [ 7, 2, 8, 6, 1, 3, 5, 4, 9 ],
+            [ 9, 4, 6, 2, 5, 7, 8, 3, 1 ],
             [ 6, 9, 4, 8, 3, 2, 1, 5, 7 ],
-            [ 8, 1, 2, 7, 4, 5, 3, undefined, undefined ],
-            [ 3, 5, 7, 1, 9, 6, 2, undefined, undefined ]
+            [ 8, 1, 2, 7, 4, 5, 3, 9, 6 ],
+            [ 3, 5, 7, 1, 9, 6, 2, 8, 4 ]
         ]);
     });
 
