@@ -250,10 +250,10 @@ function preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingS
 
         const sumIndexResolvers = new Array(segment.sums.length);
         nonOverlappingSums.forEach((sum, idx) => {
-            sumIndexResolvers[segment.sums.findIndex(originalSum => originalSum === sum)] = idx;
+            sumIndexResolvers[idx] = segment.sums.findIndex(originalSum => originalSum === sum);
         });
         overlappingSums.forEach((sum, idx) => {
-            sumIndexResolvers[segment.sums.findIndex(originalSum => originalSum === sum)] = nonOverlappingSums.length + idx;
+            sumIndexResolvers[nonOverlappingSums.length + idx] = segment.sums.findIndex(originalSum => originalSum === sum);
         });
         combinedCombos.forEach(comboSets => {
             const preservedOrderCombo = new Array(comboSets.length);
