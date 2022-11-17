@@ -67,6 +67,7 @@ class SumsArea {
     constructor(sums) {
         this.sums = sums;
         this.cellsSet = new Set();
+        this.nonOverlappingCellsSet = new Set();
         this.totalValue = 0;
         sums.forEach(sum => {
             sum.cells.forEach(cell => {
@@ -75,11 +76,14 @@ class SumsArea {
         }, this);
 
         const { nonOverlappingSums } = clusterSumsByOverlap(sums, new Set(this.cellsSet));
-        nonOverlappingSums.forEach(sum => this.totalValue += sum.value);
+        nonOverlappingSums.forEach(sum => {
+            this.totalValue += sum.value;
+            sum.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
+        });
     }
 
-    has(cell) {
-        return this.cellsSet.has(cell);
+    hasNonOverlapping(cell) {
+        return this.nonOverlappingCellsSet.has(cell);
     }
 }
 
@@ -268,7 +272,7 @@ class Segment {
 
         const residualSumCells = [];
         this.cells.forEach(cell => {
-            if (!this.#sumsArea.has(cell)) {
+            if (!this.#sumsArea.hasNonOverlapping(cell)) {
                 residualSumCells.push(cell);
             }
         }, this);
