@@ -266,7 +266,7 @@ class Segment {
     }
 
     determineResidualSum() {
-        if (this.#sumsArea.totalValue === UNIQUE_SEGMENT_SUM) {
+        if (this.#sumsArea.totalValue === UNIQUE_SEGMENT_SUM && this.#sumsArea.cellsSet.size === UNIQUE_SEGMENT_LENGTH) {
             return;
         }
 
