@@ -1,5 +1,47 @@
 import { Problem, Sum } from '../src/problem';
 
+export const killerSudokuBySudokuDotCom_2022_04_06 = new Problem([
+    // upper subgrids
+    Sum.of(7).cell(0, 0).cell(0, 1).mk(),
+    Sum.of(18).cell(1, 0).cell(1, 1).cell(2, 0).mk(),
+    Sum.of(20).cell(0, 2).cell(1, 2).cell(2, 1).cell(2, 2).mk(),
+    Sum.of(17).cell(0, 3).cell(1, 3).cell(1, 4).mk(),
+    Sum.of(7).cell(2, 3).cell(2, 4).mk(),
+    Sum.of(16).cell(0, 4).cell(0, 5).cell(0, 6).mk(),
+    Sum.of(6).cell(1, 5).mk(),
+    Sum.of(18).cell(2, 5).cell(3, 3).cell(3, 4).cell(3, 5).mk(),
+    Sum.of(11).cell(0, 7).cell(0, 8).cell(1, 8).mk(),
+    Sum.of(12).cell(1, 6).cell(1, 7).mk(),
+    Sum.of(8).cell(2, 6).cell(3, 6).mk(),
+    Sum.of(21).cell(2, 7).cell(2, 8).cell(3, 7).cell(3, 8).mk(),
+
+    // middle subgrids
+    Sum.of(20).cell(3, 0).cell(4, 0).cell(5, 0).cell(6, 0).cell(6, 1).mk(),
+    Sum.of(18).cell(3, 1).cell(3, 2).cell(4, 2).mk(),
+    Sum.of(9).cell(4, 1).cell(5, 1).mk(),
+    Sum.of(18).cell(5, 2).cell(6, 2).cell(6, 3).cell(6, 4).mk(),
+    Sum.of(8).cell(4, 3).cell(5, 3).mk(),
+    Sum.of(13).cell(4, 4).cell(5, 4).mk(),
+    Sum.of(12).cell(4, 5).cell(4, 6).mk(),
+    Sum.of(12).cell(5, 5).cell(6, 5).mk(),
+    Sum.of(10).cell(4, 7).cell(4, 8).mk(),
+    Sum.of(9).cell(5, 6).cell(5, 7).mk(),
+    Sum.of(14).cell(5, 8).cell(6, 8).mk(),
+
+    // lower subgrids
+    Sum.of(7).cell(7, 0).mk(),
+    Sum.of(6).cell(8, 0).mk(),
+    Sum.of(9).cell(7, 1).cell(8, 1).mk(),
+    Sum.of(11).cell(7, 2).cell(8, 2).mk(),
+    Sum.of(7).cell(7, 3).cell(7, 4).mk(),
+    Sum.of(20).cell(8, 3).cell(8, 4).cell(8, 5).mk(),
+    Sum.of(15).cell(7, 5).cell(7, 6).cell(7, 7).mk(),
+    Sum.of(11).cell(6, 6).cell(6, 7).mk(),
+    Sum.of(3).cell(8, 6).cell(8, 7).mk(),
+    Sum.of(12).cell(7, 8).cell(8, 8).mk()
+]);
+killerSudokuBySudokuDotCom_2022_04_06.checkCorrectness();
+
 export const killerSudokuBySudokuDotCom_2022_10_18 = new Problem([
     // upper subgrids
     Sum.of(8).cell(0, 0).cell(0, 1).mk(),
