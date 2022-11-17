@@ -26,7 +26,7 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.column.idx).toEqual(3);
         expect(aCellDeterminator.subgrid.idx).toEqual(1);
         expect(aCellDeterminator.placedNumber).toBe(undefined);
-        expect(aCellDeterminator.numberOptions).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         expect(aCellDeterminator.withinSumsSet).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
     });
 

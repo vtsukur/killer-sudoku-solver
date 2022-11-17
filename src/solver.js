@@ -22,6 +22,8 @@ const newSegmentIterator = (valueOfFn) => {
 };
 
 export class CellDeterminator {
+    #numOpts
+
     constructor({ cell, row, column, subgrid }) {
         this.cell = cell;
         this.row = row;
@@ -30,7 +32,7 @@ export class CellDeterminator {
         this.withinSumsSet = new Set();
         this.solved = false;
 
-        this.numberOptions = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
+        this.#numOpts = new Set(_.range(UNIQUE_SEGMENT_LENGTH).map(i => i + 1));
         this.placedNumber = undefined;
     }
 
@@ -42,22 +44,34 @@ export class CellDeterminator {
         this.withinSumsSet.delete(withinSum);
     }
 
-    reduceNumberOptions(numberOptions) {
+    numOpts() {
+        return this.#numOpts;
+    }
+
+    hasNumOpt(num) {
+        return this.#numOpts.has(num);
+    }
+
+    deleteNumOpt(num) {
+        return this.#numOpts.delete(num);
+    }
+
+    reduceNumberOptions(numOpts) {
         const removedNumOptions = new Set();
         const newSet = new Set();
-        for (const existingNumberOption of this.numberOptions) {
-            if (numberOptions.has(existingNumberOption)) {
+        for (const existingNumberOption of this.#numOpts) {
+            if (numOpts.has(existingNumberOption)) {
                 newSet.add(existingNumberOption);
             } else {
                 removedNumOptions.add(existingNumberOption);
             }
         }
-        this.numberOptions = newSet;
+        this.#numOpts = newSet;
         return removedNumOptions;
     }
 
     placeNumber(number) {
-        this.numberOptions = new Set([number]);
+        this.#numOpts = new Set([number]);
         this.placedNumber = number;
         this.solved = true;
     }
@@ -113,14 +127,14 @@ class SumDeterminator {
     }
 
     updateCombinations(combos) {
-        const numberOptions = new Set();
+        const numOpts = new Set();
         [...combos].forEach(comboSet => {
-            [...comboSet].forEach(number => {
-                numberOptions.add(number);
+            [...comboSet].forEach(num => {
+                numOpts.add(num);
             });
         });
 
-        this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numberOptions));
+        this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numOpts));
     }
 
     reduce() {
@@ -169,11 +183,11 @@ class SumDeterminator {
         const modifiedCellDets = [];
         this.cellsDeterminators.forEach(cellDet => {
             context.processCell(cellDet, 0, () => {
-                Array.from(cellDet.numberOptions).forEach(num => {
+                Array.from(cellDet.numOpts()).forEach(num => {
                     context.processNumber(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
-                            cellDet.numberOptions.delete(num);
+                            cellDet.deleteNumOpt(num);
                             modifiedCellDets.push(cellDet);
                         }    
                     });
@@ -192,7 +206,7 @@ class SumDeterminator {
             const lastNum = this.sum.value - currentSumVal;
             if (context.processedNumbers.has(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
-            has = lastCellDet.numberOptions.has(lastNum);
+            has = lastCellDet.hasNumOpt(lastNum);
             if (has) {
                 const sortedNumbers = [...context.numbersStack];
                 sortedNumbers[this.#cellCount - 1] = lastNum;
@@ -203,7 +217,7 @@ class SumDeterminator {
         } else {
             this.cellsDeterminators.forEach(cellDet => {
                 context.processCell(cellDet, step, () => {
-                    Array.from(cellDet.numberOptions).forEach(num => {
+                    Array.from(cellDet.numOpts()).forEach(num => {
                         context.processNumber(num, step, () => {
                             has = this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context) || has;
                         });
@@ -554,8 +568,8 @@ export class Solver {
                     if (rowIdx === cellDet.cell.rowIdx && colIdx === cellDet.cell.colIdx) continue;
         
                     const aCellDet = this.cellDeterminatorAt(rowIdx, colIdx);
-                    if (aCellDet.numberOptions.has(number)) {
-                        aCellDet.numberOptions.delete(number);
+                    if (aCellDet.hasNumOpt(number)) {
+                        aCellDet.deleteNumOpt(number);
                         sumsToReduceSet = new Set([...sumsToReduceSet, ...aCellDet.withinSumsSet]);
                     }
                 }    
@@ -574,7 +588,7 @@ export class Solver {
                 segment.sums.forEach(sum => {
                     if (sum.isSingleCellSum) return;
                     const sumDet = this.sumsDeterminatorsMap.get(sum.key());
-                    const hasNumInCells = sumDet.cellsDeterminators.some(cellDet => cellDet.numberOptions.has(num));
+                    const hasNumInCells = sumDet.cellsDeterminators.some(cellDet => cellDet.hasNumOpt(num));
                     if (hasNumInCells) {
                         sumDetsWithNum.push(sumDet);
                     }
@@ -600,8 +614,8 @@ export class Solver {
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
                 const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
-                if (cellDet.numberOptions.size === 1 && !cellDet.solved) {
-                    this.#placeNumber(cellDet.cell, cellDet.numberOptions.values().next().value);
+                if (cellDet.numOpts().size === 1 && !cellDet.solved) {
+                    this.#placeNumber(cellDet.cell, cellDet.numOpts().values().next().value);
                     cellDets.push(cellDet);
                 }
             });
