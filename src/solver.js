@@ -359,14 +359,12 @@ export class Subgrid extends Segment {
 export class Solver {
     #solution;
     #placedNumbersCount;
-    #sumDetsNotWithinSegments;
 
     constructor(problem) {
         this.problem = problem;
         this.inputSums = [];
         this.inputSumsMatrix = newGridMatrix();
         this.sumsDeterminatorsMap = new Map();
-        this.#sumDetsNotWithinSegments = new Set();
         this.cellsMatrix = newGridMatrix();
         this.#solution = newGridMatrix();
         this.#placedNumbersCount = 0;
@@ -643,18 +641,14 @@ export class Solver {
 
     #registerSum(sum) {
         const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
-        if (sum.isWithinSegment) {
-            if (sum.isWithinRow) {
-                this.rows[sumDeterminator.anyRowIdx()].addSum(sum);
-            }
-            if (sum.isWithinColumn) {
-                this.columns[sumDeterminator.anyColumnIdx()].addSum(sum);
-            }
-            if (sum.isWithinSubgrid) {
-                this.subgrids[sumDeterminator.anySubgridIdx()].addSum(sum);
-            }    
-        } else {
-            this.#sumDetsNotWithinSegments.add(sumDeterminator);
+        if (sum.isWithinRow) {
+            this.rows[sumDeterminator.anyRowIdx()].addSum(sum);
+        }
+        if (sum.isWithinColumn) {
+            this.columns[sumDeterminator.anyColumnIdx()].addSum(sum);
+        }
+        if (sum.isWithinSubgrid) {
+            this.subgrids[sumDeterminator.anySubgridIdx()].addSum(sum);
         }
         sum.cells.forEach(cell => {
             this.cellDeterminatorOf(cell).addWithinSum(sum);
