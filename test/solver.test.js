@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cell, Sum, GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem';
 import { Solver } from '../src/solver';
-import { killerSudokuBySudokuDotCom_2022_04_06, killerSudokuBySudokuDotCom_2022_08_12, killerSudokuBySudokuDotCom_2022_10_18, killerSudokuBySudokuDotCom_2022_10_19, killerSudokuBySudokuDotCom_2022_10_22, killerSudokuBySudokuDotCom_2022_10_25, killerSudokuBySudokuDotCom_2022_11_01, killerSudokuBySudokuDotCom_2022_11_10, killerSudokuBySudokuDotCom_expertLevel_1 } from './realKillerSudokuProblems';
+import { killerSudokuBySudokuDotCom_2022_04_06, killerSudokuBySudokuDotCom_2022_08_12, killerSudokuBySudokuDotCom_2022_08_30, killerSudokuBySudokuDotCom_2022_10_18, killerSudokuBySudokuDotCom_2022_10_19, killerSudokuBySudokuDotCom_2022_10_22, killerSudokuBySudokuDotCom_2022_10_25, killerSudokuBySudokuDotCom_2022_11_01, killerSudokuBySudokuDotCom_2022_11_10, killerSudokuBySudokuDotCom_expertLevel_1 } from './realKillerSudokuProblems';
 
 describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
@@ -61,6 +61,23 @@ describe('Tests for solver', () => {
             [ 2, 5, 6, 1, 8, 9, 4, 7, 3 ],
             [ 3, 4, 9, 6, 7, 2, 8, 5, 1 ],
             [ 8, 7, 1, 5, 3, 4, 9, 2, 6 ]
+        ]);
+    });
+
+    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-08-30)', () => {
+        const solver = new Solver(killerSudokuBySudokuDotCom_2022_08_30);
+        const solution = solver.solve();
+
+        expect(solution).toEqual([
+            [ 7, 6, 2, 8, 5, 1, 9, 4, 3 ],
+            [ 3, 5, 4, 9, 2, 6, 1, 7, 8 ],
+            [ 8, 1, 9, 4, 7, 3, 6, 5, 2 ],
+            [ 9, 3, 1, 5, 6, 8, 7, 2, 4 ],
+            [ 2, 4, 5, 1, 9, 7, 3, 8, 6 ],
+            [ 6, 7, 8, 3, 4, 2, 5, 1, 9 ],
+            [ 4, 9, 7, 6, 8, 5, 2, 3, 1 ],
+            [ 1, 2, 6, 7, 3, 4, 8, 9, 5 ],
+            [ 5, 8, 3, 2, 1, 9, 4, 6, 7 ]
         ]);
     });
 
