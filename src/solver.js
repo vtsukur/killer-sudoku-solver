@@ -440,6 +440,11 @@ export class Solver {
             }, (colIdx) => {
                 return this.columns[colIdx].cellIterator()
             });
+            this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
+                return sumDet.minRowIdx >= leftIdx && sumDet.maxRowIdx < rightIdxExclusive;
+            }, (rowIdx) => {
+                return this.rows[rowIdx].cellIterator()
+            });
         });
     }
 
@@ -454,11 +459,11 @@ export class Solver {
                 sumsArea = new SumsArea(sumsArea.sums.concat(sumDet.sum), nSegmentCellCount);
             }
         }
-        if (sumsArea.cellsSet.size > nSegmentCellCount - 6) {
+        if (sumsArea.nonOverlappingCellsSet.size > nSegmentCellCount - 6) {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { rowIdx, colIdx } of cellIteratorFn(idx)) {
-                    if (!sumsArea.has(this.cellAt(rowIdx, colIdx))) {
+                    if (!sumsArea.hasNonOverlapping(this.cellAt(rowIdx, colIdx))) {
                         residualCells.push(this.cellAt(rowIdx, colIdx));
                     }
                 }
