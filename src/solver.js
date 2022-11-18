@@ -534,6 +534,7 @@ export class Solver {
             }
             else {
                 nextSumsSet = this.#determineUniqueSumsInSegments();
+                sumDetsIterable = nextSumsSet.values();
             }
 
             iterate = nextSumsSet.size > 0;
@@ -609,6 +610,11 @@ export class Solver {
                 reducedCellDets.forEach(cellDet => {
                     sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
                 });
+
+                // remove number from other cells
+                // for (const { rowIdx, colIdx } of segment.cellIterator()) {
+
+                // }
             });
         });
 
