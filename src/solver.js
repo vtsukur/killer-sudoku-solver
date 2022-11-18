@@ -224,7 +224,7 @@ class SumDeterminator {
         if (step === (this.#cellCount - 1)) {
             context.i++;
             const lastNum = this.sum.value - currentSumVal;
-            if (context.processedNumbers.has(lastNum)) return false;
+            if (context.mayNotProceedWithNumber(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
             has = lastCellDet.hasNumOpt(lastNum);
             if (has) {
