@@ -425,7 +425,7 @@ export class Solver {
     }
 
     solve() {
-        this.#determineAndSliceResidualSumsInAdjacentNSegmentAreas(2);
+        this.#determineAndSliceResidualSumsInAdjacentNSegmentAreas();
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         this.#mainReduce();
@@ -433,17 +433,19 @@ export class Solver {
         return this.#solution;
     }
 
-    #determineAndSliceResidualSumsInAdjacentNSegmentAreas(n) {
-        _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftIdx => {
-            this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
-                return sumDet.minColIdx >= leftIdx && sumDet.maxColIdx < rightIdxExclusive;
-            }, (colIdx) => {
-                return this.columns[colIdx].cellIterator()
-            });
-            this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
-                return sumDet.minRowIdx >= leftIdx && sumDet.maxRowIdx < rightIdxExclusive;
-            }, (rowIdx) => {
-                return this.rows[rowIdx].cellIterator()
+    #determineAndSliceResidualSumsInAdjacentNSegmentAreas() {
+        _.range(2, 9).reverse().forEach(n => {
+            _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftIdx => {
+                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
+                    return sumDet.minColIdx >= leftIdx && sumDet.maxColIdx < rightIdxExclusive;
+                }, (colIdx) => {
+                    return this.columns[colIdx].cellIterator()
+                });
+                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
+                    return sumDet.minRowIdx >= leftIdx && sumDet.maxRowIdx < rightIdxExclusive;
+                }, (rowIdx) => {
+                    return this.rows[rowIdx].cellIterator()
+                });
             });
         });
     }
