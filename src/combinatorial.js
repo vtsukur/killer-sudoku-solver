@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from './problem';
+import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from './problem';
 
 const MIN_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
@@ -77,7 +77,11 @@ export function findSumCombinationsForSegment(segment) {
     return preservedSumOrderCombos;
 }
 
-export function clusterSumsByOverlap(sums, cells) {
+export function clusterSumsByOverlap(sums, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
+    if (!sums.length) {
+        return { nonOverlappingSums: [], overlappingSums: [] };
+    }
+
     let nonOverlappingSums = [];
     const overlappingSums = [];
 
@@ -95,7 +99,7 @@ export function clusterSumsByOverlap(sums, cells) {
     if (allSumsAreNonOverlapping) {
         nonOverlappingSums = [...sums];
     } else {
-        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(sums);
+        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(sums, absMaxAreaCellCount);
         sums.forEach(sum => {
             if (maxNonOverlappingSumAreaSet.has(sum)) {
                 nonOverlappingSums.push(sum);
@@ -111,7 +115,7 @@ export function clusterSumsByOverlap(sums, cells) {
     };
 }
 
-function findMaxNonOverlappingSumArea(sums) {
+function findMaxNonOverlappingSumArea(sums, absMaxAreaCellCount) {
     const context = {
         allSumsSet: new Set(sums),
         maxAreaSet: new Set(),
@@ -120,7 +124,8 @@ function findMaxNonOverlappingSumArea(sums) {
         sumsStack: new Set(),
         remainingSumsStack: new Set(sums),
         overlappingSumsStack: new Set(),
-        areaCellKeysStack: new Set()
+        areaCellKeysStack: new Set(),
+        absMaxAreaCellCount: absMaxAreaCellCount
     };
 
     sums.forEach(sum => {
@@ -131,7 +136,7 @@ function findMaxNonOverlappingSumArea(sums) {
 }
 
 function findBiggestNonOverlappingSumAreaRecursive(sum, context) {
-    if (context.maxAreaCellCount >= UNIQUE_SEGMENT_LENGTH || !sum) {
+    if (context.maxAreaCellCount >= context.absMaxAreaCellCount || !sum) {
         return;
     }
 
@@ -143,8 +148,8 @@ function findBiggestNonOverlappingSumAreaRecursive(sum, context) {
     sum.cells.forEach(cell => context.areaCellKeysStack.add(cell.key()));
     context.cellCount += sum.cellCount;
 
-    if (context.cellCount >= UNIQUE_SEGMENT_LENGTH ||
-        (context.cellCount <= UNIQUE_SEGMENT_LENGTH && context.cellCount > context.maxAreaCellCount)) {
+    if (context.cellCount >= context.absMaxAreaCellCount ||
+        (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
         context.maxAreaSet = new Set(context.sumsStack);
         context.maxAreaCellCount = context.cellCount;
     }

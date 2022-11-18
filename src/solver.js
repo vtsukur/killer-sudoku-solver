@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum } from './problem';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, Sum, UNIQUE_SEGMENT_COUNT, Cell } from './problem';
 import { clusterSumsByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
@@ -78,7 +78,7 @@ export class CellDeterminator {
 }
 
 class SumsArea {
-    constructor(sums) {
+    constructor(sums = [], absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
         this.sums = sums;
         this.cellsSet = new Set();
         this.nonOverlappingCellsSet = new Set();
@@ -89,11 +89,15 @@ class SumsArea {
             }, this);
         }, this);
 
-        const { nonOverlappingSums } = clusterSumsByOverlap(sums, new Set(this.cellsSet));
+        const { nonOverlappingSums } = clusterSumsByOverlap(sums, new Set(this.cellsSet), absMaxAreaCellCount);
         nonOverlappingSums.forEach(sum => {
             this.totalValue += sum.value;
             sum.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
         });
+    }
+
+    has(cell) {
+        return this.cellsSet.has(cell);
     }
 
     hasNonOverlapping(cell) {
@@ -110,6 +114,16 @@ class SumDeterminator {
         this.sum = sum;
         this.#firstCell = sum.cells[0];
         this.cellsDeterminators = cellsDeterminators;
+        this.minRowIdx = UNIQUE_SEGMENT_LENGTH + 1;
+        this.minColIdx = this.minRowIdx;
+        this.maxRowIdx = 0;
+        this.maxColIdx = this.maxRowIdx;
+        sum.cells.forEach(cell => {
+            this.minRowIdx = Math.min(this.minRowIdx, cell.rowIdx);
+            this.maxRowIdx = Math.max(this.maxRowIdx, cell.rowIdx);
+            this.minColIdx = Math.min(this.minColIdx, cell.colIdx);
+            this.maxColIdx = Math.max(this.maxColIdx, cell.colIdx);
+        });
         this.#cellCount = sum.cellCount;
         this.#combosMap = new Map();
     }
@@ -412,11 +426,42 @@ export class Solver {
     }
 
     solve() {
+        this.#determineAndSliceResidualSumsInNSegments(2);
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         this.#mainReduce();
 
         return this.#solution;
+    }
+
+    #determineAndSliceResidualSumsInNSegments(n) {
+        const nSegmentCellCount = n * UNIQUE_SEGMENT_COUNT;
+        const nSegmentSumVal = n * UNIQUE_SEGMENT_SUM;
+        _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftColIdx => {
+            const rightColIdxExclusive = leftColIdx + n;
+            let sumsArea = new SumsArea();
+            for (const sumDet of this.sumsDeterminatorsMap.values()) {
+                if (sumDet.minColIdx >= leftColIdx && sumDet.maxColIdx < rightColIdxExclusive) {
+                    sumsArea = new SumsArea(sumsArea.sums.concat(sumDet.sum), nSegmentCellCount);
+                }
+            }
+            if (sumsArea.cellsSet.size > nSegmentCellCount - 6) {
+                const residualCells = [];
+                _.range(leftColIdx, rightColIdxExclusive).forEach(colIdx => {
+                    for (const { rowIdx } of this.columns[colIdx].cellIterator()) {
+                        if (!sumsArea.has(this.cellAt(rowIdx, colIdx))) {
+                            residualCells.push(this.cellAt(rowIdx, colIdx));
+                        }
+                    }
+                });
+                if (residualCells.length) {
+                    const residualSum = new Sum(nSegmentSumVal - sumsArea.totalValue, residualCells);
+                    if (!this.sumsDeterminatorsMap.has(residualSum.key())) {
+                        this.#addAndSliceResidualSumRecursively(residualSum);                        
+                    }
+                }
+            }
+        });
     }
 
     #determineAndSliceResidualSumsInSegments() {
