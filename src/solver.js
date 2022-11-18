@@ -273,6 +273,10 @@ class SumDeterminator {
     #hasSingleCombination() {
         return this.#combosMap.size === 1;
     }
+
+    has(cellDet) {
+        return this.sum.cells.findIndex(cell => cell.key() === cellDet.cell.key()) !== -1;
+    }
 }
 
 class Segment {
@@ -612,9 +616,19 @@ export class Solver {
                 });
 
                 // remove number from other cells
-                // for (const { rowIdx, colIdx } of segment.cellIterator()) {
+                const furtherReducedCellDets = new Set();
+                for (const { rowIdx, colIdx } of segment.cellIterator()) {
+                    const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                    if (sumDetToReDefine.has(cellDet)) return;
 
-                // }
+                    if (cellDet.hasNumOpt(num)) {
+                        cellDet.deleteNumOpt(num);
+                        furtherReducedCellDets.add(cellDet);
+                    }
+                }
+                furtherReducedCellDets.forEach(cellDet => {
+                    sumsToReduce = new Set([...sumsToReduce, ...cellDet.withinSumsSet]);
+                });
             });
         });
 
