@@ -58,15 +58,14 @@ export class CellDeterminator {
 
     reduceNumberOptions(numOpts) {
         const removedNumOptions = new Set();
-        const newSet = new Set();
         for (const existingNumberOption of this.#numOpts) {
-            if (numOpts.has(existingNumberOption)) {
-                newSet.add(existingNumberOption);
-            } else {
+            if (!numOpts.has(existingNumberOption)) {
                 removedNumOptions.add(existingNumberOption);
             }
         }
-        this.#numOpts = newSet;
+        for (const numToRemove of removedNumOptions) {
+            this.deleteNumOpt(numToRemove);
+        }
         return removedNumOptions;
     }
 
