@@ -425,7 +425,7 @@ export class Solver {
     }
 
     solve() {
-        this.#determineAndSliceResidualSumsInNSegments(2);
+        this.#determineAndSliceResidualSumsInAdjacentNSegmentAreas(2);
         this.#determineAndSliceResidualSumsInSegments();
         this.#fillUpCombinationsForSumsAndMakeInitialReduce();
         this.#mainReduce();
@@ -433,34 +433,43 @@ export class Solver {
         return this.#solution;
     }
 
-    #determineAndSliceResidualSumsInNSegments(n) {
+    #determineAndSliceResidualSumsInAdjacentNSegmentAreas(n) {
+        _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftIdx => {
+            this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (sumDet, rightIdxExclusive) => {
+                return sumDet.minColIdx >= leftIdx && sumDet.maxColIdx < rightIdxExclusive;
+            }, (colIdx) => {
+                return this.columns[colIdx].cellIterator()
+            });
+        });
+    }
+
+    #doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, withinSegmentFn, cellIteratorFn) {
         const nSegmentCellCount = n * UNIQUE_SEGMENT_COUNT;
         const nSegmentSumVal = n * UNIQUE_SEGMENT_SUM;
-        _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftColIdx => {
-            const rightColIdxExclusive = leftColIdx + n;
-            let sumsArea = new SumsArea();
-            for (const sumDet of this.sumsDeterminatorsMap.values()) {
-                if (sumDet.minColIdx >= leftColIdx && sumDet.maxColIdx < rightColIdxExclusive) {
-                    sumsArea = new SumsArea(sumsArea.sums.concat(sumDet.sum), nSegmentCellCount);
-                }
+
+        const rightIdxExclusive = leftIdx + n;
+        let sumsArea = new SumsArea();
+        for (const sumDet of this.sumsDeterminatorsMap.values()) {
+            if (withinSegmentFn(sumDet, rightIdxExclusive)) {
+                sumsArea = new SumsArea(sumsArea.sums.concat(sumDet.sum), nSegmentCellCount);
             }
-            if (sumsArea.cellsSet.size > nSegmentCellCount - 6) {
-                const residualCells = [];
-                _.range(leftColIdx, rightColIdxExclusive).forEach(colIdx => {
-                    for (const { rowIdx } of this.columns[colIdx].cellIterator()) {
-                        if (!sumsArea.has(this.cellAt(rowIdx, colIdx))) {
-                            residualCells.push(this.cellAt(rowIdx, colIdx));
-                        }
-                    }
-                });
-                if (residualCells.length) {
-                    const residualSum = new Sum(nSegmentSumVal - sumsArea.totalValue, residualCells);
-                    if (!this.sumsDeterminatorsMap.has(residualSum.key())) {
-                        this.#addAndSliceResidualSumRecursively(residualSum);                        
+        }
+        if (sumsArea.cellsSet.size > nSegmentCellCount - 6) {
+            const residualCells = [];
+            _.range(leftIdx, rightIdxExclusive).forEach(idx => {
+                for (const { rowIdx, colIdx } of cellIteratorFn(idx)) {
+                    if (!sumsArea.has(this.cellAt(rowIdx, colIdx))) {
+                        residualCells.push(this.cellAt(rowIdx, colIdx));
                     }
                 }
+            });
+            if (residualCells.length) {
+                const residualSum = new Sum(nSegmentSumVal - sumsArea.totalValue, residualCells);
+                if (!this.sumsDeterminatorsMap.has(residualSum.key())) {
+                    this.#addAndSliceResidualSumRecursively(residualSum);                        
+                }
             }
-        });
+        }
     }
 
     #determineAndSliceResidualSumsInSegments() {
