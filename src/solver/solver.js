@@ -22,7 +22,7 @@ const newSegmentIterator = (valueOfFn) => {
     return newAreaIterator(valueOfFn, UNIQUE_SEGMENT_LENGTH);
 };
 
-export class CellDeterminator {
+export class CellSolver {
     #numOpts
 
     constructor({ cell, row, column, subgrid }) {
@@ -105,7 +105,7 @@ class SumsArea {
     }
 }
 
-class CageDeterminator {
+class CageSolver {
     #firstCell;
     #cellCount;
     #combosMap;
@@ -406,7 +406,7 @@ export class Solver {
 
         this.cellsDeterminatorsMatrix = newGridMatrix();
         this.problem.cells.forEach(cell => {
-            this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellDeterminator({
+            this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
                 cell,
                 row: this.rows[cell.rowIdx],
                 column: this.columns[cell.colIdx],
@@ -721,7 +721,7 @@ export class Solver {
     }
 
     #registerSum(cage) {
-        const cageDeterminator = new CageDeterminator(cage, cage.cells.map(cell => this.cellDeterminatorOf(cell), this));
+        const cageDeterminator = new CageSolver(cage, cage.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (cage.isWithinRow) {
             this.rows[cageDeterminator.anyRowIdx()].addSum(cage);
         }
