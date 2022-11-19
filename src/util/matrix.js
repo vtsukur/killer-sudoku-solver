@@ -1,4 +1,4 @@
-import { UNIQUE_SEGMENT_LENGTH } from './problem/constants';
+import { UNIQUE_SEGMENT_LENGTH } from '../problem/constants';
 
 export const newGridMatrix = () => {
     return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));

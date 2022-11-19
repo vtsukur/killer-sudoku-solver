@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from './matrix';
+import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from './util/matrix';
 import { Problem } from './problem/problem';
 import { Cage } from './problem/cage';
 
