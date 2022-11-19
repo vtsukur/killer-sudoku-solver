@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from './matrix';
 import { Problem } from './problem/problem';
-import { Sum } from './problem/sum';
+import { Cage } from './problem/cage';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
@@ -55,12 +55,12 @@ export default function reader(path) {
         const sumEntry = readEntry(value, idx);
         if (!sums.has(sumEntry.ref)) {
             if (!sumEntry.value) {
-                throw `Sum def without value: ${value}`;
+                throw `Cage def without value: ${value}`;
             }
-            sums.set(sumEntry.ref, Sum.of(sumEntry.value));
+            sums.set(sumEntry.ref, Cage.of(sumEntry.value));
         }
         else if (sums.has(sumEntry.ref) && sumEntry.value) {
-            throw `Sum def duplicate: ${sumEntry.ref}`;
+            throw `Cage def duplicate: ${sumEntry.ref}`;
         }
         sums.get(sumEntry.ref).cell(
             rowIdxInGridMatrixByAbsolute(idx),

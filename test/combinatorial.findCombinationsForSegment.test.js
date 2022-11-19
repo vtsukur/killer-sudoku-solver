@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { findSumCombinationsForSegment } from '../src/combinatorial';
-import { Sum } from '../src/problem/sum';
+import { Cage } from '../src/problem/cage';
 
 const segmentOf = (sums) => {
     let cellsMap = new Map();
@@ -17,10 +17,10 @@ const segmentOf = (sums) => {
 describe('Tests for the finder of number combinations to form a segment out of sums', () => {
     test('Multiple combinations of numbers to form a complete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
-            Sum.of(15).cell(1, 1).cell(1, 2).mk(),
-            Sum.of(10).cell(1, 3).cell(2, 3).mk(),
-            Sum.of(7).cell(2, 1).cell(2, 2).mk(),
-            Sum.of(13).cell(3, 1).cell(3, 2).cell(3, 3).mk()
+            Cage.of(15).cell(1, 1).cell(1, 2).mk(),
+            Cage.of(10).cell(1, 3).cell(2, 3).mk(),
+            Cage.of(7).cell(2, 1).cell(2, 2).mk(),
+            Cage.of(13).cell(3, 1).cell(3, 2).cell(3, 3).mk()
         ]))).toEqual([
             [ new Set([6, 9]), new Set([2, 8]), new Set([3, 4]), new Set([1, 5, 7]) ],
             [ new Set([6, 9]), new Set([3, 7]), new Set([2, 5]), new Set([1, 4, 8]) ],
@@ -32,10 +32,10 @@ describe('Tests for the finder of number combinations to form a segment out of s
 
     test('Combination of numbers to form a complete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
-            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
-            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
-            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
-            Sum.of(10).cell(1, 8).cell(1, 9).mk()
+            Cage.of(4).cell(1, 1).cell(1, 2).mk(),
+            Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Cage.of(7).cell(1, 6).cell(1, 7).mk(),
+            Cage.of(10).cell(1, 8).cell(1, 9).mk()
         ]))).toEqual([
             [ new Set([1, 3]), new Set([7, 8, 9]), new Set([2, 5]), new Set([4, 6]) ]
         ]);
@@ -43,8 +43,8 @@ describe('Tests for the finder of number combinations to form a segment out of s
 
     test('Combinations of numbers to form an incomplete segment with non-overlapping sums', () => {
         expect(findSumCombinationsForSegment(segmentOf([
-            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
-            Sum.of(9).cell(1, 6).cell(1, 7).mk()
+            Cage.of(4).cell(1, 1).cell(1, 2).mk(),
+            Cage.of(9).cell(1, 6).cell(1, 7).mk()
         ]))).toEqual([
             [ new Set([1, 3]), new Set([2, 7]) ],
             [ new Set([1, 3]), new Set([4, 5]) ]
@@ -53,11 +53,11 @@ describe('Tests for the finder of number combinations to form a segment out of s
 
     test('Combinations of numbers to form a segment with overlapping sum', () => {
         expect(findSumCombinationsForSegment(segmentOf([
-            Sum.of(8).cell(2, 5).cell(3, 5).mk(),
-            Sum.of(8).cell(7, 5).mk(),
+            Cage.of(8).cell(2, 5).cell(3, 5).mk(),
+            Cage.of(8).cell(7, 5).mk(),
             // overlapping sum
-            Sum.of(4).cell(1, 5).cell(2, 5).mk(),
-            Sum.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk()
+            Cage.of(4).cell(1, 5).cell(2, 5).mk(),
+            Cage.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk()
         ]))).toEqual([
             [ new Set([1, 7]), new Set([8]), new Set([1, 3]), new Set([2, 3, 4, 5, 6, 9]) ],
             [ new Set([2, 6]), new Set([8]), new Set([1, 3]), new Set([1, 3, 4, 5, 7, 9]) ],
@@ -96,26 +96,26 @@ describe('Tests for the finder of number combinations to form a segment out of s
     });
 
     test('Combinations of numbers to form a segment out of too many sums with non-overlapping cells', () => {
-        expect(() => findSumCombinationsForSegment(segmentOf(_.range(10).map(i => Sum.of(5).cell(i, 0).mk())))).toThrow(
+        expect(() => findSumCombinationsForSegment(segmentOf(_.range(10).map(i => Cage.of(5).cell(i, 0).mk())))).toThrow(
             'Too many sums with non-overlapping cells. Expected no more than 9 sums. Actual: 10');
     });
 
     test('Combinations of numbers to form a segment out of sums with non-overlapping cells whose total sum is greater than segments max', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
-            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
-            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
-            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
-            Sum.of(100).cell(1, 8).cell(1, 9).mk()
+            Cage.of(4).cell(1, 1).cell(1, 2).mk(),
+            Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Cage.of(7).cell(1, 6).cell(1, 7).mk(),
+            Cage.of(100).cell(1, 8).cell(1, 9).mk()
         ]))).toThrow(
             "Total sum with non-overlapping cells should be <= 45. Actual: 135. Sums: ");
     });
 
     test('Combinations of numbers to form a segment out of sums with too many non-overlapping cells', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
-            Sum.of(4).cell(1, 1).cell(1, 2).mk(),
-            Sum.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
-            Sum.of(7).cell(1, 6).cell(1, 7).mk(),
-            Sum.of(10).cell(1, 8).cell(1, 9).cell(2, 9).mk()
+            Cage.of(4).cell(1, 1).cell(1, 2).mk(),
+            Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
+            Cage.of(7).cell(1, 6).cell(1, 7).mk(),
+            Cage.of(10).cell(1, 8).cell(1, 9).cell(2, 9).mk()
         ]))).toThrow(
             'Too many cells in sums with non-overlapping cells. Expected no more than 9 cells. Actual: 10');
     });

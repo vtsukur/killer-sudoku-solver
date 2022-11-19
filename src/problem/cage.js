@@ -1,6 +1,6 @@
 import { Cell } from './cell';
 
-export class Sum {
+export class Cage {
     #cellsSet;
 
     constructor(value, cells) {
@@ -47,7 +47,7 @@ export class Sum {
         }
 
         mk() {
-            return new Sum(this.value, this.cells);
+            return new Cage(this.value, this.cells);
         }
     }
 

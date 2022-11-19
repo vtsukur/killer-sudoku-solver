@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { GRID_CELL_COUNT, UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH } from '../src/problem/constants';
 import { Cell } from '../src/problem/cell';
-import { Sum } from '../src/problem/sum';
+import { Cage } from '../src/problem/cage';
 import { Solver } from '../src/solver';
 import { sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from './realProblemSamples';
 
@@ -13,14 +13,14 @@ describe('Tests for solver', () => {
         expect(solver.problem.cells[21]).toEqual(new Cell(2, 3));
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputSums.length).toBe(33);
-        expect(solver.inputSums[9]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.inputSumAt(2, 3)).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.inputSums[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.inputSumAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.rows[2].sums[1]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.rows[2].sums[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.columns[2].sums[1]).toEqual(Sum.of(2).cell(3, 2).mk());
+        expect(solver.columns[2].sums[1]).toEqual(Cage.of(2).cell(3, 2).mk());
         expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.subgrids[1].sums[2]).toEqual(Sum.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.subgrids[1].sums[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellDeterminatorAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, UNIQUE_SEGMENT_COUNT } from './problem/constants';
-import { Sum } from './problem/sum';
+import { Cage } from './problem/cage';
 import { clusterSumsByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
@@ -316,7 +316,7 @@ class Segment {
             }
         }, this);
 
-        return new Sum(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
+        return new Cage(UNIQUE_SEGMENT_SUM - this.#sumsArea.totalValue, residualSumCells);
     }
 
     addSum(newSum) {
@@ -472,7 +472,7 @@ export class Solver {
                 }
             });
             if (residualCells.length) {
-                const residualSum = new Sum(nSegmentSumVal - sumsArea.totalValue, residualCells);
+                const residualSum = new Cage(nSegmentSumVal - sumsArea.totalValue, residualCells);
                 if (!this.sumsDeterminatorsMap.has(residualSum.key())) {
                     this.#addAndSliceResidualSumRecursively(residualSum);                        
                 }
@@ -542,7 +542,7 @@ export class Solver {
                 secondChunkSumCells.push(cell);
             }
         });
-        return new Sum(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
+        return new Cage(sumToSlice.value - firstChunkSum.value, secondChunkSumCells);
     }
 
     #fillUpCombinationsForSumsAndMakeInitialReduce() {
@@ -589,7 +589,7 @@ export class Solver {
                 newlySolvedCellDets.forEach(cellDet => {
                     const withinSumsSet = cellDet.withinSumsSet;
                     if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellSum)) {
-                        const firstChunkSum = Sum.of(cellDet.placedNumber).cell(cellDet.cell.rowIdx, cellDet.cell.colIdx).mk();
+                        const firstChunkSum = Cage.of(cellDet.placedNumber).cell(cellDet.cell.rowIdx, cellDet.cell.colIdx).mk();
                         this.#addAndSliceResidualSumRecursively(firstChunkSum);
                     }
                 });
