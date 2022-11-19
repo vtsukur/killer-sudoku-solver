@@ -9,9 +9,10 @@ export class Problem {
     constructor(sums) {
         this.sums = [...sums];
         this.cells = this.sums.map(sum => sum.cells).flat();
+        this.#validate();
     }
 
-    checkCorrectness() {
+    #validate() {
         const cells = this.sums.flatMap(sum => sum.cells);
         if (cells.length !== GRID_CELL_COUNT) {
             this.#throwValidationError(`Expected cell count: ${GRID_CELL_COUNT}. Actual: ${cells.length}`);

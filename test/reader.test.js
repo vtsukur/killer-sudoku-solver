@@ -2,18 +2,8 @@ import reader from '../src/reader.js';
 import { Problem, Sum } from '../src/problem.js';
 
 describe('Reader tests', () => {
-    test('Basic read', () => {
-        const problem = reader('./test/readerBaseTest.txt');
-        expect(problem).toEqual(new Problem([
-            Sum.of(17).cell(0, 0).cell(0, 1).cell(0, 2).mk(),
-            Sum.of(7).cell(0, 3).mk(),
-            Sum.of(9).cell(0, 4).cell(0, 5).mk(),
-        ]));
-    });
-
     test('Full read - real problem #1', () => {
         const problem = reader('./problems/1.txt');
-        problem.checkCorrectness();
         expect(problem).toEqual(new Problem([
             // upper subgrids
             Sum.of(17).cell(0, 0).cell(1, 0).cell(1, 1).mk(),
@@ -57,7 +47,6 @@ describe('Reader tests', () => {
 
     test('Full read - real problem #2', () => {
         const problem = reader('./problems/2.txt');
-        problem.checkCorrectness();
         expect(problem).toEqual(new Problem([
             // upper subgrids
             Sum.of(15).cell(0, 0).cell(0, 1).mk(),

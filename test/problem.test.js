@@ -49,15 +49,11 @@ const modifyCorrectProblem = function(lastSum) {
 };
 
 describe('Problem tests', () => {
-    test('Check correct problem', () => {
-        correctProblem.checkCorrectness();
-    });
-
     test('Check incorrect problem in which amount of cells does not match expected field cells count', () => {
         expect(() =>
             new Problem([
                 Sum.of(405).cell(0, 0).mk()
-            ]).checkCorrectness()
+            ])
         ).toThrow(`Invalid problem definiton. Expected cell count: 81. Actual: 1`);
     });
 
@@ -65,7 +61,7 @@ describe('Problem tests', () => {
         expect(() =>
             modifyCorrectProblem(
                 Sum.of(16).cell(9, 8)/* outside of range */.cell(8, 7).cell(8, 8).mk()
-            ).checkCorrectness()
+            )
         ).toThrow(`Invalid problem definiton. Expected cell to be within the field. Actual cell: (9, 8)`);
     });
 
@@ -73,7 +69,7 @@ describe('Problem tests', () => {
         expect(() =>
             modifyCorrectProblem(
                 Sum.of(16).cell(8, 9)/* outside of range */.cell(8, 7).cell(8, 8).mk()
-            ).checkCorrectness()
+            )
         ).toThrow(`Invalid problem definiton. Expected cell to be within the field. Actual cell: (8, 9)`);
     });
 
@@ -81,7 +77,7 @@ describe('Problem tests', () => {
         expect(() =>
             modifyCorrectProblem(
                 Sum.of(16).cell(8, 6)/* here comes the duplicate */.cell(8, 6).cell(8, 8).mk()
-            ).checkCorrectness()
+            )
         ).toThrow(`Invalid problem definiton. Found cell duplicate: (8, 6)`);
     });
 
@@ -90,7 +86,7 @@ describe('Problem tests', () => {
             modifyCorrectProblem(
                 // abnormal sum on the field: 116 instead of 16
                 Sum.of(116).cell(8, 6).cell(8, 7).cell(8, 8).mk()
-            ).checkCorrectness()
+            )
         ).toThrow(`Invalid problem definiton. Expected field sum: 405. Actual: 505`);
     });
 });
