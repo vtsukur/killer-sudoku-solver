@@ -52,7 +52,7 @@ export function findNumberCombinationsForSum(sum, count) {
     return combos;
 }
 
-export function findSumCombinationsForSegment(houseSolver) {
+export function findSumCombinationsForHouse(houseSolver) {
     if (typeof(houseSolver) !== 'object' || !houseSolver) {
         throw `Invalid houseSolver: ${houseSolver}`;
     }

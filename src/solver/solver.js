@@ -5,7 +5,7 @@ import { Cage } from '../problem/cage';
 import { CellSolver } from './cellSolver';
 import { CageSolver } from './cageSolver';
 import { CagesArea } from './cagesArea';
-import { findSumCombinationsForSegment } from './combinatorial';
+import { findSumCombinationsForHouse } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -21,7 +21,7 @@ const newAreaIterator = (valueOfFn, max) => {
     }
 };
 
-const newSegmentIterator = (valueOfFn) => {
+const newHouseIterator = (valueOfFn) => {
     return newAreaIterator(valueOfFn, House.SIZE);
 };
 
@@ -72,7 +72,7 @@ export class RowSolver extends HouseSolver {
     }
 
     static iteratorFor(idx) {
-        return newSegmentIterator(colIdx => {
+        return newHouseIterator(colIdx => {
             return { rowIdx: idx, colIdx };
         });
     }
@@ -84,7 +84,7 @@ export class ColumnSolver extends HouseSolver {
     }
 
     static iteratorFor(idx) {
-        return newSegmentIterator(rowIdx => {
+        return newHouseIterator(rowIdx => {
             return { rowIdx, colIdx: idx };
         });
     }
@@ -96,7 +96,7 @@ export class NonetSolver extends HouseSolver {
     }
 
     static iteratorFor(idx) {
-        return newSegmentIterator(i => {
+        return newHouseIterator(i => {
             const nonetStartingRowIdx = Math.floor(idx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
             const nonetStartingColIdx = (idx % House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
             const rowIdx = nonetStartingRowIdx + Math.floor(i / House.NONET_SIDE_LENGTH);
@@ -131,9 +131,9 @@ export class Solver {
         this.columnSolvers = [];
         this.nonets = [];
         _.range(House.SIZE).forEach(i => {
-            this.rowSolvers.push(new RowSolver(i, this.#collectSegmentCells(RowSolver.iteratorFor(i))));
-            this.columnSolvers.push(new ColumnSolver(i, this.#collectSegmentCells(ColumnSolver.iteratorFor(i))));
-            this.nonets.push(new NonetSolver(i, this.#collectSegmentCells(NonetSolver.iteratorFor(i))));
+            this.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
+            this.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
+            this.nonets.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
         }, this);
 
         this.cellSolversMatrix = newGridMatrix();
@@ -153,28 +153,28 @@ export class Solver {
         this.houseSolvers = [[...this.rowSolvers], [...this.columnSolvers], [...this.nonets]].flat();
     }
 
-    #collectSegmentCells(iterator) {
+    #collectHouseCells(iterator) {
         return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
     }
 
     solve() {
-        this.#determineAndSliceResidualCagesInAdjacentNSegmentAreas();
-        this.#determineAndSliceResidualCagesInSegments();
+        this.#determineAndSliceResidualCagesInAdjacentNHouseAreas();
+        this.#determineAndSliceResidualCagesInHouses();
         this.#fillUpCombinationsForCagesAndMakeInitialReduce();
         this.#mainReduce();
 
         return this.#solution;
     }
 
-    #determineAndSliceResidualCagesInAdjacentNSegmentAreas() {
+    #determineAndSliceResidualCagesInAdjacentNHouseAreas() {
         _.range(2, 9).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minColIdx >= leftIdx && cageSolver.maxColIdx < rightIdxExclusive;
                 }, (colIdx) => {
                     return this.columnSolvers[colIdx].cellIterator()
                 });
-                this.#doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minRowIdx >= leftIdx && cageSolver.maxRowIdx < rightIdxExclusive;
                 }, (rowIdx) => {
                     return this.rowSolvers[rowIdx].cellIterator()
@@ -183,18 +183,18 @@ export class Solver {
         });
     }
 
-    #doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, withinSegmentFn, cellIteratorFn) {
-        const nSegmentCellCount = n * House.SIZE;
-        const nSegmentSumVal = n * House.SUM;
+    #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, withinHouseFn, cellIteratorFn) {
+        const nHouseCellCount = n * House.SIZE;
+        const nHouseSumVal = n * House.SUM;
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new CagesArea();
         for (const cageSolver of this.cagesSolversMap.values()) {
-            if (withinSegmentFn(cageSolver, rightIdxExclusive)) {
-                cagesArea = new CagesArea(cagesArea.cages.concat(cageSolver.cage), nSegmentCellCount);
+            if (withinHouseFn(cageSolver, rightIdxExclusive)) {
+                cagesArea = new CagesArea(cagesArea.cages.concat(cageSolver.cage), nHouseCellCount);
             }
         }
-        if (cagesArea.nonOverlappingCellsSet.size > nSegmentCellCount - 6) {
+        if (cagesArea.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { rowIdx, colIdx } of cellIteratorFn(idx)) {
@@ -204,7 +204,7 @@ export class Solver {
                 }
             });
             if (residualCells.length) {
-                const residualCage = new Cage(nSegmentSumVal - cagesArea.totalValue, residualCells);
+                const residualCage = new Cage(nHouseSumVal - cagesArea.totalValue, residualCells);
                 if (!this.cagesSolversMap.has(residualCage.key())) {
                     this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
@@ -212,7 +212,7 @@ export class Solver {
         }
     }
 
-    #determineAndSliceResidualCagesInSegments() {
+    #determineAndSliceResidualCagesInHouses() {
         this.houseSolvers.forEach(houseSolver => {
             const residualCage = houseSolver.determineResidualCage();
             if (residualCage) {
@@ -279,13 +279,13 @@ export class Solver {
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
         this.houseSolvers.forEach(houseSolver => {
-            const combosForSegment = findSumCombinationsForSegment(houseSolver);
-            houseSolver.debugCombosForSegment = combosForSegment;
+            const combosForHouse = findSumCombinationsForHouse(houseSolver);
+            houseSolver.debugCombosForHouse = combosForHouse;
             houseSolver.cages.forEach((cage, idx) => {
                 const cageSolver = this.cagesSolversMap.get(cage.key());
                 const combosKeySet = new Set();
                 const combos = [];
-                combosForSegment.forEach(combo => {
+                combosForHouse.forEach(combo => {
                     const comboSet = combo[idx];
                     const key = Array.from(combo[idx]).join();
                     if (!combosKeySet.has(key)) {
@@ -311,7 +311,7 @@ export class Solver {
             this.#reduceCages(cageSolversIterable);
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
-            let nextCagesSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
+            let nextCagesSet = this.#reduceHousesBySolvedCells(solvedCellDets);
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
@@ -330,7 +330,7 @@ export class Solver {
                 cageSolversIterable = nextCagesSet.values();
             }
             else {
-                nextCagesSet = this.#determineUniqueCagesInSegments();
+                nextCagesSet = this.#determineUniqueCagesInHouses();
                 cageSolversIterable = nextCagesSet.values();
             }
 
@@ -360,7 +360,7 @@ export class Solver {
         }
     }
 
-    #reduceSegmentsBySolvedCells(cellsSolvers) {
+    #reduceHousesBySolvedCells(cellsSolvers) {
         let cagesToReduceSet = new Set();
         cellsSolvers.forEach(cellSolver => {
             const number = cellSolver.placedNumber;
@@ -383,7 +383,7 @@ export class Solver {
         return new Set(Array.from(cagesToReduceSet).map(cage => this.cagesSolversMap.get(cage.key())));
     }
 
-    #determineUniqueCagesInSegments() {
+    #determineUniqueCagesInHouses() {
         let cagesToReduce = new Set();
 
         this.houseSolvers.forEach(houseSolver => {

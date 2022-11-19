@@ -48,7 +48,7 @@ export class CageSolver {
 
     reduce() {
         if (this.#cellCount > 1 && this.#cellCount < 6) {
-            if (this.cage.isWithinSegment) {
+            if (this.cage.isWithinHouse) {
                 return this.#reduceByCellPermutations(false);
             } else {
                 return this.#reduceByCellPermutations(true);

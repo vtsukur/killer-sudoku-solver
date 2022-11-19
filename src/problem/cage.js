@@ -12,7 +12,7 @@ export class Cage {
         this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.rowIdx);
         this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.colIdx);
         this.isWithinSubgrid = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonetIdx);
-        this.isWithinSegment = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
+        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
     }
 
     #isSameForAll(whatFn) {
