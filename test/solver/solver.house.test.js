@@ -145,7 +145,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Initialize nonets', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
-        expect(solver.nonets[0]).toEqual(new NonetSolver(
+        expect(solver.nonetSolver(0)).toEqual(new NonetSolver(
             0, [
                 new Cell(0, 0), new Cell(0, 1), new Cell(0, 2),
                 new Cell(1, 0), new Cell(1, 1), new Cell(1, 2),

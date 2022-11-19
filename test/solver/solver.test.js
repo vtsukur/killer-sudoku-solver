@@ -20,8 +20,8 @@ describe('Tests for solver', () => {
         expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columnSolvers.length).toBe(House.SIZE);
         expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
-        expect(solver.nonets.length).toBe(House.SIZE);
-        expect(solver.nonets[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.nonetSolvers.length).toBe(House.SIZE);
+        expect(solver.nonetSolvers[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
@@ -213,7 +213,7 @@ describe('Tests for solver', () => {
         _.range(House.SIZE).forEach(idx => {
             expect(solver.rowSolvers[idx].cages.length).toBe(House.SIZE);
             expect(solver.columnSolvers[idx].cages.length).toBe(House.SIZE);
-            expect(solver.nonets[idx].cages.length).toBe(House.SIZE);
+            expect(solver.nonetSolvers[idx].cages.length).toBe(House.SIZE);
         });
     });
 });

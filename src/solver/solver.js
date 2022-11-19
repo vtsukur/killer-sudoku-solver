@@ -33,11 +33,11 @@ export class Solver {
 
         this.rowSolvers = [];
         this.columnSolvers = [];
-        this.nonets = [];
+        this.nonetSolvers = [];
         _.range(House.SIZE).forEach(i => {
             this.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
             this.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
-            this.nonets.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
+            this.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
         }, this);
 
         this.cellSolversMatrix = newGridMatrix();
@@ -46,7 +46,7 @@ export class Solver {
                 cell,
                 rowSolver: this.rowSolvers[cell.rowIdx],
                 columnSolver: this.columnSolvers[cell.colIdx],
-                nonetSolver: this.nonets[cell.nonetIdx]
+                nonetSolver: this.nonetSolvers[cell.nonetIdx]
             });
         }, this);
 
@@ -54,7 +54,7 @@ export class Solver {
             this.#registerCage(cage);
         }, this);
 
-        this.houseSolvers = [[...this.rowSolvers], [...this.columnSolvers], [...this.nonets]].flat();
+        this.houseSolvers = [[...this.rowSolvers], [...this.columnSolvers], [...this.nonetSolvers]].flat();
     }
 
     #collectHouseCells(iterator) {
@@ -271,7 +271,7 @@ export class Solver {
             [
                 this.rowSolvers[cellSolver.cell.rowIdx],
                 this.columnSolvers[cellSolver.cell.colIdx],
-                this.nonets[cellSolver.cell.nonetIdx]
+                this.nonetSolvers[cellSolver.cell.nonetIdx]
             ].forEach(houseSolver => {
                 for (const { rowIdx, colIdx } of houseSolver.cellIterator()) {
                     if (rowIdx === cellSolver.cell.rowIdx && colIdx === cellSolver.cell.colIdx) continue;
@@ -365,7 +365,7 @@ export class Solver {
             this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.nonets[cageSolver.anySubgridIdx()].addCage(cage);
+            this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCage(cage);
@@ -382,7 +382,7 @@ export class Solver {
             this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.nonets[cageSolver.anySubgridIdx()].removeCage(cage);
+            this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinCage(cage);
@@ -415,6 +415,6 @@ export class Solver {
     }
 
     nonetSolver(idx) {
-        return this.nonets[idx];
+        return this.nonetSolvers[idx];
     }
 }
