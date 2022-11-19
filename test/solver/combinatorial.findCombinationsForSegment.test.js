@@ -14,8 +14,8 @@ const segmentOf = (cages) => {
     return { cages, cells: Array.from(cellsMap.values()) };
 }
 
-describe('Tests for the finder of number combinations to form a segment out of cages', () => {
-    test('Multiple combinations of numbers to form a complete segment with non-overlapping cages', () => {
+describe('Tests for the finder of number combinations to form a houseSolver out of cages', () => {
+    test('Multiple combinations of numbers to form a complete houseSolver with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(15).cell(1, 1).cell(1, 2).mk(),
             Cage.of(10).cell(1, 3).cell(2, 3).mk(),
@@ -30,7 +30,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
         ]);
     });
 
-    test('Combination of numbers to form a complete segment with non-overlapping cages', () => {
+    test('Combination of numbers to form a complete houseSolver with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
@@ -41,7 +41,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
         ]);
     });
 
-    test('Combinations of numbers to form an incomplete segment with non-overlapping cages', () => {
+    test('Combinations of numbers to form an incomplete houseSolver with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(9).cell(1, 6).cell(1, 7).mk()
@@ -51,7 +51,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
         ]);
     });
 
-    test('Combinations of numbers to form a segment with overlapping cage', () => {
+    test('Combinations of numbers to form a houseSolver with overlapping cage', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(8).cell(2, 5).cell(3, 5).mk(),
             Cage.of(8).cell(7, 5).mk(),
@@ -65,19 +65,19 @@ describe('Tests for the finder of number combinations to form a segment out of c
         ]);
     });
 
-    test('Combinations of numbers to form a segment out of invalid segment', () => {
-        expect(() => findSumCombinationsForSegment(undefined)).toThrow('Invalid segment: undefined');
-        expect(() => findSumCombinationsForSegment(null)).toThrow('Invalid segment: null');
-        expect(() => findSumCombinationsForSegment(1)).toThrow('Invalid segment: 1');
-        expect(() => findSumCombinationsForSegment('string')).toThrow('Invalid segment: string');
-        expect(() => findSumCombinationsForSegment(() => {})).toThrow('Invalid segment: () => {}');
+    test('Combinations of numbers to form a houseSolver out of invalid houseSolver', () => {
+        expect(() => findSumCombinationsForSegment(undefined)).toThrow('Invalid houseSolver: undefined');
+        expect(() => findSumCombinationsForSegment(null)).toThrow('Invalid houseSolver: null');
+        expect(() => findSumCombinationsForSegment(1)).toThrow('Invalid houseSolver: 1');
+        expect(() => findSumCombinationsForSegment('string')).toThrow('Invalid houseSolver: string');
+        expect(() => findSumCombinationsForSegment(() => {})).toThrow('Invalid houseSolver: () => {}');
     });
 
-    test('Combinations of numbers to form a segment out of no cages', () => {
+    test('Combinations of numbers to form a houseSolver out of no cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([]))).toEqual([]);
     });
 
-    test('Combinations of numbers to form a segment out of invalid segment cages', () => {
+    test('Combinations of numbers to form a houseSolver out of invalid houseSolver cages', () => {
         expect(() => findSumCombinationsForSegment(segmentOf(undefined))).toThrow('Invalid cages: undefined');
         expect(() => findSumCombinationsForSegment(segmentOf(null))).toThrow('Invalid cages: null');
         expect(() => findSumCombinationsForSegment(segmentOf({}))).toThrow('Invalid cages: [object Object]');
@@ -86,7 +86,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
         expect(() => findSumCombinationsForSegment(segmentOf(() => {}))).toThrow('Invalid cages: () => {}');
     });
 
-    test('Combinations of numbers to form a segment out of invalid segment cells', () => {
+    test('Combinations of numbers to form a houseSolver out of invalid houseSolver cells', () => {
         expect(() => findSumCombinationsForSegment({ cages: [], cells: undefined })).toThrow('Invalid cells: undefined');
         expect(() => findSumCombinationsForSegment({ cages: [], cells: null })).toThrow('Invalid cells: null');
         expect(() => findSumCombinationsForSegment({ cages: [], cells: {} })).toThrow('Invalid cells: [object Object]');
@@ -95,12 +95,12 @@ describe('Tests for the finder of number combinations to form a segment out of c
         expect(() => findSumCombinationsForSegment({ cages: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
     });
 
-    test('Combinations of numbers to form a segment out of too many cages with non-overlapping cells', () => {
+    test('Combinations of numbers to form a houseSolver out of too many cages with non-overlapping cells', () => {
         expect(() => findSumCombinationsForSegment(segmentOf(_.range(10).map(i => Cage.of(5).cell(i, 0).mk())))).toThrow(
             'Too many cages with non-overlapping cells. Expected no more than 9 cages. Actual: 10');
     });
 
-    test('Combinations of numbers to form a segment out of cages with non-overlapping cells whose total cage is greater than segments max', () => {
+    test('Combinations of numbers to form a houseSolver out of cages with non-overlapping cells whose total cage is greater than segments max', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
@@ -110,7 +110,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
             "Total cage with non-overlapping cells should be <= 45. Actual: 135. Cages: ");
     });
 
-    test('Combinations of numbers to form a segment out of cages with too many non-overlapping cells', () => {
+    test('Combinations of numbers to form a houseSolver out of cages with too many non-overlapping cells', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),

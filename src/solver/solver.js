@@ -25,7 +25,7 @@ const newSegmentIterator = (valueOfFn) => {
     return newAreaIterator(valueOfFn, House.SIZE);
 };
 
-class Segment {
+class HouseSolver {
     #cagesArea;
 
     constructor(idx, cells, inputCages = [], cellIteratorFn) {
@@ -66,7 +66,7 @@ class Segment {
     }
 }
 
-export class Row extends Segment {
+export class Row extends HouseSolver {
     constructor(idx, cells, inputCages) {
         super(idx, cells, inputCages, Row.iteratorFor);
     }
@@ -78,7 +78,7 @@ export class Row extends Segment {
     }
 }
 
-export class Column extends Segment {
+export class Column extends HouseSolver {
     constructor(idx, cells, inputCages) {
         super(idx, cells, inputCages, Column.iteratorFor);
     }
@@ -90,7 +90,7 @@ export class Column extends Segment {
     }
 }
 
-export class Subgrid extends Segment {
+export class Subgrid extends HouseSolver {
     constructor(idx, cells, inputCages) {
         super(idx, cells, inputCages, Subgrid.iteratorFor);
     }
@@ -213,8 +213,8 @@ export class Solver {
     }
 
     #determineAndSliceResidualCagesInSegments() {
-        this.segments.forEach(segment => {
-            const residualCage = segment.determineResidualCage();
+        this.segments.forEach(houseSolver => {
+            const residualCage = houseSolver.determineResidualCage();
             if (residualCage) {
                 this.#addAndSliceResidualCageRecursively(residualCage);
             }
@@ -278,10 +278,10 @@ export class Solver {
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
-        this.segments.forEach(segment => {
-            const combosForSegment = findSumCombinationsForSegment(segment);
-            segment.debugCombosForSegment = combosForSegment;
-            segment.cages.forEach((cage, idx) => {
+        this.segments.forEach(houseSolver => {
+            const combosForSegment = findSumCombinationsForSegment(houseSolver);
+            houseSolver.debugCombosForSegment = combosForSegment;
+            houseSolver.cages.forEach((cage, idx) => {
                 const cageSolver = this.cagesSolversMap.get(cage.key());
                 const combosKeySet = new Set();
                 const combos = [];
@@ -368,8 +368,8 @@ export class Solver {
                 this.rows[cellSolver.cell.rowIdx],
                 this.columns[cellSolver.cell.colIdx],
                 this.subgrids[cellSolver.cell.subgridIdx]
-            ].forEach(segment => {
-                for (const { rowIdx, colIdx } of segment.cellIterator()) {
+            ].forEach(houseSolver => {
+                for (const { rowIdx, colIdx } of houseSolver.cellIterator()) {
                     if (rowIdx === cellSolver.cell.rowIdx && colIdx === cellSolver.cell.colIdx) continue;
         
                     const aCellDet = this.cellSolverAt(rowIdx, colIdx);
@@ -386,11 +386,11 @@ export class Solver {
     #determineUniqueCagesInSegments() {
         let cagesToReduce = new Set();
 
-        this.segments.forEach(segment => {
+        this.segments.forEach(houseSolver => {
             _.range(1, House.SIZE + 1).forEach(num => {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
-                segment.cages.forEach(cage => {
+                houseSolver.cages.forEach(cage => {
                     if (cage.isSingleCellCage) return;
                     const cageSolver = this.cagesSolversMap.get(cage.key());
                     const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
@@ -410,7 +410,7 @@ export class Solver {
 
                 // remove number from other cells
                 const furtherReducedCellDets = new Set();
-                for (const { rowIdx, colIdx } of segment.cellIterator()) {
+                for (const { rowIdx, colIdx } of houseSolver.cellIterator()) {
                     const cellSolver = this.cellSolverAt(rowIdx, colIdx);
                     if (cageSolverToReDefine.has(cellSolver)) return;
 
