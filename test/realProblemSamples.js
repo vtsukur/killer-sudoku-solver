@@ -40,7 +40,7 @@ export const sampleProblem = new Problem([
     Sum.of(16).cell(8, 6).cell(8, 7).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_04_06 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_04_06 = new Problem([
     // upper subgrids
     Sum.of(7).cell(0, 0).cell(0, 1).mk(),
     Sum.of(18).cell(1, 0).cell(1, 1).cell(2, 0).mk(),
@@ -81,7 +81,7 @@ export const killerSudokuBySudokuDotCom_2022_04_06 = new Problem([
     Sum.of(12).cell(7, 8).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_08_12 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_08_12 = new Problem([
     // upper subgrids
     Sum.of(6).cell(0, 0).cell(1, 0).mk(),
     Sum.of(12).cell(0, 1).cell(1, 1).mk(),
@@ -122,7 +122,7 @@ export const killerSudokuBySudokuDotCom_2022_08_12 = new Problem([
     Sum.of(7).cell(7, 8).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_08_30 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_08_30 = new Problem([
     // upper subgrids
     Sum.of(15).cell(0, 0).cell(0, 1).cell(0, 2).mk(),
     Sum.of(12).cell(1, 0).cell(1, 1).cell(1, 2).mk(),
@@ -163,7 +163,7 @@ export const killerSudokuBySudokuDotCom_2022_08_30 = new Problem([
     Sum.of(12).cell(7, 8).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_10_18 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_18 = new Problem([
     // upper subgrids
     Sum.of(8).cell(0, 0).cell(0, 1).mk(),
     Sum.of(13).cell(1, 0).cell(1, 1).mk(),
@@ -205,7 +205,7 @@ export const killerSudokuBySudokuDotCom_2022_10_18 = new Problem([
     Sum.of(20).cell(8, 5).cell(8, 6).cell(8, 7).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_10_19 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_19 = new Problem([
     // upper subgrids
     Sum.of(25).cell(0, 0).cell(1, 0).cell(2, 0).cell(3, 0).mk(),
     Sum.of(7).cell(0, 1).cell(1, 1).mk(),
@@ -246,7 +246,7 @@ export const killerSudokuBySudokuDotCom_2022_10_19 = new Problem([
     Sum.of(9).cell(7, 8).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_10_22 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_22 = new Problem([
     // upper subgrids
     Sum.of(11).cell(0, 0).cell(0, 1).mk(),
     Sum.of(10).cell(1, 0).cell(1, 1).mk(),
@@ -287,7 +287,7 @@ export const killerSudokuBySudokuDotCom_2022_10_22 = new Problem([
     Sum.of(13).cell(8, 6).cell(8, 7).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_10_25 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_25 = new Problem([
     // upper subgrids
     Sum.of(11).cell(0, 0).cell(0, 1).mk(),
     Sum.of(12).cell(0, 2).cell(1, 2).cell(1, 3).mk(),
@@ -326,7 +326,7 @@ export const killerSudokuBySudokuDotCom_2022_10_25 = new Problem([
     Sum.of(15).cell(7, 8).cell(8, 7).cell(8, 8).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_11_01 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_11_01 = new Problem([
     // upper subgrids
     Sum.of(15).cell(0, 0).cell(0, 1).mk(),
     Sum.of(10).cell(0, 2).cell(1, 2).mk(),
@@ -367,7 +367,7 @@ export const killerSudokuBySudokuDotCom_2022_11_01 = new Problem([
     Sum.of(7).cell(8, 6).cell(8, 7).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_2022_11_10 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_11_10 = new Problem([
     // upper subgrids
     Sum.of(7).cell(0, 0).cell(0, 1).mk(),
     Sum.of(7).cell(0, 2).cell(1, 2).mk(),
@@ -408,7 +408,7 @@ export const killerSudokuBySudokuDotCom_2022_11_10 = new Problem([
     Sum.of(8).cell(8, 6).cell(8, 7).mk()
 ]);
 
-export const killerSudokuBySudokuDotCom_expertLevel_1 = new Problem([
+export const sudokuDotCom_randomExpertLevelChallenge = new Problem([
     // upper subgrids
     Sum.of(30).cell(0, 0).cell(0, 1).cell(1, 0).cell(1, 1).cell(1, 2).cell(2, 0).mk(),
     Sum.of(10).cell(2, 1).cell(2, 2).mk(),

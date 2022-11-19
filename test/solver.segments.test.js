@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { killerSudokuBySudokuDotCom_2022_11_01 } from './realKillerSudokuProblems';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from './realProblemSamples';
 import { Cell, Sum, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../src/problem';
 import { Row, Column, Subgrid, Solver } from '../src/solver';
 
 describe('Tests for creation and initialization of rows, columns and subgrids', () => {    
     test('Initialize rows', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.row(0)).toEqual(new Row(
             0, _.range(9).map(colIdx => new Cell(0, colIdx)), [
                 Sum.of(15).cell(0, 0).cell(0, 1).mk(),
@@ -59,7 +59,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
     });
 
     test('Determine residual sums in rows (shallow)', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const row0 = solver.row(0);
         const residualSum0 = row0.determineResidualSum();
@@ -73,7 +73,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
     });
 
     test('Initialize columns', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.column(0)).toEqual(new Column(
             0, _.range(9).map(rowIdx => new Cell(rowIdx, 0)), [
                 Sum.of(19).cell(6, 0).cell(7, 0).cell(8, 0).mk()
@@ -123,7 +123,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
     });
 
     test('Determine residual sums in columns (shallow)', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const column0 = solver.column(0);
         const residualSum0 = column0.determineResidualSum();
@@ -138,7 +138,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
     });
 
     test('Initialize subgrids', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         expect(solver.subgrids[0]).toEqual(new Subgrid(
             0, [
@@ -241,7 +241,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
     });
 
     test('Determine residual sums in subgrids (shallow)', () => {
-        const solver = new Solver(killerSudokuBySudokuDotCom_2022_11_01);
+        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const subgrid0 = solver.subgrid(0);
         const residualSum0 = subgrid0.determineResidualSum();
