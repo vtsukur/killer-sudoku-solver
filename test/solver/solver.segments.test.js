@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../realProblemSamples';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realProblemSamples';
 import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../../src/problem/constants';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
