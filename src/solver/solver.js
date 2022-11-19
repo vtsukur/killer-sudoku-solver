@@ -382,7 +382,7 @@ export class Solver {
         this.problem = problem;
         this.inputSums = [];
         this.inputSumsMatrix = newGridMatrix();
-        this.cagesDeterminatorsMap = new Map();
+        this.cagesSolversMap = new Map();
         this.cellsMatrix = newGridMatrix();
         this.#solution = newGridMatrix();
         this.#placedNumbersCount = 0;
@@ -437,13 +437,13 @@ export class Solver {
     #determineAndSliceResidualSumsInAdjacentNSegmentAreas() {
         _.range(2, 9).reverse().forEach(n => {
             _.range(UNIQUE_SEGMENT_LENGTH - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (cageDet, rightIdxExclusive) => {
-                    return cageDet.minColIdx >= leftIdx && cageDet.maxColIdx < rightIdxExclusive;
+                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
+                    return cageSolver.minColIdx >= leftIdx && cageSolver.maxColIdx < rightIdxExclusive;
                 }, (colIdx) => {
                     return this.columns[colIdx].cellIterator()
                 });
-                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (cageDet, rightIdxExclusive) => {
-                    return cageDet.minRowIdx >= leftIdx && cageDet.maxRowIdx < rightIdxExclusive;
+                this.#doDetermineAndSliceResidualSumsInAdjacentNSegmentAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
+                    return cageSolver.minRowIdx >= leftIdx && cageSolver.maxRowIdx < rightIdxExclusive;
                 }, (rowIdx) => {
                     return this.rows[rowIdx].cellIterator()
                 });
@@ -457,9 +457,9 @@ export class Solver {
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new SumsArea();
-        for (const cageDet of this.cagesDeterminatorsMap.values()) {
-            if (withinSegmentFn(cageDet, rightIdxExclusive)) {
-                cagesArea = new SumsArea(cagesArea.cages.concat(cageDet.cage), nSegmentCellCount);
+        for (const cageSolver of this.cagesSolversMap.values()) {
+            if (withinSegmentFn(cageSolver, rightIdxExclusive)) {
+                cagesArea = new SumsArea(cagesArea.cages.concat(cageSolver.cage), nSegmentCellCount);
             }
         }
         if (cagesArea.nonOverlappingCellsSet.size > nSegmentCellCount - 6) {
@@ -473,7 +473,7 @@ export class Solver {
             });
             if (residualCells.length) {
                 const residualSum = new Cage(nSegmentSumVal - cagesArea.totalValue, residualCells);
-                if (!this.cagesDeterminatorsMap.has(residualSum.key())) {
+                if (!this.cagesSolversMap.has(residualSum.key())) {
                     this.#addAndSliceResidualSumRecursively(residualSum);                        
                 }
             }
@@ -496,7 +496,7 @@ export class Solver {
             const nextResidualSums = [];
 
             residualSums.forEach(residualSum => {
-                if (this.cagesDeterminatorsMap.has(residualSum.key())) return;
+                if (this.cagesSolversMap.has(residualSum.key())) return;
 
                 this.#registerSum(residualSum);
 
@@ -550,7 +550,7 @@ export class Solver {
             const combosForSegment = findSumCombinationsForSegment(segment);
             segment.debugCombosForSegment = combosForSegment;
             segment.cages.forEach((cage, idx) => {
-                const cageDeterminator = this.cagesDeterminatorsMap.get(cage.key());
+                const cageSolver = this.cagesSolversMap.get(cage.key());
                 const combosKeySet = new Set();
                 const combos = [];
                 combosForSegment.forEach(combo => {
@@ -561,13 +561,13 @@ export class Solver {
                         combosKeySet.add(key);
                     }
                 });
-                cageDeterminator.updateCombinations(combos);
+                cageSolver.updateCombinations(combos);
             }, this);
         }, this);
     }
 
     #mainReduce() {
-        let cageDetsIterable = this.cagesDeterminatorsMap.values();
+        let cageSolversIterable = this.cagesSolversMap.values();
         let iterate = true;
         let newlySolvedCellDets = [];
 
@@ -576,7 +576,7 @@ export class Solver {
                 return;
             }
     
-            this.#reduceSums(cageDetsIterable);
+            this.#reduceSums(cageSolversIterable);
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
             let nextSumsSet = this.#reduceSegmentsBySolvedCells(solvedCellDets);
@@ -584,7 +584,7 @@ export class Solver {
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
             if (nextSumsSet.size > 0) {
-                cageDetsIterable = nextSumsSet.values();
+                cageSolversIterable = nextSumsSet.values();
             } else if (newlySolvedCellDets.length > 0) {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinSumsSet = cellSolver.withinSumsSet;
@@ -594,26 +594,26 @@ export class Solver {
                     }
                 });
                 newlySolvedCellDets = [];
-                nextSumsSet = new Set(this.cagesDeterminatorsMap.values());
-                cageDetsIterable = nextSumsSet.values();
+                nextSumsSet = new Set(this.cagesSolversMap.values());
+                cageSolversIterable = nextSumsSet.values();
             }
             else {
                 nextSumsSet = this.#determineUniqueSumsInSegments();
-                cageDetsIterable = nextSumsSet.values();
+                cageSolversIterable = nextSumsSet.values();
             }
 
             iterate = nextSumsSet.size > 0;
         }
     }
 
-    #reduceSums(cageDetsIterable) {
+    #reduceSums(cageSolversIterable) {
         let iterate = true;
 
         while (iterate) {
             let modifiedCellDets = new Set();
 
-            for (const cageDeterminator of cageDetsIterable) {
-                const currentlyModifiedCellDets = cageDeterminator.reduce();
+            for (const cageSolver of cageSolversIterable) {
+                const currentlyModifiedCellDets = cageSolver.reduce();
                 modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
             }
 
@@ -622,8 +622,8 @@ export class Solver {
                 moreSumsToReduce = new Set([...moreSumsToReduce, ...modifiedCellDet.withinSumsSet]);
             }
 
-            const nextSumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(cage => this.cagesDeterminatorsMap.get(cage.key())));
-            cageDetsIterable = nextSumDetsToReduce.values();
+            const nextSumDetsToReduce = new Set(Array.from(moreSumsToReduce).map(cage => this.cagesSolversMap.get(cage.key())));
+            cageSolversIterable = nextSumDetsToReduce.values();
             iterate = nextSumDetsToReduce.size > 0;
         }
     }
@@ -648,7 +648,7 @@ export class Solver {
                 }    
             });
         });
-        return new Set(Array.from(cagesToReduceSet).map(cage => this.cagesDeterminatorsMap.get(cage.key())));
+        return new Set(Array.from(cagesToReduceSet).map(cage => this.cagesSolversMap.get(cage.key())));
     }
 
     #determineUniqueSumsInSegments() {
@@ -656,20 +656,20 @@ export class Solver {
 
         this.segments.forEach(segment => {
             _.range(1, UNIQUE_SEGMENT_LENGTH + 1).forEach(num => {
-                const cageDetsWithNum = [];
+                const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 segment.cages.forEach(cage => {
                     if (cage.isSingleCellSum) return;
-                    const cageDet = this.cagesDeterminatorsMap.get(cage.key());
-                    const hasNumInCells = cageDet.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
+                    const cageSolver = this.cagesSolversMap.get(cage.key());
+                    const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
-                        cageDetsWithNum.push(cageDet);
+                        cageSolversWithNum.push(cageSolver);
                     }
                 });
-                if (cageDetsWithNum.length !== 1) return;
+                if (cageSolversWithNum.length !== 1) return;
 
-                const cageDetToReDefine = cageDetsWithNum[0];
-                const reducedCellDets = cageDetToReDefine.reduceToCombinationsContaining(num);
+                const cageSolverToReDefine = cageSolversWithNum[0];
+                const reducedCellDets = cageSolverToReDefine.reduceToCombinationsContaining(num);
                 
                 if (!reducedCellDets.length) return;
                 reducedCellDets.forEach(cellSolver => {
@@ -680,7 +680,7 @@ export class Solver {
                 const furtherReducedCellDets = new Set();
                 for (const { rowIdx, colIdx } of segment.cellIterator()) {
                     const cellSolver = this.cellSolverAt(rowIdx, colIdx);
-                    if (cageDetToReDefine.has(cellSolver)) return;
+                    if (cageSolverToReDefine.has(cellSolver)) return;
 
                     if (cellSolver.hasNumOpt(num)) {
                         cellSolver.deleteNumOpt(num);
@@ -693,7 +693,7 @@ export class Solver {
             });
         });
 
-        return new Set(Array.from(cagesToReduce).map(cage => this.cagesDeterminatorsMap.get(cage.key())));
+        return new Set(Array.from(cagesToReduce).map(cage => this.cagesSolversMap.get(cage.key())));
     }
 
     #determineCellsWithSingleOption() {
@@ -721,37 +721,37 @@ export class Solver {
     }
 
     #registerSum(cage) {
-        const cageDeterminator = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
+        const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
         if (cage.isWithinRow) {
-            this.rows[cageDeterminator.anyRowIdx()].addSum(cage);
+            this.rows[cageSolver.anyRowIdx()].addSum(cage);
         }
         if (cage.isWithinColumn) {
-            this.columns[cageDeterminator.anyColumnIdx()].addSum(cage);
+            this.columns[cageSolver.anyColumnIdx()].addSum(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.subgrids[cageDeterminator.anySubgridIdx()].addSum(cage);
+            this.subgrids[cageSolver.anySubgridIdx()].addSum(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinSum(cage);
         }, this);
-        this.cagesDeterminatorsMap.set(cage.key(), cageDeterminator);
+        this.cagesSolversMap.set(cage.key(), cageSolver);
     }
 
     #unregisterSum(cage) {
-        const cageDeterminator = this.cagesDeterminatorsMap.get(cage.key());
+        const cageSolver = this.cagesSolversMap.get(cage.key());
         if (cage.isWithinRow) {
-            this.rows[cageDeterminator.anyRowIdx()].removeSum(cage);
+            this.rows[cageSolver.anyRowIdx()].removeSum(cage);
         }
         if (cage.isWithinColumn) {
-            this.columns[cageDeterminator.anyColumnIdx()].removeSum(cage);
+            this.columns[cageSolver.anyColumnIdx()].removeSum(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.subgrids[cageDeterminator.anySubgridIdx()].removeSum(cage);
+            this.subgrids[cageSolver.anySubgridIdx()].removeSum(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinSum(cage);
         }, this);
-        this.cagesDeterminatorsMap.delete(cage.key());
+        this.cagesSolversMap.delete(cage.key());
     }
 
     inputSumAt(rowIdx, colIdx) {
