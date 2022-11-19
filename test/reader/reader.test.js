@@ -6,7 +6,7 @@ describe('Reader tests', () => {
     test('Full read - real problem #1', () => {
         const problem = reader('./test/reader/problems/1.txt');
         expect(problem).toEqual(new Problem([
-            // upper subgrids
+            // upper nonets
             Cage.of(17).cell(0, 0).cell(1, 0).cell(1, 1).mk(),
             Cage.of(7).cell(0, 1).mk(),
             Cage.of(7).cell(0, 2).cell(0, 3).mk(),
@@ -20,7 +20,7 @@ describe('Reader tests', () => {
             Cage.of(9).cell(2, 2).mk(),
             Cage.of(13).cell(2, 5).cell(2, 6).mk(),
 
-            // middle subgrids
+            // middle nonets
             Cage.of(17).cell(3, 0).cell(4, 0).cell(4, 1).mk(),
             Cage.of(14).cell(3, 2).cell(3, 3).mk(),
             Cage.of(23).cell(3, 4).cell(4, 4).cell(4, 5).cell(4, 6).mk(),
@@ -35,7 +35,7 @@ describe('Reader tests', () => {
             Cage.of(25).cell(5, 6).cell(6, 6).cell(6, 7).cell(7, 7).mk(),
             Cage.of(6).cell(5, 7).mk(),
 
-            // lower subgrids
+            // lower nonets
             Cage.of(3).cell(6, 0).cell(7, 0).mk(),
             Cage.of(8).cell(6, 8).cell(7, 8).mk(),
             Cage.of(27).cell(7, 1).cell(7, 2).cell(7, 3).cell(8, 2).cell(8, 3).mk(),
@@ -49,7 +49,7 @@ describe('Reader tests', () => {
     test('Full read - real problem #2', () => {
         const problem = reader('./test/reader/problems/2.txt');
         expect(problem).toEqual(new Problem([
-            // upper subgrids
+            // upper nonets
             Cage.of(15).cell(0, 0).cell(0, 1).mk(),
             Cage.of(10).cell(0, 2).cell(1, 2).mk(),
             Cage.of(17).cell(0, 3).cell(1, 3).mk(),
@@ -64,7 +64,7 @@ describe('Reader tests', () => {
             Cage.of(16).cell(2, 6).cell(3, 6).mk(),
             Cage.of(9).cell(2, 7).cell(2, 8).mk(),
 
-            // middle subgrids
+            // middle nonets
             Cage.of(4).cell(3, 0).cell(3, 1).mk(),
             Cage.of(2).cell(3, 2).mk(),
             Cage.of(14).cell(3, 3).cell(3, 4).mk(),
@@ -76,7 +76,7 @@ describe('Reader tests', () => {
             Cage.of(20).cell(4, 5).cell(4, 6).cell(5, 4).cell(5, 5).mk(),
             Cage.of(22).cell(5, 6).cell(5, 7).cell(6, 6).cell(6, 7).mk(),
 
-            // lower subgrids
+            // lower nonets
             Cage.of(19).cell(6, 0).cell(7, 0).cell(8, 0).mk(),
             Cage.of(14).cell(6, 1).cell(7, 1).cell(8, 1).cell(8, 2).mk(),
             Cage.of(15).cell(6, 2).cell(6, 3).cell(7, 2).mk(),

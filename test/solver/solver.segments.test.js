@@ -5,8 +5,8 @@ import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { RowSolver, ColumnSolver, NonetSolver, Solver } from '../../src/solver/solver';
 
-describe('Tests for creation and initialization of rows, columns and subgrids', () => {    
-    test('Initialize rows', () => {
+describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
+    test('Initialize row solvers', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.rowSolver(0)).toEqual(new RowSolver(
             0, _.range(9).map(colIdx => new Cell(0, colIdx)), [
@@ -60,7 +60,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual cages in rows (shallow)', () => {
+    test('Determine residual cages in row solvers (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const row0 = solver.rowSolver(0);
@@ -74,7 +74,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
             new Cage(House.SUM, _.range(House.SIZE).map(colIdx => new Cell(5, colIdx))));
     });
 
-    test('Initialize columns', () => {
+    test('Initialize column solvers', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.columnSolver(0)).toEqual(new ColumnSolver(
             0, _.range(9).map(rowIdx => new Cell(rowIdx, 0)), [
@@ -124,7 +124,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual cages in columns (shallow)', () => {
+    test('Determine residual cages in column solvers (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const column0 = solver.columnSolver(0);
@@ -139,10 +139,10 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
             new Cage(House.SUM, _.range(House.SIZE).map(rowIdx => new Cell(rowIdx, 1))));
     });
 
-    test('Initialize subgrids', () => {
+    test('Initialize nonets', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
-        expect(solver.subgrids[0]).toEqual(new NonetSolver(
+        expect(solver.nonets[0]).toEqual(new NonetSolver(
             0, [
                 new Cell(0, 0), new Cell(0, 1), new Cell(0, 2),
                 new Cell(1, 0), new Cell(1, 1), new Cell(1, 2),
@@ -242,15 +242,15 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual cages in subgrids (shallow)', () => {
+    test('Determine residual cages in nonet solvers (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
-        const subgrid0 = solver.nonetSolver(0);
-        const residualCage0 = subgrid0.determineResidualCage();
+        const nonet0 = solver.nonetSolver(0);
+        const residualCage0 = nonet0.determineResidualCage();
         expect(residualCage0).toBe(undefined);
         
-        const subgrid1 = solver.nonetSolver(1);
-        const residualCage1 = subgrid1.determineResidualCage();
+        const nonet1 = solver.nonetSolver(1);
+        const residualCage1 = nonet1.determineResidualCage();
         expect(residualCage1).toEqual(Cage.of(4).cell(1, 5).cell(2, 5).mk());
     });
 });

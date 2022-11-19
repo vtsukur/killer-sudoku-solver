@@ -16,12 +16,12 @@ describe('Tests for solver', () => {
         expect(solver.inputCages.length).toBe(33);
         expect(solver.inputCages[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.inputCageAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.rows.length).toBe(House.SIZE);
-        expect(solver.rows[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.columns.length).toBe(House.SIZE);
-        expect(solver.columns[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
-        expect(solver.subgrids.length).toBe(House.SIZE);
-        expect(solver.subgrids[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.rowSolvers.length).toBe(House.SIZE);
+        expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.columnSolvers.length).toBe(House.SIZE);
+        expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
+        expect(solver.nonets.length).toBe(House.SIZE);
+        expect(solver.nonets[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
@@ -211,9 +211,9 @@ describe('Tests for solver', () => {
         expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
-            expect(solver.rows[idx].cages.length).toBe(House.SIZE);
-            expect(solver.columns[idx].cages.length).toBe(House.SIZE);
-            expect(solver.subgrids[idx].cages.length).toBe(House.SIZE);
+            expect(solver.rowSolvers[idx].cages.length).toBe(House.SIZE);
+            expect(solver.columnSolvers[idx].cages.length).toBe(House.SIZE);
+            expect(solver.nonets[idx].cages.length).toBe(House.SIZE);
         });
     });
 });

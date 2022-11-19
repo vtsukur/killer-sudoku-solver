@@ -32,7 +32,7 @@ export class CageSolver {
     }
 
     anySubgridIdx() {
-        return this.#firstCell.subgridIdx;
+        return this.#firstCell.nonetIdx;
     }
 
     updateCombinations(combos) {

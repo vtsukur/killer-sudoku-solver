@@ -4,7 +4,7 @@ export class Cell {
     constructor(rowIdx, colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.subgridIdx = Math.floor(rowIdx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(colIdx / House.NONET_SIDE_LENGTH);
+        this.nonetIdx = Math.floor(rowIdx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(colIdx / House.NONET_SIDE_LENGTH);
     }
 
     isWithinRange() {
