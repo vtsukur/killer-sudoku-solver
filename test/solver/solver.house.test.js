@@ -3,7 +3,10 @@ import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realProblem
 import { House } from '../../src/problem/house';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
-import { RowSolver, ColumnSolver, NonetSolver, Solver } from '../../src/solver/solver';
+import { Solver } from '../../src/solver/solver';
+import { RowSolver } from '../../src/solver/rowSolver';
+import { ColumnSolver } from '../../src/solver/columnSolver';
+import { NonetSolver } from '../../src/solver/nonetSolver';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
     test('Initialize row solvers', () => {

@@ -41,4 +41,22 @@ export class HouseSolver {
     cellIterator() {
         return this.cellIteratorFn(this.idx);
     }
+
+    static #newAreaIterator(valueOfFn, max) {
+        let i = 0;
+        return {
+            [Symbol.iterator]() { return this; },
+            next() {
+                if (i < max) {
+                    return { value: valueOfFn(i++), done: false };
+                } else {
+                    return { value: max, done: true };
+                }
+            }
+        }
+    }
+    
+    static newHouseIterator(valueOfFn) {
+        return HouseSolver.#newAreaIterator(valueOfFn, House.SIZE);
+    }
 }

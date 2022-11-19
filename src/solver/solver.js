@@ -5,66 +5,10 @@ import { Cage } from '../problem/cage';
 import { CellSolver } from './cellSolver';
 import { CageSolver } from './cageSolver';
 import { CagesArea } from './cagesArea';
-import { HouseSolver } from './houseSolver';
 import { findSumCombinationsForHouse } from './combinatorial';
-
-const newAreaIterator = (valueOfFn, max) => {
-    let i = 0;
-    return {
-        [Symbol.iterator]() { return this; },
-        next() {
-            if (i < max) {
-                return { value: valueOfFn(i++), done: false };
-            } else {
-                return { value: max, done: true };
-            }
-        }
-    }
-};
-
-const newHouseIterator = (valueOfFn) => {
-    return newAreaIterator(valueOfFn, House.SIZE);
-};
-
-export class RowSolver extends HouseSolver {
-    constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, RowSolver.iteratorFor);
-    }
-
-    static iteratorFor(idx) {
-        return newHouseIterator(colIdx => {
-            return { rowIdx: idx, colIdx };
-        });
-    }
-}
-
-export class ColumnSolver extends HouseSolver {
-    constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, ColumnSolver.iteratorFor);
-    }
-
-    static iteratorFor(idx) {
-        return newHouseIterator(rowIdx => {
-            return { rowIdx, colIdx: idx };
-        });
-    }
-}
-
-export class NonetSolver extends HouseSolver {
-    constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, NonetSolver.iteratorFor);
-    }
-
-    static iteratorFor(idx) {
-        return newHouseIterator(i => {
-            const nonetStartingRowIdx = Math.floor(idx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
-            const nonetStartingColIdx = (idx % House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
-            const rowIdx = nonetStartingRowIdx + Math.floor(i / House.NONET_SIDE_LENGTH);
-            const colIdx = nonetStartingColIdx + i % House.NONET_SIDE_LENGTH;
-            return { rowIdx, colIdx };
-        });
-    }
-}
+import { RowSolver } from './rowSolver';
+import { ColumnSolver } from './columnSolver';
+import { NonetSolver } from './nonetSolver';
 
 export class Solver {
     #solution;
