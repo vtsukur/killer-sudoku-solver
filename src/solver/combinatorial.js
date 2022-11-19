@@ -13,14 +13,14 @@ _.range(UNIQUE_SEGMENT_LENGTH).forEach(count => {
     }
 })
 
-export function findNumberCombinationsForSum(cage, count) {
-    if (typeof (cage) !== 'number' || !cage || cage <= 0) {
-        throw `Invalid cage: ${cage}`;
+export function findNumberCombinationsForSum(sum, count) {
+    if (typeof (sum) !== 'number' || !sum || sum <= 0) {
+        throw `Invalid cage: ${sum}`;
     }
     if (typeof (count) !== 'number' || !count || count <= 0) {
         throw `Invalid count: ${count}`;
     }
-    if (cage < MIN_SUMS_PER_COUNT[count - 1] || cage > MAX_SUMS_PER_COUNT[count - 1]) {
+    if (sum < MIN_SUMS_PER_COUNT[count - 1] || sum > MAX_SUMS_PER_COUNT[count - 1]) {
         return [];
     }
 
@@ -30,12 +30,12 @@ export function findNumberCombinationsForSum(cage, count) {
 
     function combosRecursive(level, startWith) {
         if (level > count) {
-            if (currentSum === cage) {
+            if (currentSum === sum) {
                 combos.push(new Set(numbers));
             }
         } else {
             for (let i = startWith; i <= UNIQUE_SEGMENT_LENGTH; ++i) {
-                if (currentSum + i > cage) {
+                if (currentSum + i > sum) {
                     return;
                 } else {
                     numbers[level - 1] = i;
@@ -72,9 +72,9 @@ export function findSumCombinationsForSegment(segment) {
     const combosForNonOverlappingCages = doFindForNonOverlappingCages(nonOverlappingCages);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const combinedCombos = merge(combosForNonOverlappingCages, combosForOverlappingCages);
-    const preservedSumOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingCages, overlappingCages);
+    const preservedCageOrderCombos = preserveOrder(combinedCombos, segment, nonOverlappingCages, overlappingCages);
 
-    return preservedSumOrderCombos;
+    return preservedCageOrderCombos;
 }
 
 export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
@@ -99,9 +99,9 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE
     if (allCagesAreNonOverlapping) {
         nonOverlappingCages = [...cages];
     } else {
-        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(cages, absMaxAreaCellCount);
+        const maxNonOverlappingCagesAreaSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
         cages.forEach(cage => {
-            if (maxNonOverlappingSumAreaSet.has(cage)) {
+            if (maxNonOverlappingCagesAreaSet.has(cage)) {
                 nonOverlappingCages.push(cage);
             } else {
                 overlappingCages.push(cage);
@@ -115,7 +115,7 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE
     };
 }
 
-function findMaxNonOverlappingSumArea(cages, absMaxAreaCellCount) {
+function findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount) {
     const context = {
         allCagesSet: new Set(cages),
         maxAreaSet: new Set(),
@@ -129,13 +129,13 @@ function findMaxNonOverlappingSumArea(cages, absMaxAreaCellCount) {
     };
 
     cages.forEach(cage => {
-        findBiggestNonOverlappingSumAreaRecursive(cage, context);
+        findBiggestNonOverlappingCagesAreaRecursive(cage, context);
     });
 
     return context.maxAreaSet;
 }
 
-function findBiggestNonOverlappingSumAreaRecursive(cage, context) {
+function findBiggestNonOverlappingCagesAreaRecursive(cage, context) {
     if (context.maxAreaCellCount >= context.absMaxAreaCellCount || !cage) {
         return;
     }
@@ -154,8 +154,8 @@ function findBiggestNonOverlappingSumAreaRecursive(cage, context) {
         context.maxAreaCellCount = context.cellCount;
     }
 
-    const nextSum = context.remainingCagesStack.values().next().value;
-    findBiggestNonOverlappingSumAreaRecursive(nextSum, context);
+    const nextCage = context.remainingCagesStack.values().next().value;
+    findBiggestNonOverlappingCagesAreaRecursive(nextCage, context);
 
     context.cellCount -= cage.cellCount;
     cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key()));
