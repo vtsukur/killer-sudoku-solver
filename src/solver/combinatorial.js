@@ -255,10 +255,10 @@ function preserveOrder(combinedCombos, segment, nonOverlappingCages, overlapping
 
         const cageIndexResolvers = new Array(segment.cages.length);
         nonOverlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[idx] = segment.cages.findIndex(originalSum => originalSum === cage);
+            cageIndexResolvers[idx] = segment.cages.findIndex(originalCage => originalCage === cage);
         });
         overlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[nonOverlappingCages.length + idx] = segment.cages.findIndex(originalSum => originalSum === cage);
+            cageIndexResolvers[nonOverlappingCages.length + idx] = segment.cages.findIndex(originalCage => originalCage === cage);
         });
         combinedCombos.forEach(comboSets => {
             const preservedOrderCombo = new Array(comboSets.length);
