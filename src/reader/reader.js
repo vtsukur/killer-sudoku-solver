@@ -57,7 +57,7 @@ export default function reader(path) {
             if (!cageEntry.sum) {
                 throw `Cage def without sum: ${value}`;
             }
-            cages.set(cageEntry.ref, Cage.of(cageEntry.sum));
+            cages.set(cageEntry.ref, Cage.ofSum(cageEntry.sum));
         }
         else if (cages.has(cageEntry.ref) && cageEntry.sum) {
             throw `Cage def duplicate: ${cageEntry.ref}`;

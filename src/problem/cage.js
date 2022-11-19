@@ -51,7 +51,7 @@ export class Cage {
         }
     }
 
-    static of(sum) {
+    static ofSum(sum) {
         return new this.Builder(sum);
     }
 }
