@@ -226,7 +226,7 @@ export class Solver {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinCagesSet = cellSolver.withinCagesSet;
                     if (!(withinCagesSet.size === 1 && withinCagesSet.values().next().value.isSingleCellCage)) {
-                        const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).cell(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
+                        const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).at(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
                         this.#addAndSliceResidualCageRecursively(firstChunkCage);
                     }
                 });

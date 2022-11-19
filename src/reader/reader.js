@@ -62,7 +62,7 @@ export default function reader(path) {
         else if (cages.has(cageEntry.ref) && cageEntry.sum) {
             throw `Cage def duplicate: ${cageEntry.ref}`;
         }
-        cages.get(cageEntry.ref).cell(
+        cages.get(cageEntry.ref).at(
             rowIdxInGridMatrixByAbsolute(idx),
             columnIdxInGridMatrixFromAbsloute(idx)
         );

@@ -12,14 +12,14 @@ describe('Tests for solver', () => {
 
         expect(solver.cellAt(2, 3)).toEqual(Cell.at(2, 3));
         expect(solver.inputCages.length).toBe(33);
-        expect(solver.inputCages[9]).toEqual(Cage.ofSum(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.inputCageAt(2, 3)).toEqual(Cage.ofSum(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.inputCages[9]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
+        expect(solver.inputCageAt(2, 3)).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
         expect(solver.rowSolvers.length).toBe(House.SIZE);
-        expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.ofSum(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
         expect(solver.columnSolvers.length).toBe(House.SIZE);
-        expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.ofSum(2).cell(3, 2).mk());
+        expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.ofSum(2).at(3, 2).mk());
         expect(solver.nonetSolvers.length).toBe(House.SIZE);
-        expect(solver.nonetSolvers[1].cages[2]).toEqual(Cage.ofSum(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.nonetSolvers[1].cages[2]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(Cell.at(2, 3));
