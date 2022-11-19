@@ -1,5 +1,5 @@
 import reader from '../src/reader.js';
-import { Problem, Sum } from '../src/problem.js';
+import { Problem, Sum } from '../src/problem/problem';
 
 describe('Reader tests', () => {
     test('Full read - real problem #1', () => {

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Problem, Sum } from '../src/problem';
+import { Problem, Sum } from '../src/problem/problem';
 import { sampleProblem } from './realProblemSamples';
 
 const modifyCorrectProblem = function(lastSum) {

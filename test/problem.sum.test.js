@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Sum, Cell } from '../src/problem';
+import { Sum, Cell } from '../src/problem/problem';
 
 describe('Sum tests', () => {
     test('Sum creation', () => {

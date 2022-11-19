@@ -1,4 +1,4 @@
-import { GRID_CELL_COUNT, GRID_SUM, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_LENGTH } from './problem/constants';
+import { GRID_CELL_COUNT, GRID_SUM, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_LENGTH } from './constants';
 
 export class Problem {
     constructor(sums) {

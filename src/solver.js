@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { newGridMatrix } from './matrix';
 import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, UNIQUE_SEGMENT_COUNT } from './problem/constants';
-import { Sum } from './problem';
+import { Sum } from './problem/problem';
 import { clusterSumsByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
