@@ -105,7 +105,7 @@ class SumsArea {
     }
 }
 
-class SumDeterminator {
+class CageDeterminator {
     #firstCell;
     #cellCount;
     #combosMap;
@@ -721,7 +721,7 @@ export class Solver {
     }
 
     #registerSum(sum) {
-        const sumDeterminator = new SumDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
+        const sumDeterminator = new CageDeterminator(sum, sum.cells.map(cell => this.cellDeterminatorOf(cell), this));
         if (sum.isWithinRow) {
             this.rows[sumDeterminator.anyRowIdx()].addSum(sum);
         }
