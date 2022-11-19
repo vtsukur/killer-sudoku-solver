@@ -15,7 +15,7 @@ export class CagesArea {
 
         const { nonOverlappingCages } = clusterCagesByOverlap(cages, new Set(this.cellsSet), absMaxAreaCellCount);
         nonOverlappingCages.forEach(cage => {
-            this.totalValue += cage.value;
+            this.totalValue += cage.sum;
             cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
         });
     }

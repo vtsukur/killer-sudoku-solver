@@ -179,7 +179,7 @@ export class Solver {
                 secondChunkCageCells.push(cell);
             }
         });
-        return new Cage(cageToSlice.value - firstChunkCage.value, secondChunkCageCells);
+        return new Cage(cageToSlice.sum - firstChunkCage.sum, secondChunkCageCells);
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {

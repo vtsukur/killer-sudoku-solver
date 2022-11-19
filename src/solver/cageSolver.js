@@ -119,7 +119,7 @@ export class CageSolver {
 
         if (step === (this.#cellCount - 1)) {
             context.i++;
-            const lastNum = this.cage.value - currentSumVal;
+            const lastNum = this.cage.sum - currentSumVal;
             if (context.mayNotProceedWithNumber(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
             has = lastCellDet.hasNumOpt(lastNum);

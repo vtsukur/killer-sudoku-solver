@@ -94,8 +94,8 @@ describe('Reader tests', () => {
         expect(() => reader('./test/reader/unknownEntry.txt')).toThrow('Unknown entry: a:a');
     });
     
-    test('Cage def without value', () => {
-        expect(() => reader('./test/reader/cageWithoutValue.txt')).toThrow('Cage def without value: a');
+    test('Cage def without sum', () => {
+        expect(() => reader('./test/reader/cageWithoutValue.txt')).toThrow('Cage def without sum: a');
     });
     
     test('Cage def duplicate', () => {

@@ -5,14 +5,14 @@ import { Cage } from '../../src/problem/cage';
 describe('Cage tests', () => {
     test('Cage creation', () => {
         const cage = new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]);
-        expect(cage.value).toBe(10);
+        expect(cage.sum).toBe(10);
         expect(cage.cellCount).toBe(2);
         expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
     });
 
     test('Cage creation via builder', () => {
         const cage = Cage.of(10).cell(4, 4).cell(4, 5).mk();
-        expect(cage.value).toBe(10);
+        expect(cage.sum).toBe(10);
         expect(cage.cellCount).toBe(2);
         expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
     });

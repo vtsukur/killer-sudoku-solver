@@ -3,8 +3,8 @@ import { Cell } from './cell';
 export class Cage {
     #cellsSet;
 
-    constructor(value, cells) {
-        this.value = value;
+    constructor(sum, cells) {
+        this.sum = sum;
         this.cells = cells;
         this.#cellsSet = new Set(cells.map(cell => cell.key()));
 
@@ -28,7 +28,7 @@ export class Cage {
     }
 
     key() {
-        return `${this.value} [${this.cells.join(', ')}]`;
+        return `${this.sum} [${this.cells.join(', ')}]`;
     }
 
     toString() {
@@ -36,8 +36,8 @@ export class Cage {
     }
 
     static Builder = class {
-        constructor(value) {
-            this.value = value;
+        constructor(sum) {
+            this.sum = sum;
             this.cells = [];
         }
 
@@ -47,11 +47,11 @@ export class Cage {
         }
 
         mk() {
-            return new Cage(this.value, this.cells);
+            return new Cage(this.sum, this.cells);
         }
     }
 
-    static of(value) {
-        return new this.Builder(value);
+    static of(sum) {
+        return new this.Builder(sum);
     }
 }

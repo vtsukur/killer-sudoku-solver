@@ -23,7 +23,7 @@ export class Problem {
             cellSet.add(cell.key());
         });
 
-        const actualGridSum = this.cages.reduce((prev, current) => prev + current.value, 0);
+        const actualGridSum = this.cages.reduce((prev, current) => prev + current.sum, 0);
         if (actualGridSum !== Grid.TOTAL_SUM) {
             this.#throwValidationError(`Expected field cage: ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
         }

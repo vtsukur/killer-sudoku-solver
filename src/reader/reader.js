@@ -4,7 +4,7 @@ import { Problem } from '../problem/problem';
 import { Cage } from '../problem/cage';
 
 const CAGE_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
-const SUM_VALUE_REGEX = /^([0-9]+)$/;
+const SUM_REGEX = /^([0-9]+)$/;
 
 class CageEntry {
     constructor(ref) {
@@ -13,9 +13,9 @@ class CageEntry {
 }
 
 class CageDef extends CageEntry {
-    constructor(ref, value) {
+    constructor(ref, sum) {
         super(ref);
-        this.value = value;
+        this.sum = sum;
     }
 }
 
@@ -29,17 +29,17 @@ const readEntry = function(entry, index) {
     const cageRefOrDefMatch = entry.match(CAGE_DEF_OR_REF_REGEX);
     if (cageRefOrDefMatch) {
         const key = cageRefOrDefMatch[1];
-        const value = cageRefOrDefMatch[3];
-        if (value) {
-            return new CageDef(key, parseInt(value))
+        const sum = cageRefOrDefMatch[3];
+        if (sum) {
+            return new CageDef(key, parseInt(sum))
         } else {
             return new CageRef(key);
         }
     } else {
-        const cageMatch = entry.match(SUM_VALUE_REGEX);
+        const cageMatch = entry.match(SUM_REGEX);
         if (cageMatch) {
-            const value = parseInt(cageMatch[0]);
-            return new CageDef(`${value}_${index}`, value);
+            const sum = parseInt(cageMatch[0]);
+            return new CageDef(`${sum}_${index}`, sum);
         } else {
             throw `Unknown entry: ${entry}`;
         }
@@ -54,12 +54,12 @@ export default function reader(path) {
     entries.forEach((value, idx) => {
         const cageEntry = readEntry(value, idx);
         if (!cages.has(cageEntry.ref)) {
-            if (!cageEntry.value) {
-                throw `Cage def without value: ${value}`;
+            if (!cageEntry.sum) {
+                throw `Cage def without sum: ${value}`;
             }
-            cages.set(cageEntry.ref, Cage.of(cageEntry.value));
+            cages.set(cageEntry.ref, Cage.of(cageEntry.sum));
         }
-        else if (cages.has(cageEntry.ref) && cageEntry.value) {
+        else if (cages.has(cageEntry.ref) && cageEntry.sum) {
             throw `Cage def duplicate: ${cageEntry.ref}`;
         }
         cages.get(cageEntry.ref).cell(

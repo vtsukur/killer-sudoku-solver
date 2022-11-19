@@ -167,7 +167,7 @@ function doFindForNonOverlappingCages(cages) {
     if (cages.length > House.SIZE) {
         throw `Too many cages with non-overlapping cells. Expected no more than ${House.SIZE} cages. Actual: ${cages.length})`;
     }
-    const totalSum = cages.reduce((partialSum, a) => partialSum + a.value, 0);
+    const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
     if (totalSum > House.SUM) {
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${cages.join(', ')}}`;
     }
@@ -180,7 +180,7 @@ function doFindForNonOverlappingCages(cages) {
     }
 
     const combos = [];
-    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.value, cage.cellCount));
+    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
     const checkingSet = new Set();
 
@@ -211,7 +211,7 @@ function doFindForOverlappingCages(cages) {
     if (cages.length === 0) return [];
 
     const combos = [];
-    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.value, cage.cellCount));
+    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
 
     function combosRecursive(step) {
