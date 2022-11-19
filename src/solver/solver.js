@@ -166,7 +166,7 @@ class CageSolver {
     #reduceByCellPermutations(canHaveNumberDuplicates) {
         const context = {
             i: 0,
-            cellDets: this.cellSolvers,
+            cellsSolvers: this.cellSolvers,
             processedCellDets: new Set(),
             remainingCellDets: new Set(this.cellSolvers),
             processedNumbers: new Set(),
@@ -628,9 +628,9 @@ export class Solver {
         }
     }
 
-    #reduceSegmentsBySolvedCells(cellDets) {
+    #reduceSegmentsBySolvedCells(cellsSolvers) {
         let cagesToReduceSet = new Set();
-        cellDets.forEach(cellDet => {
+        cellsSolvers.forEach(cellDet => {
             const number = cellDet.placedNumber;
             [
                 this.rows[cellDet.cell.rowIdx],
@@ -697,19 +697,19 @@ export class Solver {
     }
 
     #determineCellsWithSingleOption() {
-        const cellDets = [];
+        const cellsSolvers = [];
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
                 const cellDet = this.cellSolverAt(rowIdx, colIdx);
                 if (cellDet.numOpts().size === 1 && !cellDet.solved) {
                     this.#placeNumber(cellDet.cell, cellDet.numOpts().values().next().value);
-                    cellDets.push(cellDet);
+                    cellsSolvers.push(cellDet);
                 }
             });
         });
 
-        return cellDets;
+        return cellsSolvers;
     }
 
     #placeNumber(cell, number) {
