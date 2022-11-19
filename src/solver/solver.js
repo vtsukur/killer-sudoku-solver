@@ -172,13 +172,13 @@ class CageSolver {
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellsSolversStack: new Array(this.#cellCount),
-            processCell: function(cellDet, step, fn) {
-                if (this.processedCellDets.has(cellDet)) return;
-                this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
-                this.cellsSolversStack[step] = cellDet;
+            processCell: function(cellSolver, step, fn) {
+                if (this.processedCellDets.has(cellSolver)) return;
+                this.processedCellDets.add(cellSolver); this.remainingCellDets.delete(cellSolver);
+                this.cellsSolversStack[step] = cellSolver;
                 const retVal = fn();
                 this.cellsSolversStack[step] = undefined;
-                this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);    
+                this.processedCellDets.delete(cellSolver); this.remainingCellDets.add(cellSolver);    
                 return retVal;
             },
             mayNotProceedWithNumber: function(num) {
@@ -202,14 +202,14 @@ class CageSolver {
         this.#combosMap = new Map();
 
         const modifiedCellDets = [];
-        this.cellSolvers.forEach(cellDet => {
-            context.processCell(cellDet, 0, () => {
-                Array.from(cellDet.numOpts()).forEach(num => {
+        this.cellSolvers.forEach(cellSolver => {
+            context.processCell(cellSolver, 0, () => {
+                Array.from(cellSolver.numOpts()).forEach(num => {
                     context.processNumber(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
-                            cellDet.deleteNumOpt(num);
-                            modifiedCellDets.push(cellDet);
+                            cellSolver.deleteNumOpt(num);
+                            modifiedCellDets.push(cellSolver);
                         }    
                     });
                 });
@@ -236,9 +236,9 @@ class CageSolver {
                 this.#combosMap.set(comboKey, sortedNumbers);
             }
         } else {
-            this.cellSolvers.forEach(cellDet => {
-                context.processCell(cellDet, step, () => {
-                    Array.from(cellDet.numOpts()).forEach(num => {
+            this.cellSolvers.forEach(cellSolver => {
+                context.processCell(cellSolver, step, () => {
+                    Array.from(cellSolver.numOpts()).forEach(num => {
                         context.processNumber(num, step, () => {
                             has = this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context) || has;
                         });
@@ -272,9 +272,9 @@ class CageSolver {
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
             const reducedCellDets = [];
-            this.cellSolvers.forEach(cellDet => {
-                if (cellDet.reduceNumberOptions(newNumOptions).size > 0) {
-                    reducedCellDets.push(cellDet);
+            this.cellSolvers.forEach(cellSolver => {
+                if (cellSolver.reduceNumberOptions(newNumOptions).size > 0) {
+                    reducedCellDets.push(cellSolver);
                 }
             });
             return reducedCellDets;
@@ -288,8 +288,8 @@ class CageSolver {
         return this.#combosMap.size === 1;
     }
 
-    has(cellDet) {
-        return this.cage.cells.findIndex(cell => cell.key() === cellDet.cell.key()) !== -1;
+    has(cellSolver) {
+        return this.cage.cells.findIndex(cell => cell.key() === cellSolver.cell.key()) !== -1;
     }
 }
 
@@ -586,10 +586,10 @@ export class Solver {
             if (nextSumsSet.size > 0) {
                 cageDetsIterable = nextSumsSet.values();
             } else if (newlySolvedCellDets.length > 0) {
-                newlySolvedCellDets.forEach(cellDet => {
-                    const withinSumsSet = cellDet.withinSumsSet;
+                newlySolvedCellDets.forEach(cellSolver => {
+                    const withinSumsSet = cellSolver.withinSumsSet;
                     if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellSum)) {
-                        const firstChunkSum = Cage.of(cellDet.placedNumber).cell(cellDet.cell.rowIdx, cellDet.cell.colIdx).mk();
+                        const firstChunkSum = Cage.of(cellSolver.placedNumber).cell(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
                         this.#addAndSliceResidualSumRecursively(firstChunkSum);
                     }
                 });
@@ -630,15 +630,15 @@ export class Solver {
 
     #reduceSegmentsBySolvedCells(cellsSolvers) {
         let cagesToReduceSet = new Set();
-        cellsSolvers.forEach(cellDet => {
-            const number = cellDet.placedNumber;
+        cellsSolvers.forEach(cellSolver => {
+            const number = cellSolver.placedNumber;
             [
-                this.rows[cellDet.cell.rowIdx],
-                this.columns[cellDet.cell.colIdx],
-                this.subgrids[cellDet.cell.subgridIdx]
+                this.rows[cellSolver.cell.rowIdx],
+                this.columns[cellSolver.cell.colIdx],
+                this.subgrids[cellSolver.cell.subgridIdx]
             ].forEach(segment => {
                 for (const { rowIdx, colIdx } of segment.cellIterator()) {
-                    if (rowIdx === cellDet.cell.rowIdx && colIdx === cellDet.cell.colIdx) continue;
+                    if (rowIdx === cellSolver.cell.rowIdx && colIdx === cellSolver.cell.colIdx) continue;
         
                     const aCellDet = this.cellSolverAt(rowIdx, colIdx);
                     if (aCellDet.hasNumOpt(number)) {
@@ -661,7 +661,7 @@ export class Solver {
                 segment.cages.forEach(cage => {
                     if (cage.isSingleCellSum) return;
                     const cageDet = this.cagesDeterminatorsMap.get(cage.key());
-                    const hasNumInCells = cageDet.cellSolvers.some(cellDet => cellDet.hasNumOpt(num));
+                    const hasNumInCells = cageDet.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageDetsWithNum.push(cageDet);
                     }
@@ -672,23 +672,23 @@ export class Solver {
                 const reducedCellDets = cageDetToReDefine.reduceToCombinationsContaining(num);
                 
                 if (!reducedCellDets.length) return;
-                reducedCellDets.forEach(cellDet => {
-                    cagesToReduce = new Set([...cagesToReduce, ...cellDet.withinSumsSet]);
+                reducedCellDets.forEach(cellSolver => {
+                    cagesToReduce = new Set([...cagesToReduce, ...cellSolver.withinSumsSet]);
                 });
 
                 // remove number from other cells
                 const furtherReducedCellDets = new Set();
                 for (const { rowIdx, colIdx } of segment.cellIterator()) {
-                    const cellDet = this.cellSolverAt(rowIdx, colIdx);
-                    if (cageDetToReDefine.has(cellDet)) return;
+                    const cellSolver = this.cellSolverAt(rowIdx, colIdx);
+                    if (cageDetToReDefine.has(cellSolver)) return;
 
-                    if (cellDet.hasNumOpt(num)) {
-                        cellDet.deleteNumOpt(num);
-                        furtherReducedCellDets.add(cellDet);
+                    if (cellSolver.hasNumOpt(num)) {
+                        cellSolver.deleteNumOpt(num);
+                        furtherReducedCellDets.add(cellSolver);
                     }
                 }
-                furtherReducedCellDets.forEach(cellDet => {
-                    cagesToReduce = new Set([...cagesToReduce, ...cellDet.withinSumsSet]);
+                furtherReducedCellDets.forEach(cellSolver => {
+                    cagesToReduce = new Set([...cagesToReduce, ...cellSolver.withinSumsSet]);
                 });
             });
         });
@@ -701,10 +701,10 @@ export class Solver {
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
-                const cellDet = this.cellSolverAt(rowIdx, colIdx);
-                if (cellDet.numOpts().size === 1 && !cellDet.solved) {
-                    this.#placeNumber(cellDet.cell, cellDet.numOpts().values().next().value);
-                    cellsSolvers.push(cellDet);
+                const cellSolver = this.cellSolverAt(rowIdx, colIdx);
+                if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
+                    this.#placeNumber(cellSolver.cell, cellSolver.numOpts().values().next().value);
+                    cellsSolvers.push(cellSolver);
                 }
             });
         });
