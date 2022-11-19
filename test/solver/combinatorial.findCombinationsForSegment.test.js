@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { findSumCombinationsForSegment } from '../src/solver/combinatorial';
-import { Cage } from '../src/problem/cage';
+import { findSumCombinationsForSegment } from '../../src/solver/combinatorial';
+import { Cage } from '../../src/problem/cage';
 
 const segmentOf = (cages) => {
     let cellsMap = new Map();
