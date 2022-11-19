@@ -3,7 +3,8 @@ import { newGridMatrix } from '../util/matrix';
 import { House } from '../problem/house';
 import { Cage } from '../problem/cage';
 import { CellSolver } from './cellSolver';
-import { clusterCagesByOverlap, findSumCombinationsForSegment } from './combinatorial';
+import { CagesArea } from './cagesArea';
+import { findSumCombinationsForSegment } from './combinatorial';
 
 const newAreaIterator = (valueOfFn, max) => {
     let i = 0;
@@ -22,30 +23,6 @@ const newAreaIterator = (valueOfFn, max) => {
 const newSegmentIterator = (valueOfFn) => {
     return newAreaIterator(valueOfFn, House.SIZE);
 };
-
-class CagesArea {
-    constructor(cages = [], absMaxAreaCellCount = House.SIZE) {
-        this.cages = cages;
-        this.cellsSet = new Set();
-        this.nonOverlappingCellsSet = new Set();
-        this.totalValue = 0;
-        cages.forEach(cage => {
-            cage.cells.forEach(cell => {
-                this.cellsSet.add(cell);
-            }, this);
-        }, this);
-
-        const { nonOverlappingCages } = clusterCagesByOverlap(cages, new Set(this.cellsSet), absMaxAreaCellCount);
-        nonOverlappingCages.forEach(cage => {
-            this.totalValue += cage.value;
-            cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
-        });
-    }
-
-    hasNonOverlapping(cell) {
-        return this.nonOverlappingCellsSet.has(cell);
-    }
-}
 
 class CageSolver {
     #firstCell;
