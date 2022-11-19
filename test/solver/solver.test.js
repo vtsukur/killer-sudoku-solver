@@ -14,7 +14,7 @@ describe('Tests for solver', () => {
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputCages.length).toBe(33);
         expect(solver.inputCages[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.inputSumAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.inputCageAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solver.rows[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
@@ -29,7 +29,7 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.subgrid.idx).toEqual(1);
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
-        expect(aCellDeterminator.withinCagesSet).toEqual(new Set([ solver.inputSumAt(2, 3) ]));
+        expect(aCellDeterminator.withinCagesSet).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
     });
 
     test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-04-06)', () => {

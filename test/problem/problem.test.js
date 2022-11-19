@@ -3,10 +3,10 @@ import { Problem } from '../../src/problem/problem';
 import { Cage } from '../../src/problem/cage';
 import { sampleProblem } from './realProblemSamples';
 
-const modifyCorrectProblem = function(lastSum) {
+const modifyCorrectProblem = function(lastCage) {
     const cages = [...sampleProblem.cages];
     cages.pop();
-    cages.push(lastSum);
+    cages.push(lastCage);
     return new Problem(cages);
 };
 
