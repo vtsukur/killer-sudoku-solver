@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Cell } from '../src/problem/cell';
+import { Cell } from '../../src/problem/cell';
 
 describe('Cell tests', () => {
     test('Cell creatiom', () => {

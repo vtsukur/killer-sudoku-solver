@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cell } from '../src/problem/cell';
-import { Cage } from '../src/problem/cage';
+import { Cell } from '../../src/problem/cell';
+import { Cage } from '../../src/problem/cage';
 
 describe('Cage tests', () => {
     test('Cage creation', () => {

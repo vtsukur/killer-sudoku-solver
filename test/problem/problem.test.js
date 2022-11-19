@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { Problem } from '../src/problem/problem';
-import { Cage } from '../src/problem/cage';
-import { sampleProblem } from './realProblemSamples';
+import { Problem } from '../../src/problem/problem';
+import { Cage } from '../../src/problem/cage';
+import { sampleProblem } from '../realProblemSamples';
 
 const modifyCorrectProblem = function(lastSum) {
     const cages = [...sampleProblem.cages];
