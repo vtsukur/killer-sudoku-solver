@@ -37,12 +37,12 @@ export class CellSolver {
         this.placedNumber = undefined;
     }
 
-    addWithinSum(withinSum) {
-        this.withinCagesSet.add(withinSum);
+    addWithinCage(withinCage) {
+        this.withinCagesSet.add(withinCage);
     }
 
-    removeWithinSum(withinSum) {
-        this.withinCagesSet.delete(withinSum);
+    removeWithinCage(withinCage) {
+        this.withinCagesSet.delete(withinCage);
     }
 
     numOpts() {
@@ -304,27 +304,27 @@ class Segment {
         this.cellIteratorFn = cellIteratorFn;
     }
 
-    determineResidualSum() {
+    determineResidualCage() {
         if (this.#cagesArea.totalValue === UNIQUE_SEGMENT_SUM && this.#cagesArea.cellsSet.size === UNIQUE_SEGMENT_LENGTH) {
             return;
         }
 
-        const residualSumCells = [];
+        const residualCageCells = [];
         this.cells.forEach(cell => {
             if (!this.#cagesArea.hasNonOverlapping(cell)) {
-                residualSumCells.push(cell);
+                residualCageCells.push(cell);
             }
         }, this);
 
-        return new Cage(UNIQUE_SEGMENT_SUM - this.#cagesArea.totalValue, residualSumCells);
+        return new Cage(UNIQUE_SEGMENT_SUM - this.#cagesArea.totalValue, residualCageCells);
     }
 
-    addSum(newSum) {
-        this.cages.push(newSum);
+    addSum(newCage) {
+        this.cages.push(newCage);
         this.#cagesArea = new CagesArea(this.cages);
     }
 
-    removeSum(cageToRemove) {
+    removeCage(cageToRemove) {
         this.cages = this.cages.filter(cage => cage !== cageToRemove);
         this.#cagesArea = new CagesArea(this.cages);
     }
@@ -472,9 +472,9 @@ export class Solver {
                 }
             });
             if (residualCells.length) {
-                const residualSum = new Cage(nSegmentSumVal - cagesArea.totalValue, residualCells);
-                if (!this.cagesSolversMap.has(residualSum.key())) {
-                    this.#addAndSliceResidualSumRecursively(residualSum);                        
+                const residualCage = new Cage(nSegmentSumVal - cagesArea.totalValue, residualCells);
+                if (!this.cagesSolversMap.has(residualCage.key())) {
+                    this.#addAndSliceResidualSumRecursively(residualCage);                        
                 }
             }
         }
@@ -482,9 +482,9 @@ export class Solver {
 
     #determineAndSliceResidualCagesInSegments() {
         this.segments.forEach(segment => {
-            const residualSum = segment.determineResidualSum();
-            if (residualSum) {
-                this.#addAndSliceResidualSumRecursively(residualSum);
+            const residualCage = segment.determineResidualCage();
+            if (residualCage) {
+                this.#addAndSliceResidualSumRecursively(residualCage);
             }
         }, this);
     }
@@ -732,7 +732,7 @@ export class Solver {
             this.subgrids[cageSolver.anySubgridIdx()].addSum(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinSum(cage);
+            this.cellSolverOf(cell).addWithinCage(cage);
         }, this);
         this.cagesSolversMap.set(cage.key(), cageSolver);
     }
@@ -740,16 +740,16 @@ export class Solver {
     #unregisterCage(cage) {
         const cageSolver = this.cagesSolversMap.get(cage.key());
         if (cage.isWithinRow) {
-            this.rows[cageSolver.anyRowIdx()].removeSum(cage);
+            this.rows[cageSolver.anyRowIdx()].removeCage(cage);
         }
         if (cage.isWithinColumn) {
-            this.columns[cageSolver.anyColumnIdx()].removeSum(cage);
+            this.columns[cageSolver.anyColumnIdx()].removeCage(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.subgrids[cageSolver.anySubgridIdx()].removeSum(cage);
+            this.subgrids[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinSum(cage);
+            this.cellSolverOf(cell).removeWithinCage(cage);
         }, this);
         this.cagesSolversMap.delete(cage.key());
     }
