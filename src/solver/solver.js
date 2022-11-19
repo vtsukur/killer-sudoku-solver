@@ -110,10 +110,10 @@ class CageSolver {
     #cellCount;
     #combosMap;
 
-    constructor(cage, cellsDeterminators) {
+    constructor(cage, cellSolvers) {
         this.cage = cage;
         this.#firstCell = cage.cells[0];
-        this.cellsDeterminators = cellsDeterminators;
+        this.cellSolvers = cellSolvers;
         this.minRowIdx = UNIQUE_SEGMENT_LENGTH + 1;
         this.minColIdx = this.minRowIdx;
         this.maxRowIdx = 0;
@@ -148,7 +148,7 @@ class CageSolver {
             });
         });
 
-        this.cellsDeterminators.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numOpts));
+        this.cellSolvers.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numOpts));
     }
 
     reduce() {
@@ -166,9 +166,9 @@ class CageSolver {
     #reduceByCellPermutations(canHaveNumberDuplicates) {
         const context = {
             i: 0,
-            cellDets: this.cellsDeterminators,
+            cellDets: this.cellSolvers,
             processedCellDets: new Set(),
-            remainingCellDets: new Set(this.cellsDeterminators),
+            remainingCellDets: new Set(this.cellSolvers),
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellsDetsStack: new Array(this.#cellCount),
@@ -202,7 +202,7 @@ class CageSolver {
         this.#combosMap = new Map();
 
         const modifiedCellDets = [];
-        this.cellsDeterminators.forEach(cellDet => {
+        this.cellSolvers.forEach(cellDet => {
             context.processCell(cellDet, 0, () => {
                 Array.from(cellDet.numOpts()).forEach(num => {
                     context.processNumber(num, 0, () => {
@@ -236,7 +236,7 @@ class CageSolver {
                 this.#combosMap.set(comboKey, sortedNumbers);
             }
         } else {
-            this.cellsDeterminators.forEach(cellDet => {
+            this.cellSolvers.forEach(cellDet => {
                 context.processCell(cellDet, step, () => {
                     Array.from(cellDet.numOpts()).forEach(num => {
                         context.processNumber(num, step, () => {
@@ -272,7 +272,7 @@ class CageSolver {
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
             const reducedCellDets = [];
-            this.cellsDeterminators.forEach(cellDet => {
+            this.cellSolvers.forEach(cellDet => {
                 if (cellDet.reduceNumberOptions(newNumOptions).size > 0) {
                     reducedCellDets.push(cellDet);
                 }
@@ -404,9 +404,9 @@ export class Solver {
             this.subgrids.push(new Subgrid(i, this.#collectSegmentCells(Subgrid.iteratorFor(i))));
         }, this);
 
-        this.cellsDeterminatorsMatrix = newGridMatrix();
+        this.cellSolversMatrix = newGridMatrix();
         this.problem.cells.forEach(cell => {
-            this.cellsDeterminatorsMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
+            this.cellSolversMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
                 cell,
                 row: this.rows[cell.rowIdx],
                 column: this.columns[cell.colIdx],
@@ -661,7 +661,7 @@ export class Solver {
                 segment.cages.forEach(cage => {
                     if (cage.isSingleCellSum) return;
                     const cageDet = this.cagesDeterminatorsMap.get(cage.key());
-                    const hasNumInCells = cageDet.cellsDeterminators.some(cellDet => cellDet.hasNumOpt(num));
+                    const hasNumInCells = cageDet.cellSolvers.some(cellDet => cellDet.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageDetsWithNum.push(cageDet);
                     }
@@ -767,7 +767,7 @@ export class Solver {
     }
 
     cellDeterminatorAt(rowIdx, colIdx) {
-        return this.cellsDeterminatorsMatrix[rowIdx][colIdx];
+        return this.cellSolversMatrix[rowIdx][colIdx];
     }
 
     row(idx) {
