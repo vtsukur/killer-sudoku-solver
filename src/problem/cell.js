@@ -1,10 +1,10 @@
-import { SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_LENGTH } from './constants';
+import { NONET_SIDE_LENGTH, HOUSE_SIZE } from './constants';
 
 export class Cell {
     constructor(rowIdx, colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.subgridIdx = Math.floor(rowIdx / SUBGRID_SIDE_LENGTH) * SUBGRID_SIDE_LENGTH + Math.floor(colIdx / SUBGRID_SIDE_LENGTH);
+        this.subgridIdx = Math.floor(rowIdx / NONET_SIDE_LENGTH) * NONET_SIDE_LENGTH + Math.floor(colIdx / NONET_SIDE_LENGTH);
     }
 
     isWithinRange() {
@@ -12,7 +12,7 @@ export class Cell {
     }
 
     #coordWithinRange(i) {
-        return i >= 0 && i < UNIQUE_SEGMENT_LENGTH;
+        return i >= 0 && i < HOUSE_SIZE;
     }
 
     key() {

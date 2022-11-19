@@ -1,13 +1,13 @@
-import { UNIQUE_SEGMENT_LENGTH } from '../problem/constants';
+import { HOUSE_SIZE } from '../problem/constants';
 
 export const newGridMatrix = () => {
-    return new Array(UNIQUE_SEGMENT_LENGTH).fill().map(() => new Array(UNIQUE_SEGMENT_LENGTH));
+    return new Array(HOUSE_SIZE).fill().map(() => new Array(HOUSE_SIZE));
 };
 
 export const rowIdxInGridMatrixByAbsolute = (idx) => {
-    return Math.floor(idx / UNIQUE_SEGMENT_LENGTH);
+    return Math.floor(idx / HOUSE_SIZE);
 };
 
 export const columnIdxInGridMatrixFromAbsloute = (idx) => {
-    return idx % UNIQUE_SEGMENT_LENGTH;
+    return idx % HOUSE_SIZE;
 };

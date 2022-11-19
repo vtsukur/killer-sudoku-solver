@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { GRID_CELL_COUNT, UNIQUE_SEGMENT_LENGTH } from '../../src/problem/constants';
+import { GRID_CELL_COUNT, HOUSE_SIZE } from '../../src/problem/constants';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { Solver } from '../../src/solver/solver';
@@ -15,11 +15,11 @@ describe('Tests for solver', () => {
         expect(solver.inputCages.length).toBe(33);
         expect(solver.inputCages[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.inputCageAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.rows.length).toBe(UNIQUE_SEGMENT_LENGTH);
+        expect(solver.rows.length).toBe(HOUSE_SIZE);
         expect(solver.rows[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.columns.length).toBe(UNIQUE_SEGMENT_LENGTH);
+        expect(solver.columns.length).toBe(HOUSE_SIZE);
         expect(solver.columns[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
-        expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_LENGTH);
+        expect(solver.subgrids.length).toBe(HOUSE_SIZE);
         expect(solver.subgrids[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
@@ -209,10 +209,10 @@ describe('Tests for solver', () => {
         expect(solver.cellSolverAt(2, 7).placedNumber).toBe(8);
         expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
-        _.range(UNIQUE_SEGMENT_LENGTH).forEach(idx => {
-            expect(solver.rows[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
-            expect(solver.columns[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
-            expect(solver.subgrids[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
+        _.range(HOUSE_SIZE).forEach(idx => {
+            expect(solver.rows[idx].cages.length).toBe(HOUSE_SIZE);
+            expect(solver.columns[idx].cages.length).toBe(HOUSE_SIZE);
+            expect(solver.subgrids[idx].cages.length).toBe(HOUSE_SIZE);
         });
     });
 });

@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_LENGTH, HOUSE_SUM } from '../problem/constants';
+import { HOUSE_SIZE, HOUSE_SUM } from '../problem/constants';
 
-const MIN_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
-const MAX_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
-_.range(UNIQUE_SEGMENT_LENGTH).forEach(count => {
+const MIN_SUMS_PER_COUNT = new Array(HOUSE_SIZE);
+const MAX_SUMS_PER_COUNT = new Array(HOUSE_SIZE);
+_.range(HOUSE_SIZE).forEach(count => {
     if (count == 0) {
         MIN_SUMS_PER_COUNT[count] = 1;
-        MAX_SUMS_PER_COUNT[count] = UNIQUE_SEGMENT_LENGTH;
+        MAX_SUMS_PER_COUNT[count] = HOUSE_SIZE;
     } else {
         MIN_SUMS_PER_COUNT[count] = MIN_SUMS_PER_COUNT[count - 1] + (count + 1);
-        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (UNIQUE_SEGMENT_LENGTH - count);
+        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (HOUSE_SIZE - count);
     }
 })
 
@@ -34,7 +34,7 @@ export function findNumberCombinationsForSum(sum, count) {
                 combos.push(new Set(numbers));
             }
         } else {
-            for (let i = startWith; i <= UNIQUE_SEGMENT_LENGTH; ++i) {
+            for (let i = startWith; i <= HOUSE_SIZE; ++i) {
                 if (currentSum + i > sum) {
                     return;
                 } else {
@@ -77,7 +77,7 @@ export function findSumCombinationsForSegment(segment) {
     return preservedCageOrderCombos;
 }
 
-export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_LENGTH) {
+export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = HOUSE_SIZE) {
     if (!cages.length) {
         return { nonOverlappingCages: [], overlappingCages: [] };
     }
@@ -164,16 +164,16 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage, context) {
 }
 
 function doFindForNonOverlappingCages(cages) {
-    if (cages.length > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many cages with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cages. Actual: ${cages.length})`;
+    if (cages.length > HOUSE_SIZE) {
+        throw `Too many cages with non-overlapping cells. Expected no more than ${HOUSE_SIZE} cages. Actual: ${cages.length})`;
     }
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.value, 0);
     if (totalSum > HOUSE_SUM) {
         throw `Total cage with non-overlapping cells should be <= ${HOUSE_SUM}. Actual: ${totalSum}. Cages: {${cages.join(', ')}}`;
     }
     const cellCount = cages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
-    if (cellCount > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many cells in cages with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cells. Actual: ${cellCount})`;
+    if (cellCount > HOUSE_SIZE) {
+        throw `Too many cells in cages with non-overlapping cells. Expected no more than ${HOUSE_SIZE} cells. Actual: ${cellCount})`;
     }
     if (cages.length == 0) {
         return [];
