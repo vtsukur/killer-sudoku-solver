@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, HOUSE_SUM } from '../problem/constants';
+import { UNIQUE_SEGMENT_LENGTH, HOUSE_SUM } from '../problem/constants';
 
 const MIN_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
@@ -77,7 +77,7 @@ export function findSumCombinationsForSegment(segment) {
     return preservedCageOrderCombos;
 }
 
-export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
+export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_LENGTH) {
     if (!cages.length) {
         return { nonOverlappingCages: [], overlappingCages: [] };
     }

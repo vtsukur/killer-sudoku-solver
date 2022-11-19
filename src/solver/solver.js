@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { newGridMatrix } from '../util/matrix';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, HOUSE_SUM, UNIQUE_SEGMENT_COUNT } from '../problem/constants';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, HOUSE_SUM } from '../problem/constants';
 import { Cage } from '../problem/cage';
 import { clusterCagesByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
@@ -78,7 +78,7 @@ export class CellSolver {
 }
 
 class CagesArea {
-    constructor(cages = [], absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
+    constructor(cages = [], absMaxAreaCellCount = UNIQUE_SEGMENT_LENGTH) {
         this.cages = cages;
         this.cellsSet = new Set();
         this.nonOverlappingCellsSet = new Set();
@@ -448,7 +448,7 @@ export class Solver {
     }
 
     #doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, withinSegmentFn, cellIteratorFn) {
-        const nSegmentCellCount = n * UNIQUE_SEGMENT_COUNT;
+        const nSegmentCellCount = n * UNIQUE_SEGMENT_LENGTH;
         const nSegmentSumVal = n * HOUSE_SUM;
 
         const rightIdxExclusive = leftIdx + n;
