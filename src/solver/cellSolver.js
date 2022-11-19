@@ -4,11 +4,11 @@ import { House } from '../problem/house';
 export class CellSolver {
     #numOpts
 
-    constructor({ cell, row, column, subgrid }) {
+    constructor({ cell, rowSolver, columnSolver, nonetSolver }) {
         this.cell = cell;
-        this.row = row;
-        this.column = column;
-        this.subgrid = subgrid;
+        this.rowSolver = rowSolver;
+        this.columnSolver = columnSolver;
+        this.nonetSolver = nonetSolver;
         this.withinCagesSet = new Set();
         this.solved = false;
 

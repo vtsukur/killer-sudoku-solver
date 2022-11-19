@@ -66,9 +66,9 @@ class HouseSolver {
     }
 }
 
-export class Row extends HouseSolver {
+export class RowSolver extends HouseSolver {
     constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, Row.iteratorFor);
+        super(idx, cells, inputCages, RowSolver.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -78,9 +78,9 @@ export class Row extends HouseSolver {
     }
 }
 
-export class Column extends HouseSolver {
+export class ColumnSolver extends HouseSolver {
     constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, Column.iteratorFor);
+        super(idx, cells, inputCages, ColumnSolver.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -90,9 +90,9 @@ export class Column extends HouseSolver {
     }
 }
 
-export class Subgrid extends HouseSolver {
+export class NonetSolver extends HouseSolver {
     constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, Subgrid.iteratorFor);
+        super(idx, cells, inputCages, NonetSolver.iteratorFor);
     }
 
     static iteratorFor(idx) {
@@ -131,18 +131,18 @@ export class Solver {
         this.columns = [];
         this.subgrids = [];
         _.range(House.SIZE).forEach(i => {
-            this.rows.push(new Row(i, this.#collectSegmentCells(Row.iteratorFor(i))));
-            this.columns.push(new Column(i, this.#collectSegmentCells(Column.iteratorFor(i))));
-            this.subgrids.push(new Subgrid(i, this.#collectSegmentCells(Subgrid.iteratorFor(i))));
+            this.rows.push(new RowSolver(i, this.#collectSegmentCells(RowSolver.iteratorFor(i))));
+            this.columns.push(new ColumnSolver(i, this.#collectSegmentCells(ColumnSolver.iteratorFor(i))));
+            this.subgrids.push(new NonetSolver(i, this.#collectSegmentCells(NonetSolver.iteratorFor(i))));
         }, this);
 
         this.cellSolversMatrix = newGridMatrix();
         this.problem.cells.forEach(cell => {
             this.cellSolversMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
                 cell,
-                row: this.rows[cell.rowIdx],
-                column: this.columns[cell.colIdx],
-                subgrid: this.subgrids[cell.subgridIdx]
+                rowSolver: this.rows[cell.rowIdx],
+                columnSolver: this.columns[cell.colIdx],
+                nonetSolver: this.subgrids[cell.subgridIdx]
             });
         }, this);
 
@@ -502,15 +502,15 @@ export class Solver {
         return this.cellSolversMatrix[rowIdx][colIdx];
     }
 
-    row(idx) {
+    rowSolver(idx) {
         return this.rows[idx];
     }
 
-    column(idx) {
+    columnSolver(idx) {
         return this.columns[idx];
     }
 
-    subgrid(idx) {
+    nonetSolver(idx) {
         return this.subgrids[idx];
     }
 }

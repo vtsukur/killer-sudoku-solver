@@ -25,9 +25,9 @@ describe('Tests for solver', () => {
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
-        expect(aCellDeterminator.row.idx).toEqual(2);
-        expect(aCellDeterminator.column.idx).toEqual(3);
-        expect(aCellDeterminator.subgrid.idx).toEqual(1);
+        expect(aCellDeterminator.rowSolver.idx).toEqual(2);
+        expect(aCellDeterminator.columnSolver.idx).toEqual(3);
+        expect(aCellDeterminator.nonetSolver.idx).toEqual(1);
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         expect(aCellDeterminator.withinCagesSet).toEqual(new Set([ solver.inputCageAt(2, 3) ]));

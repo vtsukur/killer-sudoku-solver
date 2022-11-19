@@ -19,7 +19,7 @@ describe('Problem tests', () => {
         ).toThrow(`Invalid problem definiton. Expected cell count: 81. Actual: 1`);
     });
 
-    test('Check incorrect problem in which at least one of the cells is out of row range', () => {
+    test('Check incorrect problem in which at least one of the cells is out of rowSolver range', () => {
         expect(() =>
             modifyCorrectProblem(
                 Cage.of(16).cell(9, 8)/* outside of range */.cell(8, 7).cell(8, 8).mk()
@@ -27,7 +27,7 @@ describe('Problem tests', () => {
         ).toThrow(`Invalid problem definiton. Expected cell to be within the field. Actual cell: (9, 8)`);
     });
 
-    test('Check incorrect problem in which at least one of the cells is out of column range', () => {
+    test('Check incorrect problem in which at least one of the cells is out of columnSolver range', () => {
         expect(() =>
             modifyCorrectProblem(
                 Cage.of(16).cell(8, 9)/* outside of range */.cell(8, 7).cell(8, 8).mk()
