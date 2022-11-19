@@ -96,10 +96,6 @@ class CagesArea {
         });
     }
 
-    has(cell) {
-        return this.cellsSet.has(cell);
-    }
-
     hasNonOverlapping(cell) {
         return this.nonOverlappingCellsSet.has(cell);
     }
