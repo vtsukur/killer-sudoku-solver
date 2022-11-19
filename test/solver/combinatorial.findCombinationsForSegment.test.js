@@ -107,7 +107,7 @@ describe('Tests for the finder of number combinations to form a segment out of c
             Cage.of(7).cell(1, 6).cell(1, 7).mk(),
             Cage.of(100).cell(1, 8).cell(1, 9).mk()
         ]))).toThrow(
-            "Total cage with non-overlapping cells should be <= 45. Actual: 135. Sums: ");
+            "Total cage with non-overlapping cells should be <= 45. Actual: 135. Cages: ");
     });
 
     test('Combinations of numbers to form a segment out of cages with too many non-overlapping cells', () => {
