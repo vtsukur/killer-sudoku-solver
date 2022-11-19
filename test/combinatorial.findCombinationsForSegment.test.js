@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { findSumCombinationsForSegment } from '../src/combinatorial';
+import { findSumCombinationsForSegment } from '../src/solver/combinatorial';
 import { Cage } from '../src/problem/cage';
 
 const segmentOf = (cages) => {

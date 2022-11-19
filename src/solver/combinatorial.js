@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from './problem/constants';
+import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../problem/constants';
 
 const MIN_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
