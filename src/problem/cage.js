@@ -8,10 +8,10 @@ export class Cage {
         this.cells = cells;
         this.#cellsSet = new Set(cells.map(cell => cell.key()));
 
-        this.isSingleCellSum = this.cellCount === 1;
-        this.isWithinRow = this.isSingleCellSum || this.#isSameForAll(cell => cell.rowIdx);
-        this.isWithinColumn = this.isSingleCellSum || this.#isSameForAll(cell => cell.colIdx);
-        this.isWithinSubgrid = this.isSingleCellSum || this.#isSameForAll(cell => cell.subgridIdx);
+        this.isSingleCellCage = this.cellCount === 1;
+        this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.rowIdx);
+        this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.colIdx);
+        this.isWithinSubgrid = this.isSingleCellCage || this.#isSameForAll(cell => cell.subgridIdx);
         this.isWithinSegment = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
     }
 

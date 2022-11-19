@@ -3,43 +3,43 @@ import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from 
 import { Problem } from '../problem/problem';
 import { Cage } from '../problem/cage';
 
-const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
+const CAGE_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
 
-class SumEntry {
+class CageEntry {
     constructor(ref) {
         this.ref = ref;
     }
 }
 
-class SumDef extends SumEntry {
+class CageDef extends CageEntry {
     constructor(ref, value) {
         super(ref);
         this.value = value;
     }
 }
 
-class SumRef extends SumEntry {
+class CageRef extends CageEntry {
     constructor(ref) {
         super(ref)
     }
 }
 
 const readEntry = function(entry, index) {
-    const cageRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
+    const cageRefOrDefMatch = entry.match(CAGE_DEF_OR_REF_REGEX);
     if (cageRefOrDefMatch) {
         const key = cageRefOrDefMatch[1];
         const value = cageRefOrDefMatch[3];
         if (value) {
-            return new SumDef(key, parseInt(value))
+            return new CageDef(key, parseInt(value))
         } else {
-            return new SumRef(key);
+            return new CageRef(key);
         }
     } else {
         const cageMatch = entry.match(SUM_VALUE_REGEX);
         if (cageMatch) {
             const value = parseInt(cageMatch[0]);
-            return new SumDef(`${value}_${index}`, value);
+            return new CageDef(`${value}_${index}`, value);
         } else {
             throw `Unknown entry: ${entry}`;
         }

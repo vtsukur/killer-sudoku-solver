@@ -588,7 +588,7 @@ export class Solver {
             } else if (newlySolvedCellDets.length > 0) {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinSumsSet = cellSolver.withinSumsSet;
-                    if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellSum)) {
+                    if (!(withinSumsSet.size === 1 && withinSumsSet.values().next().value.isSingleCellCage)) {
                         const firstChunkSum = Cage.of(cellSolver.placedNumber).cell(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
                         this.#addAndSliceResidualSumRecursively(firstChunkSum);
                     }
@@ -659,7 +659,7 @@ export class Solver {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 segment.cages.forEach(cage => {
-                    if (cage.isSingleCellSum) return;
+                    if (cage.isSingleCellCage) return;
                     const cageSolver = this.cagesSolversMap.get(cage.key());
                     const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
