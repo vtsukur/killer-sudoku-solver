@@ -171,13 +171,13 @@ class CageSolver {
             remainingCellDets: new Set(this.cellSolvers),
             processedNumbers: new Set(),
             numbersStack: new Array(this.#cellCount),
-            cellsDetsStack: new Array(this.#cellCount),
+            cellsSolversStack: new Array(this.#cellCount),
             processCell: function(cellDet, step, fn) {
                 if (this.processedCellDets.has(cellDet)) return;
                 this.processedCellDets.add(cellDet); this.remainingCellDets.delete(cellDet);
-                this.cellsDetsStack[step] = cellDet;
+                this.cellsSolversStack[step] = cellDet;
                 const retVal = fn();
-                this.cellsDetsStack[step] = undefined;
+                this.cellsSolversStack[step] = undefined;
                 this.processedCellDets.delete(cellDet); this.remainingCellDets.add(cellDet);    
                 return retVal;
             },
