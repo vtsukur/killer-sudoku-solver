@@ -1,4 +1,4 @@
-import { GRID_CELL_COUNT, GRID_SUM } from './constants';
+import { GRID_CELL_COUNT, GRID_TOTAL_SUM } from './constants';
 
 export class Problem {
     constructor(cages) {
@@ -25,8 +25,8 @@ export class Problem {
         });
 
         const actualGridSum = this.cages.reduce((prev, current) => prev + current.value, 0);
-        if (actualGridSum !== GRID_SUM) {
-            this.#throwValidationError(`Expected field cage: ${GRID_SUM}. Actual: ${actualGridSum}`);
+        if (actualGridSum !== GRID_TOTAL_SUM) {
+            this.#throwValidationError(`Expected field cage: ${GRID_TOTAL_SUM}. Actual: ${actualGridSum}`);
         }
     }
 
