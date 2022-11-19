@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { newGridMatrix } from '../util/matrix';
-import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, UNIQUE_SEGMENT_SUM, UNIQUE_SEGMENT_COUNT } from '../problem/constants';
+import { UNIQUE_SEGMENT_LENGTH, SUBGRID_SIDE_LENGTH, HOUSE_SUM, UNIQUE_SEGMENT_COUNT } from '../problem/constants';
 import { Cage } from '../problem/cage';
 import { clusterCagesByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
@@ -301,7 +301,7 @@ class Segment {
     }
 
     determineResidualCage() {
-        if (this.#cagesArea.totalValue === UNIQUE_SEGMENT_SUM && this.#cagesArea.cellsSet.size === UNIQUE_SEGMENT_LENGTH) {
+        if (this.#cagesArea.totalValue === HOUSE_SUM && this.#cagesArea.cellsSet.size === UNIQUE_SEGMENT_LENGTH) {
             return;
         }
 
@@ -312,7 +312,7 @@ class Segment {
             }
         }, this);
 
-        return new Cage(UNIQUE_SEGMENT_SUM - this.#cagesArea.totalValue, residualCageCells);
+        return new Cage(HOUSE_SUM - this.#cagesArea.totalValue, residualCageCells);
     }
 
     addCage(newCage) {
@@ -449,7 +449,7 @@ export class Solver {
 
     #doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, withinSegmentFn, cellIteratorFn) {
         const nSegmentCellCount = n * UNIQUE_SEGMENT_COUNT;
-        const nSegmentSumVal = n * UNIQUE_SEGMENT_SUM;
+        const nSegmentSumVal = n * HOUSE_SUM;
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new CagesArea();

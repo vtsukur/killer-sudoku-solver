@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realProblemSamples';
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../../src/problem/constants';
+import { UNIQUE_SEGMENT_LENGTH, HOUSE_SUM } from '../../src/problem/constants';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { Row, Column, Subgrid, Solver } from '../../src/solver/solver';
@@ -71,7 +71,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const row5 = solver.row(5);
         const residualCage5 = row5.determineResidualCage();
         expect(residualCage5).toEqual(
-            new Cage(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))));
+            new Cage(HOUSE_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))));
     });
 
     test('Initialize columns', () => {
@@ -136,7 +136,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const column1 = solver.column(1);
         const residualCage1 = column1.determineResidualCage();
         expect(residualCage1).toEqual(
-            new Cage(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1))));
+            new Cage(HOUSE_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1))));
     });
 
     test('Initialize subgrids', () => {

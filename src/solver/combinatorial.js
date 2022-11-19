@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../problem/constants';
+import { UNIQUE_SEGMENT_COUNT, UNIQUE_SEGMENT_LENGTH, HOUSE_SUM } from '../problem/constants';
 
 const MIN_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
 const MAX_SUMS_PER_COUNT = new Array(UNIQUE_SEGMENT_LENGTH);
@@ -168,8 +168,8 @@ function doFindForNonOverlappingCages(cages) {
         throw `Too many cages with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cages. Actual: ${cages.length})`;
     }
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.value, 0);
-    if (totalSum > UNIQUE_SEGMENT_SUM) {
-        throw `Total cage with non-overlapping cells should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Cages: {${cages.join(', ')}}`;
+    if (totalSum > HOUSE_SUM) {
+        throw `Total cage with non-overlapping cells should be <= ${HOUSE_SUM}. Actual: ${totalSum}. Cages: {${cages.join(', ')}}`;
     }
     const cellCount = cages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > UNIQUE_SEGMENT_LENGTH) {
