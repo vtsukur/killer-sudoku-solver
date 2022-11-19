@@ -26,19 +26,19 @@ class SumRef extends SumEntry {
 }
 
 const readEntry = function(entry, index) {
-    const sumRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
-    if (sumRefOrDefMatch) {
-        const key = sumRefOrDefMatch[1];
-        const value = sumRefOrDefMatch[3];
+    const cageRefOrDefMatch = entry.match(SUM_DEF_OR_REF_REGEX);
+    if (cageRefOrDefMatch) {
+        const key = cageRefOrDefMatch[1];
+        const value = cageRefOrDefMatch[3];
         if (value) {
             return new SumDef(key, parseInt(value))
         } else {
             return new SumRef(key);
         }
     } else {
-        const sumMatch = entry.match(SUM_VALUE_REGEX);
-        if (sumMatch) {
-            const value = parseInt(sumMatch[0]);
+        const cageMatch = entry.match(SUM_VALUE_REGEX);
+        if (cageMatch) {
+            const value = parseInt(cageMatch[0]);
             return new SumDef(`${value}_${index}`, value);
         } else {
             throw `Unknown entry: ${entry}`;
@@ -50,23 +50,23 @@ export default function reader(path) {
     const raw = readFileSync(path, 'utf8');
     const entries = raw.split(/(\s+)/).filter(e => e.trim().length > 0);
 
-    const sums = new Map();
+    const cages = new Map();
     entries.forEach((value, idx) => {
-        const sumEntry = readEntry(value, idx);
-        if (!sums.has(sumEntry.ref)) {
-            if (!sumEntry.value) {
+        const cageEntry = readEntry(value, idx);
+        if (!cages.has(cageEntry.ref)) {
+            if (!cageEntry.value) {
                 throw `Cage def without value: ${value}`;
             }
-            sums.set(sumEntry.ref, Cage.of(sumEntry.value));
+            cages.set(cageEntry.ref, Cage.of(cageEntry.value));
         }
-        else if (sums.has(sumEntry.ref) && sumEntry.value) {
-            throw `Cage def duplicate: ${sumEntry.ref}`;
+        else if (cages.has(cageEntry.ref) && cageEntry.value) {
+            throw `Cage def duplicate: ${cageEntry.ref}`;
         }
-        sums.get(sumEntry.ref).cell(
+        cages.get(cageEntry.ref).cell(
             rowIdxInGridMatrixByAbsolute(idx),
             columnIdxInGridMatrixFromAbsloute(idx)
         );
     });
 
-    return new Problem(Array.from(sums.values()).map(sumBuilder => sumBuilder.mk()));
+    return new Problem(Array.from(cages.values()).map(cageBuilder => cageBuilder.mk()));
 }

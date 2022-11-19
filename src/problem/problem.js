@@ -1,14 +1,14 @@
 import { GRID_CELL_COUNT, GRID_SUM } from './constants';
 
 export class Problem {
-    constructor(sums) {
-        this.sums = [...sums];
-        this.cells = this.sums.map(sum => sum.cells).flat();
+    constructor(cages) {
+        this.cages = [...cages];
+        this.cells = this.cages.map(cage => cage.cells).flat();
         this.#validate();
     }
 
     #validate() {
-        const cells = this.sums.flatMap(sum => sum.cells);
+        const cells = this.cages.flatMap(cage => cage.cells);
         if (cells.length !== GRID_CELL_COUNT) {
             this.#throwValidationError(`Expected cell count: ${GRID_CELL_COUNT}. Actual: ${cells.length}`);
         }
@@ -24,9 +24,9 @@ export class Problem {
             cellSet.add(cell.key());
         });
 
-        const actualFieldSum = this.sums.reduce((prev, current) => prev + current.value, 0);
+        const actualFieldSum = this.cages.reduce((prev, current) => prev + current.value, 0);
         if (actualFieldSum !== GRID_SUM) {
-            this.#throwValidationError(`Expected field sum: ${GRID_SUM}. Actual: ${actualFieldSum}`);
+            this.#throwValidationError(`Expected field cage: ${GRID_SUM}. Actual: ${actualFieldSum}`);
         }
     }
 

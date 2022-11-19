@@ -4,17 +4,17 @@ import { Cage } from '../src/problem/cage';
 
 describe('Cage tests', () => {
     test('Cage creation', () => {
-        const sum = new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]);
-        expect(sum.value).toBe(10);
-        expect(sum.cellCount).toBe(2);
-        expect(sum.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
+        const cage = new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]);
+        expect(cage.value).toBe(10);
+        expect(cage.cellCount).toBe(2);
+        expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
     });
 
     test('Cage creation via builder', () => {
-        const sum = Cage.of(10).cell(4, 4).cell(4, 5).mk();
-        expect(sum.value).toBe(10);
-        expect(sum.cellCount).toBe(2);
-        expect(sum.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
+        const cage = Cage.of(10).cell(4, 4).cell(4, 5).mk();
+        expect(cage.value).toBe(10);
+        expect(cage.cellCount).toBe(2);
+        expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
     });
 
     test('Cage within row', () => {
@@ -45,10 +45,10 @@ describe('Cage tests', () => {
     });
 
     test('Cage not within row neither column nor subgrid', () => {
-        const sum = Cage.of(10).cell(5, 6).cell(6, 6).cell(6, 5).mk();
-        expect(sum.isWithinRow).toBe(false);
-        expect(sum.isWithinColumn).toBe(false);
-        expect(sum.isWithinSubgrid).toBe(false);
+        const cage = Cage.of(10).cell(5, 6).cell(6, 6).cell(6, 5).mk();
+        expect(cage.isWithinRow).toBe(false);
+        expect(cage.isWithinColumn).toBe(false);
+        expect(cage.isWithinSubgrid).toBe(false);
     });
 
     test('Cage key', () => {

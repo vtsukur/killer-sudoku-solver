@@ -16,11 +16,11 @@ describe('Tests for solver', () => {
         expect(solver.inputSums[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.inputSumAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.rows.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.rows[2].sums[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.rows[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.columns.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.columns[2].sums[1]).toEqual(Cage.of(2).cell(3, 2).mk());
+        expect(solver.columns[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
         expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
-        expect(solver.subgrids[1].sums[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
+        expect(solver.subgrids[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellDeterminatorAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
@@ -210,9 +210,9 @@ describe('Tests for solver', () => {
         expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(idx => {
-            expect(solver.rows[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
-            expect(solver.columns[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
-            expect(solver.subgrids[idx].sums.length).toBe(UNIQUE_SEGMENT_LENGTH);
+            expect(solver.rows[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
+            expect(solver.columns[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
+            expect(solver.subgrids[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);
         });
     });
 });

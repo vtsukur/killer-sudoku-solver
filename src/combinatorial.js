@@ -13,14 +13,14 @@ _.range(UNIQUE_SEGMENT_LENGTH).forEach(count => {
     }
 })
 
-export function findNumberCombinationsForSum(sum, count) {
-    if (typeof (sum) !== 'number' || !sum || sum <= 0) {
-        throw `Invalid sum: ${sum}`;
+export function findNumberCombinationsForSum(cage, count) {
+    if (typeof (cage) !== 'number' || !cage || cage <= 0) {
+        throw `Invalid cage: ${cage}`;
     }
     if (typeof (count) !== 'number' || !count || count <= 0) {
         throw `Invalid count: ${count}`;
     }
-    if (sum < MIN_SUMS_PER_COUNT[count - 1] || sum > MAX_SUMS_PER_COUNT[count - 1]) {
+    if (cage < MIN_SUMS_PER_COUNT[count - 1] || cage > MAX_SUMS_PER_COUNT[count - 1]) {
         return [];
     }
 
@@ -30,12 +30,12 @@ export function findNumberCombinationsForSum(sum, count) {
 
     function combosRecursive(level, startWith) {
         if (level > count) {
-            if (currentSum === sum) {
+            if (currentSum === cage) {
                 combos.push(new Set(numbers));
             }
         } else {
             for (let i = startWith; i <= UNIQUE_SEGMENT_LENGTH; ++i) {
-                if (currentSum + i > sum) {
+                if (currentSum + i > cage) {
                     return;
                 } else {
                     numbers[level - 1] = i;
@@ -57,9 +57,9 @@ export function findSumCombinationsForSegment(segment) {
         throw `Invalid segment: ${segment}`;
     }
 
-    const sums = segment.sums;
-    if (!Array.isArray(sums)) {
-        throw `Invalid sums: ${sums}`;
+    const cages = segment.cages;
+    if (!Array.isArray(cages)) {
+        throw `Invalid cages: ${cages}`;
     }
 
     const cells = segment.cells;
@@ -67,7 +67,7 @@ export function findSumCombinationsForSegment(segment) {
         throw `Invalid cells: ${cells}`;
     }
 
-    const { nonOverlappingSums, overlappingSums } = clusterSumsByOverlap(sums, cells);
+    const { nonOverlappingSums, overlappingSums } = clusterSumsByOverlap(cages, cells);
 
     const combosForNonOverlappingSums = doFindForNonOverlappingSums(nonOverlappingSums);
     const combosForOverlappingSums = doFindForOverlappingSums(overlappingSums);
@@ -77,8 +77,8 @@ export function findSumCombinationsForSegment(segment) {
     return preservedSumOrderCombos;
 }
 
-export function clusterSumsByOverlap(sums, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
-    if (!sums.length) {
+export function clusterSumsByOverlap(cages, cells, absMaxAreaCellCount = UNIQUE_SEGMENT_COUNT) {
+    if (!cages.length) {
         return { nonOverlappingSums: [], overlappingSums: [] };
     }
 
@@ -89,22 +89,22 @@ export function clusterSumsByOverlap(sums, cells, absMaxAreaCellCount = UNIQUE_S
     cells.forEach(cell => {
         cellsToSumsMap.set(cell.key(), new Set());
     })
-    sums.forEach(sum => {
-        sum.cells.forEach(cell => {
-            cellsToSumsMap.get(cell.key()).add(sum);
+    cages.forEach(cage => {
+        cage.cells.forEach(cell => {
+            cellsToSumsMap.get(cell.key()).add(cage);
         });
     });
 
-    const allSumsAreNonOverlapping = Array.from(cellsToSumsMap.values()).every(sumSet => sumSet.size === 1);
+    const allSumsAreNonOverlapping = Array.from(cellsToSumsMap.values()).every(cageSet => cageSet.size === 1);
     if (allSumsAreNonOverlapping) {
-        nonOverlappingSums = [...sums];
+        nonOverlappingSums = [...cages];
     } else {
-        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(sums, absMaxAreaCellCount);
-        sums.forEach(sum => {
-            if (maxNonOverlappingSumAreaSet.has(sum)) {
-                nonOverlappingSums.push(sum);
+        const maxNonOverlappingSumAreaSet = findMaxNonOverlappingSumArea(cages, absMaxAreaCellCount);
+        cages.forEach(cage => {
+            if (maxNonOverlappingSumAreaSet.has(cage)) {
+                nonOverlappingSums.push(cage);
             } else {
-                overlappingSums.push(sum);
+                overlappingSums.push(cage);
             }
         });    
     }
@@ -115,77 +115,77 @@ export function clusterSumsByOverlap(sums, cells, absMaxAreaCellCount = UNIQUE_S
     };
 }
 
-function findMaxNonOverlappingSumArea(sums, absMaxAreaCellCount) {
+function findMaxNonOverlappingSumArea(cages, absMaxAreaCellCount) {
     const context = {
-        allSumsSet: new Set(sums),
+        allSumsSet: new Set(cages),
         maxAreaSet: new Set(),
         maxAreaCellCount: 0,
         cellCount: 0,
-        sumsStack: new Set(),
-        remainingSumsStack: new Set(sums),
+        cagesStack: new Set(),
+        remainingSumsStack: new Set(cages),
         overlappingSumsStack: new Set(),
         areaCellKeysStack: new Set(),
         absMaxAreaCellCount: absMaxAreaCellCount
     };
 
-    sums.forEach(sum => {
-        findBiggestNonOverlappingSumAreaRecursive(sum, context);
+    cages.forEach(cage => {
+        findBiggestNonOverlappingSumAreaRecursive(cage, context);
     });
 
     return context.maxAreaSet;
 }
 
-function findBiggestNonOverlappingSumAreaRecursive(sum, context) {
-    if (context.maxAreaCellCount >= context.absMaxAreaCellCount || !sum) {
+function findBiggestNonOverlappingSumAreaRecursive(cage, context) {
+    if (context.maxAreaCellCount >= context.absMaxAreaCellCount || !cage) {
         return;
     }
 
-    const noOverlap = sum.cells.every(cell => !context.areaCellKeysStack.has(cell.key()));
+    const noOverlap = cage.cells.every(cell => !context.areaCellKeysStack.has(cell.key()));
     if (!noOverlap) return;
 
-    context.sumsStack.add(sum);
-    context.remainingSumsStack.delete(sum);
-    sum.cells.forEach(cell => context.areaCellKeysStack.add(cell.key()));
-    context.cellCount += sum.cellCount;
+    context.cagesStack.add(cage);
+    context.remainingSumsStack.delete(cage);
+    cage.cells.forEach(cell => context.areaCellKeysStack.add(cell.key()));
+    context.cellCount += cage.cellCount;
 
     if (context.cellCount >= context.absMaxAreaCellCount ||
         (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
-        context.maxAreaSet = new Set(context.sumsStack);
+        context.maxAreaSet = new Set(context.cagesStack);
         context.maxAreaCellCount = context.cellCount;
     }
 
     const nextSum = context.remainingSumsStack.values().next().value;
     findBiggestNonOverlappingSumAreaRecursive(nextSum, context);
 
-    context.cellCount -= sum.cellCount;
-    sum.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key()));
-    context.remainingSumsStack.add(sum);
-    context.sumsStack.delete(sum);
+    context.cellCount -= cage.cellCount;
+    cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key()));
+    context.remainingSumsStack.add(cage);
+    context.cagesStack.delete(cage);
 }
 
-function doFindForNonOverlappingSums(sums) {
-    if (sums.length > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} sums. Actual: ${sums.length})`;
+function doFindForNonOverlappingSums(cages) {
+    if (cages.length > UNIQUE_SEGMENT_LENGTH) {
+        throw `Too many cages with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cages. Actual: ${cages.length})`;
     }
-    const totalSum = sums.reduce((partialSum, a) => partialSum + a.value, 0);
+    const totalSum = cages.reduce((partialSum, a) => partialSum + a.value, 0);
     if (totalSum > UNIQUE_SEGMENT_SUM) {
-        throw `Total sum with non-overlapping cells should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Sums: {${sums.join(', ')}}`;
+        throw `Total cage with non-overlapping cells should be <= ${UNIQUE_SEGMENT_SUM}. Actual: ${totalSum}. Sums: {${cages.join(', ')}}`;
     }
-    const cellCount = sums.reduce((partialSum, a) => partialSum + a.cellCount, 0);
+    const cellCount = cages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > UNIQUE_SEGMENT_LENGTH) {
-        throw `Too many cells in sums with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cells. Actual: ${cellCount})`;
+        throw `Too many cells in cages with non-overlapping cells. Expected no more than ${UNIQUE_SEGMENT_LENGTH} cells. Actual: ${cellCount})`;
     }
-    if (sums.length == 0) {
+    if (cages.length == 0) {
         return [];
     }
 
     const combos = [];
-    const combosForSums = sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
-    const stack = new Array(sums.length);
+    const combosForSums = cages.map(cage => findNumberCombinationsForSum(cage.value, cage.cellCount));
+    const stack = new Array(cages.length);
     const checkingSet = new Set();
 
     function combosRecursive(step) {
-        if (step === sums.length) {
+        if (step === cages.length) {
             combos.push([...stack]);
         } else {
             const combosForSum = combosForSums[step];
@@ -207,15 +207,15 @@ function doFindForNonOverlappingSums(sums) {
     return combos;
 }
 
-function doFindForOverlappingSums(sums) {
-    if (sums.length === 0) return [];
+function doFindForOverlappingSums(cages) {
+    if (cages.length === 0) return [];
 
     const combos = [];
-    const combosForSums = sums.map(sum => findNumberCombinationsForSum(sum.value, sum.cellCount));
-    const stack = new Array(sums.length);
+    const combosForSums = cages.map(cage => findNumberCombinationsForSum(cage.value, cage.cellCount));
+    const stack = new Array(cages.length);
 
     function combosRecursive(step) {
-        if (step === sums.length) {
+        if (step === cages.length) {
             combos.push([...stack]);
         } else {
             const combosForSum = combosForSums[step];
@@ -253,17 +253,17 @@ function preserveOrder(combinedCombos, segment, nonOverlappingSums, overlappingS
     else {
         const orderPreservedCombos = [];
 
-        const sumIndexResolvers = new Array(segment.sums.length);
-        nonOverlappingSums.forEach((sum, idx) => {
-            sumIndexResolvers[idx] = segment.sums.findIndex(originalSum => originalSum === sum);
+        const cageIndexResolvers = new Array(segment.cages.length);
+        nonOverlappingSums.forEach((cage, idx) => {
+            cageIndexResolvers[idx] = segment.cages.findIndex(originalSum => originalSum === cage);
         });
-        overlappingSums.forEach((sum, idx) => {
-            sumIndexResolvers[nonOverlappingSums.length + idx] = segment.sums.findIndex(originalSum => originalSum === sum);
+        overlappingSums.forEach((cage, idx) => {
+            cageIndexResolvers[nonOverlappingSums.length + idx] = segment.cages.findIndex(originalSum => originalSum === cage);
         });
         combinedCombos.forEach(comboSets => {
             const preservedOrderCombo = new Array(comboSets.length);
             comboSets.forEach((numbersSet, idx) => {
-                preservedOrderCombo[sumIndexResolvers[idx]] = numbersSet;
+                preservedOrderCombo[cageIndexResolvers[idx]] = numbersSet;
             });
             orderPreservedCombos.push(preservedOrderCombo);
         });

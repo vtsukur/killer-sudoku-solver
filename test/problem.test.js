@@ -4,10 +4,10 @@ import { Cage } from '../src/problem/cage';
 import { sampleProblem } from './realProblemSamples';
 
 const modifyCorrectProblem = function(lastSum) {
-    const sums = [...sampleProblem.sums];
-    sums.pop();
-    sums.push(lastSum);
-    return new Problem(sums);
+    const cages = [...sampleProblem.cages];
+    cages.pop();
+    cages.push(lastSum);
+    return new Problem(cages);
 };
 
 describe('Problem tests', () => {
@@ -43,12 +43,12 @@ describe('Problem tests', () => {
         ).toThrow(`Invalid problem definiton. Found cell duplicate: (8, 6)`);
     });
 
-    test('Check incorrect problem in which overall sum does not match', () => {
+    test('Check incorrect problem in which overall cage does not match', () => {
         expect(() =>
             modifyCorrectProblem(
-                // abnormal sum on the field: 116 instead of 16
+                // abnormal cage on the field: 116 instead of 16
                 Cage.of(116).cell(8, 6).cell(8, 7).cell(8, 8).mk()
             )
-        ).toThrow(`Invalid problem definiton. Expected field sum: 405. Actual: 505`);
+        ).toThrow(`Invalid problem definiton. Expected field cage: 405. Actual: 505`);
     });
 });

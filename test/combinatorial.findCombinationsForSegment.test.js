@@ -2,20 +2,20 @@ import _ from 'lodash';
 import { findSumCombinationsForSegment } from '../src/combinatorial';
 import { Cage } from '../src/problem/cage';
 
-const segmentOf = (sums) => {
+const segmentOf = (cages) => {
     let cellsMap = new Map();
-    if (Array.isArray(sums)) {
-        sums.forEach(sum => {
-            sum.cells.forEach(cell => {
+    if (Array.isArray(cages)) {
+        cages.forEach(cage => {
+            cage.cells.forEach(cell => {
                 cellsMap.set(cell.key(), cell);
             });
         });
     }
-    return { sums, cells: Array.from(cellsMap.values()) };
+    return { cages, cells: Array.from(cellsMap.values()) };
 }
 
-describe('Tests for the finder of number combinations to form a segment out of sums', () => {
-    test('Multiple combinations of numbers to form a complete segment with non-overlapping sums', () => {
+describe('Tests for the finder of number combinations to form a segment out of cages', () => {
+    test('Multiple combinations of numbers to form a complete segment with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(15).cell(1, 1).cell(1, 2).mk(),
             Cage.of(10).cell(1, 3).cell(2, 3).mk(),
@@ -30,7 +30,7 @@ describe('Tests for the finder of number combinations to form a segment out of s
         ]);
     });
 
-    test('Combination of numbers to form a complete segment with non-overlapping sums', () => {
+    test('Combination of numbers to form a complete segment with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
@@ -41,7 +41,7 @@ describe('Tests for the finder of number combinations to form a segment out of s
         ]);
     });
 
-    test('Combinations of numbers to form an incomplete segment with non-overlapping sums', () => {
+    test('Combinations of numbers to form an incomplete segment with non-overlapping cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(9).cell(1, 6).cell(1, 7).mk()
@@ -51,11 +51,11 @@ describe('Tests for the finder of number combinations to form a segment out of s
         ]);
     });
 
-    test('Combinations of numbers to form a segment with overlapping sum', () => {
+    test('Combinations of numbers to form a segment with overlapping cage', () => {
         expect(findSumCombinationsForSegment(segmentOf([
             Cage.of(8).cell(2, 5).cell(3, 5).mk(),
             Cage.of(8).cell(7, 5).mk(),
-            // overlapping sum
+            // overlapping cage
             Cage.of(4).cell(1, 5).cell(2, 5).mk(),
             Cage.of(29).cell(0, 5).cell(1, 5).cell(4, 5).cell(5, 5).cell(6, 5).cell(8, 5).mk()
         ]))).toEqual([
@@ -73,50 +73,50 @@ describe('Tests for the finder of number combinations to form a segment out of s
         expect(() => findSumCombinationsForSegment(() => {})).toThrow('Invalid segment: () => {}');
     });
 
-    test('Combinations of numbers to form a segment out of no sums', () => {
+    test('Combinations of numbers to form a segment out of no cages', () => {
         expect(findSumCombinationsForSegment(segmentOf([]))).toEqual([]);
     });
 
-    test('Combinations of numbers to form a segment out of invalid segment sums', () => {
-        expect(() => findSumCombinationsForSegment(segmentOf(undefined))).toThrow('Invalid sums: undefined');
-        expect(() => findSumCombinationsForSegment(segmentOf(null))).toThrow('Invalid sums: null');
-        expect(() => findSumCombinationsForSegment(segmentOf({}))).toThrow('Invalid sums: [object Object]');
-        expect(() => findSumCombinationsForSegment(segmentOf(3))).toThrow('Invalid sums: 3');
-        expect(() => findSumCombinationsForSegment(segmentOf('string'))).toThrow('Invalid sums: string');
-        expect(() => findSumCombinationsForSegment(segmentOf(() => {}))).toThrow('Invalid sums: () => {}');
+    test('Combinations of numbers to form a segment out of invalid segment cages', () => {
+        expect(() => findSumCombinationsForSegment(segmentOf(undefined))).toThrow('Invalid cages: undefined');
+        expect(() => findSumCombinationsForSegment(segmentOf(null))).toThrow('Invalid cages: null');
+        expect(() => findSumCombinationsForSegment(segmentOf({}))).toThrow('Invalid cages: [object Object]');
+        expect(() => findSumCombinationsForSegment(segmentOf(3))).toThrow('Invalid cages: 3');
+        expect(() => findSumCombinationsForSegment(segmentOf('string'))).toThrow('Invalid cages: string');
+        expect(() => findSumCombinationsForSegment(segmentOf(() => {}))).toThrow('Invalid cages: () => {}');
     });
 
     test('Combinations of numbers to form a segment out of invalid segment cells', () => {
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: undefined })).toThrow('Invalid cells: undefined');
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: null })).toThrow('Invalid cells: null');
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: {} })).toThrow('Invalid cells: [object Object]');
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: 3 })).toThrow('Invalid cells: 3');
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: 'string' })).toThrow('Invalid cells: string');
-        expect(() => findSumCombinationsForSegment({ sums: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: undefined })).toThrow('Invalid cells: undefined');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: null })).toThrow('Invalid cells: null');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: {} })).toThrow('Invalid cells: [object Object]');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: 3 })).toThrow('Invalid cells: 3');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: 'string' })).toThrow('Invalid cells: string');
+        expect(() => findSumCombinationsForSegment({ cages: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
     });
 
-    test('Combinations of numbers to form a segment out of too many sums with non-overlapping cells', () => {
+    test('Combinations of numbers to form a segment out of too many cages with non-overlapping cells', () => {
         expect(() => findSumCombinationsForSegment(segmentOf(_.range(10).map(i => Cage.of(5).cell(i, 0).mk())))).toThrow(
-            'Too many sums with non-overlapping cells. Expected no more than 9 sums. Actual: 10');
+            'Too many cages with non-overlapping cells. Expected no more than 9 cages. Actual: 10');
     });
 
-    test('Combinations of numbers to form a segment out of sums with non-overlapping cells whose total sum is greater than segments max', () => {
+    test('Combinations of numbers to form a segment out of cages with non-overlapping cells whose total cage is greater than segments max', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Cage.of(7).cell(1, 6).cell(1, 7).mk(),
             Cage.of(100).cell(1, 8).cell(1, 9).mk()
         ]))).toThrow(
-            "Total sum with non-overlapping cells should be <= 45. Actual: 135. Sums: ");
+            "Total cage with non-overlapping cells should be <= 45. Actual: 135. Sums: ");
     });
 
-    test('Combinations of numbers to form a segment out of sums with too many non-overlapping cells', () => {
+    test('Combinations of numbers to form a segment out of cages with too many non-overlapping cells', () => {
         expect(() => findSumCombinationsForSegment(segmentOf([
             Cage.of(4).cell(1, 1).cell(1, 2).mk(),
             Cage.of(24).cell(1, 3).cell(1, 4).cell(1, 5).mk(),
             Cage.of(7).cell(1, 6).cell(1, 7).mk(),
             Cage.of(10).cell(1, 8).cell(1, 9).cell(2, 9).mk()
         ]))).toThrow(
-            'Too many cells in sums with non-overlapping cells. Expected no more than 9 cells. Actual: 10');
+            'Too many cells in cages with non-overlapping cells. Expected no more than 9 cells. Actual: 10');
     });
 });

@@ -60,7 +60,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual sums in rows (shallow)', () => {
+    test('Determine residual cages in rows (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const row0 = solver.row(0);
@@ -124,7 +124,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual sums in columns (shallow)', () => {
+    test('Determine residual cages in columns (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const column0 = solver.column(0);
@@ -242,7 +242,7 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         ));
     });
 
-    test('Determine residual sums in subgrids (shallow)', () => {
+    test('Determine residual cages in subgrids (shallow)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const subgrid0 = solver.subgrid(0);
