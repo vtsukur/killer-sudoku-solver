@@ -41,7 +41,8 @@ export class Solver {
         }, this);
 
         this.cellSolversMatrix = newGridMatrix();
-        this.problem.cells.forEach(cell => {
+        const cells = problem.cages.map(cage => cage.cells).flat();
+        cells.forEach(cell => {
             this.cellSolversMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
                 cell,
                 rowSolver: this.rowSolvers[cell.rowIdx],

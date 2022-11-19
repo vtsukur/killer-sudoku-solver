@@ -3,7 +3,6 @@ import { Grid } from './grid';
 export class Problem {
     constructor(cages) {
         this.cages = [...cages];
-        this.cells = this.cages.map(cage => cage.cells).flat();
         this.#validate();
     }
 

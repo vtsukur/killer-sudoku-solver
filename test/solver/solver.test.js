@@ -10,8 +10,6 @@ describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
-        expect(solver.problem.cells.length).toBe(Grid.CELL_COUNT);
-        expect(solver.problem.cells[21]).toEqual(new Cell(2, 3));
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputCages.length).toBe(33);
         expect(solver.inputCages[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
