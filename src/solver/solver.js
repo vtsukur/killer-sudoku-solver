@@ -311,21 +311,6 @@ export class Solver {
                 reducedCellDets.forEach(cellSolver => {
                     cagesToReduce = new Set([...cagesToReduce, ...cellSolver.withinCagesSet]);
                 });
-
-                // remove number from other cells
-                const furtherReducedCellDets = new Set();
-                for (const { rowIdx, colIdx } of houseSolver.cellIterator()) {
-                    const cellSolver = this.cellSolverAt(rowIdx, colIdx);
-                    if (cageSolverToReDefine.has(cellSolver)) return;
-
-                    if (cellSolver.hasNumOpt(num)) {
-                        cellSolver.deleteNumOpt(num);
-                        furtherReducedCellDets.add(cellSolver);
-                    }
-                }
-                furtherReducedCellDets.forEach(cellSolver => {
-                    cagesToReduce = new Set([...cagesToReduce, ...cellSolver.withinCagesSet]);
-                });
             });
         });
 
