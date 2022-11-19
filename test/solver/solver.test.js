@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { GRID_CELL_COUNT, HOUSE_SIZE } from '../../src/problem/constants';
+import { HOUSE_SIZE } from '../../src/problem/constants';
+import { Grid } from '../../src/problem/grid';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { Solver } from '../../src/solver/solver';
@@ -9,7 +10,7 @@ describe('Tests for solver', () => {
     test('Create solver (shallow coverage)', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
-        expect(solver.problem.cells.length).toBe(GRID_CELL_COUNT);
+        expect(solver.problem.cells.length).toBe(Grid.CELL_COUNT);
         expect(solver.problem.cells[21]).toEqual(new Cell(2, 3));
         expect(solver.cellAt(2, 3)).toEqual(new Cell(2, 3));
         expect(solver.inputCages.length).toBe(33);

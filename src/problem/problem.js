@@ -1,4 +1,4 @@
-import { GRID_CELL_COUNT, GRID_TOTAL_SUM } from './constants';
+import { Grid } from './grid';
 
 export class Problem {
     constructor(cages) {
@@ -9,8 +9,8 @@ export class Problem {
 
     #validate() {
         const cells = this.cages.flatMap(cage => cage.cells);
-        if (cells.length !== GRID_CELL_COUNT) {
-            this.#throwValidationError(`Expected cell count: ${GRID_CELL_COUNT}. Actual: ${cells.length}`);
+        if (cells.length !== Grid.CELL_COUNT) {
+            this.#throwValidationError(`Expected cell count: ${Grid.CELL_COUNT}. Actual: ${cells.length}`);
         }
 
         const cellSet = new Set();
@@ -25,8 +25,8 @@ export class Problem {
         });
 
         const actualGridSum = this.cages.reduce((prev, current) => prev + current.value, 0);
-        if (actualGridSum !== GRID_TOTAL_SUM) {
-            this.#throwValidationError(`Expected field cage: ${GRID_TOTAL_SUM}. Actual: ${actualGridSum}`);
+        if (actualGridSum !== Grid.TOTAL_SUM) {
+            this.#throwValidationError(`Expected field cage: ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
         }
     }
 
