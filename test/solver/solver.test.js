@@ -22,7 +22,7 @@ describe('Tests for solver', () => {
         expect(solver.subgrids.length).toBe(UNIQUE_SEGMENT_COUNT);
         expect(solver.subgrids[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
-        const aCellDeterminator = solver.cellDeterminatorAt(2, 3);
+        const aCellDeterminator = solver.cellSolverAt(2, 3);
         expect(aCellDeterminator.cell).toEqual(new Cell(2, 3));
         expect(aCellDeterminator.row.idx).toEqual(2);
         expect(aCellDeterminator.column.idx).toEqual(3);
@@ -206,8 +206,8 @@ describe('Tests for solver', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         solver.solve();
 
-        expect(solver.cellDeterminatorAt(2, 7).placedNumber).toBe(8);
-        expect(solver.cellDeterminatorAt(2, 7).solved).toBe(true);
+        expect(solver.cellSolverAt(2, 7).placedNumber).toBe(8);
+        expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(idx => {
             expect(solver.rows[idx].cages.length).toBe(UNIQUE_SEGMENT_LENGTH);

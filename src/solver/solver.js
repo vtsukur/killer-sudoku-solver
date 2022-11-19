@@ -148,7 +148,7 @@ class CageSolver {
             });
         });
 
-        this.cellSolvers.forEach(cellDeterminator => cellDeterminator.reduceNumberOptions(numOpts));
+        this.cellSolvers.forEach(cellSolver => cellSolver.reduceNumberOptions(numOpts));
     }
 
     reduce() {
@@ -518,14 +518,14 @@ export class Solver {
     #getSumsFullyContainingResidualSum(residualSum) {
         let allAssociatedSumsSet = new Set();
         residualSum.cells.forEach(cell => {
-            allAssociatedSumsSet = new Set([...allAssociatedSumsSet, ...this.cellDeterminatorOf(cell).withinSumsSet]);
+            allAssociatedSumsSet = new Set([...allAssociatedSumsSet, ...this.cellSolverOf(cell).withinSumsSet]);
         }, this);
         allAssociatedSumsSet.delete(residualSum);
 
         const result = [];
         for (const associatedSum of allAssociatedSumsSet.values()) {
             const associatedSumFullyContainsResidualSum = residualSum.cells.every(cell => {
-                return this.cellDeterminatorOf(cell).withinSumsSet.has(associatedSum);
+                return this.cellSolverOf(cell).withinSumsSet.has(associatedSum);
             }, this);
             if (associatedSumFullyContainsResidualSum) {
                 result.push(associatedSum);
@@ -640,7 +640,7 @@ export class Solver {
                 for (const { rowIdx, colIdx } of segment.cellIterator()) {
                     if (rowIdx === cellDet.cell.rowIdx && colIdx === cellDet.cell.colIdx) continue;
         
-                    const aCellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                    const aCellDet = this.cellSolverAt(rowIdx, colIdx);
                     if (aCellDet.hasNumOpt(number)) {
                         aCellDet.deleteNumOpt(number);
                         cagesToReduceSet = new Set([...cagesToReduceSet, ...aCellDet.withinSumsSet]);
@@ -679,7 +679,7 @@ export class Solver {
                 // remove number from other cells
                 const furtherReducedCellDets = new Set();
                 for (const { rowIdx, colIdx } of segment.cellIterator()) {
-                    const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                    const cellDet = this.cellSolverAt(rowIdx, colIdx);
                     if (cageDetToReDefine.has(cellDet)) return;
 
                     if (cellDet.hasNumOpt(num)) {
@@ -701,7 +701,7 @@ export class Solver {
 
         _.range(UNIQUE_SEGMENT_LENGTH).forEach(rowIdx => {
             _.range(UNIQUE_SEGMENT_LENGTH).forEach(colIdx => {
-                const cellDet = this.cellDeterminatorAt(rowIdx, colIdx);
+                const cellDet = this.cellSolverAt(rowIdx, colIdx);
                 if (cellDet.numOpts().size === 1 && !cellDet.solved) {
                     this.#placeNumber(cellDet.cell, cellDet.numOpts().values().next().value);
                     cellDets.push(cellDet);
@@ -713,15 +713,15 @@ export class Solver {
     }
 
     #placeNumber(cell, number) {
-        const cellDeterminator = this.cellDeterminatorOf(cell);
-        cellDeterminator.placeNumber(number);
+        const cellSolver = this.cellSolverOf(cell);
+        cellSolver.placeNumber(number);
 
         this.#solution[cell.rowIdx][cell.colIdx] = number;
         this.#placedNumbersCount++;
     }
 
     #registerSum(cage) {
-        const cageDeterminator = new CageSolver(cage, cage.cells.map(cell => this.cellDeterminatorOf(cell), this));
+        const cageDeterminator = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
         if (cage.isWithinRow) {
             this.rows[cageDeterminator.anyRowIdx()].addSum(cage);
         }
@@ -732,7 +732,7 @@ export class Solver {
             this.subgrids[cageDeterminator.anySubgridIdx()].addSum(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellDeterminatorOf(cell).addWithinSum(cage);
+            this.cellSolverOf(cell).addWithinSum(cage);
         }, this);
         this.cagesDeterminatorsMap.set(cage.key(), cageDeterminator);
     }
@@ -749,7 +749,7 @@ export class Solver {
             this.subgrids[cageDeterminator.anySubgridIdx()].removeSum(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellDeterminatorOf(cell).removeWithinSum(cage);
+            this.cellSolverOf(cell).removeWithinSum(cage);
         }, this);
         this.cagesDeterminatorsMap.delete(cage.key());
     }
@@ -762,11 +762,11 @@ export class Solver {
         return this.cellsMatrix[rowIds][colIdx];
     }
 
-    cellDeterminatorOf(cell) {
-        return this.cellDeterminatorAt(cell.rowIdx, cell.colIdx);
+    cellSolverOf(cell) {
+        return this.cellSolverAt(cell.rowIdx, cell.colIdx);
     }
 
-    cellDeterminatorAt(rowIdx, colIdx) {
+    cellSolverAt(rowIdx, colIdx) {
         return this.cellSolversMatrix[rowIdx][colIdx];
     }
 
