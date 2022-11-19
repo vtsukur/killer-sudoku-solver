@@ -91,14 +91,14 @@ describe('Reader tests', () => {
     });
 
     test('Unknown entry', () => {
-        expect(() => reader('./test/reader/readerUnknownEntry.txt')).toThrow('Unknown entry: a:a');
+        expect(() => reader('./test/reader/unknownEntry.txt')).toThrow('Unknown entry: a:a');
     });
     
     test('Cage def without value', () => {
-        expect(() => reader('./test/reader/readerSumDefWithoutValue.txt')).toThrow('Cage def without value: a');
+        expect(() => reader('./test/reader/cageWithoutValue.txt')).toThrow('Cage def without value: a');
     });
     
     test('Cage def duplicate', () => {
-        expect(() => reader('./test/reader/readerSumDefDuplication.txt')).toThrow('Cage def duplicate: a');
+        expect(() => reader('./test/reader/cageDuplication.txt')).toThrow('Cage def duplicate: a');
     });
 });
