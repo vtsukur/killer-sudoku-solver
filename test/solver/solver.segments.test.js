@@ -64,13 +64,13 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const row0 = solver.row(0);
-        const residualSum0 = row0.determineResidualCage();
-        expect(residualSum0).toEqual(
+        const residualCage0 = row0.determineResidualCage();
+        expect(residualCage0).toEqual(
             Cage.of(23).cell(0, 2).cell(0, 3).cell(0, 4).cell(0, 5).cell(0, 8).mk());
         
         const row5 = solver.row(5);
-        const residualSum5 = row5.determineResidualCage();
-        expect(residualSum5).toEqual(
+        const residualCage5 = row5.determineResidualCage();
+        expect(residualCage5).toEqual(
             new Cage(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(colIdx => new Cell(5, colIdx))));
     });
 
@@ -128,14 +128,14 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const column0 = solver.column(0);
-        const residualSum0 = column0.determineResidualCage();
-        expect(residualSum0).toEqual(
+        const residualCage0 = column0.determineResidualCage();
+        expect(residualCage0).toEqual(
             Cage.of(26).cell(0, 0).cell(1, 0).cell(2, 0).cell(3, 0).cell(4, 0).cell(5, 0).mk()
         );
         
         const column1 = solver.column(1);
-        const residualSum1 = column1.determineResidualCage();
-        expect(residualSum1).toEqual(
+        const residualCage1 = column1.determineResidualCage();
+        expect(residualCage1).toEqual(
             new Cage(UNIQUE_SEGMENT_SUM, _.range(UNIQUE_SEGMENT_LENGTH).map(rowIdx => new Cell(rowIdx, 1))));
     });
 
@@ -246,11 +246,11 @@ describe('Tests for creation and initialization of rows, columns and subgrids', 
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const subgrid0 = solver.subgrid(0);
-        const residualSum0 = subgrid0.determineResidualCage();
-        expect(residualSum0).toBe(undefined);
+        const residualCage0 = subgrid0.determineResidualCage();
+        expect(residualCage0).toBe(undefined);
         
         const subgrid1 = solver.subgrid(1);
-        const residualSum1 = subgrid1.determineResidualCage();
-        expect(residualSum1).toEqual(Cage.of(4).cell(1, 5).cell(2, 5).mk());
+        const residualCage1 = subgrid1.determineResidualCage();
+        expect(residualCage1).toEqual(Cage.of(4).cell(1, 5).cell(2, 5).mk());
     });
 });

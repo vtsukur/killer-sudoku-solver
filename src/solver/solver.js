@@ -319,7 +319,7 @@ class Segment {
         return new Cage(UNIQUE_SEGMENT_SUM - this.#cagesArea.totalValue, residualCageCells);
     }
 
-    addSum(newCage) {
+    addCage(newCage) {
         this.cages.push(newCage);
         this.#cagesArea = new CagesArea(this.cages);
     }
@@ -474,7 +474,7 @@ export class Solver {
             if (residualCells.length) {
                 const residualCage = new Cage(nSegmentSumVal - cagesArea.totalValue, residualCells);
                 if (!this.cagesSolversMap.has(residualCage.key())) {
-                    this.#addAndSliceResidualSumRecursively(residualCage);                        
+                    this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
         }
@@ -484,26 +484,26 @@ export class Solver {
         this.segments.forEach(segment => {
             const residualCage = segment.determineResidualCage();
             if (residualCage) {
-                this.#addAndSliceResidualSumRecursively(residualCage);
+                this.#addAndSliceResidualCageRecursively(residualCage);
             }
         }, this);
     }
 
-    #addAndSliceResidualSumRecursively(initialResidualSum) {
-        let residualCages = [ initialResidualSum ];
+    #addAndSliceResidualCageRecursively(initialResidualCage) {
+        let residualCages = [ initialResidualCage ];
 
         while (residualCages.length > 0) {
             const nextResidualCages = [];
 
-            residualCages.forEach(residualSum => {
-                if (this.cagesSolversMap.has(residualSum.key())) return;
+            residualCages.forEach(residualCage => {
+                if (this.cagesSolversMap.has(residualCage.key())) return;
 
-                this.#registerCage(residualSum);
+                this.#registerCage(residualCage);
 
-                const cagesForResidualSum = this.#getCagesFullyContainingResidualSum(residualSum);
+                const cagesForResidualSum = this.#getCagesFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
                 cagesForResidualSum.forEach(firstChunkSum => {
-                    const secondChunkSum = this.#sliceSum(firstChunkSum, residualSum);
+                    const secondChunkSum = this.#sliceCage(firstChunkSum, residualCage);
                     cagesToUnregister.push(firstChunkSum);
                     nextResidualCages.push(secondChunkSum);
                 }, this);
@@ -515,34 +515,34 @@ export class Solver {
         }
     }
 
-    #getCagesFullyContainingResidualSum(residualSum) {
+    #getCagesFullyContainingResidualCage(residualCage) {
         let allAssociatedCagesSet = new Set();
-        residualSum.cells.forEach(cell => {
+        residualCage.cells.forEach(cell => {
             allAssociatedCagesSet = new Set([...allAssociatedCagesSet, ...this.cellSolverOf(cell).withinCagesSet]);
         }, this);
-        allAssociatedCagesSet.delete(residualSum);
+        allAssociatedCagesSet.delete(residualCage);
 
         const result = [];
-        for (const associatedSum of allAssociatedCagesSet.values()) {
-            const associatedSumFullyContainsResidualSum = residualSum.cells.every(cell => {
-                return this.cellSolverOf(cell).withinCagesSet.has(associatedSum);
+        for (const associatedCage of allAssociatedCagesSet.values()) {
+            const associatedCageFullyContainsResidualSum = residualCage.cells.every(cell => {
+                return this.cellSolverOf(cell).withinCagesSet.has(associatedCage);
             }, this);
-            if (associatedSumFullyContainsResidualSum) {
-                result.push(associatedSum);
+            if (associatedCageFullyContainsResidualSum) {
+                result.push(associatedCage);
             }
         }
 
         return result;
     }
 
-    #sliceSum(cageToSlice, firstChunkSum) {
-        const secondChunkSumCells = [];
+    #sliceCage(cageToSlice, firstChunkCage) {
+        const secondChunkCageCells = [];
         cageToSlice.cells.forEach(cell => {
-            if (!firstChunkSum.has(cell)) {
-                secondChunkSumCells.push(cell);
+            if (!firstChunkCage.has(cell)) {
+                secondChunkCageCells.push(cell);
             }
         });
-        return new Cage(cageToSlice.value - firstChunkSum.value, secondChunkSumCells);
+        return new Cage(cageToSlice.value - firstChunkCage.value, secondChunkCageCells);
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
@@ -590,7 +590,7 @@ export class Solver {
                     const withinCagesSet = cellSolver.withinCagesSet;
                     if (!(withinCagesSet.size === 1 && withinCagesSet.values().next().value.isSingleCellCage)) {
                         const firstChunkSum = Cage.of(cellSolver.placedNumber).cell(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
-                        this.#addAndSliceResidualSumRecursively(firstChunkSum);
+                        this.#addAndSliceResidualCageRecursively(firstChunkSum);
                     }
                 });
                 newlySolvedCellDets = [];
@@ -723,13 +723,13 @@ export class Solver {
     #registerCage(cage) {
         const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
         if (cage.isWithinRow) {
-            this.rows[cageSolver.anyRowIdx()].addSum(cage);
+            this.rows[cageSolver.anyRowIdx()].addCage(cage);
         }
         if (cage.isWithinColumn) {
-            this.columns[cageSolver.anyColumnIdx()].addSum(cage);
+            this.columns[cageSolver.anyColumnIdx()].addCage(cage);
         }
         if (cage.isWithinSubgrid) {
-            this.subgrids[cageSolver.anySubgridIdx()].addSum(cage);
+            this.subgrids[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCage(cage);
