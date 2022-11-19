@@ -1,10 +1,10 @@
-import { NONET_SIDE_LENGTH, HOUSE_SIZE } from './constants';
+import { House } from './house';
 
 export class Cell {
     constructor(rowIdx, colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.subgridIdx = Math.floor(rowIdx / NONET_SIDE_LENGTH) * NONET_SIDE_LENGTH + Math.floor(colIdx / NONET_SIDE_LENGTH);
+        this.subgridIdx = Math.floor(rowIdx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(colIdx / House.NONET_SIDE_LENGTH);
     }
 
     isWithinRange() {
@@ -12,7 +12,7 @@ export class Cell {
     }
 
     #coordWithinRange(i) {
-        return i >= 0 && i < HOUSE_SIZE;
+        return i >= 0 && i < House.SIZE;
     }
 
     key() {

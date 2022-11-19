@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { HOUSE_SIZE } from '../../src/problem/constants';
+import { House } from '../../src/problem/house';
 import { Grid } from '../../src/problem/grid';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
@@ -16,11 +16,11 @@ describe('Tests for solver', () => {
         expect(solver.inputCages.length).toBe(33);
         expect(solver.inputCages[9]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
         expect(solver.inputCageAt(2, 3)).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.rows.length).toBe(HOUSE_SIZE);
+        expect(solver.rows.length).toBe(House.SIZE);
         expect(solver.rows[2].cages[1]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
-        expect(solver.columns.length).toBe(HOUSE_SIZE);
+        expect(solver.columns.length).toBe(House.SIZE);
         expect(solver.columns[2].cages[1]).toEqual(Cage.of(2).cell(3, 2).mk());
-        expect(solver.subgrids.length).toBe(HOUSE_SIZE);
+        expect(solver.subgrids.length).toBe(House.SIZE);
         expect(solver.subgrids[1].cages[2]).toEqual(Cage.of(11).cell(2, 3).cell(2, 4).mk());
 
         const aCellDeterminator = solver.cellSolverAt(2, 3);
@@ -210,10 +210,10 @@ describe('Tests for solver', () => {
         expect(solver.cellSolverAt(2, 7).placedNumber).toBe(8);
         expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
-        _.range(HOUSE_SIZE).forEach(idx => {
-            expect(solver.rows[idx].cages.length).toBe(HOUSE_SIZE);
-            expect(solver.columns[idx].cages.length).toBe(HOUSE_SIZE);
-            expect(solver.subgrids[idx].cages.length).toBe(HOUSE_SIZE);
+        _.range(House.SIZE).forEach(idx => {
+            expect(solver.rows[idx].cages.length).toBe(House.SIZE);
+            expect(solver.columns[idx].cages.length).toBe(House.SIZE);
+            expect(solver.subgrids[idx].cages.length).toBe(House.SIZE);
         });
     });
 });

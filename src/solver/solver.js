@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { newGridMatrix } from '../util/matrix';
-import { HOUSE_SIZE, NONET_SIDE_LENGTH, HOUSE_SUM } from '../problem/constants';
+import { House } from '../problem/house';
 import { Cage } from '../problem/cage';
 import { clusterCagesByOverlap, findSumCombinationsForSegment } from './combinatorial';
 
@@ -19,7 +19,7 @@ const newAreaIterator = (valueOfFn, max) => {
 };
 
 const newSegmentIterator = (valueOfFn) => {
-    return newAreaIterator(valueOfFn, HOUSE_SIZE);
+    return newAreaIterator(valueOfFn, House.SIZE);
 };
 
 export class CellSolver {
@@ -33,7 +33,7 @@ export class CellSolver {
         this.withinCagesSet = new Set();
         this.solved = false;
 
-        this.#numOpts = new Set(_.range(HOUSE_SIZE).map(i => i + 1));
+        this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
         this.placedNumber = undefined;
     }
 
@@ -78,7 +78,7 @@ export class CellSolver {
 }
 
 class CagesArea {
-    constructor(cages = [], absMaxAreaCellCount = HOUSE_SIZE) {
+    constructor(cages = [], absMaxAreaCellCount = House.SIZE) {
         this.cages = cages;
         this.cellsSet = new Set();
         this.nonOverlappingCellsSet = new Set();
@@ -110,7 +110,7 @@ class CageSolver {
         this.cage = cage;
         this.#firstCell = cage.cells[0];
         this.cellSolvers = cellSolvers;
-        this.minRowIdx = HOUSE_SIZE + 1;
+        this.minRowIdx = House.SIZE + 1;
         this.minColIdx = this.minRowIdx;
         this.maxRowIdx = 0;
         this.maxColIdx = this.maxRowIdx;
@@ -301,7 +301,7 @@ class Segment {
     }
 
     determineResidualCage() {
-        if (this.#cagesArea.totalValue === HOUSE_SUM && this.#cagesArea.cellsSet.size === HOUSE_SIZE) {
+        if (this.#cagesArea.totalValue === House.SUM && this.#cagesArea.cellsSet.size === House.SIZE) {
             return;
         }
 
@@ -312,7 +312,7 @@ class Segment {
             }
         }, this);
 
-        return new Cage(HOUSE_SUM - this.#cagesArea.totalValue, residualCageCells);
+        return new Cage(House.SUM - this.#cagesArea.totalValue, residualCageCells);
     }
 
     addCage(newCage) {
@@ -361,10 +361,10 @@ export class Subgrid extends Segment {
 
     static iteratorFor(idx) {
         return newSegmentIterator(i => {
-            const subgridStartingRowIdx = Math.floor(idx / NONET_SIDE_LENGTH) * NONET_SIDE_LENGTH;
-            const subgridStartingColIdx = (idx % NONET_SIDE_LENGTH) * NONET_SIDE_LENGTH;
-            const rowIdx = subgridStartingRowIdx + Math.floor(i / NONET_SIDE_LENGTH);
-            const colIdx = subgridStartingColIdx + i % NONET_SIDE_LENGTH;
+            const subgridStartingRowIdx = Math.floor(idx / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
+            const subgridStartingColIdx = (idx % House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH;
+            const rowIdx = subgridStartingRowIdx + Math.floor(i / House.NONET_SIDE_LENGTH);
+            const colIdx = subgridStartingColIdx + i % House.NONET_SIDE_LENGTH;
             return { rowIdx, colIdx };
         });
     }
@@ -394,7 +394,7 @@ export class Solver {
         this.rows = [];
         this.columns = [];
         this.subgrids = [];
-        _.range(HOUSE_SIZE).forEach(i => {
+        _.range(House.SIZE).forEach(i => {
             this.rows.push(new Row(i, this.#collectSegmentCells(Row.iteratorFor(i))));
             this.columns.push(new Column(i, this.#collectSegmentCells(Column.iteratorFor(i))));
             this.subgrids.push(new Subgrid(i, this.#collectSegmentCells(Subgrid.iteratorFor(i))));
@@ -432,7 +432,7 @@ export class Solver {
 
     #determineAndSliceResidualCagesInAdjacentNSegmentAreas() {
         _.range(2, 9).reverse().forEach(n => {
-            _.range(HOUSE_SIZE - n + 1).forEach(leftIdx => {
+            _.range(House.SIZE - n + 1).forEach(leftIdx => {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minColIdx >= leftIdx && cageSolver.maxColIdx < rightIdxExclusive;
                 }, (colIdx) => {
@@ -448,8 +448,8 @@ export class Solver {
     }
 
     #doDetermineAndSliceResidualCagesInAdjacentNSegmentAreas(n, leftIdx, withinSegmentFn, cellIteratorFn) {
-        const nSegmentCellCount = n * HOUSE_SIZE;
-        const nSegmentSumVal = n * HOUSE_SUM;
+        const nSegmentCellCount = n * House.SIZE;
+        const nSegmentSumVal = n * House.SUM;
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new CagesArea();
@@ -651,7 +651,7 @@ export class Solver {
         let cagesToReduce = new Set();
 
         this.segments.forEach(segment => {
-            _.range(1, HOUSE_SIZE + 1).forEach(num => {
+            _.range(1, House.SIZE + 1).forEach(num => {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 segment.cages.forEach(cage => {
@@ -695,8 +695,8 @@ export class Solver {
     #determineCellsWithSingleOption() {
         const cellsSolvers = [];
 
-        _.range(HOUSE_SIZE).forEach(rowIdx => {
-            _.range(HOUSE_SIZE).forEach(colIdx => {
+        _.range(House.SIZE).forEach(rowIdx => {
+            _.range(House.SIZE).forEach(colIdx => {
                 const cellSolver = this.cellSolverAt(rowIdx, colIdx);
                 if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
                     this.#placeNumber(cellSolver.cell, cellSolver.numOpts().values().next().value);

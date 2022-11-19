@@ -1,13 +1,13 @@
-import { HOUSE_SIZE } from '../problem/constants';
+import { House } from '../problem/house';
 
 export const newGridMatrix = () => {
-    return new Array(HOUSE_SIZE).fill().map(() => new Array(HOUSE_SIZE));
+    return new Array(House.SIZE).fill().map(() => new Array(House.SIZE));
 };
 
 export const rowIdxInGridMatrixByAbsolute = (idx) => {
-    return Math.floor(idx / HOUSE_SIZE);
+    return Math.floor(idx / House.SIZE);
 };
 
 export const columnIdxInGridMatrixFromAbsloute = (idx) => {
-    return idx % HOUSE_SIZE;
+    return idx % House.SIZE;
 };
