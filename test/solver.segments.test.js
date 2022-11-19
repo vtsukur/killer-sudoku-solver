@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from './realProblemSamples';
-import { Cell, Sum, UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../src/problem';
+import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../src/problem/constants';
+import { Cell, Sum } from '../src/problem';
 import { Row, Column, Subgrid, Solver } from '../src/solver';
 
 describe('Tests for creation and initialization of rows, columns and subgrids', () => {    

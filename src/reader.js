@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from './matrix';
-import { Problem, Sum, UNIQUE_SEGMENT_LENGTH } from './problem';
+import { Problem, Sum } from './problem';
 
 const SUM_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_VALUE_REGEX = /^([0-9]+)$/;
