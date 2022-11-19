@@ -22,4 +22,8 @@ export class Cell {
     toString() {
         return this.key();
     }
+
+    static at(rowIdx, colIdx) {
+        return new Cell(rowIdx, colIdx);
+    }
 }

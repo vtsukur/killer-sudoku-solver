@@ -4,17 +4,17 @@ import { Cage } from '../../src/problem/cage';
 
 describe('Cage tests', () => {
     test('Cage creation', () => {
-        const cage = new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]);
+        const cage = new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.sum).toBe(10);
         expect(cage.cellCount).toBe(2);
-        expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
+        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
     test('Cage creation via builder', () => {
         const cage = Cage.of(10).cell(4, 4).cell(4, 5).mk();
         expect(cage.sum).toBe(10);
         expect(cage.cellCount).toBe(2);
-        expect(cage.cells).toEqual([ new Cell(4, 4), new Cell(4, 5) ]);
+        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
     test('Cage within rowSolver', () => {
@@ -52,12 +52,12 @@ describe('Cage tests', () => {
     });
 
     test('Cage key', () => {
-        expect(new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]).key()).toBe(
+        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key()).toBe(
             "10 [(4, 4), (4, 5)]");
     });
 
     test('Cage toString', () => {
-        expect(new Cage(10, [ new Cell(4, 4), new Cell(4, 5) ]).toString()).toBe(
+        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).toString()).toBe(
             "10 [(4, 4), (4, 5)]");
     });
 });

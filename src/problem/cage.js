@@ -42,7 +42,7 @@ export class Cage {
         }
 
         cell(rowIdx, cellIdx) {
-            this.cells.push(new Cell(rowIdx, cellIdx));
+            this.cells.push(Cell.at(rowIdx, cellIdx));
             return this;
         }
 
