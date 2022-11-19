@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from './realProblemSamples';
-import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../src/problem/constants';
-import { Cell } from '../src/problem/cell';
-import { Cage } from '../src/problem/cage';
-import { Row, Column, Subgrid, Solver } from '../src/solver/solver';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../realProblemSamples';
+import { UNIQUE_SEGMENT_LENGTH, UNIQUE_SEGMENT_SUM } from '../../src/problem/constants';
+import { Cell } from '../../src/problem/cell';
+import { Cage } from '../../src/problem/cage';
+import { Row, Column, Subgrid, Solver } from '../../src/solver/solver';
 
 describe('Tests for creation and initialization of rows, columns and subgrids', () => {    
     test('Initialize rows', () => {
