@@ -2,7 +2,8 @@ import _ from 'lodash';
 import { House } from '../problem/house';
 
 export class CellSolver {
-    #numOpts
+    #numOpts;
+    #withinCageSolvers;
 
     constructor({ cell, rowSolver, columnSolver, nonetSolver }) {
         this.cell = cell;
@@ -13,6 +14,7 @@ export class CellSolver {
         this.solved = false;
 
         this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
+        this.#withinCageSolvers = new Set();
         this.placedNumber = undefined;
     }
 
@@ -22,6 +24,18 @@ export class CellSolver {
 
     removeWithinCage(withinCage) {
         this.withinCagesSet.delete(withinCage);
+    }
+
+    addWithinCageSolver(withinCageSolver) {
+        this.#withinCageSolvers.add(withinCageSolver);
+    }
+
+    removeWithinCageSolver(withinCageSolver) {
+        this.#withinCageSolvers.delete(withinCageSolver);
+    }
+
+    get withinCageSolvers() {
+        return this.#withinCageSolvers;
     }
 
     numOpts() {

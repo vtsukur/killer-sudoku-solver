@@ -254,14 +254,13 @@ export class Solver {
                 modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
             }
 
-            let moreCagesToReduce = new Set();
+            let moreCageSolversToReduce = new Set();
             for (const modifiedCellDet of modifiedCellDets.values()) {
-                moreCagesToReduce = new Set([...moreCagesToReduce, ...modifiedCellDet.withinCagesSet]);
+                moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellDet.withinCageSolvers]);
             }
 
-            const nextCageSolversToReduce = new Set(Array.from(moreCagesToReduce).map(cage => this.cagesSolversMap.get(cage.key())));
-            cageSolversIterable = nextCageSolversToReduce.values();
-            iterate = nextCageSolversToReduce.size > 0;
+            cageSolversIterable = moreCageSolversToReduce.values();
+            iterate = moreCageSolversToReduce.size > 0;
         }
     }
 
@@ -355,6 +354,7 @@ export class Solver {
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCage(cage);
+            this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
         }, this);
         this.cagesSolversMap.set(cage.key(), cageSolver);
     }
@@ -372,6 +372,7 @@ export class Solver {
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinCage(cage);
+            this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         }, this);
         this.cagesSolversMap.delete(cage.key());
     }
