@@ -11,9 +11,6 @@ describe('Tests for solver', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         expect(solver.cellAt(2, 3)).toEqual(Cell.at(2, 3));
-        expect(solver.inputCages.length).toBe(33);
-        expect(solver.inputCages[9]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
-        expect(solver.inputCageAt(2, 3)).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
         expect(solver.rowSolvers.length).toBe(House.SIZE);
         expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
         expect(solver.columnSolvers.length).toBe(House.SIZE);
