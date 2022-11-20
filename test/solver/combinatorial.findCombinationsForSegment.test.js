@@ -107,7 +107,7 @@ describe('Tests for the finder of number combinations to form a house solver out
             Cage.ofSum(7).at(1, 6).at(1, 7).mk(),
             Cage.ofSum(100).at(1, 8).at(1, 9).mk()
         ]))).toThrow(
-            "Total cage with non-overlapping cells should be <= 45. Actual: 135. Cages: ");
+            'Total cage with non-overlapping cells should be <= 45. Actual: 135. Cages: ');
     });
 
     test('Combinations of numbers to form a houseSolver out of cages with too many non-overlapping cells', () => {
