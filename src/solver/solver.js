@@ -265,7 +265,7 @@ export class Solver {
     }
 
     #reduceHousesBySolvedCells(cellsSolvers) {
-        let cagesToReduceSet = new Set();
+        let cageSolversToReduceSet = new Set();
         cellsSolvers.forEach(cellSolver => {
             const number = cellSolver.placedNumber;
             [
@@ -279,12 +279,12 @@ export class Solver {
                     const aCellDet = this.cellSolverAt(row, col);
                     if (aCellDet.hasNumOpt(number)) {
                         aCellDet.deleteNumOpt(number);
-                        cagesToReduceSet = new Set([...cagesToReduceSet, ...aCellDet.withinCagesSet]);
+                        cageSolversToReduceSet = new Set([...cageSolversToReduceSet, ...aCellDet.withinCageSolvers]);
                     }
                 }    
             });
         });
-        return new Set(Array.from(cagesToReduceSet).map(cage => this.cagesSolversMap.get(cage.key())));
+        return cageSolversToReduceSet;
     }
 
     #determineUniqueCagesInHouses() {
