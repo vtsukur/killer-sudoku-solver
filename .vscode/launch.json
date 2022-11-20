@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch tests via NPM",
+            "name": "[NPM] All Tests",
             "request": "launch",
             "runtimeArgs": [
                 "run",
