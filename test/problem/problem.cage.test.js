@@ -17,34 +17,34 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
-    // test('Cage within rowSolver', () => {
+    // test('Cage within row solver', () => {
     //     expect(Cage.ofSum(10).at(4, 4).mk().isWithinRow).toBe(true);
     //     expect(Cage.ofSum(10).at(4, 4).at(4, 5).mk().isWithinRow).toBe(true);
     // });
 
-    // test('Cage not within rowSolver', () => {
+    // test('Cage not within row solver', () => {
     //     expect(Cage.ofSum(10).at(4, 4).at(5, 4).mk().isWithinRow).toBe(false);
     // });
 
-    // test('Cage within columnSolver', () => {
+    // test('Cage within column solver', () => {
     //     expect(Cage.ofSum(10).at(5, 5).mk().isWithinColumn).toBe(true);
     //     expect(Cage.ofSum(10).at(5, 5).at(6, 5).mk().isWithinColumn).toBe(true);
     // });
 
-    // test('Cage not within columnSolver', () => {
+    // test('Cage not within column solver', () => {
     //     expect(Cage.ofSum(10).at(5, 5).at(5, 6).mk().isWithinColumn).toBe(false);
     // });
 
-    // test('Cage within nonetSolver', () => {
+    // test('Cage within nonet solver', () => {
     //     expect(Cage.ofSum(10).at(6, 6).mk().isWithinNonet).toBe(true);
     //     expect(Cage.ofSum(10).at(6, 6).at(6, 7).at(6, 8).mk().isWithinNonet).toBe(true);
     // });
 
-    // test('Cage not within nonetSolver', () => {
+    // test('Cage not within nonet solver', () => {
     //     expect(Cage.ofSum(10).at(5, 6).at(6, 6).mk().isWithinNonet).toBe(false);
     // });
 
-    // test('Cage not within rowSolver neither columnSolver nor nonetSolver', () => {
+    // test('Cage not within row solver neither column solver nor nonet solver', () => {
     //     const cage = Cage.ofSum(10).at(5, 6).at(6, 6).at(6, 5).mk();
     //     expect(cage.isWithinRow).toBe(false);
     //     expect(cage.isWithinColumn).toBe(false);
