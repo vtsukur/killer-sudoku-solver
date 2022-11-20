@@ -288,7 +288,7 @@ export class Solver {
     }
 
     #determineUniqueCagesInHouses() {
-        let cagesToReduce = new Set();
+        let cageSolversToReduce = new Set();
 
         this.houseSolvers.forEach(houseSolver => {
             _.range(1, House.SIZE + 1).forEach(num => {
@@ -309,12 +309,12 @@ export class Solver {
                 
                 if (!reducedCellDets.length) return;
                 reducedCellDets.forEach(cellSolver => {
-                    cagesToReduce = new Set([...cagesToReduce, ...cellSolver.withinCagesSet]);
+                    cageSolversToReduce = new Set([...cageSolversToReduce, ...cellSolver.withinCageSolvers]);
                 });
             });
         });
 
-        return new Set(Array.from(cagesToReduce).map(cage => this.cagesSolversMap.get(cage.key())));
+        return cageSolversToReduce;
     }
 
     #determineCellsWithSingleOption() {
