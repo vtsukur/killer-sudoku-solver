@@ -25,8 +25,8 @@ export class Solver {
 
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
-                this.inputCagesMatrix[cell.rowIdx][cell.colIdx] = cage;
-                this.cellsMatrix[cell.rowIdx][cell.colIdx] = cell;
+                this.inputCagesMatrix[cell.row][cell.col] = cage;
+                this.cellsMatrix[cell.row][cell.col] = cell;
             }, this);
             this.inputCages.push(cage);
         }, this);
@@ -43,11 +43,11 @@ export class Solver {
         this.cellSolversMatrix = newGridMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellSolversMatrix[cell.rowIdx][cell.colIdx] = new CellSolver({
+            this.cellSolversMatrix[cell.row][cell.col] = new CellSolver({
                 cell,
-                rowSolver: this.rowSolvers[cell.rowIdx],
-                columnSolver: this.columnSolvers[cell.colIdx],
-                nonetSolver: this.nonetSolvers[cell.nonetIdx]
+                rowSolver: this.rowSolvers[cell.row],
+                columnSolver: this.columnSolvers[cell.col],
+                nonetSolver: this.nonetSolvers[cell.nonet]
             });
         }, this);
 
@@ -59,7 +59,7 @@ export class Solver {
     }
 
     #collectHouseCells(iterator) {
-        return Array.from(iterator).map(coords => this.cellAt(coords.rowIdx, coords.colIdx), this);
+        return Array.from(iterator).map(coords => this.cellAt(coords.row, coords.col), this);
     }
 
     solve() {
@@ -75,14 +75,14 @@ export class Solver {
         _.range(2, 9).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
-                    return cageSolver.minColIdx >= leftIdx && cageSolver.maxColIdx < rightIdxExclusive;
-                }, (colIdx) => {
-                    return this.columnSolvers[colIdx].cellIterator()
+                    return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
+                }, (col) => {
+                    return this.columnSolvers[col].cellIterator()
                 });
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
-                    return cageSolver.minRowIdx >= leftIdx && cageSolver.maxRowIdx < rightIdxExclusive;
-                }, (rowIdx) => {
-                    return this.rowSolvers[rowIdx].cellIterator()
+                    return cageSolver.minRow >= leftIdx && cageSolver.maxRow < rightIdxExclusive;
+                }, (row) => {
+                    return this.rowSolvers[row].cellIterator()
                 });
             });
         });
@@ -102,9 +102,9 @@ export class Solver {
         if (cagesArea.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
-                for (const { rowIdx, colIdx } of cellIteratorFn(idx)) {
-                    if (!cagesArea.hasNonOverlapping(this.cellAt(rowIdx, colIdx))) {
-                        residualCells.push(this.cellAt(rowIdx, colIdx));
+                for (const { row, col } of cellIteratorFn(idx)) {
+                    if (!cagesArea.hasNonOverlapping(this.cellAt(row, col))) {
+                        residualCells.push(this.cellAt(row, col));
                     }
                 }
             });
@@ -226,7 +226,7 @@ export class Solver {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinCagesSet = cellSolver.withinCagesSet;
                     if (!(withinCagesSet.size === 1 && withinCagesSet.values().next().value.isSingleCellCage)) {
-                        const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).at(cellSolver.cell.rowIdx, cellSolver.cell.colIdx).mk();
+                        const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).at(cellSolver.cell.row, cellSolver.cell.col).mk();
                         this.#addAndSliceResidualCageRecursively(firstChunkCage);
                     }
                 });
@@ -270,14 +270,14 @@ export class Solver {
         cellsSolvers.forEach(cellSolver => {
             const number = cellSolver.placedNumber;
             [
-                this.rowSolvers[cellSolver.cell.rowIdx],
-                this.columnSolvers[cellSolver.cell.colIdx],
-                this.nonetSolvers[cellSolver.cell.nonetIdx]
+                this.rowSolvers[cellSolver.cell.row],
+                this.columnSolvers[cellSolver.cell.col],
+                this.nonetSolvers[cellSolver.cell.nonet]
             ].forEach(houseSolver => {
-                for (const { rowIdx, colIdx } of houseSolver.cellIterator()) {
-                    if (rowIdx === cellSolver.cell.rowIdx && colIdx === cellSolver.cell.colIdx) continue;
+                for (const { row, col } of houseSolver.cellIterator()) {
+                    if (row === cellSolver.cell.row && col === cellSolver.cell.col) continue;
         
-                    const aCellDet = this.cellSolverAt(rowIdx, colIdx);
+                    const aCellDet = this.cellSolverAt(row, col);
                     if (aCellDet.hasNumOpt(number)) {
                         aCellDet.deleteNumOpt(number);
                         cagesToReduceSet = new Set([...cagesToReduceSet, ...aCellDet.withinCagesSet]);
@@ -321,9 +321,9 @@ export class Solver {
     #determineCellsWithSingleOption() {
         const cellsSolvers = [];
 
-        _.range(House.SIZE).forEach(rowIdx => {
-            _.range(House.SIZE).forEach(colIdx => {
-                const cellSolver = this.cellSolverAt(rowIdx, colIdx);
+        _.range(House.SIZE).forEach(row => {
+            _.range(House.SIZE).forEach(col => {
+                const cellSolver = this.cellSolverAt(row, col);
                 if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
                     this.#placeNumber(cellSolver.cell, cellSolver.numOpts().values().next().value);
                     cellsSolvers.push(cellSolver);
@@ -338,14 +338,14 @@ export class Solver {
         const cellSolver = this.cellSolverOf(cell);
         cellSolver.placeNumber(number);
 
-        this.#solution[cell.rowIdx][cell.colIdx] = number;
+        this.#solution[cell.row][cell.col] = number;
         this.#placedNumbersCount++;
     }
 
     #registerCage(cage) {
         const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
         if (cage.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRowIdx()].addCage(cage);
+            this.rowSolvers[cageSolver.anyRow()].addCage(cage);
         }
         if (cage.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
@@ -362,7 +362,7 @@ export class Solver {
     #unregisterCage(cage) {
         const cageSolver = this.cagesSolversMap.get(cage.key());
         if (cage.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRowIdx()].removeCage(cage);
+            this.rowSolvers[cageSolver.anyRow()].removeCage(cage);
         }
         if (cage.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
@@ -376,20 +376,20 @@ export class Solver {
         this.cagesSolversMap.delete(cage.key());
     }
 
-    inputCageAt(rowIdx, colIdx) {
-        return this.inputCagesMatrix[rowIdx][colIdx];
+    inputCageAt(row, col) {
+        return this.inputCagesMatrix[row][col];
     }
 
-    cellAt(rowIds, colIdx) {
-        return this.cellsMatrix[rowIds][colIdx];
+    cellAt(rowIds, col) {
+        return this.cellsMatrix[rowIds][col];
     }
 
     cellSolverOf(cell) {
-        return this.cellSolverAt(cell.rowIdx, cell.colIdx);
+        return this.cellSolverAt(cell.row, cell.col);
     }
 
-    cellSolverAt(rowIdx, colIdx) {
-        return this.cellSolversMatrix[rowIdx][colIdx];
+    cellSolverAt(row, col) {
+        return this.cellSolversMatrix[row][col];
     }
 
     rowSolver(idx) {

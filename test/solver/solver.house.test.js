@@ -12,52 +12,52 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Initialize row solvers', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.rowSolver(0)).toEqual(new RowSolver(
-            0, _.range(9).map(colIdx => Cell.at(0, colIdx)), [
+            0, _.range(9).map(col => Cell.at(0, col)), [
                 Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
                 Cage.ofSum(7).at(0, 6).at(0, 7).mk()
             ]
         ));
         expect(solver.rowSolver(1)).toEqual(new RowSolver(
-            1, _.range(9).map(colIdx => Cell.at(1, colIdx)), [
+            1, _.range(9).map(col => Cell.at(1, col)), [
                 Cage.ofSum(7).at(1, 0).at(1, 1).mk(),
                 Cage.ofSum(10).at(1, 5).at(1, 6).at(1, 7).mk()
             ]
         ));
         expect(solver.rowSolver(2)).toEqual(new RowSolver(
-            2, _.range(9).map(colIdx => Cell.at(2, colIdx)), [
+            2, _.range(9).map(col => Cell.at(2, col)), [
                 Cage.ofSum(13).at(2, 0).at(2, 1).at(2, 2).mk(),
                 Cage.ofSum(11).at(2, 3).at(2, 4).mk(),
                 Cage.ofSum(9).at(2, 7).at(2, 8).mk()
             ]
         ));
         expect(solver.rowSolver(3)).toEqual(new RowSolver(
-            3, _.range(9).map(colIdx => Cell.at(3, colIdx)), [
+            3, _.range(9).map(col => Cell.at(3, col)), [
                 Cage.ofSum(4).at(3, 0).at(3, 1).mk(),
                 Cage.ofSum(2).at(3, 2).mk(),
                 Cage.ofSum(14).at(3, 3).at(3, 4).mk()
             ]
         ));
         expect(solver.rowSolver(4)).toEqual(new RowSolver(
-            4, _.range(9).map(colIdx => Cell.at(4, colIdx)), [
+            4, _.range(9).map(col => Cell.at(4, col)), [
                 Cage.ofSum(10).at(4, 3).at(4, 4).mk()
             ]
         ));
         expect(solver.rowSolver(5)).toEqual(new RowSolver(
-            5, _.range(9).map(colIdx => Cell.at(5, colIdx)), []
+            5, _.range(9).map(col => Cell.at(5, col)), []
         ));
         expect(solver.rowSolver(6)).toEqual(new RowSolver(
-            6, _.range(9).map(colIdx => Cell.at(6, colIdx)), [
+            6, _.range(9).map(col => Cell.at(6, col)), [
                 Cage.ofSum(6).at(6, 4).at(6, 5).mk()
             ]
         ));
         expect(solver.rowSolver(7)).toEqual(new RowSolver(
-            7, _.range(9).map(colIdx => Cell.at(7, colIdx)), [
+            7, _.range(9).map(col => Cell.at(7, col)), [
                 Cage.ofSum(8).at(7, 5).mk(),
                 Cage.ofSum(10).at(7, 6).at(7, 7).mk()
             ]
         ));
         expect(solver.rowSolver(8)).toEqual(new RowSolver(
-            8, _.range(9).map(colIdx => Cell.at(8, colIdx)), [
+            8, _.range(9).map(col => Cell.at(8, col)), [
                 Cage.ofSum(7).at(8, 6).at(8, 7).mk()
             ]
         ));
@@ -74,52 +74,52 @@ describe('Tests for creation and initialization of row, column and nonet solvers
         const row5 = solver.rowSolver(5);
         const residualCage5 = row5.determineResidualCage();
         expect(residualCage5).toEqual(
-            new Cage(House.SUM, _.range(House.SIZE).map(colIdx => Cell.at(5, colIdx))));
+            new Cage(House.SUM, _.range(House.SIZE).map(col => Cell.at(5, col))));
     });
 
     test('Initialize column solvers', () => {
         const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.columnSolver(0)).toEqual(new ColumnSolver(
-            0, _.range(9).map(rowIdx => Cell.at(rowIdx, 0)), [
+            0, _.range(9).map(row => Cell.at(row, 0)), [
                 Cage.ofSum(19).at(6, 0).at(7, 0).at(8, 0).mk()
             ]
         ));
         expect(solver.columnSolver(1)).toEqual(new ColumnSolver(
-            1, _.range(9).map(rowIdx => Cell.at(rowIdx, 1)), []
+            1, _.range(9).map(row => Cell.at(row, 1)), []
         ));
         expect(solver.columnSolver(2)).toEqual(new ColumnSolver(
-            2, _.range(9).map(rowIdx => Cell.at(rowIdx, 2)), [
+            2, _.range(9).map(row => Cell.at(row, 2)), [
                 Cage.ofSum(10).at(0, 2).at(1, 2).mk(),
                 Cage.ofSum(2).at(3, 2).mk()
             ]
         ));
         expect(solver.columnSolver(3)).toEqual(new ColumnSolver(
-            3, _.range(9).map(rowIdx => Cell.at(rowIdx, 3)), [
+            3, _.range(9).map(row => Cell.at(row, 3)), [
                 Cage.ofSum(17).at(0, 3).at(1, 3).mk(),
                 Cage.ofSum(6).at(7, 3).at(8, 3).mk()
             ]
         ));
         expect(solver.columnSolver(4)).toEqual(new ColumnSolver(
-            4, _.range(9).map(rowIdx => Cell.at(rowIdx, 4)), []
+            4, _.range(9).map(row => Cell.at(row, 4)), []
         ));
         expect(solver.columnSolver(5)).toEqual(new ColumnSolver(
-            5, _.range(9).map(rowIdx => Cell.at(rowIdx, 5)), [
+            5, _.range(9).map(row => Cell.at(row, 5)), [
                 Cage.ofSum(8).at(2, 5).at(3, 5).mk(),
                 Cage.ofSum(8).at(7, 5).mk()
             ]
         ));
         expect(solver.columnSolver(6)).toEqual(new ColumnSolver(
-            6, _.range(9).map(rowIdx => Cell.at(rowIdx, 6)), [
+            6, _.range(9).map(row => Cell.at(row, 6)), [
                 Cage.ofSum(16).at(2, 6).at(3, 6).mk()
             ]
         ));
         expect(solver.columnSolver(7)).toEqual(new ColumnSolver(
-            7, _.range(9).map(rowIdx => Cell.at(rowIdx, 7)), [
+            7, _.range(9).map(row => Cell.at(row, 7)), [
                 Cage.ofSum(5).at(3, 7).at(4, 7).mk()
             ]
         ));
         expect(solver.columnSolver(8)).toEqual(new ColumnSolver(
-            8, _.range(9).map(rowIdx => Cell.at(rowIdx, 8)), [
+            8, _.range(9).map(row => Cell.at(row, 8)), [
                 Cage.ofSum(11).at(0, 8).at(1, 8).mk(),
                 Cage.ofSum(19).at(3, 8).at(4, 8).at(5, 8).mk(),
                 Cage.ofSum(14).at(6, 8).at(7, 8).at(8, 8).mk()
@@ -139,7 +139,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
         const column1 = solver.columnSolver(1);
         const residualCage1 = column1.determineResidualCage();
         expect(residualCage1).toEqual(
-            new Cage(House.SUM, _.range(House.SIZE).map(rowIdx => Cell.at(rowIdx, 1))));
+            new Cage(House.SUM, _.range(House.SIZE).map(row => Cell.at(row, 1))));
     });
 
     test('Initialize nonets', () => {

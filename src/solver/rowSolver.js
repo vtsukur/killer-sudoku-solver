@@ -6,8 +6,8 @@ export class RowSolver extends HouseSolver {
     }
 
     static iteratorFor(idx) {
-        return HouseSolver.newHouseIterator(colIdx => {
-            return { rowIdx: idx, colIdx };
+        return HouseSolver.newHouseIterator(col => {
+            return { row: idx, col };
         });
     }
 }

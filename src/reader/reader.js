@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { columnIdxInGridMatrixFromAbsloute, rowIdxInGridMatrixByAbsolute } from '../util/matrix';
+import { columnInGridMatrixFromAbsolute, rowInGridMatrixByAbsolute } from '../util/matrix';
 import { Problem } from '../problem/problem';
 import { Cage } from '../problem/cage';
 
@@ -63,8 +63,8 @@ export default function reader(path) {
             throw `Cage def duplicate: ${cageEntry.ref}`;
         }
         cages.get(cageEntry.ref).at(
-            rowIdxInGridMatrixByAbsolute(idx),
-            columnIdxInGridMatrixFromAbsloute(idx)
+            rowInGridMatrixByAbsolute(idx),
+            columnInGridMatrixFromAbsolute(idx)
         );
     });
 

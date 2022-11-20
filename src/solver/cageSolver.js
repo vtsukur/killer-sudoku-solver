@@ -9,30 +9,30 @@ export class CageSolver {
         this.cage = cage;
         this.#firstCell = cage.cells[0];
         this.cellSolvers = cellSolvers;
-        this.minRowIdx = House.SIZE + 1;
-        this.minColIdx = this.minRowIdx;
-        this.maxRowIdx = 0;
-        this.maxColIdx = this.maxRowIdx;
+        this.minRow = House.SIZE + 1;
+        this.minCol = this.minRow;
+        this.maxRow = 0;
+        this.maxCol = this.maxRow;
         cage.cells.forEach(cell => {
-            this.minRowIdx = Math.min(this.minRowIdx, cell.rowIdx);
-            this.maxRowIdx = Math.max(this.maxRowIdx, cell.rowIdx);
-            this.minColIdx = Math.min(this.minColIdx, cell.colIdx);
-            this.maxColIdx = Math.max(this.maxColIdx, cell.colIdx);
+            this.minRow = Math.min(this.minRow, cell.row);
+            this.maxRow = Math.max(this.maxRow, cell.row);
+            this.minCol = Math.min(this.minCol, cell.col);
+            this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
     }
 
-    anyRowIdx() {
-        return this.#firstCell.rowIdx;
+    anyRow() {
+        return this.#firstCell.row;
     }
 
     anyColumnIdx() {
-        return this.#firstCell.colIdx;
+        return this.#firstCell.col;
     }
 
     anySubgridIdx() {
-        return this.#firstCell.nonetIdx;
+        return this.#firstCell.nonet;
     }
 
     updateCombinations(combos) {

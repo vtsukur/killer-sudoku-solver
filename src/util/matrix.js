@@ -4,10 +4,10 @@ export const newGridMatrix = () => {
     return new Array(House.SIZE).fill().map(() => new Array(House.SIZE));
 };
 
-export const rowIdxInGridMatrixByAbsolute = (idx) => {
+export const rowInGridMatrixByAbsolute = (idx) => {
     return Math.floor(idx / House.SIZE);
 };
 
-export const columnIdxInGridMatrixFromAbsloute = (idx) => {
+export const columnInGridMatrixFromAbsolute = (idx) => {
     return idx % House.SIZE;
 };
