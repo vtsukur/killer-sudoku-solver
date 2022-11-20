@@ -27,7 +27,7 @@ describe('Tests for puzzle solver', () => {
         // expect(aCellDeterminator.withinCageSolvers).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-04-06)', () => {
+    test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_04_06);
         const solution = solver.solve();
 
@@ -44,7 +44,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-08-12)', () => {
+    test('Find solution for Daily Challenge (2022-08-12) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_08_12);
         const solution = solver.solve();
 
@@ -61,7 +61,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-08-30)', () => {
+    test('Find solution for Daily Challenge (2022-08-30) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_08_30);
         const solution = solver.solve();
 
@@ -78,7 +78,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-18)', () => {
+    test('Find solution for Daily Challenge (2022-10-18) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_10_18);
         const solution = solver.solve();
 
@@ -95,7 +95,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-19)', () => {
+    test('Find solution for Daily Challenge (2022-10-19) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_10_19);
         const solution = solver.solve();
 
@@ -112,7 +112,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-22)', () => {
+    test('Find solution for Daily Challenge (2022-10-22) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_10_22);
         const solution = solver.solve();
 
@@ -129,7 +129,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-10-25)', () => {
+    test('Find solution for Daily Challenge (2022-10-25) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_10_25);
         const solution = solver.solve();
 
@@ -146,7 +146,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-11-01)', () => {
+    test('Find solution for Daily Challenge (2022-11-01) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         const solution = solver.solve();
 
@@ -163,7 +163,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-11-10)', () => {
+    test('Find solution for Daily Challenge (2022-11-10) by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_10);
         const solution = solver.solve();
 
@@ -180,7 +180,7 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (Killer Sudoku by Sudoku.com - Random Expert Level Challenge)', () => {
+    test('Find solution for random expert level challenge by Sudoku.com', () => {
         const solver = new PuzzleSolver(sudokuDotCom_randomExpertLevelChallenge);
         const solution = solver.solve();
 
