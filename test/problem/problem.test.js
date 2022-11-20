@@ -16,7 +16,7 @@ describe('Problem tests', () => {
         expect(correctProblem.cages).toEqual(sampleProblem.cages);
     });
 
-    test('Construction of incorrect problem in which amount of cells does not match expected cell count', () => {
+    test('Construction of incorrect problem with invalid cell count', () => {
         expect(() =>
             new Problem([ Cage.ofSum(405).at(0, 0).mk() ])
         ).toThrow('Invalid problem. Expected cell count: 81. Actual: 1');
