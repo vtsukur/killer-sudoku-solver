@@ -12,8 +12,8 @@ export class CageSolver {
         this.isSingleCellCage = this.cellCount === 1;
         this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
         this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
-        this.isWithinSubgrid = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
-        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
+        this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
+        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         this.#firstCell = cage.cells[0];
         this.cellSolvers = cellSolvers;
         this.minRow = House.SIZE + 1;

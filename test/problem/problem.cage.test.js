@@ -36,19 +36,19 @@ describe('Cage tests', () => {
     // });
 
     // test('Cage within nonetSolver', () => {
-    //     expect(Cage.ofSum(10).at(6, 6).mk().isWithinSubgrid).toBe(true);
-    //     expect(Cage.ofSum(10).at(6, 6).at(6, 7).at(6, 8).mk().isWithinSubgrid).toBe(true);
+    //     expect(Cage.ofSum(10).at(6, 6).mk().isWithinNonet).toBe(true);
+    //     expect(Cage.ofSum(10).at(6, 6).at(6, 7).at(6, 8).mk().isWithinNonet).toBe(true);
     // });
 
     // test('Cage not within nonetSolver', () => {
-    //     expect(Cage.ofSum(10).at(5, 6).at(6, 6).mk().isWithinSubgrid).toBe(false);
+    //     expect(Cage.ofSum(10).at(5, 6).at(6, 6).mk().isWithinNonet).toBe(false);
     // });
 
     // test('Cage not within rowSolver neither columnSolver nor nonetSolver', () => {
     //     const cage = Cage.ofSum(10).at(5, 6).at(6, 6).at(6, 5).mk();
     //     expect(cage.isWithinRow).toBe(false);
     //     expect(cage.isWithinColumn).toBe(false);
-    //     expect(cage.isWithinSubgrid).toBe(false);
+    //     expect(cage.isWithinNonet).toBe(false);
     // });
 
     test('Cage key', () => {

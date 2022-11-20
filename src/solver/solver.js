@@ -350,7 +350,7 @@ export class Solver {
         if (cageSolver.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
         }
-        if (cageSolver.isWithinSubgrid) {
+        if (cageSolver.isWithinNonet) {
             this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
@@ -367,7 +367,7 @@ export class Solver {
         if (cageSolver.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
         }
-        if (cageSolver.isWithinSubgrid) {
+        if (cageSolver.isWithinNonet) {
             this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
