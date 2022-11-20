@@ -11,6 +11,11 @@ const modifyCorrectProblem = function(lastCage) {
 };
 
 describe('Problem tests', () => {
+    test('Construction of correct problem', () => {
+        const correctProblem = new Problem(sampleProblem.cages);
+        expect(correctProblem.cages).toEqual(sampleProblem.cages);
+    });
+
     test('Check incorrect problem in which amount of cells does not match expected field cells count', () => {
         expect(() =>
             new Problem([
