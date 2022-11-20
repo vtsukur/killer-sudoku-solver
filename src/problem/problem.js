@@ -30,6 +30,6 @@ export class Problem {
     }
 
     #throwValidationError(detailedMessage) {
-        throw `Invalid problem definiton. ${detailedMessage}`;
+        throw `Invalid problem. ${detailedMessage}`;
     }
 }
