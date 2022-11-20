@@ -14,7 +14,7 @@ export class HouseSolver {
     }
 
     determineResidualCage() {
-        if (this.#cagesArea.totalValue === House.SUM && this.#cagesArea.cellsSet.size === House.SIZE) {
+        if (this.#cagesArea.sum === House.SUM && this.#cagesArea.cellsSet.size === House.SIZE) {
             return;
         }
 
@@ -25,7 +25,7 @@ export class HouseSolver {
             }
         }, this);
 
-        return new Cage(House.SUM - this.#cagesArea.totalValue, residualCageCells);
+        return new Cage(House.SUM - this.#cagesArea.sum, residualCageCells);
     }
 
     addCage(newCage) {

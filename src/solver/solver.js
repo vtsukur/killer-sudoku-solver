@@ -109,7 +109,7 @@ export class Solver {
                 }
             });
             if (residualCells.length) {
-                const residualCage = new Cage(nHouseSumVal - cagesArea.totalValue, residualCells);
+                const residualCage = new Cage(nHouseSumVal - cagesArea.sum, residualCells);
                 if (!this.cagesSolversMap.has(residualCage.key())) {
                     this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
