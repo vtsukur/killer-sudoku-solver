@@ -8,9 +8,7 @@ export class Problem {
 
     #validate() {
         const cells = this.cages.flatMap(cage => cage.cells);
-        if (cells.length !== Grid.CELL_COUNT) {
-            this.#throwValidationError(`Expected cell count: ${Grid.CELL_COUNT}. Actual: ${cells.length}`);
-        }
+        this.#checkAllCellsPresent(cells);
 
         const cellSet = new Set();
         cells.forEach(cell => {
@@ -26,6 +24,12 @@ export class Problem {
         const actualGridSum = this.cages.reduce((prev, current) => prev + current.sum, 0);
         if (actualGridSum !== Grid.TOTAL_SUM) {
             this.#throwValidationError(`Expected field cage: ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
+        }
+    }
+
+    #checkAllCellsPresent(cells) {
+        if (cells.length !== Grid.CELL_COUNT) {
+            this.#throwValidationError(`Expected cell count: ${Grid.CELL_COUNT}. Actual: ${cells.length}`);
         }
     }
 
