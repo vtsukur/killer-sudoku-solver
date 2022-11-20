@@ -16,7 +16,6 @@ export class Solver {
 
     constructor(problem) {
         this.problem = problem;
-        this.inputCagesMatrix = newGridMatrix();
         this.cagesSolversMap = new Map();
         this.cellsMatrix = newGridMatrix();
         this.#solution = newGridMatrix();
@@ -24,7 +23,6 @@ export class Solver {
 
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
-                this.inputCagesMatrix[cell.row][cell.col] = cage;
                 this.cellsMatrix[cell.row][cell.col] = cell;
             }, this);
         }, this);
