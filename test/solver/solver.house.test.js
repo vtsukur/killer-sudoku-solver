@@ -3,14 +3,14 @@ import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realProblem
 import { House } from '../../src/problem/house';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
-import { Solver } from '../../src/solver/solver';
+import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { RowSolver } from '../../src/solver/rowSolver';
 import { ColumnSolver } from '../../src/solver/columnSolver';
 import { NonetSolver } from '../../src/solver/nonetSolver';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
     test('Initialize row solvers', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.rowSolver(0)).toEqual(new RowSolver(
             0, _.range(9).map(col => Cell.at(0, col)), [
                 Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
@@ -64,7 +64,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     });
 
     test('Determine residual cages in row solvers (shallow)', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const row0 = solver.rowSolver(0);
         const residualCage0 = row0.determineResidualCage();
@@ -78,7 +78,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     });
 
     test('Initialize column solvers', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         expect(solver.columnSolver(0)).toEqual(new ColumnSolver(
             0, _.range(9).map(row => Cell.at(row, 0)), [
                 Cage.ofSum(19).at(6, 0).at(7, 0).at(8, 0).mk()
@@ -128,7 +128,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     });
 
     test('Determine residual cages in column solvers (shallow)', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const column0 = solver.columnSolver(0);
         const residualCage0 = column0.determineResidualCage();
@@ -143,7 +143,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     });
 
     test('Initialize nonets', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         expect(solver.nonetSolver(0)).toEqual(new NonetSolver(
             0, [
@@ -246,7 +246,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     });
 
     test('Determine residual cages in nonet solvers (shallow)', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         const nonet0 = solver.nonetSolver(0);
         const residualCage0 = nonet0.determineResidualCage();

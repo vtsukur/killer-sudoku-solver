@@ -19,12 +19,12 @@
             "type": "node"
         },
         {
-            "name": "[NPM] Solver Tests",
+            "name": "[NPM] Puzzle Solver Tests",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "solver.test.js"
+                "puzzleSolver.test.js"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -10,7 +10,7 @@ import { RowSolver } from './rowSolver';
 import { ColumnSolver } from './columnSolver';
 import { NonetSolver } from './nonetSolver';
 
-export class Solver {
+export class PuzzleSolver {
     #solution;
     #placedNumbersCount;
 
