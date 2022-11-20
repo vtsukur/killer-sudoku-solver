@@ -10,20 +10,11 @@ export class CellSolver {
         this.rowSolver = rowSolver;
         this.columnSolver = columnSolver;
         this.nonetSolver = nonetSolver;
-        this.withinCagesSet = new Set();
         this.solved = false;
 
         this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
         this.#withinCageSolvers = new Set();
         this.placedNumber = undefined;
-    }
-
-    addWithinCage(withinCage) {
-        this.withinCagesSet.add(withinCage);
-    }
-
-    removeWithinCage(withinCage) {
-        this.withinCagesSet.delete(withinCage);
     }
 
     addWithinCageSolver(withinCageSolver) {

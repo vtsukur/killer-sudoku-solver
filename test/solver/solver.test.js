@@ -28,7 +28,7 @@ describe('Tests for solver', () => {
         expect(aCellDeterminator.nonetSolver.idx).toEqual(1);
         expect(aCellDeterminator.placedNumber).toBe(undefined);
         expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
-        expect(aCellDeterminator.withinCagesSet).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
+        // expect(aCellDeterminator.withinCageSolvers).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
     });
 
     test('Find solution (Killer Sudoku by Sudoku.com - Daily Challenge 2022-04-06)', () => {

@@ -353,7 +353,6 @@ export class Solver {
             this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinCage(cage);
             this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
         }, this);
         this.cagesSolversMap.set(cage.key(), cageSolver);
@@ -371,7 +370,6 @@ export class Solver {
             this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinCage(cage);
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         }, this);
         this.cagesSolversMap.delete(cage.key());
