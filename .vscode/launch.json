@@ -19,6 +19,21 @@
             "type": "node"
         },
         {
+            "name": "[NPM] problem.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "problem.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[NPM] Puzzle Solver Tests",
             "request": "launch",
             "runtimeArgs": [
