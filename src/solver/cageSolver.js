@@ -2,11 +2,18 @@ import { House } from '../problem/house';
 
 export class CageSolver {
     #firstCell;
+    #cellsSet;
     #cellCount;
     #combosMap;
 
     constructor(cage, cellSolvers) {
         this.cage = cage;
+        this.#cellsSet = new Set(cage.cells.map(cell => cell.key()));
+        this.isSingleCellCage = this.cellCount === 1;
+        this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
+        this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
+        this.isWithinSubgrid = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
+        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
         this.#firstCell = cage.cells[0];
         this.cellSolvers = cellSolvers;
         this.minRow = House.SIZE + 1;
@@ -21,6 +28,10 @@ export class CageSolver {
         });
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
+    }
+
+    #isSameForAll(whatFn) {
+        return new Set(this.cage.cells.map(whatFn)).size === 1;
     }
 
     anyRow() {
@@ -184,6 +195,18 @@ export class CageSolver {
     }
 
     has(cellSolver) {
-        return this.cage.cells.findIndex(cell => cell.key() === cellSolver.cell.key()) !== -1;
+        return this.#cellsSet.has(cellSolver.key());
+    }
+
+    get cellCount() {
+        return this.#cellsSet.size;
+    }
+
+    key() {
+        return this.cage.key();
+    }
+
+    toString() {
+        return this.key();
     }
 }

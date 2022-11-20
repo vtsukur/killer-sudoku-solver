@@ -225,7 +225,7 @@ export class Solver {
             } else if (newlySolvedCellDets.length > 0) {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinCagesSet = cellSolver.withinCagesSet;
-                    if (!(withinCagesSet.size === 1 && withinCagesSet.values().next().value.isSingleCellCage)) {
+                    if (!(withinCagesSet.size === 1 && this.cagesSolversMap.get(withinCagesSet.values().next().value.key()).isSingleCellCage)) {
                         const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).at(cellSolver.cell.row, cellSolver.cell.col).mk();
                         this.#addAndSliceResidualCageRecursively(firstChunkCage);
                     }
@@ -296,7 +296,7 @@ export class Solver {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 houseSolver.cages.forEach(cage => {
-                    if (cage.isSingleCellCage) return;
+                    if (this.cagesSolversMap.get(cage.key()).isSingleCellCage) return;
                     const cageSolver = this.cagesSolversMap.get(cage.key());
                     const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
@@ -344,13 +344,13 @@ export class Solver {
 
     #registerCage(cage) {
         const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
-        if (cage.isWithinRow) {
+        if (cageSolver.isWithinRow) {
             this.rowSolvers[cageSolver.anyRow()].addCage(cage);
         }
-        if (cage.isWithinColumn) {
+        if (cageSolver.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
         }
-        if (cage.isWithinSubgrid) {
+        if (cageSolver.isWithinSubgrid) {
             this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
@@ -361,13 +361,13 @@ export class Solver {
 
     #unregisterCage(cage) {
         const cageSolver = this.cagesSolversMap.get(cage.key());
-        if (cage.isWithinRow) {
+        if (cageSolver.isWithinRow) {
             this.rowSolvers[cageSolver.anyRow()].removeCage(cage);
         }
-        if (cage.isWithinColumn) {
+        if (cageSolver.isWithinColumn) {
             this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
         }
-        if (cage.isWithinSubgrid) {
+        if (cageSolver.isWithinSubgrid) {
             this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {

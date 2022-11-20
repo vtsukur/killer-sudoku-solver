@@ -7,16 +7,6 @@ export class Cage {
         this.sum = sum;
         this.cells = cells;
         this.#cellsSet = new Set(cells.map(cell => cell.key()));
-
-        this.isSingleCellCage = this.cellCount === 1;
-        this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
-        this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
-        this.isWithinSubgrid = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
-        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinSubgrid;
-    }
-
-    #isSameForAll(whatFn) {
-        return new Set(this.cells.map(whatFn)).size === 1;
     }
 
     get cellCount() {
