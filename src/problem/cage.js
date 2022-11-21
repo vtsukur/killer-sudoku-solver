@@ -1,12 +1,25 @@
 import { Cell } from './cell';
+import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Cage {
-    #cellsSet;
+    #cellSet;
 
     constructor(sum, cells) {
         this.sum = sum;
+        this.#cellSet = Cage.#validateCellsAndTransformToSet(cells);
         this.cells = [...cells];
-        this.#cellsSet = new Set(cells.map(cell => cell.key));
+    }
+
+    static #validateCellsAndTransformToSet(cells) {
+        const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
+        if (duplicateCellKeys.length > 0) {
+            Cage.#throwValidationError(`${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}`);
+        }
+        return cellSet;
+    }
+
+    static #throwValidationError(detailedMessage) {
+        throw `Invalid cage. ${detailedMessage}`;
     }
 
     get cellCount() {
@@ -14,7 +27,7 @@ export class Cage {
     }
 
     has(cell) {
-        return this.#cellsSet.has(cell.key);
+        return this.#cellSet.has(cell.key);
     }
 
     get key() {
