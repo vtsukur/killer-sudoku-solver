@@ -14,35 +14,43 @@ export class Problem {
     }
 
     static #checkCells(cells) {
-        const cellSet = Problem.#checkCellsForDuplicates(cells);
-        Problem.#checkForMissingCells(cells, cellSet);
+        const cellMap = Problem.#fillSameCellCountMap(cells);
+        Problem.#checkCellsForDuplicates(cellMap);
+        Problem.#checkForMissingCells(cellMap);
     }
 
-    static #checkCellsForDuplicates(cells) {
-        const duplicates = [];
-
-        const cellSet = new Set();
+    static #fillSameCellCountMap(cells) {
+        const cellMap = new Map();
         cells.forEach(cell => {
-            if (cellSet.has(cell.key())) {
-                duplicates.push(cell.key());
-            }
-            cellSet.add(cell.key());
+            const value = cellMap.get(cell.key());
+            cellMap.set(cell.key(), value ? value + 1 : 1);
         });
+        return cellMap;
+    }
+
+    static #checkCellsForDuplicates(cellMap) {
+        const duplicates = [];
+        for (const sameCellCountEntry of cellMap.entries()) {
+            const cellKey = sameCellCountEntry[0];
+            const sameCellCount = sameCellCountEntry[1];
+            if (sameCellCount > 1) {
+                duplicates.push(cellKey);
+            }
+        }
+
         if (duplicates.length > 0) {
             Problem.#throwValidationError(`${duplicates.length} duplicate cell(s): ${duplicates.join(', ')}`);
         }
-
-        return cellSet;
     }
 
-    static #checkForMissingCells(cells, cellSet) {
-        if (cells.length === Grid.CELL_COUNT) return;
+    static #checkForMissingCells(cellMap) {
+        if (cellMap.size === Grid.CELL_COUNT) return;
 
         const missing = [];
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
                 const cellKey = new Cell(row, col).key();
-                if (!cellSet.has(cellKey)) {
+                if (!cellMap.has(cellKey)) {
                     missing.push(cellKey);
                 }
             });
