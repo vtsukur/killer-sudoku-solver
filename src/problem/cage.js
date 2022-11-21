@@ -4,11 +4,13 @@ import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Cage {
     #cellSet;
+    #key;
 
     constructor(sum, cells) {
         this.sum = Cage.#validateSum(sum);
         this.#cellSet = Cage.#validateCellsAndTransformToSet(cells);
         this.cells = [...cells];
+        this.#key = `${this.sum} [${this.cells.join(', ')}]`;
     }
 
     static #validateSum(sum) {
@@ -33,23 +35,11 @@ export class Cage {
         throw `Invalid cage. ${detailedMessage}`;
     }
 
-    get cellCount() {
-        return this.cells.length;
+    static ofSum(sum) {
+        return new this.#Builder(sum);
     }
-
-    has(cell) {
-        return this.#cellSet.has(cell.key);
-    }
-
-    get key() {
-        return `${this.sum} [${this.cells.join(', ')}]`;
-    }
-
-    toString() {
-        return this.key;
-    }
-
-    static Builder = class {
+    
+    static #Builder = class {
         constructor(sum) {
             this.sum = sum;
             this.cells = [];
@@ -64,8 +54,20 @@ export class Cage {
             return new Cage(this.sum, this.cells);
         }
     }
+    
+    get cellCount() {
+        return this.cells.length;
+    }
 
-    static ofSum(sum) {
-        return new this.Builder(sum);
+    has(cell) {
+        return this.#cellSet.has(cell.key);
+    }
+
+    get key() {
+        return this.#key;
+    }
+
+    toString() {
+        return this.key;
     }
 }
