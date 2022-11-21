@@ -1,4 +1,5 @@
 import { Cell } from './cell';
+import { House } from './house';
 import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Cage {
@@ -14,6 +15,9 @@ export class Cage {
         const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
         if (duplicateCellKeys.length > 0) {
             Cage.#throwValidationError(`${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}`);
+        }
+        if (cellSet.size > House.SIZE) {
+            Cage.#throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${cellSet.size}`);
         }
         return cellSet;
     }

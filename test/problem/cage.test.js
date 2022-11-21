@@ -29,6 +29,15 @@ describe('Cage tests', () => {
         );
     });
 
+    test('Construction of invalid cage with more than 9 cells (cage cannot be bigger than a house)', () => {
+        expect(() => Cage.ofSum(46)
+                .at(0, 0).at(0, 1).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 6).at(0, 7).at(0, 8)
+                .at(1, 0)
+                .mk()).toThrow(
+            'Invalid cage. Cell count should be <= 9. Actual cell count: 10'
+        );
+    });
+
     test('Cage key', () => {
         expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key).toBe(
             '10 [(4, 4), (4, 5)]');
