@@ -5,7 +5,7 @@ export class Cage {
 
     constructor(sum, cells) {
         this.sum = sum;
-        this.cells = cells;
+        this.cells = [...cells];
         this.#cellsSet = new Set(cells.map(cell => cell.key));
     }
 
