@@ -35,9 +35,9 @@ describe('Tests for the finder of number combinations to form a house solver out
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).mk(),
             Cage.ofSum(7).at(1, 6).at(1, 7).mk(),
-            Cage.ofSum(10).at(1, 8).at(1, 9).mk()
+            Cage.ofSum(4).at(1, 8).mk()
         ]))).toEqual([
-            [ new Set([1, 3]), new Set([7, 8, 9]), new Set([2, 5]), new Set([4, 6]) ]
+            [ new Set([1, 3]), new Set([7, 8, 9]), new Set([2, 5]), new Set([4]) ]
         ]);
     });
 
@@ -95,28 +95,13 @@ describe('Tests for the finder of number combinations to form a house solver out
         expect(() => findSumCombinationsForHouse({ cages: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
     });
 
-    test('Combinations of numbers to form a house solver out of too many cages with non-overlapping cells', () => {
-        expect(() => findSumCombinationsForHouse(houseSolverOf(_.range(10).map(i => Cage.ofSum(5).at(i, 0).mk())))).toThrow(
-            'Too many cages with non-overlapping cells. Expected no more than 9 cages. Actual: 10');
-    });
-
-    test('Combinations of numbers to form a house solver out of cages with non-overlapping cells whose total cage is greater than house max', () => {
+    test('Combinations of numbers to form a house solver out of cages with non-overlapping cells whose total sum is greater than house max', () => {
         expect(() => findSumCombinationsForHouse(houseSolverOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).mk(),
-            Cage.ofSum(7).at(1, 6).at(1, 7).mk(),
-            Cage.ofSum(100).at(1, 8).at(1, 9).mk()
+            Cage.ofSum(12).at(1, 6).at(1, 7).mk(),
+            Cage.ofSum(6).at(1, 8).mk()
         ]))).toThrow(
-            'Total cage with non-overlapping cells should be <= 45. Actual: 135. Cages: ');
-    });
-
-    test('Combinations of numbers to form a houseSolver out of cages with too many non-overlapping cells', () => {
-        expect(() => findSumCombinationsForHouse(houseSolverOf([
-            Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
-            Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).mk(),
-            Cage.ofSum(7).at(1, 6).at(1, 7).mk(),
-            Cage.ofSum(10).at(1, 8).at(1, 9).at(2, 9).mk()
-        ]))).toThrow(
-            'Too many cells in cages with non-overlapping cells. Expected no more than 9 cells. Actual: 10');
+            'Total cage with non-overlapping cells should be <= 45. Actual: 46. Cages: ');
     });
 });
