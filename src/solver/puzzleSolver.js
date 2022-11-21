@@ -171,7 +171,7 @@ export class PuzzleSolver {
     #sliceCage(cageToSlice, firstChunkCage) {
         const secondChunkCageCells = [];
         cageToSlice.cells.forEach(cell => {
-            if (!firstChunkCage.has(cell)) {
+            if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
                 secondChunkCageCells.push(cell);
             }
         });

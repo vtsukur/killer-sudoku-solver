@@ -3,13 +3,11 @@ import { House } from './house';
 import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Cage {
-    #cellSet;
     #key;
 
     constructor(sum, cells) {
         this.sum = Cage.#validateSum(sum);
-        this.#cellSet = Cage.#validateCellsAndTransformToSet(cells);
-        this.cells = [...cells];
+        this.cells = [...Cage.#validateCells(cells)];
         this.#key = `${this.sum} [${this.cells.join(', ')}]`;
     }
 
@@ -20,7 +18,7 @@ export class Cage {
         return sum;
     }
 
-    static #validateCellsAndTransformToSet(cells) {
+    static #validateCells(cells) {
         const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
         if (duplicateCellKeys.length > 0) {
             Cage.#throwValidationError(`${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}`);
@@ -28,7 +26,7 @@ export class Cage {
         if (cellSet.size > House.SIZE) {
             Cage.#throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${cellSet.size}`);
         }
-        return cellSet;
+        return cells;
     }
 
     static #throwValidationError(detailedMessage) {
@@ -57,10 +55,6 @@ export class Cage {
     
     get cellCount() {
         return this.cells.length;
-    }
-
-    has(cell) {
-        return this.#cellSet.has(cell.key);
     }
 
     get key() {
