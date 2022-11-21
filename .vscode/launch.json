@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[NPM] <all tests>",
+            "name": "[npm] <all tests>",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -19,7 +19,7 @@
             "type": "node"
         },
         {
-            "name": "[NPM] grid.test.js",
+            "name": "[npm] grid.test.js",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -34,7 +34,7 @@
             "type": "node"
         },
         {
-            "name": "[NPM] problem.test.js",
+            "name": "[npm] problem.test.js",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -49,7 +49,7 @@
             "type": "node"
         },
         {
-            "name": "[NPM] puzzleSolver.test.js",
+            "name": "[npm] puzzleSolver.test.js",
             "request": "launch",
             "runtimeArgs": [
                 "run",
