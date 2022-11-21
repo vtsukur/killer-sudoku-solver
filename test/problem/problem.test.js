@@ -3,7 +3,7 @@ import { Problem } from '../../src/problem/problem';
 import { Cage } from '../../src/problem/cage';
 import { sampleProblem } from './realProblemSamples';
 
-const modifyCorrectProblem = function(lastCage) {
+const replaceLastCageInCorrectProblemWith = function(lastCage) {
     const cages = [...sampleProblem.cages];
     cages.pop();
     cages.push(lastCage);
@@ -16,42 +16,36 @@ describe('Problem tests', () => {
         expect(correctProblem.cages).toEqual(sampleProblem.cages);
     });
 
-    test('Construction of incorrect problem with invalid cell count', () => {
+    test('Construction of incorrect problem with a missing cell', () => {
         expect(() =>
-            new Problem([ Cage.ofSum(405).at(0, 0).mk() ])
-        ).toThrow('Invalid problem. Expected cell count: 81. Actual: 1');
-    });
-
-    test('Check incorrect problem in which at least one of the cells is out of row solver range', () => {
-        expect(() =>
-            modifyCorrectProblem(
-                Cage.ofSum(16).at(9, 8)/* outside of range */.at(8, 7).at(8, 8).mk()
+            replaceLastCageInCorrectProblemWith(
+                Cage.ofSum(16).at(8, 6).at(8, 7).mk()
             )
-        ).toThrow(`Invalid problem. Expected cell to be within the field. Actual cell: (9, 8)`);
+        ).toThrow('Invalid problem. Missing 1 cell(s): (8, 8)');
     });
 
-    test('Check incorrect problem in which at least one of the cells is out of column solver range', () => {
+    test('Construction of incorrect problem with two missing cells', () => {
         expect(() =>
-            modifyCorrectProblem(
-                Cage.ofSum(16).at(8, 9)/* outside of range */.at(8, 7).at(8, 8).mk()
+            replaceLastCageInCorrectProblemWith(
+                Cage.ofSum(9).at(8, 6).mk()
             )
-        ).toThrow(`Invalid problem. Expected cell to be within the field. Actual cell: (8, 9)`);
+        ).toThrow('Invalid problem. Missing 2 cell(s): (8, 7), (8, 8)');
     });
 
-    test('Check incorrect problem in which at least one of the cells is duplicated / not filled', () => {
+    test('Construction of incorrect problem with a duplicate cells', () => {
         expect(() =>
-            modifyCorrectProblem(
-                Cage.ofSum(16).at(8, 6)/* here comes the duplicate */.at(8, 6).at(8, 8).mk()
+            replaceLastCageInCorrectProblemWith(
+                Cage.ofSum(16).at(8, 6)/* here comes the duplicate: */.at(8, 6).at(8, 8).mk()
             )
-        ).toThrow(`Invalid problem. Found cell duplicate: (8, 6)`);
+        ).toThrow('Invalid problem. 1 duplicate cell(s): (8, 6)');
     });
 
-    test('Check incorrect problem in which overall cage does not match', () => {
+    test('Construction of incorrect problem in which sum of all cages does not add up to 405', () => {
         expect(() =>
-            modifyCorrectProblem(
+            replaceLastCageInCorrectProblemWith(
                 // abnormal cage on the field: 116 instead of 16
-                Cage.ofSum(116).at(8, 6).at(8, 7).at(8, 8).mk()
+                Cage.ofSum(17).at(8, 6).at(8, 7).at(8, 8).mk()
             )
-        ).toThrow(`Invalid problem. Expected field cage: 405. Actual: 505`);
+        ).toThrow('Invalid problem. Expected sum of all cages to be 405. Actual: 406');
     });
 });

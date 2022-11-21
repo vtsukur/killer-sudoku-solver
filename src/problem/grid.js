@@ -2,6 +2,9 @@ import { House } from './house';
 
 export class Grid {
     static #SIDE_LENGTH = 9;
+    static get SIDE_LENGTH() {
+        return Grid.#SIDE_LENGTH;
+    }
 
     static #TOTAL_SUM = Grid.#SIDE_LENGTH * House.SUM;
     static get TOTAL_SUM() {
