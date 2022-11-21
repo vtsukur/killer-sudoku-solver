@@ -19,6 +19,21 @@
             "type": "node"
         },
         {
+            "name": "[npm] cage.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cage.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[npm] cell.test.js",
             "request": "launch",
             "runtimeArgs": [
