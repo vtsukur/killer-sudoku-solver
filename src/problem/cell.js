@@ -13,20 +13,18 @@ export class Cell {
     }
 
     static #validate(row, col) {
-        if (!Cell.#coordWithinRange(row)) {
-            Cell.#throwOutOfRangeValidationError('Row', row);
-        }
-        if (!Cell.#coordWithinRange(col)) {
-            Cell.#throwOutOfRangeValidationError('Column', col);
+        Cell.#validateIndex('Row', row);
+        Cell.#validateIndex('Column', col);
+    }
+
+    static #validateIndex(type, actualValue) {
+        if (!Cell.#coordWithinRange(actualValue)) {
+            throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${House.SIZE}). Actual: ${actualValue}`;
         }
     }
 
     static #coordWithinRange(i) {
         return i >= 0 && i < House.SIZE;
-    }
-
-    static #throwOutOfRangeValidationError(type, actualValue) {
-        throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${House.SIZE}). Actual: ${actualValue}`;
     }
 
     key() {

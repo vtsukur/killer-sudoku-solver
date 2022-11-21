@@ -8,6 +8,22 @@ describe('Cell tests', () => {
         expect(cell.col).toBe(4);
     });
 
+    test('Construction of cell with row outside of the range (below 0)', () => {
+        expect(() => Cell.at(-1, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: -1');
+    });
+
+    test('Construction of cell with row outside of the range (above 8)', () => {
+        expect(() => Cell.at(9, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: 9');
+    });
+
+    test('Construction of cell with column outside of the range (below 0)', () => {
+        expect(() => Cell.at(4, -1)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: -1');
+    });
+
+    test('Construction of cell with column outside of the range (above 8)', () => {
+        expect(() => Cell.at(4, 9)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: 9');
+    });
+
     test('Cells have correct nonet index', () => {
         // north-west nonet (0)
         _.range(0, 3).forEach(r => {
