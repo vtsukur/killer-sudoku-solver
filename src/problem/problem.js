@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Cell } from './cell';
 import { Grid } from './grid';
+import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Problem {
     constructor(cages) {
@@ -14,12 +15,11 @@ export class Problem {
     }
 
     static #validateCageCells(cells) {
-        const cellCountMap = Problem.#cellCountMapFor(cells);
-        if (cellCountMap.size === Grid.CELL_COUNT) return;
+        const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
+        if (cellSet.size === Grid.CELL_COUNT) return;
 
-        const missingCellKeys = Problem.#findMissingCellKeys(cellCountMap);
+        const missingCellKeys = Problem.#findMissingCellKeys(cellSet);
         const hasMissingCells = missingCellKeys.length > 0;
-        const duplicateCellKeys = Problem.#findDuplicateCellKeys(cellCountMap);
         const hasDuplicateCells = duplicateCellKeys.length > 0;
 
         if (hasMissingCells || hasDuplicateCells) {
@@ -36,38 +36,17 @@ export class Problem {
         }
     }
 
-    static #cellCountMapFor(cells) {
-        const map = new Map();
-        cells.forEach(cell => {
-            const count = map.get(cell.key);
-            map.set(cell.key, count ? count + 1 : 1);
-        });
-        return map;
-    }
-
-    static #findMissingCellKeys(cellCountMap) {
+    static #findMissingCellKeys(cellSet) {
         const missing = [];
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
                 const cellKey = Cell.keyOf(row, col);
-                if (!cellCountMap.has(cellKey)) {
+                if (!cellSet.has(cellKey)) {
                     missing.push(cellKey);
                 }
             });
         });
         return missing;
-    }
-
-    static #findDuplicateCellKeys(cellCountMap) {
-        const duplicates = [];
-        for (const sameCellCountEntry of cellCountMap.entries()) {
-            const cellKey = sameCellCountEntry[0];
-            const sameCellCount = sameCellCountEntry[1];
-            if (sameCellCount > 1) {
-                duplicates.push(cellKey);
-            }
-        }
-        return duplicates;
     }
 
     static #validateCages(cages) {
