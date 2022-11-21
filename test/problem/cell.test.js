@@ -2,13 +2,13 @@ import _ from 'lodash';
 import { Cell } from '../../src/problem/cell';
 
 describe('Cell tests', () => {
-    test('Cell creatiom', () => {
+    test('Construction of correct cell preserving row and column', () => {
         const cell = Cell.at(4, 4);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(4);
     });
 
-    test('NonetSolver index for cells', () => {
+    test('Cells have correct nonet index', () => {
         // north-west nonet (0)
         _.range(0, 3).forEach(r => {
             _.range(0, 3).forEach(c => {
