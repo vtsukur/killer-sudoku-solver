@@ -14,6 +14,11 @@ export class Problem {
     }
 
     static #checkCells(cells) {
+        const cellSet = Problem.#checkCellsForDuplicates(cells);
+        Problem.#checkForMissingCells(cells, cellSet);
+    }
+
+    static #checkCellsForDuplicates(cells) {
         const duplicates = [];
 
         const cellSet = new Set();
@@ -27,18 +32,22 @@ export class Problem {
             Problem.#throwValidationError(`${duplicates.length} duplicate cell(s): ${duplicates.join(', ')}`);
         }
 
-        if (cells.length !== Grid.CELL_COUNT) {
-            const missing = [];
-            _.range(Grid.SIDE_LENGTH).forEach(row => {
-                _.range(Grid.SIDE_LENGTH).forEach(col => {
-                    const cellKey = new Cell(row, col).key();
-                    if (!cellSet.has(cellKey)) {
-                        missing.push(cellKey);
-                    }
-                });
+        return cellSet;
+    }
+
+    static #checkForMissingCells(cells, cellSet) {
+        if (cells.length === Grid.CELL_COUNT) return;
+
+        const missing = [];
+        _.range(Grid.SIDE_LENGTH).forEach(row => {
+            _.range(Grid.SIDE_LENGTH).forEach(col => {
+                const cellKey = new Cell(row, col).key();
+                if (!cellSet.has(cellKey)) {
+                    missing.push(cellKey);
+                }
             });
-            this.#throwValidationError(`Missing ${missing.length} cell(s): ${missing.join(', ')}`);
-        }
+        });
+        this.#throwValidationError(`Missing ${missing.length} cell(s): ${missing.join(', ')}`);
     }
 
     static #checkCages(cages) {
