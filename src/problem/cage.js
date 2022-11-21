@@ -6,9 +6,16 @@ export class Cage {
     #cellSet;
 
     constructor(sum, cells) {
-        this.sum = sum;
+        this.sum = Cage.#validateSum(sum);
         this.#cellSet = Cage.#validateCellsAndTransformToSet(cells);
         this.cells = [...cells];
+    }
+
+    static #validateSum(sum) {
+        if (sum < 1 || sum > House.SUM) {
+            Cage.#throwValidationError(`Sum outside of range. Expected to be within [1, ${House.SUM}]. Actual: ${sum}`);
+        }
+        return sum;
     }
 
     static #validateCellsAndTransformToSet(cells) {

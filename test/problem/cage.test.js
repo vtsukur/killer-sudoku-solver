@@ -17,6 +17,18 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
+    test('Construction of invalid cage with sum outside of the range: <1', () => {
+        expect(() => Cage.ofSum(-1).at(4, 4).at(4, 5).mk()).toThrow(
+            'Invalid cage. Sum outside of range. Expected to be within [1, 45]. Actual: -1'
+        );
+    });
+
+    test('Construction of invalid cage with sum outside of the range: >45', () => {
+        expect(() => Cage.ofSum(46).at(4, 4).at(4, 5).mk()).toThrow(
+            'Invalid cage. Sum outside of range. Expected to be within [1, 45]. Actual: 46'
+        );
+    });
+
     test('Construction of invalid cage with a duplicate cell', () => {
         expect(() => Cage.ofSum(9).at(4, 4).at(4, 4).mk()).toThrow(
             'Invalid cage. 1 duplicate cell(s): (4, 4)'
@@ -30,7 +42,7 @@ describe('Cage tests', () => {
     });
 
     test('Construction of invalid cage with more than 9 cells (cage cannot be bigger than a house)', () => {
-        expect(() => Cage.ofSum(46)
+        expect(() => Cage.ofSum(45)
                 .at(0, 0).at(0, 1).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 6).at(0, 7).at(0, 8)
                 .at(1, 0)
                 .mk()).toThrow(
