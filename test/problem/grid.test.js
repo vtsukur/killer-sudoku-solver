@@ -9,7 +9,7 @@ describe('Grid tests', () => {
         expect(Grid.SIDE_LENGTH).toEqual(9);
     });
 
-    test('Grid cell count is 81', () => {
+    test('Grid has 81 cells', () => {
         expect(Grid.CELL_COUNT).toEqual(81);
     });
 
