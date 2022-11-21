@@ -11,12 +11,12 @@ const replaceLastCageInCorrectProblemWith = function(lastCage) {
 };
 
 describe('Problem tests', () => {
-    test('Construction of correct problem preserving all cages', () => {
+    test('Construction of problem storing cages', () => {
         const correctProblem = new Problem(sampleProblem.cages);
         expect(correctProblem.cages).toEqual(sampleProblem.cages);
     });
 
-    test('Construction of incorrect problem with a missing cell', () => {
+    test('Construction of invalid problem with a missing cell', () => {
         expect(() =>
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(16).at(8, 6).at(8, 7).mk()
@@ -24,7 +24,7 @@ describe('Problem tests', () => {
         ).toThrow('Invalid problem. 1 missing cell(s): (8, 8)');
     });
 
-    test('Construction of incorrect problem with two missing cells', () => {
+    test('Construction of invalid problem with two missing cells', () => {
         expect(() =>
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(9).at(8, 6).mk()
@@ -32,7 +32,7 @@ describe('Problem tests', () => {
         ).toThrow('Invalid problem. 2 missing cell(s): (8, 7), (8, 8)');
     });
 
-    test('Construction of incorrect problem with both a missing cell and a duplicate cell', () => {
+    test('Construction of invalid problem with both a missing cell and a duplicate cell', () => {
         expect(() =>
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(16).at(8, 6)/* here comes the duplicate: */.at(8, 6).at(8, 8).mk()
@@ -40,7 +40,7 @@ describe('Problem tests', () => {
         ).toThrow('Invalid problem. 1 missing cell(s): (8, 7). 1 duplicate cell(s): (8, 6)');
     });
 
-    test('Construction of incorrect problem in which sum of all cages does not add up to 405', () => {
+    test('Construction of invalid problem in which sum of all cages does not add up to 405', () => {
         expect(() =>
             replaceLastCageInCorrectProblemWith(
                 // abnormal cage on the field: 116 instead of 16

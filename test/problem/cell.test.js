@@ -2,25 +2,25 @@ import _ from 'lodash';
 import { Cell } from '../../src/problem/cell';
 
 describe('Cell tests', () => {
-    test('Construction of correct cell preserving row and column', () => {
+    test('Construction of cell storing row and column', () => {
         const cell = Cell.at(4, 4);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(4);
     });
 
-    test('Construction of cell with row outside of the range (below 0)', () => {
+    test('Construction of invalid cell with row outside of the range (below 0)', () => {
         expect(() => Cell.at(-1, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: -1');
     });
 
-    test('Construction of cell with row outside of the range (above 8)', () => {
+    test('Construction of invalid cell with row outside of the range (above 8)', () => {
         expect(() => Cell.at(9, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: 9');
     });
 
-    test('Construction of cell with column outside of the range (below 0)', () => {
+    test('Construction of invalid cell with column outside of the range (below 0)', () => {
         expect(() => Cell.at(4, -1)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: -1');
     });
 
-    test('Construction of cell with column outside of the range (above 8)', () => {
+    test('Construction of invalid cell with column outside of the range (above 8)', () => {
         expect(() => Cell.at(4, 9)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: 9');
     });
 
