@@ -14,12 +14,12 @@ export class Problem {
     }
 
     static #checkCells(cells) {
-        const cellMap = Problem.#fillSameCellCountMap(cells);
-        if (cellMap.size === Grid.CELL_COUNT) return;
+        const cellCountMap = Problem.#cellCountMapFor(cells);
+        if (cellCountMap.size === Grid.CELL_COUNT) return;
 
-        const missing = Problem.#findMissingCells(cellMap);
+        const missing = Problem.#findMissingCells(cellCountMap);
         const hasMissing = missing.length > 0;
-        const duplicates = Problem.#findDuplicateCells(cellMap);
+        const duplicates = Problem.#findDuplicateCells(cellCountMap);
         const hasDuplicates = duplicates.length > 0;
 
         if (hasMissing || hasDuplicates) {
@@ -35,7 +35,7 @@ export class Problem {
         }
     }
 
-    static #fillSameCellCountMap(cells) {
+    static #cellCountMapFor(cells) {
         const cellMap = new Map();
         cells.forEach(cell => {
             const value = cellMap.get(cell.key());
