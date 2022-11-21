@@ -11,7 +11,7 @@ const replaceLastCageInCorrectProblemWith = function(lastCage) {
 };
 
 describe('Problem tests', () => {
-    test('Construction of correct problem', () => {
+    test('Construction of correct problem preserving all cages', () => {
         const correctProblem = new Problem(sampleProblem.cages);
         expect(correctProblem.cages).toEqual(sampleProblem.cages);
     });
