@@ -9,11 +9,11 @@ export class Problem {
     }
 
     static #validate(cages) {
-        Problem.#checkCells(cages.flatMap(cage => cage.cells));
-        Problem.#checkCages(cages);
+        Problem.#validateCageCells(cages.flatMap(cage => cage.cells));
+        Problem.#validateCages(cages);
     }
 
-    static #checkCells(cells) {
+    static #validateCageCells(cells) {
         const cellCountMap = Problem.#cellCountMapFor(cells);
         if (cellCountMap.size === Grid.CELL_COUNT) return;
 
@@ -70,7 +70,7 @@ export class Problem {
         return duplicates;
     }
 
-    static #checkCages(cages) {
+    static #validateCages(cages) {
         const actualGridSum = cages.reduce((prev, current) => prev + current.sum, 0);
         if (actualGridSum !== Grid.TOTAL_SUM) {
             this.#throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
