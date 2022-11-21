@@ -7,7 +7,7 @@ const houseSolverOf = (cages) => {
     if (Array.isArray(cages)) {
         cages.forEach(cage => {
             cage.cells.forEach(cell => {
-                cellsMap.set(cell.key(), cell);
+                cellsMap.set(cell.key, cell);
             });
         });
     }

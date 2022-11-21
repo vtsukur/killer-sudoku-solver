@@ -87,11 +87,11 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = House.
 
     const cellsToCagesMap = new Map();
     cells.forEach(cell => {
-        cellsToCagesMap.set(cell.key(), new Set());
+        cellsToCagesMap.set(cell.key, new Set());
     })
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
-            cellsToCagesMap.get(cell.key()).add(cage);
+            cellsToCagesMap.get(cell.key).add(cage);
         });
     });
 
@@ -140,12 +140,12 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage, context) {
         return;
     }
 
-    const noOverlap = cage.cells.every(cell => !context.areaCellKeysStack.has(cell.key()));
+    const noOverlap = cage.cells.every(cell => !context.areaCellKeysStack.has(cell.key));
     if (!noOverlap) return;
 
     context.cagesStack.add(cage);
     context.remainingCagesStack.delete(cage);
-    cage.cells.forEach(cell => context.areaCellKeysStack.add(cell.key()));
+    cage.cells.forEach(cell => context.areaCellKeysStack.add(cell.key));
     context.cellCount += cage.cellCount;
 
     if (context.cellCount >= context.absMaxAreaCellCount ||
@@ -158,7 +158,7 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage, context) {
     findBiggestNonOverlappingCagesAreaRecursive(nextCage, context);
 
     context.cellCount -= cage.cellCount;
-    cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key()));
+    cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key));
     context.remainingCagesStack.add(cage);
     context.cagesStack.delete(cage);
 }

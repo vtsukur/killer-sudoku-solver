@@ -106,7 +106,7 @@ export class PuzzleSolver {
             });
             if (residualCells.length) {
                 const residualCage = new Cage(nHouseSumVal - cagesArea.sum, residualCells);
-                if (!this.cagesSolversMap.has(residualCage.key())) {
+                if (!this.cagesSolversMap.has(residualCage.key)) {
                     this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
@@ -129,7 +129,7 @@ export class PuzzleSolver {
             const nextResidualCages = [];
 
             residualCages.forEach(residualCage => {
-                if (this.cagesSolversMap.has(residualCage.key())) return;
+                if (this.cagesSolversMap.has(residualCage.key)) return;
 
                 this.#registerCage(residualCage);
 
@@ -153,7 +153,7 @@ export class PuzzleSolver {
         residualCage.cells.forEach(cell => {
             allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.cellSolverOf(cell).withinCageSolvers]);
         }, this);
-        allAssociatedCageSolversSet.delete(this.cagesSolversMap.get(residualCage.key()));
+        allAssociatedCageSolversSet.delete(this.cagesSolversMap.get(residualCage.key));
 
         const result = [];
         for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {
@@ -183,7 +183,7 @@ export class PuzzleSolver {
             const combosForHouse = findSumCombinationsForHouse(houseSolver);
             houseSolver.debugCombosForHouse = combosForHouse;
             houseSolver.cages.forEach((cage, idx) => {
-                const cageSolver = this.cagesSolversMap.get(cage.key());
+                const cageSolver = this.cagesSolversMap.get(cage.key);
                 const combosKeySet = new Set();
                 const combos = [];
                 combosForHouse.forEach(combo => {
@@ -291,8 +291,8 @@ export class PuzzleSolver {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 houseSolver.cages.forEach(cage => {
-                    if (this.cagesSolversMap.get(cage.key()).isSingleCellCage) return;
-                    const cageSolver = this.cagesSolversMap.get(cage.key());
+                    if (this.cagesSolversMap.get(cage.key).isSingleCellCage) return;
+                    const cageSolver = this.cagesSolversMap.get(cage.key);
                     const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageSolversWithNum.push(cageSolver);
@@ -351,11 +351,11 @@ export class PuzzleSolver {
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
         }, this);
-        this.cagesSolversMap.set(cage.key(), cageSolver);
+        this.cagesSolversMap.set(cage.key, cageSolver);
     }
 
     #unregisterCage(cage) {
-        const cageSolver = this.cagesSolversMap.get(cage.key());
+        const cageSolver = this.cagesSolversMap.get(cage.key);
         if (cageSolver.isWithinRow) {
             this.rowSolvers[cageSolver.anyRow()].removeCage(cage);
         }
@@ -368,7 +368,7 @@ export class PuzzleSolver {
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         }, this);
-        this.cagesSolversMap.delete(cage.key());
+        this.cagesSolversMap.delete(cage.key);
     }
 
     cellAt(rowIds, col) {

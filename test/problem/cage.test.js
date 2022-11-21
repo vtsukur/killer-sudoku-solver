@@ -52,7 +52,7 @@ describe('Cage tests', () => {
     // });
 
     test('Cage key', () => {
-        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key()).toBe(
+        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key).toBe(
             '10 [(4, 4), (4, 5)]');
     });
 

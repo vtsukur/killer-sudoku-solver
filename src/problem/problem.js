@@ -39,8 +39,8 @@ export class Problem {
     static #cellCountMapFor(cells) {
         const map = new Map();
         cells.forEach(cell => {
-            const count = map.get(cell.key());
-            map.set(cell.key(), count ? count + 1 : 1);
+            const count = map.get(cell.key);
+            map.set(cell.key, count ? count + 1 : 1);
         });
         return map;
     }
@@ -49,7 +49,7 @@ export class Problem {
         const missing = [];
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
-                const cellKey = Cell.at(row, col).key();
+                const cellKey = Cell.at(row, col).key;
                 if (!cellCountMap.has(cellKey)) {
                     missing.push(cellKey);
                 }

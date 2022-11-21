@@ -1,11 +1,14 @@
 import { House } from './house';
 
 export class Cell {
+    #key;
+
     constructor(row, col) {
         Cell.#validate(row, col);
         this.row = row;
         this.col = col;
         this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
+        this.#key = `(${row}, ${col})`;
     }
 
     static at(row, col) {
@@ -27,11 +30,11 @@ export class Cell {
         return i >= 0 && i < House.SIZE;
     }
 
-    key() {
-        return `(${this.row}, ${this.col})`;
+    get key() {
+        return this.#key;
     }
 
     toString() {
-        return this.key();
+        return this.key;
     }
 }

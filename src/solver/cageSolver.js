@@ -8,7 +8,7 @@ export class CageSolver {
 
     constructor(cage, cellSolvers) {
         this.cage = cage;
-        this.#cellsSet = new Set(cage.cells.map(cell => cell.key()));
+        this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.isSingleCellCage = this.cellCount === 1;
         this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
         this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
@@ -195,18 +195,18 @@ export class CageSolver {
     }
 
     has(cellSolver) {
-        return this.#cellsSet.has(cellSolver.key());
+        return this.#cellsSet.has(cellSolver.key);
     }
 
     get cellCount() {
         return this.#cellsSet.size;
     }
 
-    key() {
-        return this.cage.key();
+    get key() {
+        return this.cage.key;
     }
 
     toString() {
-        return this.key();
+        return this.key;
     }
 }

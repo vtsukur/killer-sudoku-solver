@@ -6,7 +6,7 @@ export class Cage {
     constructor(sum, cells) {
         this.sum = sum;
         this.cells = cells;
-        this.#cellsSet = new Set(cells.map(cell => cell.key()));
+        this.#cellsSet = new Set(cells.map(cell => cell.key));
     }
 
     get cellCount() {
@@ -14,15 +14,15 @@ export class Cage {
     }
 
     has(cell) {
-        return this.#cellsSet.has(cell.key());
+        return this.#cellsSet.has(cell.key);
     }
 
-    key() {
+    get key() {
         return `${this.sum} [${this.cells.join(', ')}]`;
     }
 
     toString() {
-        return this.key();
+        return this.key;
     }
 
     static Builder = class {
