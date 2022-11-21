@@ -15,8 +15,24 @@ export class Problem {
 
     static #checkCells(cells) {
         const cellMap = Problem.#fillSameCellCountMap(cells);
-        Problem.#checkCellsForDuplicates(cellMap);
-        Problem.#checkForMissingCells(cellMap);
+        if (cellMap.size === Grid.CELL_COUNT) return;
+
+        const missing = Problem.#findMissingCells(cellMap);
+        const hasMissing = missing.length > 0;
+        const duplicates = Problem.#findDuplicateCells(cellMap);
+        const hasDuplicates = duplicates.length > 0;
+
+        if (hasMissing || hasDuplicates) {
+            let message = '';
+
+            if (hasMissing) {
+                message = `${missing.length} missing cell(s): ${missing.join(', ')}. `;
+            }
+            if (hasDuplicates) {
+                message = `${message}${duplicates.length} duplicate cell(s): ${duplicates.join(', ')}.`
+            }
+            Problem.#throwValidationError(message.trim().slice(0, -1));
+        }
     }
 
     static #fillSameCellCountMap(cells) {
@@ -28,7 +44,7 @@ export class Problem {
         return cellMap;
     }
 
-    static #checkCellsForDuplicates(cellMap) {
+    static #findDuplicateCells(cellMap) {
         const duplicates = [];
         for (const sameCellCountEntry of cellMap.entries()) {
             const cellKey = sameCellCountEntry[0];
@@ -37,15 +53,10 @@ export class Problem {
                 duplicates.push(cellKey);
             }
         }
-
-        if (duplicates.length > 0) {
-            Problem.#throwValidationError(`${duplicates.length} duplicate cell(s): ${duplicates.join(', ')}`);
-        }
+        return duplicates;
     }
 
-    static #checkForMissingCells(cellMap) {
-        if (cellMap.size === Grid.CELL_COUNT) return;
-
+    static #findMissingCells(cellMap) {
         const missing = [];
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
@@ -55,7 +66,7 @@ export class Problem {
                 }
             });
         });
-        this.#throwValidationError(`Missing ${missing.length} cell(s): ${missing.join(', ')}`);
+        return missing;
     }
 
     static #checkCages(cages) {

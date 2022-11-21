@@ -21,7 +21,7 @@ describe('Problem tests', () => {
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(16).at(8, 6).at(8, 7).mk()
             )
-        ).toThrow('Invalid problem. Missing 1 cell(s): (8, 8)');
+        ).toThrow('Invalid problem. 1 missing cell(s): (8, 8)');
     });
 
     test('Construction of incorrect problem with two missing cells', () => {
@@ -29,15 +29,15 @@ describe('Problem tests', () => {
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(9).at(8, 6).mk()
             )
-        ).toThrow('Invalid problem. Missing 2 cell(s): (8, 7), (8, 8)');
+        ).toThrow('Invalid problem. 2 missing cell(s): (8, 7), (8, 8)');
     });
 
-    test('Construction of incorrect problem with a duplicate cells', () => {
+    test('Construction of incorrect problem with both a missing cell and a duplicate cell', () => {
         expect(() =>
             replaceLastCageInCorrectProblemWith(
                 Cage.ofSum(16).at(8, 6)/* here comes the duplicate: */.at(8, 6).at(8, 8).mk()
             )
-        ).toThrow('Invalid problem. 1 duplicate cell(s): (8, 6)');
+        ).toThrow('Invalid problem. 1 missing cell(s): (8, 7). 1 duplicate cell(s): (8, 6)');
     });
 
     test('Construction of incorrect problem in which sum of all cages does not add up to 405', () => {
