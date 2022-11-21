@@ -8,7 +8,7 @@ export class Cell {
         this.row = row;
         this.col = col;
         this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
-        this.#key = `(${row}, ${col})`;
+        this.#key = Cell.keyOf(row, col);
     }
 
     static at(row, col) {
@@ -28,6 +28,10 @@ export class Cell {
 
     static #coordWithinRange(i) {
         return i >= 0 && i < House.SIZE;
+    }
+
+    static keyOf(row, col) {
+        return `(${row}, ${col})`
     }
 
     get key() {

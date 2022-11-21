@@ -49,7 +49,7 @@ export class Problem {
         const missing = [];
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
-                const cellKey = Cell.at(row, col).key;
+                const cellKey = Cell.keyOf(row, col);
                 if (!cellCountMap.has(cellKey)) {
                     missing.push(cellKey);
                 }
