@@ -1,7 +1,7 @@
+import { valuesForMsg } from '../util/readableMessages';
+import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { House } from './house';
-import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
-import { valuesForMsg } from '../util/readableMessages';
 
 export class Cage {
     #sum;

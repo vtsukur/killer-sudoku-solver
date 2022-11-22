@@ -1,8 +1,8 @@
 import _ from 'lodash';
+import { sentencesForError, valuesForMsg } from '../util/readableMessages';
+import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { Grid } from './grid';
-import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
-import { sentencesForError, valuesForMsg } from '../util/readableMessages';
 
 export class Problem {
     #cages;
