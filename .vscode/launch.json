@@ -79,6 +79,21 @@
             "type": "node"
         },
         {
+            "name": "[npm] nonet.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "nonet.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[npm] problem.test.js",
             "request": "launch",
             "runtimeArgs": [
