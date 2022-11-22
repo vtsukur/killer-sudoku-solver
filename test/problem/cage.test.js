@@ -55,6 +55,11 @@ describe('Cage tests', () => {
             '10 [(4, 4), (4, 5)]');
     });
 
+    test('Cage key stays the same regardless of cell order', () => {
+        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key).toBe(
+            new Cage(10, [ Cell.at(4, 5), Cell.at(4, 4) ]).key);
+    });
+
     test('Cage toString', () => {
         expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).toString()).toBe(
             '10 [(4, 4), (4, 5)]');

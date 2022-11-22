@@ -11,6 +11,7 @@ export class Cage {
     constructor(sum, cells) {
         this.#sum = Cage.#validateSum(sum);
         this.#cells = [...Cage.#validateCells(cells)];
+        this.#cells.sort();
         this.#key = `${this.sum} [${valuesForMsg(this.cells)}]`;
     }
 
