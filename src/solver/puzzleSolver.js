@@ -96,7 +96,7 @@ export class PuzzleSolver {
             residualCages.forEach(residualCage => {
                 if (this.#model.cagesSolversMap.has(residualCage.key)) return;
 
-                this.#registerCage(residualCage);
+                this.#model.registerCage(residualCage);
 
                 const cageSolversForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
@@ -106,7 +106,7 @@ export class PuzzleSolver {
                     nextResidualCages.push(secondChunkCage);
                 }, this);
 
-                cagesToUnregister.forEach(cage => this.#unregisterCage(cage));
+                cagesToUnregister.forEach(cage => this.#model.unregisterCage(cage));
             });
 
             residualCages = nextResidualCages;
@@ -300,40 +300,6 @@ export class PuzzleSolver {
 
         this.#solution[cell.row][cell.col] = num;
         this.#placedNumsCount++;
-    }
-
-    #registerCage(cage) {
-        const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
-        if (cageSolver.isWithinRow) {
-            this.#model.rowSolvers[cageSolver.anyRow()].addCage(cage);
-        }
-        if (cageSolver.isWithinColumn) {
-            this.#model.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
-        }
-        if (cageSolver.isWithinNonet) {
-            this.#model.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
-        }
-        cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
-        }, this);
-        this.#model.cagesSolversMap.set(cage.key, cageSolver);
-    }
-
-    #unregisterCage(cage) {
-        const cageSolver = this.#model.cagesSolversMap.get(cage.key);
-        if (cageSolver.isWithinRow) {
-            this.#model.rowSolvers[cageSolver.anyRow()].removeCage(cage);
-        }
-        if (cageSolver.isWithinColumn) {
-            this.#model.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
-        }
-        if (cageSolver.isWithinNonet) {
-            this.#model.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
-        }
-        cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
-        }, this);
-        this.#model.cagesSolversMap.delete(cage.key);
     }
 
     cellSolverOf(cell) {
