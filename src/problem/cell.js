@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { House } from './house';
 
 export class Cell {
@@ -6,8 +7,8 @@ export class Cell {
     constructor(row, col) {
         this.row = Cell.#validateIndex('Row', row);
         this.col = Cell.#validateIndex('Column', col);
-        this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
         this.#key = Cell.keyOf(row, col);
+        this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
     }
 
     static #validateIndex(type, actualValue) {
@@ -19,7 +20,7 @@ export class Cell {
     }
 
     static #coordWithinRange(i) {
-        return i >= 0 && i < House.SIZE;
+        return _.inRange(i, 0, House.SIZE);
     }
 
     static at(row, col) {
@@ -35,6 +36,6 @@ export class Cell {
     }
 
     toString() {
-        return this.key;
+        return this.#key;
     }
 }

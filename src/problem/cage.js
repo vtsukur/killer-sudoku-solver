@@ -62,6 +62,6 @@ export class Cage {
     }
 
     toString() {
-        return this.key;
+        return this.#key;
     }
 }
