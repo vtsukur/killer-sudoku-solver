@@ -80,7 +80,7 @@ export class PuzzleSolver {
             if (residualCage) {
                 this.#addAndSliceResidualCageRecursively(residualCage);
             }
-        }, this);
+        });
     }
 
     #addAndSliceResidualCageRecursively(initialResidualCage) {
@@ -100,7 +100,7 @@ export class PuzzleSolver {
                     const secondChunkCage = firstChunkCageSolver.slice(residualCage);
                     cagesToUnregister.push(firstChunkCageSolver.cage);
                     nextResidualCages.push(secondChunkCage);
-                }, this);
+                });
 
                 cagesToUnregister.forEach(cage => this.#model.unregisterCage(cage));
             });
@@ -113,14 +113,14 @@ export class PuzzleSolver {
         let allAssociatedCageSolversSet = new Set();
         residualCage.cells.forEach(cell => {
             allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.cellSolverOf(cell).withinCageSolvers]);
-        }, this);
+        });
         allAssociatedCageSolversSet.delete(this.#model.cagesSolversMap.get(residualCage.key));
 
         const result = [];
         for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {
             const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
                 return this.cellSolverOf(cell).withinCageSolvers.has(associatedCageSolver);
-            }, this);
+            });
             if (associatedCageFullyContainsResidualCage) {
                 result.push(associatedCageSolver);
             }
@@ -146,8 +146,8 @@ export class PuzzleSolver {
                     }
                 });
                 cageSolver.updateCombinations(combos);
-            }, this);
-        }, this);
+            });
+        });
     }
 
     #mainReduce() {
