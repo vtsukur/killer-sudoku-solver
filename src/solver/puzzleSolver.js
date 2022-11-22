@@ -49,19 +49,13 @@ export class PuzzleSolver {
                 });
             });
         });
-        this.#model.nonetSolvers.forEach(houseSolver => {
-            const residualCage = houseSolver.determineResidualCage();
-            if (residualCage) {
-                this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);
-            }
+        _.range(House.SIZE).forEach(leftIdx => {
+            this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageSolver) => {
+                return cageSolver.isWithinNonet && cageSolver.cage.cells[0].nonet === leftIdx;
+            }, (nonet) => {
+                return this.#model.nonetSolvers[nonet].cellIterator();
+            });
         });
-        // _.range(House.SIZE).forEach(leftIdx => {
-        //     this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageSolver) => {
-        //         return cageSolver.cage.isWithinNonet && cageSolver.cage.cells[0].nonet === leftIdx;
-        //     }, (nonet) => {
-        //         return this.#model.nonetSolvers[nonet].cellIterator();
-        //     });
-        // });
     }
 
     #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, withinHouseFn, cellIteratorFn) {
