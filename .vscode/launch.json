@@ -64,6 +64,21 @@
             "type": "node"
         },
         {
+            "name": "[npm] house.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "house.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[npm] problem.test.js",
             "request": "launch",
             "runtimeArgs": [
