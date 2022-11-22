@@ -8,11 +8,6 @@ export class House {
     static get SUM() {
         return House.#SUM;
     }
-    
-    static #NONET_SIDE_LENGTH = 3;
-    static get NONET_SIDE_LENGTH() {
-        return House.#NONET_SIDE_LENGTH;
-    }
 
     constructor() {
         throw new TypeError('House is not constructable');

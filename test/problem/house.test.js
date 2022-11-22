@@ -12,8 +12,4 @@ describe('House tests', () => {
     test('House sum is 45', () => {
         expect(House.SUM).toEqual(45);
     });
-
-    test('Nonet side length is 3', () => {
-        expect(House.NONET_SIDE_LENGTH).toEqual(3);
-    });
 });

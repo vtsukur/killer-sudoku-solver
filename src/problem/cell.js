@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from './house';
+import { Nonet } from './nonet';
 
 export class Cell {
     #row;
@@ -10,7 +11,7 @@ export class Cell {
         this.#row = Cell.#validateIndex('Row', row);
         this.#col = Cell.#validateIndex('Column', col);
         this.#key = Cell.keyOf(row, col);
-        this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
+        this.nonet = Math.floor(row / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH + Math.floor(col / Nonet.SIDE_LENGTH);
     }
 
     static #validateIndex(type, actualValue) {
