@@ -9,13 +9,17 @@ import { ColumnSolver } from './columnSolver';
 import { findSumCombinationsForHouse } from './combinatorial';
 import { NonetSolver } from './nonetSolver';
 import { RowSolver } from './rowSolver';
+import { SolverModel } from './solverModel';
 
 export class PuzzleSolver {
     #solution;
     #placedNumsCount;
+    #model;
 
     constructor(problem) {
         this.problem = problem;
+        this.#model = new SolverModel(problem);
+
         this.cagesSolversMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
