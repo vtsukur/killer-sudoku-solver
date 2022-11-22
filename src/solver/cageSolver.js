@@ -191,17 +191,6 @@ export class CageSolver {
         }
     }
 
-    slice(firstChunkCage) {
-        const cageToSlice = this.cage;
-        const secondChunkCageCells = [];
-        cageToSlice.cells.forEach(cell => {
-            if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
-                secondChunkCageCells.push(cell);
-            }
-        });
-        return new Cage(cageToSlice.sum - firstChunkCage.sum, secondChunkCageCells);
-    }
-
     #hasSingleCombination() {
         return this.#combosMap.size === 1;
     }

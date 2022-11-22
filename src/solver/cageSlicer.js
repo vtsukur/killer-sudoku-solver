@@ -1,3 +1,5 @@
+import { Cage } from "../problem/cage";
+
 export class CageSlicer {
     #model;
 
@@ -19,7 +21,7 @@ export class CageSlicer {
                 const cageSolversForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
                 cageSolversForResidualCage.forEach(firstChunkCageSolver => {
-                    const secondChunkCage = firstChunkCageSolver.slice(residualCage);
+                    const secondChunkCage = CageSlicer.#slice(firstChunkCageSolver.cage, residualCage);
                     cagesToUnregister.push(firstChunkCageSolver.cage);
                     nextResidualCages.push(secondChunkCage);
                 });
@@ -49,5 +51,15 @@ export class CageSlicer {
         }
 
         return result;
+    }
+
+    static #slice(cageToSlice, firstChunkCage) {
+        const secondChunkCageCells = [];
+        cageToSlice.cells.forEach(cell => {
+            if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
+                secondChunkCageCells.push(cell);
+            }
+        });
+        return new Cage(cageToSlice.sum - firstChunkCage.sum, secondChunkCageCells);
     }
 }
