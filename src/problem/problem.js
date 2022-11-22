@@ -4,8 +4,10 @@ import { Grid } from './grid';
 import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Problem {
+    #cages;
+
     constructor(cages) {
-        this.cages = [...Problem.#validate(cages)];
+        this.#cages = [...Problem.#validate(cages)];
     }
 
     static #validate(cages) {
@@ -72,5 +74,9 @@ export class Problem {
 
     static #throwValidationError(detailedMessage) {
         throw `Invalid problem. ${detailedMessage}`;
+    }
+
+    get cages() {
+        return this.#cages;
     }
 }
