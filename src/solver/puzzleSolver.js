@@ -19,40 +19,8 @@ export class PuzzleSolver {
     constructor(problem) {
         this.problem = problem;
         this.#model = new SolverModel(problem);
-
-        // this.#model.cagesSolversMap = new Map();
         this.#solution = Grid.newMatrix();
         this.#placedNumsCount = 0;
-
-        // this.#model.rowSolvers = [];
-        // this.#model.columnSolvers = [];
-        // this.#model.nonetSolvers = [];
-        // _.range(House.SIZE).forEach(i => {
-            // this.#model.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
-        //     this.#model.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
-        //     this.#model.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
-        // }, this);
-
-        // this.#model.cellSolversMatrix = Grid.newMatrix();
-        // const cells = problem.cages.map(cage => cage.cells).flat();
-        // cells.forEach(cell => {
-        //     this.#model.cellSolversMatrix[cell.row][cell.col] = new CellSolver({
-        //         cell,
-        //         rowSolver: this.#model.rowSolvers[cell.row],
-        //         columnSolver: this.#model.columnSolvers[cell.col],
-        //         nonetSolver: this.#model.nonetSolvers[cell.nonet]
-        //     });
-        // }, this);
-
-        // problem.cages.forEach(cage => {
-        //     this.#registerCage(cage);
-        // }, this);
-
-        // this.#model.houseSolvers = [[...this.#model.rowSolvers], [...this.#model.columnSolvers], [...this.#model.nonetSolvers]].flat();
-    }
-
-    #collectHouseCells(iterator) {
-        return Array.from(iterator).map(coords => this.#model.cellAt(coords.row, coords.col), this);
     }
 
     solve() {
