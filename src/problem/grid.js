@@ -16,6 +16,18 @@ export class Grid {
         return Grid.#TOTAL_SUM;
     }
 
+    static rowFromAbs(idx) {
+        return Math.floor(idx / House.SIZE);
+    }
+
+    static colFromAbs(idx) {
+        return idx % House.SIZE;
+    }
+
+    static newMatrix() {
+        return new Array(House.SIZE).fill().map(() => new Array(House.SIZE));
+    }
+
     constructor() {
         throw new TypeError('Grid is not constructable');
     }

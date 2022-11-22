@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { newGridMatrix } from '../util/matrix';
-import { House } from '../problem/house';
 import { Cage } from '../problem/cage';
-import { CellSolver } from './cellSolver';
-import { CageSolver } from './cageSolver';
+import { Grid } from '../problem/grid';
+import { House } from '../problem/house';
 import { CagesArea } from './cagesArea';
-import { findSumCombinationsForHouse } from './combinatorial';
-import { RowSolver } from './rowSolver';
+import { CageSolver } from './cageSolver';
+import { CellSolver } from './cellSolver';
 import { ColumnSolver } from './columnSolver';
+import { findSumCombinationsForHouse } from './combinatorial';
 import { NonetSolver } from './nonetSolver';
+import { RowSolver } from './rowSolver';
 
 export class PuzzleSolver {
     #solution;
@@ -17,8 +17,8 @@ export class PuzzleSolver {
     constructor(problem) {
         this.problem = problem;
         this.cagesSolversMap = new Map();
-        this.cellsMatrix = newGridMatrix();
-        this.#solution = newGridMatrix();
+        this.cellsMatrix = Grid.newMatrix();
+        this.#solution = Grid.newMatrix();
         this.#placedNumbersCount = 0;
 
         problem.cages.forEach(cage => {
@@ -36,7 +36,7 @@ export class PuzzleSolver {
             this.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
         }, this);
 
-        this.cellSolversMatrix = newGridMatrix();
+        this.cellSolversMatrix = Grid.newMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
             this.cellSolversMatrix[cell.row][cell.col] = new CellSolver({

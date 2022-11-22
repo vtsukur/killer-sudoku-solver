@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { columnInGridMatrixFromAbs, rowInGridMatrixFromAbs } from '../util/matrix';
-import { Problem } from '../problem/problem';
 import { Cage } from '../problem/cage';
+import { Grid } from '../problem/grid';
+import { Problem } from '../problem/problem';
 
 const CAGE_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_REGEX = /^([0-9]+)$/;
@@ -63,8 +63,7 @@ export default function reader(path) {
             throw `Cage def duplicate: ${cageEntry.ref}`;
         }
         cages.get(cageEntry.ref).at(
-            rowInGridMatrixFromAbs(idx),
-            columnInGridMatrixFromAbs(idx)
+            Grid.rowFromAbs(idx), Grid.colFromAbs(idx)
         );
     });
 
