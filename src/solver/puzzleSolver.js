@@ -3,12 +3,7 @@ import { Cage } from '../problem/cage';
 import { Grid } from '../problem/grid';
 import { House } from '../problem/house';
 import { CagesArea } from './cagesArea';
-import { CageSolver } from './cageSolver';
-import { CellSolver } from './cellSolver';
-import { ColumnSolver } from './columnSolver';
 import { findSumCombinationsForHouse } from './combinatorial';
-import { NonetSolver } from './nonetSolver';
-import { RowSolver } from './rowSolver';
 import { SolverModel } from './solverModel';
 
 export class PuzzleSolver {
