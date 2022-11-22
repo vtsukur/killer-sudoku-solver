@@ -1,6 +1,6 @@
 import { Cell } from './cell';
 import { House } from './house';
-import { cellSetAndDuplicatesOf } from './uniqueCells';
+import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 
 export class Cage {
     #sum;

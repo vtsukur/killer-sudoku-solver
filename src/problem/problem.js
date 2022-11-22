@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cell } from './cell';
 import { Grid } from './grid';
-import { cellSetAndDuplicatesOf } from './uniqueCells';
+import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 
 export class Problem {
     #cages;
