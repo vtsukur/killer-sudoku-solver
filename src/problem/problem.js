@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Cell } from './cell';
 import { Grid } from './grid';
 import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
-import { valuesForMsg } from '../util/readableMessages';
+import { sentencesForError, valuesForMsg } from '../util/readableMessages';
 
 export class Problem {
     #cages;
@@ -26,30 +26,14 @@ export class Problem {
         const hasDuplicateCells = duplicateCellKeys.length > 0;
 
         if (hasMissingCells || hasDuplicateCells) {
-            const message = new this.#Sentences();
+            const sentences = [];
             if (hasMissingCells) {
-                message.add(`${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`);
+                sentences.push(`${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`);
             }
             if (hasDuplicateCells) {
-                message.add(`${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`);
+                sentences.push(`${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`);
             }
-            Problem.#throwValidationError(message);
-        }
-    }
-
-    static #Sentences = class {
-        #message = '';
-
-        add(sentence) {
-            if (this.#message.length > 0) {
-                this.#message = `${this.#message}. ${sentence}`;
-            } else {
-                this.#message = sentence;
-            }
-        }
-
-        toString() {
-            return this.#message;
+            Problem.#throwValidationError(sentencesForError(sentences));
         }
     }
 
