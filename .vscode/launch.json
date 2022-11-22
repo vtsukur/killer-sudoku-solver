@@ -109,6 +109,21 @@
             "type": "node"
         },
         {
+            "name": "[npm] reader.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "reader.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[npm] combinatorial.findCombinationsForSegment.test.js",
             "request": "launch",
             "runtimeArgs": [
