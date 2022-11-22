@@ -31,7 +31,7 @@ export class PuzzleSolver {
     }
 
     #determineAndSliceResidualCagesInAdjacentNHouseAreas() {
-        _.range(1, 3).reverse().forEach(n => {
+        _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minRow >= leftIdx && cageSolver.maxRow < rightIdxExclusive;
@@ -40,7 +40,7 @@ export class PuzzleSolver {
                 });
             });
         });
-        _.range(1, 3).reverse().forEach(n => {
+        _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
