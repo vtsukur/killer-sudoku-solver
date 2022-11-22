@@ -116,7 +116,7 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = House.
     };
 }
 
-// there is an issue with it having single cells ommitted
+// there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
 function findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount) {
     const context = {
         allCagesSet: new Set(cages),
