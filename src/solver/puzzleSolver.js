@@ -21,15 +21,8 @@ export class PuzzleSolver {
         this.#model = new SolverModel(problem);
 
         this.cagesSolversMap = new Map();
-        this.cellsMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
         this.#placedNumsCount = 0;
-
-        problem.cages.forEach(cage => {
-            cage.cells.forEach(cell => {
-                this.cellsMatrix[cell.row][cell.col] = cell;
-            }, this);
-        }, this);
 
         this.rowSolvers = [];
         this.columnSolvers = [];
@@ -59,7 +52,7 @@ export class PuzzleSolver {
     }
 
     #collectHouseCells(iterator) {
-        return Array.from(iterator).map(coords => this.cellAt(coords.row, coords.col), this);
+        return Array.from(iterator).map(coords => this.#model.cellAt(coords.row, coords.col), this);
     }
 
     solve() {
@@ -103,8 +96,8 @@ export class PuzzleSolver {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { row, col } of cellIteratorFn(idx)) {
-                    if (!cagesArea.hasNonOverlapping(this.cellAt(row, col))) {
-                        residualCells.push(this.cellAt(row, col));
+                    if (!cagesArea.hasNonOverlapping(this.#model.cellAt(row, col))) {
+                        residualCells.push(this.#model.cellAt(row, col));
                     }
                 }
             });
@@ -373,10 +366,6 @@ export class PuzzleSolver {
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         }, this);
         this.cagesSolversMap.delete(cage.key);
-    }
-
-    cellAt(rowIds, col) {
-        return this.cellsMatrix[rowIds][col];
     }
 
     cellSolverOf(cell) {

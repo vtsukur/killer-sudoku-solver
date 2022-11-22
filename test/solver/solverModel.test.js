@@ -1,0 +1,28 @@
+import { Cage } from "../../src/problem/cage";
+import { Cell } from "../../src/problem/cell";
+import { House } from "../../src/problem/house";
+import { SolverModel } from "../../src/solver/solverModel";
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from "../problem/realProblemSamples";
+
+describe('Tests for solver model', () => {
+    test('Construction of solver model (shallow coverage)', () => {
+        const solver = new SolverModel(sudokuDotCom_dailyChallengeOf_2022_11_01);
+
+        expect(solver.cellAt(2, 3)).toEqual(Cell.at(2, 3));
+        expect(solver.rowSolvers.length).toBe(House.SIZE);
+        expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
+        expect(solver.columnSolvers.length).toBe(House.SIZE);
+        expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.ofSum(2).at(3, 2).mk());
+        expect(solver.nonetSolvers.length).toBe(House.SIZE);
+        expect(solver.nonetSolvers[1].cages[2]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
+
+        const aCellDeterminator = solver.cellSolverAt(2, 3);
+        expect(aCellDeterminator.cell).toEqual(Cell.at(2, 3));
+        expect(aCellDeterminator.rowSolver.idx).toEqual(2);
+        expect(aCellDeterminator.columnSolver.idx).toEqual(3);
+        expect(aCellDeterminator.nonetSolver.idx).toEqual(1);
+        expect(aCellDeterminator.placedNum).toBe(undefined);
+        // expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        // expect(aCellDeterminator.withinCageSolvers).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
+    });
+});

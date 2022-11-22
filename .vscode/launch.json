@@ -154,6 +154,21 @@
             "type": "node"
         },
         {
+            "name": "[npm] solverModel.test.js",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "solverModel.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
