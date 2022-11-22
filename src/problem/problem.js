@@ -5,13 +5,13 @@ import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Problem {
     constructor(cages) {
-        Problem.#validate(cages);
-        this.cages = [...cages];
+        this.cages = [...Problem.#validate(cages)];
     }
 
     static #validate(cages) {
         Problem.#validateCageCells(cages.flatMap(cage => cage.cells));
         Problem.#validateCages(cages);
+        return cages;
     }
 
     static #validateCageCells(cells) {
@@ -23,16 +23,30 @@ export class Problem {
         const hasDuplicateCells = duplicateCellKeys.length > 0;
 
         if (hasMissingCells || hasDuplicateCells) {
-            let message = '';
+            const message = new this.#Sentences();
             if (hasMissingCells) {
-                message = `${missingCellKeys.length} missing cell(s): ${missingCellKeys.join(', ')}. `;
+                message.add(`${missingCellKeys.length} missing cell(s): ${missingCellKeys.join(', ')}`);
             }
             if (hasDuplicateCells) {
-                message = `${message}${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}.`
+                message.add(`${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}`);
             }
-            // removing trailing whitespaces and last dot.
-            message = message.trim().slice(0, -1);
             Problem.#throwValidationError(message);
+        }
+    }
+
+    static #Sentences = class {
+        #message = '';
+
+        add(sentence) {
+            if (this.#message.length > 0) {
+                this.#message = `${this.#message}. ${sentence}`;
+            } else {
+                this.#message = sentence;
+            }
+        }
+
+        toString() {
+            return this.#message;
         }
     }
 
@@ -50,7 +64,7 @@ export class Problem {
     }
 
     static #validateCages(cages) {
-        const actualGridSum = cages.reduce((prev, current) => prev + current.sum, 0);
+        const actualGridSum = _.sum(cages.map(cage => cage.sum));
         if (actualGridSum !== Grid.TOTAL_SUM) {
             this.#throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
         }
