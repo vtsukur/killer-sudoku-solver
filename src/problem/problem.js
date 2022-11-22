@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { Cell } from './cell';
 import { Grid } from './grid';
 import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
+import { valuesForMsg } from '../util/readableMessages';
 
 export class Problem {
     #cages;
@@ -27,10 +28,10 @@ export class Problem {
         if (hasMissingCells || hasDuplicateCells) {
             const message = new this.#Sentences();
             if (hasMissingCells) {
-                message.add(`${missingCellKeys.length} missing cell(s): ${missingCellKeys.join(', ')}`);
+                message.add(`${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`);
             }
             if (hasDuplicateCells) {
-                message.add(`${duplicateCellKeys.length} duplicate cell(s): ${duplicateCellKeys.join(', ')}`);
+                message.add(`${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`);
             }
             Problem.#throwValidationError(message);
         }

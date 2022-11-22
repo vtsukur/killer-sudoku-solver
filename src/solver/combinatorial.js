@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from '../problem/house';
+import { valuesForMsg } from '../util/readableMessages';
 
 const MIN_SUMS_PER_COUNT = new Array(House.SIZE);
 const MAX_SUMS_PER_COUNT = new Array(House.SIZE);
@@ -169,7 +170,7 @@ function doFindForNonOverlappingCages(cages) {
     }
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
     if (totalSum > House.SUM) {
-        throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${cages.join(', ')}}`;
+        throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${valuesForMsg(cages)}}`;
     }
     const cellCount = cages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     if (cellCount > House.SIZE) {
