@@ -24,7 +24,6 @@ export class PuzzleSolver {
 
     solve() {
         this.#determineAndSliceResidualCagesInAdjacentNHouseAreas();
-        this.#determineAndSliceResidualCagesInHouses();
         this.#fillUpCombinationsForCagesAndMakeInitialReduce();
         this.#mainReduce();
 
@@ -32,13 +31,8 @@ export class PuzzleSolver {
     }
 
     #determineAndSliceResidualCagesInAdjacentNHouseAreas() {
-        _.range(2, 9).reverse().forEach(n => {
+        _.range(1, 3).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
-                    return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
-                }, (col) => {
-                    return this.#model.columnSolvers[col].cellIterator()
-                });
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minRow >= leftIdx && cageSolver.maxRow < rightIdxExclusive;
                 }, (row) => {
@@ -46,6 +40,28 @@ export class PuzzleSolver {
                 });
             });
         });
+        _.range(1, 3).reverse().forEach(n => {
+            _.range(House.SIZE - n + 1).forEach(leftIdx => {
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
+                    return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
+                }, (col) => {
+                    return this.#model.columnSolvers[col].cellIterator()
+                });
+            });
+        });
+        this.#model.nonetSolvers.forEach(houseSolver => {
+            const residualCage = houseSolver.determineResidualCage();
+            if (residualCage) {
+                this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);
+            }
+        });
+        // _.range(House.SIZE).forEach(leftIdx => {
+        //     this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageSolver) => {
+        //         return cageSolver.cage.isWithinNonet && cageSolver.cage.cells[0].nonet === leftIdx;
+        //     }, (nonet) => {
+        //         return this.#model.nonetSolvers[nonet].cellIterator();
+        //     });
+        // });
     }
 
     #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, withinHouseFn, cellIteratorFn) {
@@ -53,13 +69,14 @@ export class PuzzleSolver {
         const nHouseSum = n * House.SUM;
 
         const rightIdxExclusive = leftIdx + n;
-        let cagesArea = new CagesArea();
+        let cages = [];
         for (const cageSolver of this.#model.cagesSolversMap.values()) {
             if (withinHouseFn(cageSolver, rightIdxExclusive)) {
-                cagesArea = new CagesArea(cagesArea.cages.concat(cageSolver.cage), nHouseCellCount);
+                cages = cages.concat(cageSolver.cage);
             }
         }
-        if (cagesArea.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
+        const cagesArea = new CagesArea(cages, nHouseCellCount);
+        if (n === 1 || cagesArea.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { row, col } of cellIteratorFn(idx)) {
@@ -75,15 +92,6 @@ export class PuzzleSolver {
                 }
             }
         }
-    }
-
-    #determineAndSliceResidualCagesInHouses() {
-        this.#model.houseSolvers.forEach(houseSolver => {
-            const residualCage = houseSolver.determineResidualCage();
-            if (residualCage) {
-                this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);
-            }
-        });
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
