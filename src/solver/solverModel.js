@@ -21,8 +21,8 @@ export class SolverModel {
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
                 this.cellsMatrix[cell.row][cell.col] = cell;
-            }, this);
-        }, this);
+            });
+        });
 
         this.rowSolvers = [];
         this.columnSolvers = [];
@@ -31,7 +31,7 @@ export class SolverModel {
             this.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
             this.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
             this.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
-        }, this);
+        });
 
         this.cellSolversMatrix = Grid.newMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
@@ -42,21 +42,21 @@ export class SolverModel {
                 columnSolver: this.columnSolvers[cell.col],
                 nonetSolver: this.nonetSolvers[cell.nonet]
             });
-        }, this);
+        });
 
         problem.cages.forEach(cage => {
             this.registerCage(cage);
-        }, this);
+        });
 
         this.houseSolvers = [[...this.rowSolvers], [...this.columnSolvers], [...this.nonetSolvers]].flat();
     }
 
     #collectHouseCells(iterator) {
-        return Array.from(iterator).map(coords => this.cellAt(coords.row, coords.col), this);
+        return Array.from(iterator).map(coords => this.cellAt(coords.row, coords.col));
     }
 
     registerCage(cage) {
-        const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
+        const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
         if (cageSolver.isWithinRow) {
             this.rowSolvers[cageSolver.anyRow()].addCage(cage);
         }
@@ -68,7 +68,7 @@ export class SolverModel {
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
-        }, this);
+        });
         this.cagesSolversMap.set(cage.key, cageSolver);
     }
 
@@ -85,7 +85,7 @@ export class SolverModel {
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
-        }, this);
+        });
         this.cagesSolversMap.delete(cage.key);
     }
 

@@ -23,7 +23,7 @@ export class HouseSolver {
             if (!this.#cagesArea.hasNonOverlapping(cell)) {
                 residualCageCells.push(cell);
             }
-        }, this);
+        });
 
         return new Cage(House.SUM - this.#cagesArea.sum, residualCageCells);
     }
