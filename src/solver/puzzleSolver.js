@@ -20,35 +20,35 @@ export class PuzzleSolver {
         this.problem = problem;
         this.#model = new SolverModel(problem);
 
-        this.cagesSolversMap = new Map();
+        // this.#model.cagesSolversMap = new Map();
         this.#solution = Grid.newMatrix();
         this.#placedNumsCount = 0;
 
-        this.rowSolvers = [];
-        this.columnSolvers = [];
-        this.nonetSolvers = [];
-        _.range(House.SIZE).forEach(i => {
-            this.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
-            this.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
-            this.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
-        }, this);
+        // this.#model.rowSolvers = [];
+        // this.#model.columnSolvers = [];
+        // this.#model.nonetSolvers = [];
+        // _.range(House.SIZE).forEach(i => {
+            // this.#model.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
+        //     this.#model.columnSolvers.push(new ColumnSolver(i, this.#collectHouseCells(ColumnSolver.iteratorFor(i))));
+        //     this.#model.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
+        // }, this);
 
-        this.cellSolversMatrix = Grid.newMatrix();
-        const cells = problem.cages.map(cage => cage.cells).flat();
-        cells.forEach(cell => {
-            this.cellSolversMatrix[cell.row][cell.col] = new CellSolver({
-                cell,
-                rowSolver: this.rowSolvers[cell.row],
-                columnSolver: this.columnSolvers[cell.col],
-                nonetSolver: this.nonetSolvers[cell.nonet]
-            });
-        }, this);
+        // this.#model.cellSolversMatrix = Grid.newMatrix();
+        // const cells = problem.cages.map(cage => cage.cells).flat();
+        // cells.forEach(cell => {
+        //     this.#model.cellSolversMatrix[cell.row][cell.col] = new CellSolver({
+        //         cell,
+        //         rowSolver: this.#model.rowSolvers[cell.row],
+        //         columnSolver: this.#model.columnSolvers[cell.col],
+        //         nonetSolver: this.#model.nonetSolvers[cell.nonet]
+        //     });
+        // }, this);
 
-        problem.cages.forEach(cage => {
-            this.#registerCage(cage);
-        }, this);
+        // problem.cages.forEach(cage => {
+        //     this.#registerCage(cage);
+        // }, this);
 
-        this.houseSolvers = [[...this.rowSolvers], [...this.columnSolvers], [...this.nonetSolvers]].flat();
+        // this.#model.houseSolvers = [[...this.#model.rowSolvers], [...this.#model.columnSolvers], [...this.#model.nonetSolvers]].flat();
     }
 
     #collectHouseCells(iterator) {
@@ -70,12 +70,12 @@ export class PuzzleSolver {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
                 }, (col) => {
-                    return this.columnSolvers[col].cellIterator()
+                    return this.#model.columnSolvers[col].cellIterator()
                 });
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
                     return cageSolver.minRow >= leftIdx && cageSolver.maxRow < rightIdxExclusive;
                 }, (row) => {
-                    return this.rowSolvers[row].cellIterator()
+                    return this.#model.rowSolvers[row].cellIterator()
                 });
             });
         });
@@ -87,7 +87,7 @@ export class PuzzleSolver {
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new CagesArea();
-        for (const cageSolver of this.cagesSolversMap.values()) {
+        for (const cageSolver of this.#model.cagesSolversMap.values()) {
             if (withinHouseFn(cageSolver, rightIdxExclusive)) {
                 cagesArea = new CagesArea(cagesArea.cages.concat(cageSolver.cage), nHouseCellCount);
             }
@@ -103,7 +103,7 @@ export class PuzzleSolver {
             });
             if (residualCells.length) {
                 const residualCage = new Cage(nHouseSum - cagesArea.sum, residualCells);
-                if (!this.cagesSolversMap.has(residualCage.key)) {
+                if (!this.#model.cagesSolversMap.has(residualCage.key)) {
                     this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
@@ -111,7 +111,7 @@ export class PuzzleSolver {
     }
 
     #determineAndSliceResidualCagesInHouses() {
-        this.houseSolvers.forEach(houseSolver => {
+        this.#model.houseSolvers.forEach(houseSolver => {
             const residualCage = houseSolver.determineResidualCage();
             if (residualCage) {
                 this.#addAndSliceResidualCageRecursively(residualCage);
@@ -126,7 +126,7 @@ export class PuzzleSolver {
             const nextResidualCages = [];
 
             residualCages.forEach(residualCage => {
-                if (this.cagesSolversMap.has(residualCage.key)) return;
+                if (this.#model.cagesSolversMap.has(residualCage.key)) return;
 
                 this.#registerCage(residualCage);
 
@@ -150,7 +150,7 @@ export class PuzzleSolver {
         residualCage.cells.forEach(cell => {
             allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.cellSolverOf(cell).withinCageSolvers]);
         }, this);
-        allAssociatedCageSolversSet.delete(this.cagesSolversMap.get(residualCage.key));
+        allAssociatedCageSolversSet.delete(this.#model.cagesSolversMap.get(residualCage.key));
 
         const result = [];
         for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {
@@ -176,11 +176,11 @@ export class PuzzleSolver {
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
-        this.houseSolvers.forEach(houseSolver => {
+        this.#model.houseSolvers.forEach(houseSolver => {
             const combosForHouse = findSumCombinationsForHouse(houseSolver);
             houseSolver.debugCombosForHouse = combosForHouse;
             houseSolver.cages.forEach((cage, idx) => {
-                const cageSolver = this.cagesSolversMap.get(cage.key);
+                const cageSolver = this.#model.cagesSolversMap.get(cage.key);
                 const combosKeySet = new Set();
                 const combos = [];
                 combosForHouse.forEach(combo => {
@@ -197,7 +197,7 @@ export class PuzzleSolver {
     }
 
     #mainReduce() {
-        let cageSolversIterable = this.cagesSolversMap.values();
+        let cageSolversIterable = this.#model.cagesSolversMap.values();
         let iterate = true;
         let newlySolvedCellDets = [];
 
@@ -224,7 +224,7 @@ export class PuzzleSolver {
                     }
                 });
                 newlySolvedCellDets = [];
-                nextCagesSet = new Set(this.cagesSolversMap.values());
+                nextCagesSet = new Set(this.#model.cagesSolversMap.values());
                 cageSolversIterable = nextCagesSet.values();
             }
             else {
@@ -262,9 +262,9 @@ export class PuzzleSolver {
         cellsSolvers.forEach(cellSolver => {
             const num = cellSolver.placedNum;
             [
-                this.rowSolvers[cellSolver.cell.row],
-                this.columnSolvers[cellSolver.cell.col],
-                this.nonetSolvers[cellSolver.cell.nonet]
+                this.#model.rowSolvers[cellSolver.cell.row],
+                this.#model.columnSolvers[cellSolver.cell.col],
+                this.#model.nonetSolvers[cellSolver.cell.nonet]
             ].forEach(houseSolver => {
                 for (const { row, col } of houseSolver.cellIterator()) {
                     if (row === cellSolver.cell.row && col === cellSolver.cell.col) continue;
@@ -283,13 +283,13 @@ export class PuzzleSolver {
     #determineUniqueCagesInHouses() {
         let cageSolversToReduce = new Set();
 
-        this.houseSolvers.forEach(houseSolver => {
+        this.#model.houseSolvers.forEach(houseSolver => {
             _.range(1, House.SIZE + 1).forEach(num => {
                 const cageSolversWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 houseSolver.cages.forEach(cage => {
-                    if (this.cagesSolversMap.get(cage.key).isSingleCellCage) return;
-                    const cageSolver = this.cagesSolversMap.get(cage.key);
+                    if (this.#model.cagesSolversMap.get(cage.key).isSingleCellCage) return;
+                    const cageSolver = this.#model.cagesSolversMap.get(cage.key);
                     const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageSolversWithNum.push(cageSolver);
@@ -337,35 +337,35 @@ export class PuzzleSolver {
     #registerCage(cage) {
         const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell), this));
         if (cageSolver.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRow()].addCage(cage);
+            this.#model.rowSolvers[cageSolver.anyRow()].addCage(cage);
         }
         if (cageSolver.isWithinColumn) {
-            this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
+            this.#model.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
         }
         if (cageSolver.isWithinNonet) {
-            this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
+            this.#model.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
         }, this);
-        this.cagesSolversMap.set(cage.key, cageSolver);
+        this.#model.cagesSolversMap.set(cage.key, cageSolver);
     }
 
     #unregisterCage(cage) {
-        const cageSolver = this.cagesSolversMap.get(cage.key);
+        const cageSolver = this.#model.cagesSolversMap.get(cage.key);
         if (cageSolver.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRow()].removeCage(cage);
+            this.#model.rowSolvers[cageSolver.anyRow()].removeCage(cage);
         }
         if (cageSolver.isWithinColumn) {
-            this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
+            this.#model.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
         }
         if (cageSolver.isWithinNonet) {
-            this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
+            this.#model.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         }, this);
-        this.cagesSolversMap.delete(cage.key);
+        this.#model.cagesSolversMap.delete(cage.key);
     }
 
     cellSolverOf(cell) {
@@ -373,18 +373,18 @@ export class PuzzleSolver {
     }
 
     cellSolverAt(row, col) {
-        return this.cellSolversMatrix[row][col];
+        return this.#model.cellSolversMatrix[row][col];
     }
 
     rowSolver(idx) {
-        return this.rowSolvers[idx];
+        return this.#model.rowSolvers[idx];
     }
 
     columnSolver(idx) {
-        return this.columnSolvers[idx];
+        return this.#model.columnSolvers[idx];
     }
 
     nonetSolver(idx) {
-        return this.nonetSolvers[idx];
+        return this.#model.nonetSolvers[idx];
     }
 }

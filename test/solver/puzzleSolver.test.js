@@ -182,9 +182,9 @@ describe('Tests for puzzle solver', () => {
         expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
-            expect(solver.rowSolvers[idx].cages.length).toBe(House.SIZE);
-            expect(solver.columnSolvers[idx].cages.length).toBe(House.SIZE);
-            expect(solver.nonetSolvers[idx].cages.length).toBe(House.SIZE);
+            expect(solver.rowSolver(idx).cages.length).toBe(House.SIZE);
+            expect(solver.columnSolver(idx).cages.length).toBe(House.SIZE);
+            expect(solver.nonetSolver(idx).cages.length).toBe(House.SIZE);
         });
     });
 });
