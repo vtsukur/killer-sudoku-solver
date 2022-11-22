@@ -2,11 +2,13 @@ import _ from 'lodash';
 import { House } from './house';
 
 export class Cell {
+    #row;
+    #col;
     #key;
 
     constructor(row, col) {
-        this.row = Cell.#validateIndex('Row', row);
-        this.col = Cell.#validateIndex('Column', col);
+        this.#row = Cell.#validateIndex('Row', row);
+        this.#col = Cell.#validateIndex('Column', col);
         this.#key = Cell.keyOf(row, col);
         this.nonet = Math.floor(row / House.NONET_SIDE_LENGTH) * House.NONET_SIDE_LENGTH + Math.floor(col / House.NONET_SIDE_LENGTH);
     }
@@ -29,6 +31,14 @@ export class Cell {
 
     static keyOf(row, col) {
         return `(${row}, ${col})`
+    }
+
+    get row() {
+        return this.#row;
+    }
+
+    get col() {
+        return this.#col;
     }
 
     get key() {
