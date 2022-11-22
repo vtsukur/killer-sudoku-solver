@@ -97,7 +97,7 @@ export class PuzzleSolver {
                 const cageSolversForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
                 cageSolversForResidualCage.forEach(firstChunkCageSolver => {
-                    const secondChunkCage = this.#sliceCage(firstChunkCageSolver.cage, residualCage);
+                    const secondChunkCage = firstChunkCageSolver.slice(residualCage);
                     cagesToUnregister.push(firstChunkCageSolver.cage);
                     nextResidualCages.push(secondChunkCage);
                 }, this);
@@ -127,16 +127,6 @@ export class PuzzleSolver {
         }
 
         return result;
-    }
-
-    #sliceCage(cageToSlice, firstChunkCage) {
-        const secondChunkCageCells = [];
-        cageToSlice.cells.forEach(cell => {
-            if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
-                secondChunkCageCells.push(cell);
-            }
-        });
-        return new Cage(cageToSlice.sum - firstChunkCage.sum, secondChunkCageCells);
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
