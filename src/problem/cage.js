@@ -3,11 +3,13 @@ import { House } from './house';
 import { cellSetAndDuplicatesOf } from './uniqueCells';
 
 export class Cage {
+    #sum;
+    #cells;
     #key;
 
     constructor(sum, cells) {
-        this.sum = Cage.#validateSum(sum);
-        this.cells = [...Cage.#validateCells(cells)];
+        this.#sum = Cage.#validateSum(sum);
+        this.#cells = [...Cage.#validateCells(cells)];
         this.#key = `${this.sum} [${this.cells.join(', ')}]`;
     }
 
@@ -53,8 +55,16 @@ export class Cage {
         }
     }
     
+    get sum() {
+        return this.#sum;
+    }
+
+    get cells() {
+        return this.#cells;
+    }
+
     get cellCount() {
-        return this.cells.length;
+        return this.#cells.length;
     }
 
     get key() {
