@@ -11,7 +11,7 @@ export class Cell {
         this.#row = Cell.#validateIndex('Row', row);
         this.#col = Cell.#validateIndex('Column', col);
         this.#key = Cell.keyOf(row, col);
-        this.nonet = Math.floor(row / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH + Math.floor(col / Nonet.SIDE_LENGTH);
+        this.nonet = Nonet.indexOf(row, col);
     }
 
     static #validateIndex(type, actualValue) {
