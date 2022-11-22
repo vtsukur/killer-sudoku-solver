@@ -5,6 +5,7 @@ import { House } from '../problem/house';
 import { CagesArea } from './cagesArea';
 import { findSumCombinationsForHouse } from './combinatorial';
 import { SolverModel } from './solverModel';
+import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
 
 export class PuzzleSolver {
     #solution;
@@ -169,7 +170,7 @@ export class PuzzleSolver {
                 return;
             }
     
-            this.#reduceCages(cageSolversIterable);
+            new ReducePermsInCagesStrategy(cageSolversIterable).apply();
     
             const solvedCellDets = this.#determineCellsWithSingleOption();
             let nextCagesSet = this.#reduceHousesBySolvedCells(solvedCellDets);
@@ -196,27 +197,6 @@ export class PuzzleSolver {
             }
 
             iterate = nextCagesSet.size > 0;
-        }
-    }
-
-    #reduceCages(cageSolversIterable) {
-        let iterate = true;
-
-        while (iterate) {
-            let modifiedCellDets = new Set();
-
-            for (const cageSolver of cageSolversIterable) {
-                const currentlyModifiedCellDets = cageSolver.reduce();
-                modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
-            }
-
-            let moreCageSolversToReduce = new Set();
-            for (const modifiedCellDet of modifiedCellDets.values()) {
-                moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellDet.withinCageSolvers]);
-            }
-
-            cageSolversIterable = moreCageSolversToReduce.values();
-            iterate = moreCageSolversToReduce.size > 0;
         }
     }
 
