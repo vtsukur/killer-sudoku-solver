@@ -54,7 +54,7 @@ export class CageSolver {
             });
         });
 
-        this.cellSolvers.forEach(cellSolver => cellSolver.reduceNumberOptions(numOpts));
+        this.cellSolvers.forEach(cellSolver => cellSolver.reduceNumOptions(numOpts));
     }
 
     reduce() {
@@ -69,13 +69,13 @@ export class CageSolver {
         }
     }
 
-    #reduceByCellPermutations(canHaveNumberDuplicates) {
+    #reduceByCellPermutations(canHaveNumDuplicates) {
         const context = {
             i: 0,
             cellsSolvers: this.cellSolvers,
             processedCellDets: new Set(),
             remainingCellDets: new Set(this.cellSolvers),
-            processedNumbers: new Set(),
+            processedNums: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellsSolversStack: new Array(this.#cellCount),
             processCell: function(cellSolver, step, fn) {
@@ -87,17 +87,17 @@ export class CageSolver {
                 this.processedCellDets.delete(cellSolver); this.remainingCellDets.add(cellSolver);    
                 return retVal;
             },
-            mayNotProceedWithNumber: function(num) {
-                return canHaveNumberDuplicates ? false : this.processedNumbers.has(num);
+            mayNotProceedWithNum: function(num) {
+                return canHaveNumDuplicates ? false : this.processedNums.has(num);
             },
-            processNumber: function(num, step, fn) {
+            processNum: function(num, step, fn) {
                 this.i++;
-                if (this.mayNotProceedWithNumber(num)) return;
-                this.processedNumbers.add(num);
+                if (this.mayNotProceedWithNum(num)) return;
+                this.processedNums.add(num);
                 this.numbersStack[step] = num;
                 const retVal = fn();
                 this.numbersStack[step] = undefined;
-                this.processedNumbers.delete(num);
+                this.processedNums.delete(num);
                 return retVal;
             },
             remainingCellDet: function() {
@@ -111,7 +111,7 @@ export class CageSolver {
         this.cellSolvers.forEach(cellSolver => {
             context.processCell(cellSolver, 0, () => {
                 Array.from(cellSolver.numOpts()).forEach(num => {
-                    context.processNumber(num, 0, () => {
+                    context.processNum(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
                             cellSolver.deleteNumOpt(num);
@@ -131,21 +131,21 @@ export class CageSolver {
         if (step === (this.#cellCount - 1)) {
             context.i++;
             const lastNum = this.cage.sum - currentSumVal;
-            if (context.mayNotProceedWithNumber(lastNum)) return false;
+            if (context.mayNotProceedWithNum(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
             has = lastCellDet.hasNumOpt(lastNum);
             if (has) {
-                const sortedNumbers = [...context.numbersStack];
-                sortedNumbers[this.#cellCount - 1] = lastNum;
-                sortedNumbers.sort();
-                const comboKey = sortedNumbers.join();
-                this.#combosMap.set(comboKey, sortedNumbers);
+                const sortedNums = [...context.numbersStack];
+                sortedNums[this.#cellCount - 1] = lastNum;
+                sortedNums.sort();
+                const comboKey = sortedNums.join();
+                this.#combosMap.set(comboKey, sortedNums);
             }
         } else {
             this.cellSolvers.forEach(cellSolver => {
                 context.processCell(cellSolver, step, () => {
                     Array.from(cellSolver.numOpts()).forEach(num => {
-                        context.processNumber(num, step, () => {
+                        context.processNum(num, step, () => {
                             has = this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context) || has;
                         });
                     });
@@ -179,7 +179,7 @@ export class CageSolver {
             this.#combosMap = newCombosMap;
             const reducedCellDets = [];
             this.cellSolvers.forEach(cellSolver => {
-                if (cellSolver.reduceNumberOptions(newNumOptions).size > 0) {
+                if (cellSolver.reduceNumOptions(newNumOptions).size > 0) {
                     reducedCellDets.push(cellSolver);
                 }
             });

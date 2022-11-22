@@ -12,14 +12,14 @@ import { RowSolver } from './rowSolver';
 
 export class PuzzleSolver {
     #solution;
-    #placedNumbersCount;
+    #placedNumsCount;
 
     constructor(problem) {
         this.problem = problem;
         this.cagesSolversMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
-        this.#placedNumbersCount = 0;
+        this.#placedNumsCount = 0;
 
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
@@ -205,7 +205,7 @@ export class PuzzleSolver {
         let newlySolvedCellDets = [];
 
         while (iterate) {
-            if (this.#placedNumbersCount >= 81) {
+            if (this.#placedNumsCount >= 81) {
                 return;
             }
     
@@ -222,7 +222,7 @@ export class PuzzleSolver {
                 newlySolvedCellDets.forEach(cellSolver => {
                     const withinCageSolversSet = cellSolver.withinCageSolvers;
                     if (!(withinCageSolversSet.size === 1 && withinCageSolversSet.values().next().value.isSingleCellCage)) {
-                        const firstChunkCage = Cage.ofSum(cellSolver.placedNumber).at(cellSolver.cell.row, cellSolver.cell.col).mk();
+                        const firstChunkCage = Cage.ofSum(cellSolver.placedNum).at(cellSolver.cell.row, cellSolver.cell.col).mk();
                         this.#addAndSliceResidualCageRecursively(firstChunkCage);
                     }
                 });
@@ -263,7 +263,7 @@ export class PuzzleSolver {
     #reduceHousesBySolvedCells(cellsSolvers) {
         let cageSolversToReduceSet = new Set();
         cellsSolvers.forEach(cellSolver => {
-            const number = cellSolver.placedNumber;
+            const num = cellSolver.placedNum;
             [
                 this.rowSolvers[cellSolver.cell.row],
                 this.columnSolvers[cellSolver.cell.col],
@@ -273,8 +273,8 @@ export class PuzzleSolver {
                     if (row === cellSolver.cell.row && col === cellSolver.cell.col) continue;
         
                     const aCellDet = this.cellSolverAt(row, col);
-                    if (aCellDet.hasNumOpt(number)) {
-                        aCellDet.deleteNumOpt(number);
+                    if (aCellDet.hasNumOpt(num)) {
+                        aCellDet.deleteNumOpt(num);
                         cageSolversToReduceSet = new Set([...cageSolversToReduceSet, ...aCellDet.withinCageSolvers]);
                     }
                 }    
@@ -320,7 +320,7 @@ export class PuzzleSolver {
             _.range(House.SIZE).forEach(col => {
                 const cellSolver = this.cellSolverAt(row, col);
                 if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
-                    this.#placeNumber(cellSolver.cell, cellSolver.numOpts().values().next().value);
+                    this.#placeNum(cellSolver.cell, cellSolver.numOpts().values().next().value);
                     cellsSolvers.push(cellSolver);
                 }
             });
@@ -329,12 +329,12 @@ export class PuzzleSolver {
         return cellsSolvers;
     }
 
-    #placeNumber(cell, number) {
+    #placeNum(cell, num) {
         const cellSolver = this.cellSolverOf(cell);
-        cellSolver.placeNumber(number);
+        cellSolver.placeNum(num);
 
-        this.#solution[cell.row][cell.col] = number;
-        this.#placedNumbersCount++;
+        this.#solution[cell.row][cell.col] = num;
+        this.#placedNumsCount++;
     }
 
     #registerCage(cage) {

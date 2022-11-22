@@ -22,7 +22,7 @@ describe('Tests for puzzle solver', () => {
         expect(aCellDeterminator.rowSolver.idx).toEqual(2);
         expect(aCellDeterminator.columnSolver.idx).toEqual(3);
         expect(aCellDeterminator.nonetSolver.idx).toEqual(1);
-        expect(aCellDeterminator.placedNumber).toBe(undefined);
+        expect(aCellDeterminator.placedNum).toBe(undefined);
         expect(aCellDeterminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         // expect(aCellDeterminator.withinCageSolvers).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
     });
@@ -201,7 +201,7 @@ describe('Tests for puzzle solver', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         solver.solve();
 
-        expect(solver.cellSolverAt(2, 7).placedNumber).toBe(8);
+        expect(solver.cellSolverAt(2, 7).placedNum).toBe(8);
         expect(solver.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {

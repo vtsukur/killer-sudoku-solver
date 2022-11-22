@@ -14,7 +14,7 @@ export class CellSolver {
 
         this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
         this.#withinCageSolvers = new Set();
-        this.placedNumber = undefined;
+        this.placedNum = undefined;
     }
 
     addWithinCageSolver(withinCageSolver) {
@@ -41,11 +41,11 @@ export class CellSolver {
         return this.#numOpts.delete(num);
     }
 
-    reduceNumberOptions(numOpts) {
+    reduceNumOptions(numOpts) {
         const removedNumOptions = new Set();
-        for (const existingNumberOption of this.#numOpts) {
-            if (!numOpts.has(existingNumberOption)) {
-                removedNumOptions.add(existingNumberOption);
+        for (const existingNumOption of this.#numOpts) {
+            if (!numOpts.has(existingNumOption)) {
+                removedNumOptions.add(existingNumOption);
             }
         }
         for (const numToRemove of removedNumOptions) {
@@ -54,9 +54,9 @@ export class CellSolver {
         return removedNumOptions;
     }
 
-    placeNumber(number) {
-        this.#numOpts = new Set([number]);
-        this.placedNumber = number;
+    placeNum(num) {
+        this.#numOpts = new Set([num]);
+        this.placedNum = num;
         this.solved = true;
     }
 }

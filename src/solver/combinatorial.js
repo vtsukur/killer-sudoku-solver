@@ -14,7 +14,7 @@ _.range(House.SIZE).forEach(count => {
     }
 })
 
-export function findNumberCombinationsForSum(sum, count) {
+export function findNumCombinationsForSum(sum, count) {
     if (typeof (sum) !== 'number' || !sum || sum <= 0) {
         throw `Invalid cage: ${sum}`;
     }
@@ -181,7 +181,7 @@ function doFindForNonOverlappingCages(cages) {
     }
 
     const combos = [];
-    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.sum, cage.cellCount));
+    const combosForCages = cages.map(cage => findNumCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
     const checkingSet = new Set();
 
@@ -192,12 +192,12 @@ function doFindForNonOverlappingCages(cages) {
             const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum) {
                 const comboForSumArr = [...comboForSum];
-                if (comboForSumArr.every(number => !checkingSet.has(number))) {
+                if (comboForSumArr.every(num => !checkingSet.has(num))) {
                     stack[step] = comboForSum;
 
-                    comboForSumArr.forEach(number => checkingSet.add(number));
+                    comboForSumArr.forEach(num => checkingSet.add(num));
                     combosRecursive(step + 1);    
-                    comboForSumArr.forEach(number => checkingSet.delete(number));
+                    comboForSumArr.forEach(num => checkingSet.delete(num));
                 }
             }
         }
@@ -212,7 +212,7 @@ function doFindForOverlappingCages(cages) {
     if (cages.length === 0) return [];
 
     const combos = [];
-    const combosForCages = cages.map(cage => findNumberCombinationsForSum(cage.sum, cage.cellCount));
+    const combosForCages = cages.map(cage => findNumCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
 
     function combosRecursive(step) {
