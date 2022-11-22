@@ -125,12 +125,12 @@ export class CageSolver {
         return modifiedCellDets;
     } 
 
-    #hasSumMatchingPermutationsRecursive(currentSumVal, step, context) {
+    #hasSumMatchingPermutationsRecursive(currentSum, step, context) {
         let has = false;
 
         if (step === (this.#cellCount - 1)) {
             context.i++;
-            const lastNum = this.cage.sum - currentSumVal;
+            const lastNum = this.cage.sum - currentSum;
             if (context.mayNotProceedWithNum(lastNum)) return false;
             const lastCellDet = context.remainingCellDet();
             has = lastCellDet.hasNumOpt(lastNum);
@@ -146,7 +146,7 @@ export class CageSolver {
                 context.processCell(cellSolver, step, () => {
                     Array.from(cellSolver.numOpts()).forEach(num => {
                         context.processNum(num, step, () => {
-                            has = this.#hasSumMatchingPermutationsRecursive(currentSumVal + num, step + 1, context) || has;
+                            has = this.#hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
                         });
                     });
                 });

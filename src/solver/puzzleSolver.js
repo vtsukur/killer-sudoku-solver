@@ -86,7 +86,7 @@ export class PuzzleSolver {
 
     #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, withinHouseFn, cellIteratorFn) {
         const nHouseCellCount = n * House.SIZE;
-        const nHouseSumVal = n * House.SUM;
+        const nHouseSum = n * House.SUM;
 
         const rightIdxExclusive = leftIdx + n;
         let cagesArea = new CagesArea();
@@ -105,7 +105,7 @@ export class PuzzleSolver {
                 }
             });
             if (residualCells.length) {
-                const residualCage = new Cage(nHouseSumVal - cagesArea.sum, residualCells);
+                const residualCage = new Cage(nHouseSum - cagesArea.sum, residualCells);
                 if (!this.cagesSolversMap.has(residualCage.key)) {
                     this.#addAndSliceResidualCageRecursively(residualCage);                        
                 }
