@@ -3,18 +3,21 @@ import { Cage } from '../problem/cage';
 import { Grid } from '../problem/grid';
 import { House } from '../problem/house';
 import { CagesArea } from './cagesArea';
+import { CageSlicer } from './cageSlicer';
 import { findSumCombinationsForHouse } from './combinatorial';
 import { SolverModel } from './solverModel';
 import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
 
 export class PuzzleSolver {
+    #model;
+    #cageSlicer;
     #solution;
     #placedNumsCount;
-    #model;
 
     constructor(problem) {
         this.problem = problem;
         this.#model = new SolverModel(problem);
+        this.#cageSlicer = new CageSlicer(this.#model);
         this.#solution = Grid.newMatrix();
         this.#placedNumsCount = 0;
     }
@@ -68,7 +71,7 @@ export class PuzzleSolver {
             if (residualCells.length) {
                 const residualCage = new Cage(nHouseSum - cagesArea.sum, residualCells);
                 if (!this.#model.cagesSolversMap.has(residualCage.key)) {
-                    this.#addAndSliceResidualCageRecursively(residualCage);                        
+                    this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
         }
@@ -78,55 +81,9 @@ export class PuzzleSolver {
         this.#model.houseSolvers.forEach(houseSolver => {
             const residualCage = houseSolver.determineResidualCage();
             if (residualCage) {
-                this.#addAndSliceResidualCageRecursively(residualCage);
+                this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);
             }
         });
-    }
-
-    #addAndSliceResidualCageRecursively(initialResidualCage) {
-        let residualCages = [ initialResidualCage ];
-
-        while (residualCages.length > 0) {
-            const nextResidualCages = [];
-
-            residualCages.forEach(residualCage => {
-                if (this.#model.cagesSolversMap.has(residualCage.key)) return;
-
-                this.#model.registerCage(residualCage);
-
-                const cageSolversForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
-                const cagesToUnregister = [];
-                cageSolversForResidualCage.forEach(firstChunkCageSolver => {
-                    const secondChunkCage = firstChunkCageSolver.slice(residualCage);
-                    cagesToUnregister.push(firstChunkCageSolver.cage);
-                    nextResidualCages.push(secondChunkCage);
-                });
-
-                cagesToUnregister.forEach(cage => this.#model.unregisterCage(cage));
-            });
-
-            residualCages = nextResidualCages;
-        }
-    }
-
-    #getCageSolversFullyContainingResidualCage(residualCage) {
-        let allAssociatedCageSolversSet = new Set();
-        residualCage.cells.forEach(cell => {
-            allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.cellSolverOf(cell).withinCageSolvers]);
-        });
-        allAssociatedCageSolversSet.delete(this.#model.cagesSolversMap.get(residualCage.key));
-
-        const result = [];
-        for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {
-            const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
-                return this.cellSolverOf(cell).withinCageSolvers.has(associatedCageSolver);
-            });
-            if (associatedCageFullyContainsResidualCage) {
-                result.push(associatedCageSolver);
-            }
-        }
-
-        return result;
     }
 
     #fillUpCombinationsForCagesAndMakeInitialReduce() {
@@ -174,7 +131,7 @@ export class PuzzleSolver {
                     const withinCageSolversSet = cellSolver.withinCageSolvers;
                     if (!(withinCageSolversSet.size === 1 && withinCageSolversSet.values().next().value.isSingleCellCage)) {
                         const firstChunkCage = Cage.ofSum(cellSolver.placedNum).at(cellSolver.cell.row, cellSolver.cell.col).mk();
-                        this.#addAndSliceResidualCageRecursively(firstChunkCage);
+                        this.#cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
                     }
                 });
                 newlySolvedCellDets = [];
