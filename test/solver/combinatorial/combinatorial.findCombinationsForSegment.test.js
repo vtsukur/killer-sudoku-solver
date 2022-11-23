@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { findSumCombinationsForHouse } from '../../../src/solver/combinatorial/index';
+import { findSumCombinationsForHouse } from '../../../src/solver/combinatorial/combinatorial';
 import { Cage } from '../../../src/problem/cage';
 
 const houseModelOf = (cages) => {

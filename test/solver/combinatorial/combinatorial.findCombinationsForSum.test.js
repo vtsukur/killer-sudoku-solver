@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { findNumCombinationsForSum } from '../../../src/solver/combinatorial/index';
+import { findNumCombinationsForSum } from '../../../src/solver/combinatorial/combinatorial';
 
 describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 1 cell', () => {
