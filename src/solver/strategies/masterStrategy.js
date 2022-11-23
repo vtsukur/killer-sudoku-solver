@@ -31,8 +31,9 @@ export class MasterStrategy extends BaseStrategy {
             new ReducePermsInCagesStrategy().apply(ctx);
     
             const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
-            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
+            new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
 
+            let nextCagesSet = new Set();
             if (solvedCellModels.length > 0) {
                 new SliceCagesForSolvedCellsStrategy(solvedCellModels).apply(ctx);
                 nextCagesSet = new Set(model.cageModelsMap.values());
