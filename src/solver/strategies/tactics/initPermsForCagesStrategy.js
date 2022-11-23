@@ -11,7 +11,7 @@ export class InitPermsForCagesStrategy extends BaseStrategy {
             const combosForHouse = findSumCombinationsForHouse(houseSolver);
             houseSolver.debugCombosForHouse = combosForHouse;
             houseSolver.cages.forEach((cage, idx) => {
-                const cageSolver = this.model.cagesSolversMap.get(cage.key);
+                const cageModel = this.model.cageModelsMap.get(cage.key);
                 const combosKeySet = new Set();
                 const combos = [];
                 combosForHouse.forEach(combo => {
@@ -22,7 +22,7 @@ export class InitPermsForCagesStrategy extends BaseStrategy {
                         combosKeySet.add(key);
                     }
                 });
-                cageSolver.updateCombinations(combos);
+                cageModel.updateCombinations(combos);
             });
         });
     }

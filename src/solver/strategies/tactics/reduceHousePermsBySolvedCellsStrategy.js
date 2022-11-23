@@ -9,7 +9,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
     }
 
     apply() {
-        let cageSolversToReduceSet = new Set();
+        let cageModelsToReduceSet = new Set();
         this.#solvedCellSolvers.forEach(cellModel => {
             const num = cellModel.placedNum;
             [
@@ -23,11 +23,11 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
                     const aCellModel = this.model.cellSolverAt(row, col);
                     if (aCellModel.hasNumOpt(num)) {
                         aCellModel.deleteNumOpt(num);
-                        cageSolversToReduceSet = new Set([...cageSolversToReduceSet, ...aCellModel.withinCageSolvers]);
+                        cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageSolvers]);
                     }
                 }    
             });
         });
-        return cageSolversToReduceSet;
+        return cageModelsToReduceSet;
     }
 }

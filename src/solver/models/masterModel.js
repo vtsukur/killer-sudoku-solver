@@ -13,7 +13,7 @@ export class MasterModel {
 
     constructor(problem) {
         this.problem = problem;
-        this.cagesSolversMap = new Map();
+        this.cageModelsMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
         this.#placedNumCount = 0;
@@ -56,37 +56,37 @@ export class MasterModel {
     }
 
     registerCage(cage) {
-        const cageSolver = new CageModel(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
-        if (cageSolver.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRow()].addCage(cage);
+        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
+        if (cageModel.isWithinRow) {
+            this.rowSolvers[cageModel.anyRow()].addCage(cage);
         }
-        if (cageSolver.isWithinColumn) {
-            this.columnSolvers[cageSolver.anyColumnIdx()].addCage(cage);
+        if (cageModel.isWithinColumn) {
+            this.columnSolvers[cageModel.anyColumnIdx()].addCage(cage);
         }
-        if (cageSolver.isWithinNonet) {
-            this.nonetSolvers[cageSolver.anySubgridIdx()].addCage(cage);
+        if (cageModel.isWithinNonet) {
+            this.nonetSolvers[cageModel.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinCageSolver(cageSolver);
+            this.cellSolverOf(cell).addWithinCageSolver(cageModel);
         });
-        this.cagesSolversMap.set(cage.key, cageSolver);
+        this.cageModelsMap.set(cage.key, cageModel);
     }
 
     unregisterCage(cage) {
-        const cageSolver = this.cagesSolversMap.get(cage.key);
-        if (cageSolver.isWithinRow) {
-            this.rowSolvers[cageSolver.anyRow()].removeCage(cage);
+        const cageModel = this.cageModelsMap.get(cage.key);
+        if (cageModel.isWithinRow) {
+            this.rowSolvers[cageModel.anyRow()].removeCage(cage);
         }
-        if (cageSolver.isWithinColumn) {
-            this.columnSolvers[cageSolver.anyColumnIdx()].removeCage(cage);
+        if (cageModel.isWithinColumn) {
+            this.columnSolvers[cageModel.anyColumnIdx()].removeCage(cage);
         }
-        if (cageSolver.isWithinNonet) {
-            this.nonetSolvers[cageSolver.anySubgridIdx()].removeCage(cage);
+        if (cageModel.isWithinNonet) {
+            this.nonetSolvers[cageModel.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
+            this.cellSolverOf(cell).removeWithinCageSolver(cageModel);
         });
-        this.cagesSolversMap.delete(cage.key);
+        this.cageModelsMap.delete(cage.key);
     }
 
     placeNum(cell, num) {

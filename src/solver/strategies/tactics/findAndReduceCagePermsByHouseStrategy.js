@@ -8,32 +8,32 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
     }
 
     apply() {
-        let cageSolversToReduce = new Set();
+        let cageModelsToReduce = new Set();
 
         this.model.houseSolvers.forEach(houseSolver => {
             _.range(1, House.SIZE + 1).forEach(num => {
-                const cageSolversWithNum = [];
+                const cageModelsWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 houseSolver.cages.forEach(cage => {
-                    if (this.model.cagesSolversMap.get(cage.key).isSingleCellCage) return;
-                    const cageSolver = this.model.cagesSolversMap.get(cage.key);
-                    const hasNumInCells = cageSolver.cellModels.some(cellModel => cellModel.hasNumOpt(num));
+                    if (this.model.cageModelsMap.get(cage.key).isSingleCellCage) return;
+                    const cageModel = this.model.cageModelsMap.get(cage.key);
+                    const hasNumInCells = cageModel.cellModels.some(cellModel => cellModel.hasNumOpt(num));
                     if (hasNumInCells) {
-                        cageSolversWithNum.push(cageSolver);
+                        cageModelsWithNum.push(cageModel);
                     }
                 });
-                if (cageSolversWithNum.length !== 1) return;
+                if (cageModelsWithNum.length !== 1) return;
 
-                const cageSolverToReDefine = cageSolversWithNum[0];
-                const reducedCellModels = cageSolverToReDefine.reduceToCombinationsContaining(num);
+                const cageModelToReDefine = cageModelsWithNum[0];
+                const reducedCellModels = cageModelToReDefine.reduceToCombinationsContaining(num);
                 
                 if (!reducedCellModels.length) return;
                 reducedCellModels.forEach(cellModel => {
-                    cageSolversToReduce = new Set([...cageSolversToReduce, ...cellModel.withinCageSolvers]);
+                    cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageSolvers]);
                 });
             });
         });
 
-        return cageSolversToReduce;
+        return cageModelsToReduce;
     }
 }

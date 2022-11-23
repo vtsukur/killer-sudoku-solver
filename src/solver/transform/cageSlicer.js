@@ -14,13 +14,13 @@ export class CageSlicer {
             const nextResidualCages = [];
 
             residualCages.forEach(residualCage => {
-                if (this.#model.cagesSolversMap.has(residualCage.key)) return;
+                if (this.#model.cageModelsMap.has(residualCage.key)) return;
 
                 this.#model.registerCage(residualCage);
 
-                const cageSolversForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
+                const cageModelsForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                cageSolversForResidualCage.forEach(firstChunkCageSolver => {
+                cageModelsForResidualCage.forEach(firstChunkCageSolver => {
                     const secondChunkCage = CageSlicer.#slice(firstChunkCageSolver.cage, residualCage);
                     cagesToUnregister.push(firstChunkCageSolver.cage);
                     nextResidualCages.push(secondChunkCage);
@@ -38,7 +38,7 @@ export class CageSlicer {
         residualCage.cells.forEach(cell => {
             allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.#model.cellSolverOf(cell).withinCageSolvers]);
         });
-        allAssociatedCageSolversSet.delete(this.#model.cagesSolversMap.get(residualCage.key));
+        allAssociatedCageSolversSet.delete(this.#model.cageModelsMap.get(residualCage.key));
 
         const result = [];
         for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {

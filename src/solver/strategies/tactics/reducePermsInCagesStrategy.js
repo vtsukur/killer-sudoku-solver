@@ -1,11 +1,11 @@
 import { BaseStrategy } from '../baseStrategy';
 
 export class ReducePermsInCagesStrategy extends BaseStrategy {
-    #cageSolversIterable;
+    #cageModelsIterable;
 
-    constructor(model, cageSolversIterable) {
+    constructor(model, cageModelsIterable) {
         super(model);
-        this.#cageSolversIterable = cageSolversIterable;
+        this.#cageModelsIterable = cageModelsIterable;
     }
 
     apply() {
@@ -14,8 +14,8 @@ export class ReducePermsInCagesStrategy extends BaseStrategy {
         while (iterate) {
             let modifiedCellModels = new Set();
 
-            for (const cageSolver of this.#cageSolversIterable) {
-                const currentlyModifiedCellModels = cageSolver.reduce();
+            for (const cageModel of this.#cageModelsIterable) {
+                const currentlyModifiedCellModels = cageModel.reduce();
                 modifiedCellModels = new Set([...modifiedCellModels, ...currentlyModifiedCellModels]);
             }
 
@@ -24,7 +24,7 @@ export class ReducePermsInCagesStrategy extends BaseStrategy {
                 moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellModel.withinCageSolvers]);
             }
 
-            this.#cageSolversIterable = moreCageSolversToReduce.values();
+            this.#cageModelsIterable = moreCageSolversToReduce.values();
             iterate = moreCageSolversToReduce.size > 0;
         }
     }

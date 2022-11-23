@@ -16,8 +16,8 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
     apply() {
         _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
-                    return cageSolver.minRow >= leftIdx && cageSolver.maxRow < rightIdxExclusive;
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageModel, rightIdxExclusive) => {
+                    return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
                 }, (row) => {
                     return this.model.rowSolvers[row].cellIterator()
                 });
@@ -25,16 +25,16 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
         });
         _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageSolver, rightIdxExclusive) => {
-                    return cageSolver.minCol >= leftIdx && cageSolver.maxCol < rightIdxExclusive;
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageModel, rightIdxExclusive) => {
+                    return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
                 }, (col) => {
                     return this.model.columnSolvers[col].cellIterator()
                 });
             });
         });
         _.range(House.SIZE).forEach(leftIdx => {
-            this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageSolver) => {
-                return cageSolver.isWithinNonet && cageSolver.cage.cells[0].nonet === leftIdx;
+            this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageModel) => {
+                return cageModel.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
             }, (nonet) => {
                 return this.model.nonetSolvers[nonet].cellIterator();
             });
@@ -47,9 +47,9 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
 
         const rightIdxExclusive = leftIdx + n;
         let cages = [];
-        for (const cageSolver of this.model.cagesSolversMap.values()) {
-            if (withinHouseFn(cageSolver, rightIdxExclusive)) {
-                cages = cages.concat(cageSolver.cage);
+        for (const cageModel of this.model.cageModelsMap.values()) {
+            if (withinHouseFn(cageModel, rightIdxExclusive)) {
+                cages = cages.concat(cageModel.cage);
             }
         }
         const cagesArea = new CagesArea(cages, nHouseCellCount);
@@ -64,7 +64,7 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
             });
             if (residualCells.length) {
                 const residualCage = new Cage(nHouseSum - cagesArea.sum, residualCells);
-                if (!this.model.cagesSolversMap.has(residualCage.key)) {
+                if (!this.model.cageModelsMap.has(residualCage.key)) {
                     this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
