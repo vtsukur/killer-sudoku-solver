@@ -39,7 +39,7 @@ export class MasterStrategy extends BaseStrategy {
                 nextCagesSet = new Set(model.cageModelsMap.values());
             }
 
-            if (!nextCagesSet.size > 0) {
+            if (!nextCagesSet.size) {
                 nextCagesSet = new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
             }
             cageModelsIterable = nextCagesSet.values();
