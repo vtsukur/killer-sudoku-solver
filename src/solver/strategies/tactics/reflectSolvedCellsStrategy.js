@@ -4,7 +4,7 @@ import { sliceCagesForSolvedCellsStrategy } from './sliceCagesForSolvedCellsStra
 export const reflectSolvedCellsStrategy = (ctx) => {
     if (ctx.hasRecentlySolvedCellModels) {
         ctx.run(reduceHousePermsBySolvedCellsStrategy);
-        sliceCagesForSolvedCellsStrategy(ctx);
+        ctx.run(sliceCagesForSolvedCellsStrategy);
         ctx.clearRecentlySolvedCellModels();
         ctx.cageModelsToReevaluatePerms = ctx.model.cageModelsMap.values();
     }
