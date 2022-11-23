@@ -1,0 +1,24 @@
+import { Cage } from '../../problem/cage';
+import { CageSlicer } from '../cageSlicer';
+import { BaseModelStrategy } from './baseModelStrategy';
+
+export class SliceCagesForSolvedCellsStrategy extends BaseModelStrategy {
+    #cageSlicer;
+    #solvedCellSolvers;
+
+    constructor(model, solvedCellSolvers) {
+        super(model);
+        this.#cageSlicer = new CageSlicer(model);
+        this.#solvedCellSolvers = solvedCellSolvers;
+    }
+
+    apply() {
+        this.#solvedCellSolvers.forEach(cellSolver => {
+            const withinCageSolversSet = cellSolver.withinCageSolvers;
+            if (!(withinCageSolversSet.size === 1 && withinCageSolversSet.values().next().value.isSingleCellCage)) {
+                const firstChunkCage = Cage.ofSum(cellSolver.placedNum).at(cellSolver.cell.row, cellSolver.cell.col).mk();
+                this.#cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
+            }
+        });
+    }
+}

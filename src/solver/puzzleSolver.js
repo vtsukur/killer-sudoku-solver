@@ -1,23 +1,19 @@
 import _ from 'lodash';
-import { Cage } from '../problem/cage';
-import { Grid } from '../problem/grid';
 import { House } from '../problem/house';
-import { CageSlicer } from './cageSlicer';
 import { SolverModel } from './solverModel';
 import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/placeNumsForSingleOptionCellsStrategy';
 import { ReduceHousePermsBySolvedCellsStrategy } from './strategies/reduceHousePermsBySolvedCellsStrategy';
 import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
+import { SliceCagesForSolvedCellsStrategy } from './strategies/sliceCagesForSolvedCellsStrategy';
 
 export class PuzzleSolver {
     #model;
-    #cageSlicer;
 
     constructor(problem) {
         this.problem = problem;
         this.#model = new SolverModel(problem);
-        this.#cageSlicer = new CageSlicer(this.#model);
     }
 
     solve() {
@@ -48,13 +44,7 @@ export class PuzzleSolver {
             if (nextCagesSet.size > 0) {
                 cageSolversIterable = nextCagesSet.values();
             } else if (newlySolvedCellDets.length > 0) {
-                newlySolvedCellDets.forEach(cellSolver => {
-                    const withinCageSolversSet = cellSolver.withinCageSolvers;
-                    if (!(withinCageSolversSet.size === 1 && withinCageSolversSet.values().next().value.isSingleCellCage)) {
-                        const firstChunkCage = Cage.ofSum(cellSolver.placedNum).at(cellSolver.cell.row, cellSolver.cell.col).mk();
-                        this.#cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
-                    }
-                });
+                new SliceCagesForSolvedCellsStrategy(this.#model, newlySolvedCellDets).apply();
                 newlySolvedCellDets = [];
                 nextCagesSet = new Set(this.#model.cagesSolversMap.values());
                 cageSolversIterable = nextCagesSet.values();
