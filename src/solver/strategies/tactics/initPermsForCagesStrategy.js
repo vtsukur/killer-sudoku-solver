@@ -1,4 +1,4 @@
-import { findSumCombinationsForHouse } from '../../combinatorial';
+import { findSumCombinationsForHouse } from '../../combinatorial/index';
 import { BaseStrategy } from '../baseStrategy';
 
 export class InitPermsForCagesStrategy extends BaseStrategy {
