@@ -116,4 +116,16 @@ export class SolverModel {
     cellSolverAt(row, col) {
         return this.cellSolversMatrix[row][col];
     }
+
+    rowSolver(idx) {
+        return this.rowSolvers[idx];
+    }
+
+    columnSolver(idx) {
+        return this.columnSolvers[idx];
+    }
+
+    nonetSolver(idx) {
+        return this.nonetSolvers[idx];
+    }
 }

@@ -174,17 +174,18 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    test('Find solution (whitebox verification)', () => {
+    test('Find solution (whitebox verification of the model)', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
         solver.solve();
 
-        expect(solver.cellSolverAt(2, 7).placedNum).toBe(8);
-        expect(solver.cellSolverAt(2, 7).solved).toBe(true);
+        const model = solver.model;
+        expect(model.cellSolverAt(2, 7).placedNum).toBe(8);
+        expect(model.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
-            expect(solver.rowSolver(idx).cages.length).toBe(House.SIZE);
-            expect(solver.columnSolver(idx).cages.length).toBe(House.SIZE);
-            expect(solver.nonetSolver(idx).cages.length).toBe(House.SIZE);
+            expect(model.rowSolver(idx).cages.length).toBe(House.SIZE);
+            expect(model.columnSolver(idx).cages.length).toBe(House.SIZE);
+            expect(model.nonetSolver(idx).cages.length).toBe(House.SIZE);
         });
     });
 });

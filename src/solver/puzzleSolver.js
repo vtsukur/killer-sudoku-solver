@@ -58,23 +58,7 @@ export class PuzzleSolver {
         }
     }
 
-    cellSolverOf(cell) {
-        return this.cellSolverAt(cell.row, cell.col);
-    }
-
-    cellSolverAt(row, col) {
-        return this.#model.cellSolversMatrix[row][col];
-    }
-
-    rowSolver(idx) {
-        return this.#model.rowSolvers[idx];
-    }
-
-    columnSolver(idx) {
-        return this.#model.columnSolvers[idx];
-    }
-
-    nonetSolver(idx) {
-        return this.#model.nonetSolvers[idx];
+    get model() {
+        return this.#model;
     }
 }
