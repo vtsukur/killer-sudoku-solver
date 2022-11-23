@@ -22,7 +22,7 @@ export class MasterStrategy extends BaseStrategy {
         let iterate = true;
         let newlySolvedCellModels = [];
 
-        ctx.setCageModelsToReevaluatePerms(model.cageModelsMap.values());
+        ctx.cageModelsToReevaluatePerms =model.cageModelsMap.values();
 
         while (iterate) {
             if (model.isSolved) {
@@ -48,7 +48,7 @@ export class MasterStrategy extends BaseStrategy {
                 nextCagesSet = new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
                 cageModelsIterable = nextCagesSet.values();
             }
-            ctx.setCageModelsToReevaluatePerms(nextCagesSet.values());
+            ctx.cageModelsToReevaluatePerms = nextCagesSet.values();
 
             iterate = nextCagesSet.size > 0;
         }

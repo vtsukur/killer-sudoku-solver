@@ -21,7 +21,7 @@ export class Context {
         return this.#cageModelsToReevaluatePerms;
     }
 
-    setCageModelsToReevaluatePerms(cageModelsToReevaluatePerms) {
-        this.#cageModelsToReevaluatePerms = cageModelsToReevaluatePerms;
+    set cageModelsToReevaluatePerms(value) {
+        this.#cageModelsToReevaluatePerms = value;
     }
 }
