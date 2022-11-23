@@ -5,11 +5,11 @@ export class CellModel {
     #numOpts;
     #withinCageModels;
 
-    constructor({ cell, rowModel, columnModel, nonetSolver }) {
+    constructor({ cell, rowModel, columnModel, nonetModel }) {
         this.cell = cell;
         this.rowModel = rowModel;
         this.columnModel = columnModel;
-        this.nonetSolver = nonetSolver;
+        this.nonetModel = nonetModel;
         this.solved = false;
 
         this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));

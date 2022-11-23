@@ -36,7 +36,7 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
             this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIdx, (cageModel) => {
                 return cageModel.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
             }, (nonet) => {
-                return this.model.nonetSolvers[nonet].cellIterator();
+                return this.model.nonetModels[nonet].cellIterator();
             });
         });
     }

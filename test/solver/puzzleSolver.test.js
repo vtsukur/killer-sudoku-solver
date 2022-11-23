@@ -185,7 +185,7 @@ describe('Tests for puzzle solver', () => {
         _.range(House.SIZE).forEach(idx => {
             expect(model.rowModel(idx).cages.length).toBe(House.SIZE);
             expect(model.columnModel(idx).cages.length).toBe(House.SIZE);
-            expect(model.nonetSolver(idx).cages.length).toBe(House.SIZE);
+            expect(model.nonetModel(idx).cages.length).toBe(House.SIZE);
         });
     });
 });

@@ -6,7 +6,7 @@ import { Cage } from '../../src/problem/cage';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { RowModel } from '../../src/solver/models/elements/rowModel';
 import { ColumnModel } from '../../src/solver/models/elements/columnModel';
-import { NonetSolver } from '../../src/solver/models/elements/nonetSolver';
+import { NonetModel } from '../../src/solver/models/elements/nonetModel';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
     test('Initialize row solvers', () => {
@@ -145,7 +145,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Initialize nonets', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
-        expect(model.nonetSolver(0)).toEqual(new NonetSolver(
+        expect(model.nonetModel(0)).toEqual(new NonetModel(
             0, [
                 Cell.at(0, 0), Cell.at(0, 1), Cell.at(0, 2),
                 Cell.at(1, 0), Cell.at(1, 1), Cell.at(1, 2),
@@ -157,7 +157,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(13).at(2, 0).at(2, 1).at(2, 2).mk()
             ]
         ));
-        expect(model.nonetSolver(1)).toEqual(new NonetSolver(
+        expect(model.nonetModel(1)).toEqual(new NonetModel(
             1, [
                 Cell.at(0, 3), Cell.at(0, 4), Cell.at(0, 5),
                 Cell.at(1, 3), Cell.at(1, 4), Cell.at(1, 5),
@@ -168,7 +168,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(11).at(2, 3).at(2, 4).mk()
             ]
         ));
-        expect(model.nonetSolver(2)).toEqual(new NonetSolver(
+        expect(model.nonetModel(2)).toEqual(new NonetModel(
             2, [
                 Cell.at(0, 6), Cell.at(0, 7), Cell.at(0, 8),
                 Cell.at(1, 6), Cell.at(1, 7), Cell.at(1, 8),
@@ -179,7 +179,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(9).at(2, 7).at(2, 8).mk()
             ]
         ));
-        expect(model.nonetSolver(3)).toEqual(new NonetSolver(
+        expect(model.nonetModel(3)).toEqual(new NonetModel(
             3, [
                 Cell.at(3, 0), Cell.at(3, 1), Cell.at(3, 2),
                 Cell.at(4, 0), Cell.at(4, 1), Cell.at(4, 2),
@@ -190,7 +190,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(27).at(4, 0).at(4, 1).at(5, 0).at(5, 1).mk()
             ]
         ));
-        expect(model.nonetSolver(4)).toEqual(new NonetSolver(
+        expect(model.nonetModel(4)).toEqual(new NonetModel(
             4, [
                 Cell.at(3, 3), Cell.at(3, 4), Cell.at(3, 5),
                 Cell.at(4, 3), Cell.at(4, 4), Cell.at(4, 5),
@@ -200,7 +200,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(10).at(4, 3).at(4, 4).mk()
             ]
         ));
-        expect(model.nonetSolver(5)).toEqual(new NonetSolver(
+        expect(model.nonetModel(5)).toEqual(new NonetModel(
             5, [
                 Cell.at(3, 6), Cell.at(3, 7), Cell.at(3, 8),
                 Cell.at(4, 6), Cell.at(4, 7), Cell.at(4, 8),
@@ -210,7 +210,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(19).at(3, 8).at(4, 8).at(5, 8).mk()
             ]
         ));
-        expect(model.nonetSolver(6)).toEqual(new NonetSolver(
+        expect(model.nonetModel(6)).toEqual(new NonetModel(
             6, [
                 Cell.at(6, 0), Cell.at(6, 1), Cell.at(6, 2),
                 Cell.at(7, 0), Cell.at(7, 1), Cell.at(7, 2),
@@ -220,7 +220,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(14).at(6, 1).at(7, 1).at(8, 1).at(8, 2).mk()
             ]
         ));
-        expect(model.nonetSolver(7)).toEqual(new NonetSolver(
+        expect(model.nonetModel(7)).toEqual(new NonetModel(
             7, [
                 Cell.at(6, 3), Cell.at(6, 4), Cell.at(6, 5),
                 Cell.at(7, 3), Cell.at(7, 4), Cell.at(7, 5),
@@ -232,7 +232,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
                 Cage.ofSum(8).at(7, 5).mk()
             ]
         ));
-        expect(model.nonetSolver(8)).toEqual(new NonetSolver(
+        expect(model.nonetModel(8)).toEqual(new NonetModel(
             8, [
                 Cell.at(6, 6), Cell.at(6, 7), Cell.at(6, 8),
                 Cell.at(7, 6), Cell.at(7, 7), Cell.at(7, 8),
@@ -248,11 +248,11 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Determine residual cages in nonet solvers (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
-        const nonet0 = model.nonetSolver(0);
+        const nonet0 = model.nonetModel(0);
         const residualCage0 = nonet0.determineResidualCage();
         expect(residualCage0).toBe(undefined);
         
-        const nonet1 = model.nonetSolver(1);
+        const nonet1 = model.nonetModel(1);
         const residualCage1 = nonet1.determineResidualCage();
         expect(residualCage1).toEqual(Cage.ofSum(4).at(1, 5).at(2, 5).mk());
     });

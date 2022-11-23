@@ -1,9 +1,9 @@
 import { Nonet } from '../../../problem/nonet';
 import { HouseSolver } from './houseSolver';
 
-export class NonetSolver extends HouseSolver {
+export class NonetModel extends HouseSolver {
     constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, NonetSolver.iteratorFor);
+        super(idx, cells, inputCages, NonetModel.iteratorFor);
     }
 
     static iteratorFor(idx) {
