@@ -1,4 +1,4 @@
-import { Cage } from "../problem/cage";
+import { Cage } from '../../problem/cage';
 
 export class CageSlicer {
     #model;
