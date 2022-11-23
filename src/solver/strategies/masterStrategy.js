@@ -4,7 +4,7 @@ import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidual
 import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
-import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
+import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends BaseStrategy {
     constructor() {
@@ -20,7 +20,7 @@ export class MasterStrategy extends BaseStrategy {
         do {
             reducePermsInCagesStrategy(ctx);
             placeNumsForSingleOptionCellsStrategy(ctx);
-            new ReflectSolvedCellsStrategy().apply(ctx);
+            reflectSolvedCellsStrategy(ctx);
             new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
         }
         while (!model.isSolved && ctx.hasCageModelsToReevaluatePerms)
