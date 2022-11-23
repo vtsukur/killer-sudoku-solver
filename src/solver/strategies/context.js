@@ -11,6 +11,10 @@ export class Context {
         this.#recentlySolvedCellModels = [];
     }
     
+    run(strategyFn) {
+        strategyFn.apply(this);
+    }
+
     get model() {
         return this.#model;
     }
