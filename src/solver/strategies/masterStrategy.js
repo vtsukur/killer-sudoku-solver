@@ -1,4 +1,4 @@
-import { BaseStrategy } from './tactics/baseStrategy';
+import { BaseStrategy } from './baseStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';

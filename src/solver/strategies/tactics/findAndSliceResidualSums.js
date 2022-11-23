@@ -3,7 +3,7 @@ import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesArea } from '../../cagesArea';
 import { CageSlicer } from '../../cageSlicer';
-import { BaseStrategy } from './baseStrategy';
+import { BaseStrategy } from '../baseStrategy';
 
 export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
     #cageSlicer;

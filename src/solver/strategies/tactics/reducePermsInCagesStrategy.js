@@ -1,4 +1,4 @@
-import { BaseStrategy } from './baseStrategy';
+import { BaseStrategy } from '../baseStrategy';
 
 export class ReducePermsInCagesStrategy extends BaseStrategy {
     #cageSolversIterable;

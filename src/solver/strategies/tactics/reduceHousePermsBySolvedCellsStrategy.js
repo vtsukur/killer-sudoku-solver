@@ -1,4 +1,4 @@
-import { BaseStrategy } from './baseStrategy';
+import { BaseStrategy } from '../baseStrategy';
 
 export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
     #solvedCellSolvers;
