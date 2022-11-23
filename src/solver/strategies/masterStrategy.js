@@ -1,6 +1,4 @@
-import { CageSlicer } from '../transform/cageSlicer';
 import { BaseStrategy } from './baseStrategy';
-import { Context } from './context';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
