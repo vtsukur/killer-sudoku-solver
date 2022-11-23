@@ -4,9 +4,9 @@ import { House } from '../../src/problem/house';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
-import { RowSolver } from '../../src/solver/rowSolver';
-import { ColumnSolver } from '../../src/solver/columnSolver';
-import { NonetSolver } from '../../src/solver/nonetSolver';
+import { RowSolver } from '../../src/solver/models/elements/rowSolver';
+import { ColumnSolver } from '../../src/solver/models/elements/columnSolver';
+import { NonetSolver } from '../../src/solver/models/elements/nonetSolver';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
     test('Initialize row solvers', () => {

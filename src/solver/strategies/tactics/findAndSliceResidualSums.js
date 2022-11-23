@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
-import { CagesArea } from '../../cagesArea';
+import { CagesArea } from '../../models/elements/cagesArea';
 import { CageSlicer } from '../../cageSlicer';
 import { BaseStrategy } from '../baseStrategy';
 

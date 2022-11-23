@@ -1,5 +1,5 @@
-import { Cage } from '../problem/cage';
-import { House } from '../problem/house';
+import { Cage } from '../../../problem/cage';
+import { House } from '../../../problem/house';
 import { CagesArea } from './cagesArea';
 
 export class HouseSolver {

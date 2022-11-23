@@ -1,5 +1,4 @@
-import { Cage } from '../problem/cage';
-import { House } from '../problem/house';
+import { House } from '../../../problem/house';
 
 export class CageSolver {
     #firstCell;
