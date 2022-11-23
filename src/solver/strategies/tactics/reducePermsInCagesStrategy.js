@@ -5,10 +5,10 @@ export class ReducePermsInCagesStrategy extends BaseStrategy {
         super(model);
     }
 
-    apply() {
+    apply(ctx) {
         let iterate = true;
 
-        let cageModelsIterable = this.model.cageModelsToReevaluatePerms;
+        let cageModelsIterable = ctx.cageModelsToReevaluatePerms;
 
         while (iterate) {
             let modifiedCellModels = new Set();
