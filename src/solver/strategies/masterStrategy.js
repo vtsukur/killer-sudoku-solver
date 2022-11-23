@@ -8,7 +8,7 @@ import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy
 export const masterStrategy = (ctx) => {
     const model = ctx.model;
 
-    findAndSliceResidualSumsStrategy(ctx);
+    ctx.run(findAndSliceResidualSumsStrategy);
     initPermsForCagesStrategy(ctx);
 
     do {

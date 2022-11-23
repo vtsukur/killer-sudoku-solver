@@ -3,30 +3,30 @@ import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 
-export const findAndSliceResidualSumsStrategy = (ctx) => {
+export function findAndSliceResidualSumsStrategy() {
     _.range(1, 4).reverse().forEach(n => {
         _.range(House.SIZE - n + 1).forEach(leftIdx => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, (cageModel, rightIdxExclusive) => {
+            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
             }, (row) => {
-                return ctx.model.rowModels[row].cellIterator()
+                return this.model.rowModels[row].cellIterator()
             });
         });
     });
     _.range(1, 4).reverse().forEach(n => {
         _.range(House.SIZE - n + 1).forEach(leftIdx => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, (cageModel, rightIdxExclusive) => {
+            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
             }, (col) => {
-                return ctx.model.columnModels[col].cellIterator()
+                return this.model.columnModels[col].cellIterator()
             });
         });
     });
     _.range(House.SIZE).forEach(leftIdx => {
-        doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, 1, leftIdx, (cageModel) => {
+        doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, 1, leftIdx, (cageModel) => {
             return cageModel.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
         }, (nonet) => {
-            return ctx.model.nonetModels[nonet].cellIterator();
+            return this.model.nonetModels[nonet].cellIterator();
         });
     });
 };
