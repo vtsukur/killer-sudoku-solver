@@ -2,7 +2,7 @@ import { BaseStrategy } from './baseStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
-import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
+import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
@@ -19,7 +19,7 @@ export class MasterStrategy extends BaseStrategy {
 
         do {
             reducePermsInCagesStrategy(ctx);
-            new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
+            placeNumsForSingleOptionCellsStrategy(ctx);
             new ReflectSolvedCellsStrategy().apply(ctx);
             new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
         }
