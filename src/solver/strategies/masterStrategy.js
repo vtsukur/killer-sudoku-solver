@@ -31,13 +31,12 @@ export class MasterStrategy extends BaseStrategy {
             new ReducePermsInCagesStrategy().apply(ctx);
     
             const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
-            new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
 
             let nextCagesSet = new Set();
             if (solvedCellModels.length > 0) {
+                new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
                 new SliceCagesForSolvedCellsStrategy(solvedCellModels).apply(ctx);
                 nextCagesSet = new Set(model.cageModelsMap.values());
-                cageModelsIterable = nextCagesSet.values();
             }
 
             if (nextCagesSet.size > 0) {
