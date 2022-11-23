@@ -1,16 +1,16 @@
 import { BaseStrategy } from '../baseStrategy';
 
 export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
-    #solvedCellSolvers;
+    #solvedCellModels;
 
-    constructor(model, solvedCellSolvers) {
+    constructor(model, solvedCellModels) {
         super(model);
-        this.#solvedCellSolvers = solvedCellSolvers;
+        this.#solvedCellModels = solvedCellModels;
     }
 
     apply() {
         let cageModelsToReduceSet = new Set();
-        this.#solvedCellSolvers.forEach(cellModel => {
+        this.#solvedCellModels.forEach(cellModel => {
             const num = cellModel.placedNum;
             [
                 this.model.rowModels[cellModel.cell.row],
@@ -20,7 +20,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
                 for (const { row, col } of houseModel.cellIterator()) {
                     if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
         
-                    const aCellModel = this.model.cellSolverAt(row, col);
+                    const aCellModel = this.model.cellModelAt(row, col);
                     if (aCellModel.hasNumOpt(num)) {
                         aCellModel.deleteNumOpt(num);
                         cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageModels]);

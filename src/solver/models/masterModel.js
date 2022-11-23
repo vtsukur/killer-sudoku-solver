@@ -33,10 +33,10 @@ export class MasterModel {
             this.nonetModels.push(new NonetModel(i, this.#collectHouseCells(NonetModel.iteratorFor(i))));
         });
 
-        this.cellSolversMatrix = Grid.newMatrix();
+        this.cellModelsMatrix = Grid.newMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellSolversMatrix[cell.row][cell.col] = new CellModel({
+            this.cellModelsMatrix[cell.row][cell.col] = new CellModel({
                 cell,
                 rowModel: this.rowModels[cell.row],
                 columnModel: this.columnModels[cell.col],
@@ -56,7 +56,7 @@ export class MasterModel {
     }
 
     registerCage(cage) {
-        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
+        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
         if (cageModel.isWithinRow) {
             this.rowModels[cageModel.anyRow()].addCage(cage);
         }
@@ -67,7 +67,7 @@ export class MasterModel {
             this.nonetModels[cageModel.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinCageModel(cageModel);
+            this.cellModelOf(cell).addWithinCageModel(cageModel);
         });
         this.cageModelsMap.set(cage.key, cageModel);
     }
@@ -84,13 +84,13 @@ export class MasterModel {
             this.nonetModels[cageModel.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinCageModel(cageModel);
+            this.cellModelOf(cell).removeWithinCageModel(cageModel);
         });
         this.cageModelsMap.delete(cage.key);
     }
 
     placeNum(cell, num) {
-        const cellModel = this.cellSolverOf(cell);
+        const cellModel = this.cellModelOf(cell);
         cellModel.placeNum(num);
 
         this.#solution[cell.row][cell.col] = num;
@@ -109,12 +109,12 @@ export class MasterModel {
         return this.cellsMatrix[rowIds][col];
     }
 
-    cellSolverOf(cell) {
-        return this.cellSolverAt(cell.row, cell.col);
+    cellModelOf(cell) {
+        return this.cellModelAt(cell.row, cell.col);
     }
 
-    cellSolverAt(row, col) {
-        return this.cellSolversMatrix[row][col];
+    cellModelAt(row, col) {
+        return this.cellModelsMatrix[row][col];
     }
 
     rowModel(idx) {

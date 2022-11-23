@@ -179,8 +179,8 @@ describe('Tests for puzzle solver', () => {
         solver.solve();
 
         const model = solver.model;
-        expect(model.cellSolverAt(2, 7).placedNum).toBe(8);
-        expect(model.cellSolverAt(2, 7).solved).toBe(true);
+        expect(model.cellModelAt(2, 7).placedNum).toBe(8);
+        expect(model.cellModelAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
             expect(model.rowModel(idx).cages.length).toBe(House.SIZE);

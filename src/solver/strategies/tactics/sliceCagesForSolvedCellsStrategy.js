@@ -4,16 +4,16 @@ import { BaseStrategy } from '../baseStrategy';
 
 export class SliceCagesForSolvedCellsStrategy extends BaseStrategy {
     #cageSlicer;
-    #solvedCellSolvers;
+    #solvedCellModels;
 
-    constructor(model, solvedCellSolvers) {
+    constructor(model, solvedCellModels) {
         super(model);
         this.#cageSlicer = new CageSlicer(model);
-        this.#solvedCellSolvers = solvedCellSolvers;
+        this.#solvedCellModels = solvedCellModels;
     }
 
     apply() {
-        this.#solvedCellSolvers.forEach(cellModel => {
+        this.#solvedCellModels.forEach(cellModel => {
             const withinCageModelsSet = cellModel.withinCageModels;
             if (!(withinCageModelsSet.size === 1 && withinCageModelsSet.values().next().value.isSingleCellCage)) {
                 const firstChunkCage = Cage.ofSum(cellModel.placedNum).at(cellModel.cell.row, cellModel.cell.col).mk();

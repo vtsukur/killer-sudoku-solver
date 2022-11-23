@@ -36,14 +36,14 @@ export class CageSlicer {
     #getCageModelsFullyContainingResidualCage(residualCage) {
         let allAssociatedCageModelsSet = new Set();
         residualCage.cells.forEach(cell => {
-            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.#model.cellSolverOf(cell).withinCageModels]);
+            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.#model.cellModelOf(cell).withinCageModels]);
         });
         allAssociatedCageModelsSet.delete(this.#model.cageModelsMap.get(residualCage.key));
 
         const result = [];
         for (const associatedCageModel of allAssociatedCageModelsSet.values()) {
             const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
-                return this.#model.cellSolverOf(cell).withinCageModels.has(associatedCageModel);
+                return this.#model.cellModelOf(cell).withinCageModels.has(associatedCageModel);
             });
             if (associatedCageFullyContainsResidualCage) {
                 result.push(associatedCageModel);

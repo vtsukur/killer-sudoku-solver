@@ -8,8 +8,8 @@ import { RowModel } from '../../src/solver/models/elements/rowModel';
 import { ColumnModel } from '../../src/solver/models/elements/columnModel';
 import { NonetModel } from '../../src/solver/models/elements/nonetModel';
 
-describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
-    test('Initialize row solvers', () => {
+describe('Tests for creation and initialization of row, column and nonet models', () => {    
+    test('Initialize row models', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
         expect(model.rowModel(0)).toEqual(new RowModel(
             0, _.range(9).map(col => Cell.at(0, col)), [
@@ -63,7 +63,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
         ));
     });
 
-    test('Determine residual cages in row solvers (shallow)', () => {
+    test('Determine residual cages in row models (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
         const row0 = model.rowModel(0);
@@ -77,7 +77,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
             new Cage(House.SUM, _.range(House.SIZE).map(col => Cell.at(5, col))));
     });
 
-    test('Initialize column solvers', () => {
+    test('Initialize column models', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
         expect(model.columnModel(0)).toEqual(new ColumnModel(
             0, _.range(9).map(row => Cell.at(row, 0)), [
@@ -127,7 +127,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
         ));
     });
 
-    test('Determine residual cages in column solvers (shallow)', () => {
+    test('Determine residual cages in column models (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
         const column0 = model.columnModel(0);
@@ -245,7 +245,7 @@ describe('Tests for creation and initialization of row, column and nonet solvers
         ));
     });
 
-    test('Determine residual cages in nonet solvers (shallow)', () => {
+    test('Determine residual cages in nonet models (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
         const nonet0 = model.nonetModel(0);
