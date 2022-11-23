@@ -20,16 +20,12 @@ export class MasterStrategy extends BaseStrategy {
         ctx.cageModelsToReevaluatePerms = model.cageModelsMap.values();
 
         while (ctx.cageModelsToReevaluatePerms !== undefined) {
-            if (model.isSolved) {
-                return;
-            }
+            if (model.isSolved) break;
 
             new ReducePermsInCagesStrategy().apply(ctx);
             new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
             new ReflectSolvedCellsStrategy().apply(ctx);
             new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
         }
-
-        return model.solution;
     }
 }
