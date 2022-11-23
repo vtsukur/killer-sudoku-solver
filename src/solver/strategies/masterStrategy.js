@@ -1,6 +1,6 @@
 import { BaseStrategy } from './baseStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
-import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
+import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
