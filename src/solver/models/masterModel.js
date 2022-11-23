@@ -97,8 +97,8 @@ export class MasterModel {
         this.#placedNumCount++;
     }
 
-    get placedNumCount() {
-        return this.#placedNumCount;
+    get isSolved() {
+        return this.#placedNumCount === Grid.CELL_COUNT;
     }
 
     get solution() {

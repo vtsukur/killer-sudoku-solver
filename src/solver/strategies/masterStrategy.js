@@ -21,7 +21,7 @@ export class MasterStrategy extends BaseStrategy {
         let newlySolvedCellModels = [];
 
         while (iterate) {
-            if (this.model.placedNumCount >= 81) {
+            if (this.model.isSolved) {
                 return;
             }
     
