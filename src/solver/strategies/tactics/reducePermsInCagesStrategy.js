@@ -12,16 +12,16 @@ export class ReducePermsInCagesStrategy extends BaseStrategy {
         let iterate = true;
 
         while (iterate) {
-            let modifiedCellDets = new Set();
+            let modifiedCellModels = new Set();
 
             for (const cageSolver of this.#cageSolversIterable) {
-                const currentlyModifiedCellDets = cageSolver.reduce();
-                modifiedCellDets = new Set([...modifiedCellDets, ...currentlyModifiedCellDets]);
+                const currentlyModifiedCellModels = cageSolver.reduce();
+                modifiedCellModels = new Set([...modifiedCellModels, ...currentlyModifiedCellModels]);
             }
 
             let moreCageSolversToReduce = new Set();
-            for (const modifiedCellDet of modifiedCellDets.values()) {
-                moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellDet.withinCageSolvers]);
+            for (const modifiedCellModel of modifiedCellModels.values()) {
+                moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellModel.withinCageSolvers]);
             }
 
             this.#cageSolversIterable = moreCageSolversToReduce.values();

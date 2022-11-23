@@ -72,18 +72,18 @@ export class CageSolver {
     #reduceByCellPermutations(canHaveNumDuplicates) {
         const context = {
             i: 0,
-            processedCellDets: new Set(),
-            remainingCellDets: new Set(this.cellModels),
+            processedCellModels: new Set(),
+            remainingCellModels: new Set(this.cellModels),
             processedNums: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellModelsStack: new Array(this.#cellCount),
             processCell: function(cellSolver, step, fn) {
-                if (this.processedCellDets.has(cellSolver)) return;
-                this.processedCellDets.add(cellSolver); this.remainingCellDets.delete(cellSolver);
+                if (this.processedCellModels.has(cellSolver)) return;
+                this.processedCellModels.add(cellSolver); this.remainingCellModels.delete(cellSolver);
                 this.cellModelsStack[step] = cellSolver;
                 const retVal = fn();
                 this.cellModelsStack[step] = undefined;
-                this.processedCellDets.delete(cellSolver); this.remainingCellDets.add(cellSolver);    
+                this.processedCellModels.delete(cellSolver); this.remainingCellModels.add(cellSolver);    
                 return retVal;
             },
             mayNotProceedWithNum: function(num) {
@@ -99,14 +99,14 @@ export class CageSolver {
                 this.processedNums.delete(num);
                 return retVal;
             },
-            remainingCellDet: function() {
-                return context.remainingCellDets.values().next().value;
+            remainingCellModel: function() {
+                return context.remainingCellModels.values().next().value;
             }
         };
 
         this.#combosMap = new Map();
 
-        const modifiedCellDets = [];
+        const modifiedCellModels = [];
         this.cellModels.forEach(cellSolver => {
             context.processCell(cellSolver, 0, () => {
                 Array.from(cellSolver.numOpts()).forEach(num => {
@@ -114,14 +114,14 @@ export class CageSolver {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
                             cellSolver.deleteNumOpt(num);
-                            modifiedCellDets.push(cellSolver);
+                            modifiedCellModels.push(cellSolver);
                         }    
                     });
                 });
             });
         });
 
-        return modifiedCellDets;
+        return modifiedCellModels;
     } 
 
     #hasSumMatchingPermutationsRecursive(currentSum, step, context) {
@@ -131,8 +131,8 @@ export class CageSolver {
             context.i++;
             const lastNum = this.cage.sum - currentSum;
             if (context.mayNotProceedWithNum(lastNum)) return false;
-            const lastCellDet = context.remainingCellDet();
-            has = lastCellDet.hasNumOpt(lastNum);
+            const lastCellModel = context.remainingCellModel();
+            has = lastCellModel.hasNumOpt(lastNum);
             if (has) {
                 const sortedNums = [...context.numbersStack];
                 sortedNums[this.#cellCount - 1] = lastNum;
@@ -176,13 +176,13 @@ export class CageSolver {
 
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
-            const reducedCellDets = [];
+            const reducedCellModels = [];
             this.cellModels.forEach(cellSolver => {
                 if (cellSolver.reduceNumOptions(newNumOptions).size > 0) {
-                    reducedCellDets.push(cellSolver);
+                    reducedCellModels.push(cellSolver);
                 }
             });
-            return reducedCellDets;
+            return reducedCellModels;
         }
         else {
             return [];            

@@ -25,10 +25,10 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
                 if (cageSolversWithNum.length !== 1) return;
 
                 const cageSolverToReDefine = cageSolversWithNum[0];
-                const reducedCellDets = cageSolverToReDefine.reduceToCombinationsContaining(num);
+                const reducedCellModels = cageSolverToReDefine.reduceToCombinationsContaining(num);
                 
-                if (!reducedCellDets.length) return;
-                reducedCellDets.forEach(cellSolver => {
+                if (!reducedCellModels.length) return;
+                reducedCellModels.forEach(cellSolver => {
                     cageSolversToReduce = new Set([...cageSolversToReduce, ...cellSolver.withinCageSolvers]);
                 });
             });

@@ -18,7 +18,7 @@ export class MasterStrategy extends BaseStrategy {
 
         let cageSolversIterable = this.model.cagesSolversMap.values();
         let iterate = true;
-        let newlySolvedCellDets = [];
+        let newlySolvedCellModels = [];
 
         while (iterate) {
             if (this.model.placedNumCount >= 81) {
@@ -27,16 +27,16 @@ export class MasterStrategy extends BaseStrategy {
     
             new ReducePermsInCagesStrategy(this.model, cageSolversIterable).apply();
     
-            const solvedCellDets = new PlaceNumsForSingleOptionCellsStrategy(this.model).apply();
-            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.model, solvedCellDets).apply();
+            const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy(this.model).apply();
+            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.model, solvedCellModels).apply();
 
-            newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
+            newlySolvedCellModels = newlySolvedCellModels.concat(Array.from(solvedCellModels));
 
             if (nextCagesSet.size > 0) {
                 cageSolversIterable = nextCagesSet.values();
-            } else if (newlySolvedCellDets.length > 0) {
-                new SliceCagesForSolvedCellsStrategy(this.model, newlySolvedCellDets).apply();
-                newlySolvedCellDets = [];
+            } else if (newlySolvedCellModels.length > 0) {
+                new SliceCagesForSolvedCellsStrategy(this.model, newlySolvedCellModels).apply();
+                newlySolvedCellModels = [];
                 nextCagesSet = new Set(this.model.cagesSolversMap.values());
                 cageSolversIterable = nextCagesSet.values();
             }
