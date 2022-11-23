@@ -9,7 +9,7 @@ export const masterStrategy = (ctx) => {
     const model = ctx.model;
 
     ctx.run(findAndSliceResidualSumsStrategy);
-    initPermsForCagesStrategy(ctx);
+    ctx.run(initPermsForCagesStrategy);
 
     do {
         reducePermsInCagesStrategy(ctx);
