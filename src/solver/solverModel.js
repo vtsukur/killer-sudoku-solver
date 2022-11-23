@@ -9,14 +9,14 @@ import { RowSolver } from "./rowSolver";
 
 export class SolverModel {
     #solution;
-    #placedNumsCount;
+    #placedNumCount;
 
     constructor(problem) {
         this.problem = problem;
         this.cagesSolversMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
-        this.#placedNumsCount = 0;
+        this.#placedNumCount = 0;
 
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
@@ -87,6 +87,22 @@ export class SolverModel {
             this.cellSolverOf(cell).removeWithinCageSolver(cageSolver);
         });
         this.cagesSolversMap.delete(cage.key);
+    }
+
+    placeNum(cell, num) {
+        const cellSolver = this.cellSolverOf(cell);
+        cellSolver.placeNum(num);
+
+        this.#solution[cell.row][cell.col] = num;
+        this.#placedNumCount++;
+    }
+
+    get placedNumCount() {
+        return this.#placedNumCount;
+    }
+
+    get solution() {
+        return this.#solution;
     }
 
     cellAt(rowIds, col) {

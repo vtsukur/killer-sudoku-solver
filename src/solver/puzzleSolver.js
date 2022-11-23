@@ -2,26 +2,21 @@ import _ from 'lodash';
 import { Cage } from '../problem/cage';
 import { Grid } from '../problem/grid';
 import { House } from '../problem/house';
-import { CagesArea } from './cagesArea';
 import { CageSlicer } from './cageSlicer';
-import { findSumCombinationsForHouse } from './combinatorial';
 import { SolverModel } from './solverModel';
 import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
+import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/placeNumsForSingleOptionCellsStrategy';
 import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
 
 export class PuzzleSolver {
     #model;
     #cageSlicer;
-    #solution;
-    #placedNumsCount;
 
     constructor(problem) {
         this.problem = problem;
         this.#model = new SolverModel(problem);
         this.#cageSlicer = new CageSlicer(this.#model);
-        this.#solution = Grid.newMatrix();
-        this.#placedNumsCount = 0;
     }
 
     solve() {
@@ -29,7 +24,7 @@ export class PuzzleSolver {
         new InitPermsForCagesStrategy(this.#model).apply();
         this.#mainReduce();
 
-        return this.#solution;
+        return this.#model.solution;
     }
 
     #mainReduce() {
@@ -38,13 +33,13 @@ export class PuzzleSolver {
         let newlySolvedCellDets = [];
 
         while (iterate) {
-            if (this.#placedNumsCount >= 81) {
+            if (this.#model.placedNumCount >= 81) {
                 return;
             }
     
             new ReducePermsInCagesStrategy(cageSolversIterable).apply();
     
-            const solvedCellDets = this.#determineCellsWithSingleOption();
+            const solvedCellDets = new PlaceNumsForSingleOptionCellsStrategy(this.#model).apply();
             let nextCagesSet = this.#reduceHousesBySolvedCells(solvedCellDets);
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
@@ -123,30 +118,6 @@ export class PuzzleSolver {
         });
 
         return cageSolversToReduce;
-    }
-
-    #determineCellsWithSingleOption() {
-        const cellsSolvers = [];
-
-        _.range(House.SIZE).forEach(row => {
-            _.range(House.SIZE).forEach(col => {
-                const cellSolver = this.cellSolverAt(row, col);
-                if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
-                    this.#placeNum(cellSolver.cell, cellSolver.numOpts().values().next().value);
-                    cellsSolvers.push(cellSolver);
-                }
-            });
-        });
-
-        return cellsSolvers;
-    }
-
-    #placeNum(cell, num) {
-        const cellSolver = this.cellSolverOf(cell);
-        cellSolver.placeNum(num);
-
-        this.#solution[cell.row][cell.col] = num;
-        this.#placedNumsCount++;
     }
 
     cellSolverOf(cell) {
