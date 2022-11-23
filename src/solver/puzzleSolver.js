@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { House } from '../problem/house';
 import { SolverModel } from './solverModel';
+import { FindAndReduceCagePermsByHouseStrategy } from './strategies/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/placeNumsForSingleOptionCellsStrategy';
@@ -50,42 +50,12 @@ export class PuzzleSolver {
                 cageSolversIterable = nextCagesSet.values();
             }
             else {
-                nextCagesSet = this.#determineUniqueCagesInHouses();
+                nextCagesSet = new FindAndReduceCagePermsByHouseStrategy(this.#model).apply();
                 cageSolversIterable = nextCagesSet.values();
             }
 
             iterate = nextCagesSet.size > 0;
         }
-    }
-
-    #determineUniqueCagesInHouses() {
-        let cageSolversToReduce = new Set();
-
-        this.#model.houseSolvers.forEach(houseSolver => {
-            _.range(1, House.SIZE + 1).forEach(num => {
-                const cageSolversWithNum = [];
-                // consider overlapping vs non-overlapping cages
-                houseSolver.cages.forEach(cage => {
-                    if (this.#model.cagesSolversMap.get(cage.key).isSingleCellCage) return;
-                    const cageSolver = this.#model.cagesSolversMap.get(cage.key);
-                    const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
-                    if (hasNumInCells) {
-                        cageSolversWithNum.push(cageSolver);
-                    }
-                });
-                if (cageSolversWithNum.length !== 1) return;
-
-                const cageSolverToReDefine = cageSolversWithNum[0];
-                const reducedCellDets = cageSolverToReDefine.reduceToCombinationsContaining(num);
-                
-                if (!reducedCellDets.length) return;
-                reducedCellDets.forEach(cellSolver => {
-                    cageSolversToReduce = new Set([...cageSolversToReduce, ...cellSolver.withinCageSolvers]);
-                });
-            });
-        });
-
-        return cageSolversToReduce;
     }
 
     cellSolverOf(cell) {
