@@ -7,6 +7,7 @@ import { CageSlicer } from './cageSlicer';
 import { findSumCombinationsForHouse } from './combinatorial';
 import { SolverModel } from './solverModel';
 import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
+import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
 import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
 
 export class PuzzleSolver {
@@ -25,31 +26,10 @@ export class PuzzleSolver {
 
     solve() {
         new FindAndSliceResidualSumsStrategy(this.#model).apply();
-        this.#fillUpCombinationsForCagesAndMakeInitialReduce();
+        new InitPermsForCagesStrategy(this.#model).apply();
         this.#mainReduce();
 
         return this.#solution;
-    }
-
-    #fillUpCombinationsForCagesAndMakeInitialReduce() {
-        this.#model.houseSolvers.forEach(houseSolver => {
-            const combosForHouse = findSumCombinationsForHouse(houseSolver);
-            houseSolver.debugCombosForHouse = combosForHouse;
-            houseSolver.cages.forEach((cage, idx) => {
-                const cageSolver = this.#model.cagesSolversMap.get(cage.key);
-                const combosKeySet = new Set();
-                const combos = [];
-                combosForHouse.forEach(combo => {
-                    const comboSet = combo[idx];
-                    const key = Array.from(combo[idx]).join();
-                    if (!combosKeySet.has(key)) {
-                        combos.push(comboSet);
-                        combosKeySet.add(key);
-                    }
-                });
-                cageSolver.updateCombinations(combos);
-            });
-        });
     }
 
     #mainReduce() {
