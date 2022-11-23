@@ -5,10 +5,10 @@ export class CellModel {
     #numOpts;
     #withinCageModels;
 
-    constructor({ cell, rowSolver, columnSolver, nonetSolver }) {
+    constructor({ cell, rowSolver, columnModel, nonetSolver }) {
         this.cell = cell;
         this.rowSolver = rowSolver;
-        this.columnSolver = columnSolver;
+        this.columnModel = columnModel;
         this.nonetSolver = nonetSolver;
         this.solved = false;
 

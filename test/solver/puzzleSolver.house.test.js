@@ -5,7 +5,7 @@ import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { RowSolver } from '../../src/solver/models/elements/rowSolver';
-import { ColumnSolver } from '../../src/solver/models/elements/columnSolver';
+import { ColumnModel } from '../../src/solver/models/elements/columnModel';
 import { NonetSolver } from '../../src/solver/models/elements/nonetSolver';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
@@ -79,46 +79,46 @@ describe('Tests for creation and initialization of row, column and nonet solvers
 
     test('Initialize column solvers', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
-        expect(model.columnSolver(0)).toEqual(new ColumnSolver(
+        expect(model.columnModel(0)).toEqual(new ColumnModel(
             0, _.range(9).map(row => Cell.at(row, 0)), [
                 Cage.ofSum(19).at(6, 0).at(7, 0).at(8, 0).mk()
             ]
         ));
-        expect(model.columnSolver(1)).toEqual(new ColumnSolver(
+        expect(model.columnModel(1)).toEqual(new ColumnModel(
             1, _.range(9).map(row => Cell.at(row, 1)), []
         ));
-        expect(model.columnSolver(2)).toEqual(new ColumnSolver(
+        expect(model.columnModel(2)).toEqual(new ColumnModel(
             2, _.range(9).map(row => Cell.at(row, 2)), [
                 Cage.ofSum(10).at(0, 2).at(1, 2).mk(),
                 Cage.ofSum(2).at(3, 2).mk()
             ]
         ));
-        expect(model.columnSolver(3)).toEqual(new ColumnSolver(
+        expect(model.columnModel(3)).toEqual(new ColumnModel(
             3, _.range(9).map(row => Cell.at(row, 3)), [
                 Cage.ofSum(17).at(0, 3).at(1, 3).mk(),
                 Cage.ofSum(6).at(7, 3).at(8, 3).mk()
             ]
         ));
-        expect(model.columnSolver(4)).toEqual(new ColumnSolver(
+        expect(model.columnModel(4)).toEqual(new ColumnModel(
             4, _.range(9).map(row => Cell.at(row, 4)), []
         ));
-        expect(model.columnSolver(5)).toEqual(new ColumnSolver(
+        expect(model.columnModel(5)).toEqual(new ColumnModel(
             5, _.range(9).map(row => Cell.at(row, 5)), [
                 Cage.ofSum(8).at(2, 5).at(3, 5).mk(),
                 Cage.ofSum(8).at(7, 5).mk()
             ]
         ));
-        expect(model.columnSolver(6)).toEqual(new ColumnSolver(
+        expect(model.columnModel(6)).toEqual(new ColumnModel(
             6, _.range(9).map(row => Cell.at(row, 6)), [
                 Cage.ofSum(16).at(2, 6).at(3, 6).mk()
             ]
         ));
-        expect(model.columnSolver(7)).toEqual(new ColumnSolver(
+        expect(model.columnModel(7)).toEqual(new ColumnModel(
             7, _.range(9).map(row => Cell.at(row, 7)), [
                 Cage.ofSum(5).at(3, 7).at(4, 7).mk()
             ]
         ));
-        expect(model.columnSolver(8)).toEqual(new ColumnSolver(
+        expect(model.columnModel(8)).toEqual(new ColumnModel(
             8, _.range(9).map(row => Cell.at(row, 8)), [
                 Cage.ofSum(11).at(0, 8).at(1, 8).mk(),
                 Cage.ofSum(19).at(3, 8).at(4, 8).at(5, 8).mk(),
@@ -130,13 +130,13 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Determine residual cages in column solvers (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
-        const column0 = model.columnSolver(0);
+        const column0 = model.columnModel(0);
         const residualCage0 = column0.determineResidualCage();
         expect(residualCage0).toEqual(
             Cage.ofSum(26).at(0, 0).at(1, 0).at(2, 0).at(3, 0).at(4, 0).at(5, 0).mk()
         );
         
-        const column1 = model.columnSolver(1);
+        const column1 = model.columnModel(1);
         const residualCage1 = column1.determineResidualCage();
         expect(residualCage1).toEqual(
             new Cage(House.SUM, _.range(House.SIZE).map(row => Cell.at(row, 1))));

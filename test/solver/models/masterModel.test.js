@@ -11,15 +11,15 @@ describe('Tests for master model', () => {
         expect(solver.cellAt(2, 3)).toEqual(Cell.at(2, 3));
         expect(solver.rowSolvers.length).toBe(House.SIZE);
         expect(solver.rowSolvers[2].cages[1]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
-        expect(solver.columnSolvers.length).toBe(House.SIZE);
-        expect(solver.columnSolvers[2].cages[1]).toEqual(Cage.ofSum(2).at(3, 2).mk());
+        expect(solver.columnModels.length).toBe(House.SIZE);
+        expect(solver.columnModels[2].cages[1]).toEqual(Cage.ofSum(2).at(3, 2).mk());
         expect(solver.nonetSolvers.length).toBe(House.SIZE);
         expect(solver.nonetSolvers[1].cages[2]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
 
         const aCellModelerminator = solver.cellSolverAt(2, 3);
         expect(aCellModelerminator.cell).toEqual(Cell.at(2, 3));
         expect(aCellModelerminator.rowSolver.idx).toEqual(2);
-        expect(aCellModelerminator.columnSolver.idx).toEqual(3);
+        expect(aCellModelerminator.columnModel.idx).toEqual(3);
         expect(aCellModelerminator.nonetSolver.idx).toEqual(1);
         expect(aCellModelerminator.placedNum).toBe(undefined);
         // expect(aCellModelerminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));

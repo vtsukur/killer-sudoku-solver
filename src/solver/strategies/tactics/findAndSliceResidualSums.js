@@ -28,7 +28,7 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
                 this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIdx, (cageModel, rightIdxExclusive) => {
                     return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
                 }, (col) => {
-                    return this.model.columnSolvers[col].cellIterator()
+                    return this.model.columnModels[col].cellIterator()
                 });
             });
         });

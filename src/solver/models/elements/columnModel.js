@@ -1,8 +1,8 @@
 import { HouseSolver } from './houseSolver';
 
-export class ColumnSolver extends HouseSolver {
+export class ColumnModel extends HouseSolver {
     constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, ColumnSolver.iteratorFor);
+        super(idx, cells, inputCages, ColumnModel.iteratorFor);
     }
 
     static iteratorFor(idx) {

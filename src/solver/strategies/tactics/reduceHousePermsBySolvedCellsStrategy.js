@@ -14,7 +14,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
             const num = cellModel.placedNum;
             [
                 this.model.rowSolvers[cellModel.cell.row],
-                this.model.columnSolvers[cellModel.cell.col],
+                this.model.columnModels[cellModel.cell.col],
                 this.model.nonetSolvers[cellModel.cell.nonet]
             ].forEach(houseSolver => {
                 for (const { row, col } of houseSolver.cellIterator()) {
