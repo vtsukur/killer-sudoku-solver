@@ -12,7 +12,7 @@ export const masterStrategy = (ctx) => {
     ctx.run(initPermsForCagesStrategy);
 
     do {
-        reducePermsInCagesStrategy(ctx);
+        ctx.run(reducePermsInCagesStrategy);
         placeNumsForSingleOptionCellsStrategy(ctx);
         ctx.run(reflectSolvedCellsStrategy);
         ctx.run(findAndReduceCagePermsByHouseStrategy);

@@ -1,10 +1,10 @@
-export const reducePermsInCagesStrategy = (ctx) => {
+export function reducePermsInCagesStrategy() {
     let iterate = true;
 
     while (iterate) {
         let modifiedCellModels = new Set();
 
-        for (const cageModel of ctx.cageModelsToReevaluatePerms) {
+        for (const cageModel of this.cageModelsToReevaluatePerms) {
             const currentlyModifiedCellModels = cageModel.reduce();
             modifiedCellModels = new Set([...modifiedCellModels, ...currentlyModifiedCellModels]);
         }
@@ -14,9 +14,9 @@ export const reducePermsInCagesStrategy = (ctx) => {
             moreCageModelsToReduce = new Set([...moreCageModelsToReduce, ...modifiedCellModel.withinCageModels]);
         }
 
-        ctx.cageModelsToReevaluatePerms = moreCageModelsToReduce.values();
+        this.cageModelsToReevaluatePerms = moreCageModelsToReduce.values();
         iterate = moreCageModelsToReduce.size > 0;
     }
 
-    ctx.clearCageModelsToReevaluatePerms();
+    this.clearCageModelsToReevaluatePerms();
 }
