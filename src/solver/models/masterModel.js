@@ -67,7 +67,7 @@ export class MasterModel {
             this.nonetSolvers[cageModel.anySubgridIdx()].addCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).addWithinCageSolver(cageModel);
+            this.cellSolverOf(cell).addWithinCageModel(cageModel);
         });
         this.cageModelsMap.set(cage.key, cageModel);
     }
@@ -84,7 +84,7 @@ export class MasterModel {
             this.nonetSolvers[cageModel.anySubgridIdx()].removeCage(cage);
         }
         cage.cells.forEach(cell => {
-            this.cellSolverOf(cell).removeWithinCageSolver(cageModel);
+            this.cellSolverOf(cell).removeWithinCageModel(cageModel);
         });
         this.cageModelsMap.delete(cage.key);
     }

@@ -23,7 +23,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
                     const aCellModel = this.model.cellSolverAt(row, col);
                     if (aCellModel.hasNumOpt(num)) {
                         aCellModel.deleteNumOpt(num);
-                        cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageSolvers]);
+                        cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageModels]);
                     }
                 }    
             });

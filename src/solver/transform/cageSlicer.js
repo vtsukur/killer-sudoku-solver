@@ -18,11 +18,11 @@ export class CageSlicer {
 
                 this.#model.registerCage(residualCage);
 
-                const cageModelsForResidualCage = this.#getCageSolversFullyContainingResidualCage(residualCage);
+                const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                cageModelsForResidualCage.forEach(firstChunkCageSolver => {
-                    const secondChunkCage = CageSlicer.#slice(firstChunkCageSolver.cage, residualCage);
-                    cagesToUnregister.push(firstChunkCageSolver.cage);
+                cageModelsForResidualCage.forEach(firstChunkCageModel => {
+                    const secondChunkCage = CageSlicer.#slice(firstChunkCageModel.cage, residualCage);
+                    cagesToUnregister.push(firstChunkCageModel.cage);
                     nextResidualCages.push(secondChunkCage);
                 });
 
@@ -33,20 +33,20 @@ export class CageSlicer {
         }
     }
 
-    #getCageSolversFullyContainingResidualCage(residualCage) {
-        let allAssociatedCageSolversSet = new Set();
+    #getCageModelsFullyContainingResidualCage(residualCage) {
+        let allAssociatedCageModelsSet = new Set();
         residualCage.cells.forEach(cell => {
-            allAssociatedCageSolversSet = new Set([...allAssociatedCageSolversSet, ...this.#model.cellSolverOf(cell).withinCageSolvers]);
+            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.#model.cellSolverOf(cell).withinCageModels]);
         });
-        allAssociatedCageSolversSet.delete(this.#model.cageModelsMap.get(residualCage.key));
+        allAssociatedCageModelsSet.delete(this.#model.cageModelsMap.get(residualCage.key));
 
         const result = [];
-        for (const associatedCageSolver of allAssociatedCageSolversSet.values()) {
+        for (const associatedCageModel of allAssociatedCageModelsSet.values()) {
             const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
-                return this.#model.cellSolverOf(cell).withinCageSolvers.has(associatedCageSolver);
+                return this.#model.cellSolverOf(cell).withinCageModels.has(associatedCageModel);
             });
             if (associatedCageFullyContainsResidualCage) {
-                result.push(associatedCageSolver);
+                result.push(associatedCageModel);
             }
         }
 

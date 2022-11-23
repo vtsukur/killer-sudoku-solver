@@ -29,7 +29,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
                 
                 if (!reducedCellModels.length) return;
                 reducedCellModels.forEach(cellModel => {
-                    cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageSolvers]);
+                    cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
                 });
             });
         });

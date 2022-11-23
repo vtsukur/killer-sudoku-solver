@@ -19,13 +19,13 @@ export class ReducePermsInCagesStrategy extends BaseStrategy {
                 modifiedCellModels = new Set([...modifiedCellModels, ...currentlyModifiedCellModels]);
             }
 
-            let moreCageSolversToReduce = new Set();
+            let moreCageModelsToReduce = new Set();
             for (const modifiedCellModel of modifiedCellModels.values()) {
-                moreCageSolversToReduce = new Set([...moreCageSolversToReduce, ...modifiedCellModel.withinCageSolvers]);
+                moreCageModelsToReduce = new Set([...moreCageModelsToReduce, ...modifiedCellModel.withinCageModels]);
             }
 
-            this.#cageModelsIterable = moreCageSolversToReduce.values();
-            iterate = moreCageSolversToReduce.size > 0;
+            this.#cageModelsIterable = moreCageModelsToReduce.values();
+            iterate = moreCageModelsToReduce.size > 0;
         }
     }
 }

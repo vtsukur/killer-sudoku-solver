@@ -3,7 +3,7 @@ import { House } from '../../../problem/house';
 
 export class CellModel {
     #numOpts;
-    #withinCageSolvers;
+    #withinCageModels;
 
     constructor({ cell, rowSolver, columnSolver, nonetSolver }) {
         this.cell = cell;
@@ -13,20 +13,20 @@ export class CellModel {
         this.solved = false;
 
         this.#numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
-        this.#withinCageSolvers = new Set();
+        this.#withinCageModels = new Set();
         this.placedNum = undefined;
     }
 
-    addWithinCageSolver(withinCageSolver) {
-        this.#withinCageSolvers.add(withinCageSolver);
+    addWithinCageModel(withinCageModel) {
+        this.#withinCageModels.add(withinCageModel);
     }
 
-    removeWithinCageSolver(withinCageSolver) {
-        this.#withinCageSolvers.delete(withinCageSolver);
+    removeWithinCageModel(withinCageModel) {
+        this.#withinCageModels.delete(withinCageModel);
     }
 
-    get withinCageSolvers() {
-        return this.#withinCageSolvers;
+    get withinCageModels() {
+        return this.#withinCageModels;
     }
 
     numOpts() {

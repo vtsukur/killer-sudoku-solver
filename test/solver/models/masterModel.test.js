@@ -23,6 +23,6 @@ describe('Tests for master model', () => {
         expect(aCellModelerminator.nonetSolver.idx).toEqual(1);
         expect(aCellModelerminator.placedNum).toBe(undefined);
         // expect(aCellModelerminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
-        // expect(aCellModelerminator.withinCageSolvers).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
+        // expect(aCellModelerminator.withinCageModels).toEqual(new Set([ solver.inputCageAt(2, 3) ]));
     });
 });
