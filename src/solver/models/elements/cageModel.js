@@ -1,6 +1,6 @@
 import { House } from '../../../problem/house';
 
-export class CageSolver {
+export class CageModel {
     #firstCell;
     #cellsSet;
     #cellCount;

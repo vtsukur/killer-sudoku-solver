@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
-import { CageSolver } from './elements/cageSolver';
+import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnSolver } from './elements/columnSolver';
 import { NonetSolver } from './elements/nonetSolver';
@@ -56,7 +56,7 @@ export class MasterModel {
     }
 
     registerCage(cage) {
-        const cageSolver = new CageSolver(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
+        const cageSolver = new CageModel(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
         if (cageSolver.isWithinRow) {
             this.rowSolvers[cageSolver.anyRow()].addCage(cage);
         }
