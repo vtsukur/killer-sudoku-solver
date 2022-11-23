@@ -10,11 +10,13 @@ import { RowModel } from './elements/rowModel';
 export class MasterModel {
     #solution;
     #placedNumCount;
+    #cageModelsToReevaluatePerms;
 
     constructor(problem) {
         this.problem = problem;
         this.cageModelsMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
+        this.#cageModelsToReevaluatePerms = new Set();
         this.#solution = Grid.newMatrix();
         this.#placedNumCount = 0;
 
@@ -95,6 +97,14 @@ export class MasterModel {
 
         this.#solution[cell.row][cell.col] = num;
         this.#placedNumCount++;
+    }
+
+    get cageModelsToReevaluatePerms() {
+        return this.#cageModelsToReevaluatePerms;
+    }
+
+    setCageModelsToReevaluatePerms(cageModelsToReevaluatePerms) {
+        this.#cageModelsToReevaluatePerms = cageModelsToReevaluatePerms;
     }
 
     get isSolved() {

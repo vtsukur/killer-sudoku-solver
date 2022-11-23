@@ -20,12 +20,14 @@ export class MasterStrategy extends BaseStrategy {
         let iterate = true;
         let newlySolvedCellModels = [];
 
+        this.model.setCageModelsToReevaluatePerms(this.model.cageModelsMap.values());
+
         while (iterate) {
             if (this.model.isSolved) {
                 return;
             }
-    
-            new ReducePermsInCagesStrategy(this.model, cageModelsIterable).apply();
+
+            new ReducePermsInCagesStrategy(this.model).apply();
     
             const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy(this.model).apply();
             let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.model, solvedCellModels).apply();
@@ -44,6 +46,7 @@ export class MasterStrategy extends BaseStrategy {
                 nextCagesSet = new FindAndReduceCagePermsByHouseStrategy(this.model).apply();
                 cageModelsIterable = nextCagesSet.values();
             }
+            this.model.setCageModelsToReevaluatePerms(nextCagesSet.values());
 
             iterate = nextCagesSet.size > 0;
         }
