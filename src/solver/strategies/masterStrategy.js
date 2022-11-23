@@ -20,7 +20,6 @@ export class MasterStrategy extends BaseStrategy {
 
         let cageModelsIterable = model.cageModelsMap.values();
         let iterate = true;
-        // let newlySolvedCellModels = [];
 
         ctx.cageModelsToReevaluatePerms =model.cageModelsMap.values();
 
@@ -34,7 +33,6 @@ export class MasterStrategy extends BaseStrategy {
             const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
             let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
 
-            // newlySolvedCellModels = newlySolvedCellModels.concat(Array.from(solvedCellModels));
             if (solvedCellModels.length > 0) {
                 new SliceCagesForSolvedCellsStrategy(solvedCellModels).apply(ctx);
                 nextCagesSet = new Set(model.cageModelsMap.values());
@@ -44,12 +42,6 @@ export class MasterStrategy extends BaseStrategy {
             if (nextCagesSet.size > 0) {
                 cageModelsIterable = nextCagesSet.values();
             }
-            // else if (newlySolvedCellModels.length > 0) {
-            //     new SliceCagesForSolvedCellsStrategy(newlySolvedCellModels).apply(ctx);
-            //     newlySolvedCellModels = [];
-            //     nextCagesSet = new Set(model.cageModelsMap.values());
-            //     cageModelsIterable = nextCagesSet.values();
-            // }
             else {
                 nextCagesSet = new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
                 cageModelsIterable = nextCagesSet.values();
