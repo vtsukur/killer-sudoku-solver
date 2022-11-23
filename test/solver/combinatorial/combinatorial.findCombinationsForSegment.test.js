@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { findSumCombinationsForHouse } from '../../src/solver/combinatorial/index';
-import { Cage } from '../../src/problem/cage';
+import { findSumCombinationsForHouse } from '../../../src/solver/combinatorial/index';
+import { Cage } from '../../../src/problem/cage';
 
 const houseSolverOf = (cages) => {
     let cellsMap = new Map();
