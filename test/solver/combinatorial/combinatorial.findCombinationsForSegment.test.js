@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { findSumCombinationsForHouse } from '../../../src/solver/combinatorial/index';
 import { Cage } from '../../../src/problem/cage';
 
-const houseSolverOf = (cages) => {
+const houseModelOf = (cages) => {
     let cellsMap = new Map();
     if (Array.isArray(cages)) {
         cages.forEach(cage => {
@@ -16,7 +16,7 @@ const houseSolverOf = (cages) => {
 
 describe('Tests for the finder of number combinations to form a house solver out of cages', () => {
     test('Multiple combinations of numbers to form a complete house solver with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseSolverOf([
+        expect(findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(15).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(10).at(1, 3).at(2, 3).mk(),
             Cage.ofSum(7).at(2, 1).at(2, 2).mk(),
@@ -31,7 +31,7 @@ describe('Tests for the finder of number combinations to form a house solver out
     });
 
     test('Combination of numbers to form a complete house solver with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseSolverOf([
+        expect(findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).mk(),
             Cage.ofSum(7).at(1, 6).at(1, 7).mk(),
@@ -42,7 +42,7 @@ describe('Tests for the finder of number combinations to form a house solver out
     });
 
     test('Combinations of numbers to form an incomplete house solver with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseSolverOf([
+        expect(findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(9).at(1, 6).at(1, 7).mk()
         ]))).toEqual([
@@ -52,7 +52,7 @@ describe('Tests for the finder of number combinations to form a house solver out
     });
 
     test('Combinations of numbers to form a house solver with overlapping cage', () => {
-        expect(findSumCombinationsForHouse(houseSolverOf([
+        expect(findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(8).at(2, 5).at(3, 5).mk(),
             Cage.ofSum(8).at(7, 5).mk(),
             // overlapping cage
@@ -66,24 +66,24 @@ describe('Tests for the finder of number combinations to form a house solver out
     });
 
     test('Combinations of numbers to form a house solver out of invalid house solver', () => {
-        expect(() => findSumCombinationsForHouse(undefined)).toThrow('Invalid houseSolver: undefined');
-        expect(() => findSumCombinationsForHouse(null)).toThrow('Invalid houseSolver: null');
-        expect(() => findSumCombinationsForHouse(1)).toThrow('Invalid houseSolver: 1');
-        expect(() => findSumCombinationsForHouse('string')).toThrow('Invalid houseSolver: string');
-        expect(() => findSumCombinationsForHouse(() => {})).toThrow('Invalid houseSolver: () => {}');
+        expect(() => findSumCombinationsForHouse(undefined)).toThrow('Invalid houseModel: undefined');
+        expect(() => findSumCombinationsForHouse(null)).toThrow('Invalid houseModel: null');
+        expect(() => findSumCombinationsForHouse(1)).toThrow('Invalid houseModel: 1');
+        expect(() => findSumCombinationsForHouse('string')).toThrow('Invalid houseModel: string');
+        expect(() => findSumCombinationsForHouse(() => {})).toThrow('Invalid houseModel: () => {}');
     });
 
     test('Combinations of numbers to form a house solver out of no cages', () => {
-        expect(findSumCombinationsForHouse(houseSolverOf([]))).toEqual([]);
+        expect(findSumCombinationsForHouse(houseModelOf([]))).toEqual([]);
     });
 
     test('Combinations of numbers to form a house solver out of invalid house solver cages', () => {
-        expect(() => findSumCombinationsForHouse(houseSolverOf(undefined))).toThrow('Invalid cages: undefined');
-        expect(() => findSumCombinationsForHouse(houseSolverOf(null))).toThrow('Invalid cages: null');
-        expect(() => findSumCombinationsForHouse(houseSolverOf({}))).toThrow('Invalid cages: [object Object]');
-        expect(() => findSumCombinationsForHouse(houseSolverOf(3))).toThrow('Invalid cages: 3');
-        expect(() => findSumCombinationsForHouse(houseSolverOf('string'))).toThrow('Invalid cages: string');
-        expect(() => findSumCombinationsForHouse(houseSolverOf(() => {}))).toThrow('Invalid cages: () => {}');
+        expect(() => findSumCombinationsForHouse(houseModelOf(undefined))).toThrow('Invalid cages: undefined');
+        expect(() => findSumCombinationsForHouse(houseModelOf(null))).toThrow('Invalid cages: null');
+        expect(() => findSumCombinationsForHouse(houseModelOf({}))).toThrow('Invalid cages: [object Object]');
+        expect(() => findSumCombinationsForHouse(houseModelOf(3))).toThrow('Invalid cages: 3');
+        expect(() => findSumCombinationsForHouse(houseModelOf('string'))).toThrow('Invalid cages: string');
+        expect(() => findSumCombinationsForHouse(houseModelOf(() => {}))).toThrow('Invalid cages: () => {}');
     });
 
     test('Combinations of numbers to form a house solver out of invalid house solver cells', () => {
@@ -96,7 +96,7 @@ describe('Tests for the finder of number combinations to form a house solver out
     });
 
     test('Combinations of numbers to form a house solver out of cages with non-overlapping cells whose total sum is greater than house max', () => {
-        expect(() => findSumCombinationsForHouse(houseSolverOf([
+        expect(() => findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).mk(),
             Cage.ofSum(12).at(1, 6).at(1, 7).mk(),

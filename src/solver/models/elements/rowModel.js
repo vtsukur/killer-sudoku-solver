@@ -1,12 +1,12 @@
-import { HouseSolver } from './houseSolver';
+import { HouseModel } from './houseModel';
 
-export class RowModel extends HouseSolver {
+export class RowModel extends HouseModel {
     constructor(idx, cells, inputCages) {
         super(idx, cells, inputCages, RowModel.iteratorFor);
     }
 
     static iteratorFor(idx) {
-        return HouseSolver.newHouseIterator(col => {
+        return HouseModel.newHouseIterator(col => {
             return { row: idx, col };
         });
     }

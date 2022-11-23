@@ -48,7 +48,7 @@ export class MasterModel {
             this.registerCage(cage);
         });
 
-        this.houseSolvers = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
+        this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
     #collectHouseCells(iterator) {

@@ -1,13 +1,13 @@
 import { Nonet } from '../../../problem/nonet';
-import { HouseSolver } from './houseSolver';
+import { HouseModel } from './houseModel';
 
-export class NonetModel extends HouseSolver {
+export class NonetModel extends HouseModel {
     constructor(idx, cells, inputCages) {
         super(idx, cells, inputCages, NonetModel.iteratorFor);
     }
 
     static iteratorFor(idx) {
-        return HouseSolver.newHouseIterator(i => {
+        return HouseModel.newHouseIterator(i => {
             const nonetStartingRow = Math.floor(idx / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const nonetStartingCol = (idx % Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const row = nonetStartingRow + Math.floor(i / Nonet.SIDE_LENGTH);

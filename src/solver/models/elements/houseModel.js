@@ -2,7 +2,7 @@ import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesArea } from './cagesArea';
 
-export class HouseSolver {
+export class HouseModel {
     #cagesArea;
 
     constructor(idx, cells, inputCages = [], cellIteratorFn) {
@@ -57,6 +57,6 @@ export class HouseSolver {
     }
     
     static newHouseIterator(valueOfFn) {
-        return HouseSolver.#newAreaIterator(valueOfFn, House.SIZE);
+        return HouseModel.#newAreaIterator(valueOfFn, House.SIZE);
     }
 }
