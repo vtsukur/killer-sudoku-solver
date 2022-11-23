@@ -12,7 +12,6 @@ export class PuzzleSolver {
     #model;
 
     constructor(problem) {
-        this.problem = problem;
         this.#model = new SolverModel(problem);
     }
 
