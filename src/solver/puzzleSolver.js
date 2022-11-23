@@ -7,6 +7,7 @@ import { SolverModel } from './solverModel';
 import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/placeNumsForSingleOptionCellsStrategy';
+import { ReduceHousePermsBySolvedCellsStrategy } from './strategies/reduceHousePermsBySolvedCellsStrategy';
 import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
 
 export class PuzzleSolver {
@@ -40,7 +41,7 @@ export class PuzzleSolver {
             new ReducePermsInCagesStrategy(cageSolversIterable).apply();
     
             const solvedCellDets = new PlaceNumsForSingleOptionCellsStrategy(this.#model).apply();
-            let nextCagesSet = this.#reduceHousesBySolvedCells(solvedCellDets);
+            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.#model, solvedCellDets).apply();
 
             newlySolvedCellDets = newlySolvedCellDets.concat(Array.from(solvedCellDets));
 
@@ -65,29 +66,6 @@ export class PuzzleSolver {
 
             iterate = nextCagesSet.size > 0;
         }
-    }
-
-    #reduceHousesBySolvedCells(cellsSolvers) {
-        let cageSolversToReduceSet = new Set();
-        cellsSolvers.forEach(cellSolver => {
-            const num = cellSolver.placedNum;
-            [
-                this.#model.rowSolvers[cellSolver.cell.row],
-                this.#model.columnSolvers[cellSolver.cell.col],
-                this.#model.nonetSolvers[cellSolver.cell.nonet]
-            ].forEach(houseSolver => {
-                for (const { row, col } of houseSolver.cellIterator()) {
-                    if (row === cellSolver.cell.row && col === cellSolver.cell.col) continue;
-        
-                    const aCellDet = this.cellSolverAt(row, col);
-                    if (aCellDet.hasNumOpt(num)) {
-                        aCellDet.deleteNumOpt(num);
-                        cageSolversToReduceSet = new Set([...cageSolversToReduceSet, ...aCellDet.withinCageSolvers]);
-                    }
-                }    
-            });
-        });
-        return cageSolversToReduceSet;
     }
 
     #determineUniqueCagesInHouses() {
