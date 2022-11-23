@@ -1,4 +1,5 @@
 import { CageSlicer } from '../transform/cageSlicer';
+import { BaseStrategy } from './baseStrategy';
 import { Context } from './context';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
@@ -8,29 +9,25 @@ import { ReduceHousePermsBySolvedCellsStrategy } from './tactics/reduceHousePerm
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { SliceCagesForSolvedCellsStrategy } from './tactics/sliceCagesForSolvedCellsStrategy';
 
-export class MasterStrategy {
-    #model;
-    #cageSlicer;
-
-    constructor(model) {
-        this.#model = model;
-        this.#cageSlicer = new CageSlicer(model);
+export class MasterStrategy extends BaseStrategy {
+    constructor() {
+        super();
     }
 
-    apply() {
-        const ctx = new Context(this.#model);
+    apply(ctx) {
+        const model = ctx.model;
 
-        new FindAndSliceResidualSumsStrategy(this.#cageSlicer).apply(ctx);
+        new FindAndSliceResidualSumsStrategy().apply(ctx);
         new InitPermsForCagesStrategy().apply(ctx);
 
-        let cageModelsIterable = this.#model.cageModelsMap.values();
+        let cageModelsIterable = model.cageModelsMap.values();
         let iterate = true;
         let newlySolvedCellModels = [];
 
-        ctx.setCageModelsToReevaluatePerms(this.#model.cageModelsMap.values());
+        ctx.setCageModelsToReevaluatePerms(model.cageModelsMap.values());
 
         while (iterate) {
-            if (this.#model.isSolved) {
+            if (model.isSolved) {
                 return;
             }
 
@@ -44,9 +41,9 @@ export class MasterStrategy {
             if (nextCagesSet.size > 0) {
                 cageModelsIterable = nextCagesSet.values();
             } else if (newlySolvedCellModels.length > 0) {
-                new SliceCagesForSolvedCellsStrategy(this.#cageSlicer, newlySolvedCellModels).apply(ctx);
+                new SliceCagesForSolvedCellsStrategy(newlySolvedCellModels).apply(ctx);
                 newlySolvedCellModels = [];
-                nextCagesSet = new Set(this.#model.cageModelsMap.values());
+                nextCagesSet = new Set(model.cageModelsMap.values());
                 cageModelsIterable = nextCagesSet.values();
             }
             else {
@@ -58,6 +55,6 @@ export class MasterStrategy {
             iterate = nextCagesSet.size > 0;
         }
 
-        return this.#model.solution;
+        return model.solution;
     }
 }

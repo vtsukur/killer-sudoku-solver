@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { MasterModel } from './models/masterModel';
+import { Context } from './strategies/context';
 import { MasterStrategy } from './strategies/masterStrategy';
+import { CageSlicer } from './transform/cageSlicer';
 
 export class PuzzleSolver {
     #model;
@@ -8,11 +10,13 @@ export class PuzzleSolver {
 
     constructor(problem) {
         this.#model = new MasterModel(problem);
-        this.#masterStrategy = new MasterStrategy(this.#model);
+        this.#masterStrategy = new MasterStrategy();
     }
 
     solve() {
-        this.#masterStrategy.apply();
+        const ctx = new Context(this.#model, new CageSlicer(this.#model));
+
+        this.#masterStrategy.apply(ctx);
 
         return this.#model.solution;
     }

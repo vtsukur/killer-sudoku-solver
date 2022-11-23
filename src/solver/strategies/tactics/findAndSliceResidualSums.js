@@ -5,17 +5,14 @@ import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { BaseStrategy } from '../baseStrategy';
 
 export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
-    #cageSlicer;
-
-    constructor(cageSlicer) {
+    constructor() {
         super();
-        this.#cageSlicer = cageSlicer;
     }
 
     apply(ctx) {
         _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx.model, n, leftIdx, (cageModel, rightIdxExclusive) => {
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, (cageModel, rightIdxExclusive) => {
                     return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
                 }, (row) => {
                     return ctx.model.rowModels[row].cellIterator()
@@ -24,7 +21,7 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
         });
         _.range(1, 4).reverse().forEach(n => {
             _.range(House.SIZE - n + 1).forEach(leftIdx => {
-                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx.model, n, leftIdx, (cageModel, rightIdxExclusive) => {
+                this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, (cageModel, rightIdxExclusive) => {
                     return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
                 }, (col) => {
                     return ctx.model.columnModels[col].cellIterator()
@@ -32,7 +29,7 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
             });
         });
         _.range(House.SIZE).forEach(leftIdx => {
-            this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx.model, 1, leftIdx, (cageModel) => {
+            this.#doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, 1, leftIdx, (cageModel) => {
                 return cageModel.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
             }, (nonet) => {
                 return ctx.model.nonetModels[nonet].cellIterator();
@@ -40,13 +37,13 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
         });
     }
 
-    #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(model, n, leftIdx, withinHouseFn, cellIteratorFn) {
+    #doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, withinHouseFn, cellIteratorFn) {
         const nHouseCellCount = n * House.SIZE;
         const nHouseSum = n * House.SUM;
 
         const rightIdxExclusive = leftIdx + n;
         let cages = [];
-        for (const cageModel of model.cageModelsMap.values()) {
+        for (const cageModel of ctx.model.cageModelsMap.values()) {
             if (withinHouseFn(cageModel, rightIdxExclusive)) {
                 cages = cages.concat(cageModel.cage);
             }
@@ -56,15 +53,15 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { row, col } of cellIteratorFn(idx)) {
-                    if (!cagesAreaModel.hasNonOverlapping(model.cellAt(row, col))) {
-                        residualCells.push(model.cellAt(row, col));
+                    if (!cagesAreaModel.hasNonOverlapping(ctx.model.cellAt(row, col))) {
+                        residualCells.push(ctx.model.cellAt(row, col));
                     }
                 }
             });
             if (residualCells.length) {
                 const residualCage = new Cage(nHouseSum - cagesAreaModel.sum, residualCells);
-                if (!model.cageModelsMap.has(residualCage.key)) {
-                    this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
+                if (!ctx.model.cageModelsMap.has(residualCage.key)) {
+                    ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
                 }
             }
         }

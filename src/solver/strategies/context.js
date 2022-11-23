@@ -1,14 +1,20 @@
 export class Context {
-    #cageModelsToReevaluatePerms;
     #model;
+    #cageSlicer;
+    #cageModelsToReevaluatePerms;
 
-    constructor(model) {
+    constructor(model, cageSlicer) {
         this.#model = model;
+        this.#cageSlicer = cageSlicer;
         this.#cageModelsToReevaluatePerms = new Set();
     }
     
     get model() {
         return this.#model;
+    }
+
+    get cageSlicer() {
+        return this.#cageSlicer;
     }
 
     get cageModelsToReevaluatePerms() {
