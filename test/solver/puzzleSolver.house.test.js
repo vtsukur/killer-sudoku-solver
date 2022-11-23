@@ -4,59 +4,59 @@ import { House } from '../../src/problem/house';
 import { Cell } from '../../src/problem/cell';
 import { Cage } from '../../src/problem/cage';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
-import { RowSolver } from '../../src/solver/models/elements/rowSolver';
+import { RowModel } from '../../src/solver/models/elements/rowModel';
 import { ColumnModel } from '../../src/solver/models/elements/columnModel';
 import { NonetSolver } from '../../src/solver/models/elements/nonetSolver';
 
 describe('Tests for creation and initialization of row, column and nonet solvers', () => {    
     test('Initialize row solvers', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
-        expect(model.rowSolver(0)).toEqual(new RowSolver(
+        expect(model.rowModel(0)).toEqual(new RowModel(
             0, _.range(9).map(col => Cell.at(0, col)), [
                 Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
                 Cage.ofSum(7).at(0, 6).at(0, 7).mk()
             ]
         ));
-        expect(model.rowSolver(1)).toEqual(new RowSolver(
+        expect(model.rowModel(1)).toEqual(new RowModel(
             1, _.range(9).map(col => Cell.at(1, col)), [
                 Cage.ofSum(7).at(1, 0).at(1, 1).mk(),
                 Cage.ofSum(10).at(1, 5).at(1, 6).at(1, 7).mk()
             ]
         ));
-        expect(model.rowSolver(2)).toEqual(new RowSolver(
+        expect(model.rowModel(2)).toEqual(new RowModel(
             2, _.range(9).map(col => Cell.at(2, col)), [
                 Cage.ofSum(13).at(2, 0).at(2, 1).at(2, 2).mk(),
                 Cage.ofSum(11).at(2, 3).at(2, 4).mk(),
                 Cage.ofSum(9).at(2, 7).at(2, 8).mk()
             ]
         ));
-        expect(model.rowSolver(3)).toEqual(new RowSolver(
+        expect(model.rowModel(3)).toEqual(new RowModel(
             3, _.range(9).map(col => Cell.at(3, col)), [
                 Cage.ofSum(4).at(3, 0).at(3, 1).mk(),
                 Cage.ofSum(2).at(3, 2).mk(),
                 Cage.ofSum(14).at(3, 3).at(3, 4).mk()
             ]
         ));
-        expect(model.rowSolver(4)).toEqual(new RowSolver(
+        expect(model.rowModel(4)).toEqual(new RowModel(
             4, _.range(9).map(col => Cell.at(4, col)), [
                 Cage.ofSum(10).at(4, 3).at(4, 4).mk()
             ]
         ));
-        expect(model.rowSolver(5)).toEqual(new RowSolver(
+        expect(model.rowModel(5)).toEqual(new RowModel(
             5, _.range(9).map(col => Cell.at(5, col)), []
         ));
-        expect(model.rowSolver(6)).toEqual(new RowSolver(
+        expect(model.rowModel(6)).toEqual(new RowModel(
             6, _.range(9).map(col => Cell.at(6, col)), [
                 Cage.ofSum(6).at(6, 4).at(6, 5).mk()
             ]
         ));
-        expect(model.rowSolver(7)).toEqual(new RowSolver(
+        expect(model.rowModel(7)).toEqual(new RowModel(
             7, _.range(9).map(col => Cell.at(7, col)), [
                 Cage.ofSum(8).at(7, 5).mk(),
                 Cage.ofSum(10).at(7, 6).at(7, 7).mk()
             ]
         ));
-        expect(model.rowSolver(8)).toEqual(new RowSolver(
+        expect(model.rowModel(8)).toEqual(new RowModel(
             8, _.range(9).map(col => Cell.at(8, col)), [
                 Cage.ofSum(7).at(8, 6).at(8, 7).mk()
             ]
@@ -66,12 +66,12 @@ describe('Tests for creation and initialization of row, column and nonet solvers
     test('Determine residual cages in row solvers (shallow)', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
-        const row0 = model.rowSolver(0);
+        const row0 = model.rowModel(0);
         const residualCage0 = row0.determineResidualCage();
         expect(residualCage0).toEqual(
             Cage.ofSum(23).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 8).mk());
         
-        const row5 = model.rowSolver(5);
+        const row5 = model.rowModel(5);
         const residualCage5 = row5.determineResidualCage();
         expect(residualCage5).toEqual(
             new Cage(House.SUM, _.range(House.SIZE).map(col => Cell.at(5, col))));

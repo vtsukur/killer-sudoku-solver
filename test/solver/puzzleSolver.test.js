@@ -183,7 +183,7 @@ describe('Tests for puzzle solver', () => {
         expect(model.cellSolverAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
-            expect(model.rowSolver(idx).cages.length).toBe(House.SIZE);
+            expect(model.rowModel(idx).cages.length).toBe(House.SIZE);
             expect(model.columnModel(idx).cages.length).toBe(House.SIZE);
             expect(model.nonetSolver(idx).cages.length).toBe(House.SIZE);
         });

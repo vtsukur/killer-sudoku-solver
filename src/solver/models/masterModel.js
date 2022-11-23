@@ -5,7 +5,7 @@ import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';
 import { NonetSolver } from './elements/nonetSolver';
-import { RowSolver } from './elements/rowSolver';
+import { RowModel } from './elements/rowModel';
 
 export class MasterModel {
     #solution;
@@ -24,11 +24,11 @@ export class MasterModel {
             });
         });
 
-        this.rowSolvers = [];
+        this.rowModels = [];
         this.columnModels = [];
         this.nonetSolvers = [];
         _.range(House.SIZE).forEach(i => {
-            this.rowSolvers.push(new RowSolver(i, this.#collectHouseCells(RowSolver.iteratorFor(i))));
+            this.rowModels.push(new RowModel(i, this.#collectHouseCells(RowModel.iteratorFor(i))));
             this.columnModels.push(new ColumnModel(i, this.#collectHouseCells(ColumnModel.iteratorFor(i))));
             this.nonetSolvers.push(new NonetSolver(i, this.#collectHouseCells(NonetSolver.iteratorFor(i))));
         });
@@ -38,7 +38,7 @@ export class MasterModel {
         cells.forEach(cell => {
             this.cellSolversMatrix[cell.row][cell.col] = new CellModel({
                 cell,
-                rowSolver: this.rowSolvers[cell.row],
+                rowModel: this.rowModels[cell.row],
                 columnModel: this.columnModels[cell.col],
                 nonetSolver: this.nonetSolvers[cell.nonet]
             });
@@ -48,7 +48,7 @@ export class MasterModel {
             this.registerCage(cage);
         });
 
-        this.houseSolvers = [[...this.rowSolvers], [...this.columnModels], [...this.nonetSolvers]].flat();
+        this.houseSolvers = [[...this.rowModels], [...this.columnModels], [...this.nonetSolvers]].flat();
     }
 
     #collectHouseCells(iterator) {
@@ -58,7 +58,7 @@ export class MasterModel {
     registerCage(cage) {
         const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellSolverOf(cell)));
         if (cageModel.isWithinRow) {
-            this.rowSolvers[cageModel.anyRow()].addCage(cage);
+            this.rowModels[cageModel.anyRow()].addCage(cage);
         }
         if (cageModel.isWithinColumn) {
             this.columnModels[cageModel.anyColumnIdx()].addCage(cage);
@@ -75,7 +75,7 @@ export class MasterModel {
     unregisterCage(cage) {
         const cageModel = this.cageModelsMap.get(cage.key);
         if (cageModel.isWithinRow) {
-            this.rowSolvers[cageModel.anyRow()].removeCage(cage);
+            this.rowModels[cageModel.anyRow()].removeCage(cage);
         }
         if (cageModel.isWithinColumn) {
             this.columnModels[cageModel.anyColumnIdx()].removeCage(cage);
@@ -117,8 +117,8 @@ export class MasterModel {
         return this.cellSolversMatrix[row][col];
     }
 
-    rowSolver(idx) {
-        return this.rowSolvers[idx];
+    rowModel(idx) {
+        return this.rowModels[idx];
     }
 
     columnModel(idx) {

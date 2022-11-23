@@ -5,9 +5,9 @@ export class CellModel {
     #numOpts;
     #withinCageModels;
 
-    constructor({ cell, rowSolver, columnModel, nonetSolver }) {
+    constructor({ cell, rowModel, columnModel, nonetSolver }) {
         this.cell = cell;
-        this.rowSolver = rowSolver;
+        this.rowModel = rowModel;
         this.columnModel = columnModel;
         this.nonetSolver = nonetSolver;
         this.solved = false;
