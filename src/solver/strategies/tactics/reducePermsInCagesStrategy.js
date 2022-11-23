@@ -3,8 +3,8 @@ import { BaseStrategy } from './baseStrategy';
 export class ReducePermsInCagesStrategy extends BaseStrategy {
     #cageSolversIterable;
 
-    constructor(cageSolversIterable) {
-        super();
+    constructor(model, cageSolversIterable) {
+        super(model);
         this.#cageSolversIterable = cageSolversIterable;
     }
 

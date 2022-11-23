@@ -1,4 +1,4 @@
-import { BaseModelStrategy } from './tactics/baseModelStrategy';
+import { BaseStrategy } from './tactics/baseStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
@@ -7,7 +7,7 @@ import { ReduceHousePermsBySolvedCellsStrategy } from './tactics/reduceHousePerm
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { SliceCagesForSolvedCellsStrategy } from './tactics/sliceCagesForSolvedCellsStrategy';
 
-export class MasterStrategy extends BaseModelStrategy {
+export class MasterStrategy extends BaseStrategy {
     constructor(model) {
         super(model);
     }
@@ -25,7 +25,7 @@ export class MasterStrategy extends BaseModelStrategy {
                 return;
             }
     
-            new ReducePermsInCagesStrategy(cageSolversIterable).apply();
+            new ReducePermsInCagesStrategy(this.model, cageSolversIterable).apply();
     
             const solvedCellDets = new PlaceNumsForSingleOptionCellsStrategy(this.model).apply();
             let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.model, solvedCellDets).apply();

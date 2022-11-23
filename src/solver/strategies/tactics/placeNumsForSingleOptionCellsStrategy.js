@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
-import { BaseModelStrategy } from './baseModelStrategy';
+import { BaseStrategy } from './baseStrategy';
 
-export class PlaceNumsForSingleOptionCellsStrategy extends BaseModelStrategy {
+export class PlaceNumsForSingleOptionCellsStrategy extends BaseStrategy {
     constructor(model) {
         super(model);
     }

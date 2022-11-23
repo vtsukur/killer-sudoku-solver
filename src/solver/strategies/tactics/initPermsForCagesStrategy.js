@@ -1,7 +1,7 @@
 import { findSumCombinationsForHouse } from '../../combinatorial';
-import { BaseModelStrategy } from './baseModelStrategy';
+import { BaseStrategy } from './baseStrategy';
 
-export class InitPermsForCagesStrategy extends BaseModelStrategy {
+export class InitPermsForCagesStrategy extends BaseStrategy {
     constructor(model) {
         super(model);
     }

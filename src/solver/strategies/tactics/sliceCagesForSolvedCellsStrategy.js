@@ -1,8 +1,8 @@
 import { Cage } from '../../../problem/cage';
 import { CageSlicer } from '../../cageSlicer';
-import { BaseModelStrategy } from './baseModelStrategy';
+import { BaseStrategy } from './baseStrategy';
 
-export class SliceCagesForSolvedCellsStrategy extends BaseModelStrategy {
+export class SliceCagesForSolvedCellsStrategy extends BaseStrategy {
     #cageSlicer;
     #solvedCellSolvers;
 

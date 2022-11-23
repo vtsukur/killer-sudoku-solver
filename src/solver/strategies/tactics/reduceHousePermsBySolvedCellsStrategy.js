@@ -1,6 +1,6 @@
-import { BaseModelStrategy } from './baseModelStrategy';
+import { BaseStrategy } from './baseStrategy';
 
-export class ReduceHousePermsBySolvedCellsStrategy extends BaseModelStrategy {
+export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
     #solvedCellSolvers;
 
     constructor(model, solvedCellSolvers) {

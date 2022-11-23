@@ -3,9 +3,9 @@ import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesArea } from '../../cagesArea';
 import { CageSlicer } from '../../cageSlicer';
-import { BaseModelStrategy } from './baseModelStrategy';
+import { BaseStrategy } from './baseStrategy';
 
-export class FindAndSliceResidualSumsStrategy extends BaseModelStrategy {
+export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
     #cageSlicer;
 
     constructor(model) {
