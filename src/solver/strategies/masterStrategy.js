@@ -17,33 +17,17 @@ export class MasterStrategy extends BaseStrategy {
         new FindAndSliceResidualSumsStrategy().apply(ctx);
         new InitPermsForCagesStrategy().apply(ctx);
 
-        let cageModelsIterable = model.cageModelsMap.values();
-        let iterate = true;
-
         ctx.cageModelsToReevaluatePerms = model.cageModelsMap.values();
 
-        while (iterate) {
+        while (ctx.cageModelsToReevaluatePerms !== undefined) {
             if (model.isSolved) {
                 return;
             }
 
             new ReducePermsInCagesStrategy().apply(ctx);
-    
             new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
-
-            let nextCagesSet = new Set();
-            if (ctx.hasRecentlySolvedCellModels) {
-                new ReflectSolvedCellsStrategy().apply(ctx);
-                nextCagesSet = new Set(model.cageModelsMap.values());
-            }
-
-            if (!nextCagesSet.size) {
-                nextCagesSet = new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
-            }
-            cageModelsIterable = nextCagesSet.values();
-            ctx.cageModelsToReevaluatePerms = nextCagesSet.values();
-
-            iterate = nextCagesSet.size > 0;
+            new ReflectSolvedCellsStrategy().apply(ctx);
+            new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
         }
 
         return model.solution;

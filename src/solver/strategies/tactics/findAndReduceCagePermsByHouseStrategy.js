@@ -8,6 +8,8 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
     }
 
     apply(ctx) {
+        if (ctx.cageModelsToReevaluatePerms) return;
+
         let cageModelsToReduce = new Set();
 
         ctx.model.houseModels.forEach(houseModel => {
@@ -34,6 +36,6 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
             });
         });
 
-        return cageModelsToReduce;
+        ctx.cageModelsToReevaluatePerms = cageModelsToReduce.values();
     }
 }

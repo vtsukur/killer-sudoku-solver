@@ -15,6 +15,7 @@ export class ReflectSolvedCellsStrategy extends BaseStrategy {
             new ReduceHousePermsBySolvedCellsStrategy(ctx.recentlySolvedCellModels).apply(ctx);
             new SliceCagesForSolvedCellsStrategy(ctx.recentlySolvedCellModels).apply(ctx);
             ctx.clearRecentlySolvedCellModels();
+            ctx.cageModelsToReevaluatePerms = ctx.model.cageModelsMap.values();
         }
     }
 }
