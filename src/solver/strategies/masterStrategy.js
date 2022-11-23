@@ -20,7 +20,7 @@ export class MasterStrategy extends BaseStrategy {
         let cageModelsIterable = model.cageModelsMap.values();
         let iterate = true;
 
-        ctx.cageModelsToReevaluatePerms =model.cageModelsMap.values();
+        ctx.cageModelsToReevaluatePerms = model.cageModelsMap.values();
 
         while (iterate) {
             if (model.isSolved) {
