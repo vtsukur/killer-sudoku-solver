@@ -8,18 +8,18 @@ export class PlaceNumsForSingleOptionCellsStrategy extends BaseStrategy {
     }
 
     apply() {
-        const cellsSolvers = [];
+        const cellModels = [];
 
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
                 const cellSolver = this.model.cellSolverAt(row, col);
                 if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
                     this.model.placeNum(cellSolver.cell, cellSolver.numOpts().values().next().value);
-                    cellsSolvers.push(cellSolver);
+                    cellModels.push(cellSolver);
                 }
             });
         });
 
-        return cellsSolvers;
+        return cellModels;
     }
 }

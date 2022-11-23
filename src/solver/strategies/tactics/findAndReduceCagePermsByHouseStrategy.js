@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
                 houseSolver.cages.forEach(cage => {
                     if (this.model.cagesSolversMap.get(cage.key).isSingleCellCage) return;
                     const cageSolver = this.model.cagesSolversMap.get(cage.key);
-                    const hasNumInCells = cageSolver.cellSolvers.some(cellSolver => cellSolver.hasNumOpt(num));
+                    const hasNumInCells = cageSolver.cellModels.some(cellSolver => cellSolver.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageSolversWithNum.push(cageSolver);
                     }

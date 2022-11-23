@@ -6,7 +6,7 @@ export class CageSolver {
     #cellCount;
     #combosMap;
 
-    constructor(cage, cellSolvers) {
+    constructor(cage, cellModels) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.isSingleCellCage = this.cellCount === 1;
@@ -15,7 +15,7 @@ export class CageSolver {
         this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
         this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         this.#firstCell = cage.cells[0];
-        this.cellSolvers = cellSolvers;
+        this.cellModels = cellModels;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -54,7 +54,7 @@ export class CageSolver {
             });
         });
 
-        this.cellSolvers.forEach(cellSolver => cellSolver.reduceNumOptions(numOpts));
+        this.cellModels.forEach(cellSolver => cellSolver.reduceNumOptions(numOpts));
     }
 
     reduce() {
@@ -72,18 +72,17 @@ export class CageSolver {
     #reduceByCellPermutations(canHaveNumDuplicates) {
         const context = {
             i: 0,
-            cellsSolvers: this.cellSolvers,
             processedCellDets: new Set(),
-            remainingCellDets: new Set(this.cellSolvers),
+            remainingCellDets: new Set(this.cellModels),
             processedNums: new Set(),
             numbersStack: new Array(this.#cellCount),
-            cellsSolversStack: new Array(this.#cellCount),
+            cellModelsStack: new Array(this.#cellCount),
             processCell: function(cellSolver, step, fn) {
                 if (this.processedCellDets.has(cellSolver)) return;
                 this.processedCellDets.add(cellSolver); this.remainingCellDets.delete(cellSolver);
-                this.cellsSolversStack[step] = cellSolver;
+                this.cellModelsStack[step] = cellSolver;
                 const retVal = fn();
-                this.cellsSolversStack[step] = undefined;
+                this.cellModelsStack[step] = undefined;
                 this.processedCellDets.delete(cellSolver); this.remainingCellDets.add(cellSolver);    
                 return retVal;
             },
@@ -108,7 +107,7 @@ export class CageSolver {
         this.#combosMap = new Map();
 
         const modifiedCellDets = [];
-        this.cellSolvers.forEach(cellSolver => {
+        this.cellModels.forEach(cellSolver => {
             context.processCell(cellSolver, 0, () => {
                 Array.from(cellSolver.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
@@ -142,7 +141,7 @@ export class CageSolver {
                 this.#combosMap.set(comboKey, sortedNums);
             }
         } else {
-            this.cellSolvers.forEach(cellSolver => {
+            this.cellModels.forEach(cellSolver => {
                 context.processCell(cellSolver, step, () => {
                     Array.from(cellSolver.numOpts()).forEach(num => {
                         context.processNum(num, step, () => {
@@ -178,7 +177,7 @@ export class CageSolver {
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
             const reducedCellDets = [];
-            this.cellSolvers.forEach(cellSolver => {
+            this.cellModels.forEach(cellSolver => {
                 if (cellSolver.reduceNumOptions(newNumOptions).size > 0) {
                     reducedCellDets.push(cellSolver);
                 }
