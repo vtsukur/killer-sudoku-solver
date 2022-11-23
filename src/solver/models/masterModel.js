@@ -90,8 +90,8 @@ export class MasterModel {
     }
 
     placeNum(cell, num) {
-        const cellSolver = this.cellSolverOf(cell);
-        cellSolver.placeNum(num);
+        const cellModel = this.cellSolverOf(cell);
+        cellModel.placeNum(num);
 
         this.#solution[cell.row][cell.col] = num;
         this.#placedNumCount++;

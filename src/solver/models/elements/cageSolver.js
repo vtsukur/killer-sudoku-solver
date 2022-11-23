@@ -54,7 +54,7 @@ export class CageSolver {
             });
         });
 
-        this.cellModels.forEach(cellSolver => cellSolver.reduceNumOptions(numOpts));
+        this.cellModels.forEach(cellModel => cellModel.reduceNumOptions(numOpts));
     }
 
     reduce() {
@@ -77,13 +77,13 @@ export class CageSolver {
             processedNums: new Set(),
             numbersStack: new Array(this.#cellCount),
             cellModelsStack: new Array(this.#cellCount),
-            processCell: function(cellSolver, step, fn) {
-                if (this.processedCellModels.has(cellSolver)) return;
-                this.processedCellModels.add(cellSolver); this.remainingCellModels.delete(cellSolver);
-                this.cellModelsStack[step] = cellSolver;
+            processCell: function(cellModel, step, fn) {
+                if (this.processedCellModels.has(cellModel)) return;
+                this.processedCellModels.add(cellModel); this.remainingCellModels.delete(cellModel);
+                this.cellModelsStack[step] = cellModel;
                 const retVal = fn();
                 this.cellModelsStack[step] = undefined;
-                this.processedCellModels.delete(cellSolver); this.remainingCellModels.add(cellSolver);    
+                this.processedCellModels.delete(cellModel); this.remainingCellModels.add(cellModel);    
                 return retVal;
             },
             mayNotProceedWithNum: function(num) {
@@ -107,14 +107,14 @@ export class CageSolver {
         this.#combosMap = new Map();
 
         const modifiedCellModels = [];
-        this.cellModels.forEach(cellSolver => {
-            context.processCell(cellSolver, 0, () => {
-                Array.from(cellSolver.numOpts()).forEach(num => {
+        this.cellModels.forEach(cellModel => {
+            context.processCell(cellModel, 0, () => {
+                Array.from(cellModel.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
-                            cellSolver.deleteNumOpt(num);
-                            modifiedCellModels.push(cellSolver);
+                            cellModel.deleteNumOpt(num);
+                            modifiedCellModels.push(cellModel);
                         }    
                     });
                 });
@@ -141,9 +141,9 @@ export class CageSolver {
                 this.#combosMap.set(comboKey, sortedNums);
             }
         } else {
-            this.cellModels.forEach(cellSolver => {
-                context.processCell(cellSolver, step, () => {
-                    Array.from(cellSolver.numOpts()).forEach(num => {
+            this.cellModels.forEach(cellModel => {
+                context.processCell(cellModel, step, () => {
+                    Array.from(cellModel.numOpts()).forEach(num => {
                         context.processNum(num, step, () => {
                             has = this.#hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
                         });
@@ -177,9 +177,9 @@ export class CageSolver {
         if (removedCombos.length > 0) {
             this.#combosMap = newCombosMap;
             const reducedCellModels = [];
-            this.cellModels.forEach(cellSolver => {
-                if (cellSolver.reduceNumOptions(newNumOptions).size > 0) {
-                    reducedCellModels.push(cellSolver);
+            this.cellModels.forEach(cellModel => {
+                if (cellModel.reduceNumOptions(newNumOptions).size > 0) {
+                    reducedCellModels.push(cellModel);
                 }
             });
             return reducedCellModels;
@@ -193,8 +193,8 @@ export class CageSolver {
         return this.#combosMap.size === 1;
     }
 
-    has(cellSolver) {
-        return this.#cellsSet.has(cellSolver.key);
+    has(cellModel) {
+        return this.#cellsSet.has(cellModel.key);
     }
 
     get cellCount() {

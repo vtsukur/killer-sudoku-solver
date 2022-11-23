@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
                 houseSolver.cages.forEach(cage => {
                     if (this.model.cagesSolversMap.get(cage.key).isSingleCellCage) return;
                     const cageSolver = this.model.cagesSolversMap.get(cage.key);
-                    const hasNumInCells = cageSolver.cellModels.some(cellSolver => cellSolver.hasNumOpt(num));
+                    const hasNumInCells = cageSolver.cellModels.some(cellModel => cellModel.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageSolversWithNum.push(cageSolver);
                     }
@@ -28,8 +28,8 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
                 const reducedCellModels = cageSolverToReDefine.reduceToCombinationsContaining(num);
                 
                 if (!reducedCellModels.length) return;
-                reducedCellModels.forEach(cellSolver => {
-                    cageSolversToReduce = new Set([...cageSolversToReduce, ...cellSolver.withinCageSolvers]);
+                reducedCellModels.forEach(cellModel => {
+                    cageSolversToReduce = new Set([...cageSolversToReduce, ...cellModel.withinCageSolvers]);
                 });
             });
         });

@@ -13,10 +13,10 @@ export class SliceCagesForSolvedCellsStrategy extends BaseStrategy {
     }
 
     apply() {
-        this.#solvedCellSolvers.forEach(cellSolver => {
-            const withinCageSolversSet = cellSolver.withinCageSolvers;
+        this.#solvedCellSolvers.forEach(cellModel => {
+            const withinCageSolversSet = cellModel.withinCageSolvers;
             if (!(withinCageSolversSet.size === 1 && withinCageSolversSet.values().next().value.isSingleCellCage)) {
-                const firstChunkCage = Cage.ofSum(cellSolver.placedNum).at(cellSolver.cell.row, cellSolver.cell.col).mk();
+                const firstChunkCage = Cage.ofSum(cellModel.placedNum).at(cellModel.cell.row, cellModel.cell.col).mk();
                 this.#cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
             }
         });

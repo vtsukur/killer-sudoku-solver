@@ -10,15 +10,15 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
 
     apply() {
         let cageSolversToReduceSet = new Set();
-        this.#solvedCellSolvers.forEach(cellSolver => {
-            const num = cellSolver.placedNum;
+        this.#solvedCellSolvers.forEach(cellModel => {
+            const num = cellModel.placedNum;
             [
-                this.model.rowSolvers[cellSolver.cell.row],
-                this.model.columnSolvers[cellSolver.cell.col],
-                this.model.nonetSolvers[cellSolver.cell.nonet]
+                this.model.rowSolvers[cellModel.cell.row],
+                this.model.columnSolvers[cellModel.cell.col],
+                this.model.nonetSolvers[cellModel.cell.nonet]
             ].forEach(houseSolver => {
                 for (const { row, col } of houseSolver.cellIterator()) {
-                    if (row === cellSolver.cell.row && col === cellSolver.cell.col) continue;
+                    if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
         
                     const aCellModel = this.model.cellSolverAt(row, col);
                     if (aCellModel.hasNumOpt(num)) {

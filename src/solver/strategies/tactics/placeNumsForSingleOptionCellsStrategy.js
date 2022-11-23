@@ -12,10 +12,10 @@ export class PlaceNumsForSingleOptionCellsStrategy extends BaseStrategy {
 
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
-                const cellSolver = this.model.cellSolverAt(row, col);
-                if (cellSolver.numOpts().size === 1 && !cellSolver.solved) {
-                    this.model.placeNum(cellSolver.cell, cellSolver.numOpts().values().next().value);
-                    cellModels.push(cellSolver);
+                const cellModel = this.model.cellSolverAt(row, col);
+                if (cellModel.numOpts().size === 1 && !cellModel.solved) {
+                    this.model.placeNum(cellModel.cell, cellModel.numOpts().values().next().value);
+                    cellModels.push(cellModel);
                 }
             });
         });
