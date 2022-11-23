@@ -100,9 +100,9 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = House.
     if (allCagesAreNonOverlapping) {
         nonOverlappingCages = [...cages];
     } else {
-        const maxNonOverlappingCagesAreaSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
+        const maxNonOverlappingCagesAreaModelSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
         cages.forEach(cage => {
-            if (maxNonOverlappingCagesAreaSet.has(cage)) {
+            if (maxNonOverlappingCagesAreaModelSet.has(cage)) {
                 nonOverlappingCages.push(cage);
             } else {
                 overlappingCages.push(cage);

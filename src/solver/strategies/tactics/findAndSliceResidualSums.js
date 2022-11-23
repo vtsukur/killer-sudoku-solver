@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
-import { CagesArea } from '../../models/elements/cagesArea';
+import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { CageSlicer } from '../../transform/cageSlicer';
 import { BaseStrategy } from '../baseStrategy';
 
@@ -52,18 +52,18 @@ export class FindAndSliceResidualSumsStrategy extends BaseStrategy {
                 cages = cages.concat(cageModel.cage);
             }
         }
-        const cagesArea = new CagesArea(cages, nHouseCellCount);
-        if (n === 1 || cagesArea.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
+        const cagesAreaModel = new CagesAreaModel(cages, nHouseCellCount);
+        if (n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
             const residualCells = [];
             _.range(leftIdx, rightIdxExclusive).forEach(idx => {
                 for (const { row, col } of cellIteratorFn(idx)) {
-                    if (!cagesArea.hasNonOverlapping(this.model.cellAt(row, col))) {
+                    if (!cagesAreaModel.hasNonOverlapping(this.model.cellAt(row, col))) {
                         residualCells.push(this.model.cellAt(row, col));
                     }
                 }
             });
             if (residualCells.length) {
-                const residualCage = new Cage(nHouseSum - cagesArea.sum, residualCells);
+                const residualCage = new Cage(nHouseSum - cagesAreaModel.sum, residualCells);
                 if (!this.model.cageModelsMap.has(residualCage.key)) {
                     this.#cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
                 }

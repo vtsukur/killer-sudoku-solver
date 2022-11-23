@@ -1,7 +1,7 @@
 import { House } from '../../../problem/house';
 import { clusterCagesByOverlap } from '../../combinatorial/index';
 
-export class CagesArea {
+export class CagesAreaModel {
     constructor(cages = [], absMaxAreaCellCount = House.SIZE) {
         this.cages = cages;
         this.cellsSet = new Set();
