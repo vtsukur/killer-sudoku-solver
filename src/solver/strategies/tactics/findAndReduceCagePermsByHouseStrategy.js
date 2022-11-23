@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
 
-export const findAndReduceCagePermsByHouseStrategy = (ctx) => {
-    if (ctx.hasCageModelsToReevaluatePerms) return;
+export function findAndReduceCagePermsByHouseStrategy() {
+    if (this.hasCageModelsToReevaluatePerms) return;
 
     let cageModelsToReduce = new Set();
 
-    ctx.model.houseModels.forEach(houseModel => {
+    this.model.houseModels.forEach(houseModel => {
         _.range(1, House.SIZE + 1).forEach(num => {
             const cageModelsWithNum = [];
             // consider overlapping vs non-overlapping cages
             houseModel.cages.forEach(cage => {
-                if (ctx.model.cageModelsMap.get(cage.key).isSingleCellCage) return;
-                const cageModel = ctx.model.cageModelsMap.get(cage.key);
+                if (this.model.cageModelsMap.get(cage.key).isSingleCellCage) return;
+                const cageModel = this.model.cageModelsMap.get(cage.key);
                 const hasNumInCells = cageModel.cellModels.some(cellModel => cellModel.hasNumOpt(num));
                 if (hasNumInCells) {
                     cageModelsWithNum.push(cageModel);
@@ -30,5 +30,5 @@ export const findAndReduceCagePermsByHouseStrategy = (ctx) => {
         });
     });
 
-    ctx.cageModelsToReevaluatePerms = cageModelsToReduce.values();
+    this.cageModelsToReevaluatePerms = cageModelsToReduce.values();
 }
