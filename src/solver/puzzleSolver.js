@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { SolverModel } from './solverModel';
-import { FindAndReduceCagePermsByHouseStrategy } from './strategies/findAndReduceCagePermsByHouseStrategy';
-import { FindAndSliceResidualSumsStrategy } from './strategies/findAndSliceResidualSums';
-import { InitPermsForCagesStrategy } from './strategies/initPermsForCagesStrategy';
-import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/placeNumsForSingleOptionCellsStrategy';
-import { ReduceHousePermsBySolvedCellsStrategy } from './strategies/reduceHousePermsBySolvedCellsStrategy';
-import { ReducePermsInCagesStrategy } from './strategies/reducePermsInCagesStrategy';
-import { SliceCagesForSolvedCellsStrategy } from './strategies/sliceCagesForSolvedCellsStrategy';
+import { FindAndReduceCagePermsByHouseStrategy } from './strategies/tactics/findAndReduceCagePermsByHouseStrategy';
+import { FindAndSliceResidualSumsStrategy } from './strategies/tactics/findAndSliceResidualSums';
+import { InitPermsForCagesStrategy } from './strategies/tactics/initPermsForCagesStrategy';
+import { PlaceNumsForSingleOptionCellsStrategy } from './strategies/tactics/placeNumsForSingleOptionCellsStrategy';
+import { ReduceHousePermsBySolvedCellsStrategy } from './strategies/tactics/reduceHousePermsBySolvedCellsStrategy';
+import { ReducePermsInCagesStrategy } from './strategies/tactics/reducePermsInCagesStrategy';
+import { SliceCagesForSolvedCellsStrategy } from './strategies/tactics/sliceCagesForSolvedCellsStrategy';
 
 export class PuzzleSolver {
     #model;

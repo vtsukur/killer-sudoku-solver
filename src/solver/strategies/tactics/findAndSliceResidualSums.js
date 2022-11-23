@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { Cage } from '../../problem/cage';
-import { House } from '../../problem/house';
-import { CagesArea } from '../cagesArea';
-import { CageSlicer } from '../cageSlicer';
+import { Cage } from '../../../problem/cage';
+import { House } from '../../../problem/house';
+import { CagesArea } from '../../cagesArea';
+import { CageSlicer } from '../../cageSlicer';
 import { BaseModelStrategy } from './baseModelStrategy';
 
 export class FindAndSliceResidualSumsStrategy extends BaseModelStrategy {

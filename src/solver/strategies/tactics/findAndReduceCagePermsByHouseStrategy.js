@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { House } from '../../problem/house';
+import { House } from '../../../problem/house';
 import { BaseModelStrategy } from './baseModelStrategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends BaseModelStrategy {
