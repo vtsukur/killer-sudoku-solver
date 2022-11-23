@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SolverModel } from './solverModel';
+import { MasterModel } from './masterModel';
 import { MasterStrategy } from './strategies/masterStrategy';
 
 export class PuzzleSolver {
@@ -7,7 +7,7 @@ export class PuzzleSolver {
     #masterStrategy;
 
     constructor(problem) {
-        this.#model = new SolverModel(problem);
+        this.#model = new MasterModel(problem);
         this.#masterStrategy = new MasterStrategy(this.#model);
     }
 

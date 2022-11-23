@@ -7,7 +7,7 @@ import { ColumnSolver } from "./columnSolver";
 import { NonetSolver } from "./nonetSolver";
 import { RowSolver } from "./rowSolver";
 
-export class SolverModel {
+export class MasterModel {
     #solution;
     #placedNumCount;
 

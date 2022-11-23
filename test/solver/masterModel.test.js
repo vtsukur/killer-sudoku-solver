@@ -1,12 +1,12 @@
-import { Cage } from "../../src/problem/cage";
-import { Cell } from "../../src/problem/cell";
-import { House } from "../../src/problem/house";
-import { SolverModel } from "../../src/solver/solverModel";
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from "../problem/realProblemSamples";
+import { Cage } from '../../src/problem/cage';
+import { Cell } from '../../src/problem/cell';
+import { House } from '../../src/problem/house';
+import { MasterModel } from '../../src/solver/masterModel';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realProblemSamples';
 
-describe('Tests for solver model', () => {
-    test('Construction of solver model (shallow coverage)', () => {
-        const solver = new SolverModel(sudokuDotCom_dailyChallengeOf_2022_11_01);
+describe('Tests for master model', () => {
+    test('Construction of master model (shallow coverage)', () => {
+        const solver = new MasterModel(sudokuDotCom_dailyChallengeOf_2022_11_01);
 
         expect(solver.cellAt(2, 3)).toEqual(Cell.at(2, 3));
         expect(solver.rowSolvers.length).toBe(House.SIZE);
