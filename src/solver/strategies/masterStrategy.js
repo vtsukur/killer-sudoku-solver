@@ -1,4 +1,4 @@
-import { BaseStrategy } from './baseStrategy';
+import { CageSlicer } from '../transform/cageSlicer';
 import { Context } from './context';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSums';
@@ -8,45 +8,49 @@ import { ReduceHousePermsBySolvedCellsStrategy } from './tactics/reduceHousePerm
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { SliceCagesForSolvedCellsStrategy } from './tactics/sliceCagesForSolvedCellsStrategy';
 
-export class MasterStrategy extends BaseStrategy {
+export class MasterStrategy {
+    #model;
+    #cageSlicer;
+
     constructor(model) {
-        super(model);
+        this.#model = model;
+        this.#cageSlicer = new CageSlicer(model);
     }
 
     apply() {
-        const ctx = new Context(this.model);
+        const ctx = new Context(this.#model);
 
-        new FindAndSliceResidualSumsStrategy(this.model).apply(ctx);
-        new InitPermsForCagesStrategy(this.model).apply(ctx);
+        new FindAndSliceResidualSumsStrategy(this.#cageSlicer).apply(ctx);
+        new InitPermsForCagesStrategy().apply(ctx);
 
-        let cageModelsIterable = this.model.cageModelsMap.values();
+        let cageModelsIterable = this.#model.cageModelsMap.values();
         let iterate = true;
         let newlySolvedCellModels = [];
 
-        ctx.setCageModelsToReevaluatePerms(this.model.cageModelsMap.values());
+        ctx.setCageModelsToReevaluatePerms(this.#model.cageModelsMap.values());
 
         while (iterate) {
-            if (this.model.isSolved) {
+            if (this.#model.isSolved) {
                 return;
             }
 
-            new ReducePermsInCagesStrategy(this.model).apply(ctx);
+            new ReducePermsInCagesStrategy().apply(ctx);
     
-            const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy(this.model).apply(ctx);
-            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(this.model, solvedCellModels).apply(ctx);
+            const solvedCellModels = new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
+            let nextCagesSet = new ReduceHousePermsBySolvedCellsStrategy(solvedCellModels).apply(ctx);
 
             newlySolvedCellModels = newlySolvedCellModels.concat(Array.from(solvedCellModels));
 
             if (nextCagesSet.size > 0) {
                 cageModelsIterable = nextCagesSet.values();
             } else if (newlySolvedCellModels.length > 0) {
-                new SliceCagesForSolvedCellsStrategy(this.model, newlySolvedCellModels).apply(ctx);
+                new SliceCagesForSolvedCellsStrategy(this.#cageSlicer, newlySolvedCellModels).apply(ctx);
                 newlySolvedCellModels = [];
-                nextCagesSet = new Set(this.model.cageModelsMap.values());
+                nextCagesSet = new Set(this.#model.cageModelsMap.values());
                 cageModelsIterable = nextCagesSet.values();
             }
             else {
-                nextCagesSet = new FindAndReduceCagePermsByHouseStrategy(this.model).apply(ctx);
+                nextCagesSet = new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
                 cageModelsIterable = nextCagesSet.values();
             }
             ctx.setCageModelsToReevaluatePerms(nextCagesSet.values());
@@ -54,6 +58,6 @@ export class MasterStrategy extends BaseStrategy {
             iterate = nextCagesSet.size > 0;
         }
 
-        return this.model.solution;
+        return this.#model.solution;
     }
 }

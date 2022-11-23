@@ -3,8 +3,8 @@ import { BaseStrategy } from '../baseStrategy';
 export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
     #solvedCellModels;
 
-    constructor(model, solvedCellModels) {
-        super(model);
+    constructor(solvedCellModels) {
+        super();
         this.#solvedCellModels = solvedCellModels;
     }
 
@@ -20,7 +20,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends BaseStrategy {
                 for (const { row, col } of houseModel.cellIterator()) {
                     if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
         
-                    const aCellModel = this.model.cellModelAt(row, col);
+                    const aCellModel = ctx.model.cellModelAt(row, col);
                     if (aCellModel.hasNumOpt(num)) {
                         aCellModel.deleteNumOpt(num);
                         cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageModels]);

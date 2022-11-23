@@ -3,8 +3,8 @@ import { House } from '../../../problem/house';
 import { BaseStrategy } from '../baseStrategy';
 
 export class PlaceNumsForSingleOptionCellsStrategy extends BaseStrategy {
-    constructor(model) {
-        super(model);
+    constructor() {
+        super();
     }
 
     apply(ctx) {

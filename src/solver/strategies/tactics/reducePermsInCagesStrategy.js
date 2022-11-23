@@ -1,8 +1,8 @@
 import { BaseStrategy } from '../baseStrategy';
 
 export class ReducePermsInCagesStrategy extends BaseStrategy {
-    constructor(model) {
-        super(model);
+    constructor() {
+        super();
     }
 
     apply(ctx) {

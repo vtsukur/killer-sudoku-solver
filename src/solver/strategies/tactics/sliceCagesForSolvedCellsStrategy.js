@@ -1,14 +1,13 @@
 import { Cage } from '../../../problem/cage';
-import { CageSlicer } from '../../transform/cageSlicer';
 import { BaseStrategy } from '../baseStrategy';
 
 export class SliceCagesForSolvedCellsStrategy extends BaseStrategy {
     #cageSlicer;
     #solvedCellModels;
 
-    constructor(model, solvedCellModels) {
-        super(model);
-        this.#cageSlicer = new CageSlicer(model);
+    constructor(cageSlicer, solvedCellModels) {
+        super();
+        this.#cageSlicer = cageSlicer;
         this.#solvedCellModels = solvedCellModels;
     }
 

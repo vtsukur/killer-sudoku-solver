@@ -2,8 +2,8 @@ import { findSumCombinationsForHouse } from '../../combinatorial/combinatorial';
 import { BaseStrategy } from '../baseStrategy';
 
 export class InitPermsForCagesStrategy extends BaseStrategy {
-    constructor(model) {
-        super(model);
+    constructor() {
+        super();
     }
 
     apply(ctx) {
@@ -11,7 +11,7 @@ export class InitPermsForCagesStrategy extends BaseStrategy {
             const combosForHouse = findSumCombinationsForHouse(houseModel);
             houseModel.debugCombosForHouse = combosForHouse;
             houseModel.cages.forEach((cage, idx) => {
-                const cageModel = this.model.cageModelsMap.get(cage.key);
+                const cageModel = ctx.model.cageModelsMap.get(cage.key);
                 const combosKeySet = new Set();
                 const combos = [];
                 combosForHouse.forEach(combo => {
