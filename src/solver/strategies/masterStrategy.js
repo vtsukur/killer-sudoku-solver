@@ -1,5 +1,5 @@
 import { BaseStrategy } from './baseStrategy';
-import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
+import { findAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
@@ -21,7 +21,7 @@ export class MasterStrategy extends BaseStrategy {
             reducePermsInCagesStrategy(ctx);
             placeNumsForSingleOptionCellsStrategy(ctx);
             reflectSolvedCellsStrategy(ctx);
-            new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
+            findAndReduceCagePermsByHouseStrategy(ctx);
         }
         while (!model.isSolved && ctx.hasCageModelsToReevaluatePerms)
     }
