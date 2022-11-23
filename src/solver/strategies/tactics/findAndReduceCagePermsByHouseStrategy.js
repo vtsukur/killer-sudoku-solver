@@ -8,7 +8,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
     }
 
     apply(ctx) {
-        if (ctx.cageModelsToReevaluatePerms) return;
+        if (ctx.hasCageModelsToReevaluatePerms) return;
 
         let cageModelsToReduce = new Set();
 

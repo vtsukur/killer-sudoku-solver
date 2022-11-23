@@ -17,14 +17,12 @@ export class MasterStrategy extends BaseStrategy {
         new FindAndSliceResidualSumsStrategy().apply(ctx);
         new InitPermsForCagesStrategy().apply(ctx);
 
-        ctx.cageModelsToReevaluatePerms = model.cageModelsMap.values();
-
         do {
             new ReducePermsInCagesStrategy().apply(ctx);
             new PlaceNumsForSingleOptionCellsStrategy().apply(ctx);
             new ReflectSolvedCellsStrategy().apply(ctx);
             new FindAndReduceCagePermsByHouseStrategy().apply(ctx);
         }
-        while (!model.isSolved && ctx.cageModelsToReevaluatePerms !== undefined)
+        while (!model.isSolved && ctx.hasCageModelsToReevaluatePerms)
     }
 }

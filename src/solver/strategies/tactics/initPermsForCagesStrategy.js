@@ -25,5 +25,7 @@ export class InitPermsForCagesStrategy extends BaseStrategy {
                 cageModel.updateCombinations(combos);
             });
         });
+
+        ctx.cageModelsToReevaluatePerms = ctx.model.cageModelsMap.values();
     }
 }

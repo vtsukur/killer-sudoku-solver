@@ -19,6 +19,10 @@ export class Context {
         return this.#cageSlicer;
     }
 
+    get hasCageModelsToReevaluatePerms() {
+        return this.#cageModelsToReevaluatePerms !== undefined;
+    }
+
     get cageModelsToReevaluatePerms() {
         return this.#cageModelsToReevaluatePerms;
     }
