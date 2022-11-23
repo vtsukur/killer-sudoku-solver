@@ -6,8 +6,8 @@ export class InitPermsForCagesStrategy extends BaseStrategy {
         super(model);
     }
 
-    apply() {
-        this.model.houseModels.forEach(houseModel => {
+    apply(ctx) {
+        ctx.model.houseModels.forEach(houseModel => {
             const combosForHouse = findSumCombinationsForHouse(houseModel);
             houseModel.debugCombosForHouse = combosForHouse;
             houseModel.cages.forEach((cage, idx) => {

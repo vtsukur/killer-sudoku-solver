@@ -7,16 +7,16 @@ export class FindAndReduceCagePermsByHouseStrategy extends BaseStrategy {
         super(model);
     }
 
-    apply() {
+    apply(ctx) {
         let cageModelsToReduce = new Set();
 
-        this.model.houseModels.forEach(houseModel => {
+        ctx.model.houseModels.forEach(houseModel => {
             _.range(1, House.SIZE + 1).forEach(num => {
                 const cageModelsWithNum = [];
                 // consider overlapping vs non-overlapping cages
                 houseModel.cages.forEach(cage => {
-                    if (this.model.cageModelsMap.get(cage.key).isSingleCellCage) return;
-                    const cageModel = this.model.cageModelsMap.get(cage.key);
+                    if (ctx.model.cageModelsMap.get(cage.key).isSingleCellCage) return;
+                    const cageModel = ctx.model.cageModelsMap.get(cage.key);
                     const hasNumInCells = cageModel.cellModels.some(cellModel => cellModel.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageModelsWithNum.push(cageModel);

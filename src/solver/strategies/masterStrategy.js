@@ -14,7 +14,7 @@ export class MasterStrategy extends BaseStrategy {
     }
 
     apply() {
-        const ctx = new Context();
+        const ctx = new Context(this.model);
 
         new FindAndSliceResidualSumsStrategy(this.model).apply(ctx);
         new InitPermsForCagesStrategy(this.model).apply(ctx);
