@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
 
-export class CellSolver {
+export class CellModel {
     #numOpts;
     #withinCageSolvers;
 

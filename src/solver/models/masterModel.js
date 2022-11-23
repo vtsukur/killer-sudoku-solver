@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
 import { CageSolver } from './elements/cageSolver';
-import { CellSolver } from './elements/cellSolver';
+import { CellModel } from './elements/cellModel';
 import { ColumnSolver } from './elements/columnSolver';
 import { NonetSolver } from './elements/nonetSolver';
 import { RowSolver } from './elements/rowSolver';
@@ -36,7 +36,7 @@ export class MasterModel {
         this.cellSolversMatrix = Grid.newMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellSolversMatrix[cell.row][cell.col] = new CellSolver({
+            this.cellSolversMatrix[cell.row][cell.col] = new CellModel({
                 cell,
                 rowSolver: this.rowSolvers[cell.row],
                 columnSolver: this.columnSolvers[cell.col],
