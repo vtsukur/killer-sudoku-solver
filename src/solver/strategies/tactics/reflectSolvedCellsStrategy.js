@@ -11,7 +11,10 @@ export class ReflectSolvedCellsStrategy extends BaseStrategy {
     }
 
     apply(ctx) {
-        new ReduceHousePermsBySolvedCellsStrategy(this.#solvedCellModels).apply(ctx);
-        new SliceCagesForSolvedCellsStrategy(this.#solvedCellModels).apply(ctx);
+        if (ctx.hasRecentlySolvedCellModels) {
+            new ReduceHousePermsBySolvedCellsStrategy(ctx.recentlySolvedCellModels).apply(ctx);
+            new SliceCagesForSolvedCellsStrategy(ctx.recentlySolvedCellModels).apply(ctx);
+            ctx.clearRecentlySolvedCellModels();
+        }
     }
 }

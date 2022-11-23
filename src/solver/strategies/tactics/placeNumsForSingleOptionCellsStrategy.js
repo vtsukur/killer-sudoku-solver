@@ -20,6 +20,6 @@ export class PlaceNumsForSingleOptionCellsStrategy extends BaseStrategy {
             });
         });
 
-        return cellModels;
+        ctx.recentlySolvedCellModels = cellModels;
     }
 }

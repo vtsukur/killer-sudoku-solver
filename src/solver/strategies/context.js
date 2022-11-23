@@ -2,11 +2,13 @@ export class Context {
     #model;
     #cageSlicer;
     #cageModelsToReevaluatePerms;
+    #recentlySolvedCellModels;
 
     constructor(model, cageSlicer) {
         this.#model = model;
         this.#cageSlicer = cageSlicer;
         this.#cageModelsToReevaluatePerms = new Set();
+        this.#recentlySolvedCellModels = [];
     }
     
     get model() {
@@ -23,5 +25,21 @@ export class Context {
 
     set cageModelsToReevaluatePerms(value) {
         this.#cageModelsToReevaluatePerms = value;
+    }
+
+    get hasRecentlySolvedCellModels() {
+        return this.#recentlySolvedCellModels.length > 0;
+    }
+
+    get recentlySolvedCellModels() {
+        return this.#recentlySolvedCellModels;
+    }
+
+    set recentlySolvedCellModels(value) {
+        this.#recentlySolvedCellModels = value;
+    }
+
+    clearRecentlySolvedCellModels() {
+        this.#cageModelsToReevaluatePerms = [];
     }
 }
