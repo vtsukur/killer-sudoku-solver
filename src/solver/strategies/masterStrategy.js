@@ -14,7 +14,7 @@ export const masterStrategy = (ctx) => {
     do {
         reducePermsInCagesStrategy(ctx);
         placeNumsForSingleOptionCellsStrategy(ctx);
-        reflectSolvedCellsStrategy(ctx);
+        ctx.run(reflectSolvedCellsStrategy);
         findAndReduceCagePermsByHouseStrategy(ctx);
     }
     while (!model.isSolved && ctx.hasCageModelsToReevaluatePerms)
