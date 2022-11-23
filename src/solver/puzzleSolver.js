@@ -13,7 +13,7 @@ export class PuzzleSolver {
 
     solve() {
         const ctx = new Context(this.#model, new CageSlicer(this.#model));
-        masterStrategy(ctx);
+        ctx.run(masterStrategy);
         return this.#model.solution;
     }
 

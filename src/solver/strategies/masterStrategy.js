@@ -5,17 +5,15 @@ import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSin
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
-export const masterStrategy = (ctx) => {
-    const model = ctx.model;
-
-    ctx.run(findAndSliceResidualSumsStrategy);
-    ctx.run(initPermsForCagesStrategy);
+export function masterStrategy() {
+    this.run(findAndSliceResidualSumsStrategy);
+    this.run(initPermsForCagesStrategy);
 
     do {
-        ctx.run(reducePermsInCagesStrategy);
-        ctx.run(placeNumsForSingleOptionCellsStrategy);
-        ctx.run(reflectSolvedCellsStrategy);
-        ctx.run(findAndReduceCagePermsByHouseStrategy);
+        this.run(reducePermsInCagesStrategy);
+        this.run(placeNumsForSingleOptionCellsStrategy);
+        this.run(reflectSolvedCellsStrategy);
+        this.run(findAndReduceCagePermsByHouseStrategy);
     }
-    while (!model.isSolved && ctx.hasCageModelsToReevaluatePerms)
+    while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms)
 }
