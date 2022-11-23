@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { Grid } from "../problem/grid";
-import { House } from "../problem/house";
-import { CageSolver } from "./cageSolver";
-import { CellSolver } from "./cellSolver";
-import { ColumnSolver } from "./columnSolver";
-import { NonetSolver } from "./nonetSolver";
-import { RowSolver } from "./rowSolver";
+import { Grid } from "../../problem/grid";
+import { House } from "../../problem/house";
+import { CageSolver } from "../cageSolver";
+import { CellSolver } from "../cellSolver";
+import { ColumnSolver } from "../columnSolver";
+import { NonetSolver } from "../nonetSolver";
+import { RowSolver } from "../rowSolver";
 
 export class MasterModel {
     #solution;

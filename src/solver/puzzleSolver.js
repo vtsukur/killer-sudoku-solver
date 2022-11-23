@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { MasterModel } from './masterModel';
+import { MasterModel } from './models/masterModel';
 import { MasterStrategy } from './strategies/masterStrategy';
 
 export class PuzzleSolver {
