@@ -12,8 +12,9 @@ describe('CageModel tests', () => {
         const cage = Cage.ofSum(17).cell(cell1).cell(cell2).mk();
         const cageModel = new CageModel(cage, [ cellModel1, cellModel2 ]);
 
-        cageModel.reduce();
+        const modifiedCellModels = cageModel.reduce();
 
+        expect(modifiedCellModels).toEqual(new Set([ cellModel1, cellModel2 ]));
         expect(cellModel1.numOpts()).toEqual(new Set([ 8, 9 ]));
         expect(cellModel2.numOpts()).toEqual(new Set([ 8, 9 ]));
         expect(Array.from(cageModel.combos)).toEqual([
