@@ -41,4 +41,25 @@ describe('CageModel tests', () => {
             [ 6, 7 ]
         ]);
     });
+
+    test('Reducing CageModel of size 3 with a single combination', () => {
+        const cell1 = Cell.at(0, 0);
+        const cellModel1 = new CellModel(cell1);
+        const cell2 = Cell.at(0, 1);
+        const cellModel2 = new CellModel(cell2);
+        const cell3 = Cell.at(0, 2);
+        const cellModel3 = new CellModel(cell3);
+        const cage = Cage.ofSum(24).cell(cell1).cell(cell2).cell(cell3).mk();
+        const cageModel = new CageModel(cage, [ cellModel1, cellModel2, cellModel3 ]);
+
+        const modifiedCellModels = cageModel.reduce();
+
+        expect(modifiedCellModels).toEqual(new Set([ cellModel1, cellModel2, cellModel3 ]));
+        expect(cellModel1.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
+        expect(cellModel2.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
+        expect(cellModel3.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
+        expect(Array.from(cageModel.combos)).toEqual([
+            [ 7, 8, 9 ]
+        ]);
+    });
 });
