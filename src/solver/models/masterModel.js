@@ -36,12 +36,7 @@ export class MasterModel {
         this.cellModelsMatrix = Grid.newMatrix();
         const cells = problem.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellModelsMatrix[cell.row][cell.col] = new CellModel({
-                cell,
-                rowModel: this.rowModels[cell.row],
-                columnModel: this.columnModels[cell.col],
-                nonetModel: this.nonetModels[cell.nonet]
-            });
+            this.cellModelsMatrix[cell.row][cell.col] = new CellModel(cell);
         });
 
         problem.cages.forEach(cage => {

@@ -18,11 +18,8 @@ describe('Tests for master model', () => {
 
         const aCellModelerminator = model.cellModelAt(2, 3);
         expect(aCellModelerminator.cell).toEqual(Cell.at(2, 3));
-        expect(aCellModelerminator.rowModel.idx).toEqual(2);
-        expect(aCellModelerminator.columnModel.idx).toEqual(3);
-        expect(aCellModelerminator.nonetModel.idx).toEqual(1);
         expect(aCellModelerminator.placedNum).toBe(undefined);
-        // expect(aCellModelerminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        expect(aCellModelerminator.numOpts()).toEqual(new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]));
         // expect(aCellModelerminator.withinCageModels).toEqual(new Set([ model.inputCageAt(2, 3) ]));
     });
 });
