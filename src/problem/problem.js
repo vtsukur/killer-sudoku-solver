@@ -19,17 +19,15 @@ export class Problem {
 
     static #validateCageCells(cells) {
         const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
-        if (cellSet.size === Grid.CELL_COUNT) return;
+        if (cellSet.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
         const missingCellKeys = Problem.#findMissingCellKeys(cellSet);
 
-        if (missingCellKeys.length > 0) {
-            let message = `${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`;
-            if (duplicateCellKeys.length > 0) {
-                message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`;
-            }
-            Problem.#throwValidationError(message);
+        let message = `${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`;
+        if (duplicateCellKeys.length > 0) {
+            message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`;
         }
+        Problem.#throwValidationError(message);
     }
 
     static #findMissingCellKeys(cellSet) {
