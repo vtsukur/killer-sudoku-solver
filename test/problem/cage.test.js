@@ -10,8 +10,22 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
+    test('Construction of cage using cell builder method', () => {
+        const cage = Cage.ofSum(10).cell(Cell.at(4, 4)).cell(Cell.at(4, 5)).mk();
+        expect(cage.sum).toBe(10);
+        expect(cage.cellCount).toBe(2);
+        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
+    });
+
+    test('Cage builder stores cell count', () => {
+        const cageBuilder = Cage.ofSum(10);
+        expect(cageBuilder.cellCount).toBe(0);
+        cageBuilder.at(4, 4).at(4, 5);
+        expect(cageBuilder.cellCount).toBe(2);
+    });
+
     test('Cage cannot be constructed directly', () => {
-        expect(() => new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5)])).toThrow(
+        expect(() => new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ])).toThrow(
             'Cage is not directly constructable. Use static builder Cage.ofSum instead'
         );
     });
