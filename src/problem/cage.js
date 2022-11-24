@@ -8,7 +8,12 @@ export class Cage {
     #cells;
     #key;
 
+    static #isInternalConstruction = false;
+
     constructor(sum, cells) {
+        if (!Cage.#isInternalConstruction) {
+            throw 'Cage is not directly constructable. Use static builder Cage.ofSum instead';
+        }
         this.#sum = Cage.#validateSum(sum);
         this.#cells = [...Cage.#validateCells(cells)];
         this.#cells.sort();
@@ -62,7 +67,12 @@ export class Cage {
         }
 
         mk() {
-            return new Cage(this.sum, this.cells);
+            Cage.#isInternalConstruction = true;
+            try {
+                return new Cage(this.sum, this.cells);
+            } finally {
+                Cage.#isInternalConstruction = false;
+            }
         }
     }
     
