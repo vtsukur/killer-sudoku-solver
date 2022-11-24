@@ -10,6 +10,12 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
+    test('Cage cannot be constructed directly', () => {
+        expect(() => new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5)])).toThrow(
+            'Cage is not directly constructable. Use static builder Cage.ofSum instead'
+        );
+    });
+
     test('Construction of invalid cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1).at(4, 4).at(4, 5).mk()).toThrow(
             'Invalid cage. Sum outside of range. Expected to be within [1, 45]. Actual: -1'
