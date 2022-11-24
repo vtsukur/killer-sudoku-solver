@@ -19,12 +19,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] cage.test.js",
+            "name": "[npm] test cage",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cage.test.js"
+                "cage"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -34,12 +34,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] cell.test.js",
+            "name": "[npm] test cell",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cell.test.js"
+                "cell"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -49,12 +49,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] grid.test.js",
+            "name": "[npm] test grid",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "grid.test.js"
+                "grid"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -64,12 +64,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] house.test.js",
+            "name": "[npm] test house",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "house.test.js"
+                "house"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -79,12 +79,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] nonet.test.js",
+            "name": "[npm] test nonet",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "nonet.test.js"
+                "nonet"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -94,12 +94,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] problem.test.js",
+            "name": "[npm] test problem",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "problem.test.js"
+                "problem"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -109,12 +109,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] reader.test.js",
+            "name": "[npm] reader",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "reader.test.js"
+                "reader"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -124,12 +124,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] combinatorial.findCombinationsForSegment.test.js",
+            "name": "[npm] test combinatorial",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "combinatorial.findCombinationsForSegment.test.js"
+                "combinatorial"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -139,12 +139,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] puzzleSolver.test.js",
+            "name": "[npm] test puzzleSolver",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "puzzleSolver.test.js"
+                "puzzleSolver"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -154,12 +154,12 @@
             "type": "node"
         },
         {
-            "name": "[npm] masterModel.test.js",
+            "name": "[npm] test masterModel",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "masterModel.test.js"
+                "masterModel"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
