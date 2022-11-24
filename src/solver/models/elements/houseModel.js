@@ -13,21 +13,6 @@ export class HouseModel {
         this.cellIteratorFn = cellIteratorFn;
     }
 
-    determineResidualCage() {
-        if (this.#cagesAreaModel.sum === House.SUM && this.#cagesAreaModel.cellsSet.size === House.SIZE) {
-            return;
-        }
-
-        const residualCageCells = [];
-        this.cells.forEach(cell => {
-            if (!this.#cagesAreaModel.hasNonOverlapping(cell)) {
-                residualCageCells.push(cell);
-            }
-        });
-
-        return new Cage(House.SUM - this.#cagesAreaModel.sum, residualCageCells);
-    }
-
     addCage(newCage) {
         this.cages.push(newCage);
         this.#cagesAreaModel = new CagesAreaModel(this.cages);

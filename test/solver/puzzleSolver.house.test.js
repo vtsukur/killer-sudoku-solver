@@ -63,20 +63,6 @@ describe('Tests for creation and initialization of row, column and nonet models'
         ));
     });
 
-    test('Determine residual cages in row models (shallow)', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
-
-        const row0 = model.rowModel(0);
-        const residualCage0 = row0.determineResidualCage();
-        expect(residualCage0).toEqual(
-            Cage.ofSum(23).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 8).mk());
-        
-        const row5 = model.rowModel(5);
-        const residualCage5 = row5.determineResidualCage();
-        expect(residualCage5).toEqual(
-            new Cage(House.SUM, _.range(House.SIZE).map(col => Cell.at(5, col))));
-    });
-
     test('Initialize column models', () => {
         const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
         expect(model.columnModel(0)).toEqual(new ColumnModel(
@@ -125,21 +111,6 @@ describe('Tests for creation and initialization of row, column and nonet models'
                 Cage.ofSum(14).at(6, 8).at(7, 8).at(8, 8).mk()
             ]
         ));
-    });
-
-    test('Determine residual cages in column models (shallow)', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
-
-        const column0 = model.columnModel(0);
-        const residualCage0 = column0.determineResidualCage();
-        expect(residualCage0).toEqual(
-            Cage.ofSum(26).at(0, 0).at(1, 0).at(2, 0).at(3, 0).at(4, 0).at(5, 0).mk()
-        );
-        
-        const column1 = model.columnModel(1);
-        const residualCage1 = column1.determineResidualCage();
-        expect(residualCage1).toEqual(
-            new Cage(House.SUM, _.range(House.SIZE).map(row => Cell.at(row, 1))));
     });
 
     test('Initialize nonets', () => {
@@ -243,17 +214,5 @@ describe('Tests for creation and initialization of row, column and nonet models'
                 Cage.ofSum(7).at(8, 6).at(8, 7).mk()
             ]
         ));
-    });
-
-    test('Determine residual cages in nonet models (shallow)', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
-
-        const nonet0 = model.nonetModel(0);
-        const residualCage0 = nonet0.determineResidualCage();
-        expect(residualCage0).toBe(undefined);
-        
-        const nonet1 = model.nonetModel(1);
-        const residualCage1 = nonet1.determineResidualCage();
-        expect(residualCage1).toEqual(Cage.ofSum(4).at(1, 5).at(2, 5).mk());
     });
 });
