@@ -58,7 +58,7 @@ export class CageModel {
     }
 
     reduce() {
-        if (this.#cellCount > 1 && this.#cellCount < 6) {
+        if (this.#cellCount > 1 && this.#cellCount < 4) {
             if (this.isWithinHouse) {
                 return this.#reduceByCellPermutations(false);
             } else {
@@ -125,6 +125,8 @@ export class CageModel {
     } 
 
     #hasSumMatchingPermutationsRecursive(currentSum, step, context) {
+        if (currentSum > this.cage.sum) { return false; }
+
         let has = false;
 
         if (step === (this.#cellCount - 1)) {
