@@ -3,14 +3,7 @@ import { Cage } from '../../src/problem/cage';
 import { Cell } from '../../src/problem/cell';
 
 describe('Cage tests', () => {
-    test('Construction of cage storing sum and cells', () => {
-        const cage = new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]);
-        expect(cage.sum).toBe(10);
-        expect(cage.cellCount).toBe(2);
-        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
-    });
-
-    test('Construction of cage using builder', () => {
+    test('Construction of cage storing sum, cells and cell count', () => {
         const cage = Cage.ofSum(10).at(4, 4).at(4, 5).mk();
         expect(cage.sum).toBe(10);
         expect(cage.cellCount).toBe(2);
@@ -51,17 +44,17 @@ describe('Cage tests', () => {
     });
 
     test('Cage key', () => {
-        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key).toBe(
+        expect(Cage.ofSum(10).at(4, 4).at(4, 5).mk().key).toBe(
             '10 [(4, 4), (4, 5)]');
     });
 
     test('Cage key stays the same regardless of cell order', () => {
-        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).key).toBe(
-            new Cage(10, [ Cell.at(4, 5), Cell.at(4, 4) ]).key);
+        expect(Cage.ofSum(10).at(4, 4).at(4, 5).mk().key).toBe(
+            Cage.ofSum(10).at(4, 5).at(4, 4).mk().key);
     });
 
     test('Cage toString', () => {
-        expect(new Cage(10, [ Cell.at(4, 4), Cell.at(4, 5) ]).toString()).toBe(
+        expect(Cage.ofSum(10).at(4, 4).at(4, 5).mk().toString()).toBe(
             '10 [(4, 4), (4, 5)]');
     });
 });
