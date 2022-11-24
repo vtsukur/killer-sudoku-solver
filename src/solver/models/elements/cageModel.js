@@ -66,7 +66,7 @@ export class CageModel {
                 return this.#reduceByCellPermutations(true);
             }
         } else {
-            return [];
+            return new Set();
         }
     }
 
@@ -107,7 +107,7 @@ export class CageModel {
 
         this.#combosMap = new Map();
 
-        const modifiedCellModels = [];
+        const modifiedCellModels = new Set();
         this.cellModels.forEach(cellModel => {
             context.processCell(cellModel, 0, () => {
                 Array.from(cellModel.numOpts()).forEach(num => {
@@ -115,7 +115,7 @@ export class CageModel {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             // move to modification after looping
                             cellModel.deleteNumOpt(num);
-                            modifiedCellModels.push(cellModel);
+                            modifiedCellModels.add(cellModel);
                         }    
                     });
                 });
