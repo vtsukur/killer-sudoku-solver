@@ -198,6 +198,20 @@
             "type": "node"
         },
         {
+            "name": "[npm] profile",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "profile"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
