@@ -91,8 +91,8 @@ export class CageModel {
                 return canHaveNumDuplicates ? false : this.processedNums.has(num);
             },
             processNum: function(num, step, fn) {
-                this.i++;
                 if (this.mayNotProceedWithNum(num)) return;
+                this.i++;
                 this.processedNums.add(num);
                 this.numbersStack[step] = num;
                 const retVal = fn();
@@ -198,5 +198,9 @@ export class CageModel {
 
     get cellCount() {
         return this.#cellsSet.size;
+    }
+
+    get combos() {
+        return this.#combosMap.values();
     }
 }
