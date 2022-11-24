@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { House } from '../../../problem/house';
 
 export class CageModel {
@@ -58,7 +59,7 @@ export class CageModel {
     }
 
     reduce() {
-        if (this.#cellCount > 1 && this.#cellCount < 4) {
+        if (_.inRange(this.#cellCount, 2, 4)) {
             if (this.isWithinHouse) {
                 return this.#reduceByCellPermutations(false);
             } else {
