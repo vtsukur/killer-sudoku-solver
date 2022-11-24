@@ -58,6 +58,9 @@ export class Cage {
         }
 
         cell(aCell) {
+            if (!aCell || !(aCell instanceof Cell)) {
+                throw `Invalid cell value. Expected to be instance of Cage. Actual: ${aCell}`;
+            }
             this.cells.push(aCell);
             return this;
         }

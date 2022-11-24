@@ -54,6 +54,18 @@ describe('Cage tests', () => {
         );
     });
 
+    test('Construction of invalid cage with undefined cell', () => {
+        expect(() => Cage.ofSum(9).cell(undefined)).toThrow(
+            'Invalid cell value. Expected to be instance of Cage. Actual: undefined'
+        );
+    });
+
+    test('Construction of invalid cage with non-cell', () => {
+        expect(() => Cage.ofSum(9).cell(4)).toThrow(
+            'Invalid cell value. Expected to be instance of Cage. Actual: 4'
+        );
+    });
+
     test('Construction of invalid cage with more than 9 cells (cage cannot be bigger than a house)', () => {
         expect(() => Cage.ofSum(45)
                 .at(0, 0).at(0, 1).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 6).at(0, 7).at(0, 8)
