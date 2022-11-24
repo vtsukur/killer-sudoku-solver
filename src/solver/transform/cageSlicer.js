@@ -54,12 +54,12 @@ export class CageSlicer {
     }
 
     static #slice(cageToSlice, firstChunkCage) {
-        const secondChunkCageCells = [];
+        const secondChunkCageBuilder = Cage.ofSum(cageToSlice.sum - firstChunkCage.sum);
         cageToSlice.cells.forEach(cell => {
             if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
-                secondChunkCageCells.push(cell);
+                secondChunkCageBuilder.cell(cell);
             }
         });
-        return new Cage(cageToSlice.sum - firstChunkCage.sum, secondChunkCageCells);
+        return secondChunkCageBuilder.mk();
     }
 }

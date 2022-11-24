@@ -52,6 +52,15 @@ export class Cage {
             return this;
         }
 
+        cell(aCell) {
+            this.cells.push(aCell);
+            return this;
+        }
+
+        get cellCount() {
+            return this.cells.length;
+        }
+
         mk() {
             return new Cage(this.sum, this.cells);
         }
