@@ -59,7 +59,7 @@ export class CageModel {
 
     reduce() {
         if (this.#cellCount > 1 && this.#cellCount < 6) {
-            if (this.cage.isWithinHouse) {
+            if (this.isWithinHouse) {
                 return this.#reduceByCellPermutations(false);
             } else {
                 return this.#reduceByCellPermutations(true);
@@ -193,19 +193,7 @@ export class CageModel {
         return this.#combosMap.size === 1;
     }
 
-    has(cellModel) {
-        return this.#cellsSet.has(cellModel.key);
-    }
-
     get cellCount() {
         return this.#cellsSet.size;
-    }
-
-    get key() {
-        return this.cage.key;
-    }
-
-    toString() {
-        return this.key;
     }
 }
