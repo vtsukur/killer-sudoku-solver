@@ -169,6 +169,20 @@
             "type": "node"
         },
         {
+            "name": "[npm] test puzzleSolver (single)",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test-single-puzzle"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "[npm] test masterModel",
             "request": "launch",
             "runtimeArgs": [
