@@ -54,9 +54,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, 
         });
         if (residualCells.length) {
             const residualCage = new Cage(nHouseSum - cagesAreaModel.sum, residualCells);
-            // if (!ctx.model.cageModelsMap.has(residualCage.key)) {
-                ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
-            // }
+            ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCage);                        
         }
     }
 }
