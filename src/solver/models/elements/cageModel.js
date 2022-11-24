@@ -72,7 +72,6 @@ export class CageModel {
 
     #reduceByCellPermutations(canHaveNumDuplicates) {
         const context = {
-            i: 0,
             processedCellModels: new Set(),
             remainingCellModels: new Set(this.cellModels),
             processedNums: new Set(),
@@ -92,7 +91,6 @@ export class CageModel {
             },
             processNum: function(num, step, fn) {
                 if (this.mayNotProceedWithNum(num)) return;
-                this.i++;
                 this.processedNums.add(num);
                 this.numbersStack[step] = num;
                 const retVal = fn();
@@ -130,7 +128,6 @@ export class CageModel {
         let has = false;
 
         if (step === (this.#cellCount - 1)) {
-            context.i++;
             const lastNum = this.cage.sum - currentSum;
             if (context.mayNotProceedWithNum(lastNum)) return false;
             const lastCellModel = context.remainingCellModel();
