@@ -113,7 +113,6 @@ export class CageModel {
                 Array.from(cellModel.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            // move to modification after looping
                             cellModel.deleteNumOpt(num);
                             modifiedCellModels.add(cellModel);
                         }    
