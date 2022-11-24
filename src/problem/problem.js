@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { sentencesForError, valuesForMsg } from '../util/readableMessages';
+import { valuesForMsg } from '../util/readableMessages';
 import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { Grid } from './grid';
@@ -22,18 +22,13 @@ export class Problem {
         if (cellSet.size === Grid.CELL_COUNT) return;
 
         const missingCellKeys = Problem.#findMissingCellKeys(cellSet);
-        const hasMissingCells = missingCellKeys.length > 0;
-        const hasDuplicateCells = duplicateCellKeys.length > 0;
 
-        if (hasMissingCells || hasDuplicateCells) {
-            const sentences = [];
-            if (hasMissingCells) {
-                sentences.push(`${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`);
+        if (missingCellKeys.length > 0) {
+            let message = `${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`;
+            if (duplicateCellKeys.length > 0) {
+                message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`;
             }
-            if (hasDuplicateCells) {
-                sentences.push(`${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`);
-            }
-            Problem.#throwValidationError(sentencesForError(sentences));
+            Problem.#throwValidationError(message);
         }
     }
 
