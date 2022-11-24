@@ -64,6 +64,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [combinatorial]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "combinatorial"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [grid]",
             "request": "launch",
             "runtimeArgs": [
@@ -85,6 +100,21 @@
                 "run",
                 "test",
                 "house"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [masterModel]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "masterModel"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -139,21 +169,6 @@
             "type": "node"
         },
         {
-            "name": "npm run test [combinatorial]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "combinatorial"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
             "name": "npm run test [puzzleSolver]",
             "request": "launch",
             "runtimeArgs": [
@@ -174,21 +189,6 @@
             "runtimeArgs": [
                 "run",
                 "test-single-puzzle"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [masterModel]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "masterModel"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
