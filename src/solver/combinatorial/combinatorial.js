@@ -166,16 +166,9 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage, context) {
 }
 
 function doFindForNonOverlappingCages(cages) {
-    if (cages.length > House.SIZE) {
-        throw `Too many cages with non-overlapping cells. Expected no more than ${House.SIZE} cages. Actual: ${cages.length})`;
-    }
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
     if (totalSum > House.SUM) {
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${valuesForMsg(cages)}}`;
-    }
-    const cellCount = cages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
-    if (cellCount > House.SIZE) {
-        throw `Too many cells in cages with non-overlapping cells. Expected no more than ${House.SIZE} cells. Actual: ${cellCount})`;
     }
     if (cages.length == 0) {
         return [];
