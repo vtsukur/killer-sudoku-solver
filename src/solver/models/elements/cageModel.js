@@ -37,7 +37,7 @@ export class CageModel {
     }
 
     initialReduce() {
-        if (!this.isWithinHouse) return;
+        if (!this.isWithinHouse || !this.#isEligibleForReduction()) return;
 
         const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
         let nums = new Set();
@@ -74,7 +74,7 @@ export class CageModel {
     }
 
     reduce() {
-        if (_.inRange(this.#cellCount, 2, 4)) {
+        if (this.#isEligibleForReduction()) {
             if (this.isWithinHouse) {
                 return this.#reduceByCellPermutations(false);
             } else {
@@ -83,6 +83,10 @@ export class CageModel {
         } else {
             return new Set();
         }
+    }
+
+    #isEligibleForReduction() {
+        return _.inRange(this.#cellCount, 2, 4);
     }
 
     #reduceByCellPermutations(canHaveNumDuplicates) {
