@@ -81,6 +81,8 @@ export class CageModel {
             if (this.isWithinHouse) {
                 if (this.#enableExperimentalOptimization && this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
+                } else if (this.#enableExperimentalOptimization && this.#cellCount === 3) {
+                    return this.#reduceOptimalForSize3();
                 } else {
                     return this.#reduceByCellPermutations(false);
                 }
@@ -124,6 +126,10 @@ export class CageModel {
         }
 
         return modifiedCellMs;
+    }
+
+    #reduceOptimalForSize3() {
+        return this.#reduceByCellPermutations(false);
     }
 
     #combosForNumArr(num) {
