@@ -129,7 +129,64 @@ export class CageModel {
     }
 
     #reduceOptimalForSize3() {
-        return this.#reduceByCellPermutations(false);
+        const modifiedCellMs = new Set();
+
+        const PERMS_OF_3 = [
+            [0, 1, 2],
+            [0, 2, 1],
+            [1, 0, 2],
+            [1, 2, 0],
+            [2, 0, 1],
+            [2, 1, 0]
+        ];
+
+        const cellMs = this.cellModels;
+
+        for (const cellM0 of cellMs) {
+            const cellM0Index = cellMs.findIndex(c => c === cellM0);
+            const remainingCellMs = [...cellMs];
+            remainingCellMs.splice(cellM0Index, 1);
+            const cellM1 = remainingCellMs[0];
+            const cellM2 = remainingCellMs[1];
+
+            for (const num0 of cellM0.numOpts()) {
+                let numStands = false;
+                for (const combo of this.#combosForNumArr(num0)) {
+                    const num0Index = combo.findIndex(n => n === num0);
+                    const remainingNums = [...combo];
+                    remainingNums.splice(num0Index, 1);
+                    const num1 = remainingNums[0];
+                    const num2 = remainingNums[1];
+
+                    const hasFirstPerm = cellM1.hasNumOpt(num1) && cellM2.hasNumOpt(num2);
+                    const hasSecondPerm = cellM1.hasNumOpt(num2) && cellM2.hasNumOpt(num1);
+                    const hasAtLeastOnePerm = hasFirstPerm || hasSecondPerm;
+                    numStands = numStands || hasAtLeastOnePerm;
+
+                    if (hasAtLeastOnePerm) break;
+                }
+                if (!numStands) {
+                    cellM0.deleteNumOpt(num0);
+                    modifiedCellMs.add(cellM0);
+                }
+            }
+        }
+
+        for (const combo of this.#combosMap.values()) {
+            let comboStands = false;
+            for (const perm of PERMS_OF_3) {
+                const cellM0HasIt = cellMs[0].hasNumOpt(combo[perm[0]]);
+                const cellM1HasIt = cellMs[1].hasNumOpt(combo[perm[1]]);
+                const cellM2HasIt = cellMs[2].hasNumOpt(combo[perm[2]]);
+                const someCellHasIt = cellM0HasIt && cellM1HasIt && cellM2HasIt;
+                comboStands = comboStands || someCellHasIt;
+            }
+            if (!comboStands) {
+                this.#deleteComboArr(combo);
+            }
+        }
+        
+        return modifiedCellMs;
     }
 
     #combosForNumArr(num) {
