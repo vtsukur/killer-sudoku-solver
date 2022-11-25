@@ -1,5 +1,6 @@
 import { PermEdge } from './permEdge';
 
+// experimental
 export class PermGraph {
     #cellMs;
     #cellCount;
