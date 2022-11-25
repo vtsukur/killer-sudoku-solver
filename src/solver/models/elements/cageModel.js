@@ -98,6 +98,7 @@ export class CageModel {
 
     #reduceOptimalForSize2() {
         const modifiedCellMs = new Set();
+        const combosToPotentiallyRemoveMap = new Map();
 
         for (const oneCellM of this.cellModels) {
             const anotherCellM = this.cellModels[0] === oneCellM ? this.cellModels[1] : this.cellModels[0];
@@ -107,21 +108,19 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
                         modifiedCellMs.add(oneCellM);
-                        if (!(oneCellM.hasNumOpt(anotherNum) && anotherCellM.hasNumOpt(oneNum))) {
-                            const comboToDelete = [ oneNum, anotherNum ];
-                            comboToDelete.sort();
-                            this.#deleteComboArr(comboToDelete);
-                            if (oneCellM.hasNumOpt(anotherNum)) {
-                                oneCellM.deleteNumOpt(anotherNum);
-                            }
-                            if (anotherCellM.hasNumOpt(oneNum)) {
-                                anotherCellM.deleteNumOpt(oneNum);
-                                modifiedCellMs.add(anotherCellM);
-                            }
-                        }
+                        combosToPotentiallyRemoveMap.set(combo.join(), combo);
                     }
                 }
-            }    
+            }
+        }
+
+        for (const comboToPotentiallyRemove of combosToPotentiallyRemoveMap.values()) {
+            if (!this.cellModels[0].hasNumOpt(comboToPotentiallyRemove[0]) &&
+                    !this.cellModels[0].hasNumOpt(comboToPotentiallyRemove[1]) &&
+                    !this.cellModels[1].hasNumOpt(comboToPotentiallyRemove[0]) &&
+                    !this.cellModels[1].hasNumOpt(comboToPotentiallyRemove[1])) {
+                this.#deleteComboArr(comboToPotentiallyRemove);
+            }
         }
 
         return modifiedCellMs;
