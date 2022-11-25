@@ -52,6 +52,7 @@ export class MasterModel {
 
     registerCage(cage) {
         const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
+        cageModel.initialReduce();
         if (cageModel.isWithinRow) {
             this.rowModels[cageModel.anyRow()].addCage(cage);
         }

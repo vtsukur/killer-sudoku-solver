@@ -8,15 +8,14 @@ const cell2 = Cell.at(0, 1);
 const cell3 = Cell.at(0, 2);
 
 describe('CageModel tests', () => {
-    test('Reducing CageModel of size 2 with a single combination', () => {
+    test('Initial reduction for CageModel of size 2 with a single combination', () => {
         const cellModel1 = new CellModel(cell1);
         const cellModel2 = new CellModel(cell2);
         const cage = Cage.ofSum(17).cell(cell1).cell(cell2).mk();
         const cageModel = new CageModel(cage, [ cellModel1, cellModel2 ]);
 
-        const modifiedCellModels = cageModel.reduce();
+        cageModel.initialReduce();
 
-        expect(modifiedCellModels).toEqual(new Set([ cellModel1, cellModel2 ]));
         expect(cellModel1.numOpts()).toEqual(new Set([ 8, 9 ]));
         expect(cellModel2.numOpts()).toEqual(new Set([ 8, 9 ]));
         expect(Array.from(cageModel.combos)).toEqual([
@@ -24,15 +23,14 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reducing CageModel of size 2 with several combinations', () => {
+    test('Initial reduction for CageModel of size 2 with several combinations', () => {
         const cellModel1 = new CellModel(cell1);
         const cellModel2 = new CellModel(cell2);
         const cage = Cage.ofSum(13).cell(cell1).cell(cell2).mk();
         const cageModel = new CageModel(cage, [ cellModel1, cellModel2 ]);
 
-        const modifiedCellModels = cageModel.reduce();
+        cageModel.initialReduce();
 
-        expect(modifiedCellModels).toEqual(new Set([ cellModel1, cellModel2 ]));
         expect(cellModel1.numOpts()).toEqual(new Set([ 4, 5, 6, 7, 8, 9 ]));
         expect(cellModel2.numOpts()).toEqual(new Set([ 4, 5, 6, 7, 8, 9 ]));
         expect(Array.from(cageModel.combos)).toEqual([
@@ -42,16 +40,15 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reducing CageModel of size 3 with a single combination', () => {
+    test('Initial reduction for CageModel of size 3 with a single combination', () => {
         const cellModel1 = new CellModel(cell1);
         const cellModel2 = new CellModel(cell2);
         const cellModel3 = new CellModel(cell3);
         const cage = Cage.ofSum(24).cell(cell1).cell(cell2).cell(cell3).mk();
         const cageModel = new CageModel(cage, [ cellModel1, cellModel2, cellModel3 ]);
 
-        const modifiedCellModels = cageModel.reduce();
+        cageModel.initialReduce();
 
-        expect(modifiedCellModels).toEqual(new Set([ cellModel1, cellModel2, cellModel3 ]));
         expect(cellModel1.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
         expect(cellModel2.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
         expect(cellModel3.numOpts()).toEqual(new Set([ 7, 8, 9 ]));

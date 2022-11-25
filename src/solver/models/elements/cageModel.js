@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
+import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 
 export class CageModel {
     #firstCell;
@@ -33,6 +34,20 @@ export class CageModel {
 
     #isSameForAll(whatFn) {
         return new Set(this.cage.cells.map(whatFn)).size === 1;
+    }
+
+    initialReduce() {
+        if (!this.isWithinHouse) return;
+
+        const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
+        let nums = new Set();
+        combos.forEach(combo => {
+            nums = new Set([...nums, ...combo]);
+            const comboValue = Array.from(combo);
+            const comboKey = comboValue.join();
+            this.#combosMap.set(comboKey, comboValue);
+        })
+        this.cellModels.forEach(cellM => cellM.reduceNumOptions(nums));
     }
 
     anyRow() {
