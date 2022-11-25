@@ -7,6 +7,7 @@ export class CageModel {
     #cellsSet;
     #cellCount;
     #combosMap;
+    #enableExperimentalOptimization;
 
     constructor(cage, cellModels) {
         this.cage = cage;
@@ -30,6 +31,7 @@ export class CageModel {
         });
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
+        this.#enableExperimentalOptimization = true;
     }
 
     #isSameForAll(whatFn) {
@@ -43,6 +45,7 @@ export class CageModel {
         let nums = new Set();
         combos.forEach(combo => {
             nums = new Set([...nums, ...combo]);
+
             const comboValue = Array.from(combo);
             const comboKey = comboValue.join();
             this.#combosMap.set(comboKey, comboValue);
@@ -76,7 +79,11 @@ export class CageModel {
     reduce() {
         if (this.#isEligibleForReduction()) {
             if (this.isWithinHouse) {
-                return this.#reduceByCellPermutations(false);
+                if (this.#enableExperimentalOptimization && this.#cellCount === 2) {
+                    return this.#reduceOptimalForSize2();
+                } else {
+                    return this.#reduceByCellPermutations(false);
+                }
             } else {
                 return this.#reduceByCellPermutations(true);
             }
@@ -87,6 +94,51 @@ export class CageModel {
 
     #isEligibleForReduction() {
         return _.inRange(this.#cellCount, 2, 4);
+    }
+
+    #reduceOptimalForSize2() {
+        const modifiedCellMs = new Set();
+
+        for (const oneCellM of this.cellModels) {
+            const anotherCellM = this.cellModels[0] === oneCellM ? this.cellModels[1] : this.cellModels[0];
+            for (const oneNum of oneCellM.numOpts()) {
+                for (const combo of this.#combosForNumArr(oneNum)) {
+                    const anotherNum = combo[0] === oneNum ? combo[1] : combo[0];
+                    if (!anotherCellM.hasNumOpt(anotherNum)) {
+                        oneCellM.deleteNumOpt(oneNum);
+                        modifiedCellMs.add(oneCellM);
+                        if (!(oneCellM.hasNumOpt(anotherNum) && anotherCellM.hasNumOpt(oneNum))) {
+                            const comboToDelete = [ oneNum, anotherNum ];
+                            comboToDelete.sort();
+                            this.#deleteComboArr(comboToDelete);
+                            if (oneCellM.hasNumOpt(anotherNum)) {
+                                oneCellM.deleteNumOpt(anotherNum);
+                            }
+                            if (anotherCellM.hasNumOpt(oneNum)) {
+                                anotherCellM.deleteNumOpt(oneNum);
+                                modifiedCellMs.add(anotherCellM);
+                            }
+                        }
+                    }
+                }
+            }    
+        }
+
+        return modifiedCellMs;
+    }
+
+    #combosForNumArr(num) {
+        const combosArr = [];
+        for (const combo of this.#combosMap.values()) {
+            if (combo.some(n => n === num)) {
+                combosArr.push(combo);
+            }
+        }
+        return combosArr;
+    }
+
+    #deleteComboArr(combo) {
+        this.#combosMap.delete(combo.join());
     }
 
     #reduceByCellPermutations(canHaveNumDuplicates) {
