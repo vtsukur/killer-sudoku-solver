@@ -20,9 +20,9 @@ export class CageSlicer {
 
                 const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                cageModelsForResidualCage.forEach(firstChunkCageModel => {
-                    const secondChunkCage = CageSlicer.#slice(firstChunkCageModel.cage, residualCage);
-                    cagesToUnregister.push(firstChunkCageModel.cage);
+                cageModelsForResidualCage.forEach(cageModel => {
+                    const secondChunkCage = CageSlicer.#slice(cageModel.cage, residualCage);
+                    cagesToUnregister.push(cageModel.cage);
                     nextResidualCages.push(secondChunkCage);
                 });
 
