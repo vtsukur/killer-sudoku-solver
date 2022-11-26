@@ -40,6 +40,10 @@ export class CageModel {
         return new Set(this.cage.cells.map(whatFn)).size === 1;
     }
 
+    get canHaveDuplicateNums() {
+        return this.#canHaveDuplicateNums;
+    }
+
     initialReduce() {
         if (!this.isWithinHouse || !this.#isEligibleForReduction()) return;
 

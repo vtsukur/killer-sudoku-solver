@@ -50,8 +50,8 @@ export class MasterModel {
         return Array.from(iterator).map(coords => this.cellAt(coords.row, coords.col));
     }
 
-    registerCage(cage) {
-        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
+    registerCage(cage, canHaveDuplicateNums) {
+        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
         cageModel.initialReduce();
         if (cageModel.isWithinRow) {
             this.rowModels[cageModel.anyRow()].addCage(cage);

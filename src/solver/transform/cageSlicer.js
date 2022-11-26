@@ -16,15 +16,17 @@ export class CageSlicer {
             residualCages.forEach(residualCage => {
                 if (this.#model.cageModelsMap.has(residualCage.key)) return;
 
-                this.#model.registerCage(residualCage);
-
                 const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
+                let canHaveDuplicateNums = false;
                 cageModelsForResidualCage.forEach(cageModel => {
                     const secondChunkCage = CageSlicer.#slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);
                     nextResidualCages.push(secondChunkCage);
+                    canHaveDuplicateNums = canHaveDuplicateNums || cageModel.canHaveDuplicateNums;
                 });
+
+                this.#model.registerCage(residualCage, canHaveDuplicateNums);
 
                 cagesToUnregister.forEach(cage => this.#model.unregisterCage(cage));
             });
