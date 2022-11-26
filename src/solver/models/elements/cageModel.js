@@ -8,8 +8,9 @@ export class CageModel {
     #cellCount;
     #combosMap;
     #enableExperimentalOptimization;
+    #canHaveDuplicateNums;
 
-    constructor(cage, cellModels) {
+    constructor(cage, cellModels, canHaveDuplicateNums = false) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.isSingleCellCage = this.cellCount === 1;
@@ -19,6 +20,7 @@ export class CageModel {
         this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
+        this.#canHaveDuplicateNums = canHaveDuplicateNums === undefined ? this.isWithinHouse : canHaveDuplicateNums;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -78,14 +80,16 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReduction()) {
-            if (this.isWithinHouse) {
-                if (this.#enableExperimentalOptimization && this.#cellCount === 2) {
+            if (this.#canHaveDuplicateNums && this.#enableExperimentalOptimization) {
+                if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
-                } else if (this.#enableExperimentalOptimization && this.#cellCount === 3) {
+                } else if (this.#cellCount === 3) {
                     return this.#reduceOptimalForSize3();
                 } else {
-                    return this.#reduceByCellPermutations(false);
+                    throw 'Should not reach here';
                 }
+            } else if (this.isWithinHouse) {
+                return this.#reduceByCellPermutations(false);
             } else {
                 return this.#reduceByCellPermutations(true);
             }

@@ -40,7 +40,7 @@ export class MasterModel {
         });
 
         problem.cages.forEach(cage => {
-            this.registerCage(cage);
+            this.registerCage(cage, false);
         });
 
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
