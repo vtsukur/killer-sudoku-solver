@@ -10,7 +10,7 @@ export class CageModel {
     #enableExperimentalOptimization;
     #canHaveDuplicateNums;
 
-    constructor(cage, cellModels, canHaveDuplicateNums = false) {
+    constructor(cage, cellModels, canHaveDuplicateNums) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.isSingleCellCage = this.cellCount === 1;
