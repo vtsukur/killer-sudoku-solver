@@ -20,7 +20,7 @@ export class CageModel {
         this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
-        this.#canHaveDuplicateNums = canHaveDuplicateNums === undefined ? this.isWithinHouse : canHaveDuplicateNums;
+        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? this.isWithinHouse : canHaveDuplicateNums;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;

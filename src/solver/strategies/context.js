@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export class Context {
     #model;
     #cageSlicer;
@@ -24,7 +26,7 @@ export class Context {
     }
 
     get hasCageModelsToReevaluatePerms() {
-        return this.#cageModelsToReevaluatePerms !== undefined;
+        return !_.isUndefined(this.#cageModelsToReevaluatePerms);
     }
 
     get cageModelsToReevaluatePerms() {
