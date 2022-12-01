@@ -84,7 +84,7 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReduction()) {
-            if (this.#canHaveDuplicateNums && this.#enableExperimentalOptimization) {
+            if (this.isWithinHouse && this.#enableExperimentalOptimization) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
                 } else if (this.#cellCount === 3) {
