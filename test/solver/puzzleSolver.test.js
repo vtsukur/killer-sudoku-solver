@@ -174,22 +174,22 @@ describe('Tests for puzzle solver', () => {
         ]);
     });
 
-    // test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
-    //     const solver = new PuzzleSolver(dailyKillerSudokuDotCom_puzzle24789_difficulty10);
-    //     const solution = solver.solve();
+    test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
+        const solver = new PuzzleSolver(dailyKillerSudokuDotCom_puzzle24789_difficulty10);
+        const solution = solver.solve();
 
-    //     expect(solution).toEqual([
-    //         [ 6, 8, 5, 1, 3, 2, 4, 7, 9 ],
-    //         [ 7, 3, 4, 5, 9, 8, 1, 6, 2 ],
-    //         [ 2, 1, 9, 7, 6, 4, 5, 3, 8 ],
-    //         [ 9, 2, 6, 8, 7, 1, 3, 4, 5 ],
-    //         [ 8, 5, 1, 3, 4, 9, 7, 2, 6 ],
-    //         [ 4, 7, 3, 2, 5, 6, 8, 9, 1 ],
-    //         [ 5, 6, 8, 4, 2, 7, 9, 1, 3 ],
-    //         [ 3, 4, 2, 9, 1, 5, 6, 8, 7 ],
-    //         [ 1, 9, 7, 6, 8, 3, 2, 5, 4 ]
-    //     ]);
-    // });
+        expect(solution).toEqual([
+            [ 6, 8, 5, 1, 3, 2, 4, 7, 9 ],
+            [ 7, 3, 4, 5, 9, 8, 1, 6, 2 ],
+            [ 2, 1, 9, 7, 6, 4, 5, 3, 8 ],
+            [ 9, 2, 6, 8, 7, 1, 3, 4, 5 ],
+            [ 8, 5, 1, 3, 4, 9, 7, 2, 6 ],
+            [ 4, 7, 3, 2, 5, 6, 8, 9, 1 ],
+            [ 5, 6, 8, 4, 2, 7, 9, 1, 3 ],
+            [ 3, 4, 2, 9, 1, 5, 6, 8, 7 ],
+            [ 1, 9, 7, 6, 8, 3, 2, 5, 4 ]
+        ]);
+    });
 
     test('Find solution (whitebox verification of the model)', () => {
         const solver = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01);
