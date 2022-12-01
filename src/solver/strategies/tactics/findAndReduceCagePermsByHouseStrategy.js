@@ -30,5 +30,5 @@ export function findAndReduceCagePermsByHouseStrategy() {
         });
     });
 
-    this.cageModelsToReevaluatePerms = cageModelsToReduce.values();
+    this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? cageModelsToReduce.values() : undefined;
 }
