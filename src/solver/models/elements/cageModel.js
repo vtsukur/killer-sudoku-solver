@@ -296,7 +296,7 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum) {
-        if (this.#hasSingleCombination() || !this.#combosMap.size) return [];
+        if (this.hasSingleCombination() || !this.#combosMap.size) return [];
 
         const newCombosMap = new Map();
         const removedCombos = [];
@@ -329,7 +329,7 @@ export class CageModel {
         }
     }
 
-    #hasSingleCombination() {
+    hasSingleCombination() {
         return this.#combosMap.size === 1;
     }
 

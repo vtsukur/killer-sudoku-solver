@@ -29,5 +29,30 @@ export function findAndReduceCagePermsByHouseStrategy() {
         });
     });
 
+    for (const cageModel of this.model.cageModelsMap.values()) {
+        if (cageModel.isSingleCellCage || !cageModel.hasSingleCombination() || !cageModel.isWithinHouse) continue;
+
+        const combo = cageModel.combos.next().value;
+
+        if (cageModel.isWithinRow) {
+            const rowM = this.model.rowModels[cageModel.anyRow()];
+            for (const { row, col } of rowM.cellIterator()) {
+                if (col < cageModel.minCol || col > cageModel.maxCol) {
+                    const cellM = this.model.cellModelAt(row, col);
+                    let shouldReduce = false;
+                    for (const num of combo) {
+                        if (cellM.hasNumOpt(num)) {
+                            cellM.deleteNumOpt(num);
+                            shouldReduce = true;
+                        }
+                    }
+                    if (shouldReduce) {
+                        cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+                    }
+                }
+            }
+        }
+    }
+
     this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? cageModelsToReduce.values() : undefined;
 }
