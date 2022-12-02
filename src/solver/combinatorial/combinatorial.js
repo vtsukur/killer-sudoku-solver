@@ -58,12 +58,9 @@ export function findSumCombinationsForHouse(houseModel) {
         throw `Invalid houseModel: ${houseModel}`;
     }
 
-    const cells = houseModel.cells;
-    if (!Array.isArray(cells)) {
-        throw `Invalid cells: ${cells}`;
-    }
-
     const cages = houseModel.cageModels.map(cageModel => cageModel.cage);
+    const cells = houseModel.cells;
+
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
     const combosForNonOverlappingCages = doFindForNonOverlappingCages(nonOverlappingCages);

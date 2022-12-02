@@ -79,15 +79,6 @@ describe('Tests for the finder of number combinations to form a house model out 
         expect(findSumCombinationsForHouse(houseModelOf([]))).toEqual([]);
     });
 
-    test('Combinations of numbers to form a house model out of invalid house model cells', () => {
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: undefined })).toThrow('Invalid cells: undefined');
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: null })).toThrow('Invalid cells: null');
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: {} })).toThrow('Invalid cells: [object Object]');
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: 3 })).toThrow('Invalid cells: 3');
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: 'string' })).toThrow('Invalid cells: string');
-        expect(() => findSumCombinationsForHouse({ cages: [], cells: () => {} })).toThrow('Invalid cells: () => {}');
-    });
-
     test('Combinations of numbers to form a house model out of cages with non-overlapping cells whose total sum is greater than house max', () => {
         expect(() => findSumCombinationsForHouse(houseModelOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).mk(),
