@@ -58,22 +58,18 @@ export function findSumCombinationsForHouse(houseModel) {
         throw `Invalid houseModel: ${houseModel}`;
     }
 
-    const cages = houseModel.cages;
-    if (!Array.isArray(cages)) {
-        throw `Invalid cages: ${cages}`;
-    }
-
     const cells = houseModel.cells;
     if (!Array.isArray(cells)) {
         throw `Invalid cells: ${cells}`;
     }
 
+    const cages = houseModel.cageModels.map(cageModel => cageModel.cage);
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
     const combosForNonOverlappingCages = doFindForNonOverlappingCages(nonOverlappingCages);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const combinedCombos = merge(combosForNonOverlappingCages, combosForOverlappingCages);
-    const preservedCageOrderCombos = preserveOrder(combinedCombos, houseModel, nonOverlappingCages, overlappingCages);
+    const preservedCageOrderCombos = preserveOrder(combinedCombos, cages, nonOverlappingCages, overlappingCages);
 
     return preservedCageOrderCombos;
 }
@@ -241,19 +237,19 @@ function merge(combosForNonOverlappingCages, combosForOverlappingCages) {
     }
 }
 
-function preserveOrder(combinedCombos, houseModel, nonOverlappingCages, overlappingCages) {
+function preserveOrder(combinedCombos, cages, nonOverlappingCages, overlappingCages) {
     if (overlappingCages.length === 0) {
         return combinedCombos;
     }
     else {
         const orderPreservedCombos = [];
 
-        const cageIndexResolvers = new Array(houseModel.cages.length);
+        const cageIndexResolvers = new Array(cages.length);
         nonOverlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[idx] = houseModel.cages.findIndex(originalCage => originalCage === cage);
+            cageIndexResolvers[idx] = cages.findIndex(originalCage => originalCage === cage);
         });
         overlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[nonOverlappingCages.length + idx] = houseModel.cages.findIndex(originalCage => originalCage === cage);
+            cageIndexResolvers[nonOverlappingCages.length + idx] = cages.findIndex(originalCage => originalCage === cage);
         });
         combinedCombos.forEach(comboSets => {
             const preservedOrderCombo = new Array(comboSets.length);
