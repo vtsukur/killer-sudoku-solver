@@ -27,6 +27,10 @@ export class HouseModel {
         this.#cages = this.#cageModels.map(cageModel => cageModel.cage);
     }
 
+    get cageModels() {
+        return this.#cageModels;
+    }
+
     get cages() {
         return this.#cages;
     }

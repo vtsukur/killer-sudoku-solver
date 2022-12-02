@@ -4,8 +4,7 @@ export function initPermsForCagesStrategy() {
     this.model.houseModels.forEach(houseModel => {
         const combosForHouse = findSumCombinationsForHouse(houseModel);
         houseModel.debugCombosForHouse = combosForHouse;
-        houseModel.cages.forEach((cage, idx) => {
-            const cageModel = this.model.cageModelsMap.get(cage.key);
+        houseModel.cageModels.forEach((cageModel, idx) => {
             const combosKeySet = new Set();
             const combos = [];
             combosForHouse.forEach(combo => {
