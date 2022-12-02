@@ -35,24 +35,40 @@ export function findAndReduceCagePermsByHouseStrategy() {
         const combo = cageModel.combos.next().value;
 
         if (cageModel.isWithinRow) {
-            const rowM = this.model.rowModels[cageModel.anyRow()];
-            for (const { row, col } of rowM.cellIterator()) {
-                if (col < cageModel.minCol || col > cageModel.maxCol) {
-                    const cellM = this.model.cellModelAt(row, col);
-                    let shouldReduce = false;
-                    for (const num of combo) {
-                        if (cellM.hasNumOpt(num)) {
-                            cellM.deleteNumOpt(num);
-                            shouldReduce = true;
-                        }
-                    }
-                    if (shouldReduce) {
-                        cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
-                    }
-                }
-            }
+            const rowReduced = reduceByHouse(cageModel, this.model.rowModels[cageModel.anyRow()], this.model, combo);
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
+        } else if (cageModel.isWithinColumn) {
+            const columnReduced = reduceByHouse(cageModel, this.model.columnModels[cageModel.anyColumnIdx()], this.model, combo);
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
+        }
+
+        if (cageModel.isWithinNonet) {
+            const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anySubgridIdx()], this.model, combo);
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
         }
     }
 
     this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? cageModelsToReduce.values() : undefined;
+}
+
+const reduceByHouse = (cageModel, house, model, combo) => {
+    let cageModelsToReduce = new Set();
+
+    for (const { row, col } of house.cellIterator()) {
+        if (cageModel.hasCellAt(row, col)) continue;
+
+        const cellM = model.cellModelAt(row, col);
+        let shouldReduce = false;
+        for (const num of combo) {
+            if (cellM.hasNumOpt(num)) {
+                cellM.deleteNumOpt(num);
+                shouldReduce = true;
+            }
+        }
+        if (shouldReduce) {
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+        }
+    }
+
+    return cageModelsToReduce;
 }

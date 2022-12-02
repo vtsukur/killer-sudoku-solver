@@ -71,6 +71,10 @@ export class CageModel {
         return this.#firstCell.nonet;
     }
 
+    hasCellAt(row, col) {
+        return this.cellModels.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
+    }
+
     updateCombinations(combos) {
         const numOpts = new Set();
         [...combos].forEach(comboSet => {
