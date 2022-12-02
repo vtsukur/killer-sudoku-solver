@@ -1,8 +1,8 @@
 import { HouseModel } from './houseModel';
 
 export class ColumnModel extends HouseModel {
-    constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, ColumnModel.iteratorFor);
+    constructor(idx, cells) {
+        super(idx, cells, ColumnModel.iteratorFor);
     }
 
     static iteratorFor(idx) {

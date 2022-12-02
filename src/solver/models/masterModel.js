@@ -54,13 +54,13 @@ export class MasterModel {
         const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
         cageModel.initialReduce();
         if (cageModel.isWithinRow) {
-            this.rowModels[cageModel.anyRow()].addCage(cage);
+            this.rowModels[cageModel.anyRow()].addCageModel(cageModel);
         }
         if (cageModel.isWithinColumn) {
-            this.columnModels[cageModel.anyColumnIdx()].addCage(cage);
+            this.columnModels[cageModel.anyColumnIdx()].addCageModel(cageModel);
         }
         if (cageModel.isWithinNonet) {
-            this.nonetModels[cageModel.anySubgridIdx()].addCage(cage);
+            this.nonetModels[cageModel.anySubgridIdx()].addCageModel(cageModel);
         }
         cage.cells.forEach(cell => {
             this.cellModelOf(cell).addWithinCageModel(cageModel);
@@ -71,13 +71,13 @@ export class MasterModel {
     unregisterCage(cage) {
         const cageModel = this.cageModelsMap.get(cage.key);
         if (cageModel.isWithinRow) {
-            this.rowModels[cageModel.anyRow()].removeCage(cage);
+            this.rowModels[cageModel.anyRow()].removeCageModel(cageModel);
         }
         if (cageModel.isWithinColumn) {
-            this.columnModels[cageModel.anyColumnIdx()].removeCage(cage);
+            this.columnModels[cageModel.anyColumnIdx()].removeCageModel(cageModel);
         }
         if (cageModel.isWithinNonet) {
-            this.nonetModels[cageModel.anySubgridIdx()].removeCage(cage);
+            this.nonetModels[cageModel.anySubgridIdx()].removeCageModel(cageModel);
         }
         cage.cells.forEach(cell => {
             this.cellModelOf(cell).removeWithinCageModel(cageModel);

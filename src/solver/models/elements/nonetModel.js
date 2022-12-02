@@ -2,8 +2,8 @@ import { Nonet } from '../../../problem/nonet';
 import { HouseModel } from './houseModel';
 
 export class NonetModel extends HouseModel {
-    constructor(idx, cells, inputCages) {
-        super(idx, cells, inputCages, NonetModel.iteratorFor);
+    constructor(idx, cells) {
+        super(idx, cells, NonetModel.iteratorFor);
     }
 
     static iteratorFor(idx) {
