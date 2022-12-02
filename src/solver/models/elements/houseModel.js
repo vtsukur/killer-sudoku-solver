@@ -4,7 +4,6 @@ import { CagesAreaModel } from './cagesAreaModel';
 export class HouseModel {
     #cageModels;
     #cages;
-    #cagesAreaModel;
 
     constructor(idx, cells, cellIteratorFn) {
         this.idx = idx;
@@ -26,7 +25,6 @@ export class HouseModel {
 
     #updateCageAndCagesAreaModel() {
         this.#cages = this.#cageModels.map(cageModel => cageModel.cage);
-        this.#cagesAreaModel = new CagesAreaModel(this.#cages);
     }
 
     get cages() {
