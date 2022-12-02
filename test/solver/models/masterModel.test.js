@@ -10,11 +10,11 @@ describe('Tests for master model', () => {
 
         expect(model.cellAt(2, 3)).toEqual(Cell.at(2, 3));
         expect(model.rowModels.length).toBe(House.SIZE);
-        expect(model.rowModels[2].cages[1]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
+        expect(model.rowModels[2].cageModels[1].cage).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
         expect(model.columnModels.length).toBe(House.SIZE);
-        expect(model.columnModels[2].cages[1]).toEqual(Cage.ofSum(2).at(3, 2).mk());
+        expect(model.columnModels[2].cageModels[1].cage).toEqual(Cage.ofSum(2).at(3, 2).mk());
         expect(model.nonetModels.length).toBe(House.SIZE);
-        expect(model.nonetModels[1].cages[2]).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
+        expect(model.nonetModels[1].cageModels[2].cage).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
 
         const aCellModelerminator = model.cellModelAt(2, 3);
         expect(aCellModelerminator.cell).toEqual(Cell.at(2, 3));

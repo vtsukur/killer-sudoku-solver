@@ -200,9 +200,9 @@ describe('Tests for puzzle solver', () => {
         expect(model.cellModelAt(2, 7).solved).toBe(true);
 
         _.range(House.SIZE).forEach(idx => {
-            expect(model.rowModel(idx).cages.length).toBe(House.SIZE);
-            expect(model.columnModel(idx).cages.length).toBe(House.SIZE);
-            expect(model.nonetModel(idx).cages.length).toBe(House.SIZE);
+            expect(model.rowModel(idx).cageModels.length).toBe(House.SIZE);
+            expect(model.columnModel(idx).cageModels.length).toBe(House.SIZE);
+            expect(model.nonetModel(idx).cageModels.length).toBe(House.SIZE);
         });
     });
 });
