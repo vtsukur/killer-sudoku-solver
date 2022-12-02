@@ -6,9 +6,6 @@ export function reducePermsInCagesStrategy() {
 
         for (const cageModel of this.cageModelsToReevaluatePerms) {
             const currentlyModifiedCellModels = cageModel.reduce();
-            // if (currentlyModifiedCellModels.size > 0 && cageModel.comboCount === 1 && cageModel.isWithinHouse) {
-            //     this.addCageModelToReflectHouseReduction
-            // }
             modifiedCellModels = new Set([...modifiedCellModels, ...currentlyModifiedCellModels]);
         }
 

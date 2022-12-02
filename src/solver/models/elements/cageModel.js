@@ -340,8 +340,4 @@ export class CageModel {
     get combos() {
         return this.#combosMap.values();
     }
-
-    get comboCount() {
-        return this.#combosMap.size;
-    }
 }

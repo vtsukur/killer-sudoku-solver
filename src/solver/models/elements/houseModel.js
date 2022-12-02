@@ -1,5 +1,4 @@
 import { House } from '../../../problem/house';
-import { CagesAreaModel } from './cagesAreaModel';
 
 export class HouseModel {
     #cageModels;
