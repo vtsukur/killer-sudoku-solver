@@ -9,21 +9,21 @@ export class HouseModel {
         this.idx = idx;
         this.cells = cells;
         this.#cageModels = [];
-        this.#updateCageAndCagesAreaModel();
+        this.#updateCages();
         this.cellIteratorFn = cellIteratorFn;
     }
 
     addCageModel(newCageModel) {
         this.#cageModels.push(newCageModel);
-        this.#updateCageAndCagesAreaModel();
+        this.#updateCages();
     }
 
     removeCageModel(cageModelToRemove) {
         this.#cageModels = this.#cageModels.filter(cageModel => cageModel !== cageModelToRemove);
-        this.#updateCageAndCagesAreaModel();
+        this.#updateCages();
     }
 
-    #updateCageAndCagesAreaModel() {
+    #updateCages() {
         this.#cages = this.#cageModels.map(cageModel => cageModel.cage);
     }
 
