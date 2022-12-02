@@ -1,26 +1,36 @@
-import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesAreaModel } from './cagesAreaModel';
 
 export class HouseModel {
+    #cageModels;
+    #cages;
     #cagesAreaModel;
 
-    constructor(idx, cells, inputCages = [], cellIteratorFn) {
+    constructor(idx, cells, cellIteratorFn) {
         this.idx = idx;
         this.cells = cells;
-        this.cages = inputCages;
-        this.#cagesAreaModel = new CagesAreaModel(this.cages);
+        this.#cageModels = [];
+        this.#updateCageAndCagesAreaModel();
         this.cellIteratorFn = cellIteratorFn;
     }
 
-    addCage(newCage) {
-        this.cages.push(newCage);
-        this.#cagesAreaModel = new CagesAreaModel(this.cages);
+    addCageModel(newCageModel) {
+        this.#cageModels.push(newCageModel);
+        this.#updateCageAndCagesAreaModel();
     }
 
-    removeCage(cageToRemove) {
-        this.cages = this.cages.filter(cage => cage !== cageToRemove);
-        this.#cagesAreaModel = new CagesAreaModel(this.cages);
+    removeCageModel(cageModelToRemove) {
+        this.#cageModels = this.#cageModels.filter(cageModel => cageModel !== cageModelToRemove);
+        this.#updateCageAndCagesAreaModel();
+    }
+
+    #updateCageAndCagesAreaModel() {
+        this.#cages = this.#cageModels.map(cageModel => cageModel.cage);
+        this.#cagesAreaModel = new CagesAreaModel(this.#cages);
+    }
+
+    get cages() {
+        return this.#cages;
     }
 
     cellIterator() {
