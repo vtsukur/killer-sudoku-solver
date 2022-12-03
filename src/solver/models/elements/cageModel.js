@@ -97,10 +97,8 @@ export class CageModel {
                     // remove for refactoring
                     throw 'Should not reach here';
                 }
-            } else if (this.#canHaveDuplicateNums) {
-                return this.#reduceByCellPermutations(true);
             } else {
-                return this.#reduceByCellPermutations(false);
+                return this.#reduceByCellPermutations();
             }
         } else {
             return new Set();
@@ -216,8 +214,9 @@ export class CageModel {
         this.#combosMap.delete(combo.join());
     }
 
-    #reduceByCellPermutations(canHaveNumDuplicates) {
+    #reduceByCellPermutations() {
         const context = {
+            canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellModels: new Set(),
             remainingCellModels: new Set(this.cellModels),
             processedNums: new Set(),
@@ -233,7 +232,7 @@ export class CageModel {
                 return retVal;
             },
             mayNotProceedWithNum: function(num) {
-                return canHaveNumDuplicates ? false : this.processedNums.has(num);
+                return this.canHaveDuplicateNums ? false : this.processedNums.has(num);
             },
             processNum: function(num, step, fn) {
                 if (this.mayNotProceedWithNum(num)) return;
