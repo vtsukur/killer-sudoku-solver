@@ -20,7 +20,7 @@ export class CageModel {
         this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
-        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? this.isWithinHouse : canHaveDuplicateNums;
+        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.isWithinHouse : canHaveDuplicateNums;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -45,7 +45,7 @@ export class CageModel {
     }
 
     initialReduce() {
-        if (!this.isWithinHouse || !this.#isEligibleForReduction()) return;
+        if (this.#canHaveDuplicateNums || !this.#isEligibleForReduction()) return;
 
         const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
         let nums = new Set();
@@ -98,9 +98,9 @@ export class CageModel {
                     throw 'Should not reach here';
                 }
             } else if (this.#canHaveDuplicateNums) {
-                return this.#reduceByCellPermutations(false);
-            } else {
                 return this.#reduceByCellPermutations(true);
+            } else {
+                return this.#reduceByCellPermutations(false);
             }
         } else {
             return new Set();

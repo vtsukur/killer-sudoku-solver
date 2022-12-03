@@ -1,4 +1,5 @@
 import { Cage } from '../../problem/cage';
+import { CageModel } from '../models/elements/cageModel';
 
 export class CageSlicer {
     #model;
@@ -18,12 +19,12 @@ export class CageSlicer {
 
                 const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                let canHaveDuplicateNums = false;
+                let canHaveDuplicateNums = /* refactor */!(new CageModel(residualCage, []).isWithinHouse);
                 cageModelsForResidualCage.forEach(cageModel => {
                     const secondChunkCage = CageSlicer.#slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);
                     nextResidualCages.push(secondChunkCage);
-                    canHaveDuplicateNums = canHaveDuplicateNums || cageModel.canHaveDuplicateNums;
+                    canHaveDuplicateNums = canHaveDuplicateNums && cageModel.canHaveDuplicateNums;
                 });
 
                 this.#model.registerCage(residualCage, canHaveDuplicateNums);
