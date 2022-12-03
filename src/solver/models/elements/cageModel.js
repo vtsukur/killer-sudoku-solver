@@ -63,11 +63,11 @@ export class CageModel {
         return this.#firstCell.row;
     }
 
-    anyColumnIdx() {
+    anyColumn() {
         return this.#firstCell.col;
     }
 
-    anySubgridIdx() {
+    anyNonet() {
         return this.#firstCell.nonet;
     }
 

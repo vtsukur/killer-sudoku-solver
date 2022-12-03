@@ -57,10 +57,10 @@ export class MasterModel {
             this.rowModels[cageModel.anyRow()].addCageModel(cageModel);
         }
         if (cageModel.isWithinColumn) {
-            this.columnModels[cageModel.anyColumnIdx()].addCageModel(cageModel);
+            this.columnModels[cageModel.anyColumn()].addCageModel(cageModel);
         }
         if (cageModel.isWithinNonet) {
-            this.nonetModels[cageModel.anySubgridIdx()].addCageModel(cageModel);
+            this.nonetModels[cageModel.anyNonet()].addCageModel(cageModel);
         }
         cage.cells.forEach(cell => {
             this.cellModelOf(cell).addWithinCageModel(cageModel);
@@ -74,10 +74,10 @@ export class MasterModel {
             this.rowModels[cageModel.anyRow()].removeCageModel(cageModel);
         }
         if (cageModel.isWithinColumn) {
-            this.columnModels[cageModel.anyColumnIdx()].removeCageModel(cageModel);
+            this.columnModels[cageModel.anyColumn()].removeCageModel(cageModel);
         }
         if (cageModel.isWithinNonet) {
-            this.nonetModels[cageModel.anySubgridIdx()].removeCageModel(cageModel);
+            this.nonetModels[cageModel.anyNonet()].removeCageModel(cageModel);
         }
         cage.cells.forEach(cell => {
             this.cellModelOf(cell).removeWithinCageModel(cageModel);

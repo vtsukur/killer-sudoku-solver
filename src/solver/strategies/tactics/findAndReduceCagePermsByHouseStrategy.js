@@ -38,12 +38,12 @@ export function findAndReduceCagePermsByHouseStrategy() {
             const rowReduced = reduceByHouse(cageModel, this.model.rowModels[cageModel.anyRow()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
         } else if (cageModel.isWithinColumn) {
-            const columnReduced = reduceByHouse(cageModel, this.model.columnModels[cageModel.anyColumnIdx()], this.model, combo);
+            const columnReduced = reduceByHouse(cageModel, this.model.columnModels[cageModel.anyColumn()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
         }
 
         if (cageModel.isWithinNonet) {
-            const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anySubgridIdx()], this.model, combo);
+            const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anyNonet()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
         }
     }
