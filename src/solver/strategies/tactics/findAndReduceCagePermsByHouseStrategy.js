@@ -11,7 +11,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
             const cageModelsWithNum = [];
             // consider overlapping vs non-overlapping cages
             houseModel.cageModels.forEach(cageModel => {
-                if (cageModel.isSingleCellCage) return;
+                if (cageModel.positioningFlags.isSingleCellCage) return;
                 const hasNumInCells = cageModel.cellModels.some(cellModel => cellModel.hasNumOpt(num));
                 if (hasNumInCells) {
                     cageModelsWithNum.push(cageModel);
@@ -30,19 +30,19 @@ export function findAndReduceCagePermsByHouseStrategy() {
     });
 
     for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.isSingleCellCage || !cageModel.hasSingleCombination() || !cageModel.isWithinHouse) continue;
+        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination() || !cageModel.positioningFlags.isWithinHouse) continue;
 
         const combo = cageModel.combos.next().value;
 
-        if (cageModel.isWithinRow) {
+        if (cageModel.positioningFlags.isWithinRow) {
             const rowReduced = reduceByHouse(cageModel, this.model.rowModels[cageModel.anyRow()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
-        } else if (cageModel.isWithinColumn) {
+        } else if (cageModel.positioningFlags.isWithinColumn) {
             const columnReduced = reduceByHouse(cageModel, this.model.columnModels[cageModel.anyColumn()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
         }
 
-        if (cageModel.isWithinNonet) {
+        if (cageModel.positioningFlags.isWithinNonet) {
             const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anyNonet()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
         }

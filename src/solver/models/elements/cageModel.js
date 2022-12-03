@@ -13,14 +13,10 @@ export class CageModel {
     constructor(cage, cellModels, canHaveDuplicateNums) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
-        this.isSingleCellCage = this.cellCount === 1;
-        this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
-        this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
-        this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
-        this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
+        this.positioningFlags = new CageModel.#PositioningFlags(cage);
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
-        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.isWithinHouse : canHaveDuplicateNums;
+        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -36,8 +32,19 @@ export class CageModel {
         this.#enableExperimentalOptimization = true;
     }
 
-    #isSameForAll(whatFn) {
-        return new Set(this.cage.cells.map(whatFn)).size === 1;
+    static #PositioningFlags = class {
+        constructor(cage) {
+            this.cage = cage;
+            this.isSingleCellCage = cage.cellCount === 1;
+            this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
+            this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
+            this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
+            this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
+        }
+
+        #isSameForAll(whatFn) {
+            return new Set(this.cage.cells.map(whatFn)).size === 1;
+        }
     }
 
     get canHaveDuplicateNums() {
@@ -88,7 +95,7 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReduction()) {
-            if (this.isWithinHouse && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
+            if (this.positioningFlags.isWithinHouse && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
                 } else if (this.#cellCount === 3) {

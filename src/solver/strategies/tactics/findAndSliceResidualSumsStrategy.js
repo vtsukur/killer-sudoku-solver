@@ -24,7 +24,7 @@ export function findAndSliceResidualSumsStrategy() {
     });
     _.range(House.SIZE).forEach(leftIdx => {
         doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, 1, leftIdx, (cageModel) => {
-            return cageModel.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
+            return cageModel.positioningFlags.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
         }, (nonet) => {
             return this.model.nonetModels[nonet].cellIterator();
         });
