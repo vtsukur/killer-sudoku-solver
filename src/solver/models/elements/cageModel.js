@@ -99,7 +99,7 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReduction()) {
-            if (this.positioningFlags.isWithinHouse && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
+            if (!this.#canHaveDuplicateNums && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
                 } else if (this.#cellCount === 3) {
