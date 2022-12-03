@@ -56,7 +56,7 @@ export class CageModel {
     }
 
     initialReduce() {
-        if (this.#canHaveDuplicateNums || !this.#isEligibleForReduction()) return;
+        if (this.#canHaveDuplicateNums) return;
 
         const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
         let nums = new Set();
