@@ -88,15 +88,16 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReduction()) {
-            if (this.isWithinHouse && this.#enableExperimentalOptimization) {
+            if (this.isWithinHouse && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
                 } else if (this.#cellCount === 3) {
                     return this.#reduceOptimalForSize3();
                 } else {
+                    // remove for refactoring
                     throw 'Should not reach here';
                 }
-            } else if (this.isWithinHouse) {
+            } else if (this.#canHaveDuplicateNums) {
                 return this.#reduceByCellPermutations(false);
             } else {
                 return this.#reduceByCellPermutations(true);
@@ -107,7 +108,7 @@ export class CageModel {
     }
 
     #isEligibleForReduction() {
-        return _.inRange(this.#cellCount, 2, 4);
+        return _.inRange(this.#cellCount, 2, 5);
     }
 
     #reduceOptimalForSize2() {
