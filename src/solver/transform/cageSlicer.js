@@ -19,7 +19,7 @@ export class CageSlicer {
 
                 const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                let canHaveDuplicateNums = /* refactor */!(new CageModel(residualCage, []).positioningFlags.isWithinHouse);
+                let canHaveDuplicateNums = !CageModel.positioningFlagsFor(residualCage).isWithinHouse;
                 cageModelsForResidualCage.forEach(cageModel => {
                     const secondChunkCage = CageSlicer.#slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);

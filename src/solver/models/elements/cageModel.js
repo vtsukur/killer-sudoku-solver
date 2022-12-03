@@ -13,7 +13,7 @@ export class CageModel {
     constructor(cage, cellModels, canHaveDuplicateNums) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
-        this.positioningFlags = new CageModel.#PositioningFlags(cage);
+        this.positioningFlags = CageModel.positioningFlagsFor(cage);
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
         this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
@@ -30,6 +30,10 @@ export class CageModel {
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
         this.#enableExperimentalOptimization = true;
+    }
+
+    static positioningFlagsFor(cage) {
+        return new CageModel.#PositioningFlags(cage);
     }
 
     static #PositioningFlags = class {
