@@ -406,6 +406,11 @@ export class CageModel {
                 const clue = { num };
                 if (positioningFlags.isWithinRow) {
                     clue.row = cells[0].row;
+                } else if (positioningFlags.isWithinColumn) {
+                    clue.col = cells[0].col;
+                }
+                if (positioningFlags.isWithinNonet) {
+                    clue.nonet = cells[0].nonet;
                 }
                 clues.push(clue);
             }
