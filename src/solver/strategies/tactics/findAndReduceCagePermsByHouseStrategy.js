@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
+import { CageModel } from '../../models/elements/cageModel';
 
 export function findAndReduceCagePermsByHouseStrategy() {
     if (this.hasCageModelsToReevaluatePerms) return;
@@ -45,6 +46,19 @@ export function findAndReduceCagePermsByHouseStrategy() {
         if (cageModel.positioningFlags.isWithinNonet) {
             const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anyNonet()], this.model, combo);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
+        }
+    }
+
+    for (const cageModel of this.model.cageModelsMap.values()) {
+        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination() || cageModel.positioningFlags.isWithinHouse) continue;
+
+        const combo = cageModel.combos.next().value;
+
+        for (const numPlacementClue of cageModel.findNumPlacementClues()) {
+            if (!_.isUndefined(numPlacementClue.row)) {
+                const rowReduced = reduceByHouse(cageModel, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
+                cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);    
+            }
         }
     }
 

@@ -13,7 +13,7 @@ export class CageModel {
     constructor(cage, cellModels, canHaveDuplicateNums) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
-        this.positioningFlags = CageModel.positioningFlagsFor(cage);
+        this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this.#firstCell = cage.cells[0];
         this.cellModels = cellModels;
         this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
@@ -32,14 +32,14 @@ export class CageModel {
         this.#enableExperimentalOptimization = true;
     }
 
-    static positioningFlagsFor(cage) {
-        return new CageModel.#PositioningFlags(cage);
+    static positioningFlagsFor(cells) {
+        return new CageModel.#PositioningFlags(cells);
     }
 
     static #PositioningFlags = class {
-        constructor(cage) {
-            this.cage = cage;
-            this.isSingleCellCage = cage.cellCount === 1;
+        constructor(cells) {
+            this.cells = cells;
+            this.isSingleCellCage = cells.length === 1;
             this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
             this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
             this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
@@ -47,7 +47,7 @@ export class CageModel {
         }
 
         #isSameForAll(whatFn) {
-            return new Set(this.cage.cells.map(whatFn)).size === 1;
+            return new Set(this.cells.map(whatFn)).size === 1;
         }
     }
 
@@ -384,6 +384,34 @@ export class CageModel {
         }
 
         return modifiedCellMs;
+    }
+
+    findNumPlacementClues() {
+        const numToCells = new Map();
+        for (const cellM of this.cellModels) {
+            for (const num of cellM.numOpts()) {
+                if (!numToCells.has(num)) {
+                    numToCells.set(num, []);
+                }
+                numToCells.get(num).push(cellM.cell);
+            }
+        }
+
+        const clues = [];
+        for (const numToCellsEntry of numToCells.entries()) {
+            const num = numToCellsEntry[0];
+            const cells = numToCellsEntry[1];
+            const positioningFlags = CageModel.positioningFlagsFor(cells);
+            if (positioningFlags.isWithinHouse) {
+                const clue = { num };
+                if (positioningFlags.isWithinRow) {
+                    clue.row = cells[0].row;
+                }
+                clues.push(clue);
+            }
+        }
+
+        return clues;
     }
 
     reduceToCombinationsContaining(withNum) {
