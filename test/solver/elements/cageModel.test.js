@@ -125,7 +125,7 @@ describe('CageModel tests', () => {
         // });
     });
 
-    test('Reduction for CageModel of size 7 and sum 31 with 2 combinations', () => {
+    test('Reduction for CageModel of size 7 and sum 31 with 2 combinations after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
         const cell_04 = Cell.at(0, 4);
         const cell_05 = Cell.at(0, 5);
         const cell_06 = Cell.at(0, 6);
@@ -155,6 +155,21 @@ describe('CageModel tests', () => {
         const initialCombos = Array.from(cageModel.combos);
         expect(initialCombos).toEqual([
             [ 1, 2, 3, 4, 5, 7, 9 ],
+            [ 1, 2, 3, 4, 6, 7, 8 ]
+        ]);
+
+        cellModel_04.deleteNumOpt(3); cellModel_04.deleteNumOpt(9);
+        cellModel_05.deleteNumOpt(3); cellModel_05.deleteNumOpt(9);
+        cellModel_06.deleteNumOpt(3); cellModel_06.deleteNumOpt(9);
+        cellModel_13.deleteNumOpt(4); cellModel_13.deleteNumOpt(8); cellModel_13.deleteNumOpt(9);
+        cellModel_14.deleteNumOpt(4); cellModel_14.deleteNumOpt(8); cellModel_14.deleteNumOpt(9);
+        cellModel_15.deleteNumOpt(4); cellModel_15.deleteNumOpt(8); cellModel_15.deleteNumOpt(9);
+        cellModel_16.deleteNumOpt(4); cellModel_16.deleteNumOpt(7); cellModel_16.deleteNumOpt(8); cellModel_16.deleteNumOpt(9);
+
+        cageModel.reduce();
+
+        const afterReductionCombos = Array.from(cageModel.combos);
+        expect(afterReductionCombos).toEqual([
             [ 1, 2, 3, 4, 6, 7, 8 ]
         ]);
     });

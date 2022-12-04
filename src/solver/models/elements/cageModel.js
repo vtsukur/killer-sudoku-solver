@@ -98,7 +98,7 @@ export class CageModel {
     }
 
     reduce() {
-        if (this.#isEligibleForReduction()) {
+        if (this.#isEligibleForReductionOfSmallSize()) {
             if (!this.#canHaveDuplicateNums && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
@@ -109,14 +109,16 @@ export class CageModel {
                     throw 'Should not reach here';
                 }
             } else {
-                return this.#reduceByCellPermutations();
+                return this.#reduceSmallCage();
             }
+        } else if (!this.#canHaveDuplicateNums) {
+            return this.#reduceLargeCage();
         } else {
             return new Set();
         }
     }
 
-    #isEligibleForReduction() {
+    #isEligibleForReductionOfSmallSize() {
         return _.inRange(this.#cellCount, 2, 5);
     }
 
@@ -225,7 +227,7 @@ export class CageModel {
         this.#combosMap.delete(combo.join());
     }
 
-    #reduceByCellPermutations() {
+    #reduceSmallCage() {
         const context = {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellModels: new Set(),
@@ -276,7 +278,7 @@ export class CageModel {
         });
 
         return modifiedCellModels;
-    } 
+    }
 
     #hasSumMatchingPermutationsRecursive(currentSum, step, context) {
         if (currentSum > this.cage.sum) { return false; }
@@ -308,6 +310,80 @@ export class CageModel {
         }
 
         return has;
+    }
+
+    #reduceLargeCage() {
+        let presentNums = new Set();
+        this.cellModels.forEach(cellM => {
+            presentNums = new Set([...presentNums, ...cellM.numOpts()]);
+        });
+
+        const commonComboNums = new Set();
+        _.range(1, House.SIZE + 1).forEach(num => {
+            let hasNumInAllCombos = true;
+            for (const combo of this.#combosMap.values()) {
+                const comboSet = new Set(combo); // avoid creating set and use cache instead
+                hasNumInAllCombos = hasNumInAllCombos && comboSet.has(num);
+            }
+            if (hasNumInAllCombos) {
+                commonComboNums.add(num);
+            }
+        });
+
+        for (const commonNum of commonComboNums) {
+            if (!presentNums.has(commonNum)) {
+                throw `Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`;
+            }
+        }
+
+        const validCombos = [];
+        let validComboNums = new Set();
+        const noLongerValidCombos = [];
+        let noLongerValidComboNums = new Set();
+        for (const combo of this.#combosMap.values()) {
+            let validCombo = true;
+            for (const num of combo) {
+                if (commonComboNums.has(num)) continue;
+
+                if (!presentNums.has(num)) {
+                    validCombo = false;
+                    break;
+                }
+            }
+
+            if (validCombo) {
+                validCombos.push(combo);
+                validComboNums = new Set([...validComboNums, ...combo]);
+            } else {
+                noLongerValidCombos.push(combo);
+                noLongerValidComboNums = new Set([...noLongerValidComboNums, ...combo]);
+            }
+        }
+
+        const modifiedCellMs = new Set();
+        if (noLongerValidCombos.length > 0) {
+            const numOptsToDelete = new Set();
+            for (const num of noLongerValidComboNums) {
+                if (!validComboNums.has(num) && presentNums.has(num)) {
+                    numOptsToDelete.add(num);
+                }
+            }
+
+            for (const cellM of this.cellModels) {
+                for (const num of numOptsToDelete) {
+                    if (cellM.hasNumOpt(num)) {
+                        cellM.deleteNumOpt(num);
+                        modifiedCellMs.add(cellM);
+                    }
+                }
+            }
+
+            for (const noLongerValidCombo of noLongerValidCombos) {
+                this.#combosMap.delete(noLongerValidCombo.join());
+            }
+        }
+
+        return modifiedCellMs;
     }
 
     reduceToCombinationsContaining(withNum) {
