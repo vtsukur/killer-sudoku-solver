@@ -50,7 +50,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
     }
 
     for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination() || cageModel.positioningFlags.isWithinHouse) continue;
+        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination()) continue;
 
         const combo = cageModel.combos.next().value;
 
