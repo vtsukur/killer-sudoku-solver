@@ -21,7 +21,7 @@ export class CageSlicer {
                 const cagesToUnregister = [];
                 let canHaveDuplicateNums = !CageModel.positioningFlagsFor(residualCage.cells).isWithinHouse;
                 cageModelsForResidualCage.forEach(cageModel => {
-                    const secondChunkCage = CageSlicer.#slice(cageModel.cage, residualCage);
+                    const secondChunkCage = CageSlicer.slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);
                     nextResidualCages.push(secondChunkCage);
                     canHaveDuplicateNums = canHaveDuplicateNums && cageModel.canHaveDuplicateNums;
@@ -56,7 +56,7 @@ export class CageSlicer {
         return result;
     }
 
-    static #slice(cageToSlice, firstChunkCage) {
+    static slice(cageToSlice, firstChunkCage) {
         const secondChunkCageBuilder = Cage.ofSum(cageToSlice.sum - firstChunkCage.sum);
         cageToSlice.cells.forEach(cell => {
             if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {

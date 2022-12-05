@@ -402,8 +402,8 @@ export class CageModel {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
             const positioningFlags = CageModel.positioningFlagsFor(cells);
+            const clue = { num };
             if (positioningFlags.isWithinHouse) {
-                const clue = { num };
                 if (positioningFlags.isWithinRow) {
                     clue.row = cells[0].row;
                 } else if (positioningFlags.isWithinColumn) {
@@ -412,6 +412,18 @@ export class CageModel {
                 if (positioningFlags.isWithinNonet) {
                     clue.nonet = cells[0].nonet;
                 }
+            }
+            if (cells.length === 1) {
+                clue.singleCellForNum = cells[0];
+                const singleCellForNumCombos = [];
+                for (const combo of this.#combosMap.values()) {
+                    if (new Set(combo).has(num)) {
+                        singleCellForNumCombos.push(combo);
+                    }
+                }
+                clue.singleCellForNumCombos = singleCellForNumCombos;
+            }
+            if (positioningFlags.isWithinHouse || cells.length === 1) {
                 clues.push(clue);
             }
         }
@@ -463,5 +475,9 @@ export class CageModel {
 
     get combos() {
         return this.#combosMap.values();
+    }
+
+    get comboCount() {
+        return this.#combosMap.size;
     }
 }
