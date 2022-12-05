@@ -83,12 +83,26 @@ export function findAndReduceCagePermsByHouseStrategy() {
                         comboSet.delete(numPlacementClue.num);
                         reducedSingleCellForNumCombos.push(Array.from(comboSet));
                     }
+                    let reduce = false;
                     if (cageLeftPositioningFlags.isWithinRow) {
                         if (!checkIfHouseStaysValidWithLeftoverCage(this.model.rowModels[cageLeft.cells[0].row], cageLeft, reducedSingleCellForNumCombos)) {
-                            const cellMToReduce = this.model.cellModelOf(numPlacementClue.singleCellForNum);
-                            cellMToReduce.deleteNumOpt(numPlacementClue.num);
-                            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellMToReduce.withinCageModels]);
+                            reduce = true;
                         }
+                    }
+                    if (cageLeftPositioningFlags.isWithinColumn) {
+                        if (!checkIfHouseStaysValidWithLeftoverCage(this.model.columnModels[cageLeft.cells[0].col], cageLeft, reducedSingleCellForNumCombos)) {
+                            reduce = true;
+                        }
+                    }
+                    if (cageLeftPositioningFlags.isWithinNonet) {
+                        if (!checkIfHouseStaysValidWithLeftoverCage(this.model.nonetModels[cageLeft.cells[0].nonet], cageLeft, reducedSingleCellForNumCombos)) {
+                            reduce = true;
+                        }
+                    }
+                    if (reduce) {
+                        const cellMToReduce = this.model.cellModelOf(numPlacementClue.singleCellForNum);
+                        cellMToReduce.deleteNumOpt(numPlacementClue.num);
+                        cageModelsToReduce = new Set([...cageModelsToReduce, ...cellMToReduce.withinCageModels]);
                     }
                 }
             }
