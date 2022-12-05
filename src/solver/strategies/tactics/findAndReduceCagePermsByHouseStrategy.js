@@ -23,6 +23,20 @@ export function findAndReduceCagePermsByHouseStrategy() {
             if (cageModelsWithNum.length !== 1) return;
 
             const cageModelToReDefine = cageModelsWithNum[0];
+
+            const numPlacementClues = cageModelToReDefine.findNumPlacementClues(num);
+            let singleCellForNum = undefined;
+            for (const clue of numPlacementClues) {
+                if (!_.isUndefined(clue.singleCellForNum)) {
+                    singleCellForNum = clue.singleCellForNum;
+                }
+            }
+
+            if (!_.isUndefined(singleCellForNum)) {
+                const singleOptionCellM = this.model.cellModelOf(singleCellForNum);
+                singleOptionCellM.reduceNumOptions(new Set([num]));
+            }
+
             const reducedCellModels = cageModelToReDefine.reduceToCombinationsContaining(num);
             
             if (!reducedCellModels.length) return;

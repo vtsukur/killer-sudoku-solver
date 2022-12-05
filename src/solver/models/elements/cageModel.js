@@ -386,10 +386,19 @@ export class CageModel {
         return modifiedCellMs;
     }
 
-    findNumPlacementClues() {
+    findNumPlacementClues(forNum) {
         const numToCells = new Map();
+        const numOptsFn = (cellM) => {
+            if (_.isUndefined(forNum)) {
+                return cellM.numOpts();
+            } else if (cellM.numOpts().has(forNum)) {
+                return new Set([ forNum ]);
+            } else {
+                return new Set();
+            }
+        };
         for (const cellM of this.cellModels) {
-            for (const num of cellM.numOpts()) {
+            for (const num of numOptsFn(cellM)) {
                 if (!numToCells.has(num)) {
                     numToCells.set(num, []);
                 }
