@@ -10,21 +10,22 @@ export class CageSlicer {
     }
 
     addAndSliceResidualCageRecursively(initialResidualCage) {
-        let residualCages = [ initialResidualCage ];
+        let residualCages = [ { cage: initialResidualCage, canHaveDuplicateNums: !CageModel.positioningFlagsFor(initialResidualCage.cells).isWithinHouse } ];
 
         while (residualCages.length > 0) {
             const nextResidualCages = [];
 
-            residualCages.forEach(residualCage => {
+            residualCages.forEach(entry => {
+                const residualCage = entry.cage;
                 if (this.#model.cageModelsMap.has(residualCage.key)) return;
 
                 const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = [];
-                let canHaveDuplicateNums = !CageModel.positioningFlagsFor(residualCage.cells).isWithinHouse;
+                let canHaveDuplicateNums = entry.canHaveDuplicateNums;
                 cageModelsForResidualCage.forEach(cageModel => {
                     const secondChunkCage = CageSlicer.slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);
-                    nextResidualCages.push(secondChunkCage);
+                    nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageModel.canHaveDuplicateNums });
                     canHaveDuplicateNums = canHaveDuplicateNums && cageModel.canHaveDuplicateNums;
                 });
 
