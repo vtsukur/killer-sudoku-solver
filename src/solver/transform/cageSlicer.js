@@ -1,4 +1,5 @@
 import { Cage } from '../../problem/cage';
+import { House } from '../../problem/house';
 import { CageModel } from '../models/elements/cageModel';
 
 export class CageSlicer {
@@ -64,5 +65,14 @@ export class CageSlicer {
             }
         });
         return secondChunkCageBuilder.mk();
+    }
+
+    static sliceBy(cageToSlice, sliceIndexFn) {
+        const slices = Array(House.SIZE).fill().map(() => []);
+        cageToSlice.cells.forEach(cell => {
+            const idx = sliceIndexFn(cell);
+            slices[idx].push(cell);
+        });
+        return slices.filter(cells => cells.length > 0);
     }
 }

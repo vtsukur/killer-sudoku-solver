@@ -89,37 +89,33 @@ export function findAndReduceCagePermsByHouseStrategy() {
         for (const numPlacementClue of cageModel.findNumPlacementClues()) {
             if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
                 const cageLeft = CageSlicer.slice(cageModel.cage, Cage.ofSum(numPlacementClue.num).cell(numPlacementClue.singleCellForNum).mk());
-                const cageLeftPositioningFlags = CageModel.positioningFlagsFor(cageLeft.cells);
-                if (cageLeftPositioningFlags.isWithinHouse) {
-                    const reducedSingleCellForNumCombos = [];
-                    for (const combo of numPlacementClue.singleCellForNumCombos) {
-                        const comboSet = new Set(combo);
-                        comboSet.delete(numPlacementClue.num);
-                        reducedSingleCellForNumCombos.push(Array.from(comboSet));
-                    }
-                    let reduce = false;
-                    if (cageLeftPositioningFlags.isWithinRow) {
-                        if (!checkIfHouseStaysValidWithLeftoverCage(this.model.rowModels[cageLeft.cells[0].row], cageLeft, reducedSingleCellForNumCombos)) {
-                            reduce = true;
-                        }
-                    }
-                    if (cageLeftPositioningFlags.isWithinColumn) {
-                        if (!checkIfHouseStaysValidWithLeftoverCage(this.model.columnModels[cageLeft.cells[0].col], cageLeft, reducedSingleCellForNumCombos)) {
-                            reduce = true;
-                        }
-                    }
-                    if (cageLeftPositioningFlags.isWithinNonet) {
-                        if (!checkIfHouseStaysValidWithLeftoverCage(this.model.nonetModels[cageLeft.cells[0].nonet], cageLeft, reducedSingleCellForNumCombos)) {
-                            reduce = true;
-                        }
-                    }
-                    if (reduce) {
-                        const cellMToReduce = this.model.cellModelOf(numPlacementClue.singleCellForNum);
-                        cellMToReduce.deleteNumOpt(numPlacementClue.num);
-                        cageModelsToReduce = new Set([...cageModelsToReduce, ...cellMToReduce.withinCageModels]);
-                    }
-                }
+                const furtherReduce = checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos, numPlacementClue.singleCellForNum, numPlacementClue.num, this.model);
+                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
             }
+        }
+    }
+
+    for (const cageModel of this.model.cageModelsMap.values()) {
+        if (cageModel.positioningFlags.isSingleCellCage || cageModel.positioningFlags.isWithinHouse || cageModel.comboCount !== 1 || cageModel.cellCount > 5) continue;
+
+        const slices = CageSlicer.sliceBy(cageModel.cage, (cell) => cell.row);
+        if (slices.length > 2) continue;
+
+        const firstSingleCellSlice = slices.find((sliceCells) => sliceCells.length === 1);
+        if (_.isUndefined(firstSingleCellSlice)) continue;
+
+        const firstSingleCell = firstSingleCellSlice[0];
+        const firstSingleCellM = this.model.cellModelOf(firstSingleCell);
+        const firstSingleCellMCombo = new Set(cageModel.combos.next().value);
+
+        for (const num of firstSingleCellM.numOpts()) {
+            const shortComboSet = new Set(firstSingleCellMCombo);
+            shortComboSet.delete(num);
+            const shortCombo = Array.from(shortComboSet);
+
+            const cageLeft = CageSlicer.slice(cageModel.cage, Cage.ofSum(num).cell(firstSingleCell).mk());
+            const furtherReduce = checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this.model);
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
         }
     }
 
@@ -146,6 +142,41 @@ const reduceByHouse = (cageModel, house, model, combo) => {
     }
 
     return cageModelsToReduce;
+}
+
+const checkAssumptionCage = (assumptionCage, combos, cell, num, model) => {
+    const positioningFlags = CageModel.positioningFlagsFor(assumptionCage.cells);
+    if (positioningFlags.isWithinHouse) {
+        const reducedSingleCellForNumCombos = [];
+        for (const combo of combos) {
+            const comboSet = new Set(combo);
+            comboSet.delete(num);
+            reducedSingleCellForNumCombos.push(Array.from(comboSet));
+        }
+        let reduce = false;
+        if (positioningFlags.isWithinRow) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.rowModels[assumptionCage.cells[0].row], assumptionCage, reducedSingleCellForNumCombos)) {
+                reduce = true;
+            }
+        }
+        if (positioningFlags.isWithinColumn) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.columnModels[assumptionCage.cells[0].col], assumptionCage, reducedSingleCellForNumCombos)) {
+                reduce = true;
+            }
+        }
+        if (positioningFlags.isWithinNonet) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.nonetModels[assumptionCage.cells[0].nonet], assumptionCage, reducedSingleCellForNumCombos)) {
+                reduce = true;
+            }
+        }
+        if (reduce) {
+            const cellMToReduce = model.cellModelOf(cell);
+            cellMToReduce.deleteNumOpt(num);
+            return new Set(cellMToReduce.withinCageModels);
+        }
+    }
+
+    return new Set();
 }
 
 const checkIfHouseStaysValidWithLeftoverCage = (houseM, leftoverCage, leftOverCageCombos) => {
