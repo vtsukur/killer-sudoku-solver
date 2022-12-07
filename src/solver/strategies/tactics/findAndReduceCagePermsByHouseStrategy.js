@@ -85,6 +85,27 @@ export function findAndReduceCagePermsByHouseStrategy() {
     }
 
     for (const cageModel of this.model.cageModelsMap.values()) {
+        if (cageModel.positioningFlags.isSingleCellCage || cageModel.hasSingleCombination() || cageModel.positioningFlags.isWithinHouse) continue;
+
+        for (const numPlacementClue of cageModel.findNumPlacementClues()) {
+            if (!numPlacementClue.presentInAllCombos) continue;
+
+            // if (!_.isUndefined(numPlacementClue.row)) {
+            //     const rowReduced = reduceByHouse(cageModel, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
+            //     cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
+            // } else if (!_.isUndefined(numPlacementClue.col)) {
+            //     const columnReduced = reduceByHouse(cageModel, this.model.columnModels[numPlacementClue.col], this.model, [ numPlacementClue.num ]);
+            //     cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
+            // }
+
+            // if (!_.isUndefined(numPlacementClue.nonet)) {
+            //     const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[numPlacementClue.nonet], this.model, [ numPlacementClue.num ]);
+            //     cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
+            // }
+        }
+    }
+
+    for (const cageModel of this.model.cageModelsMap.values()) {
         if (cageModel.positioningFlags.isSingleCellCage || cageModel.positioningFlags.isWithinHouse || cageModel.comboCount < 2) continue;
         for (const numPlacementClue of cageModel.findNumPlacementClues()) {
             if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {

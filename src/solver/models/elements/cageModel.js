@@ -432,7 +432,10 @@ export class CageModel {
                 }
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
-            if (positioningFlags.isWithinHouse || cells.length === 1) {
+            if (positioningFlags.isWithinHouse || cells.length === 1) {                
+                clue.presentInAllCombos = Array.from(this.#combosMap.values()).every(combo => {
+                    return new Set(combo).has(num);
+                });
                 clues.push(clue);
             }
         }
