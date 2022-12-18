@@ -52,8 +52,8 @@ export class Cage {
             this.cells = [];
         }
 
-        at(row, cellIdx) {
-            this.cells.push(Cell.at(row, cellIdx));
+        at(row, col) {
+            this.cells.push(Cell.at(row, col));
             return this;
         }
 
