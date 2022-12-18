@@ -46,6 +46,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
         });
     });
 
+    // reduce house by cages with single combination
     for (const cageModel of this.model.cageModelsMap.values()) {
         if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination() || !cageModel.positioningFlags.isWithinHouse) continue;
 
@@ -65,6 +66,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
         }
     }
 
+    // reduce house by cages where numbers are within specific row/column/nonet
     for (const cageModel of this.model.cageModelsMap.values()) {
         if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination()) continue;
 
@@ -84,6 +86,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
         }
     }
 
+    // reduce house by cages where numbers are a part of all combinations and within specific row/column/nonet
     for (const cageModel of this.model.cageModelsMap.values()) {
         if (cageModel.canHaveDuplicateNums || cageModel.hasSingleCombination() || cageModel.positioningFlags.isWithinHouse) continue;
 
@@ -105,6 +108,7 @@ export function findAndReduceCagePermsByHouseStrategy() {
         }
     }
 
+    // reduce house by cages where numbers are only within specific cell
     for (const cageModel of this.model.cageModelsMap.values()) {
         if (cageModel.positioningFlags.isSingleCellCage || cageModel.positioningFlags.isWithinHouse || cageModel.comboCount < 2) continue;
         for (const numPlacementClue of cageModel.findNumPlacementClues()) {
