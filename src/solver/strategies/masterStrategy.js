@@ -3,6 +3,7 @@ import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidual
 import { findRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
 import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
+import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
@@ -16,6 +17,7 @@ export function masterStrategy() {
         this.run(placeNumsForSingleOptionCellsStrategy);
         this.run(reflectSolvedCellsStrategy);
         this.run(findAndReduceCagePermsByHouseStrategy);
+        this.run(reduceCellOptionsWhichInvalidateSingleComboStrategy);
     }
     while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms)
 }
