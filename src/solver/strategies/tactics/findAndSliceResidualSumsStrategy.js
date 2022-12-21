@@ -2,6 +2,8 @@ import _ from 'lodash';
 import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
+import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
+import { reflectSolvedCellsStrategy } from './reflectSolvedCellsStrategy';
 
 export function findAndSliceResidualSumsStrategy() {
     _.range(1, 4).reverse().forEach(n => {
@@ -52,8 +54,15 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, 
                 }
             }
         });
+        if (residualCageBuilder.cellCount == 1) {
+            const cellM = ctx.model.cellModelOf(residualCageBuilder.cells[0]);
+            cellM.placedNum = residualCageBuilder.mk().sum;
+            ctx.recentlySolvedCellModels = [ cellM ];
+            ctx.run(reduceCageNumOptsBySolvedCellsStrategy);
+        }
+        
         if (residualCageBuilder.cellCount) {
-            ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());                        
+            ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());
         }
     }
 }
