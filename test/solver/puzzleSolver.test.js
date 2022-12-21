@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { House } from '../../src/problem/house';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
-import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../problem/realProblemSamples';
+import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../problem/realProblemSamples';
 
 describe('Tests for puzzle solver', () => {
     test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
@@ -176,6 +176,23 @@ describe('Tests for puzzle solver', () => {
 
     test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
         const solver = new PuzzleSolver(dailyKillerSudokuDotCom_puzzle24789_difficulty10);
+        const solution = solver.solve();
+
+        expect(solution).toEqual([
+            [ 5, 1, 3, 9, 2, 8, 4, 7, 6 ],
+            [ 2, 4, 8, 3, 7, 6, 1, 9, 5 ],
+            [ 6, 7, 9, 4, 5, 1, 8, 2, 3 ],
+            [ 9, 6, 7, 2, 8, 4, 5, 3, 1 ],
+            [ 3, 8, 1, 5, 9, 7, 6, 4, 2 ],
+            [ 4, 2, 5, 6, 1, 3, 7, 8, 9 ],
+            [ 1, 9, 6, 7, 4, 2, 3, 5, 8 ],
+            [ 7, 3, 2, 8, 6, 5, 9, 1, 4 ],
+            [ 8, 5, 4, 1, 3, 9, 2, 6, 7 ]
+        ]);
+    });
+
+    test('Find solution for puzzle 24889 of difficulty 10 by DailyKillerSudoku.com', () => {
+        const solver = new PuzzleSolver(dailyKillerSudokuDotCom_puzzle24889_difficulty10);
         const solution = solver.solve();
 
         expect(solution).toEqual([
