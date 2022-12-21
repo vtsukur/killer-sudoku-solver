@@ -3,10 +3,9 @@ import { Cage } from '../../../problem/cage';
 import { House } from '../../../problem/house';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
-import { reflectSolvedCellsStrategy } from './reflectSolvedCellsStrategy';
 
 export function findAndSliceResidualSumsStrategy() {
-    _.range(1, 4).reverse().forEach(n => {
+    _.range(1, 5).reverse().forEach(n => {
         _.range(House.SIZE - n + 1).forEach(leftIdx => {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
@@ -15,7 +14,7 @@ export function findAndSliceResidualSumsStrategy() {
             });
         });
     });
-    _.range(1, 4).reverse().forEach(n => {
+    _.range(1, 5).reverse().forEach(n => {
         _.range(House.SIZE - n + 1).forEach(leftIdx => {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
