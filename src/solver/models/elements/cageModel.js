@@ -9,8 +9,9 @@ export class CageModel {
     #combosMap;
     #enableExperimentalOptimization;
     #canHaveDuplicateNums;
+    #derivedFromInputCage;
 
-    constructor(cage, cellModels, canHaveDuplicateNums) {
+    constructor(cage, cellModels, canHaveDuplicateNums, derivedFromInputCage) {
         this.cage = cage;
         this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -30,6 +31,7 @@ export class CageModel {
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
         this.#enableExperimentalOptimization = true;
+        this.#derivedFromInputCage = derivedFromInputCage;
     }
 
     static positioningFlagsFor(cells) {
@@ -491,5 +493,9 @@ export class CageModel {
 
     get comboCount() {
         return this.#combosMap.size;
+    }
+
+    get derivedFromInputCage() {
+        return this.#derivedFromInputCage;
     }
 }

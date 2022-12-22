@@ -10,17 +10,20 @@ import { RowModel } from './elements/rowModel';
 export class MasterModel {
     #solution;
     #placedNumCount;
+    #cellsToInputCagesMatrix;
 
     constructor(problem) {
         this.problem = problem;
         this.cageModelsMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
+        this.#cellsToInputCagesMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
         this.#placedNumCount = 0;
 
         problem.cages.forEach(cage => {
             cage.cells.forEach(cell => {
                 this.cellsMatrix[cell.row][cell.col] = cell;
+                this.#cellsToInputCagesMatrix[cell.row][cell.col] = cage;
             });
         });
 
@@ -51,7 +54,7 @@ export class MasterModel {
     }
 
     registerCage(cage, canHaveDuplicateNums) {
-        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
+        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums, this.#isDerivedFromInputCage(cage));
         cageModel.initialReduce();
         if (cageModel.positioningFlags.isWithinRow) {
             this.rowModels[cageModel.anyRow()].addCageModel(cageModel);
@@ -66,6 +69,12 @@ export class MasterModel {
             this.cellModelOf(cell).addWithinCageModel(cageModel);
         });
         this.cageModelsMap.set(cage.key, cageModel);
+        return cageModel;
+    }
+
+    #isDerivedFromInputCage(cage) {
+        const inputCage = this.#inputCageOf(cage.cells[0]);
+        return cage.cells.every(cell => this.#inputCageOf(cell) === inputCage);
     }
 
     unregisterCage(cage) {
@@ -111,6 +120,10 @@ export class MasterModel {
 
     cellModelAt(row, col) {
         return this.cellModelsMatrix[row][col];
+    }
+
+    #inputCageOf(cell) {
+        return this.#cellsToInputCagesMatrix[cell.row][cell.col];
     }
 
     rowModel(idx) {
