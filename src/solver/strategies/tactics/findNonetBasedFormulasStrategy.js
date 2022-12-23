@@ -18,9 +18,9 @@ export function findNonetBasedFormulasStrategy() {
                 const unfilledInnerCellMs = area.unfilledInnerCellMs(this.model);
                 const outerCellMs = area.outerCellMs;
                 if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
-                    formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set(outerCellMs)));
+                    formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set(outerCellMs), area.deltaBetweenOuterAndInner));
                 } else if (outerCellMs.size === 1 && unfilledInnerCellMs.size <= 2) {
-                    formulas.add(new Formula(outerCellMs.values().next().value, new Set(unfilledInnerCellMs)));
+                    formulas.add(new Formula(outerCellMs.values().next().value, new Set(unfilledInnerCellMs), area.deltaBetweenOuterAndInner));
                 }
                 area.addCageM(outerCageM);
             }
@@ -32,6 +32,7 @@ export function findNonetBasedFormulasStrategy() {
 
 class ExpandableNonOverlappingNonetAreaModel {
     #nonetM;
+    #sum;
     #cageMs;
     #cellMs;
     #cellKeys;
@@ -41,6 +42,7 @@ class ExpandableNonOverlappingNonetAreaModel {
 
     constructor(nonetM) {
         this.#nonetM = nonetM;
+        this.#sum = 0;
         this.#cageMs = new Set();
         this.#cellMs = new Set();
         this.#cellKeys = new Set();
@@ -61,6 +63,7 @@ class ExpandableNonOverlappingNonetAreaModel {
                 this.#outerCageMs.add(cageM);
             }
         });
+        this.#sum += cageM.cage.sum;
     }
 
     removeCageM(cageM) {
@@ -72,6 +75,7 @@ class ExpandableNonOverlappingNonetAreaModel {
             this.#innerCellMs.delete(cellM);
             this.#outerCellMs.delete(cellM);
         });
+        this.#sum -= cageM.cage.sum;
     }
 
     hasCellAt(row, col) {
@@ -90,6 +94,10 @@ class ExpandableNonOverlappingNonetAreaModel {
             }
         }
         return result;
+    }
+
+    get deltaBetweenOuterAndInner() {
+        return this.#sum - House.SUM;
     }
 
     get outerCellMs() {
@@ -120,14 +128,16 @@ class Formulas {
 class Formula {
     #cellM;
     #equalToCellMs;
+    #withDelta;
     #key;
 
-    constructor(cellM, equalToCellMs) {
+    constructor(cellM, equalToCellMs, withDelta) {
         this.#cellM = cellM;
         this.#equalToCellMs = equalToCellMs;
         const keysArr = [ cellM.cell ].concat(Array.from(equalToCellMs).map(cellM => cellM.cell)).map(cell => cell.key);
         keysArr.sort();
         this.#key = keysArr.join(', ');
+        this.#withDelta = withDelta;
     }
 
     get cellM() {
@@ -136,6 +146,10 @@ class Formula {
 
     get equalToCellMs() {
         return this.#equalToCellMs;
+    }
+
+    get withDelta() {
+        return this.#withDelta;
     }
 
     get key() {
