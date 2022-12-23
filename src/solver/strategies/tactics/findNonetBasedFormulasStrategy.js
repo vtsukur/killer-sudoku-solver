@@ -6,6 +6,8 @@ let i = 0;
 export function findNonetBasedFormulasStrategy() {
     ++i;
 
+    const formulas = new Formulas();
+
     _.range(0, House.SIZE).forEach(idx => {
         const nonetM = this.model.nonetModels[idx];
         const area = findAreaWithSingleInnieOrOutieCell(nonetM, this.model);
@@ -14,16 +16,18 @@ export function findNonetBasedFormulasStrategy() {
             for (const outerCageM of outerCageMs) {
                 area.removeCageM(outerCageM);
                 const unfilledInnerCellMs = area.unfilledInnerCellMs(this.model);
-                if (unfilledInnerCellMs.size === 1 && area.outerCellMs.size <= 3) {
-
-                }
-                if (area.outerCellMs.size === 1 && unfilledInnerCellMs.size <= 3) {
-
+                const outerCellMs = area.outerCellMs;
+                if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
+                    formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set(outerCellMs)));
+                } else if (outerCellMs.size === 1 && unfilledInnerCellMs.size <= 2) {
+                    formulas.add(new Formula(outerCellMs.values().next().value, new Set(unfilledInnerCellMs)));
                 }
                 area.addCageM(outerCageM);
             }
         }
     });
+
+    return formulas;
 }
 
 class ExpandableNonOverlappingNonetAreaModel {
@@ -94,6 +98,48 @@ class ExpandableNonOverlappingNonetAreaModel {
 
     get outerCageMs() {
         return this.#outerCageMs;
+    }
+}
+
+class Formulas {
+    #map;
+
+    constructor() {
+        this.#map = new Map();
+    }
+
+    add(formula) {
+        this.#map.set(formula.key, formula);
+    }
+
+    toArray() {
+        return Array.from(this.#map.values());
+    }
+}
+
+class Formula {
+    #cellM;
+    #equalToCellMs;
+    #key;
+
+    constructor(cellM, equalToCellMs) {
+        this.#cellM = cellM;
+        this.#equalToCellMs = equalToCellMs;
+        const keysArr = [ cellM.cell ].concat(Array.from(equalToCellMs).map(cellM => cellM.cell)).map(cell => cell.key);
+        keysArr.sort();
+        this.#key = keysArr.join(', ');
+    }
+
+    get cellM() {
+        return this.#cellM;
+    }
+
+    get equalToCellMs() {
+        return this.#equalToCellMs;
+    }
+
+    get key() {
+        return this.#key;
     }
 }
 
