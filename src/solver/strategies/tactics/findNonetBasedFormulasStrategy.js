@@ -28,7 +28,7 @@ export function findNonetBasedFormulasStrategy() {
     });
 
     let cageModelsToReduce = new Set();
-    for (const formula of formulas) {
+    for (const formula of formulas.toArray()) {
         const reducedCellModels = reduceByFormula(formula);
         reducedCellModels.forEach(cellModel => {
             cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
@@ -185,6 +185,42 @@ function findAreaWithSingleInnieOrOutieCell(nonetM, model) {
     return areaModel;
 }
 
-function reduceByFormula() {
+function reduceByFormula(formula) {
+    const reduced = new Set();
 
+    const checkingNumOpts = new Map();
+    formula.equalToCellMs.forEach(cellM => {
+        checkingNumOpts.set(cellM, new Set());
+    });
+
+    // also check for duplicate nums possibility?
+
+    for (const num of formula.cellM.numOpts()) {
+        const targetSum = num + formula.withDelta;
+        if (formula.equalToCellMs.size === 1) {
+            const otherCellM = formula.equalToCellMs.values().next().value;
+            if (!otherCellM.hasNumOpt(targetSum)) {
+                formula.cellM.deleteNumOpt(num);
+                reduced.add(formula.cellM);
+            } else {
+                checkingNumOpts.get(otherCellM).add(targetSum);
+            }
+        }
+    }
+
+    if (formula.equalToCellMs.size === 1) {
+        for (const checkingEntry of checkingNumOpts.entries()) {
+            const cellM = checkingEntry[0];
+            const numOpts = checkingEntry[1];
+
+            for (const num of cellM.numOpts()) {
+                if (!numOpts.has(num)) {
+                    cellM.deleteNumOpt(num);
+                    reduced.add(cellM);
+                }
+            }
+        }
+    }
+
+    return reduced;
 }
