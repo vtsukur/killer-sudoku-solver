@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import { Cell } from '../../../problem/cell';
 import { House } from '../../../problem/house';
+import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 
-let i = 0;
 export function findNonetBasedFormulasStrategy() {
     if (this.hasCageModelsToReevaluatePerms) return;
-
-    ++i;
 
     const formulas = new Formulas();
 
@@ -186,6 +184,8 @@ function findAreaWithSingleInnieOrOutieCell(nonetM, model) {
 }
 
 function reduceByFormula(formula) {
+    if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
+
     const reduced = new Set();
 
     const checkingNumOpts = new Map();
@@ -205,19 +205,41 @@ function reduceByFormula(formula) {
             } else {
                 checkingNumOpts.get(otherCellM).add(targetSum);
             }
+        } else if (formula.equalToCellMs.size === 2) {
+            const cellMArr = Array.from(formula.equalToCellMs);
+            const otherCellM1 = cellMArr[0];
+            const otherCellM2 = cellMArr[1];
+            const combos = findNumCombinationsForSum(targetSum, 2);
+            let hasAtLeastOneCombo = false;
+            for (const combo of combos) {
+                const comboArr = Array.from(combo);
+                const hasDirect = otherCellM1.hasNumOpt(comboArr[0]) && otherCellM2.hasNumOpt(comboArr[1]);
+                const hasInverse = otherCellM1.hasNumOpt(comboArr[1]) && otherCellM2.hasNumOpt(comboArr[0]);
+                if (hasDirect) {
+                    checkingNumOpts.get(otherCellM1).add(comboArr[0]);
+                    checkingNumOpts.get(otherCellM2).add(comboArr[1]);
+                }
+                if (hasInverse) {
+                    checkingNumOpts.get(otherCellM1).add(comboArr[1]);
+                    checkingNumOpts.get(otherCellM2).add(comboArr[0]);
+                }
+                hasAtLeastOneCombo ||= hasDirect || hasInverse;
+            }
+            if (!hasAtLeastOneCombo) {
+                formula.cellM.deleteNumOpt(num);
+                reduced.add(formula.cellM);
+            }
         }
     }
 
-    if (formula.equalToCellMs.size === 1) {
-        for (const checkingEntry of checkingNumOpts.entries()) {
-            const cellM = checkingEntry[0];
-            const numOpts = checkingEntry[1];
+    for (const checkingEntry of checkingNumOpts.entries()) {
+        const cellM = checkingEntry[0];
+        const numOpts = checkingEntry[1];
 
-            for (const num of cellM.numOpts()) {
-                if (!numOpts.has(num)) {
-                    cellM.deleteNumOpt(num);
-                    reduced.add(cellM);
-                }
+        for (const num of cellM.numOpts()) {
+            if (!numOpts.has(num)) {
+                cellM.deleteNumOpt(num);
+                reduced.add(cellM);
             }
         }
     }
