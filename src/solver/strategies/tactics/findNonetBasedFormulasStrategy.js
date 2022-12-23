@@ -19,8 +19,6 @@ export function findNonetBasedFormulasStrategy() {
                 const outerCellMs = area.outerCellMs;
                 if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
                     formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set(outerCellMs), area.deltaBetweenOuterAndInner));
-                } else if (outerCellMs.size === 1 && unfilledInnerCellMs.size <= 2) {
-                    formulas.add(new Formula(outerCellMs.values().next().value, new Set(unfilledInnerCellMs), area.deltaBetweenOuterAndInner));
                 }
                 area.addCageM(outerCageM);
             }
