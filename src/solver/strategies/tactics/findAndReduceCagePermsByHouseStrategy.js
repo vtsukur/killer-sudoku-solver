@@ -144,6 +144,38 @@ export function findAndReduceCagePermsByHouseStrategy() {
         }
     }
 
+    // reduce house when specific number are within nonet's row or column
+    this.model.nonetModels.forEach(nonetM => {
+        const numMap = new Map();
+        _.range(1, House.SIZE + 1).forEach(num => numMap.set(num, {
+            rows: new Set(),
+            cols: new Set()
+        }));
+
+        for (const { row, col } of nonetM.cellIterator()) {
+            const cellM = this.model.cellModelAt(row, col);
+            if (cellM.solved) continue;
+
+            for (const num of cellM.numOpts()) {
+                const entry = numMap.get(num);
+                entry.rows.add(row);
+                entry.cols.add(col);
+            }
+        }
+
+        _.range(1, House.SIZE + 1).forEach(num => {
+            const entry = numMap.get(num);
+            if (entry.rows.size === 1) {
+                const idx = entry.rows.values().next().value;
+                reduceNonetBasedByRowOrColumn(this.model.rowModels[idx], num, nonetM, this.model);
+            }
+            if (entry.cols.size === 1) {
+                const idx = entry.cols.values().next().value;
+                reduceNonetBasedByRowOrColumn(this.model.columnModels[idx], num, nonetM, this.model);
+            }
+        });
+    });
+
     this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? cageModelsToReduce.values() : undefined;
 }
 
@@ -250,3 +282,18 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM, leftoverCage, leftOverCa
     const valid = (noLongerValidCombos.length !== leftOverCageCombos.length);
     return valid;
 }
+
+const reduceNonetBasedByRowOrColumn = (houseM, num, nonetM, model) => {
+    let cageModelsToReduce = new Set();
+
+    for (const { row, col } of houseM.cellIterator()) {
+        const cellM = model.cellModelAt(row, col);
+        if (cellM.cell.nonet === nonetM.idx) continue;
+        if (cellM.hasNumOpt(num)) {
+            cellM.deleteNumOpt(num);
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels])
+        }
+    }
+
+    return cageModelsToReduce;
+};
