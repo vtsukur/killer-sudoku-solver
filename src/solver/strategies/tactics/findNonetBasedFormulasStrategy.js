@@ -136,7 +136,7 @@ class Formula {
         this.#equalToCellMs = equalToCellMs;
         const keysArr = [ cellM.cell ].concat(Array.from(equalToCellMs).map(cellM => cellM.cell)).map(cell => cell.key);
         keysArr.sort();
-        this.#key = `keysArr.join(', '): ${withDelta}`;
+        this.#key = `${keysArr.join(', ')}: ${withDelta}`;
         this.#withDelta = withDelta;
     }
 
