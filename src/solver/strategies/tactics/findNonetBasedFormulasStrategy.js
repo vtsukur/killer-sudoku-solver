@@ -4,6 +4,8 @@ import { House } from '../../../problem/house';
 
 let i = 0;
 export function findNonetBasedFormulasStrategy() {
+    if (this.hasCageModelsToReevaluatePerms) return;
+
     ++i;
 
     const formulas = new Formulas();
@@ -24,6 +26,16 @@ export function findNonetBasedFormulasStrategy() {
             }
         }
     });
+
+    let cageModelsToReduce = new Set();
+    for (const formula of formulas) {
+        const reducedCellModels = reduceByFormula(formula);
+        reducedCellModels.forEach(cellModel => {
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
+        });
+    }
+
+    this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? cageModelsToReduce.values() : undefined;
 
     return formulas;
 }
@@ -171,4 +183,8 @@ function findAreaWithSingleInnieOrOutieCell(nonetM, model) {
     }
 
     return areaModel;
+}
+
+function reduceByFormula() {
+
 }
