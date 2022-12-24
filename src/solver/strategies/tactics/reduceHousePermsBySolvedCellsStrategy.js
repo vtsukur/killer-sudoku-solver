@@ -1,5 +1,6 @@
 export function reduceHousePermsBySolvedCellsStrategy() {
     let cageModelsToReduceSet = new Set();
+
     this.recentlySolvedCellModels.forEach(cellModel => {
         const num = cellModel.placedNum;
         [
@@ -18,5 +19,12 @@ export function reduceHousePermsBySolvedCellsStrategy() {
             }    
         });
     });
-    return cageModelsToReduceSet;
+
+    if (cageModelsToReduceSet.size > 0) {
+        if (this.cageModelsToReduceSet) {
+            this.cageModelsToReduceSet = new Set([...this.cageModelsToReduceSet, ...cageModelsToReduceSet]);
+        } else {
+            this.cageModelsToReduceSet = cageModelsToReduceSet;
+        }
+    }
 }
