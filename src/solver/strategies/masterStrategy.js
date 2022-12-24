@@ -2,6 +2,7 @@ import { findAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCa
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { findNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
 import { findRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
+import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
 import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
@@ -20,6 +21,7 @@ export function masterStrategy() {
         this.run(findAndReduceCagePermsByHouseStrategy);
         this.run(reduceCellOptionsWhichInvalidateSingleComboStrategy);
         this.run(findNonetBasedFormulasStrategy);
+        this.run(findSameNumberOptsInSameCellsStrategy);
     }
     while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms)
 }
