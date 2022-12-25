@@ -21,10 +21,10 @@ export function reduceHousePermsBySolvedCellsStrategy() {
     });
 
     if (cageModelsToReduceSet.size > 0) {
-        if (this.cageModelsToReduceSet) {
-            this.cageModelsToReduceSet = new Set([...this.cageModelsToReduceSet, ...cageModelsToReduceSet]);
+        if (this.hasCageModelsToReevaluatePerms) {
+            this.cageModelsToReevaluatePerms = new Set([...this.cageModelsToReduceSet, ...cageModelsToReduceSet]);
         } else {
-            this.cageModelsToReduceSet = cageModelsToReduceSet;
+            this.cageModelsToReevaluatePerms = cageModelsToReduceSet;
         }
     }
 }

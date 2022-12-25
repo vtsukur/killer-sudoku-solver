@@ -80,7 +80,7 @@ export function findSameNumberOptsInSameCellsStrategy() {
     // cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...colBasedCageMsToReduce]);
 
     if (cageModelsToReduceSet.size > 0) {
-        this.cageModelsToReduceSet = cageModelsToReduceSet;
+        this.cageModelsToReevaluatePerms = cageModelsToReduceSet;
     }
 }
 
