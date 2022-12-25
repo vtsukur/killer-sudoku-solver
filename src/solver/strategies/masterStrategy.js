@@ -1,3 +1,4 @@
+import { deepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { findAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { findNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
@@ -22,6 +23,7 @@ export function masterStrategy() {
         this.run(reduceCellOptionsWhichInvalidateSingleComboStrategy);
         this.run(findNonetBasedFormulasStrategy);
         this.run(findSameNumberOptsInSameCellsStrategy);
+        this.run(deepTryOptionsStrategy);
     }
     while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms)
 }
