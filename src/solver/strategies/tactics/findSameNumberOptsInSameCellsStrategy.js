@@ -76,8 +76,13 @@ export function findSameNumberOptsInSameCellsStrategy() {
     );
     cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...rowBasedCageMsToReduce]);
 
-    // const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns();
-    // cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...colBasedCageMsToReduce]);
+    const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
+        this.model.columnModels,
+        rowNumMapForCols,
+        (directHouseIdx, perpendicularHouseIdx) => this.model.cellModelAt(perpendicularHouseIdx, directHouseIdx)
+    );
+
+    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...colBasedCageMsToReduce]);
 
     if (cageModelsToReduceSet.size > 0) {
         this.cageModelsToReevaluatePerms = cageModelsToReduceSet;
