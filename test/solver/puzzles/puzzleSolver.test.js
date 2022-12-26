@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { House } from '../../src/problem/house';
-import { PuzzleSolver } from '../../src/solver/puzzleSolver';
-import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../problem/realProblemSamples';
+import { House } from '../../../src/problem/house';
+import { PuzzleSolver } from '../../../src/solver/puzzleSolver';
+import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../../problem/realProblemSamples';
 
 describe('Tests for puzzle solver', () => {
     test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
