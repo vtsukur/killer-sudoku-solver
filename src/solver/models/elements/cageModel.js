@@ -8,7 +8,6 @@ export class CageModel {
     #cellsSet;
     #cellCount;
     #combosMap;
-    #enableExperimentalOptimization;
     #canHaveDuplicateNums;
     #derivedFromInputCage;
 
@@ -31,7 +30,6 @@ export class CageModel {
         });
         this.#cellCount = cage.cellCount;
         this.#combosMap = new Map();
-        this.#enableExperimentalOptimization = true;
         this.#derivedFromInputCage = derivedFromInputCage;
     }
 
@@ -110,7 +108,7 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReductionOfSmallSize()) {
-            if (!this.#canHaveDuplicateNums && this.#enableExperimentalOptimization && _.inRange(this.#cellCount, 2, 4)) {
+            if (!this.#canHaveDuplicateNums && _.inRange(this.#cellCount, 2, 4)) {
                 if (this.#cellCount === 2) {
                     return this.#reduceOptimalForSize2();
                 } else if (this.#cellCount === 3) {
