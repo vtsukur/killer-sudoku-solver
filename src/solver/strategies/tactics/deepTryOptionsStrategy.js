@@ -34,9 +34,12 @@ export function deepTryOptionsStrategy() {
         }
 
         if (ctxCpy.model.isSolved) {
-            this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
             break;
         }
+    }
+
+    if (cellMTarget.numOpts().size === 1) {
+        this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
     }
 }
 
