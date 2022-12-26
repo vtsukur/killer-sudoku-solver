@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
+import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
 
 export function deepTryOptionsStrategy() {
@@ -21,9 +22,12 @@ export function deepTryOptionsStrategy() {
             ctxCpy.skipInit = true;
             ctxCpy.run(masterStrategy);
         } catch(e) {
-            // throw e;
-            cellMTarget.deleteNumOpt(tryNum);
-            continue;
+            if (e instanceof InvalidSolverStepError) {
+                cellMTarget.deleteNumOpt(tryNum);
+                continue;
+            } else {
+                throw e;
+            }
         }
 
         if (ctxCpy.model.isSolved) {
