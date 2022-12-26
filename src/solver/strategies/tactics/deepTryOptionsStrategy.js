@@ -12,7 +12,7 @@ export function deepTryOptionsStrategy() {
     const cellMTarget = cellMTargets[0];
 
     for (const tryNum of cellMTarget.numOpts()) {
-        const ctxCpy = this.deepCopy();
+        const ctxCpy = this.deepCopyForDeepTry();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
         ctxCpy.model.placeNum(cellMTargetCpy.cell, tryNum);
         ctxCpy.recentlySolvedCellModels = [ cellMTargetCpy ];
@@ -20,9 +20,12 @@ export function deepTryOptionsStrategy() {
 
         try {
             ctxCpy.skipInit = true;
+            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}`);
             ctxCpy.run(masterStrategy);
+            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
         } catch(e) {
             if (e instanceof InvalidSolverStepError) {
+                console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}. FAILED`);
                 cellMTarget.deleteNumOpt(tryNum);
                 continue;
             } else {

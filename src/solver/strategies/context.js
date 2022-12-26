@@ -6,12 +6,14 @@ export class Context {
     #cageSlicer;
     #cageModelsToReevaluatePerms;
     #recentlySolvedCellModels;
+    #depth;
 
     constructor(model, cageSlicer) {
         this.#model = model;
         this.#cageSlicer = cageSlicer;
         this.#cageModelsToReevaluatePerms = undefined;
         this.#recentlySolvedCellModels = [];
+        this.#depth = 0;
     }
     
     run(strategyFn) {
@@ -58,10 +60,15 @@ export class Context {
         this.#cageModelsToReevaluatePerms = [];
     }
 
-    deepCopy() {
+    get depth() {
+        return this.#depth;
+    }
+
+    deepCopyForDeepTry() {
         const modelCopy = this.#model.deepCopy();
         const cageSlicerCopy = new CageSlicer(modelCopy);
         const copy = new Context(modelCopy, cageSlicerCopy);
+        copy.#depth = this.#depth + 1;
         return copy;
     }
 }
