@@ -4,7 +4,7 @@ import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
 
 export function deepTryOptionsStrategy() {
-    if (this.hasCageModelsToReevaluatePerms || this.model.solved) return;
+    if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;
 
     const cellMTarget = findCellMTarget(this.model);
     if (_.isUndefined(cellMTarget)) return;
@@ -31,14 +31,14 @@ export function deepTryOptionsStrategy() {
         }
 
         if (ctxCpy.model.isSolved) {
-            this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
+            // this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
             break;
         }
     }
 
-    // if (cellMTarget.numOpts().size === 1) {
-    //     this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
-    // }
+    if (cellMTarget.numOpts().size === 1) {
+        this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
+    }
 }
 
 function findCellMTarget(model) {

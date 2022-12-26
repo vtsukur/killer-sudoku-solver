@@ -34,7 +34,7 @@ export class CageModel {
     }
 
     deepCopyWithSameCellModels() {
-        const copy = new CageModel(this.cage, this.cellModels, this.#canHaveDuplicateNums, this.#derivedFromInputCage);
+        const copy = new CageModel(this.cage, [...this.cellModels], this.#canHaveDuplicateNums, this.#derivedFromInputCage);
         for (const entry of this.#combosMap.entries()) {
             copy.#combosMap.set(entry[0], [...entry[1]]);
         }

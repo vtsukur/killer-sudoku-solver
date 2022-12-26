@@ -68,9 +68,9 @@ export class MasterModel {
         }
 
         // copy house models
-        this.rowModels = [];
-        this.columnModels = [];
-        this.nonetModels = [];
+        this.rowModels = Array(House.SIZE);
+        this.columnModels = Array(House.SIZE);
+        this.nonetModels = Array(House.SIZE);
         _.range(House.SIZE).forEach(idx => {
             this.rowModels[idx] = model.rowModels[idx].deepCopyWithoutCageModels();
             this.#copyHouseCageModels(model.rowModels[idx], this.rowModels[idx]);
@@ -93,7 +93,7 @@ export class MasterModel {
         })
 
         // rewire cell models to cage models and cage models to cell models
-        for (const cageM of model.cageModelsMap.values()) {
+        for (const cageM of this.cageModelsMap.values()) {
             cageM.cellModels.forEach((cellM, idx) => {
                 cageM.cellModels[idx] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
             });
@@ -109,6 +109,26 @@ export class MasterModel {
         // no need to copy immutable data, just reference it
         this.cellsMatrix = model.cellsMatrix;
         this.#cellsToInputCagesMatrix = model.#cellsToInputCagesMatrix;
+
+        const validate = function(bool) {
+            if (!bool) throw `false`;
+        }
+        _.range(House.SIZE).forEach(row => {
+            _.range(House.SIZE).forEach(col => {
+                validate(this.cellModelAt(row, col) !== model.cellModelAt(row, col));
+
+                const cellM = model.cellModelAt(row, col);
+                for (const cageM of this.cellModelAt(row, col).withinCageModels) {
+                    cageM.cellModels.every(aCellM => validate(aCellM !== cellM));
+                }
+
+                const reverseCellM = this.cellModelAt(row, col);
+                for (const cageM of model.cellModelAt(row, col).withinCageModels) {
+                    cageM.cellModels.every(aCellM => validate(aCellM !== reverseCellM));
+                }
+
+            });    
+        });
     }
 
     #copyHouseCageModels(sourceM, targetM) {
