@@ -34,8 +34,6 @@ export function deepTryOptionsStrategy() {
         }
 
         if (ctxCpy.model.isSolved) {
-            // this.model.placeNum(cellMTarget.cell, tryNum);
-            // this.recentlySolvedCellModels = [ cellMTarget ];
             this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
             break;
         }
