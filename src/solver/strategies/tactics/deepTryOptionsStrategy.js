@@ -6,16 +6,13 @@ import { masterStrategy } from '../masterStrategy';
 export function deepTryOptionsStrategy() {
     if (this.hasCageModelsToReevaluatePerms || this.model.solved) return;
 
-    const cellMTargets = findCellMTargets(this.model);
-    if (cellMTargets.length === 0) return;
-
-    const cellMTarget = cellMTargets[0];
+    const cellMTarget = findCellMTarget(this.model);
+    if (_.isUndefined(cellMTarget)) return;
 
     for (const tryNum of cellMTarget.numOpts()) {
         const ctxCpy = this.deepCopyForDeepTry();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
         ctxCpy.model.placeNum(cellMTargetCpy.cell, tryNum);
-        ctxCpy.recentlySolvedCellModels = [ cellMTargetCpy ];
         ctxCpy.cageModelsToReevaluatePerms = ctxCpy.model.cageModelsMap.values();
 
         try {
@@ -34,26 +31,31 @@ export function deepTryOptionsStrategy() {
         }
 
         if (ctxCpy.model.isSolved) {
+            this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
             break;
         }
     }
 
-    if (cellMTarget.numOpts().size === 1) {
-        this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
-    }
+    // if (cellMTarget.numOpts().size === 1) {
+    //     this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
+    // }
 }
 
-function findCellMTargets(model) {
-    const result = [];
+function findCellMTarget(model) {
+    const cellNumOptsMap = new Map();
+    _.range(House.SIZE).forEach(idx => cellNumOptsMap.set(idx + 1, []));
 
     _.range(House.SIZE).forEach(row => {
         _.range(House.SIZE).forEach(col => {
             const cellM = model.cellModelAt(row, col);
-            if (cellM.numOpts().size === 2) {
-                result.push(cellM);
-            }
+            cellNumOptsMap.get(cellM.numOpts().size).push(cellM);
         });
     });
 
-    return result;
+    const targetSize = [2].find(size => cellNumOptsMap.get(size).length > 0);
+    if (targetSize) {
+        return cellNumOptsMap.get(targetSize)[0];
+    } else {
+        return undefined;
+    }
 }
