@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
+import { InvalidSolverStepError } from '../../invalidSolverStateError';
 
 export class CellModel {
     #numOpts;
@@ -43,6 +44,9 @@ export class CellModel {
     }
 
     deleteNumOpt(num) {
+        if (this.#numOpts.size === 1 && this.#numOpts.has(num)) {
+            throw new InvalidSolverStepError(`Requested to delete last number option ${num} for cell ${this.cell.key}`);
+        }
         return this.#numOpts.delete(num);
     }
 

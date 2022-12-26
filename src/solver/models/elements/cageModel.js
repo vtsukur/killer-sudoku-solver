@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { House } from '../../../problem/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
+import { InvalidSolverStepError } from '../../invalidSolverStateError';
 
 export class CageModel {
     #firstCell;
@@ -342,7 +343,7 @@ export class CageModel {
 
         for (const commonNum of commonComboNums) {
             if (!presentNums.has(commonNum)) {
-                throw `Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`;
+                throw new InvalidSolverStepError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
             }
         }
 
