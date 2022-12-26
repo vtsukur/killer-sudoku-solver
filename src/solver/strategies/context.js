@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { CageSlicer } from "../transform/cageSlicer";
 
 export class Context {
     #model;
@@ -55,5 +56,12 @@ export class Context {
 
     clearRecentlySolvedCellModels() {
         this.#cageModelsToReevaluatePerms = [];
+    }
+
+    deepCopy() {
+        const modelCopy = this.#model.deepCopy();
+        const cageSlicerCopy = new CageSlicer(modelCopy);
+        const copy = new Context(modelCopy, cageSlicerCopy);
+        return copy;
     }
 }

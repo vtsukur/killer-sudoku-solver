@@ -13,16 +13,21 @@ export function deepTryOptionsStrategy() {
     for (const tryNum of cellMTarget.numOpts()) {
         const ctxCpy = this.deepCopy();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-        cellMTargetCpy.placeNum(tryNum);
+        ctxCpy.model.placeNum(cellMTargetCpy.cell, tryNum);
+        ctxCpy.recentlySolvedCellModels = [ cellMTargetCpy ];
+        ctxCpy.skipInit = true;
+        ctxCpy.cageModelsToReevaluatePerms = ctxCpy.model.cageModelsMap.values();
 
         try {
             ctxCpy.run(masterStrategy);
-        } catch {
+        } catch(e) {
+            // throw e;
             continue;
         }
 
-        if (ctxCpy.model.solved) {
-            cellMTarget.placeNum(tryNum);
+        if (ctxCpy.model.isSolved) {
+            this.model.placeNum(cellMTarget.cell, tryNum);
+            this.recentlySolvedCellModels = [ cellMTarget ];
             this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
             break;
         }

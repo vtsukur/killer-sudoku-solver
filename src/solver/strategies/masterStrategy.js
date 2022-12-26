@@ -11,9 +11,11 @@ import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
 export function masterStrategy() {
-    this.run(findRedundantNonetSumsStrategy);
-    this.run(findAndSliceResidualSumsStrategy);
-    this.run(initPermsForCagesStrategy);
+    if (!this.skipInit) {
+        this.run(findRedundantNonetSumsStrategy);
+        this.run(findAndSliceResidualSumsStrategy);
+        this.run(initPermsForCagesStrategy);    
+    }
 
     do {
         this.run(reducePermsInCagesStrategy);

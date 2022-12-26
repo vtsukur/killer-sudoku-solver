@@ -10,4 +10,8 @@ export class RowModel extends HouseModel {
             return { row: idx, col };
         });
     }
+
+    deepCopyWithoutCageModels() {
+        return new RowModel(this.idx, this.cells);
+    }
 }

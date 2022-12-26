@@ -15,4 +15,8 @@ export class NonetModel extends HouseModel {
             return { row, col };
         });
     }
+
+    deepCopyWithoutCageModels() {
+        return new NonetModel(this.idx, this.cells);
+    }
 }

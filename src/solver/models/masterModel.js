@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
+import { Problem } from '../../problem/problem';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';
@@ -12,7 +13,15 @@ export class MasterModel {
     #placedNumCount;
     #cellsToInputCagesMatrix;
 
-    constructor(problem) {
+    constructor(problemOrModel) {
+        if (problemOrModel instanceof Problem) {
+            this.#initWithProblem(problemOrModel);
+        } else {
+            this.#initWithModel(problemOrModel);
+        }
+    }
+
+    #initWithProblem(problem) {
         this.problem = problem;
         this.cageModelsMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
@@ -47,6 +56,65 @@ export class MasterModel {
         });
 
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
+    }
+
+    #initWithModel(model) {
+        this.problem = model.problem;
+
+        // copy cage models
+        this.cageModelsMap = new Map();
+        for (const entry of model.cageModelsMap.entries()) {
+            this.cageModelsMap.set(entry[0], entry[1].deepCopyWithSameCellModels());
+        }
+
+        // copy house models
+        this.rowModels = [];
+        this.columnModels = [];
+        this.nonetModels = [];
+        _.range(House.SIZE).forEach(idx => {
+            this.rowModels[idx] = model.rowModels[idx].deepCopyWithoutCageModels();
+            this.#copyHouseCageModels(model.rowModels[idx], this.rowModels[idx]);
+            this.columnModels[idx] = model.columnModels[idx].deepCopyWithoutCageModels();
+            this.#copyHouseCageModels(model.columnModels[idx], this.columnModels[idx]);
+            this.nonetModels[idx] = model.nonetModels[idx].deepCopyWithoutCageModels();
+            this.#copyHouseCageModels(model.nonetModels[idx], this.nonetModels[idx]);
+        });
+        this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
+
+        // copy cell models
+        this.cellModelsMatrix = Grid.newMatrix();
+        model.cellModelsMatrix.forEach((cellModelsRow, row) => {
+            cellModelsRow.forEach((cellM, col) => {
+                this.cellModelsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
+                for (const cageM of cellM.withinCageModels) {
+                    this.cellModelsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key));
+                }
+            });
+        })
+
+        // rewire cell models to cage models and cage models to cell models
+        for (const cageM of model.cageModelsMap.values()) {
+            cageM.cellModels.forEach((cellM, idx) => {
+                cageM.cellModels[idx] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
+            });
+        }
+
+        // copy solution
+        this.#solution = Grid.newMatrix();
+        model.#solution.forEach((row, idx) => {
+            this.#solution[idx] = [...row];
+        })
+        this.#placedNumCount = model.#placedNumCount;
+
+        // no need to copy immutable data, just reference it
+        this.cellsMatrix = model.cellsMatrix;
+        this.#cellsToInputCagesMatrix = model.#cellsToInputCagesMatrix;
+    }
+
+    #copyHouseCageModels(sourceM, targetM) {
+        sourceM.cageModels.forEach(cageM => {
+            targetM.addCageModel(this.cageModelsMap.get(cageM.cage.key));
+        });
     }
 
     #collectHouseCells(iterator) {
@@ -136,5 +204,9 @@ export class MasterModel {
 
     nonetModel(idx) {
         return this.nonetModels[idx];
+    }
+
+    deepCopy() {
+        return new MasterModel(this);
     }
 }

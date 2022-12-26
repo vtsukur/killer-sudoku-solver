@@ -14,6 +14,14 @@ export class CellModel {
         this.placedNum = undefined;
     }
 
+    deepCopyWithoutCageModels() {
+        const copy = new CellModel(this.cell);
+        copy.solved = this.solved;
+        copy.#numOpts = new Set(this.#numOpts);
+        copy.placedNum = this.placedNum;
+        return copy;
+    }
+
     addWithinCageModel(withinCageModel) {
         this.#withinCageModels.add(withinCageModel);
     }

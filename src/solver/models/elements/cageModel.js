@@ -34,6 +34,14 @@ export class CageModel {
         this.#derivedFromInputCage = derivedFromInputCage;
     }
 
+    deepCopyWithSameCellModels() {
+        const copy = new CageModel(this.cage, this.cellModels, this.#canHaveDuplicateNums, this.#derivedFromInputCage);
+        for (const entry of this.#combosMap.entries()) {
+            copy.#combosMap.set(entry[0], [...entry[1]]);
+        }
+        return copy;
+    }
+
     static positioningFlagsFor(cells) {
         return new CageModel.#PositioningFlags(cells);
     }
