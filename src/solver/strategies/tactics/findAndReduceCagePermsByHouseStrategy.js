@@ -167,11 +167,13 @@ export function findAndReduceCagePermsByHouseStrategy() {
             const entry = numMap.get(num);
             if (entry.rows.size === 1) {
                 const idx = entry.rows.values().next().value;
-                reduceNonetBasedByRowOrColumn(this.model.rowModels[idx], num, nonetM, this.model);
+                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.rowModels[idx], num, nonetM, this.model);
+                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
             }
             if (entry.cols.size === 1) {
                 const idx = entry.cols.values().next().value;
-                reduceNonetBasedByRowOrColumn(this.model.columnModels[idx], num, nonetM, this.model);
+                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.columnModels[idx], num, nonetM, this.model);
+                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
             }
         });
     });
