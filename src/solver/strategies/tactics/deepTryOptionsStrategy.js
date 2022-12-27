@@ -9,20 +9,21 @@ export function deepTryOptionsStrategy() {
     const cellMTarget = findCellMTarget(this.model);
     if (_.isUndefined(cellMTarget)) return;
 
+    const size = cellMTarget.numOpts().size;
     for (const tryNum of cellMTarget.numOpts()) {
         const ctxCpy = this.deepCopyForDeepTry();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-        ctxCpy.model.placeNum(cellMTargetCpy.cell, tryNum);
-        ctxCpy.cageModelsToReevaluatePerms = ctxCpy.model.cageModelsMap.values();
+        cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
+        ctxCpy.cageModelsToReevaluatePerms = cellMTargetCpy.withinCageModels;
 
         try {
             ctxCpy.skipInit = true;
-            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}`);
+            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
             ctxCpy.run(masterStrategy);
-            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
+            console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
         } catch(e) {
             if (e instanceof InvalidSolverStepError) {
-                console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Depth: ${ctxCpy.depth}. FAILED`);
+                console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
                 cellMTarget.deleteNumOpt(tryNum);
                 continue;
             } else {
@@ -52,7 +53,7 @@ function findCellMTarget(model) {
         });
     });
 
-    const targetSize = [2].find(size => cellNumOptsMap.get(size).length > 0);
+    const targetSize = [2, 3].find(size => cellNumOptsMap.get(size).length > 0);
     if (targetSize) {
         return cellNumOptsMap.get(targetSize)[0];
     } else {
