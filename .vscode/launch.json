@@ -169,6 +169,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [imageReader]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "imageReader"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzleSolver]",
             "request": "launch",
             "runtimeArgs": [
