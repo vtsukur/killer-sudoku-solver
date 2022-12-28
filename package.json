@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/vtsukur/killer-sudoku-solver#readme",
   "dependencies": {
+    "@techstark/opencv-js": "^4.6.0-release.1",
     "lodash": "^4.17.21",
     "save-dev": "^0.0.1-security"
   },
