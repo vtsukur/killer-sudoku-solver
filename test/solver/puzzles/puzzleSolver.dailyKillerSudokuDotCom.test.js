@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { PuzzleSolver } from '../../../src/solver/puzzleSolver';
-import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10 } from '../../problem/realProblemSamples';
+import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10, dailyKillerSudokuDotCom_puzzle24919_difficulty10 } from '../../problem/realProblemSamples';
 
 describe('Tests for PuzzleSolver applied to DailyKillerSudoku.com tasks', () => {
     test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
@@ -51,6 +51,23 @@ describe('Tests for PuzzleSolver applied to DailyKillerSudoku.com tasks', () => 
             [ 5, 6, 1, 4, 9, 8, 7, 3, 2 ],
             [ 2, 8, 4, 1, 3, 7, 6, 9, 5 ],
             [ 9, 7, 3, 5, 6, 2, 4, 1, 8 ]
+        ]);
+    });
+
+    test('Find solution for puzzle 24919 of difficulty 10 by DailyKillerSudoku.com', () => {
+        const solver = new PuzzleSolver(dailyKillerSudokuDotCom_puzzle24919_difficulty10);
+        const solution = solver.solve();
+
+        expect(solution).toEqual([
+            [ 1, 3, 2, 7, 5, 8, 6, 9, 4 ],
+            [ 5, 8, 7, 4, 9, 6, 2, 3, 1 ],
+            [ 9, 4, 6, 1, 3, 2, 8, 5, 7 ],
+            [ 7, 5, 9, 2, 1, 3, 4, 6, 8 ],
+            [ 4, 6, 1, 5, 8, 9, 3, 7, 2 ],
+            [ 3, 2, 8, 6, 7, 4, 5, 1, 9 ],
+            [ 6, 7, 4, 3, 2, 1, 9, 8, 5 ],
+            [ 2, 9, 5, 8, 6, 7, 1, 4, 3 ],
+            [ 8, 1, 3, 9, 4, 5, 7, 2, 6 ]
         ]);
     });
 });
