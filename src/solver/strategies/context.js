@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { CageSlicer } from "../transform/cageSlicer";
+import _ from 'lodash';
+import { CageSlicer } from '../transform/cageSlicer';
 
 export class Context {
     #model;
@@ -7,6 +7,7 @@ export class Context {
     #cageModelsToReevaluatePerms;
     #recentlySolvedCellModels;
     #depth;
+    #foundSolution;
 
     constructor(model, cageSlicer) {
         this.#model = model;
@@ -14,10 +15,13 @@ export class Context {
         this.#cageModelsToReevaluatePerms = undefined;
         this.#recentlySolvedCellModels = [];
         this.#depth = 0;
+        this.#foundSolution = undefined;
     }
     
     run(strategyFn) {
-        strategyFn.apply(this);
+        if (!this.isSolutionFound) {
+            strategyFn.apply(this);
+        }
     }
 
     get model() {
@@ -62,6 +66,18 @@ export class Context {
 
     get depth() {
         return this.#depth;
+    }
+
+    get isSolutionFound() {
+        return !_.isUndefined(this.#foundSolution);
+    }
+
+    get foundSolution() {
+        return this.#foundSolution;
+    }
+
+    set foundSolution(foundSolution) {
+        this.#foundSolution = foundSolution;
     }
 
     deepCopyForDeepTry() {

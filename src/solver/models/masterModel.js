@@ -190,6 +190,14 @@ export class MasterModel {
         this.#placedNumCount++;
     }
 
+    applySolution(solution) {
+        _.range(House.SIZE).forEach(row => {
+            _.range(House.SIZE).forEach(col => {
+                this.placeNum(this.cellsMatrix[row][col], solution[row][col]);
+            });
+        });
+    }
+
     get isSolved() {
         return this.#placedNumCount === Grid.CELL_COUNT;
     }

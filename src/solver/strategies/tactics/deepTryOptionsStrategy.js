@@ -10,6 +10,7 @@ export function deepTryOptionsStrategy() {
     if (_.isUndefined(cellMTarget)) return;
 
     const size = cellMTarget.numOpts().size;
+    let solution;
     for (const tryNum of cellMTarget.numOpts()) {
         const ctxCpy = this.deepCopyForDeepTry();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
@@ -38,12 +39,22 @@ export function deepTryOptionsStrategy() {
         }
 
         if (ctxCpy.model.isSolved) {
+            solution = ctxCpy.model.solution;
             cellMTarget.reduceNumOptions(new Set([ tryNum ]));
+            break;
+        } else if (ctxCpy.isSolutionFound) {
+            solution = ctxCpy.foundSolution;
             break;
         }
     }
 
-    if (cellMTarget.numOpts().size < size) {
+    if (!_.isUndefined(solution)) {
+        if (this.depth === 0) {
+            this.model.applySolution(solution);
+        } else {
+            this.foundSolution = solution;
+        }
+    } else if (cellMTarget.numOpts().size < size) {
         this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
     }
 }
