@@ -1,4 +1,4 @@
-import reader from '../../src/reader/reader.js';
+import reader from '../../src/reader/textReader.js';
 import { Problem } from '../../src/problem/problem';
 import { Cage } from '../../src/problem/cage';
 
