@@ -1,6 +1,15 @@
 import Jimp from 'jimp';
 import cv from '@techstark/opencv-js';
 import _ from 'lodash';
+import tesseract from 'node-tesseract-ocr';
+
+async function recognizeText(img) {
+    await tesseract.recognize(Buffer.from(img.data), {
+        lang: "eng",
+        oem: 1,
+        psm: 3,
+    }).then((text) => console.log(text));
+}
 
 async function loadImage() {
     var jimpSrc = await Jimp.read('./test/reader/problems/dailyKillerSudokuDotCom_24919.png');
@@ -16,6 +25,8 @@ async function loadImage() {
     let color = new cv.Scalar(0, 255, 0);
     // cv.drawContours(dst, contours, -1, color, 2);
     
+    const dotContours = [];
+    const textContours = [];
     _.range(contours.size()).forEach(i => {
         const contour = contours.get(i);
         const boundingRect = cv.boundingRect(contour);
@@ -23,6 +34,13 @@ async function loadImage() {
             const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
             const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
             cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 5);
+            dotContours.push(contour);
+        }
+        if (_.inRange(boundingRect.width, 10, 40) && _.inRange(boundingRect.height, 10, 40)) {
+            const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
+            const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
+            cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 5);
+            textContours.push(contour);
         }
     });
 
@@ -30,14 +48,27 @@ async function loadImage() {
         width: dst.cols,
         height: dst.rows,
         data: Buffer.from(dst.data)
-    }).write('output.png');
+    }).write('./out/output.png');
+
+    jimpSrc.crop(10, 10, 10, 10);
+    // new Jimp({
+    //     width: textContours[0].cols,
+    //     height: textContours[0].rows,
+    //     data: Buffer.from(textContours[0].data)
+    // }).write('text0.png');
 
     src.delete();
     dst.delete();
+
+    return {
+        dotContours,
+        textContours
+    }
 }
 
 describe('Image reader tests', () => {
     test('Read problem from image', async () => {
-        await loadImage();
+        const contours = await loadImage();
+        // await recognizeText(contours.textContours[0]);
     });
 });
