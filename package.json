@@ -26,6 +26,7 @@
     "@techstark/opencv-js": "^4.6.0-release.1",
     "jimp": "^0.16.2",
     "lodash": "^4.17.21",
+    "node-tesseract-ocr": "^2.2.1",
     "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
