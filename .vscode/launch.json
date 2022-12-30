@@ -154,12 +154,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [reader]",
+            "name": "npm run test [imageReader]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "reader"
+                "imageReader"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -169,12 +169,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [imageReader]",
+            "name": "npm run test [textReader]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "imageReader"
+                "textReader"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

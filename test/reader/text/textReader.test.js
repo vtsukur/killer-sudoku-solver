@@ -1,6 +1,6 @@
-import reader from '../../src/reader/textReader.js';
-import { Problem } from '../../src/problem/problem';
-import { Cage } from '../../src/problem/cage';
+import reader from '../../../src/reader/text/textReader.js';
+import { Problem } from '../../../src/problem/problem';
+import { Cage } from '../../../src/problem/cage';
 
 describe('Reader tests', () => {
     test('Full read - real problem #1', () => {
