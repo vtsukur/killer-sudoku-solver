@@ -4,7 +4,7 @@ import { Cage } from '../../../src/problem/cage';
 
 describe('Reader tests', () => {
     test('Full read - real problem #1', () => {
-        const problem = reader('./test/reader/problems/1.txt');
+        const problem = reader('./test/reader/text/samples/1.txt');
         expect(problem).toEqual(new Problem([
             // upper nonets
             Cage.ofSum(17).at(0, 0).at(1, 0).at(1, 1).mk(),
@@ -47,7 +47,7 @@ describe('Reader tests', () => {
     });
 
     test('Full read - real problem #2', () => {
-        const problem = reader('./test/reader/problems/2.txt');
+        const problem = reader('./test/reader/text/samples/2.txt');
         expect(problem).toEqual(new Problem([
             // upper nonets
             Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
@@ -91,14 +91,14 @@ describe('Reader tests', () => {
     });
 
     test('Unknown entry', () => {
-        expect(() => reader('./test/reader/problems/unknownEntry.txt')).toThrow('Unknown entry: a:a');
+        expect(() => reader('./test/reader/text/samples/unknownEntry.txt')).toThrow('Unknown entry: a:a');
     });
     
     test('Cage def without sum', () => {
-        expect(() => reader('./test/reader/problems/cageWithoutValue.txt')).toThrow('Cage def without sum: a');
+        expect(() => reader('./test/reader/text/samples/cageWithoutValue.txt')).toThrow('Cage def without sum: a');
     });
     
     test('Cage def duplicate', () => {
-        expect(() => reader('./test/reader/problems/cageDuplication.txt')).toThrow('Cage def duplicate: a');
+        expect(() => reader('./test/reader/text/samples/cageDuplication.txt')).toThrow('Cage def duplicate: a');
     });
 });
