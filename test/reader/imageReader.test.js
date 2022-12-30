@@ -29,9 +29,15 @@ async function loadImage() {
     
     const dotContours = [];
     const textContours = [];
+    const contoursBRSet = new Set();
     _.range(contours.size()).forEach(i => {
         const contour = contours.get(i);
         const boundingRect = cv.boundingRect(contour);
+
+        const key = `(${boundingRect.x} + ${boundingRect.width}, ${boundingRect.y} + ${boundingRect.height})`;
+        if (contoursBRSet.has(key)) return
+        contoursBRSet.add(key);
+        
         if (boundingRect.width < 15 && boundingRect.height < 15) {
             const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
             const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
