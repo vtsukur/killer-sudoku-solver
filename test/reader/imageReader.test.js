@@ -58,10 +58,11 @@ async function loadImage() {
         data: Buffer.from(dst.data)
     }).write('./out/output.png');
 
-    // _.range(textContours.length).forEach(i => {
-        const tCBR = cv.boundingRect(textContours[1]);
-        jimpSrc.crop(tCBR.x, tCBR.y, tCBR.width, tCBR.height).write(`./out/text${0}.png`);
-    // });
+    _.range(textContours.length).forEach(i => {
+        const tCBR = cv.boundingRect(textContours[i]);
+        const srcCpy = new Jimp(jimpSrc);
+        srcCpy.crop(tCBR.x, tCBR.y, tCBR.width, tCBR.height).write(`./out/text${i}.png`);
+    });
     // new Jimp({
     //     width: textContours[0].cols,
     //     height: textContours[0].rows,
