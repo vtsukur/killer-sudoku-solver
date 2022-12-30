@@ -14,7 +14,7 @@ async function recognizeText(img) {
 }
 
 async function loadImage() {
-    var jimpSrc = await Jimp.read('./test/reader/problems/dailyKillerSudokuDotCom_24919.png');
+    var jimpSrc = await Jimp.read('./test/reader/image/samples/dailyKillerSudokuDotCom_24919.png');
     var src = cv.matFromImageData(jimpSrc.bitmap);
 
     cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
