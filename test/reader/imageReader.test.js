@@ -1,7 +1,7 @@
 import Jimp from 'jimp';
 import cv from '@techstark/opencv-js';
 import _ from 'lodash';
-import tesseract from 'node-tesseract-ocr';
+import tesseract from 'node-tesseract-ocr'; // use native port instead
 
 async function recognizeText(img) {
     await tesseract.recognize('./out/text0.png', {
@@ -41,13 +41,13 @@ async function loadImage() {
         if (boundingRect.width < 15 && boundingRect.height < 15) {
             const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
             const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
-            cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 5);
+            cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 2);
             dotContours.push(contour);
         }
         if (_.inRange(boundingRect.width, 10, 40) && _.inRange(boundingRect.height, 10, 40)) {
             const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
             const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
-            cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 5);
+            cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 2);
             textContours.push(contour);
         }
     });
