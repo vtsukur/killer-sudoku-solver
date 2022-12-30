@@ -169,6 +169,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [cageContoursFinder]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cageContoursFinder"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [textReader]",
             "request": "launch",
             "runtimeArgs": [
