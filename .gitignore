@@ -106,5 +106,6 @@ dist
 # macOS .DS_Store files
 *.DS_Store
 
-# out
+# temporary files
 out
+temp

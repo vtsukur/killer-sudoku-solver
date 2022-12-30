@@ -43,7 +43,7 @@ export async function findCageContours(imagePath) {
         width: dst.cols,
         height: dst.rows,
         data: Buffer.from(dst.data)
-    }).write('./out/output.png');
+    }).write('./tmp/output.png');
 
     return dotContours;
 }
