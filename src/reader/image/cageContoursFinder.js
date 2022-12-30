@@ -8,41 +8,13 @@ export async function findCageContours(imagePath) {
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
 
-    // convert image to OpenCV Mat
+    // convert image to OpenCV Mat and prepare source
     const src = cv.matFromImageData(jimpSrc.bitmap);
     prepareSourceMat(src);
+
+    // find cage contours and dump results
     const allCageContours = findAllCageContours(src);
-
-    let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
-    let color = new cv.Scalar(0, 255, 0);
-
-    // let contours = new cv.MatVector();
-    // let h = new cv.Mat();
-    // cv.findContours(src, contours, h, cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
-
-    // const dotContours = [];
-    // const contoursBRSet = new Set();
-    // _.range(contours.size()).forEach(i => {
-    //     const contour = contours.get(i);
-    //     const boundingRect = cv.boundingRect(contour);
-
-    //     const key = `(${boundingRect.x} + ${boundingRect.width}, ${boundingRect.y} + ${boundingRect.height})`;
-    //     if (contoursBRSet.has(key)) return
-    //     contoursBRSet.add(key);
-        
-    //     if (boundingRect.width < 15 && boundingRect.height < 15) {
-    //         const topLeftPoint = new cv.Point(boundingRect.x, boundingRect.y);
-    //         const bottomRightPoint = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
-    //         cv.rectangle(dst, topLeftPoint, bottomRightPoint, color, 2);
-    //         dotContours.push(contour);
-    //     }
-    // });
-
-    new Jimp({
-        width: dst.cols,
-        height: dst.rows,
-        data: Buffer.from(dst.data)
-    }).write('./tmp/output.png');
+    dumpTmpCageContoursOutput(src, allCageContours, './tmp/cageContours.png');
 
     return allCageContours;
 }
@@ -75,4 +47,21 @@ function findAllCageContours(src) {
     });
 
     return allCageContours;
+}
+
+function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
+    const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+    const GREEN = new cv.Scalar(0, 255, 0);
+    for (const cageContour of cageContours) {
+        const boundingRect = cv.boundingRect(cageContour);
+        const topLeft = new cv.Point(boundingRect.x, boundingRect.y);
+        const bottomRight = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
+        cv.rectangle(mat, topLeft, bottomRight, GREEN, 2);
+    }
+
+    new Jimp({
+        width: mat.cols,
+        height: mat.rows,
+        data: Buffer.from(mat.data)
+    }).write(outputPath);
 }
