@@ -4,11 +4,13 @@ import _ from 'lodash';
 import tesseract from 'node-tesseract-ocr';
 
 async function recognizeText(img) {
-    await tesseract.recognize(Buffer.from(img.data), {
+    await tesseract.recognize('./out/text0.png', {
         lang: "eng",
         oem: 1,
-        psm: 3,
-    }).then((text) => console.log(text));
+        psm: 6,
+    }).then((text) => {
+        console.log(text)
+    });
 }
 
 async function loadImage() {
@@ -21,7 +23,7 @@ async function loadImage() {
     let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
     let contours = new cv.MatVector();
     let h = new cv.Mat();
-    cv.findContours(src, contours, h, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
+    cv.findContours(src, contours, h, cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
     let color = new cv.Scalar(0, 255, 0);
     // cv.drawContours(dst, contours, -1, color, 2);
     
@@ -50,7 +52,10 @@ async function loadImage() {
         data: Buffer.from(dst.data)
     }).write('./out/output.png');
 
-    jimpSrc.crop(10, 10, 10, 10);
+    // _.range(textContours.length).forEach(i => {
+        const tCBR = cv.boundingRect(textContours[1]);
+        jimpSrc.crop(tCBR.x, tCBR.y, tCBR.width, tCBR.height).write(`./out/text${0}.png`);
+    // });
     // new Jimp({
     //     width: textContours[0].cols,
     //     height: textContours[0].rows,
@@ -69,6 +74,6 @@ async function loadImage() {
 describe('Image reader tests', () => {
     test('Read problem from image', async () => {
         const contours = await loadImage();
-        // await recognizeText(contours.textContours[0]);
+        await recognizeText(contours.textContours[0]);
     });
 });
