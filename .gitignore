@@ -107,5 +107,4 @@ dist
 *.DS_Store
 
 # temporary files
-out
-temp
+tmp
