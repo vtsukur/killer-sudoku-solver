@@ -16,6 +16,9 @@ export async function findCageContours(imagePath) {
     const allCageContours = findAllCageContours(src);
     dumpTmpCageContoursOutput(src, allCageContours, './tmp/cageContours.png');
 
+    // cleanup
+    src.delete();
+
     return allCageContours;
 }
 
@@ -52,6 +55,7 @@ function findAllCageContours(src) {
 function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
     const GREEN = new cv.Scalar(0, 255, 0);
+
     for (const cageContour of cageContours) {
         const boundingRect = cv.boundingRect(cageContour);
         const topLeft = new cv.Point(boundingRect.x, boundingRect.y);
@@ -64,4 +68,6 @@ function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
         height: mat.rows,
         data: Buffer.from(mat.data)
     }).write(outputPath);
+
+    mat.delete();
 }
