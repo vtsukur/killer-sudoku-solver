@@ -62,9 +62,9 @@ function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     for (const cageContour of cageContours) {
-        const boundingRect = cv.boundingRect(cageContour);
-        const topLeft = new cv.Point(boundingRect.x, boundingRect.y);
-        const bottomRight = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
+        const rect = cv.boundingRect(cageContour);
+        const topLeft = new cv.Point(rect.x, rect.y);
+        const bottomRight = new cv.Point(rect.x + rect.width, rect.y + rect.height);
         cv.rectangle(mat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CAGE_CONTOUR_THICKNESS);
     }
 
