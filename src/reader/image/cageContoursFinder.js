@@ -3,6 +3,11 @@ import Jimp from 'jimp';
 import _ from 'lodash';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
+const CANNY_THRESHOLD_MIN = 50;
+const CANNY_THRESHOLD_MAX = 200;
+const TMP_CAGE_CONTOURS_DUMP_PATH = './tmp/cageContours.png';
+const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
+const TMP_CAGE_CONTOUR_THICKNESS = 2;
 
 export async function findCageContours(imagePath) {
     // read image using Jimp.
@@ -15,7 +20,7 @@ export async function findCageContours(imagePath) {
     // find cage contours and dump results
     const contoursMatVector = new cv.MatVector();
     const allCageContours = findAllCageContours(src, contoursMatVector);
-    dumpTmpCageContoursOutput(src, allCageContours, './tmp/cageContours.png');
+    dumpTmpCageContoursOutput(src, allCageContours, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup
     contoursMatVector.delete();
@@ -29,7 +34,7 @@ function prepareSourceMat(src) {
     cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
 
     // run canny edge detector
-    cv.Canny(src, src, 50, 200, 3);
+    cv.Canny(src, src, CANNY_THRESHOLD_MIN, CANNY_THRESHOLD_MAX);
 }
 
 function findAllCageContours(src, contoursMatVector) {
@@ -55,13 +60,12 @@ function findAllCageContours(src, contoursMatVector) {
 
 function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
-    const GREEN = new cv.Scalar(0, 255, 0);
 
     for (const cageContour of cageContours) {
         const boundingRect = cv.boundingRect(cageContour);
         const topLeft = new cv.Point(boundingRect.x, boundingRect.y);
         const bottomRight = new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height);
-        cv.rectangle(mat, topLeft, bottomRight, GREEN, 2);
+        cv.rectangle(mat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CAGE_CONTOUR_THICKNESS);
     }
 
     new Jimp({
