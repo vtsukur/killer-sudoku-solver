@@ -13,10 +13,12 @@ export async function findCageContours(imagePath) {
     prepareSourceMat(src);
 
     // find cage contours and dump results
-    const allCageContours = findAllCageContours(src);
+    const contoursMatVector = new cv.MatVector();
+    const allCageContours = findAllCageContours(src, contoursMatVector);
     dumpTmpCageContoursOutput(src, allCageContours, './tmp/cageContours.png');
 
     // cleanup
+    contoursMatVector.delete();
     src.delete();
 
     return allCageContours;
@@ -30,14 +32,13 @@ function prepareSourceMat(src) {
     cv.Canny(src, src, 50, 200, 3);
 }
 
-function findAllCageContours(src) {
-    const contours = new cv.MatVector();
-    cv.findContours(src, contours, new cv.Mat(), cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
+function findAllCageContours(src, contoursMatVector) {
+    cv.findContours(src, contoursMatVector, new cv.Mat(), cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
 
     const allCageContours = [];
     const contoursBoundingRectsSet = new Set();
-    _.range(contours.size()).forEach(i => {
-        const contour = contours.get(i);
+    _.range(contoursMatVector.size()).forEach(i => {
+        const contour = contoursMatVector.get(i);
         const boundingRect = cv.boundingRect(contour);
 
         if (boundingRect.width < CAGE_BOUNDARY_DOT_MAX_SIZE && boundingRect.height < CAGE_BOUNDARY_DOT_MAX_SIZE) {
