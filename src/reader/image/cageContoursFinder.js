@@ -3,8 +3,8 @@ import Jimp from 'jimp';
 import _ from 'lodash';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
-const CANNY_THRESHOLD_MIN = 50;
-const CANNY_THRESHOLD_MAX = 200;
+const CANNY_THRESHOLD_MIN = 20;
+const CANNY_THRESHOLD_MAX = 100;
 const TMP_CAGE_CONTOURS_DUMP_PATH = './tmp/cageContours.png';
 const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CAGE_CONTOUR_THICKNESS = 2;
