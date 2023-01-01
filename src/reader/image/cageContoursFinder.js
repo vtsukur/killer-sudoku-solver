@@ -65,19 +65,41 @@ function findAllCageContours(src, contoursMatVector) {
 }
 
 function findGridContourFromCageContours(allCageContours, totalWidth, totalHeight) {
-    let minX = totalWidth;
-    let minY = totalHeight;
-    let maxX = 0;
-    let maxY = 0;
+    const leftXMap = new Map();
+    const rightXMap = new Map();
+    const topYMap = new Map();
+    const bottomYMap = new Map();
+
     for (const cageContour of allCageContours) {
         const cvRect = cv.boundingRect(cageContour);
-        minX = Math.min(minX, cvRect.x);
-        minY = Math.min(minY, cvRect.y);
-        maxX = Math.max(maxX, cvRect.x + cvRect.width);
-        maxY = Math.max(maxY, cvRect.y + cvRect.height);
+        accumCoordEntry(leftXMap, cvRect.x);
+        accumCoordEntry(rightXMap, cvRect.x + cvRect.width);
+        accumCoordEntry(topYMap, cvRect.y);
+        accumCoordEntry(bottomYMap, cvRect.y + cvRect.height);
     }
 
+    const minX = findFirstSignificantCoord(leftXMap);
+    const maxX = findFirstSignificantCoord(rightXMap, true);
+    const minY = findFirstSignificantCoord(topYMap);
+    const maxY = findFirstSignificantCoord(bottomYMap, true);
+
     return new Rect(minX, minY, maxX - minX, maxY - minY);
+}
+
+function accumCoordEntry(map, coord) {
+    if (map.has(coord)) {
+        map.set(coord, map.get(coord) + 1);
+    } else {
+        map.set(coord, 1);
+    }
+}
+
+function findFirstSignificantCoord(map, isReverse) {
+    const arr = Array.from(map.keys()).sort((a, b) => a - b);
+    const isSignificantFn = coord => map.get(coord) > 10;
+    const significant = isReverse ? arr.findLast(isSignificantFn) : arr.find(isSignificantFn);
+
+    return significant ? significant : arr[isReverse ? arr.length - 1 : 0];
 }
 
 function dumpTmpCageContoursOutput(src, cageContours, outputPath) {
