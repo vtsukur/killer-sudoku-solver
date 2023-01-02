@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
+import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
@@ -36,7 +37,10 @@ export async function findCageContours(imagePath) {
 
     // create cell contours and group cage contours by cells
     const cellContoursMatrix = createCellContours(gridContour);
-    groupCageContours(cellContoursMatrix, dottedCageContours, gridContour);
+    groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridContour);
+
+    // determine cage contours
+    const cageContours = determineCageContoursByCells(cellContoursMatrix);
 
     // dump temporary processing result
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
@@ -132,13 +136,51 @@ function createCellContours(gridContour) {
     return cellContoursMatrix;
 }
 
-function groupCageContours(cellContoursMatrix, dottedCageContours, gridContour) {
+function groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridContour) {
     for (const dottedCageContour of dottedCageContours) {
         const cvRect = cv.boundingRect(dottedCageContour);
         const cell = gridContour.cellFromRect(cvRect);
         if (!_.isUndefined(cell)) {
             cellContoursMatrix[cell.row][cell.col].markCageContour(cvRect);
         }
+    }
+}
+
+function determineCageContoursByCells(cellContoursMatrix) {
+    const cageContours = [];
+
+    _.range(House.SIZE).forEach(row => {
+        _.range(House.SIZE).forEach(col => {
+            const cellContour = cellContoursMatrix[row][col];
+            if (!cellContour.cageFound) {
+                const cageContour = new CageContour();
+                cageContours.push(cageContour);
+                determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageContour);
+            }
+        });
+    });
+
+    return cageContours;
+}
+
+function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageContour) {
+    const cellContour = cellContoursMatrix[row][col];
+    if (cellContour.cageFound || !_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
+
+    cageContour.addCell(cellContour.cell);
+    cellContour.setCageFound();
+
+    if (!cellContour.marker.hasAtRight) {
+        determineCageContoursByCellsDFS(cellContoursMatrix, row, col + 1, cageContour);
+    }
+    if (!cellContour.marker.hasAtBottom) {
+        determineCageContoursByCellsDFS(cellContoursMatrix, row + 1, col, cageContour);
+    }
+    if (!cellContour.marker.hasAtLeft) {
+        determineCageContoursByCellsDFS(cellContoursMatrix, row, col - 1, cageContour);
+    }
+    if (!cellContour.marker.hasAtTop) {
+        determineCageContoursByCellsDFS(cellContoursMatrix, row - 1, col, cageContour);
     }
 }
 

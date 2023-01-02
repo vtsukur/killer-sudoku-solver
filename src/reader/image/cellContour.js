@@ -1,12 +1,14 @@
 export class CellContour {
     #cell;
     #rect;
-    #marker;
+    #cageBorders;
+    #cageFound;
 
     constructor(cell, rect) {
         this.#cell = cell;
         this.#rect = rect;
-        this.#marker = new Marker();
+        this.#cageBorders = new CageBorders();
+        this.#cageFound = false;
     }
 
     get cell() {
@@ -17,18 +19,30 @@ export class CellContour {
         return this.#rect;
     }
 
+    get marker() {
+        return this.#cageBorders;
+    }
+
+    get cageFound() {
+        return this.#cageFound;
+    }
+
+    setCageFound() {
+        this.#cageFound = true;
+    }
+
     markCageContour(rect) {
         const relativeX = rect.x - this.#rect.x + rect.width / 2;
         const relativeY = rect.y - this.#rect.y + rect.height / 2;
 
-        const markerXSize = this.#rect.width / Marker.SIDES;
-        const markerYSize = this.#rect.height / Marker.SIDES;
+        const markerXSize = this.#rect.width / CageBorders.SIDES;
+        const markerYSize = this.#rect.height / CageBorders.SIDES;
 
-        this.#marker.setHasAt(Math.floor(relativeX / markerXSize), Math.floor(relativeY / markerYSize));
+        this.#cageBorders.setHasAt(Math.floor(relativeX / markerXSize), Math.floor(relativeY / markerYSize));
     }
 }
 
-class Marker {
+class CageBorders {
     #matrix;
 
     constructor() {
@@ -43,8 +57,24 @@ class Marker {
         this.#matrix[x][y] = true;
     }
 
+    get hasAtTop() {
+        return this.#matrix[0][1];
+    }
+
+    get hasAtBottom() {
+        return this.#matrix[2][1];
+    }
+
+    get hasAtLeft() {
+        return this.#matrix[1][0];
+    }
+
+    get hasAtRight() {
+        return this.#matrix[1][2];
+    }
+
     static #SIDES = 3;
     static get SIDES() {
-        return Marker.#SIDES;
+        return CageBorders.#SIDES;
     };
 }
