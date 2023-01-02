@@ -33,4 +33,8 @@ export class CageContour {
     set sumImagePath(value) {
         this.#sumImagePath = value;
     }
+
+    get cells() {
+        return this.#cellContours.map(c => c.cell);
+    }
 }

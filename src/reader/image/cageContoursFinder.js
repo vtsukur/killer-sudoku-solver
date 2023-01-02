@@ -1,9 +1,11 @@
 import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
+import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
+import { Problem } from '../../problem/problem';
 import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
@@ -43,15 +45,21 @@ export async function findCageContours(imagePath) {
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
     prepareCageSumImages(cageContours, jimpSrc);
+    const cages = Array();
     for (const cageContour of cageContours) {
-        await tesseract.recognize(cageContour.sumImagePath, {
+        const sum = await tesseract.recognize(cageContour.sumImagePath, {
             lang: "eng",
             oem: 1,
             psm: 6,
         }).then((text) => {
-            console.log(text)
+            return parseInt(text);
         });
+        console.log(sum);
+        const cageBuilder = Cage.ofSum(sum);
+        cageContour.cells.forEach(cell => cageBuilder.cell(cell));
+        cages.push(cageBuilder.mk());
     }
+    const problem = new Problem(cages);
 
     // dump temporary processing result
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
