@@ -37,7 +37,7 @@ export async function findCageContours(imagePath) {
     const cellContoursMatrix = createCellContours(gridContour);
 
     // dump temporary processing result
-    dumpTmpCageContoursOutput(src, allCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
+    dumpTmpContoursOutput(src, allCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup
     contoursMatVector.delete();
@@ -130,7 +130,7 @@ function createCellContours(gridContour) {
     return cellContoursMatrix;
 }
 
-function dumpTmpCageContoursOutput(src, cageContours, cellContoursMatrix, outputPath) {
+function dumpTmpContoursOutput(src, cageContours, cellContoursMatrix, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     for (const cageContour of cageContours) {
