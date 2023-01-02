@@ -5,6 +5,7 @@ import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
 import { CellContour } from './cellContour';
+import { GridContour } from './gridContour';
 import { Rect } from './rect';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
@@ -30,11 +31,12 @@ export async function findCageContours(imagePath) {
 
     // find grid contour
     const gridContour = findGridContourFromCageContours(allCageContours);
-    console.log(`Grid contour: (${gridContour.x} + ${gridContour.width}, ${gridContour.y} + ${gridContour.height})`);
+    console.log(`Grid contour: ${gridContour}`);
     console.log(`Total size: ${src.rows} x ${src.cols}`);
 
-    // create cell contours by grid contour
+    // create cell contours and group cage contours by cells
     const cellContoursMatrix = createCellContours(gridContour);
+    groupCageContoursByCellContours(cellContoursMatrix, allCageContours, gridContour);
 
     // dump temporary processing result
     dumpTmpContoursOutput(src, allCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
@@ -94,8 +96,12 @@ function findGridContourFromCageContours(allCageContours) {
     const minY = findFirstSignificantCoord(topYMap);
     const maxY = findFirstSignificantCoord(bottomYMap, true);
 
-    return new Rect(minX - GRID_CONTOUR_ADJUSTMENT, minY - GRID_CONTOUR_ADJUSTMENT,
-        maxX - minX + 2 * GRID_CONTOUR_ADJUSTMENT, maxY - minY + 2 * GRID_CONTOUR_ADJUSTMENT);
+    return new GridContour(new Rect(
+        minX - GRID_CONTOUR_ADJUSTMENT,
+        minY - GRID_CONTOUR_ADJUSTMENT,
+        maxX - minX + 2 * GRID_CONTOUR_ADJUSTMENT,
+        maxY - minY + 2 * GRID_CONTOUR_ADJUSTMENT
+    ));
 }
 
 function accumCoordEntry(map, coord) {
@@ -116,18 +122,24 @@ function findFirstSignificantCoord(map, isReverse) {
 
 function createCellContours(gridContour) {
     const cellContoursMatrix = Grid.newMatrix();
-    const cellWidth = gridContour.width / House.SIZE;
-    const cellHeight = gridContour.height / House.SIZE;
 
     _.range(House.SIZE).forEach(row => {
         _.range(House.SIZE).forEach(col => {
-            cellContoursMatrix[row][col] = new CellContour(
-                Cell.at(row, col),
-                new Rect(gridContour.x + row * cellWidth, gridContour.y + col * cellHeight, cellWidth, cellHeight));
+            cellContoursMatrix[row][col] = new CellContour(Cell.at(row, col), gridContour.cellRect(row, col));
         });
     });
 
     return cellContoursMatrix;
+}
+
+function groupCageContoursByCellContours(cellContoursMatrix, cageContours, gridContour) {
+    for (const cageContour of cageContours) {
+        const cvRect = cv.boundingRect(cageContour);
+        const cell = gridContour.cellFromRect(cvRect);
+        if (!_.isUndefined(cell)) {
+            cellContoursMatrix[cell.row][cell.col].addCageContour(cageContour);
+        }
+    }
 }
 
 function dumpTmpContoursOutput(src, cageContours, cellContoursMatrix, outputPath) {
