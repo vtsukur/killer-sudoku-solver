@@ -1,7 +1,10 @@
 import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
+import { Cell } from '../../problem/cell';
+import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
+import { CellContour } from './cellContour';
 import { Rect } from './rect';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
@@ -30,8 +33,11 @@ export async function findCageContours(imagePath) {
     console.log(`Grid contour: (${gridContour.x} + ${gridContour.width}, ${gridContour.y} + ${gridContour.height})`);
     console.log(`Total size: ${src.rows} x ${src.cols}`);
 
+    // create cell contours by grid contour
+    const cellContoursMatrix = createCellContours(gridContour);
+
     // dump temporary processing result
-    dumpTmpCageContoursOutput(src, gridContour, allCageContours, TMP_CAGE_CONTOURS_DUMP_PATH);
+    dumpTmpCageContoursOutput(src, allCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup
     contoursMatVector.delete();
@@ -108,7 +114,23 @@ function findFirstSignificantCoord(map, isReverse) {
     return significant ? significant : arr[isReverse ? arr.length - 1 : 0];
 }
 
-function dumpTmpCageContoursOutput(src, gridContour, cageContours, outputPath) {
+function createCellContours(gridContour) {
+    const cellContoursMatrix = Grid.newMatrix();
+    const cellWidth = gridContour.width / House.SIZE;
+    const cellHeight = gridContour.height / House.SIZE;
+
+    _.range(House.SIZE).forEach(row => {
+        _.range(House.SIZE).forEach(col => {
+            cellContoursMatrix[row][col] = new CellContour(
+                Cell.at(row, col),
+                new Rect(gridContour.x + row * cellWidth, gridContour.y + col * cellHeight, cellWidth, cellHeight));
+        });
+    });
+
+    return cellContoursMatrix;
+}
+
+function dumpTmpCageContoursOutput(src, cageContours, cellContoursMatrix, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     for (const cageContour of cageContours) {
@@ -118,19 +140,14 @@ function dumpTmpCageContoursOutput(src, gridContour, cageContours, outputPath) {
         cv.rectangle(mat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CONTOUR_THICKNESS);
     }
 
-    const cellWidth = gridContour.width / House.SIZE;
-    const cellHeight = gridContour.height / House.SIZE;
-    _.range(House.SIZE + 1).forEach(i => {
-        cv.line(mat,
-            new cv.Point(gridContour.x, gridContour.y + i * cellHeight),
-            new cv.Point(gridContour.x + gridContour.width, gridContour.y + i * cellHeight),
-            TMP_CELL_CONTOUR_COLOR,
-            TMP_CONTOUR_THICKNESS);
-        cv.line(mat,
-            new cv.Point(gridContour.x + i * cellWidth, gridContour.y),
-            new cv.Point(gridContour.x + i * cellWidth, gridContour.y + gridContour.height),
-            TMP_CELL_CONTOUR_COLOR,
-            TMP_CONTOUR_THICKNESS);
+    cellContoursMatrix.forEach(cellCRow => {
+        cellCRow.forEach(cellC => {
+            cv.rectangle(mat,
+                new cv.Point(cellC.rect.x, cellC.rect.y),
+                new cv.Point(cellC.rect.x + cellC.rect.width, cellC.rect.y +  + cellC.rect.height),
+                TMP_CELL_CONTOUR_COLOR,
+                TMP_CONTOUR_THICKNESS);
+        });
     });
 
     new Jimp({
