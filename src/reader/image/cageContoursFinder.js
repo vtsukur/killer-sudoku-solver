@@ -137,7 +137,7 @@ function groupCageContours(cellContoursMatrix, cageContours, gridContour) {
         const cvRect = cv.boundingRect(cageContour);
         const cell = gridContour.cellFromRect(cvRect);
         if (!_.isUndefined(cell)) {
-            cellContoursMatrix[cell.row][cell.col].addCageContour(cageContour);
+            cellContoursMatrix[cell.row][cell.col].markCageContour(cvRect);
         }
     }
 }
