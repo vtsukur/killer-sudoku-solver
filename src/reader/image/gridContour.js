@@ -37,15 +37,15 @@ export class GridContour {
     cellFromRect(rect) {
         if (!this.#hasRect(rect)) return undefined;
 
-        const relativeX = rect.x - this.#rect.x + this.#rect.width / 2;
-        const relativeY = rect.y - this.#rect.y + this.#rect.height / 2;
+        const relativeX = rect.x - this.#rect.x + rect.width / 2;
+        const relativeY = rect.y - this.#rect.y + rect.height / 2;
 
         return Cell.at(Math.floor(relativeX / this.#cellWidth), Math.floor(relativeY / this.#cellHeight));
     }
 
     #hasRect(rect) {
-        return this.#rect.x >= rect.x && this.#rect.x + this.#rect.width <= rect.x + rect.width &&
-            this.#rect.y >= rect.y && this.#rect.y + this.#rect.height <= rect.y + rect.height;
+        return this.#rect.x <= rect.x && this.#rect.x + this.#rect.width >= rect.x + rect.width &&
+            this.#rect.y <= rect.y && this.#rect.y + this.#rect.height >= rect.y + rect.height;
     }
 
     toString() {
