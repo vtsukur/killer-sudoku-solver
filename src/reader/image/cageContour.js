@@ -1,15 +1,26 @@
+import _ from 'lodash';
+
 export class CageContour {
-    #cells;
+    #cellContours;
+    #topLeftCellContour;
 
     constructor() {
-        this.#cells = Array();
+        this.#cellContours = Array();
+        this.#topLeftCellContour = undefined;
     }
 
-    addCell(cell) {
-        this.#cells.push(cell);
+    addCellContour(cellContour) {
+        this.#cellContours.push(cellContour);
+        this.#updateTopLeftCellContour(cellContour);
     }
 
-    sortCells() {
-        this.#cells.sort((a, b) => a.absIdx - b.absIdx);
+    #updateTopLeftCellContour(cellContour) {
+        if (_.isUndefined(this.#topLeftCellContour) || cellContour.cell.absIdx < this.#topLeftCellContour.cell.absIdx) {
+            this.#topLeftCellContour = cellContour;
+        }
+    }
+
+    get topLeftCellContour() {
+        return this.#topLeftCellContour;
     }
 }

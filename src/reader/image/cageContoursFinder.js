@@ -41,6 +41,7 @@ export async function findCageContours(imagePath) {
 
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
+    determineCageSums(cageContours, jimpSrc);
 
     // dump temporary processing result
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
@@ -160,8 +161,6 @@ function determineCageContoursByCells(cellContoursMatrix) {
         });
     });
 
-    cageContours.forEach(cageContour => cageContour.sortCells());
-
     return cageContours;
 }
 
@@ -169,7 +168,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     const cellContour = cellContoursMatrix[row][col];
     if (cellContour.cageFound || !_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
 
-    cageContour.addCell(cellContour.cell);
+    cageContour.addCellContour(cellContour);
     cellContour.setCageFound();
 
     if (!cellContour.cageBorders.hasAtRight) {
@@ -184,6 +183,19 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     if (!cellContour.cageBorders.hasAtTop) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row - 1, col, cageContour);
     }
+}
+
+function determineCageSums(cageContours, srcImage) {
+    cageContours.forEach((cageContour, idx) => {
+        const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
+
+        const leftX = topLeftCellContourRect.x;
+        const width = topLeftCellContourRect.width / 2;
+        const topY = topLeftCellContourRect.y;
+        const height = topLeftCellContourRect.height / 2;
+
+        new Jimp(srcImage).crop(leftX, topY, width, height).write(`./tmp/sumText_${idx}.png`);
+    });
 }
 
 function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
