@@ -19,7 +19,7 @@ export class CellContour {
         return this.#rect;
     }
 
-    get marker() {
+    get cageBorders() {
         return this.#cageBorders;
     }
 
@@ -35,10 +35,10 @@ export class CellContour {
         const relativeX = rect.x - this.#rect.x + rect.width / 2;
         const relativeY = rect.y - this.#rect.y + rect.height / 2;
 
-        const markerXSize = this.#rect.width / CageBorders.SIDES;
-        const markerYSize = this.#rect.height / CageBorders.SIDES;
+        const cageBorderXSize = this.#rect.width / CageBorders.SIDES;
+        const cageBorderYSize = this.#rect.height / CageBorders.SIDES;
 
-        this.#cageBorders.setHasAt(Math.floor(relativeX / markerXSize), Math.floor(relativeY / markerYSize));
+        this.#cageBorders.setHasAt(Math.floor(relativeX / cageBorderXSize), Math.floor(relativeY / cageBorderYSize));
     }
 }
 

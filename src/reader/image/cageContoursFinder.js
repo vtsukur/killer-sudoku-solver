@@ -170,16 +170,16 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     cageContour.addCell(cellContour.cell);
     cellContour.setCageFound();
 
-    if (!cellContour.marker.hasAtRight) {
+    if (!cellContour.cageBorders.hasAtRight) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row, col + 1, cageContour);
     }
-    if (!cellContour.marker.hasAtBottom) {
+    if (!cellContour.cageBorders.hasAtBottom) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row + 1, col, cageContour);
     }
-    if (!cellContour.marker.hasAtLeft) {
+    if (!cellContour.cageBorders.hasAtLeft) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row, col - 1, cageContour);
     }
-    if (!cellContour.marker.hasAtTop) {
+    if (!cellContour.cageBorders.hasAtTop) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row - 1, col, cageContour);
     }
 }
