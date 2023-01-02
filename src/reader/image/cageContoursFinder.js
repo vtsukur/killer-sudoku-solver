@@ -27,25 +27,25 @@ export async function findCageContours(imagePath) {
 
     // find cage contours
     const contoursMatVector = new cv.MatVector();
-    const allCageContours = findAllCageContours(src, contoursMatVector);
+    const dottedCageContours = findDottedCageContours(src, contoursMatVector);
 
     // find grid contour
-    const gridContour = findGridContourFromCageContours(allCageContours);
+    const gridContour = findGridContour(dottedCageContours);
     console.log(`Grid contour: ${gridContour}`);
-    console.log(`Total size: ${src.rows} x ${src.cols}`);
+    console.log(`Total source image size: ${src.rows} x ${src.cols}`);
 
     // create cell contours and group cage contours by cells
     const cellContoursMatrix = createCellContours(gridContour);
-    groupCageContoursByCellContours(cellContoursMatrix, allCageContours, gridContour);
+    groupCageContours(cellContoursMatrix, dottedCageContours, gridContour);
 
     // dump temporary processing result
-    dumpTmpContoursOutput(src, allCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
+    dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup
     contoursMatVector.delete();
     src.delete();
 
-    return allCageContours;
+    return dottedCageContours;
 }
 
 function prepareSourceMat(src) {
@@ -56,10 +56,10 @@ function prepareSourceMat(src) {
     cv.Canny(src, src, CANNY_THRESHOLD_MIN, CANNY_THRESHOLD_MAX);
 }
 
-function findAllCageContours(src, contoursMatVector) {
+function findDottedCageContours(src, contoursMatVector) {
     cv.findContours(src, contoursMatVector, new cv.Mat(), cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
 
-    const allCageContours = [];
+    const dottedCageContours = [];
     const contoursBoundingRectsSet = new Set();
     _.range(contoursMatVector.size()).forEach(i => {
         const contour = contoursMatVector.get(i);
@@ -69,21 +69,21 @@ function findAllCageContours(src, contoursMatVector) {
             const key = `(${cvRect.x} + ${cvRect.width}, ${cvRect.y} + ${cvRect.height})`;
             if (!contoursBoundingRectsSet.has(key)) {
                 contoursBoundingRectsSet.add(key);
-                allCageContours.push(contour);
+                dottedCageContours.push(contour);
             }
         }
     });
 
-    return allCageContours;
+    return dottedCageContours;
 }
 
-function findGridContourFromCageContours(allCageContours) {
+function findGridContour(dottedCageContours) {
     const leftXMap = new Map();
     const rightXMap = new Map();
     const topYMap = new Map();
     const bottomYMap = new Map();
 
-    for (const cageContour of allCageContours) {
+    for (const cageContour of dottedCageContours) {
         const cvRect = cv.boundingRect(cageContour);
         accumCoordEntry(leftXMap, cvRect.x);
         accumCoordEntry(rightXMap, cvRect.x + cvRect.width);
@@ -132,7 +132,7 @@ function createCellContours(gridContour) {
     return cellContoursMatrix;
 }
 
-function groupCageContoursByCellContours(cellContoursMatrix, cageContours, gridContour) {
+function groupCageContours(cellContoursMatrix, cageContours, gridContour) {
     for (const cageContour of cageContours) {
         const cvRect = cv.boundingRect(cageContour);
         const cell = gridContour.cellFromRect(cvRect);
