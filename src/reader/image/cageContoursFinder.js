@@ -165,8 +165,10 @@ function determineCageContoursByCells(cellContoursMatrix) {
 }
 
 function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageContour) {
+    if (!_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
+
     const cellContour = cellContoursMatrix[row][col];
-    if (cellContour.cageFound || !_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
+    if (cellContour.cageFound) return;
 
     cageContour.addCellContour(cellContour);
     cellContour.setCageFound();
