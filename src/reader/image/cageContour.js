@@ -8,4 +8,8 @@ export class CageContour {
     addCell(cell) {
         this.#cells.push(cell);
     }
+
+    sortCells() {
+        this.#cells.sort((a, b) => a.absIdx - b.absIdx);
+    }
 }

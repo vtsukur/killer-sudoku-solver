@@ -160,6 +160,8 @@ function determineCageContoursByCells(cellContoursMatrix) {
         });
     });
 
+    cageContours.forEach(cageContour => cageContour.sortCells());
+
     return cageContours;
 }
 

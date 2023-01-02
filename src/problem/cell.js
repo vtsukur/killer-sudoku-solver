@@ -46,6 +46,10 @@ export class Cell {
         return this.#key;
     }
 
+    get absIdx() {
+        return this.#row * House.SIZE + this.#col;
+    }
+
     toString() {
         return this.#key;
     }
