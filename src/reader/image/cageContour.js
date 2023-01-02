@@ -3,10 +3,12 @@ import _ from 'lodash';
 export class CageContour {
     #cellContours;
     #topLeftCellContour;
+    #sumImagePath;
 
     constructor() {
         this.#cellContours = Array();
         this.#topLeftCellContour = undefined;
+        this.#sumImagePath = undefined;
     }
 
     addCellContour(cellContour) {
@@ -22,5 +24,13 @@ export class CageContour {
 
     get topLeftCellContour() {
         return this.#topLeftCellContour;
+    }
+
+    get sumImagePath() {
+        return this.#sumImagePath;
+    }
+
+    set sumImagePath(value) {
+        this.#sumImagePath = value;
     }
 }

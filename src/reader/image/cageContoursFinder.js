@@ -8,6 +8,7 @@ import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
+import tesseract from 'node-tesseract-ocr'; // use native port instead
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
@@ -41,7 +42,16 @@ export async function findCageContours(imagePath) {
 
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
-    determineCageSums(cageContours, jimpSrc);
+    prepareCageSumImages(cageContours, jimpSrc);
+    for (const cageContour of cageContours) {
+        await tesseract.recognize(cageContour.sumImagePath, {
+            lang: "eng",
+            oem: 1,
+            psm: 6,
+        }).then((text) => {
+            console.log(text)
+        });
+    }
 
     // dump temporary processing result
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
@@ -187,16 +197,19 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     }
 }
 
-function determineCageSums(cageContours, srcImage) {
+function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
         const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
 
-        const leftX = topLeftCellContourRect.x;
-        const width = topLeftCellContourRect.width / 2;
-        const topY = topLeftCellContourRect.y;
-        const height = topLeftCellContourRect.height / 2;
+        const leftX = topLeftCellContourRect.x + 5;
+        const width = topLeftCellContourRect.width * 0.33;
+        const topY = topLeftCellContourRect.y + 9;
+        const height = topLeftCellContourRect.height * 0.25;
 
-        new Jimp(srcImage).crop(leftX, topY, width, height).write(`./tmp/sumText_${idx}.png`);
+        const outputPath = `./tmp/sumText_${idx}.png`;
+        const scaledSum = new Jimp(srcImage).crop(leftX, topY, width, height).scale(3);
+        new Jimp(width * 6, height * 6, 0xffffffff).composite(scaledSum, width * 1.5, height * 1.5).write(outputPath);
+        cageContour.sumImagePath = outputPath;
     });
 }
 
@@ -214,7 +227,7 @@ function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outp
         cellCRow.forEach(cellC => {
             cv.rectangle(mat,
                 new cv.Point(cellC.rect.x, cellC.rect.y),
-                new cv.Point(cellC.rect.x + cellC.rect.width, cellC.rect.y +  + cellC.rect.height),
+                new cv.Point(cellC.rect.x + cellC.rect.width, cellC.rect.y + cellC.rect.height),
                 TMP_CELL_CONTOUR_COLOR,
                 TMP_CONTOUR_THICKNESS);
         });
