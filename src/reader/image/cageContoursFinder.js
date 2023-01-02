@@ -12,7 +12,7 @@ const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
 const CANNY_THRESHOLD_MAX = 100;
 const GRID_CONTOUR_ADJUSTMENT = 3;
-const TMP_CAGE_CONTOURS_DUMP_PATH = './tmp/cageContours.png';
+const TMP_CAGE_CONTOURS_DUMP_PATH = './tmp/contours.png';
 const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
@@ -83,8 +83,8 @@ function findGridContour(dottedCageContours) {
     const topYMap = new Map();
     const bottomYMap = new Map();
 
-    for (const cageContour of dottedCageContours) {
-        const cvRect = cv.boundingRect(cageContour);
+    for (const dottedCageContour of dottedCageContours) {
+        const cvRect = cv.boundingRect(dottedCageContour);
         accumCoordEntry(leftXMap, cvRect.x);
         accumCoordEntry(rightXMap, cvRect.x + cvRect.width);
         accumCoordEntry(topYMap, cvRect.y);
@@ -132,9 +132,9 @@ function createCellContours(gridContour) {
     return cellContoursMatrix;
 }
 
-function groupCageContours(cellContoursMatrix, cageContours, gridContour) {
-    for (const cageContour of cageContours) {
-        const cvRect = cv.boundingRect(cageContour);
+function groupCageContours(cellContoursMatrix, dottedCageContours, gridContour) {
+    for (const dottedCageContour of dottedCageContours) {
+        const cvRect = cv.boundingRect(dottedCageContour);
         const cell = gridContour.cellFromRect(cvRect);
         if (!_.isUndefined(cell)) {
             cellContoursMatrix[cell.row][cell.col].markCageContour(cvRect);
@@ -142,11 +142,11 @@ function groupCageContours(cellContoursMatrix, cageContours, gridContour) {
     }
 }
 
-function dumpTmpContoursOutput(src, cageContours, cellContoursMatrix, outputPath) {
+function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
-    for (const cageContour of cageContours) {
-        const cvRect = cv.boundingRect(cageContour);
+    for (const dottedCageContour of dottedCageContours) {
+        const cvRect = cv.boundingRect(dottedCageContour);
         const topLeft = new cv.Point(cvRect.x, cvRect.y);
         const bottomRight = new cv.Point(cvRect.x + cvRect.width, cvRect.y + cvRect.height);
         cv.rectangle(mat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CONTOUR_THICKNESS);
