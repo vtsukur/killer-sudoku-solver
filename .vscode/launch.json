@@ -228,6 +228,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [readAndSolve (dailyKillerSudokuDotCom)]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "readAndSolve.dailyKillerSudokuDotCom"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run profile",
             "request": "launch",
             "runtimeArgs": [
