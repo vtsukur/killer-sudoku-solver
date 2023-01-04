@@ -212,10 +212,10 @@ function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
         const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
 
-        const leftX = topLeftCellContourRect.x + 5;
-        const width = topLeftCellContourRect.width * 0.33;
-        const topY = topLeftCellContourRect.y + 9;
-        const height = topLeftCellContourRect.height * 0.25;
+        const leftX = topLeftCellContourRect.x + 3;
+        const width = topLeftCellContourRect.width * 0.35;
+        const topY = topLeftCellContourRect.y + 3;
+        const height = topLeftCellContourRect.height * 0.33;
 
         const scaledSum = new Jimp(srcImage).crop(leftX, topY, width, height).scale(3);
         const scaledWidth = width * 6;
@@ -275,6 +275,10 @@ function prepareCageSumImages(cageContours, srcImage) {
                 masterRectBottomY = Math.max(masterRectBottomY, bottomRight.y);
             }
         }
+        masterRectLeftX -= 2;
+        masterRectRightX += 2;
+        masterRectTopY -= 2;
+        masterRectBottomY += 2;
         const adjustedMasterRect = new Rect(masterRectLeftX, masterRectTopY, masterRectRightX - masterRectLeftX, masterRectBottomY - masterRectTopY);
 
         new Jimp({
