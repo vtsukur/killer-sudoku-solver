@@ -11,6 +11,7 @@ import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
 import tesseract from 'node-tesseract-ocr'; // use native port instead
+import * as fs from 'node:fs';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
@@ -22,6 +23,8 @@ const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
 
 export async function findCageContours(imagePath) {
+    fs.rmSync('./tmp', { recursive: true, force: true });
+
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
 
@@ -263,7 +266,7 @@ function prepareCageSumImages(cageContours, srcImage) {
             width: mat.cols,
             height: mat.rows,
             data: Buffer.from(mat.data)
-        }).write(`./tmp/sumText_${idx}_contour.png`);
+        }).write(`./tmp/sumText_${idx}_contours.png`);
         const dilatedImageData24U = new Uint8Array(mat.data.length);
         _.range(src.data.length).forEach(i => {
             const offset = i * 3;
