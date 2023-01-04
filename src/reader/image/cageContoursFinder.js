@@ -216,8 +216,68 @@ function prepareCageSumImages(cageContours, srcImage) {
 
         const outputPath = `./tmp/sumText_${idx}.png`;
         const scaledSum = new Jimp(srcImage).crop(leftX, topY, width, height).scale(3);
-        new Jimp(width * 6, height * 6, 0xffffffff).composite(scaledSum, width * 1.5, height * 1.5).write(outputPath);
-        cageContour.sumImagePath = outputPath;
+        const scaledSumWithExtraWhiteSpace = new Jimp(width * 6, height * 6, 0xffffffff).composite(scaledSum, width * 1.5, height * 1.5);
+        scaledSumWithExtraWhiteSpace.write(outputPath);
+
+        // convert image to OpenCV Mat and prepare source
+        const src = cv.matFromImageData(scaledSumWithExtraWhiteSpace.bitmap);
+        prepareSourceMat(src);
+        const kernel = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(2, 2));
+        cv.dilate(src, src, kernel);
+
+        // find cage contours
+        const contoursMatVector = new cv.MatVector();
+        cv.findContours(src, contoursMatVector, new cv.Mat(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+        const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+
+        let maxContourRect = undefined;
+        const potentialTextContourRects = Array();
+        _.range(contoursMatVector.size()).forEach(i => {
+            const contour = contoursMatVector.get(i);
+            const cvRect = cv.boundingRect(contour);
+
+            if (cvRect.width > 15 && cvRect.height > 15) {
+                potentialTextContourRects.push(cvRect);
+                if (_.isUndefined(maxContourRect)) {
+                    maxContourRect = cvRect;
+                } else if (cvRect.width * cvRect.height > maxContourRect.width * maxContourRect.height) {
+                    maxContourRect = cvRect;
+                }
+            }
+        });
+
+        const maxContourRectSize = maxContourRect.width * maxContourRect.height;
+        const textContourRects = Array();
+        for (const potentialTextContourRect of potentialTextContourRects) {
+            if (_.inRange(maxContourRectSize / (potentialTextContourRect.width * potentialTextContourRect.height), 0.4, 1.6)) {
+                textContourRects.push(potentialTextContourRect);
+
+                const topLeft = new cv.Point(potentialTextContourRect.x, potentialTextContourRect.y);
+                const bottomRight = new cv.Point(potentialTextContourRect.x + potentialTextContourRect.width, potentialTextContourRect.y + potentialTextContourRect.height);
+                cv.rectangle(mat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CONTOUR_THICKNESS);
+            }
+        }
+
+        new Jimp({
+            width: mat.cols,
+            height: mat.rows,
+            data: Buffer.from(mat.data)
+        }).write(`./tmp/sumText_${idx}_contour.png`);
+        const dilatedImageData24U = new Uint8Array(mat.data.length);
+        _.range(src.data.length).forEach(i => {
+            const offset = i * 3;
+            dilatedImageData24U[offset] = src.data[i];
+            dilatedImageData24U[offset + 1] = src.data[i];
+            dilatedImageData24U[offset + 2] = src.data[i];
+        });
+        new Jimp({
+            width: src.cols,
+            height: src.rows,
+            data: Buffer.from(dilatedImageData24U)
+        }).write(`./tmp/sumText_${idx}_dilated.png`);
+    
+        cageContour.sumImagePath = `./tmp/sumText_${idx}_dilated.png`;
     });
 }
 
