@@ -297,7 +297,7 @@ function prepareCageSumImages(cageContours, srcImage) {
             adjustedMasterRect.x, adjustedMasterRect.y,
             adjustedMasterRect.width, adjustedMasterRect.height);
         new Jimp(adjustedMasterRect.width * 3, adjustedMasterRect.height * 3, 0xffffffff).
-            composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).write(`./tmp/sumText_${idx}.png`);
+            composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).write(`${TMP_DIR_PATH}/sumText_${idx}.png`);
 
         cageContour.sumImagePath = `${TMP_DIR_PATH}/sumText_${idx}.png`;
     });
