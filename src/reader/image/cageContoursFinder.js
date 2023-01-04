@@ -17,13 +17,14 @@ const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
 const CANNY_THRESHOLD_MAX = 100;
 const GRID_CONTOUR_ADJUSTMENT = 3;
-const TMP_CAGE_CONTOURS_DUMP_PATH = './tmp/contours.png';
+const TMP_DIR_PATH = './tmp/cv'
+const TMP_CAGE_CONTOURS_DUMP_PATH = `${TMP_DIR_PATH}/contours.png`;
 const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
 
 export async function findCageContours(imagePath) {
-    fs.rmSync('./tmp', { recursive: true, force: true });
+    fs.rmSync(TMP_DIR_PATH, { recursive: true, force: true });
 
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
@@ -71,7 +72,7 @@ export async function findCageContours(imagePath) {
     contoursMatVector.delete();
     src.delete();
 
-    return dottedCageContours;
+    return problem;
 }
 
 function prepareSourceMat(src) {
@@ -221,7 +222,7 @@ function prepareCageSumImages(cageContours, srcImage) {
         const scaledWidth = width * 6;
         const scaledHeight = height * 6;
         const scaledSumWithExtraWhiteSpace = new Jimp(scaledWidth, scaledHeight, 0xffffffff).composite(scaledSum, width * 1.5, height * 1.5);
-        scaledSumWithExtraWhiteSpace.write(`./tmp/sumText_${idx}_raw.png`);
+        scaledSumWithExtraWhiteSpace.write(`${TMP_DIR_PATH}/sumText_${idx}_raw.png`);
 
         // convert image to OpenCV Mat and prepare source
         const src = cv.matFromImageData(scaledSumWithExtraWhiteSpace.bitmap);
@@ -285,12 +286,12 @@ function prepareCageSumImages(cageContours, srcImage) {
             width: allContoursMat.cols,
             height: allContoursMat.rows,
             data: Buffer.from(allContoursMat.data)
-        }).write(`./tmp/sumText_${idx}_all_contours.png`);
+        }).write(`${TMP_DIR_PATH}/sumText_${idx}_all_contours.png`);
         new Jimp({
             width: textContoursMat.cols,
             height: textContoursMat.rows,
             data: Buffer.from(textContoursMat.data)
-        }).write(`./tmp/sumText_${idx}_text_contours.png`);
+        }).write(`${TMP_DIR_PATH}/sumText_${idx}_text_contours.png`);
 
         const cleanSumImage = new Jimp(scaledSumWithExtraWhiteSpace).crop(
             adjustedMasterRect.x, adjustedMasterRect.y,
@@ -298,20 +299,7 @@ function prepareCageSumImages(cageContours, srcImage) {
         new Jimp(adjustedMasterRect.width * 3, adjustedMasterRect.height * 3, 0xffffffff).
             composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).write(`./tmp/sumText_${idx}.png`);
 
-        // const dilatedImageData24U = new Uint8Array(mat.data.length);
-        // _.range(src.data.length).forEach(i => {
-        //     const offset = i * 3;
-        //     dilatedImageData24U[offset] = src.data[i];
-        //     dilatedImageData24U[offset + 1] = src.data[i];
-        //     dilatedImageData24U[offset + 2] = src.data[i];
-        // });
-        // new Jimp({
-        //     width: src.cols,
-        //     height: src.rows,
-        //     data: Buffer.from(dilatedImageData24U)
-        // }).write(`./tmp/sumText_${idx}_dilated.png`);
-    
-        cageContour.sumImagePath = `./tmp/sumText_${idx}.png`;
+        cageContour.sumImagePath = `${TMP_DIR_PATH}/sumText_${idx}.png`;
     });
 }
 
