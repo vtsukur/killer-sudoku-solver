@@ -28,6 +28,7 @@
     "jimp": "^0.16.2",
     "lodash": "^4.17.21",
     "node-tesseract-ocr": "^2.2.1",
+    "npmlog": "^7.0.1",
     "puppeteer": "^19.4.1",
     "save-dev": "^0.0.1-security"
   },
