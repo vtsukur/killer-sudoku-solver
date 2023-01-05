@@ -45,7 +45,6 @@ describe('Read and solve puzzle', () => {
         });
 
         const problem = await findCageContours('./tmp/screenshot-puzzle.png');
-        console.log(problem);
         const solver = new PuzzleSolver(problem);
         const solution = solver.solve();
 
@@ -68,7 +67,6 @@ describe('Read and solve puzzle', () => {
 
         await page.waitForXPath('//*[text()="Solved!"]');
         await page.waitForSelector('#modal.show');
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         await page.screenshot({
             path: './tmp/screenshot-solved.png',
