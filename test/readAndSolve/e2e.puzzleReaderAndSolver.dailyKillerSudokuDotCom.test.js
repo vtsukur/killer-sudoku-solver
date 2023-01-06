@@ -63,7 +63,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return page;
     };
 
-    const detectAndSavePuzzle = async function(page) {
+    const detectAndSavePuzzleImage = async function(page) {
         log.info('Detecting placement of puzzle canvas ...');
         await page.waitForSelector(SELECTOR_PUZZLE_CANVAS);
         const captureRect = await page.evaluate((selector) => {
@@ -93,7 +93,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return PUZZLE_SOURCE_IMAGE_PATH;
     };
 
-    const transformImageToStructuredProblem = async function(puzzleSourceImagePath) {
+    const transformPuzzleImageToStructuredPuzzle = async function(puzzleSourceImagePath) {
         log.info('Transforming puzzle image to structured problem ...');
         const problem = await findCageContours(puzzleSourceImagePath);
         log.info('Puzzle problem constructed successfully');
@@ -148,8 +148,8 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
     test('Puzzle 24914 of difficulty 10', async () => {
         const page = await openCleanPuzzlePage(24914);
-        const originalPuzzleSourceImagePath = await detectAndSavePuzzle(page);
-        const problem = await transformImageToStructuredProblem(originalPuzzleSourceImagePath);
+        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(page);
+        const problem = await transformPuzzleImageToStructuredPuzzle(originalPuzzleSourceImagePath);
         const solution = solvePuzzle(problem);
         await reflectSolutionOnThePage(page, solution);
         await saveSolvedPuzzleImageAndOpenIfNeccessary(page);
