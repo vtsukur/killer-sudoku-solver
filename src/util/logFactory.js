@@ -1,5 +1,7 @@
 import winston from 'winston';
 
+const format = winston.format;
+
 class Log {
     #label;
     #logger;
@@ -13,12 +15,12 @@ class Log {
                     stream: process.stderr
                 })
             ],
-            format: winston.format.combine(
-                winston.format.label({ label: this.#label }),
-                winston.format.printf((info) => {
+            format: format.combine(
+                format.label({ label: this.#label }),
+                format.printf((info) => {
                     return `${info.level.toUpperCase()} [${info.label}]: ${info.message}`;
                 }),
-                winston.format.colorize()
+                format.colorize()
             )
         });
     }
