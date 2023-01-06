@@ -9,6 +9,8 @@ import { logFactory } from '../../src/util/logFactory';
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 const openSolvedPuzzleAtCompletion = false;
 
+const SELECTOR_BANNER = '.cc_banner-wrapper';
+
 let browser;
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
@@ -22,7 +24,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         browser.close();
     });
 
-    const openPuzzlePage = async (puzzleNumber) => {
+    const openCleanPuzzlePage = async (puzzleNumber) => {
         const puzzlePage = `https://www.dailykillersudoku.com/puzzle/${puzzleNumber}`;
         log.info(`Opening DailyKillerSudoku puzzle page ${puzzlePage} ...`);
 
@@ -38,17 +40,17 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         await page.goto(puzzlePage);
         log.info('Puzzle page loaded');
 
+        log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper problem detection');
+        await page.waitForSelector(SELECTOR_BANNER);
+        await page.evaluate((selector) => {
+            document.querySelector(selector).remove();
+        }, SELECTOR_BANNER);        
+
         return page;
     }
 
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
-        const page = await openPuzzlePage(24914);
-
-        log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper problem detection');
-        await page.waitForSelector('.cc_banner-wrapper');
-        await page.evaluate(() => {
-            document.querySelector('.cc_banner-wrapper').remove();
-        });
+        const page = await openCleanPuzzlePage(24914);
 
         log.info('Detecting placement of puzzle canvas ...');
         await page.waitForSelector('.puzzle-canvas');
