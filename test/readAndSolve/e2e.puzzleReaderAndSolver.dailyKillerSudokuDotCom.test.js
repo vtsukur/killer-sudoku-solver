@@ -90,7 +90,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return problem;
     };
 
-    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
+    test('Puzzle 24914 of difficulty 10', async () => {
         const page = await openCleanPuzzlePage(24914);
         const puzzleSourceImagePath = await detectAndSavePuzzleCanvasImage(page);
         const problem = await detectProblemFromImage(puzzleSourceImagePath);
