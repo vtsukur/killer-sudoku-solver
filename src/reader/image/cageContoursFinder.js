@@ -1,17 +1,18 @@
 import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
+import tesseract from 'node-tesseract-ocr'; // use native port instead
+import * as fs from 'node:fs';
 import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
 import { Problem } from '../../problem/problem';
+import { logFactory } from '../../util/logFactory';
 import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
-import tesseract from 'node-tesseract-ocr'; // use native port instead
-import * as fs from 'node:fs';
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
@@ -22,6 +23,8 @@ const TMP_CAGE_CONTOURS_DUMP_PATH = `${TMP_DIR_PATH}/contours.png`;
 const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
+
+const log = logFactory.of('cageContoursFinder');
 
 export async function findCageContours(imagePath) {
     fs.rmSync(TMP_DIR_PATH, { recursive: true, force: true });
@@ -39,8 +42,8 @@ export async function findCageContours(imagePath) {
 
     // find grid contour
     const gridContour = findGridContour(dottedCageContours);
-    console.log(`Grid contour: ${gridContour}`);
-    console.log(`Total source image size: ${src.rows} x ${src.cols}`);
+    log.info(`Total source image size: ${src.rows} x ${src.cols}`);
+    log.info(`Detected grid contour: ${gridContour}`);
 
     // create cell contours and group cage contours by cells
     const cellContoursMatrix = createCellContours(gridContour);
@@ -58,7 +61,7 @@ export async function findCageContours(imagePath) {
         }).then((text) => {
             return parseInt(text);
         });
-        console.log(sum);
+        log.info(`Read sum: ${sum}`);
         const cageBuilder = Cage.ofSum(sum);
         cageContour.cells.forEach(cell => cageBuilder.cell(cell));
         cages.push(cageBuilder.mk());
