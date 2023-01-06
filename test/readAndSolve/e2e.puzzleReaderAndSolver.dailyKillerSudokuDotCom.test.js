@@ -106,13 +106,5 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
 async function launchHeadlessBrowser() {
     log.info('Launching Puppeteer with headless Chrome');
-    return await puppeteer.launch({
-        headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--use-gl=egl',
-            '--max_old_space_size=4096'
-        ]
-    });
+    return await puppeteer.launch();
 }
