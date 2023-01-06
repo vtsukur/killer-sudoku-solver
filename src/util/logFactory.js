@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import winston from 'winston';
 
 const format = winston.format;
@@ -18,10 +19,10 @@ class Log {
             format: format.combine(
                 format.label({ label: this.#label }),
                 format.printf((info) => {
-                    return `${info.level.toUpperCase()} [${info.label}]: ${info.message}`;
-                }),
-                format.colorize()
-            )
+                    return `${chalk.yellow(info.level.toUpperCase())} [${info.label}]: ${info.message}`;
+                })
+            ),
+            colorize: true
         });
     }
 

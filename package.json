@@ -9,10 +9,6 @@
     "test-single-puzzle": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/solver/puzzles/puzzleSolver.dailyKillerSudokuDotCom.test.js -t '24919'",
     "profile": "ndb ."
   },
-  "jest": {
-    "collectCoverage": true,
-    "testTimeout": 120000
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vtsukur/killer-sudoku-solver.git"
@@ -25,6 +21,7 @@
   "homepage": "https://github.com/vtsukur/killer-sudoku-solver#readme",
   "dependencies": {
     "@techstark/opencv-js": "^4.6.0-release.1",
+    "chalk": "^5.2.0",
     "jimp": "^0.16.2",
     "lodash": "^4.17.21",
     "node-tesseract-ocr": "^2.2.1",
