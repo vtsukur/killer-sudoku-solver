@@ -21,6 +21,8 @@ const SELECTOR_NTH_CELL = (n) => {
 const SELECTOR_SHOWN_MODAL = '#modal.show';
 const XPATH_SOLVED_TEXT = '//*[text()="Solved!"]';
 
+const STATIC_WAIT_FOR_SOLVED_ANIMATION_TIMEOUT = 1000;
+
 const PUZZLE_SOURCE_IMAGE_PATH = './tmp/screenshot-source-puzzle.png';
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = './tmp/screenshot-solved-puzzle-page.png';
 
@@ -104,7 +106,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     };
 
     const reflectSolutionOnThePage = async function(page, solution) {
-        log.info('Reflection solution of the puzzle on the page by sending input commands ...');
+        log.info('Reflecting solution of the puzzle on the page by sending input commands ...');
 
         const solutionCommands = Array();
         _.range(House.SIZE).forEach(row => {
@@ -127,6 +129,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         await page.waitForXPath(XPATH_SOLVED_TEXT);
         await page.waitForSelector(SELECTOR_SHOWN_MODAL);
         log.info('Page confirms that puzzle is solved successfully!');
+
+        log.info('Waiting for puzzle solved animation to complete');
+        await new Promise(resolve => setTimeout(resolve, STATIC_WAIT_FOR_SOLVED_ANIMATION_TIMEOUT));
     };
 
     const saveSolvedPuzzleImageAndOpenIfNeccessary = async function(page) {
