@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { House } from '../../../problem/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
+import { log } from '../../../util/log';
 
 export function deepTryOptionsStrategy() {
     if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;
@@ -20,16 +21,16 @@ export function deepTryOptionsStrategy() {
         try {
             ctxCpy.skipInit = true;
             if (ctxCpy.depth === 1) {
-                console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
+                log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
             }
             ctxCpy.run(masterStrategy);
             if (ctxCpy.depth === 1) {
-                console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
+                log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
             }
         } catch(e) {
             if (e instanceof InvalidSolverStepError) {
                 if (ctxCpy.depth === 1) {
-                    console.log(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
+                    log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
                 }
                 cellMTarget.deleteNumOpt(tryNum);
                 continue;
