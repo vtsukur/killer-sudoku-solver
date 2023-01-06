@@ -124,13 +124,17 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Yes, we are good!');
     };
 
-    const saveSolvedPuzzlePageImage = async function(page, saveTo) {
+    const saveSolvedPuzzlePageImageAndOpenIfNeccessary = async function(page) {
         log.info('Taking screenshot of the page to enable manual verification');
         await page.screenshot({
-            path: saveTo,
+            path: PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH,
             fullPage: true
         });
-        log.info(`Solved puzzle page saved to ${saveTo}`);
+        log.info(`Solved puzzle page saved to ${PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH}`);
+
+        if (openSolvedPuzzleAtCompletion) {
+            open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH);
+        }
     };
 
     test('Puzzle 24914 of difficulty 10', async () => {
@@ -139,10 +143,6 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         const problem = await detectProblemFromImage(puzzleSourceImagePath);
         const solution = solvePuzzle(problem);
         await reflectSolutionOnThePage(page, solution);
-        await saveSolvedPuzzlePageImage(page, PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH);
-
-        if (openSolvedPuzzleAtCompletion) {
-            open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH);
-        }
+        await saveSolvedPuzzlePageImageAndOpenIfNeccessary(page);
     });
 });
