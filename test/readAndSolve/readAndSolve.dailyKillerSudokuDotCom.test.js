@@ -7,6 +7,7 @@ import { logFactory } from '../../src/util/logFactory';
 import open from 'open';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
+const openSolvedPuzzleAtCompletion = false;
 
 describe('Read and solve puzzle', () => {
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
@@ -21,9 +22,9 @@ describe('Read and solve puzzle', () => {
 
         const page = await browser.newPage();
         page.setViewport({
-            width: 3360,
-            height: 2100,
-            deviceScaleFactor: 1
+            width: 1680,
+            height: 1050,
+            deviceScaleFactor: 2
         });
         await page.goto(puzzlePage);
         log.info('Puzzle page loaded');
@@ -103,6 +104,6 @@ describe('Read and solve puzzle', () => {
 
         await browser.close();
 
-        open(puzzleSolvedPageImageSavePath);
+        if (!openSolvedPuzzleAtCompletion) open(puzzleSolvedPageImageSavePath);
     });
 });
