@@ -9,7 +9,7 @@ import open from 'open';
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 const openSolvedPuzzleAtCompletion = false;
 
-describe('Read and solve puzzle', () => {
+describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
         log.info('Launching Puppeteer with headless Chrome');
         const browser = await puppeteer.launch({
@@ -104,6 +104,6 @@ describe('Read and solve puzzle', () => {
 
         await browser.close();
 
-        if (!openSolvedPuzzleAtCompletion) open(puzzleSolvedPageImageSavePath);
+        if (openSolvedPuzzleAtCompletion) open(puzzleSolvedPageImageSavePath);
     });
 });

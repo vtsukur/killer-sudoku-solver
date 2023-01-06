@@ -228,12 +228,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [readAndSolve (dailyKillerSudokuDotCom)]",
+            "name": "npm run test [puzzleReaderAndSolver]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "readAndSolve.dailyKillerSudokuDotCom"
+                "e2e.puzzleReaderAndSolver.dailyKillerSudokuDotCom"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
