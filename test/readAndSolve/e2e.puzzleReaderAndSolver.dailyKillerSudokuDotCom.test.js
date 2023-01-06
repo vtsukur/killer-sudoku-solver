@@ -72,7 +72,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         }, SELECTOR_PUZZLE_CANVAS);
         log.info(`Detected puzzle canvas client rect: (x: ${captureRect.x}, y: ${captureRect.y}, width: ${captureRect.width}, height: ${captureRect.height})`);
 
-        log.info('Taking screenshot of detected puzzle canvas ...');
+        log.info('Taking screenshot of detected puzzle canvas area ...');
         await page.screenshot({
             path: PUZZLE_SOURCE_IMAGE_PATH,
             captureBeyondViewport: true,
@@ -89,9 +89,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     };
 
     const transformImageToStructuredProblem = async function(puzzleSourceImagePath) {
-        log.info('Detecting puzzle problem from puzzle canvas image ...');
+        log.info('Transforming puzzle image to structured problem ...');
         const problem = await findCageContours(puzzleSourceImagePath);
-        log.info('Puzzle problem detected successfully');
+        log.info('Puzzle problem constructed successfully');
         return problem;
     };
 
