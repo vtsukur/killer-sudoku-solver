@@ -7,9 +7,13 @@ import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
-const openSolvedPuzzleAtCompletion = false;
 
 const SELECTOR_BANNER = '.cc_banner-wrapper';
+const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
+
+const PUZZLE_SOURCE_IMAGE_TMP_PATH = './tmp/screenshot-puzzle.png';
+
+const openSolvedPuzzleAtCompletion = false;
 
 let browser;
 
@@ -47,40 +51,43 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         }, SELECTOR_BANNER);        
 
         return page;
-    }
+    };
 
-    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
-        const page = await openCleanPuzzlePage(24914);
-
+    const detectAndSavePuzzleCanvasImage = async function(page) {
         log.info('Detecting placement of puzzle canvas ...');
-        await page.waitForSelector('.puzzle-canvas');
-        const puzzleCanvasClientRect = await page.evaluate(() => {
-            const rect = document.querySelector('.puzzle-canvas').getBoundingClientRect();
+        await page.waitForSelector(SELECTOR_PUZZLE_CANVAS);
+        const captureRect = await page.evaluate((selector) => {
+            const rect = document.querySelector(selector).getBoundingClientRect();
             return {
                 x: rect.x,
                 y: rect.y,
                 width: rect.width,
                 height: rect.height
             };
-        });
-        log.info(`Detected puzzle canvas client rect: (x: ${puzzleCanvasClientRect.x}, y: ${puzzleCanvasClientRect.y}, width: ${puzzleCanvasClientRect.width}, height: ${puzzleCanvasClientRect.height})`);
+        }, SELECTOR_PUZZLE_CANVAS);
+        log.info(`Detected puzzle canvas client rect: (x: ${captureRect.x}, y: ${captureRect.y}, width: ${captureRect.width}, height: ${captureRect.height})`);
 
-        const puzzleSourceImageSavePath = './tmp/screenshot-puzzle.png';
-        log.info(`Taking screenshot of detected puzzle canvas ...`);
+        log.info('Taking screenshot of detected puzzle canvas ...');
         await page.screenshot({
-            path: puzzleSourceImageSavePath,
+            path: PUZZLE_SOURCE_IMAGE_TMP_PATH,
             captureBeyondViewport: true,
             clip: {
-                x: puzzleCanvasClientRect.x,
-                y: puzzleCanvasClientRect.y,
-                width: puzzleCanvasClientRect.width,
-                height: puzzleCanvasClientRect.height
+                x: captureRect.x,
+                y: captureRect.y,
+                width: captureRect.width,
+                height: captureRect.height
             }
         });
-        log.info(`Puzzle canvas saved to ${puzzleSourceImageSavePath}`);
+        log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_TMP_PATH}`);
+    };
+
+    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
+        const page = await openCleanPuzzlePage(24914);
+
+        await detectAndSavePuzzleCanvasImage(page);
 
         log.info('Detecting puzzle problem from puzzle canvas image ...');
-        const problem = await findCageContours(puzzleSourceImageSavePath);
+        const problem = await findCageContours(PUZZLE_SOURCE_IMAGE_TMP_PATH);
         log.info('Puzzle problem detected successfully');
 
         log.info('Solving puzzle ...');
