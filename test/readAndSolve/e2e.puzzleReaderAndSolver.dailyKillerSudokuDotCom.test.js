@@ -79,16 +79,20 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             }
         });
         log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_TMP_PATH}`);
+
+        return PUZZLE_SOURCE_IMAGE_TMP_PATH;
+    };
+
+    const detectProblemFromImage = async function(puzzleSourceImagePath) {
+        log.info('Detecting puzzle problem from puzzle canvas image ...');
+        const problem = await findCageContours(puzzleSourceImagePath);
+        log.info('Puzzle problem detected successfully');
     };
 
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
         const page = await openCleanPuzzlePage(24914);
-
-        await detectAndSavePuzzleCanvasImage(page);
-
-        log.info('Detecting puzzle problem from puzzle canvas image ...');
-        const problem = await findCageContours(PUZZLE_SOURCE_IMAGE_TMP_PATH);
-        log.info('Puzzle problem detected successfully');
+        const puzzleSourceImagePath = await detectAndSavePuzzleCanvasImage(page);
+        const problem = await detectProblemFromImage(puzzleSourceImagePath);
 
         log.info('Solving puzzle ...');
         const solver = new PuzzleSolver(problem);
