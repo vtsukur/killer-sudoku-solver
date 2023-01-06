@@ -116,14 +116,14 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
                 const num = solution[row][col];
                 const n = row * House.SIZE + col + 1;
                 solutionCommands.push({
-                    cls: SELECTOR_NTH_CELL(n),
+                    selector: SELECTOR_NTH_CELL(n),
                     press: `${num}`
                 });
             });
         });
 
         for (const cmd of solutionCommands) {
-            await page.click(cmd.cls);
+            await page.click(cmd.selector);
             await page.keyboard.press(cmd.press);
         }
 
