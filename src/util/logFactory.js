@@ -1,11 +1,11 @@
 import winston from 'winston';
 
 class Log {
-    #namespace;
+    #label;
     #logger;
 
-    constructor(namespace) {
-        this.#namespace = namespace;
+    constructor(label) {
+        this.#label = label;
         this.#logger = winston.createLogger({
             level: 'info',
             transports: [
@@ -21,13 +21,13 @@ class Log {
     }
 
     info(msg) {
-        this.#logger.info(`[${this.#namespace}] ${msg}`);
+        this.#logger.info(`[${this.#label}] ${msg}`);
     }
 }
 
 class LogFactory {
-    of(namespace) {
-        return new Log(namespace);
+    of(label) {
+        return new Log(label);
     }
 }
 
