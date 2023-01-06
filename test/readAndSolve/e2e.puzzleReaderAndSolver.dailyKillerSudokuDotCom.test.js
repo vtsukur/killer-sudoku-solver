@@ -11,10 +11,10 @@ const log = logFactory.of('E2E Puzzle Reader & Solver');
 const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
 
-const PUZZLE_SOURCE_IMAGE_TMP_PATH = './tmp/screenshot-source-puzzle.png';
-const PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH = './tmp/screenshot-solved-puzzle-page.png';
+const PUZZLE_SOURCE_IMAGE_PATH = './tmp/screenshot-source-puzzle.png';
+const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = './tmp/screenshot-solved-puzzle-page.png';
 
-const openSolvedPuzzleAtCompletion = false;
+const OPEN_SOLVED_PUZZLE_AT_COMPLETION = false;
 
 let browser;
 
@@ -70,7 +70,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
         log.info('Taking screenshot of detected puzzle canvas ...');
         await page.screenshot({
-            path: PUZZLE_SOURCE_IMAGE_TMP_PATH,
+            path: PUZZLE_SOURCE_IMAGE_PATH,
             captureBeyondViewport: true,
             clip: {
                 x: captureRect.x,
@@ -79,9 +79,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
                 height: captureRect.height
             }
         });
-        log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_TMP_PATH}`);
+        log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_PATH}`);
 
-        return PUZZLE_SOURCE_IMAGE_TMP_PATH;
+        return PUZZLE_SOURCE_IMAGE_PATH;
     };
 
     const transformImageToStructuredProblem = async function(puzzleSourceImagePath) {
@@ -125,15 +125,15 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     };
 
     const saveSolvedPuzzleImageAndOpenIfNeccessary = async function(page) {
-        log.info('Taking screenshot of the page to enable manual verification');
+        log.info('Taking screenshot of the page to enable manual visual verification');
         await page.screenshot({
-            path: PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH,
+            path: PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH,
             fullPage: true
         });
-        log.info(`Solved puzzle page saved to ${PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH}`);
+        log.info(`Page with solved puzzle saved to ${PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH}`);
 
-        if (openSolvedPuzzleAtCompletion) {
-            open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH);
+        if (OPEN_SOLVED_PUZZLE_AT_COMPLETION) {
+            open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
         }
     };
 
