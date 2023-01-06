@@ -87,6 +87,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Detecting puzzle problem from puzzle canvas image ...');
         const problem = await findCageContours(puzzleSourceImagePath);
         log.info('Puzzle problem detected successfully');
+        return problem;
     };
 
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
