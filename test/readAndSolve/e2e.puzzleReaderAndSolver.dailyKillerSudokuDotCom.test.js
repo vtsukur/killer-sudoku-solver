@@ -22,18 +22,27 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         browser.close();
     });
 
-    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
-        const puzzlePage = 'https://www.dailykillersudoku.com/puzzle/24914';
-        log.info(`Navigating to DailyKillerSudoku puzzle page ${puzzlePage} ...`);
+    const openPuzzlePage = async (puzzleNumber) => {
+        const puzzlePage = `https://www.dailykillersudoku.com/puzzle/${puzzleNumber}`;
+        log.info(`Opening DailyKillerSudoku puzzle page ${puzzlePage} ...`);
 
         const page = await browser.newPage();
+
+        // viewport and scale factor should be big enough for image recognition techniques to work
         page.setViewport({
             width: 1680,
             height: 1050,
             deviceScaleFactor: 2
         });
+
         await page.goto(puzzlePage);
         log.info('Puzzle page loaded');
+
+        return page;
+    }
+
+    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
+        const page = await openPuzzlePage(24914);
 
         log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper problem detection');
         await page.waitForSelector('.cc_banner-wrapper');
