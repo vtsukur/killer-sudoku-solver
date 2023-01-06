@@ -24,7 +24,7 @@ const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
 
-const log = logFactory.of('cageContoursFinder');
+const log = logFactory.of('Puzzle Detection via Computer Vision');
 
 export async function findCageContours(imagePath) {
     fs.rmSync(TMP_DIR_PATH, { recursive: true, force: true });
@@ -34,25 +34,32 @@ export async function findCageContours(imagePath) {
 
     // convert image to OpenCV Mat and prepare source
     const src = cv.matFromImageData(jimpSrc.bitmap);
+    log.info(`Analyzing puzzle source image of size ${src.rows} x ${src.cols}`);
     prepareSourceMat(src);
 
     // find cage contours
+    log.info('Detecting dotted cage contours ...');
     const contoursMatVector = new cv.MatVector();
     const dottedCageContours = findDottedCageContours(src, contoursMatVector);
+    log.info(`Detected ${dottedCageContours.length} dotted cage contours`);
 
     // find grid contour
     const gridContour = findGridContour(dottedCageContours);
-    log.info(`Total source image size: ${src.rows} x ${src.cols}`);
     log.info(`Detected grid contour: ${gridContour}`);
 
     // create cell contours and group cage contours by cells
     const cellContoursMatrix = createCellContours(gridContour);
     groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridContour);
+    log.info('Grouped cell contours by cages');
 
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
+    log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
+
+    log.info('Preparing for detection of sums for each cage with extra image manipulation');
     prepareCageSumImages(cageContours, jimpSrc);
     const cages = Array();
+    log.info('Running sequential cage sum OCR top left to bottom right');
     for (const cageContour of cageContours) {
         const sum = await tesseract.recognize(cageContour.sumImagePath, {
             lang: "eng",
@@ -61,7 +68,7 @@ export async function findCageContours(imagePath) {
         }).then((text) => {
             return parseInt(text);
         });
-        log.info(`Read sum: ${sum}`);
+        log.info(`Detected sum for cage via OCR: ${sum}`);
         const cageBuilder = Cage.ofSum(sum);
         cageContour.cells.forEach(cell => cageBuilder.cell(cell));
         cages.push(cageBuilder.mk());
@@ -69,6 +76,7 @@ export async function findCageContours(imagePath) {
     const problem = new Problem(cages);
 
     // dump temporary processing result
+    log.info('Write temporary contour files');
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup

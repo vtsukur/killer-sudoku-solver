@@ -4,8 +4,9 @@ import { House } from '../../src/problem/house';
 import { findCageContours } from '../../src/reader/image/cageContoursFinder';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
+import open from 'open';
 
-const log = logFactory.of('E2E puzzle reader and solver');
+const log = logFactory.of('E2E Puzzle Reader & Solver');
 
 describe('Read and solve puzzle', () => {
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
@@ -44,7 +45,7 @@ describe('Read and solve puzzle', () => {
                 height: rect.height
             };
         });
-        log.info(`Detected puzzle canvas client rect: ${puzzleCanvasClientRect}`);
+        log.info(`Detected puzzle canvas client rect: (x: ${puzzleCanvasClientRect.x}, y: ${puzzleCanvasClientRect.y}, width: ${puzzleCanvasClientRect.width}, height: ${puzzleCanvasClientRect.height})`);
 
         const puzzleSourceImageSavePath = './tmp/screenshot-puzzle.png';
         log.info(`Taking screenshot of detected puzzle canvas ...`);
@@ -101,5 +102,7 @@ describe('Read and solve puzzle', () => {
         log.info(`Solved puzzle page saved to ${puzzleSolvedPageImageSavePath}`);
 
         await browser.close();
+
+        open(puzzleSolvedPageImageSavePath);
     });
 });
