@@ -9,10 +9,20 @@ import { logFactory } from '../../src/util/logFactory';
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 const openSolvedPuzzleAtCompletion = false;
 
-describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
-    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
-        const browser = await launchHeadlessBrowser();
+let browser;
 
+describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
+    beforeEach(async () => {
+        log.info('Launching Puppeteer with headless Chrome');
+        browser = await puppeteer.launch();
+    });
+
+    afterEach(() => {
+        log.info('Closing browser');
+        browser.close();
+    });
+
+    test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
         const puzzlePage = 'https://www.dailykillersudoku.com/puzzle/24914';
         log.info(`Navigating to DailyKillerSudoku puzzle page ${puzzlePage} ...`);
 
@@ -98,13 +108,6 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         });
         log.info(`Solved puzzle page saved to ${puzzleSolvedPageImageSavePath}`);
 
-        await browser.close();
-
         if (openSolvedPuzzleAtCompletion) open(puzzleSolvedPageImageSavePath);
     });
 });
-
-async function launchHeadlessBrowser() {
-    log.info('Launching Puppeteer with headless Chrome');
-    return await puppeteer.launch();
-}
