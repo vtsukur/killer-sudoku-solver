@@ -14,6 +14,11 @@ const PAGE_VIEWPORT_DEVICE_SCALE_FACTOR = 2;
 
 const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
+const SELECTOR_NTH_CELL = (n) => {
+    return `.cell:nth-of-type(${n})`;
+};
+const SELECTOR_SHOWN_MODAL = '#modal.show';
+const XPATH_SOLVED_TEXT = '//*[text()="Solved!"]';
 
 const PUZZLE_SOURCE_IMAGE_PATH = './tmp/screenshot-source-puzzle.png';
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = './tmp/screenshot-solved-puzzle-page.png';
@@ -109,9 +114,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
                 const num = solution[row][col];
-                const idx = row * House.SIZE + col + 1;
+                const n = row * House.SIZE + col + 1;
                 solutionCommands.push({
-                    cls: `.cell:nth-of-type(${idx})`,
+                    cls: SELECTOR_NTH_CELL(n),
                     press: `${num}`
                 });
             });
@@ -123,9 +128,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         }
 
         log.info('Check that "Solved!" modal is displayed');
-        await page.waitForXPath('//*[text()="Solved!"]');
-        await page.waitForSelector('#modal.show');
-        log.info('Yes, we are good!');
+        await page.waitForXPath(XPATH_SOLVED_TEXT);
+        await page.waitForSelector(SELECTOR_SHOWN_MODAL);
+        log.info('Page confirms that puzzle is solved successfully!');
     };
 
     const saveSolvedPuzzleImageAndOpenIfNeccessary = async function(page) {
