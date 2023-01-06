@@ -11,11 +11,7 @@ const openSolvedPuzzleAtCompletion = false;
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     test('Read and find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', async () => {
-        log.info('Launching Puppeteer with headless Chrome');
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--use-gl=egl', '--max_old_space_size=4096']
-        });
+        const browser = await launchHeadlessBrowser();
 
         const puzzlePage = 'https://www.dailykillersudoku.com/puzzle/24914';
         log.info(`Navigating to DailyKillerSudoku puzzle page ${puzzlePage} ...`);
@@ -107,3 +103,16 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         if (openSolvedPuzzleAtCompletion) open(puzzleSolvedPageImageSavePath);
     });
 });
+
+async function launchHeadlessBrowser() {
+    log.info('Launching Puppeteer with headless Chrome');
+    return await puppeteer.launch({
+        headless: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--use-gl=egl',
+            '--max_old_space_size=4096'
+        ]
+    });
+}
