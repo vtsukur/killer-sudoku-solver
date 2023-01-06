@@ -8,6 +8,10 @@ import { logFactory } from '../../src/util/logFactory';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 
+const PAGE_VIEWPORT_WIDTH = 1680;
+const PAGE_VIEWPORT_HEIGHT = 1050;
+const PAGE_VIEWPORT_DEVICE_SCALE_FACTOR = 2;
+
 const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
 
@@ -37,9 +41,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
         // viewport and scale factor should be big enough for image recognition techniques to work
         page.setViewport({
-            width: 1680,
-            height: 1050,
-            deviceScaleFactor: 2
+            width: PAGE_VIEWPORT_WIDTH,
+            height: PAGE_VIEWPORT_HEIGHT,
+            deviceScaleFactor: PAGE_VIEWPORT_DEVICE_SCALE_FACTOR
         });
 
         await page.goto(puzzlePage);
