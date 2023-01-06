@@ -54,7 +54,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return page;
     };
 
-    const detectAndSavePuzzleCanvasImage = async function(page) {
+    const detectAndSavePuzzle = async function(page) {
         log.info('Detecting placement of puzzle canvas ...');
         await page.waitForSelector(SELECTOR_PUZZLE_CANVAS);
         const captureRect = await page.evaluate((selector) => {
@@ -84,7 +84,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return PUZZLE_SOURCE_IMAGE_TMP_PATH;
     };
 
-    const detectProblemFromImage = async function(puzzleSourceImagePath) {
+    const transformImageToStructuredProblem = async function(puzzleSourceImagePath) {
         log.info('Detecting puzzle problem from puzzle canvas image ...');
         const problem = await findCageContours(puzzleSourceImagePath);
         log.info('Puzzle problem detected successfully');
@@ -124,7 +124,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Yes, we are good!');
     };
 
-    const saveSolvedPuzzlePageImageAndOpenIfNeccessary = async function(page) {
+    const saveSolvedPuzzleImageAndOpenIfNeccessary = async function(page) {
         log.info('Taking screenshot of the page to enable manual verification');
         await page.screenshot({
             path: PAGE_WITH_PUZZLE_SOLVED_IMAGE_TMP_PATH,
@@ -139,10 +139,10 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
     test('Puzzle 24914 of difficulty 10', async () => {
         const page = await openCleanPuzzlePage(24914);
-        const puzzleSourceImagePath = await detectAndSavePuzzleCanvasImage(page);
-        const problem = await detectProblemFromImage(puzzleSourceImagePath);
+        const originalPuzzleSourceImagePath = await detectAndSavePuzzle(page);
+        const problem = await transformImageToStructuredProblem(originalPuzzleSourceImagePath);
         const solution = solvePuzzle(problem);
         await reflectSolutionOnThePage(page, solution);
-        await saveSolvedPuzzlePageImageAndOpenIfNeccessary(page);
+        await saveSolvedPuzzleImageAndOpenIfNeccessary(page);
     });
 });
