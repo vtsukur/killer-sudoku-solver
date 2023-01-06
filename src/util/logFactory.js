@@ -14,14 +14,17 @@ class Log {
                 })
             ],
             format: winston.format.combine(
-                winston.format.simple(),
+                winston.format.label({ label: this.#label }),
+                winston.format.printf((info) => {
+                    return `${info.level.toUpperCase()} [${info.label}]: ${info.message}`;
+                }),
                 winston.format.colorize()
             )
         });
     }
 
     info(msg) {
-        this.#logger.info(`[${this.#label}] ${msg}`);
+        this.#logger.info(msg);
     }
 }
 
