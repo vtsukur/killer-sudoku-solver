@@ -2,7 +2,9 @@ import _ from 'lodash';
 import { House } from '../../../problem/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
-import { log } from '../../../util/log';
+import { logFactory } from '../../../util/logFactory';
+
+const log = logFactory.of(deepTryOptionsStrategy.name);
 
 export function deepTryOptionsStrategy() {
     if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;
