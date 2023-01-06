@@ -1,10 +1,10 @@
 import _ from 'lodash';
+import open from 'open';
 import puppeteer from 'puppeteer';
 import { House } from '../../src/problem/house';
 import { findCageContours } from '../../src/reader/image/cageContoursFinder';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
-import open from 'open';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 const openSolvedPuzzleAtCompletion = false;
