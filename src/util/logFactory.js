@@ -19,7 +19,9 @@ class Log {
             format: format.combine(
                 format.label({ label: this.#label }),
                 format.printf((info) => {
-                    return `${chalk.yellow(info.level.toUpperCase())} [${info.label}]: ${info.message}`;
+                    const level = chalk.bgBlue(`[${info.level.toUpperCase()}]`);
+                    const label = chalk.bgYellowBright.bold(`[${info.label}]`);
+                    return `${level} ${label} ${info.message}`;
                 })
             ),
             colorize: true
