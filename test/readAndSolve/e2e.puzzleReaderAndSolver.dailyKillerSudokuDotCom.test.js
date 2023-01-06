@@ -90,17 +90,16 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return problem;
     };
 
-    test('Puzzle 24914 of difficulty 10', async () => {
-        const page = await openCleanPuzzlePage(24914);
-        const puzzleSourceImagePath = await detectAndSavePuzzleCanvasImage(page);
-        const problem = await detectProblemFromImage(puzzleSourceImagePath);
-
+    const solvePuzzle = function(problem) {
         log.info('Solving puzzle ...');
-        const solver = new PuzzleSolver(problem);
-        const solution = solver.solve();
+        const solution = new PuzzleSolver(problem).solve();
         log.info('Solution for puzzle found!');
+        return solution;
+    };
 
-        log.info('Completing puzzle on the page with the solution by sending input commands ...');
+    const reflectSolutionOnThePage = async function(page, solution) {
+        log.info('Reflection solution of the puzzle on the page by sending input commands ...');
+
         const solutionCommands = Array();
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
@@ -122,6 +121,14 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         await page.waitForXPath('//*[text()="Solved!"]');
         await page.waitForSelector('#modal.show');
         log.info('Yes, we are good!');
+    };
+
+    test('Puzzle 24914 of difficulty 10', async () => {
+        const page = await openCleanPuzzlePage(24914);
+        const puzzleSourceImagePath = await detectAndSavePuzzleCanvasImage(page);
+        const problem = await detectProblemFromImage(puzzleSourceImagePath);
+        const solution = solvePuzzle(problem);
+        await reflectSolutionOnThePage(page, solution);
 
         const puzzleSolvedPageImageSavePath = './tmp/screenshot-solved.png';
         log.info('Taking screenshot of the page to enable manual verification');
