@@ -3,6 +3,7 @@ import open from 'open';
 import puppeteer from 'puppeteer';
 import { House } from '../../src/problem/house';
 import { findCageContours } from '../../src/reader/image/cageContoursFinder';
+import { Rect } from '../../src/reader/image/rect';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
 
@@ -66,7 +67,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     const detectAndSavePuzzleImage = async function(page) {
         log.info('Detecting placement of puzzle canvas ...');
         await page.waitForSelector(SELECTOR_PUZZLE_CANVAS);
-        const captureRect = await page.evaluate((selector) => {
+        const captureRect = Rect.from(await page.evaluate((selector) => {
             const rect = document.querySelector(selector).getBoundingClientRect();
             return {
                 x: rect.x,
@@ -74,19 +75,14 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
                 width: rect.width,
                 height: rect.height
             };
-        }, SELECTOR_PUZZLE_CANVAS);
-        log.info(`Detected puzzle canvas client rect: (x: ${captureRect.x}, y: ${captureRect.y}, width: ${captureRect.width}, height: ${captureRect.height})`);
+        }, SELECTOR_PUZZLE_CANVAS));
+        log.info(`Detected puzzle canvas client rect ${captureRect}`);
 
         log.info('Taking screenshot of detected puzzle canvas area ...');
         await page.screenshot({
             path: PUZZLE_SOURCE_IMAGE_PATH,
             captureBeyondViewport: true,
-            clip: {
-                x: captureRect.x,
-                y: captureRect.y,
-                width: captureRect.width,
-                height: captureRect.height
-            }
+            clip: captureRect
         });
         log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_PATH}`);
 

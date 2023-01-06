@@ -30,4 +30,8 @@ export class Rect {
     get height() {
         return this.#height;
     }
+
+    toString() {
+        return `{ x: ${this.#x}, y: ${this.#y}, width: ${this.#width}, height: ${this.#height} }`;
+    }
 }
