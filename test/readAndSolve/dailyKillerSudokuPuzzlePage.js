@@ -40,21 +40,21 @@ export class DailyKillerSudokuPuzzlePage {
         log.info('Page loaded');
         
         // removing cookie banner and ads
-        await this.#removeClutter();
+        await this.#removeCookieBanner();
 
         return this.#browserPage;
     }
 
-    async #removeClutter() {
-        await this.#removeCookieBanner();
-    }
-
     async #removeCookieBanner() {
         log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper puzzle detection');
-        await this.#browserPage.waitForSelector(SELECTOR_BANNER);
-        await this.#browserPage.evaluate(function(selector) {
-            document.querySelector(selector).remove();
-        }, SELECTOR_BANNER);
+        await this.#waitForSelectorAndRemove(SELECTOR_BANNER);
+    }
+
+    async #waitForSelectorAndRemove(selector) {
+        await this.#browserPage.waitForSelector(selector);
+        await this.#browserPage.evaluate(function($) {
+            document.querySelector($).remove();
+        }, selector);
     }
 
     #puzzleUrl(puzzleId) {
