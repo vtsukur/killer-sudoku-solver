@@ -3,9 +3,11 @@ import { logFactory } from '../../src/util/logFactory';
 
 const log = logFactory.of('DailyKillerSudoku.com Puzzle Page');
 
-const PAGE_VIEWPORT_WIDTH = 1680;
-const PAGE_VIEWPORT_HEIGHT = 1050;
-const PAGE_VIEWPORT_DEVICE_SCALE_FACTOR = 2;
+const BIG_ENOUGH_PAGE_VIEWPORT = {
+    width: 1680,
+    height: 1050,
+    deviceScaleFactor: 2
+};
 
 const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
@@ -29,11 +31,7 @@ export class DailyKillerSudokuPuzzlePage {
         this.#browserPage = await this.#browser.newPage();
 
         // viewport size and device scale factor should be big enough for image recognition techniques to work
-        this.#browserPage.setViewport({
-            width: PAGE_VIEWPORT_WIDTH,
-            height: PAGE_VIEWPORT_HEIGHT,
-            deviceScaleFactor: PAGE_VIEWPORT_DEVICE_SCALE_FACTOR
-        });
+        this.#browserPage.setViewport(BIG_ENOUGH_PAGE_VIEWPORT);
 
         const url = this.#puzzleUrl(puzzleId);
         log.info(`Opening page ${url} ...`);
