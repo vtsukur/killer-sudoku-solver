@@ -7,6 +7,7 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test-single-puzzle": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/solver/puzzles/puzzleSolver.dailyKillerSudokuDotCom.test.js -t '24919'",
+    "test-e2e-read-and-solve": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i test/readAndSolve/e2e.puzzleReaderAndSolver.dailyKillerSudokuDotCom.test.js",
     "profile": "ndb ."
   },
   "repository": {
