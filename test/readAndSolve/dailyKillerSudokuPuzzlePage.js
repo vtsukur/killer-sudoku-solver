@@ -51,7 +51,7 @@ export class DailyKillerSudokuPuzzlePage {
 
     async #waitForSelectorAndRemove(selector) {
         await this.#browserPage.waitForSelector(selector);
-        await this.#browserPage.evaluate(/* istanbul ignore next */ function($) {
+        await this.#browserPage.evaluate(/* istanbul ignore next */ ($) => {
             document.querySelector($).remove();
         }, selector);
     }

@@ -36,21 +36,21 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         browser.close();
     });
 
-    const transformPuzzleImageToStructuredPuzzle = async function(puzzleSourceImagePath) {
+    const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath) => {
         log.info('Transforming puzzle image to structured problem ...');
         const problem = await findCageContours(puzzleSourceImagePath);
         log.info('Puzzle problem constructed successfully');
         return problem;
     };
 
-    const solvePuzzle = function(problem) {
+    const solvePuzzle = (problem) => {
         log.info('Solving puzzle ...');
         const solution = new PuzzleSolver(problem).solve();
         log.info('Solution for puzzle found!');
         return solution;
     };
 
-    const openPageWithSolvedPuzzleIfNecessary = function(path) {
+    const openPageWithSolvedPuzzleIfNecessary = (path) => {
         if (OPEN_SOLVED_PUZZLE_AT_COMPLETION) {
             open(path);
         }
