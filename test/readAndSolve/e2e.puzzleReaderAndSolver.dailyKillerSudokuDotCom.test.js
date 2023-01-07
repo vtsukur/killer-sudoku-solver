@@ -6,14 +6,10 @@ import { findCageContours } from '../../src/reader/image/cageContoursFinder';
 import { Rect } from '../../src/reader/image/rect';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
+import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 
-const PAGE_VIEWPORT_WIDTH = 1680;
-const PAGE_VIEWPORT_HEIGHT = 1050;
-const PAGE_VIEWPORT_DEVICE_SCALE_FACTOR = 2;
-
-const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
 const SELECTOR_NTH_CELL = (n) => {
     return `.cell:nth-of-type(${n})`;
@@ -32,12 +28,13 @@ let browser;
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     test('Puzzle 24914 of difficulty 10', async () => {
-        const page = await openCleanPuzzlePage(24914);
-        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(page);
+        const page = new DailyKillerSudokuPuzzlePage(browser);
+        const browserPage = await page.open(24914);
+        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(browserPage);
         const problem = await transformPuzzleImageToStructuredPuzzle(originalPuzzleSourceImagePath);
         const solution = solvePuzzle(problem);
-        await reflectSolutionOnThePage(page, solution);
-        await saveSolvedPuzzleImageAndOpenIfNeccessary(page);
+        await reflectSolutionOnThePage(browserPage, solution);
+        await saveSolvedPuzzleImageAndOpenIfNeccessary(browserPage);
     });
     
     beforeEach(async () => {
@@ -49,31 +46,6 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Closing browser');
         browser.close();
     });
-
-    const openCleanPuzzlePage = async (puzzleNumber) => {
-        const puzzlePage = `https://www.dailykillersudoku.com/puzzle/${puzzleNumber}`;
-        log.info(`Opening DailyKillerSudoku puzzle page ${puzzlePage} ...`);
-
-        const page = await browser.newPage();
-
-        // viewport and scale factor should be big enough for image recognition techniques to work
-        page.setViewport({
-            width: PAGE_VIEWPORT_WIDTH,
-            height: PAGE_VIEWPORT_HEIGHT,
-            deviceScaleFactor: PAGE_VIEWPORT_DEVICE_SCALE_FACTOR
-        });
-
-        await page.goto(puzzlePage);
-        log.info('Puzzle page loaded');
-
-        log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper problem detection');
-        await page.waitForSelector(SELECTOR_BANNER);
-        await page.evaluate((selector) => {
-            document.querySelector(selector).remove();
-        }, SELECTOR_BANNER);        
-
-        return page;
-    };
 
     const detectAndSavePuzzleImage = async function(page) {
         log.info('Detecting placement of puzzle canvas ...');
