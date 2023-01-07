@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import _ from 'lodash';
 import { House } from '../../src/problem/house';
 import { Rect } from '../../src/reader/image/rect';
@@ -52,7 +51,7 @@ export class DailyKillerSudokuPuzzlePage {
 
     async #waitForSelectorAndRemove(selector) {
         await this.#browserPage.waitForSelector(selector);
-        await this.#browserPage.evaluate(function($) {
+        await this.#browserPage.evaluate(/* istanbul ignore next */ function($) {
             document.querySelector($).remove();
         }, selector);
     }
@@ -64,7 +63,7 @@ export class DailyKillerSudokuPuzzlePage {
     async detectAndSavePuzzleImage(puzzleSourceImagePath) {
         log.info('Detecting placement of puzzle canvas ...');
         await this.#browserPage.waitForSelector(SELECTOR_PUZZLE_CANVAS);
-        const captureRect = Rect.from(await this.#browserPage.evaluate(($) => {
+        const captureRect = Rect.from(await this.#browserPage.evaluate(/* istanbul ignore next */ ($) => {
             const rect = document.querySelector($).getBoundingClientRect();
             return {
                 x: rect.x,
