@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { Rect } from '../../src/reader/image/rect';
 import { logFactory } from '../../src/util/logFactory';
 
 const log = logFactory.of('DailyKillerSudoku.com Puzzle Page');
@@ -59,4 +60,27 @@ export class DailyKillerSudokuPuzzlePage {
     #puzzleUrl(puzzleId) {
         return `https://www.dailykillersudoku.com/puzzle/${puzzleId}`;
     }
+
+    async detectAndSavePuzzleImage(puzzleSourceImagePath) {
+        log.info('Detecting placement of puzzle canvas ...');
+        await this.#browserPage.waitForSelector(SELECTOR_PUZZLE_CANVAS);
+        const captureRect = Rect.from(await this.#browserPage.evaluate(($) => {
+            const rect = document.querySelector($).getBoundingClientRect();
+            return {
+                x: rect.x,
+                y: rect.y,
+                width: rect.width,
+                height: rect.height
+            };
+        }, SELECTOR_PUZZLE_CANVAS));
+        log.info(`Detected puzzle canvas client rect ${captureRect}`);
+
+        log.info('Taking screenshot of detected puzzle canvas area ...');
+        await this.#browserPage.screenshot({
+            path: puzzleSourceImagePath,
+            captureBeyondViewport: true,
+            clip: captureRect
+        });
+        log.info(`Screenshot of puzzle canvas area saved to ${puzzleSourceImagePath}`);
+    };
 }

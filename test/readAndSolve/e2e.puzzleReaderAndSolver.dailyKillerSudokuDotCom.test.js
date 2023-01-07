@@ -3,7 +3,6 @@ import open from 'open';
 import puppeteer from 'puppeteer';
 import { House } from '../../src/problem/house';
 import { findCageContours } from '../../src/reader/image/cageContoursFinder';
-import { Rect } from '../../src/reader/image/rect';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
 import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
@@ -30,8 +29,8 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     test('Puzzle 24914 of difficulty 10', async () => {
         const page = new DailyKillerSudokuPuzzlePage(browser);
         const browserPage = await page.open(24914);
-        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(browserPage);
-        const problem = await transformPuzzleImageToStructuredPuzzle(originalPuzzleSourceImagePath);
+        await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
+        const problem = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH);
         const solution = solvePuzzle(problem);
         await reflectSolutionOnThePage(browserPage, solution);
         await saveSolvedPuzzleImageAndOpenIfNeccessary(browserPage);
@@ -46,31 +45,6 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Closing browser');
         browser.close();
     });
-
-    const detectAndSavePuzzleImage = async function(page) {
-        log.info('Detecting placement of puzzle canvas ...');
-        await page.waitForSelector(SELECTOR_PUZZLE_CANVAS);
-        const captureRect = Rect.from(await page.evaluate((selector) => {
-            const rect = document.querySelector(selector).getBoundingClientRect();
-            return {
-                x: rect.x,
-                y: rect.y,
-                width: rect.width,
-                height: rect.height
-            };
-        }, SELECTOR_PUZZLE_CANVAS));
-        log.info(`Detected puzzle canvas client rect ${captureRect}`);
-
-        log.info('Taking screenshot of detected puzzle canvas area ...');
-        await page.screenshot({
-            path: PUZZLE_SOURCE_IMAGE_PATH,
-            captureBeyondViewport: true,
-            clip: captureRect
-        });
-        log.info(`Puzzle canvas saved to ${PUZZLE_SOURCE_IMAGE_PATH}`);
-
-        return PUZZLE_SOURCE_IMAGE_PATH;
-    };
 
     const transformPuzzleImageToStructuredPuzzle = async function(puzzleSourceImagePath) {
         log.info('Transforming puzzle image to structured problem ...');
