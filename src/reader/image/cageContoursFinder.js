@@ -60,13 +60,13 @@ export async function findCageContours(imagePath) {
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
     log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
 
-    log.info('Preparing for detection of sums for each cage with extra image processing');
+    log.info(`Preparing for detection of sums for each cage with extra image processing. Cage contours count: ${cageContours.length}`);
     prepareCageSumImages(cageContours, jimpSrc);
     const cages = Array();
     log.info('Running sequential cage sum OCR top left to bottom right');
     for (const cageContour of cageContours) {
         const sum = await tesseract.recognize(cageContour.sumImagePath, {
-            lang: "eng",
+            lang: 'eng',
             oem: 1,
             psm: 6,
         }).then((text) => {
@@ -222,7 +222,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
 
 function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
-        log.info(`Image processing of text area for cage contour ${idx}`);
+        log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
         const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
 
