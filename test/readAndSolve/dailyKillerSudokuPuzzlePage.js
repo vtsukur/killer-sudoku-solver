@@ -1,4 +1,6 @@
 /* istanbul ignore file */
+import _ from 'lodash';
+import { House } from '../../src/problem/house';
 import { Rect } from '../../src/reader/image/rect';
 import { logFactory } from '../../src/util/logFactory';
 
@@ -82,5 +84,34 @@ export class DailyKillerSudokuPuzzlePage {
             clip: captureRect
         });
         log.info(`Screenshot of puzzle canvas area saved to ${puzzleSourceImagePath}`);
+    };
+
+    async reflectSolution(solution) {
+        log.info('Reflecting puzzle solution by sending input commands ...');
+
+        const solutionCommands = Array();
+        _.range(House.SIZE).forEach(row => {
+            _.range(House.SIZE).forEach(col => {
+                const num = solution[row][col];
+                const n = row * House.SIZE + col + 1;
+                solutionCommands.push({
+                    selector: SELECTOR_NTH_CELL(n),
+                    press: `${num}`
+                });
+            });
+        });
+
+        for (const cmd of solutionCommands) {
+            await this.#browserPage.click(cmd.selector);
+            await this.#browserPage.keyboard.press(cmd.press);
+        }
+
+        log.info('Check that "Solved!" modal is displayed');
+        await this.#browserPage.waitForXPath(XPATH_SOLVED_TEXT);
+        await this.#browserPage.waitForSelector(SELECTOR_SHOWN_MODAL);
+        log.info('Page confirms that puzzle is solved successfully!');
+
+        log.info('Waiting for puzzle solved animation to complete');
+        await new Promise(resolve => setTimeout(resolve, STATIC_WAIT_FOR_SOLVED_ANIMATION_TIMEOUT));
     };
 }
