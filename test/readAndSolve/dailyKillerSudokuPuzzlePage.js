@@ -30,21 +30,27 @@ export class DailyKillerSudokuPuzzlePage {
     async open(puzzleId) {
         this.#browserPage = await this.#browser.newPage();
 
-        // viewport size and device scale factor should be big enough for image recognition techniques to work
+        // setting viewport size and device scale factor to be big enough for image recognition techniques to work
         this.#browserPage.setViewport(BIG_ENOUGH_PAGE_VIEWPORT);
 
+        // opening page
         const url = this.#puzzleUrl(puzzleId);
         log.info(`Opening page ${url} ...`);
         await this.#browserPage.goto(url);
         log.info('Page loaded');
+        
+        // removing cookie banner and ads
+        await this.#removeClutter();
 
+        return this.#browserPage;
+    }
+
+    async #removeClutter() {
         log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper puzzle detection');
         await this.#browserPage.waitForSelector(SELECTOR_BANNER);
         await this.#browserPage.evaluate(function() {
             document.querySelector('.cc_banner-wrapper').remove();
         });
-
-        return this.#browserPage;
     }
 
     #puzzleUrl(puzzleId) {
