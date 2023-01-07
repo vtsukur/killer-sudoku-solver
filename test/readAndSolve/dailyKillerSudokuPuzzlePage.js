@@ -39,7 +39,6 @@ export class DailyKillerSudokuPuzzlePage {
         await this.#browserPage.goto(url);
         log.info('Page loaded');
         
-        // removing cookie banner and ads
         await this.#removeCookieBanner();
 
         return this.#browserPage;
