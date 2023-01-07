@@ -41,8 +41,8 @@ export async function findCageContours(imagePath) {
     log.info('Detecting dotted cage contours ...');
     const contoursMatVector = new cv.MatVector();
     const dottedCageContours = findDottedCageContours(src, contoursMatVector);
-    log.info(`Detected ${dottedCageContours.length} dotted cage contours`);
-
+    log.info(`Detected ${dottedCageContours.length} dotted cage contours`);    
+    
     // find grid contour
     const gridContour = findGridContour(dottedCageContours);
     log.info(`Detected grid contour: ${gridContour}`);
@@ -52,11 +52,15 @@ export async function findCageContours(imagePath) {
     groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridContour);
     log.info('Grouped cell contours by cages');
 
+    // dump temporary processing result
+    log.info('Writing dotted cage contours and cell contours file');
+    dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
+
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
     log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
 
-    log.info('Preparing for detection of sums for each cage with extra image manipulation');
+    log.info('Preparing for detection of sums for each cage with extra image processing');
     prepareCageSumImages(cageContours, jimpSrc);
     const cages = Array();
     log.info('Running sequential cage sum OCR top left to bottom right');
@@ -74,10 +78,6 @@ export async function findCageContours(imagePath) {
         cages.push(cageBuilder.mk());
     }
     const problem = new Problem(cages);
-
-    // dump temporary processing result
-    log.info('Write temporary contour files');
-    dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
     // cleanup
     contoursMatVector.delete();
@@ -222,6 +222,8 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
 
 function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
+        log.info(`Image processing of text area for cage contour ${idx}`);
+
         const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
 
         const leftX = topLeftCellContourRect.x + 3;
@@ -309,6 +311,9 @@ function prepareCageSumImages(cageContours, srcImage) {
             adjustedMasterRect.width, adjustedMasterRect.height);
         new Jimp(adjustedMasterRect.width * 3, adjustedMasterRect.height * 3, 0xffffffff).
             composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).write(`${TMP_DIR_PATH}/sumText_${idx}.png`);
+
+        src.delete();
+        contoursMatVector.delete();
 
         cageContour.sumImagePath = `${TMP_DIR_PATH}/sumText_${idx}.png`;
     });
