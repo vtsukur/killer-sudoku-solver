@@ -17,12 +17,13 @@ let browser;
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     test('Puzzle 24914 of difficulty 10', async () => {
         const page = new DailyKillerSudokuPuzzlePage(browser);
-        const browserPage = await page.open(24914);
+        await page.open(24914);
         await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
         const problem = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH);
         const solution = solvePuzzle(problem);
         await page.reflectSolution(solution);
-        await saveSolvedPuzzleImageAndOpenIfNeccessary(browserPage);
+        await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+        openPageWithSolvedPuzzleIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
     });
     
     beforeEach(async () => {
@@ -49,16 +50,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return solution;
     };
 
-    const saveSolvedPuzzleImageAndOpenIfNeccessary = async function(page) {
-        log.info('Taking screenshot of the page to enable manual visual verification');
-        await page.screenshot({
-            path: PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH,
-            fullPage: true
-        });
-        log.info(`Page with solved puzzle saved to ${PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH}`);
-
+    const openPageWithSolvedPuzzleIfNecessary = function(path) {
         if (OPEN_SOLVED_PUZZLE_AT_COMPLETION) {
-            open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+            open(path);
         }
     };
 });

@@ -43,8 +43,6 @@ export class DailyKillerSudokuPuzzlePage {
         log.info('Page loaded');
         
         await this.#removeCookieBanner();
-
-        return this.#browserPage;
     }
 
     async #removeCookieBanner() {
@@ -113,5 +111,14 @@ export class DailyKillerSudokuPuzzlePage {
 
         log.info('Waiting for puzzle solved animation to complete');
         await new Promise(resolve => setTimeout(resolve, STATIC_WAIT_FOR_SOLVED_ANIMATION_TIMEOUT));
+    };
+
+    async saveSolvedPuzzleImage(pageWithSolvedPuzzleImagePath) {
+        log.info('Taking screenshot of the page to enable manual visual verification');
+        await this.#browserPage.screenshot({
+            path: pageWithSolvedPuzzleImagePath,
+            fullPage: true
+        });
+        log.info(`Page with solved puzzle saved to ${pageWithSolvedPuzzleImagePath}`);
     };
 }
