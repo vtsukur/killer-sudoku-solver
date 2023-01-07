@@ -31,6 +31,15 @@ const OPEN_SOLVED_PUZZLE_AT_COMPLETION = false;
 let browser;
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
+    test('Puzzle 24914 of difficulty 10', async () => {
+        const page = await openCleanPuzzlePage(24914);
+        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(page);
+        const problem = await transformPuzzleImageToStructuredPuzzle(originalPuzzleSourceImagePath);
+        const solution = solvePuzzle(problem);
+        await reflectSolutionOnThePage(page, solution);
+        await saveSolvedPuzzleImageAndOpenIfNeccessary(page);
+    });
+    
     beforeEach(async () => {
         log.info('Launching Puppeteer with headless Chrome');
         browser = await puppeteer.launch();
@@ -146,13 +155,4 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             open(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
         }
     };
-
-    test('Puzzle 24914 of difficulty 10', async () => {
-        const page = await openCleanPuzzlePage(24914);
-        const originalPuzzleSourceImagePath = await detectAndSavePuzzleImage(page);
-        const problem = await transformPuzzleImageToStructuredPuzzle(originalPuzzleSourceImagePath);
-        const solution = solvePuzzle(problem);
-        await reflectSolutionOnThePage(page, solution);
-        await saveSolvedPuzzleImageAndOpenIfNeccessary(page);
-    });
 });
