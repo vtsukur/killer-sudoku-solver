@@ -10,6 +10,8 @@ const log = logFactory.of('E2E Puzzle Reader & Solver');
 const PUZZLE_SOURCE_IMAGE_PATH = './tmp/screenshot-source-puzzle.png';
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = './tmp/screenshot-solved-puzzle-page.png';
 
+const OPEN_SOURCE_PUZZLE_IMAGE = false;
+const OPEN_CONTOURS_PUZZLE_IMAGE = false;
 const OPEN_SOLVED_PUZZLE_AT_COMPLETION = false;
 
 let browser;
@@ -19,11 +21,13 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         const page = new DailyKillerSudokuPuzzlePage(browser);
         await page.open(24914);
         await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
+        openSourcePuzzleImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
         const problem = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH);
+        openContoursPuzzleImageIfNecessary('./tmp/cv/contours.png');
         const solution = solvePuzzle(problem);
         await page.reflectSolution(solution);
         await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
-        openPageWithSolvedPuzzleIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+        openPageImageWithSolvedPuzzleIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
     });
     
     beforeEach(async () => {
@@ -50,8 +54,20 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return solution;
     };
 
-    const openPageWithSolvedPuzzleIfNecessary = (path) => {
-        if (OPEN_SOLVED_PUZZLE_AT_COMPLETION) {
+    const openSourcePuzzleImageIfNecessary = (path) => {
+        openImageIfNecessary(OPEN_SOURCE_PUZZLE_IMAGE, path);
+    };
+
+    const openContoursPuzzleImageIfNecessary = (path) => {
+        openImageIfNecessary(OPEN_CONTOURS_PUZZLE_IMAGE, path);
+    };
+
+    const openPageImageWithSolvedPuzzleIfNecessary = (path) => {
+        openImageIfNecessary(OPEN_SOLVED_PUZZLE_AT_COMPLETION, path);
+    };
+
+    const openImageIfNecessary = (doOpen, path) => {
+        if (doOpen) {
             open(path);
         }
     };
