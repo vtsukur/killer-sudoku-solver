@@ -56,6 +56,10 @@ export async function findCageContours(imagePath) {
     log.info('Writing dotted cage contours and cell contours file');
     dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, TMP_CAGE_CONTOURS_DUMP_PATH);
 
+    // cleanup
+    contoursMatVector.delete();
+    src.delete();
+
     // determine cage contours
     const cageContours = determineCageContoursByCells(cellContoursMatrix);
     log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
@@ -78,10 +82,6 @@ export async function findCageContours(imagePath) {
         cages.push(cageBuilder.mk());
     }
     const problem = new Problem(cages);
-
-    // cleanup
-    contoursMatVector.delete();
-    src.delete();
 
     return problem;
 }
