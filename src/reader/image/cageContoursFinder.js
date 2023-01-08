@@ -225,8 +225,8 @@ function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
-        simplifiedCageSumImageReader(cageContour, idx, srcImage);
-        // diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
+        // simplifiedCageSumImageReader(cageContour, idx, srcImage);
+        diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
     });
 }
 
@@ -261,6 +261,19 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     prepareSourceMat(src);
     const kernel = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(2, 2));
     cv.dilate(src, src, kernel);
+
+    // const dilatedData = new Uint8Array(src.cols * src.rows * 3);
+    // _.range(src.cols * src.rows).forEach(i => {
+    //     const offset = i * 3;
+    //     dilatedData[offset] = src.data[i];
+    //     dilatedData[offset + 1] = src.data[i];
+    //     dilatedData[offset + 2] = src.data[i];
+    // });
+    // new Jimp({
+    //     width: src.cols,
+    //     height: src.rows,
+    //     data: Buffer.from(dilatedData)
+    // }).write(`${TMP_DIR_PATH}/sumText_${idx}_dilated.png`);
 
     // find cage contours
     const contoursMatVector = new cv.MatVector();
