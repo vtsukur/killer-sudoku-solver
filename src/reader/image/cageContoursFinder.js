@@ -225,8 +225,8 @@ function prepareCageSumImages(cageContours, srcImage) {
     cageContours.forEach((cageContour, idx) => {
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
-        // simplifiedCageSumImageReader(cageContour, idx, srcImage);
-        diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
+        simplifiedCageSumImageReader(cageContour, idx, srcImage);
+        // diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
     });
 }
 
