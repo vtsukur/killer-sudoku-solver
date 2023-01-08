@@ -348,7 +348,7 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     contoursMatVector.delete();
 
     cageContour.sumImagePath = `${TMP_DIR_PATH}/sumText_${idx}.png`;
-    }
+}
 
 function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
