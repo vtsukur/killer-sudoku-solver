@@ -1,14 +1,19 @@
+import _ from 'lodash';
+import { Rect } from './rect';
+
 export class CellContour {
     #cell;
     #rect;
     #cageBorders;
     #cageFound;
+    #dottedCageContourRects;
 
     constructor(cell, rect) {
         this.#cell = cell;
         this.#rect = rect;
         this.#cageBorders = new CageBorders();
         this.#cageFound = false;
+        this.#dottedCageContourRects = Array();
     }
 
     get cell() {
@@ -25,6 +30,41 @@ export class CellContour {
 
     get cageFound() {
         return this.#cageFound;
+    }
+
+    addDottedCageContourRect(dottedCageContourRect) {
+        this.#dottedCageContourRects.push(dottedCageContourRect);
+    }
+
+    computeSumAreaRect() {
+        const DEVIATION = 5;
+        const ALIGNMENT = 1;
+
+        let leftmostDotX = (this.#rect.x + this.#rect.width);
+        let leftmostDotY = (this.#rect.y + this.#rect.height);
+        let topmostDotX = leftmostDotX;
+        let topmostDotY = leftmostDotY;
+
+        for (const dottedCageContourRect of this.#dottedCageContourRects) {
+            leftmostDotX = Math.min(leftmostDotX, dottedCageContourRect.x);
+            topmostDotY = Math.min(topmostDotY, dottedCageContourRect.y);
+        }
+
+        for (const dottedCageContourRect of this.#dottedCageContourRects) {
+            if (_.inRange(dottedCageContourRect.x, leftmostDotX - DEVIATION, leftmostDotX + DEVIATION)) {
+                leftmostDotY = Math.min(leftmostDotY, dottedCageContourRect.y);
+            }
+            if (_.inRange(dottedCageContourRect.y, topmostDotY - DEVIATION, topmostDotY + DEVIATION)) {
+                topmostDotX = Math.min(topmostDotX, dottedCageContourRect.x);
+            }
+        }
+
+        leftmostDotX += ALIGNMENT;
+        leftmostDotY -= ALIGNMENT;
+        topmostDotX -= ALIGNMENT;
+        topmostDotY += ALIGNMENT;
+
+        return new Rect(leftmostDotX, topmostDotY, topmostDotX - leftmostDotX, leftmostDotY - topmostDotY);
     }
 
     setCageFound() {
