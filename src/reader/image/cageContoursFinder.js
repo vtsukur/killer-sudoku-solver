@@ -216,23 +216,31 @@ async function prepareCageSumImages(cageContours, srcImage) {
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
         simplifiedCageSumImageReader(cageContour, idx, srcImage);
+        let sum = await ocr(cageContour.sumImagePath);
 
-        const sum = await tesseract.recognize(cageContour.sumImagePath, {
-            lang: 'eng',
-            oem: 1,
-            psm: 6,
-        }).then((text) => {
-            return parseInt(text);
-        });
-        log.info(`Detected sum for cage via OCR: ${sum}`);
+        if (isNaN(sum)) {
+            log.info('Simple sum text detection failed. Trying diligent OpenCV-based image post processor');
+            diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
+            sum = await ocr(cageContour.sumImagePath);
+        }
+
         const cageBuilder = Cage.ofSum(sum);
         cageContour.cells.forEach(cell => cageBuilder.cell(cell));
         cages.push(cageBuilder.mk());
-    
-        // diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
     };
 
     return cages;
+}
+
+async function ocr(sumImagePath) {
+    return await tesseract.recognize(sumImagePath, {
+        lang: 'eng',
+        oem: 1,
+        psm: 6,
+    }).then((text) => {
+        log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+        return parseInt(text);
+    });
 }
 
 function simplifiedCageSumImageReader(cageContour, idx, srcImage) {

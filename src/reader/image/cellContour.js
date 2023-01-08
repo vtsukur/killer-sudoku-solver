@@ -38,7 +38,7 @@ export class CellContour {
 
     computeSumAreaRect() {
         const DEVIATION = 5;
-        const ALIGNMENT = 1;
+        const ALIGNMENT = 2;
 
         let leftmostDotX = (this.#rect.x + this.#rect.width);
         let leftmostDotY = (this.#rect.y + this.#rect.height);
