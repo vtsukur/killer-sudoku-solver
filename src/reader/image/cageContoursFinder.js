@@ -227,10 +227,10 @@ function prepareCageSumImages(cageContours, srcImage) {
 
         const sumAreaRect = cageContour.topLeftCellContour.computeSumAreaRect();
 
-        const scaledSum = new Jimp(srcImage).crop(sumAreaRect.x, sumAreaRect.y, sumAreaRect.width, sumAreaRect.height).scale(2);
-        const scaledWidth = sumAreaRect.width * 4;
-        const scaledHeight = sumAreaRect.height * 4;
-        const scaledSumWithExtraWhiteSpace = new Jimp(scaledWidth, scaledHeight, 0xffffffff).composite(scaledSum, sumAreaRect.width * 1, sumAreaRect.height * 1);
+        const scaledSum = new Jimp(srcImage).crop(sumAreaRect.x, sumAreaRect.y, sumAreaRect.width, sumAreaRect.height);
+        const scaledWidth = sumAreaRect.width * 2;
+        const scaledHeight = sumAreaRect.height * 2;
+        const scaledSumWithExtraWhiteSpace = new Jimp(scaledWidth, scaledHeight, 0xffffffff).composite(scaledSum, sumAreaRect.width * 0.5, sumAreaRect.height * 0.5);
         scaledSumWithExtraWhiteSpace.write(`${TMP_DIR_PATH}/sumText_${idx}_raw.png`);
 
         cageContour.sumImagePath = `${TMP_DIR_PATH}/sumText_${idx}_raw.png`;
