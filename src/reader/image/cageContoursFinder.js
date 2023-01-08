@@ -65,22 +65,8 @@ export async function findCageContours(imagePath) {
     log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
 
     log.info(`Preparing for detection of sums for each cage with extra image processing. Cage contours count: ${cageContours.length}`);
-    prepareCageSumImages(cageContours, jimpSrc);
-    const cages = Array();
-    log.info('Running sequential cage sum OCR top left to bottom right');
-    for (const cageContour of cageContours) {
-        const sum = await tesseract.recognize(cageContour.sumImagePath, {
-            lang: 'eng',
-            oem: 1,
-            psm: 6,
-        }).then((text) => {
-            return parseInt(text);
-        });
-        log.info(`Detected sum for cage via OCR: ${sum}`);
-        const cageBuilder = Cage.ofSum(sum);
-        cageContour.cells.forEach(cell => cageBuilder.cell(cell));
-        cages.push(cageBuilder.mk());
-    }
+    const cages = await prepareCageSumImages(cageContours, jimpSrc);
+
     const problem = new Problem(cages);
 
     return problem;
@@ -221,13 +207,32 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     }
 }
 
-function prepareCageSumImages(cageContours, srcImage) {
-    cageContours.forEach((cageContour, idx) => {
+async function prepareCageSumImages(cageContours, srcImage) {
+    const cages = Array();
+
+    let idx = 0;
+    for (const cageContour of cageContours) {
+        idx++;
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
         simplifiedCageSumImageReader(cageContour, idx, srcImage);
+
+        const sum = await tesseract.recognize(cageContour.sumImagePath, {
+            lang: 'eng',
+            oem: 1,
+            psm: 6,
+        }).then((text) => {
+            return parseInt(text);
+        });
+        log.info(`Detected sum for cage via OCR: ${sum}`);
+        const cageBuilder = Cage.ofSum(sum);
+        cageContour.cells.forEach(cell => cageBuilder.cell(cell));
+        cages.push(cageBuilder.mk());
+    
         // diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage);
-    });
+    };
+
+    return cages;
 }
 
 function simplifiedCageSumImageReader(cageContour, idx, srcImage) {
