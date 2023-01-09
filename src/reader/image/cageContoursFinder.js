@@ -1,7 +1,7 @@
 import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
-import tesseract from 'node-tesseract-ocr'; // use native port instead
+import { createWorker } from 'tesseract.js';
 import * as fs from 'node:fs';
 import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
@@ -54,7 +54,7 @@ export async function findCageContours(imagePath, taskId) {
 
     // dump temporary processing result
     log.info('Writing dotted cage contours and cell contours file');
-    dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, tempFilePaths.puzzleImageSignificantContoursFilePath);
+    await dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, tempFilePaths.puzzleImageSignificantContoursFilePath);
 
     // cleanup
     contoursMatVector.delete();
@@ -65,7 +65,11 @@ export async function findCageContours(imagePath, taskId) {
     log.info(`Computed cage contours. Total cages: ${cageContours.length}`);
 
     log.info(`Preparing for detection of sums for each cage with extra image processing. Cage contours count: ${cageContours.length}`);
-    const cages = await prepareCageSumImages(cageContours, jimpSrc, tempFilePaths);
+    const tesseractWorker = await createWorker();
+    await tesseractWorker.loadLanguage('eng');
+    await tesseractWorker.initialize('eng');
+    const cages = await prepareCageSumImages(cageContours, jimpSrc, tempFilePaths, tesseractWorker);
+    await tesseractWorker.terminate();
 
     const problem = new Problem(cages);
 
@@ -210,7 +214,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     }
 }
 
-async function prepareCageSumImages(cageContours, srcImage, tempFilePaths) {
+async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesseractWorker) {
     const cages = [];
 
     let idx = 0;
@@ -218,13 +222,13 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths) {
         idx++;
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
-        simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
-        let sum = await ocr(cageContour.sumImagePath);
+        await simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
+        let sum = await ocr(cageContour.sumImagePath, tesseractWorker);
 
         if (isNaN(sum)) {
             log.info('Simple sum text detection failed. Trying diligent OpenCV-based image post processor');
-            diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
-            sum = await ocr(cageContour.sumImagePath);
+            await diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
+            sum = await ocr(cageContour.sumImagePath, tesseractWorker);
         }
 
         const cageBuilder = Cage.ofSum(sum);
@@ -235,18 +239,13 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths) {
     return cages;
 }
 
-async function ocr(sumImagePath) {
-    return await tesseract.recognize(sumImagePath, {
-        lang: 'eng',
-        oem: 1,
-        psm: 6,
-    }).then((text) => {
-        log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
-        return parseInt(text);
-    });
+async function ocr(sumImagePath, tesseractWorker) {
+    const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
+    log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+    return parseInt(text);
 }
 
-function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
+async function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
     const sumAreaRect = cageContour.topLeftCellContour.computeSumAreaRect();
 
     const scaledSum = new Jimp(srcImage).crop(sumAreaRect.x, sumAreaRect.y, sumAreaRect.width, sumAreaRect.height);
@@ -255,12 +254,12 @@ function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths)
     const scaledSumWithExtraWhiteSpace = new Jimp(scaledWidth, scaledHeight, 0xffffffff).composite(scaledSum, sumAreaRect.width * 0.5, sumAreaRect.height * 0.5);
 
     const cageSumTextFilePath = tempFilePaths.cageSumTextFilePath(idx, 'simple_padded');
-    scaledSumWithExtraWhiteSpace.write(cageSumTextFilePath);
+    await scaledSumWithExtraWhiteSpace.writeAsync(cageSumTextFilePath);
 
     cageContour.sumImagePath = cageSumTextFilePath;
 }
 
-function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
+async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
     const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
 
     const leftX = topLeftCellContourRect.x + 3;
@@ -272,7 +271,7 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     const scaledWidth = width * 6;
     const scaledHeight = height * 6;
     const scaledSumWithExtraWhiteSpace = new Jimp(scaledWidth, scaledHeight, 0xffffffff).composite(scaledSum, width * 1.5, height * 1.5);
-    scaledSumWithExtraWhiteSpace.write(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded'));
+    await scaledSumWithExtraWhiteSpace.writeAsync(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded'));
 
     // convert image to OpenCV Mat and prepare source
     const src = cv.matFromImageData(scaledSumWithExtraWhiteSpace.bitmap);
@@ -287,11 +286,11 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
         dilatedData[offset + 1] = src.data[i];
         dilatedData[offset + 2] = src.data[i];
     });
-    new Jimp({
+    await new Jimp({
         width: src.cols,
         height: src.rows,
         data: Buffer.from(dilatedData)
-    }).write(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded_dilated'));
+    }).writeAsync(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded_dilated'));
 
     // find cage contours
     const contoursMatVector = new cv.MatVector();
@@ -345,23 +344,23 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     masterRectBottomY += 2;
     const adjustedMasterRect = new Rect(masterRectLeftX, masterRectTopY, masterRectRightX - masterRectLeftX, masterRectBottomY - masterRectTopY);
 
-    new Jimp({
+    await new Jimp({
         width: allContoursMat.cols,
         height: allContoursMat.rows,
         data: Buffer.from(allContoursMat.data)
-    }).write(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded_all-contours'));
-    new Jimp({
+    }).writeAsync(tempFilePaths.cageSumTextFilePath(idx, 'diligent_scaled-padded_all-contours'));
+    await new Jimp({
         width: textContoursMat.cols,
         height: textContoursMat.rows,
         data: Buffer.from(textContoursMat.data)
-    }).write(tempFilePaths.cageSumTextFilePath(idx, 'diligent-scaled-padded_char-contours'));
+    }).writeAsync(tempFilePaths.cageSumTextFilePath(idx, 'diligent-scaled-padded_char-contours'));
 
     const cleanSumImage = new Jimp(scaledSumWithExtraWhiteSpace).crop(
         adjustedMasterRect.x, adjustedMasterRect.y,
         adjustedMasterRect.width, adjustedMasterRect.height);
     const finalPath = tempFilePaths.cageSumTextFilePath(idx, 'diligent_final');
-    new Jimp(adjustedMasterRect.width * 3, adjustedMasterRect.height * 3, 0xffffffff).
-        composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).write(finalPath);
+    await new Jimp(adjustedMasterRect.width * 3, adjustedMasterRect.height * 3, 0xffffffff).
+        composite(cleanSumImage, adjustedMasterRect.width, adjustedMasterRect.height).writeAsync(finalPath);
 
     src.delete();
     contoursMatVector.delete();
@@ -369,7 +368,7 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     cageContour.sumImagePath = finalPath;
 }
 
-function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
+async function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     for (const dottedCageContour of dottedCageContours) {
@@ -389,11 +388,11 @@ function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outp
         });
     });
 
-    new Jimp({
+    await new Jimp({
         width: mat.cols,
         height: mat.rows,
         data: Buffer.from(mat.data)
-    }).write(outputPath);
+    }).writeAsync(outputPath);
 
     mat.delete();
 }
@@ -418,6 +417,6 @@ class TempFilePaths {
     }
 
     cageSumTextFilePath(id, classifier) {
-        return `${this.filePath('/' + id + '/cage-sum_' + classifier + '.png')}`;
+        return `${this.filePath(id + '/cage-sum_' + classifier + '.png')}`;
     }
 }
