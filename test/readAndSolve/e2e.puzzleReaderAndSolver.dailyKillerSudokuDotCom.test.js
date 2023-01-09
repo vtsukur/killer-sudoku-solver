@@ -12,9 +12,7 @@ const IMAGE_PATH_BASE = './tmp/e2e';
 const PUZZLE_SOURCE_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-source-puzzle.png`;
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-solved-puzzle-page.png`;
 
-const OPEN_SOURCE_PUZZLE_IMAGE = false;
-const OPEN_CONTOURS_PUZZLE_IMAGE = false;
-const OPEN_SOLVED_PUZZLE_AT_COMPLETION = false;
+const OPEN_IMAGE_FILES = true;
 
 let browser;
 
@@ -25,13 +23,13 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         const page = new DailyKillerSudokuPuzzlePage(browser);
         await page.open(24914);
         await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
-        openSourcePuzzleImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
+        openImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
         const { problem, tempFilePaths } = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, 24914);
-        openContoursPuzzleImageIfNecessary(tempFilePaths.puzzleImageSignificantContoursFilePath);
+        openImageIfNecessary(tempFilePaths.puzzleImageSignificantContoursFilePath);
         const solution = solvePuzzle(problem);
         await page.reflectSolution(solution);
         await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
-        openPageImageWithSolvedPuzzleIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+        openImageIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
     });
     
     beforeEach(async () => {
@@ -58,20 +56,8 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         return solution;
     };
 
-    const openSourcePuzzleImageIfNecessary = (path) => {
-        openImageIfNecessary(OPEN_SOURCE_PUZZLE_IMAGE, path);
-    };
-
-    const openContoursPuzzleImageIfNecessary = (path) => {
-        openImageIfNecessary(OPEN_CONTOURS_PUZZLE_IMAGE, path);
-    };
-
-    const openPageImageWithSolvedPuzzleIfNecessary = (path) => {
-        openImageIfNecessary(OPEN_SOLVED_PUZZLE_AT_COMPLETION, path);
-    };
-
-    const openImageIfNecessary = (doOpen, path) => {
-        if (doOpen) {
+    const openImageIfNecessary = (path) => {
+        if (OPEN_IMAGE_FILES) {
             open(path);
         }
     };
