@@ -1,7 +1,19 @@
 import chalk from 'chalk';
 import winston from 'winston';
 
+import { parseArgs } from 'node:util';
+
 const format = winston.format;
+
+const { values: { logLevel } } = parseArgs({
+    options: {
+        logLevel: {
+            type: 'string',
+            default: 'info'
+        }
+    },
+    allowPositionals: true
+});
 
 class Log {
     #label;
@@ -10,7 +22,7 @@ class Log {
     constructor(label) {
         this.#label = label;
         this.#logger = winston.createLogger({
-            level: 'info',
+            level: logLevel,
             transports: [
                 new winston.transports.Stream({
                     stream: process.stderr
