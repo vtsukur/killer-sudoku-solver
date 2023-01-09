@@ -13,6 +13,7 @@ import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
+import tesseract from 'node-tesseract-ocr'; // use native port instead
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
@@ -242,9 +243,17 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesse
 }
 
 async function ocr(sumImagePath, tesseractWorker) {
-    const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
-    log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
-    return parseInt(text);
+    // const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
+    // log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+    // return parseInt(text);
+    return await tesseract.recognize(sumImagePath, {
+        lang: 'eng',
+        oem: 1,
+        psm: 6,
+    }).then((text) => {
+        log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+        return parseInt(text);
+    });
 }
 
 async function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
