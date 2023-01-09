@@ -68,6 +68,9 @@ export async function findCageContours(imagePath, taskId) {
     const tesseractWorker = await createWorker();
     await tesseractWorker.loadLanguage('eng');
     await tesseractWorker.initialize('eng');
+    tesseractWorker.setParameters({
+        tessedit_char_whitelist: '0123456789',
+    });
     const cages = await prepareCageSumImages(cageContours, jimpSrc, tempFilePaths, tesseractWorker);
     await tesseractWorker.terminate();
 
