@@ -42,24 +42,24 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         log.info('Closing browser');
         browser.close();
     });
-
-    const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath, taskId) => {
-        log.info('Transforming puzzle image to structured problem ...');
-        const result = await findCageContours(puzzleSourceImagePath, taskId);
-        log.info('Puzzle problem constructed successfully');
-        return result;
-    };
-
-    const solvePuzzle = (problem) => {
-        log.info('Solving puzzle ...');
-        const solution = new PuzzleSolver(problem).solve();
-        log.info('Solution for puzzle found!');
-        return solution;
-    };
-
-    const openImageIfNecessary = (path) => {
-        if (OPEN_IMAGE_FILES) {
-            open(path);
-        }
-    };
 });
+
+const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath, taskId) => {
+    log.info('Transforming puzzle image to structured problem ...');
+    const result = await findCageContours(puzzleSourceImagePath, taskId);
+    log.info('Puzzle problem constructed successfully');
+    return result;
+};
+
+const solvePuzzle = (problem) => {
+    log.info('Solving puzzle ...');
+    const solution = new PuzzleSolver(problem).solve();
+    log.info('Solution for puzzle found!');
+    return solution;
+};
+
+const openImageIfNecessary = (path) => {
+    if (OPEN_IMAGE_FILES) {
+        open(path);
+    }
+};
