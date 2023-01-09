@@ -15,6 +15,8 @@ const { values: { logLevel } } = parseArgs({
     allowPositionals: true
 });
 
+const isDebugGlobal = logLevel === 'debug';
+
 class Log {
     #label;
     #logger;
@@ -42,6 +44,10 @@ class Log {
 
     info(msg) {
         this.#logger.info(msg);
+    }
+
+    get isDebug() {
+        return isDebugGlobal;
     }
 }
 

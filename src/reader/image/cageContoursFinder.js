@@ -53,7 +53,6 @@ export async function findCageContours(imagePath, taskId) {
     log.info('Grouped cell contours by cages');
 
     // dump temporary processing result
-    log.info('Writing dotted cage contours and cell contours file');
     await dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, tempFilePaths.puzzleImageSignificantContoursFilePath);
 
     // cleanup
@@ -372,6 +371,9 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, 
 }
 
 async function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
+    if (!log.isDebug) return;
+
+    log.debug('Writing dotted cage contours and cell contours file');
     const mat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     for (const dottedCageContour of dottedCageContours) {
