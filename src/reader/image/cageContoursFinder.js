@@ -1,8 +1,9 @@
 import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
-import { createWorker } from 'tesseract.js';
+import tesseract from 'node-tesseract-ocr'; // use native port instead
 import * as fs from 'node:fs';
+import { createWorker } from 'tesseract.js';
 import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
@@ -13,7 +14,6 @@ import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
 import { Rect } from './rect';
-import tesseract from 'node-tesseract-ocr'; // use native port instead
 
 const CAGE_BOUNDARY_DOT_MAX_SIZE = 15;
 const CANNY_THRESHOLD_MIN = 20;
