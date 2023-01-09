@@ -43,9 +43,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         browser.close();
     });
 
-    const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath) => {
+    const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath, taskId) => {
         log.info('Transforming puzzle image to structured problem ...');
-        const result = await findCageContours(puzzleSourceImagePath);
+        const result = await findCageContours(puzzleSourceImagePath, taskId);
         log.info('Puzzle problem constructed successfully');
         return result;
     };
