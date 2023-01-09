@@ -6,7 +6,7 @@ export class CageContour {
     #sumImagePath;
 
     constructor() {
-        this.#cellContours = Array();
+        this.#cellContours = [];
         this.#topLeftCellContour = undefined;
         this.#sumImagePath = undefined;
     }

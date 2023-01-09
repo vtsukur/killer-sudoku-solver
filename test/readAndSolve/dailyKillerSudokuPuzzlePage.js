@@ -86,7 +86,7 @@ export class DailyKillerSudokuPuzzlePage {
     async reflectSolution(solution) {
         log.info('Reflecting puzzle solution by sending input commands ...');
 
-        const solutionCommands = Array();
+        const solutionCommands = [];
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
                 const num = solution[row][col];

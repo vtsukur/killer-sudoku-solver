@@ -208,7 +208,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
 }
 
 async function prepareCageSumImages(cageContours, srcImage) {
-    const cages = Array();
+    const cages = [];
 
     let idx = 0;
     for (const cageContour of cageContours) {
@@ -296,7 +296,7 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     const textContoursMat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
     let maxContourRect = undefined;
-    const potentialTextContourRects = Array();
+    const potentialTextContourRects = [];
     _.range(contoursMatVector.size()).forEach(i => {
         const contour = contoursMatVector.get(i);
         const cvRect = cv.boundingRect(contour);
@@ -315,7 +315,7 @@ function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcIma
     });
 
     const maxContourRectSize = maxContourRect.width * maxContourRect.height;
-    const textContourRects = Array();
+    const textContourRects = [];
     let masterRectLeftX = scaledWidth;
     let masterRectRightX = 0;
     let masterRectTopY = scaledHeight;

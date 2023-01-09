@@ -13,7 +13,7 @@ export class CellContour {
         this.#rect = rect;
         this.#cageBorders = new CageBorders();
         this.#cageFound = false;
-        this.#dottedCageContourRects = Array();
+        this.#dottedCageContourRects = [];
     }
 
     get cell() {
