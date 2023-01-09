@@ -70,6 +70,8 @@ export async function findCageContours(imagePath, taskId) {
     await tesseractWorker.initialize('eng');
     tesseractWorker.setParameters({
         tessedit_char_whitelist: '0123456789',
+        tessedit_ocr_engine_mode: 0,
+        tessedit_pageseg_mode: 6
     });
     const cages = await prepareCageSumImages(cageContours, jimpSrc, tempFilePaths, tesseractWorker);
     await tesseractWorker.terminate();
@@ -243,17 +245,17 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesse
 }
 
 async function ocr(sumImagePath, tesseractWorker) {
-    // const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
-    // log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
-    // return parseInt(text);
-    return await tesseract.recognize(sumImagePath, {
-        lang: 'eng',
-        oem: 1,
-        psm: 6,
-    }).then((text) => {
-        log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
-        return parseInt(text);
-    });
+    const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
+    log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+    return parseInt(text);
+    // return await tesseract.recognize(sumImagePath, {
+    //     lang: 'eng',
+    //     oem: 1,
+    //     psm: 6,
+    // }).then((text) => {
+    //     log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
+    //     return parseInt(text);
+    // });
 }
 
 async function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
