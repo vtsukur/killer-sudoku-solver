@@ -13,7 +13,7 @@ const IMAGE_PATH_BASE = './tmp/e2e';
 const PUZZLE_SOURCE_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-source-puzzle.png`;
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-solved-puzzle-page.png`;
 
-const OPEN_IMAGE_FILES = config.get("openImageFiles");
+const OPEN_IMAGE_FILES = config.get('openImageFiles');
 
 let browser;
 
