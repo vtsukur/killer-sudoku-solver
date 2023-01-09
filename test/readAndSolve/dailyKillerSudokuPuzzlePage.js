@@ -11,6 +11,11 @@ const BIG_ENOUGH_PAGE_VIEWPORT = {
     deviceScaleFactor: 2
 };
 
+const SOLVED_SCREENSHOT_EXTENSION = {
+    x: 200,
+    y: 100
+}
+
 const SELECTOR_BANNER = '.cc_banner-wrapper';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
 const SELECTOR_NTH_CELL = (n) => {
@@ -61,18 +66,7 @@ export class DailyKillerSudokuPuzzlePage {
     }
 
     async detectAndSavePuzzleImage(puzzleSourceImagePath) {
-        log.info('Detecting placement of puzzle canvas ...');
-        await this.#browserPage.waitForSelector(SELECTOR_PUZZLE_CANVAS);
-        const captureRect = Rect.from(await this.#browserPage.evaluate(/* istanbul ignore next */ ($) => {
-            const rect = document.querySelector($).getBoundingClientRect();
-            return {
-                x: rect.x,
-                y: rect.y,
-                width: rect.width,
-                height: rect.height
-            };
-        }, SELECTOR_PUZZLE_CANVAS));
-        log.info(`Detected puzzle canvas client rect ${captureRect}`);
+        const captureRect = await this.#detectClientPuzzleRect();
 
         log.info('Taking screenshot of detected puzzle canvas area ...');
         await this.#browserPage.screenshot({
@@ -113,11 +107,35 @@ export class DailyKillerSudokuPuzzlePage {
     };
 
     async saveSolvedPuzzleImage(pageWithSolvedPuzzleImagePath) {
+        const captureRect = await this.#detectClientPuzzleRect();
+
         log.info('Taking screenshot of the page to enable manual visual verification');
         await this.#browserPage.screenshot({
             path: pageWithSolvedPuzzleImagePath,
-            fullPage: true
+            captureBeyondViewport: true,
+            clip: {
+                x: 0,
+                y: 0,
+                width: captureRect.x + captureRect.width + SOLVED_SCREENSHOT_EXTENSION.x,
+                height: captureRect.y + captureRect.height + SOLVED_SCREENSHOT_EXTENSION.y
+            }
         });
         log.info(`Page with solved puzzle saved to ${pageWithSolvedPuzzleImagePath}`);
     };
+
+    async #detectClientPuzzleRect() {
+        log.info('Detecting placement of puzzle canvas ...');
+        await this.#browserPage.waitForSelector(SELECTOR_PUZZLE_CANVAS);
+        const captureRect = Rect.from(await this.#browserPage.evaluate(/* istanbul ignore next */ ($) => {
+            const rect = document.querySelector($).getBoundingClientRect();
+            return {
+                x: rect.x,
+                y: rect.y,
+                width: rect.width,
+                height: rect.height
+            };
+        }, SELECTOR_PUZZLE_CANVAS));
+        log.info(`Detected puzzle canvas client rect ${captureRect}`);
+        return captureRect;
+    }
 }
