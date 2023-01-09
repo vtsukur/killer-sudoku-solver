@@ -23,6 +23,7 @@
   "dependencies": {
     "@techstark/opencv-js": "^4.6.0-release.1",
     "chalk": "^5.2.0",
+    "config": "^3.3.8",
     "jimp": "^0.16.2",
     "lodash": "^4.17.21",
     "node-tesseract-ocr": "^2.2.1",

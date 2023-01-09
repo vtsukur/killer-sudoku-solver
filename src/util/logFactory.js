@@ -1,21 +1,11 @@
 import chalk from 'chalk';
 import winston from 'winston';
+import config from 'config';
 
-import { parseArgs } from 'node:util';
+const logLevel = config.get('logLevel')
+const isDebugGlobal = logLevel === 'debug';
 
 const format = winston.format;
-
-const { values: { logLevel } } = parseArgs({
-    options: {
-        logLevel: {
-            type: 'string',
-            default: 'info'
-        }
-    },
-    allowPositionals: true
-});
-
-const isDebugGlobal = logLevel === 'debug';
 
 class Log {
     #label;
@@ -44,6 +34,10 @@ class Log {
 
     info(msg) {
         this.#logger.info(msg);
+    }
+
+    debug(msg) {
+        this.#logger.log('debug', msg);
     }
 
     get isDebug() {
