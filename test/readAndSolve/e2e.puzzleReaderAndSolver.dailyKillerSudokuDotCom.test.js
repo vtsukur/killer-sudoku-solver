@@ -1,3 +1,4 @@
+import config from 'config';
 import * as fs from 'node:fs';
 import open from 'open';
 import puppeteer from 'puppeteer';
@@ -12,7 +13,7 @@ const IMAGE_PATH_BASE = './tmp/e2e';
 const PUZZLE_SOURCE_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-source-puzzle.png`;
 const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-solved-puzzle-page.png`;
 
-const OPEN_IMAGE_FILES = true;
+const OPEN_IMAGE_FILES = config.get("openImageFiles");
 
 let browser;
 
