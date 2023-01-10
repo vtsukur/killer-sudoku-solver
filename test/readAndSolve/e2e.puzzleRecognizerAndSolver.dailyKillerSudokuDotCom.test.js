@@ -72,7 +72,7 @@ const openImageIfNecessary = (path) => {
 
 class Paths extends TempFilePaths {
     constructor(taskId) {
-        super(`./tmp/e2e/${taskId}`);
+        super(`./tmp/e2e-tests/${taskId}`);
     }
 
     get imageOfUnsolvedPuzzle() {
