@@ -1,7 +1,7 @@
 import config from 'config';
 import open from 'open';
 import puppeteer from 'puppeteer';
-import { recognizePuzzle } from '../../src/reader/image/puzzleRecognizer';
+import { recognize } from '../../src/reader/image/recognizer';
 import { Solver } from '../../src/solver/solver';
 import { logFactory } from '../../src/util/logFactory';
 import { TempFilePaths } from '../../src/util/tempFilePaths';
@@ -28,7 +28,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             // detecting and recognizing puzzle
             await page.detectAndSavePuzzleImage(paths.imageOfUnsolvedPuzzle);
             openImageIfNecessary(paths.imageOfUnsolvedPuzzle);
-            const recognitionResult = await doRecognizePuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
+            const recognitionResult = await recognizePuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
             openImageIfNecessary(recognitionResult.paths.puzzleImageSignificantContoursFilePath);
 
             // solving puzzle
@@ -50,9 +50,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     });
 });
 
-const doRecognizePuzzle = async (puzzleSourceImagePath, taskId) => {
+const recognizePuzzle = async (puzzleSourceImagePath, taskId) => {
     log.info('Recognizing puzzle ...');
-    const result = await recognizePuzzle(puzzleSourceImagePath, taskId);
+    const result = await recognize(puzzleSourceImagePath, taskId);
     log.info('Puzzle recognized successfully');
     return result;
 };
