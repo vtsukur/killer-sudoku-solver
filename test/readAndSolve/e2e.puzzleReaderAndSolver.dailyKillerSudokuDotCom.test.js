@@ -20,17 +20,23 @@ let browser;
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     fs.mkdirSync(IMAGE_PATH_BASE, { recursive: true });
     
-    test('Puzzle 24914 of difficulty 10', async () => {
-        const page = new DailyKillerSudokuPuzzlePage(browser);
-        await page.open(24914);
-        await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
-        openImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
-        const { problem, tempFilePaths } = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, 24914);
-        openImageIfNecessary(tempFilePaths.puzzleImageSignificantContoursFilePath);
-        const solution = solvePuzzle(problem);
-        await page.reflectSolution(solution);
-        await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
-        openImageIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+    const puzzleIds = [
+        24914
+    ];
+
+    puzzleIds.forEach(puzzleId => {
+        test(`Puzzle ${puzzleId} of difficulty 10`, async () => {
+            const page = new DailyKillerSudokuPuzzlePage(browser);
+            await page.open(puzzleId);
+            await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
+            openImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
+            const { problem, tempFilePaths } = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, puzzleId);
+            openImageIfNecessary(tempFilePaths.puzzleImageSignificantContoursFilePath);
+            const solution = solvePuzzle(problem);
+            await page.reflectSolution(solution);
+            await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+            openImageIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+        });
     });
     
     beforeEach(async () => {
