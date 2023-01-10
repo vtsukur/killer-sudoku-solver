@@ -11,9 +11,9 @@ const log = logFactory.of('E2E Puzzle Reader & Solver');
 
 const OPEN_IMAGE_FILES = config.get('openImageFiles');
 
-let browser;
-
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
+    let browser;
+
     const puzzleIds = [
         24914
     ];
