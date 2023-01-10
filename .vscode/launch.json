@@ -169,12 +169,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [cageContoursFinder]",
+            "name": "npm run test [puzzleRecognizer]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cageContoursFinder"
+                "puzzleRecognizer"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
