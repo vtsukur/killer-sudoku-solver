@@ -1,5 +1,5 @@
-import { Cage } from '../../src/problem/cage';
-import { Puzzle } from '../../src/problem/puzzle';
+import { Cage } from '../../src/puzzle/cage';
+import { Puzzle } from '../../src/puzzle/puzzle';
 
 export const samplePuzzle = new Puzzle([
     // upper nonets

@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { Cage } from '../../problem/cage';
-import { Grid } from '../../problem/grid';
-import { Puzzle } from '../../problem/puzzle';
+import { Cage } from '../../puzzle/cage';
+import { Grid } from '../../puzzle/grid';
+import { Puzzle } from '../../puzzle/puzzle';
 
 const CAGE_DEF_OR_REF_REGEX = /^([a-z][a-z0-9]*)(:([0-9]+))?$/i;
 const SUM_REGEX = /^([0-9]+)$/;

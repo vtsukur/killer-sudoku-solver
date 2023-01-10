@@ -1,6 +1,6 @@
 import reader from '../../../src/reader/text/textReader.js';
-import { Puzzle } from '../../../src/problem/puzzle';
-import { Cage } from '../../../src/problem/cage';
+import { Puzzle } from '../../../src/puzzle/puzzle';
+import { Cage } from '../../../src/puzzle/cage';
 
 describe('Reader tests', () => {
     test('Full read - real puzzle #1', () => {

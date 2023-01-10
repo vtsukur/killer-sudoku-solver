@@ -1,4 +1,4 @@
-import { House } from '../../../problem/house';
+import { House } from '../../../puzzle/house';
 
 export class HouseModel {
     #cageModels;

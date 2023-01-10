@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cage } from '../../../problem/cage';
-import { House } from '../../../problem/house';
+import { Cage } from '../../../puzzle/cage';
+import { House } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CageSlicer } from '../../transform/cageSlicer';
 

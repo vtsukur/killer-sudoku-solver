@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { House } from '../../problem/house';
+import { House } from '../../puzzle/house';
 import { valuesForMsg } from '../../util/readableMessages';
 
 const MIN_SUMS_PER_COUNT = new Array(House.SIZE);

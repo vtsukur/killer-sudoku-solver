@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Nonet } from '../../src/problem/nonet';
+import { Nonet } from '../../src/puzzle/nonet';
 
 describe('Nonet tests', () => {
     test('Nonet is not construtable', () => {

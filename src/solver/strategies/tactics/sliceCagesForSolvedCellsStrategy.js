@@ -1,4 +1,4 @@
-import { Cage } from '../../../problem/cage';
+import { Cage } from '../../../puzzle/cage';
 
 export function sliceCagesForSolvedCellsStrategy() {
     this.recentlySolvedCellModels.forEach(cellModel => {

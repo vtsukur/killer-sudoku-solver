@@ -1,4 +1,4 @@
-import { House } from '../../../problem/house';
+import { House } from '../../../puzzle/house';
 import { clusterCagesByOverlap } from '../../combinatorial/combinatorial';
 
 export class CagesAreaModel {

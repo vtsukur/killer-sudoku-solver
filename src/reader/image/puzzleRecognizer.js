@@ -3,11 +3,11 @@ import Jimp from 'jimp';
 import _ from 'lodash';
 import tesseract from 'node-tesseract-ocr'; // use native port instead
 import { createWorker } from 'tesseract.js';
-import { Cage } from '../../problem/cage';
-import { Cell } from '../../problem/cell';
-import { Grid } from '../../problem/grid';
-import { House } from '../../problem/house';
-import { Puzzle } from '../../problem/puzzle';
+import { Cage } from '../../puzzle/cage';
+import { Cell } from '../../puzzle/cell';
+import { Grid } from '../../puzzle/grid';
+import { House } from '../../puzzle/house';
+import { Puzzle } from '../../puzzle/puzzle';
 import { logFactory } from '../../util/logFactory';
 import { TempFilePaths } from '../../util/tempFilePaths';
 import { CageContour } from './cageContour';

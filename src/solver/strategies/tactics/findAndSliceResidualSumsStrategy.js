@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cage } from '../../../problem/cage';
-import { House } from '../../../problem/house';
+import { Cage } from '../../../puzzle/cage';
+import { House } from '../../../puzzle/house';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 

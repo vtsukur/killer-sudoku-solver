@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Grid } from '../../../problem/grid';
+import { Grid } from '../../../puzzle/grid';
 
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
 const TARGET_CAGE_MIN_SIZE = 4;

@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cell } from '../../../problem/cell';
-import { House } from '../../../problem/house';
+import { Cell } from '../../../puzzle/cell';
+import { House } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 
 export function findNonetBasedFormulasStrategy() {

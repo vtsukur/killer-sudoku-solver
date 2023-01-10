@@ -1,4 +1,4 @@
-import { Grid } from '../../src/problem/grid';
+import { Grid } from '../../src/puzzle/grid';
 
 describe('Grid tests', () => {
     test('Grid is not construtable', () => {

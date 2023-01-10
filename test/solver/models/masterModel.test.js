@@ -1,8 +1,8 @@
-import { Cage } from '../../../src/problem/cage';
-import { Cell } from '../../../src/problem/cell';
-import { House } from '../../../src/problem/house';
+import { Cage } from '../../../src/puzzle/cage';
+import { Cell } from '../../../src/puzzle/cell';
+import { House } from '../../../src/puzzle/house';
 import { MasterModel } from '../../../src/solver/models/masterModel';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../problem/realPuzzleSamples';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for master model', () => {
     test('Construction of master model (shallow coverage)', () => {

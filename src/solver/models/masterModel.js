@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { Grid } from '../../problem/grid';
-import { House } from '../../problem/house';
-import { Puzzle } from '../../problem/puzzle';
+import { Grid } from '../../puzzle/grid';
+import { House } from '../../puzzle/house';
+import { Puzzle } from '../../puzzle/puzzle';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';

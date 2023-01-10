@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cell } from '../../../problem/cell';
-import { House } from '../../../problem/house';
+import { Cell } from '../../../puzzle/cell';
+import { House } from '../../../puzzle/house';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { RowModel } from '../../models/elements/rowModel';
 

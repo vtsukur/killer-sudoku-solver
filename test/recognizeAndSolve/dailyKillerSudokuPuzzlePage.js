@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { House } from '../../src/problem/house';
+import { House } from '../../src/puzzle/house';
 import { Rect } from '../../src/reader/image/rect';
 import { logFactory } from '../../src/util/logFactory';
 

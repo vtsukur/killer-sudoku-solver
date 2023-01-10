@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { House } from '../../../problem/house';
+import { House } from '../../../puzzle/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 
 export class CellModel {

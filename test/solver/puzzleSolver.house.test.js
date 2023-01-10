@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../problem/realPuzzleSamples';
-import { Cell } from '../../src/problem/cell';
-import { Cage } from '../../src/problem/cage';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../puzzle/realPuzzleSamples';
+import { Cell } from '../../src/puzzle/cell';
+import { Cage } from '../../src/puzzle/cage';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { RowModel } from '../../src/solver/models/elements/rowModel';
 import { ColumnModel } from '../../src/solver/models/elements/columnModel';

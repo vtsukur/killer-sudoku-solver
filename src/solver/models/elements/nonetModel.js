@@ -1,4 +1,4 @@
-import { Nonet } from '../../../problem/nonet';
+import { Nonet } from '../../../puzzle/nonet';
 import { HouseModel } from './houseModel';
 
 export class NonetModel extends HouseModel {

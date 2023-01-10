@@ -1,5 +1,5 @@
-import { Cell } from '../../problem/cell';
-import { House } from '../../problem/house';
+import { Cell } from '../../puzzle/cell';
+import { House } from '../../puzzle/house';
 import { Rect } from './rect';
 
 export class GridContour {

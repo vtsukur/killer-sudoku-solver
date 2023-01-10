@@ -1,5 +1,5 @@
-import { Cage } from '../../problem/cage';
-import { House } from '../../problem/house';
+import { Cage } from '../../puzzle/cage';
+import { House } from '../../puzzle/house';
 import { CageModel } from '../models/elements/cageModel';
 
 export class CageSlicer {

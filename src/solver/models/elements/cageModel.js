@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { House } from '../../../problem/house';
+import { House } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 
