@@ -228,7 +228,7 @@
             "type": "node"
         },
         {
-            "name": "npm run test [E2E puzzleRecognizerAndSolver]",
+            "name": "npm run test [e2e.puzzleRecognizerAndSolver]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
