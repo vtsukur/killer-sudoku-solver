@@ -154,42 +154,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [imageReader]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "imageReader"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
             "name": "npm run test [puzzleRecognizer]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "puzzleRecognizer"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [textReader]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "textReader"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
