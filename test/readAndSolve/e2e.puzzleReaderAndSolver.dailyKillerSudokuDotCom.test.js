@@ -1,10 +1,10 @@
 import config from 'config';
-import * as fs from 'node:fs';
 import open from 'open';
 import puppeteer from 'puppeteer';
 import { recognizePuzzle } from '../../src/reader/image/puzzleRecognizer';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
+import { TempFilePaths } from '../../src/util/tempFilePaths';
 import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
@@ -21,7 +21,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     puzzleIds.forEach(puzzleId => {
         test(`Puzzle ${puzzleId}`, async () => {
             // initiation
-            const paths = new TempFilePaths(puzzleId).recreateDir();
+            const paths = new Paths(puzzleId).recreateDir();
             const page = new DailyKillerSudokuPuzzlePage(browser);
             await page.open(puzzleId);
 
@@ -70,17 +70,9 @@ const openImageIfNecessary = (path) => {
     }
 };
 
-class TempFilePaths {
-    #dirPath;
-
+class Paths extends TempFilePaths {
     constructor(taskId) {
-        this.#dirPath = `./tmp/e2e/${taskId}`;
-    }
-
-    recreateDir() {
-        fs.rmSync(this.#dirPath, { recursive: true, force: true });
-        fs.mkdirSync(this.#dirPath, { recursive: true });   
-        return this; 
+        super(`./tmp/e2e/${taskId}`);
     }
 
     get imageOfUnsolvedPuzzle() {
@@ -92,6 +84,6 @@ class TempFilePaths {
     }
 
     #screenshotFilePath(classifier) {
-        return `${this.#dirPath}/screeshot-of-${classifier}.png`;
+        return this.filePath(`screeshot-of-${classifier}.png`);;
     }
 }

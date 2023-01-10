@@ -2,7 +2,6 @@ import cv from '@techstark/opencv-js';
 import Jimp from 'jimp';
 import _ from 'lodash';
 import tesseract from 'node-tesseract-ocr'; // use native port instead
-import * as fs from 'node:fs';
 import { createWorker } from 'tesseract.js';
 import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
@@ -10,6 +9,7 @@ import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
 import { Problem } from '../../problem/problem';
 import { logFactory } from '../../util/logFactory';
+import { TempFilePaths } from '../../util/tempFilePaths';
 import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
 import { GridContour } from './gridContour';
@@ -26,7 +26,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 const log = logFactory.of('Puzzle Recognition via Computer Vision');
 
 export async function recognizePuzzle(imagePath, taskId) {
-    const paths = new TempFilePaths(taskId).recreateDir();
+    const paths = new Paths(taskId).recreateDir();
 
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
@@ -411,25 +411,9 @@ async function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix
     mat.delete();
 }
 
-class TempFilePaths {
-    #dirPath;
-
+class Paths extends TempFilePaths {
     constructor(taskId) {
-        this.#dirPath = `./tmp/puzzle-recognizer/${taskId}`;
-    }
-
-    recreateDir() {
-        fs.rmSync(this.#dirPath, { recursive: true, force: true });
-        fs.mkdirSync(this.#dirPath, { recursive: true });   
-        return this; 
-    }
-
-    get dir() {
-        return this.#dirPath;
-    }
-
-    filePath(shortFileName) {
-        return `${this.#dirPath}/${shortFileName}`;
+        super(`./tmp/puzzle-recognizer/${taskId}`);
     }
 
     get puzzleImageSignificantContoursFilePath() {
