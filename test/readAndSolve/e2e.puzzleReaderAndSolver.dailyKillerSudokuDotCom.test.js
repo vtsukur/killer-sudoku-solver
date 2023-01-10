@@ -20,13 +20,18 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
     puzzleIds.forEach(puzzleId => {
         test(`Puzzle ${puzzleId}`, async () => {
+            // initiation
             const paths = new TempFilePaths(puzzleId).recreateDir();
             const page = new DailyKillerSudokuPuzzlePage(browser);
             await page.open(puzzleId);
+
+            // detecting and recognizing puzzle
             await page.detectAndSavePuzzleImage(paths.imageOfUnsolvedPuzzle);
             openImageIfNecessary(paths.imageOfUnsolvedPuzzle);
             const recognitionResult = await doRecognizePuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
             openImageIfNecessary(recognitionResult.paths.puzzleImageSignificantContoursFilePath);
+
+            // solving puzzle
             const solution = solvePuzzle(recognitionResult.problem);
             await page.reflectSolution(solution);
             await page.saveSolvedPuzzleImage(paths.imageOfPageWithSolvedPuzzle);
