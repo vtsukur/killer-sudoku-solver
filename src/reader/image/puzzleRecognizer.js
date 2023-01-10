@@ -26,7 +26,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 const log = logFactory.of('Puzzle Recognition via Computer Vision');
 
 export async function recognizePuzzle(imagePath, taskId) {
-    const tempFilePaths = new TempFilePaths(taskId).recreateDir();
+    const paths = new TempFilePaths(taskId).recreateDir();
 
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
@@ -52,7 +52,7 @@ export async function recognizePuzzle(imagePath, taskId) {
     log.info('Grouped cell contours by cages');
 
     // dump temporary processing result
-    await dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, tempFilePaths.puzzleImageSignificantContoursFilePath);
+    await dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, paths.puzzleImageSignificantContoursFilePath);
 
     // cleanup
     contoursMatVector.delete();
@@ -71,14 +71,14 @@ export async function recognizePuzzle(imagePath, taskId) {
         tessedit_ocr_engine_mode: 0,
         tessedit_pageseg_mode: 6
     });
-    const cages = await prepareCageSumImages(cageContours, jimpSrc, tempFilePaths, tesseractWorker);
+    const cages = await prepareCageSumImages(cageContours, jimpSrc, paths, tesseractWorker);
     await tesseractWorker.terminate();
 
     const problem = new Problem(cages);
 
     return {
         problem,
-        tempFilePaths
+        paths
     };
 }
 
