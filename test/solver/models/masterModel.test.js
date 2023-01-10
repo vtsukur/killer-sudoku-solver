@@ -2,7 +2,7 @@ import { Cage } from '../../../src/problem/cage';
 import { Cell } from '../../../src/problem/cell';
 import { House } from '../../../src/problem/house';
 import { MasterModel } from '../../../src/solver/models/masterModel';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../problem/realProblemSamples';
+import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../problem/realPuzzleSamples';
 
 describe('Tests for master model', () => {
     test('Construction of master model (shallow coverage)', () => {

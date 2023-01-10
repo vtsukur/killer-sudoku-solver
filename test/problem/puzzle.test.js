@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Cage } from '../../src/problem/cage';
 import { Puzzle } from '../../src/problem/puzzle';
-import { samplePuzzle } from './realProblemSamples';
+import { samplePuzzle } from './realPuzzleSamples';
 
 const replaceLastCageInCorrectPuzzleWith = function(lastCage) {
     const cages = [...samplePuzzle.cages];

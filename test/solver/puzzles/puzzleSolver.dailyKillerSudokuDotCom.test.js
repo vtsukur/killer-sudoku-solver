@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { PuzzleSolver } from '../../../src/solver/puzzleSolver';
-import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10, dailyKillerSudokuDotCom_puzzle24919_difficulty10 } from '../../problem/realProblemSamples';
+import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10, dailyKillerSudokuDotCom_puzzle24919_difficulty10 } from '../../problem/realPuzzleSamples';
 
 describe('Tests for PuzzleSolver applied to DailyKillerSudoku.com tasks', () => {
     test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
