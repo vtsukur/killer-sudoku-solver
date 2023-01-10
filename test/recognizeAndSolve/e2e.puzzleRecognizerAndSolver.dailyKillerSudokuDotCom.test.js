@@ -20,7 +20,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
 
     puzzleIds.forEach(puzzleId => {
         test(`Puzzle ${puzzleId}`, async () => {
-            // initiation
+            // initiating context
             const paths = new Paths(puzzleId).recreateDir();
             const page = new DailyKillerSudokuPuzzlePage(browser);
             await page.open(puzzleId);
