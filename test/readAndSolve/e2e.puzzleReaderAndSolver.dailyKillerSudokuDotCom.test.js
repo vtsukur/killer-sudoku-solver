@@ -30,9 +30,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             await page.open(puzzleId);
             await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
             openImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
-            const { problem, tempFilePaths } = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, puzzleId);
-            openImageIfNecessary(tempFilePaths.puzzleImageSignificantContoursFilePath);
-            const solution = solvePuzzle(problem);
+            const transformResult = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, puzzleId);
+            openImageIfNecessary(transformResult.tempFilePaths.puzzleImageSignificantContoursFilePath);
+            const solution = solvePuzzle(transformResult.problem);
             await page.reflectSolution(solution);
             await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
             openImageIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
