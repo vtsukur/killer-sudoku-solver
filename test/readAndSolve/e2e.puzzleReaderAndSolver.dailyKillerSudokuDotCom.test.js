@@ -87,6 +87,6 @@ class TempFilePaths {
     }
 
     #screenshotFilePath(classifier) {
-        return `${this.#dirPath}/screeshot-${classifier}.png`;
+        return `${this.#dirPath}/screeshot-of-${classifier}.png`;
     }
 }
