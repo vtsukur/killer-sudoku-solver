@@ -4,7 +4,7 @@ import { Context } from './strategies/context';
 import { masterStrategy } from './strategies/masterStrategy';
 import { CageSlicer } from './transform/cageSlicer';
 
-export class PuzzleSolver {
+export class Solver {
     #model;
 
     constructor(puzzle) {

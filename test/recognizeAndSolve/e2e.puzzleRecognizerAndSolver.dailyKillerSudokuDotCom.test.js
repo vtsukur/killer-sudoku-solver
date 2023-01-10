@@ -2,7 +2,7 @@ import config from 'config';
 import open from 'open';
 import puppeteer from 'puppeteer';
 import { recognizePuzzle } from '../../src/reader/image/puzzleRecognizer';
-import { PuzzleSolver } from '../../src/solver/puzzleSolver';
+import { Solver } from '../../src/solver/solver';
 import { logFactory } from '../../src/util/logFactory';
 import { TempFilePaths } from '../../src/util/tempFilePaths';
 import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
@@ -59,7 +59,7 @@ const doRecognizePuzzle = async (puzzleSourceImagePath, taskId) => {
 
 const solvePuzzle = (puzzle) => {
     log.info('Solving puzzle ...');
-    const solution = new PuzzleSolver(puzzle).solve();
+    const solution = new Solver(puzzle).solve();
     log.info('Solution for puzzle found!');
     return solution;
 };

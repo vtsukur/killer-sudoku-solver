@@ -2,14 +2,14 @@ import _ from 'lodash';
 import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../puzzle/realPuzzleSamples';
 import { Cell } from '../../src/puzzle/cell';
 import { Cage } from '../../src/puzzle/cage';
-import { PuzzleSolver } from '../../src/solver/puzzleSolver';
+import { Solver } from '../../src/solver/solver';
 import { RowModel } from '../../src/solver/models/elements/rowModel';
 import { ColumnModel } from '../../src/solver/models/elements/columnModel';
 import { NonetModel } from '../../src/solver/models/elements/nonetModel';
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {    
     test('Initialize row models', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
+        const model = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
         expect(model.rowModel(0)).toEqual(new RowModel(
             0, _.range(9).map(col => Cell.at(0, col)), [
                 Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
@@ -63,7 +63,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
     });
 
     test('Initialize column models', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
+        const model = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
         expect(model.columnModel(0)).toEqual(new ColumnModel(
             0, _.range(9).map(row => Cell.at(row, 0)), [
                 Cage.ofSum(19).at(6, 0).at(7, 0).at(8, 0).mk()
@@ -113,7 +113,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
     });
 
     test('Initialize nonets', () => {
-        const model = new PuzzleSolver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
+        const model = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
 
         expect(model.nonetModel(0)).toEqual(new NonetModel(
             0, [

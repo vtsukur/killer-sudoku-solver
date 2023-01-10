@@ -199,12 +199,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [puzzleSolver]",
+            "name": "npm run test [solver]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "puzzleSolver"
+                "solver"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -214,7 +214,7 @@
             "type": "node"
         },
         {
-            "name": "npm run test [puzzleSolver (single)]",
+            "name": "npm run test [solver (single)]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
