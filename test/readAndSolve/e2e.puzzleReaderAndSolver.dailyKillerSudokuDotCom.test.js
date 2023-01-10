@@ -78,10 +78,6 @@ class TempFilePaths {
         return this; 
     }
 
-    get dir() {
-        return this.#dirPath;
-    }
-
     get imageOfUnsolvedPuzzle() {
         return this.#screenshotFilePath('unsolved-puzzle');
     }
