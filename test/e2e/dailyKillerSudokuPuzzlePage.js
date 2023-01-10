@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { House } from '../../src/puzzle/house';
-import { Rect } from '../../src/reader/image/rect';
+import { Rect } from '../../src/recognizer/rect';
 import { logFactory } from '../../src/util/logFactory';
 
 const log = logFactory.of('DailyKillerSudoku.com Puzzle Page');

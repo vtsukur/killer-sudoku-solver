@@ -1,7 +1,7 @@
 import config from 'config';
 import open from 'open';
 import puppeteer from 'puppeteer';
-import { recognize } from '../../src/reader/image/recognizer';
+import { recognize } from '../../src/recognizer/recognizer';
 import { Solver } from '../../src/solver/solver';
 import { logFactory } from '../../src/util/logFactory';
 import { TempFilePaths } from '../../src/util/tempFilePaths';
