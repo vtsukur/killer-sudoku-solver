@@ -6,7 +6,7 @@ export class Grid {
         return Grid.#SIDE_LENGTH;
     }
 
-    static #CELL_COUNT = Grid.#SIDE_LENGTH * House.SIZE;
+    static #CELL_COUNT = Grid.#SIDE_LENGTH * Grid.#SIDE_LENGTH;
     static get CELL_COUNT() {
         return Grid.#CELL_COUNT;
     }
@@ -26,6 +26,28 @@ export class Grid {
 
     static newMatrix() {
         return new Array(House.SIZE).fill().map(() => new Array(House.SIZE));
+    }
+
+    static iterator() {
+        let i = 0;
+        return {
+            [Symbol.iterator]() { return this; },
+            next() {
+                const abs = i++;
+                if (abs < Grid.#CELL_COUNT) {
+                    return {
+                        value: {
+                            row: Grid.rowFromAbs(abs),
+                            col: Grid.colFromAbs(abs),
+                            i: abs
+                        },
+                        done: false
+                    };
+                } else {
+                    return { value: undefined, done: true };
+                }
+            }
+        }
     }
 
     constructor() {
