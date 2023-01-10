@@ -228,12 +228,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [E2E puzzleReaderAndSolver]",
+            "name": "npm run test [E2E puzzleRecognizerAndSolver]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "e2e.puzzleReaderAndSolver.dailyKillerSudokuDotCom"
+                "e2e.puzzleRecognizerAndSolver.dailyKillerSudokuDotCom"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
