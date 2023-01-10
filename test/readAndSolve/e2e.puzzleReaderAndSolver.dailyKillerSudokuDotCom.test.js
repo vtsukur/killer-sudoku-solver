@@ -9,33 +9,28 @@ import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
 
 const log = logFactory.of('E2E Puzzle Reader & Solver');
 
-const IMAGE_PATH_BASE = './tmp/e2e';
-const PUZZLE_SOURCE_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-source-puzzle.png`;
-const PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH = `${IMAGE_PATH_BASE}/screenshot-solved-puzzle-page.png`;
-
 const OPEN_IMAGE_FILES = config.get('openImageFiles');
 
 let browser;
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
-    fs.mkdirSync(IMAGE_PATH_BASE, { recursive: true });
-    
     const puzzleIds = [
         24914
     ];
 
     puzzleIds.forEach(puzzleId => {
-        test(`Puzzle ${puzzleId} of difficulty 10`, async () => {
+        test(`Puzzle ${puzzleId}`, async () => {
+            const paths = new TempFilePaths(puzzleId).recreateDir();
             const page = new DailyKillerSudokuPuzzlePage(browser);
             await page.open(puzzleId);
-            await page.detectAndSavePuzzleImage(PUZZLE_SOURCE_IMAGE_PATH);
-            openImageIfNecessary(PUZZLE_SOURCE_IMAGE_PATH);
-            const transformResult = await transformPuzzleImageToStructuredPuzzle(PUZZLE_SOURCE_IMAGE_PATH, puzzleId);
+            await page.detectAndSavePuzzleImage(paths.imageOfUnsolvedPuzzle);
+            openImageIfNecessary(paths.imageOfUnsolvedPuzzle);
+            const transformResult = await transformPuzzleImageToStructuredPuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
             openImageIfNecessary(transformResult.tempFilePaths.puzzleImageSignificantContoursFilePath);
             const solution = solvePuzzle(transformResult.problem);
             await page.reflectSolution(solution);
-            await page.saveSolvedPuzzleImage(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
-            openImageIfNecessary(PAGE_WITH_PUZZLE_SOLVED_IMAGE_PATH);
+            await page.saveSolvedPuzzleImage(paths.imageOfPageWithSolvedPuzzle);
+            openImageIfNecessary(paths.imageOfPageWithSolvedPuzzle);
         });
     });
     
@@ -69,3 +64,33 @@ const openImageIfNecessary = (path) => {
         open(path);
     }
 };
+
+class TempFilePaths {
+    #dirPath;
+
+    constructor(taskId) {
+        this.#dirPath = `./tmp/e2e/${taskId}`;
+    }
+
+    recreateDir() {
+        fs.rmSync(this.#dirPath, { recursive: true, force: true });
+        fs.mkdirSync(this.#dirPath, { recursive: true });   
+        return this; 
+    }
+
+    get dir() {
+        return this.#dirPath;
+    }
+
+    get imageOfUnsolvedPuzzle() {
+        return this.#screenshotFilePath('unsolved-puzzle');
+    }
+
+    get imageOfPageWithSolvedPuzzle() {
+        return this.#screenshotFilePath('solved-puzzle-page');
+    }
+
+    #screenshotFilePath(classifier) {
+        return `${this.#dirPath}/screeshot-${classifier}.png`;
+    }
+}
