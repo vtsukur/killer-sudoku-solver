@@ -26,9 +26,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 const log = logFactory.of('Puzzle Detection via Computer Vision');
 
 export async function findCageContours(imagePath, taskId) {
-    const tempFilePaths = new TempFilePaths(taskId);
-    fs.rmSync(tempFilePaths.dir, { recursive: true, force: true });
-    fs.mkdirSync(tempFilePaths.dir, { recursive: true });
+    const tempFilePaths = new TempFilePaths(taskId).recreateDir();
 
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);
@@ -418,6 +416,12 @@ class TempFilePaths {
 
     constructor(taskId) {
         this.#dirPath = `./tmp/puzzle-recognizer/${taskId}`;
+    }
+
+    recreateDir() {
+        fs.rmSync(this.#dirPath, { recursive: true, force: true });
+        fs.mkdirSync(this.#dirPath, { recursive: true });   
+        return this; 
     }
 
     get dir() {
