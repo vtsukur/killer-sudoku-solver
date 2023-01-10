@@ -2,7 +2,7 @@ import config from 'config';
 import * as fs from 'node:fs';
 import open from 'open';
 import puppeteer from 'puppeteer';
-import { findCageContours } from '../../src/reader/image/cageContoursFinder';
+import { recognizePuzzle } from '../../src/reader/image/puzzleRecognizer';
 import { PuzzleSolver } from '../../src/solver/puzzleSolver';
 import { logFactory } from '../../src/util/logFactory';
 import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
@@ -25,9 +25,9 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             await page.open(puzzleId);
             await page.detectAndSavePuzzleImage(paths.imageOfUnsolvedPuzzle);
             openImageIfNecessary(paths.imageOfUnsolvedPuzzle);
-            const transformResult = await transformPuzzleImageToStructuredPuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
-            openImageIfNecessary(transformResult.tempFilePaths.puzzleImageSignificantContoursFilePath);
-            const solution = solvePuzzle(transformResult.problem);
+            const recognitionResult = await doRecognizePuzzle(paths.imageOfUnsolvedPuzzle, puzzleId);
+            openImageIfNecessary(recognitionResult.tempFilePaths.puzzleImageSignificantContoursFilePath);
+            const solution = solvePuzzle(recognitionResult.problem);
             await page.reflectSolution(solution);
             await page.saveSolvedPuzzleImage(paths.imageOfPageWithSolvedPuzzle);
             openImageIfNecessary(paths.imageOfPageWithSolvedPuzzle);
@@ -45,10 +45,10 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     });
 });
 
-const transformPuzzleImageToStructuredPuzzle = async (puzzleSourceImagePath, taskId) => {
-    log.info('Transforming puzzle image to structured problem ...');
-    const result = await findCageContours(puzzleSourceImagePath, taskId);
-    log.info('Puzzle problem constructed successfully');
+const doRecognizePuzzle = async (puzzleSourceImagePath, taskId) => {
+    log.info('Recognizing puzzle ...');
+    const result = await recognizePuzzle(puzzleSourceImagePath, taskId);
+    log.info('Puzzle recognized successfully');
     return result;
 };
 

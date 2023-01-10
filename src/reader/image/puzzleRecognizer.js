@@ -25,7 +25,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 
 const log = logFactory.of('Puzzle Detection via Computer Vision');
 
-export async function findCageContours(imagePath, taskId) {
+export async function recognizePuzzle(imagePath, taskId) {
     const tempFilePaths = new TempFilePaths(taskId).recreateDir();
 
     // read image using Jimp.
