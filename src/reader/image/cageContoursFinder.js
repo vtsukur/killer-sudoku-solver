@@ -433,6 +433,6 @@ class TempFilePaths {
     }
 
     cageSumTextFilePath(id, classifier) {
-        return `${this.filePath(id + '/cage-sum_' + classifier + '.png')}`;
+        return this.filePath(`${id}/cage-sum_${classifier}.png`);
     }
 }
