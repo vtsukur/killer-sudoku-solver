@@ -7,7 +7,7 @@ import { Cage } from '../../problem/cage';
 import { Cell } from '../../problem/cell';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
-import { Problem } from '../../problem/problem';
+import { Puzzle } from '../../problem/puzzle';
 import { logFactory } from '../../util/logFactory';
 import { TempFilePaths } from '../../util/tempFilePaths';
 import { CageContour } from './cageContour';
@@ -74,10 +74,10 @@ export async function recognizePuzzle(imagePath, taskId) {
     const cages = await prepareCageSumImages(cageContours, jimpSrc, paths, tesseractWorker);
     await tesseractWorker.terminate();
 
-    const problem = new Problem(cages);
+    const puzzle = new Puzzle(cages);
 
     return {
-        problem,
+        puzzle,
         paths
     };
 }

@@ -1,7 +1,7 @@
 import { Cage } from '../../src/problem/cage';
-import { Problem } from '../../src/problem/problem';
+import { Puzzle } from '../../src/problem/puzzle';
 
-export const sampleProblem = new Problem([
+export const samplePuzzle = new Puzzle([
     // upper nonets
     Cage.ofSum(17).at(0, 0).at(1, 0).at(1, 1).mk(),
     Cage.ofSum(7).at(0, 1).mk(),
@@ -41,7 +41,7 @@ export const sampleProblem = new Problem([
     Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_04_06 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_04_06 = new Puzzle([
     // upper nonets
     Cage.ofSum(7).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(18).at(1, 0).at(1, 1).at(2, 0).mk(),
@@ -82,7 +82,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_04_06 = new Problem([
     Cage.ofSum(12).at(7, 8).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_08_12 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_08_12 = new Puzzle([
     // upper nonets
     Cage.ofSum(6).at(0, 0).at(1, 0).mk(),
     Cage.ofSum(12).at(0, 1).at(1, 1).mk(),
@@ -123,7 +123,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_08_12 = new Problem([
     Cage.ofSum(7).at(7, 8).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_08_30 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_08_30 = new Puzzle([
     // upper nonets
     Cage.ofSum(15).at(0, 0).at(0, 1).at(0, 2).mk(),
     Cage.ofSum(12).at(1, 0).at(1, 1).at(1, 2).mk(),
@@ -164,7 +164,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_08_30 = new Problem([
     Cage.ofSum(12).at(7, 8).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_10_18 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_18 = new Puzzle([
     // upper nonets
     Cage.ofSum(8).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(13).at(1, 0).at(1, 1).mk(),
@@ -206,7 +206,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_10_18 = new Problem([
     Cage.ofSum(20).at(8, 5).at(8, 6).at(8, 7).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_10_19 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_19 = new Puzzle([
     // upper nonets
     Cage.ofSum(25).at(0, 0).at(1, 0).at(2, 0).at(3, 0).mk(),
     Cage.ofSum(7).at(0, 1).at(1, 1).mk(),
@@ -247,7 +247,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_10_19 = new Problem([
     Cage.ofSum(9).at(7, 8).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_10_22 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_22 = new Puzzle([
     // upper nonets
     Cage.ofSum(11).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(10).at(1, 0).at(1, 1).mk(),
@@ -288,7 +288,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_10_22 = new Problem([
     Cage.ofSum(13).at(8, 6).at(8, 7).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_10_25 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_10_25 = new Puzzle([
     // upper nonets
     Cage.ofSum(11).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(12).at(0, 2).at(1, 2).at(1, 3).mk(),
@@ -327,7 +327,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_10_25 = new Problem([
     Cage.ofSum(15).at(7, 8).at(8, 7).at(8, 8).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_11_01 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_11_01 = new Puzzle([
     // upper nonets
     Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(10).at(0, 2).at(1, 2).mk(),
@@ -368,7 +368,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_11_01 = new Problem([
     Cage.ofSum(7).at(8, 6).at(8, 7).mk()
 ]);
 
-export const sudokuDotCom_dailyChallengeOf_2022_11_10 = new Problem([
+export const sudokuDotCom_dailyChallengeOf_2022_11_10 = new Puzzle([
     // upper nonets
     Cage.ofSum(7).at(0, 0).at(0, 1).mk(),
     Cage.ofSum(7).at(0, 2).at(1, 2).mk(),
@@ -409,7 +409,7 @@ export const sudokuDotCom_dailyChallengeOf_2022_11_10 = new Problem([
     Cage.ofSum(8).at(8, 6).at(8, 7).mk()
 ]);
 
-export const sudokuDotCom_randomExpertLevelChallenge = new Problem([
+export const sudokuDotCom_randomExpertLevelChallenge = new Puzzle([
     // upper nonets
     Cage.ofSum(30).at(0, 0).at(0, 1).at(1, 0).at(1, 1).at(1, 2).at(2, 0).mk(),
     Cage.ofSum(10).at(2, 1).at(2, 2).mk(),
@@ -451,7 +451,7 @@ export const sudokuDotCom_randomExpertLevelChallenge = new Problem([
 ]);
 
 // https://www.dailykillersudoku.com/puzzle/24789
-export const dailyKillerSudokuDotCom_puzzle24789_difficulty10 = new Problem([
+export const dailyKillerSudokuDotCom_puzzle24789_difficulty10 = new Puzzle([
     // upper nonets
     Cage.ofSum(8).at(0, 0).at(0, 1).at(1, 0).mk(),
     Cage.ofSum(15).at(2, 0).at(3, 0).mk(),
@@ -483,7 +483,7 @@ export const dailyKillerSudokuDotCom_puzzle24789_difficulty10 = new Problem([
 ]);
 
 // https://www.dailykillersudoku.com/puzzle/24889
-export const dailyKillerSudokuDotCom_puzzle24889_difficulty10 = new Problem([
+export const dailyKillerSudokuDotCom_puzzle24889_difficulty10 = new Puzzle([
     // upper nonets
     Cage.ofSum(17).at(0, 0).at(0, 1).at(1, 0).mk(),
     Cage.ofSum(15).at(0, 2).at(0, 3).at(1, 2).mk(),
@@ -512,7 +512,7 @@ export const dailyKillerSudokuDotCom_puzzle24889_difficulty10 = new Problem([
 ]);
 
 // https://www.dailykillersudoku.com/puzzle/24914
-export const dailyKillerSudokuDotCom_puzzle24914_difficulty10 = new Problem([
+export const dailyKillerSudokuDotCom_puzzle24914_difficulty10 = new Puzzle([
     // upper nonets
     Cage.ofSum(17).at(0, 0).at(1, 0).at(2, 0).mk(),
     Cage.ofSum(32).at(0, 1).at(0, 2).at(0, 3).at(1, 3).at(0, 4).at(0, 5).at(0, 6).mk(),
@@ -545,7 +545,7 @@ export const dailyKillerSudokuDotCom_puzzle24914_difficulty10 = new Problem([
 ]);
 
 // https://www.dailykillersudoku.com/puzzle/24919
-export const dailyKillerSudokuDotCom_puzzle24919_difficulty10 = new Problem([
+export const dailyKillerSudokuDotCom_puzzle24919_difficulty10 = new Puzzle([
     // upper nonets
     Cage.ofSum(17).at(0, 0).at(0, 1).at(1, 0).at(1, 1).mk(),
     Cage.ofSum(28).at(0, 2).at(1, 2).at(2, 0).at(2, 1).at(2, 2).mk(),

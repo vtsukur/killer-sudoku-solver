@@ -139,12 +139,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [problem]",
+            "name": "npm run test [puzzle]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "problem"
+                "puzzle"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -4,16 +4,16 @@ import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
-export class Problem {
+export class Puzzle {
     #cages;
 
     constructor(cages) {
-        this.#cages = [...Problem.#validate(cages)];
+        this.#cages = [...Puzzle.#validate(cages)];
     }
 
     static #validate(cages) {
-        Problem.#validateCageCells(cages.flatMap(cage => cage.cells));
-        Problem.#validateCages(cages);
+        Puzzle.#validateCageCells(cages.flatMap(cage => cage.cells));
+        Puzzle.#validateCages(cages);
         return cages;
     }
 
@@ -21,13 +21,13 @@ export class Problem {
         const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
         if (cellSet.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
-        const missingCellKeys = Problem.#findMissingCellKeys(cellSet);
+        const missingCellKeys = Puzzle.#findMissingCellKeys(cellSet);
 
         let message = `${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`;
         if (duplicateCellKeys.length > 0) {
             message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`;
         }
-        Problem.#throwValidationError(message);
+        Puzzle.#throwValidationError(message);
     }
 
     static #findMissingCellKeys(cellSet) {
@@ -51,7 +51,7 @@ export class Problem {
     }
 
     static #throwValidationError(detailedMessage) {
-        throw `Invalid problem. ${detailedMessage}`;
+        throw `Invalid puzzle. ${detailedMessage}`;
     }
 
     get cages() {

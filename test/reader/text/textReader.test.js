@@ -1,11 +1,11 @@
 import reader from '../../../src/reader/text/textReader.js';
-import { Problem } from '../../../src/problem/problem';
+import { Puzzle } from '../../../src/problem/puzzle';
 import { Cage } from '../../../src/problem/cage';
 
 describe('Reader tests', () => {
-    test('Full read - real problem #1', () => {
-        const problem = reader('./test/reader/text/samples/1.txt');
-        expect(problem).toEqual(new Problem([
+    test('Full read - real puzzle #1', () => {
+        const puzzle = reader('./test/reader/text/samples/1.txt');
+        expect(puzzle).toEqual(new Puzzle([
             // upper nonets
             Cage.ofSum(17).at(0, 0).at(1, 0).at(1, 1).mk(),
             Cage.ofSum(7).at(0, 1).mk(),
@@ -46,9 +46,9 @@ describe('Reader tests', () => {
         ]));
     });
 
-    test('Full read - real problem #2', () => {
-        const problem = reader('./test/reader/text/samples/2.txt');
-        expect(problem).toEqual(new Problem([
+    test('Full read - real puzzle #2', () => {
+        const puzzle = reader('./test/reader/text/samples/2.txt');
+        expect(puzzle).toEqual(new Puzzle([
             // upper nonets
             Cage.ofSum(15).at(0, 0).at(0, 1).mk(),
             Cage.ofSum(10).at(0, 2).at(1, 2).mk(),

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Grid } from '../../problem/grid';
 import { House } from '../../problem/house';
-import { Problem } from '../../problem/problem';
+import { Puzzle } from '../../problem/puzzle';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';
@@ -13,23 +13,23 @@ export class MasterModel {
     #placedNumCount;
     #cellsToInputCagesMatrix;
 
-    constructor(problemOrModel) {
-        if (problemOrModel instanceof Problem) {
-            this.#initWithProblem(problemOrModel);
+    constructor(puzzleOrMasterModel) {
+        if (puzzleOrMasterModel instanceof Puzzle) {
+            this.#initWithPuzzle(puzzleOrMasterModel);
         } else {
-            this.#initWithModel(problemOrModel);
+            this.#initWithMasterModel(puzzleOrMasterModel);
         }
     }
 
-    #initWithProblem(problem) {
-        this.problem = problem;
+    #initWithPuzzle(puzzle) {
+        this.puzzle = puzzle;
         this.cageModelsMap = new Map();
         this.cellsMatrix = Grid.newMatrix();
         this.#cellsToInputCagesMatrix = Grid.newMatrix();
         this.#solution = Grid.newMatrix();
         this.#placedNumCount = 0;
 
-        problem.cages.forEach(cage => {
+        puzzle.cages.forEach(cage => {
             cage.cells.forEach(cell => {
                 this.cellsMatrix[cell.row][cell.col] = cell;
                 this.#cellsToInputCagesMatrix[cell.row][cell.col] = cage;
@@ -46,20 +46,20 @@ export class MasterModel {
         });
 
         this.cellModelsMatrix = Grid.newMatrix();
-        const cells = problem.cages.map(cage => cage.cells).flat();
+        const cells = puzzle.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
             this.cellModelsMatrix[cell.row][cell.col] = new CellModel(cell);
         });
 
-        problem.cages.forEach(cage => {
+        puzzle.cages.forEach(cage => {
             this.registerCage(cage, false);
         });
 
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
-    #initWithModel(model) {
-        this.problem = model.problem;
+    #initWithMasterModel(model) {
+        this.puzzle = model.puzzle;
 
         // copy cage models
         this.cageModelsMap = new Map();

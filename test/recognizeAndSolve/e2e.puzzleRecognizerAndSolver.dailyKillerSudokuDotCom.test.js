@@ -32,7 +32,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             openImageIfNecessary(recognitionResult.paths.puzzleImageSignificantContoursFilePath);
 
             // solving puzzle
-            const solution = solvePuzzle(recognitionResult.problem);
+            const solution = solvePuzzle(recognitionResult.puzzle);
             await page.reflectSolution(solution);
             await page.saveSolvedPuzzleImage(paths.imageOfPageWithSolvedPuzzle);
             openImageIfNecessary(paths.imageOfPageWithSolvedPuzzle);
@@ -57,9 +57,9 @@ const doRecognizePuzzle = async (puzzleSourceImagePath, taskId) => {
     return result;
 };
 
-const solvePuzzle = (problem) => {
+const solvePuzzle = (puzzle) => {
     log.info('Solving puzzle ...');
-    const solution = new PuzzleSolver(problem).solve();
+    const solution = new PuzzleSolver(puzzle).solve();
     log.info('Solution for puzzle found!');
     return solution;
 };

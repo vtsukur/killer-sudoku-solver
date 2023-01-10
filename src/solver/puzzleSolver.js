@@ -7,8 +7,8 @@ import { CageSlicer } from './transform/cageSlicer';
 export class PuzzleSolver {
     #model;
 
-    constructor(problem) {
-        this.#model = new MasterModel(problem);
+    constructor(puzzle) {
+        this.#model = new MasterModel(puzzle);
     }
 
     solve() {
