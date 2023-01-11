@@ -14,10 +14,6 @@ export class Solution {
     }
 
     private static toString(data: number[][]): string {
-        let str = `${EOL}`;
-        for (const numRow of data) {
-            str += `  [ ${data.join(', ')} ]${EOL}`;
-        }
-        return str;
+        return data.map(numRow => numRow.join(' ')).join(EOL);
     }
 }

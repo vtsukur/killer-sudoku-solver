@@ -154,6 +154,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [solution]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "solution"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzleRecognizer]",
             "request": "launch",
             "runtimeArgs": [
