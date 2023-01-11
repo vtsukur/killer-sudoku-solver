@@ -34,12 +34,19 @@
             "type": "node"
         },
         {
-            "name": "npm run test [puzzle/cage]",
+            "name": "npm run test [puzzle/*]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cage"
+                "--findRelatedTests",
+                "test/puzzle/cage.test.js",
+                "test/puzzle/cell.test.js",
+                "test/puzzle/grid.test.js",
+                "test/puzzle/house.test.js",
+                "test/puzzle/nonet.test.js",
+                "test/puzzle/puzzle.test.js",
+                "test/puzzle/solution.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -49,12 +56,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [puzzle/cageModel]",
+            "name": "npm run test [puzzle/cage]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cageModel"
+                "cage"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -94,6 +101,36 @@
             "type": "node"
         },
         {
+            "name": "npm run test [puzzle/house]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "house"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [puzzle/nonet]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "nonet"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzle/puzzle]",
             "request": "launch",
             "runtimeArgs": [
@@ -109,12 +146,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [puzzle/house]",
+            "name": "npm run test [puzzle/solution]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "house"
+                "solution"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -139,27 +176,12 @@
             "type": "node"
         },
         {
-            "name": "npm run test [nonet]",
+            "name": "npm run test [models/cageModel]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "nonet"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [solution]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "solution"
+                "cageModel"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
