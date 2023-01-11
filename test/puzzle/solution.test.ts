@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { EOL } from 'os';
 import { Solution } from '../../src/puzzle/solution';
 
 describe('Solution tests', () => {
