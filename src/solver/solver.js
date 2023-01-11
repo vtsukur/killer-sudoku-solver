@@ -3,6 +3,7 @@ import { MasterModel } from './models/masterModel';
 import { Context } from './strategies/context';
 import { masterStrategy } from './strategies/masterStrategy';
 import { CageSlicer } from './transform/cageSlicer';
+import { Solution } from '../puzzle/solution';
 
 export class Solver {
     #model;
@@ -14,7 +15,7 @@ export class Solver {
     solve() {
         const ctx = new Context(this.#model, new CageSlicer(this.#model));
         ctx.run(masterStrategy);
-        return this.#model.solution;
+        return new Solution(this.#model.solution);
     }
 
     get model() {

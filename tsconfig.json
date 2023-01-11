@@ -1,0 +1,17 @@
+{
+    "esModuleInterop": true,
+    "compilerOptions": {
+        "target": "es6",
+        "module": "ES2022",
+        "strict": true,
+        "sourceMap": true,
+        "allowJs": true
+    },
+    "include": [
+        "./src/**/*",
+        "./test/**/*"
+    ],
+    "exclude":[
+        "./node_modules"
+    ]
+}

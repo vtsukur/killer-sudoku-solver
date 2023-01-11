@@ -1,8 +1,11 @@
 {
     "collectCoverage": true,
     "testTimeout": 120000,
+    "preset": "ts-jest",
+    "testEnvironment": "node",
     "moduleNameMapper": {
         "#ansi-styles": "ansi-styles/index.js",
-        "#supports-color": "supports-color/index.js"
+        "#supports-color": "supports-color/index.js",
+        "^(\\.{1,2}/.*)\\.js$": "$1"
     }
 }

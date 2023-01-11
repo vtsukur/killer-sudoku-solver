@@ -5,9 +5,9 @@ import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotC
 describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
         const solver = new Solver(dailyKillerSudokuDotCom_puzzle24789_difficulty10);
-        const solution = solver.solve();
+        const { data } = solver.solve();
 
-        expect(solution).toEqual([
+        expect(data).toEqual([
             [ 5, 1, 3, 9, 2, 8, 4, 7, 6 ],
             [ 2, 4, 8, 3, 7, 6, 1, 9, 5 ],
             [ 6, 7, 9, 4, 5, 1, 8, 2, 3 ],
@@ -22,9 +22,9 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
 
     test('Find solution for puzzle 24889 of difficulty 10 by DailyKillerSudoku.com', () => {
         const solver = new Solver(dailyKillerSudokuDotCom_puzzle24889_difficulty10);
-        const solution = solver.solve();
+        const { data } = solver.solve();
 
-        expect(solution).toEqual([
+        expect(data).toEqual([
             [ 7, 6, 8, 2, 3, 9, 1, 5, 4 ],
             [ 4, 2, 5, 6, 8, 1, 3, 7, 9 ],
             [ 9, 1, 3, 5, 7, 4, 8, 6, 2 ],
@@ -39,9 +39,9 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
 
     test('Find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', () => {
         const solver = new Solver(dailyKillerSudokuDotCom_puzzle24914_difficulty10);
-        const solution = solver.solve();
+        const { data } = solver.solve();
 
-        expect(solution).toEqual([
+        expect(data).toEqual([
             [ 7, 3, 5, 8, 1, 4, 2, 6, 9 ],
             [ 6, 1, 2, 9, 5, 3, 8, 4, 7 ],
             [ 4, 9, 8, 2, 7, 6, 1, 5, 3 ],
@@ -56,9 +56,9 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
 
     test('Find solution for puzzle 24919 of difficulty 10 by DailyKillerSudoku.com', () => {
         const solver = new Solver(dailyKillerSudokuDotCom_puzzle24919_difficulty10);
-        const solution = solver.solve();
+        const { data } = solver.solve();
 
-        expect(solution).toEqual([
+        expect(data).toEqual([
             [ 1, 3, 2, 7, 5, 8, 6, 9, 4 ],
             [ 5, 8, 7, 4, 9, 6, 2, 3, 1 ],
             [ 9, 4, 6, 1, 3, 2, 8, 5, 7 ],
