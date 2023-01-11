@@ -1,3 +1,3 @@
-export const valuesForMsg = (array: any[]) => {
+export const joinForReadability = (array: any[]) => {
     return array.join(', ');
 };

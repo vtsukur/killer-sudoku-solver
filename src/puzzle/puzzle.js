@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { valuesForMsg } from '../util/readableMessages';
+import { joinForReadability } from '../util/readableMessages';
 import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { Grid } from './grid';
@@ -23,9 +23,9 @@ export class Puzzle {
 
         const missingCellKeys = Puzzle.#findMissingCellKeys(cellSet);
 
-        let message = `${missingCellKeys.length} missing cell(s): ${valuesForMsg(missingCellKeys)}`;
+        let message = `${missingCellKeys.length} missing cell(s): ${joinForReadability(missingCellKeys)}`;
         if (duplicateCellKeys.length > 0) {
-            message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${valuesForMsg(duplicateCellKeys)}`;
+            message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${joinForReadability(duplicateCellKeys)}`;
         }
         Puzzle.#throwValidationError(message);
     }
