@@ -19,51 +19,6 @@
             "type": "node"
         },
         {
-            "name": "npm run test [cage]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "cage"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [cageModel]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "cageModel"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [cell]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "cell"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
             "name": "npm run test [combinatorial]",
             "request": "launch",
             "runtimeArgs": [
@@ -79,7 +34,52 @@
             "type": "node"
         },
         {
-            "name": "npm run test [grid]",
+            "name": "npm run test [puzzle/cage]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cage"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [puzzle/cageModel]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cageModel"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [puzzle/cell]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cell"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [puzzle/grid]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -94,7 +94,22 @@
             "type": "node"
         },
         {
-            "name": "npm run test [house]",
+            "name": "npm run test [puzzle/puzzle]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "puzzle.test.js"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
+            "name": "npm run test [puzzle/house]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -130,21 +145,6 @@
                 "run",
                 "test",
                 "nonet"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [puzzle]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "puzzle"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
