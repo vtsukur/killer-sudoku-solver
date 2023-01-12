@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
 
@@ -45,18 +45,6 @@ describe('Cage tests', () => {
     test('Construction of invalid cage with 2 duplicate cells', () => {
         expect(() => Cage.ofSum(9).at(0, 0).at(0, 1).at(0, 0).at(0, 1).mk()).toThrow(
             'Invalid cage. 2 duplicate cell(s): (0, 0), (0, 1)'
-        );
-    });
-
-    test('Construction of invalid cage with undefined cell', () => {
-        expect(() => Cage.ofSum(9).cell(undefined)).toThrow(
-            'Invalid cell value. Expected to be instance of Cage. Actual: undefined'
-        );
-    });
-
-    test('Construction of invalid cage with non-cell', () => {
-        expect(() => Cage.ofSum(9).cell(4)).toThrow(
-            'Invalid cell value. Expected to be instance of Cage. Actual: 4'
         );
     });
 
