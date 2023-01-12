@@ -1,19 +1,19 @@
 import * as fs from 'node:fs';
 
 export class TempFilePaths {
-    private dirPath: string;
+    private baseDir: string;
 
-    constructor(dirPath: string) {
-        this.dirPath = dirPath;
+    constructor(baseDir: string) {
+        this.baseDir = baseDir;
     }
 
-    recreateDir() {
-        fs.rmSync(this.dirPath, { recursive: true, force: true });
-        fs.mkdirSync(this.dirPath, { recursive: true });   
+    recreateDirSync() {
+        fs.rmSync(this.baseDir, { recursive: true, force: true });
+        fs.mkdirSync(this.baseDir, { recursive: true });   
         return this; 
     }
 
     filePath(shortFileName: string) {
-        return `${this.dirPath}/${shortFileName}`;
+        return `${this.baseDir}/${shortFileName}`;
     }
 }
