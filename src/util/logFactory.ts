@@ -1,17 +1,17 @@
 import * as chalk from 'chalk';
 import * as config from 'config';
-import { createLogger, format, transports } from 'winston';
+import { createLogger, format, transports, Logger } from 'winston';
 
 const logLevel: string = config.get('logLevel')
 const isDebugGlobal: boolean = logLevel === 'debug';
 
 class Log {
-    #label;
-    #logger;
+    private label: string;
+    private logger: Logger;
 
     constructor(label: string) {
-        this.#label = label;
-        this.#logger = createLogger({
+        this.label = label;
+        this.logger = createLogger({
             level: logLevel,
             transports: [
                 new transports.Stream({
@@ -19,7 +19,7 @@ class Log {
                 })
             ],
             format: format.combine(
-                format.label({ label: this.#label }),
+                format.label({ label: this.label }),
                 format.printf((info) => {
                     const level = chalk.white.bgBlue(`[${info.level.toUpperCase()}]`);
                     const label = chalk.black.bgYellowBright.bold(`[${info.label}]`);
@@ -30,11 +30,11 @@ class Log {
     }
 
     info(msg: string) {
-        this.#logger.info(msg);
+        this.logger.info(msg);
     }
 
     debug(msg: string) {
-        this.#logger.log('debug', msg);
+        this.logger.log('debug', msg);
     }
 
     get isDebug() {
