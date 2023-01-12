@@ -1,40 +1,29 @@
 import { House } from './house';
 
-export class Grid {
-    static #SIDE_LENGTH = 9;
-    static get SIDE_LENGTH() {
-        return Grid.#SIDE_LENGTH;
-    }
+export namespace Grid {
+    export const SIDE_LENGTH = 9;
+    export const CELL_COUNT = Grid.SIDE_LENGTH * Grid.SIDE_LENGTH;
+    export const TOTAL_SUM = Grid.SIDE_LENGTH * House.SUM;
 
-    static #CELL_COUNT = Grid.#SIDE_LENGTH * Grid.#SIDE_LENGTH;
-    static get CELL_COUNT() {
-        return Grid.#CELL_COUNT;
-    }
-
-    static #TOTAL_SUM = Grid.#SIDE_LENGTH * House.SUM;
-    static get TOTAL_SUM() {
-        return Grid.#TOTAL_SUM;
-    }
-
-    static rowFromAbs(idx) {
+    export function rowFromAbs(idx: number) {
         return Math.floor(idx / House.SIZE);
     }
 
-    static colFromAbs(idx) {
+    export function colFromAbs(idx: number) {
         return idx % House.SIZE;
     }
 
-    static newMatrix() {
-        return new Array(House.SIZE).fill().map(() => new Array(House.SIZE));
+    export function newMatrix() {
+        return new Array(House.SIZE).fill(undefined).map(() => new Array(House.SIZE));
     }
 
-    static iterator() {
+    export function iterator() {
         let i = 0;
         return {
             [Symbol.iterator]() { return this; },
             next() {
                 const abs = i++;
-                if (abs < Grid.#CELL_COUNT) {
+                if (abs < Grid.CELL_COUNT) {
                     return {
                         value: {
                             row: Grid.rowFromAbs(abs),
@@ -48,9 +37,5 @@ export class Grid {
                 }
             }
         }
-    }
-
-    constructor() {
-        throw new TypeError('Grid is not constructable');
     }
 }

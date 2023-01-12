@@ -2,10 +2,6 @@ import _ from 'lodash';
 import { Grid } from '../../../src/puzzle/grid';
 
 describe('Grid tests', () => {
-    test('Grid is not construtable', () => {
-        expect(() => new Grid()).toThrow('Grid is not constructable');
-    });
-
     test('Grid side length is 9', () => {
         expect(Grid.SIDE_LENGTH).toEqual(9);
     });
