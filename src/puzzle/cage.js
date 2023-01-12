@@ -27,12 +27,12 @@ export class Cage {
     }
 
     static #validateCells(cells) {
-        const { cellSet, duplicateCellKeys } = Cell.cellSetAndDuplicatesOf(cells);
-        if (duplicateCellKeys.length > 0) {
-            Cage.#throwValidationError(`${duplicateCellKeys.length} duplicate cell(s): ${joinForReadability(duplicateCellKeys)}`);
+        const { set, duplicateKeys } = Cell.setAndDuplicateKeysOf(cells);
+        if (duplicateKeys.length > 0) {
+            Cage.#throwValidationError(`${duplicateKeys.length} duplicate cell(s): ${joinForReadability(duplicateKeys)}`);
         }
-        if (cellSet.size > House.SIZE) {
-            Cage.#throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${cellSet.size}`);
+        if (set.size > House.SIZE) {
+            Cage.#throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${set.size}`);
         }
         return cells;
     }

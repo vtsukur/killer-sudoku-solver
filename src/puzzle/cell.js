@@ -54,16 +54,16 @@ export class Cell {
         return this.#key;
     }
 
-    static cellSetAndDuplicatesOf = (cells) => {
-        const cellSet = new Set();
-        const duplicateCellKeys = [];
+    static setAndDuplicateKeysOf = (cells) => {
+        const set = new Set();
+        const duplicateKeys = [];
         cells.forEach(cell => {
-            if (cellSet.has(cell.key)) {
-                duplicateCellKeys.push(cell.key);
+            if (set.has(cell.key)) {
+                duplicateKeys.push(cell.key);
             } else {
-                cellSet.add(cell.key);
+                set.add(cell.key);
             }
         });
-        return { cellSet, duplicateCellKeys };
+        return { set, duplicateKeys };
     }
 }

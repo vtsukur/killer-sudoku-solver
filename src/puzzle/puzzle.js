@@ -17,14 +17,14 @@ export class Puzzle {
     }
 
     static #validateCageCells(cells) {
-        const { cellSet, duplicateCellKeys } = Cell.cellSetAndDuplicatesOf(cells);
-        if (cellSet.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
+        const { set, duplicateKeys } = Cell.setAndDuplicateKeysOf(cells);
+        if (set.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
-        const missingCellKeys = Puzzle.#findMissingCellKeys(cellSet);
+        const missingCellKeys = Puzzle.#findMissingCellKeys(set);
 
         let message = `${missingCellKeys.length} missing cell(s): ${joinForReadability(missingCellKeys)}`;
-        if (duplicateCellKeys.length > 0) {
-            message = `${message}. ${duplicateCellKeys.length} duplicate cell(s): ${joinForReadability(duplicateCellKeys)}`;
+        if (duplicateKeys.length > 0) {
+            message = `${message}. ${duplicateKeys.length} duplicate cell(s): ${joinForReadability(duplicateKeys)}`;
         }
         Puzzle.#throwValidationError(message);
     }
