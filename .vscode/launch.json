@@ -250,6 +250,22 @@
             "type": "node"
         },
         {
+            "name": "npm run test [util/*]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/util/*"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [util/readableMessages]",
             "request": "launch",
             "runtimeArgs": [
