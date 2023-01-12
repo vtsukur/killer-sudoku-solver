@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Solution } from '../../src/puzzle/solution';
+import { Solution } from '../../../src/puzzle/solution';
 
 describe('Solution tests', () => {
     test('Construction of solution with data and checking both data and string representation', () => {

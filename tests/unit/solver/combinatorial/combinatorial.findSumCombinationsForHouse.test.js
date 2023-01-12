@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { findSumCombinationsForHouse } from '../../../src/solver/combinatorial/combinatorial';
-import { Cage } from '../../../src/puzzle/cage';
-import { CageModel } from '../../../src/solver/models/elements/cageModel';
+import { findSumCombinationsForHouse } from '../../../../src/solver/combinatorial/combinatorial';
+import { Cage } from '../../../../src/puzzle/cage';
+import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 
 const houseModelOf = (cages) => {
     let cellsMap = new Map();

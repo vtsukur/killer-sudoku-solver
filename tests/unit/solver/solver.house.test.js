@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../puzzle/realPuzzleSamples';
-import { Cell } from '../../src/puzzle/cell';
-import { Cage } from '../../src/puzzle/cage';
-import { Solver } from '../../src/solver/solver';
-import { RowModel } from '../../src/solver/models/elements/rowModel';
-import { ColumnModel } from '../../src/solver/models/elements/columnModel';
-import { NonetModel } from '../../src/solver/models/elements/nonetModel';
+import { Cell } from '../../../src/puzzle/cell';
+import { Cage } from '../../../src/puzzle/cage';
+import { Solver } from '../../../src/solver/solver';
+import { RowModel } from '../../../src/solver/models/elements/rowModel';
+import { ColumnModel } from '../../../src/solver/models/elements/columnModel';
+import { NonetModel } from '../../../src/solver/models/elements/nonetModel';
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {    
     test('Initialize row models', () => {

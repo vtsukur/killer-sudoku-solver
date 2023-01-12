@@ -1,7 +1,7 @@
-import { CageModel } from '../../../src/solver/models/elements/cageModel';
-import { CellModel } from '../../../src/solver/models/elements/cellModel';
-import { Cage } from '../../../src/puzzle/cage';
-import { Cell } from '../../../src/puzzle/cell';
+import { CageModel } from '../../../../src/solver/models/elements/cageModel';
+import { CellModel } from '../../../../src/solver/models/elements/cellModel';
+import { Cage } from '../../../../src/puzzle/cage';
+import { Cell } from '../../../../src/puzzle/cell';
 import _ from 'lodash';
 
 const cell1 = Cell.at(0, 0);

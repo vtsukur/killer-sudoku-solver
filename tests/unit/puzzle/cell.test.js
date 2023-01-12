@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Cell } from '../../src/puzzle/cell';
+import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cell tests', () => {
     test('Construction of cell storing row, column and nonet', () => {

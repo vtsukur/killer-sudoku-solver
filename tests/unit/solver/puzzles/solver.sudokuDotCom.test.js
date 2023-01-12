@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { House } from '../../../src/puzzle/house';
-import { Solver } from '../../../src/solver/solver';
+import { House } from '../../../../src/puzzle/house';
+import { Solver } from '../../../../src/solver/solver';
 import { sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {

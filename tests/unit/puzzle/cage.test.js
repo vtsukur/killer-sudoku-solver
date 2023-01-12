@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Cage } from '../../src/puzzle/cage';
-import { Cell } from '../../src/puzzle/cell';
+import { Cage } from '../../../src/puzzle/cage';
+import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cage tests', () => {
     test('Construction of cage storing sum, cells and cell count', () => {

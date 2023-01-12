@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Grid } from '../../src/puzzle/grid';
+import { Grid } from '../../../src/puzzle/grid';
 
 describe('Grid tests', () => {
     test('Grid is not construtable', () => {

@@ -1,7 +1,7 @@
-import { Cage } from '../../../src/puzzle/cage';
-import { Cell } from '../../../src/puzzle/cell';
-import { House } from '../../../src/puzzle/house';
-import { MasterModel } from '../../../src/solver/models/masterModel';
+import { Cage } from '../../../../src/puzzle/cage';
+import { Cell } from '../../../../src/puzzle/cell';
+import { House } from '../../../../src/puzzle/house';
+import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for master model', () => {

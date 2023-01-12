@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Solver } from '../../../src/solver/solver';
+import { Solver } from '../../../../src/solver/solver';
 import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10, dailyKillerSudokuDotCom_puzzle24919_difficulty10 } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {

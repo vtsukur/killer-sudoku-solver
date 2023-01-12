@@ -1,4 +1,4 @@
-import { House } from '../../src/puzzle/house';
+import { House } from '../../../src/puzzle/house';
 
 describe('House tests', () => {
     test('House is not construtable', () => {
