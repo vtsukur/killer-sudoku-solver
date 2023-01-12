@@ -250,6 +250,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [util/readableMessages]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "readableMessages"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [util/tempFilePaths]",
             "request": "launch",
             "runtimeArgs": [
