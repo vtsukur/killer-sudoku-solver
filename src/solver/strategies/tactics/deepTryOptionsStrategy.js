@@ -4,7 +4,7 @@ import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
 
-const log = logFactory.of(`Advanced Solver - ${deepTryOptionsStrategy.name}`);
+const log = logFactory.withLabel(`Advanced Solver - ${deepTryOptionsStrategy.name}`);
 
 export function deepTryOptionsStrategy() {
     if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;

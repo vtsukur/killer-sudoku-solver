@@ -3,7 +3,7 @@ import { House } from '../../src/puzzle/house';
 import { Rect } from '../../src/recognizer/rect';
 import { logFactory } from '../../src/util/logFactory';
 
-const log = logFactory.of('DailyKillerSudoku.com Puzzle Page');
+const log = logFactory.withLabel('DailyKillerSudoku.com Puzzle Page');
 
 const BIG_ENOUGH_PAGE_VIEWPORT = {
     width: 1680,

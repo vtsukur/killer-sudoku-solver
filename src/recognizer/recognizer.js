@@ -23,7 +23,7 @@ const TMP_CAGE_CONTOUR_COLOR = new cv.Scalar(0, 255, 0);
 const TMP_CELL_CONTOUR_COLOR = new cv.Scalar(255, 0, 0);
 const TMP_CONTOUR_THICKNESS = 2;
 
-const log = logFactory.of('Puzzle Recognition via Computer Vision');
+const log = logFactory.withLabel('Puzzle Recognition via Computer Vision');
 
 export async function recognize(imagePath, taskId) {
     const paths = new Paths(taskId).recreateDir();

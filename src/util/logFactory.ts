@@ -43,7 +43,7 @@ class Log {
 }
 
 class LogFactory {
-    of(label: string) {
+    withLabel(label: string) {
         return new Log(label);
     }
 }

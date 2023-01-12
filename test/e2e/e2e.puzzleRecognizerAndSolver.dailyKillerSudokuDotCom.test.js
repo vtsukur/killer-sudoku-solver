@@ -7,7 +7,7 @@ import { logFactory } from '../../src/util/logFactory';
 import { TempFilePaths } from '../../src/util/tempFilePaths';
 import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
 
-const log = logFactory.of('E2E Puzzle Reader & Solver');
+const log = logFactory.withLabel('E2E Puzzle Reader & Solver');
 
 const OPEN_IMAGE_FILES = config.get('openImageFiles');
 
