@@ -40,13 +40,13 @@
                 "run",
                 "test",
                 "--findRelatedTests",
-                "test/puzzle/cage.test.js",
-                "test/puzzle/cell.test.js",
-                "test/puzzle/grid.test.js",
-                "test/puzzle/house.test.js",
-                "test/puzzle/nonet.test.js",
-                "test/puzzle/puzzle.test.js",
-                "test/puzzle/solution.test.ts"
+                "tests/puzzle/cage.test.js",
+                "tests/puzzle/cell.test.js",
+                "tests/puzzle/grid.test.js",
+                "tests/puzzle/house.test.js",
+                "tests/puzzle/nonet.test.js",
+                "tests/puzzle/puzzle.test.js",
+                "tests/puzzle/solution.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
