@@ -1,22 +1,20 @@
-import chalk from 'chalk';
-import winston from 'winston';
-import config from 'config';
+import * as chalk from 'chalk';
+import * as config from 'config';
+import { createLogger, format, transports } from 'winston';
 
-const logLevel = config.get('logLevel')
-const isDebugGlobal = logLevel === 'debug';
-
-const format = winston.format;
+const logLevel: string = config.get('logLevel')
+const isDebugGlobal: boolean = logLevel === 'debug';
 
 class Log {
     #label;
     #logger;
 
-    constructor(label) {
+    constructor(label: string) {
         this.#label = label;
-        this.#logger = winston.createLogger({
+        this.#logger = createLogger({
             level: logLevel,
             transports: [
-                new winston.transports.Stream({
+                new transports.Stream({
                     stream: process.stderr
                 })
             ],
@@ -27,16 +25,15 @@ class Log {
                     const label = chalk.black.bgYellowBright.bold(`[${info.label}]`);
                     return `${level} ${label} ${info.message}`;
                 })
-            ),
-            colorize: true
+            )
         });
     }
 
-    info(msg) {
+    info(msg: string) {
         this.#logger.info(msg);
     }
 
-    debug(msg) {
+    debug(msg: string) {
         this.#logger.log('debug', msg);
     }
 
@@ -46,7 +43,7 @@ class Log {
 }
 
 class LogFactory {
-    of(label) {
+    of(label: string) {
         return new Log(label);
     }
 }
