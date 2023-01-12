@@ -1,5 +1,4 @@
 import { joinForReadability } from '../util/readableMessages';
-import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { House } from './house';
 
@@ -28,7 +27,7 @@ export class Cage {
     }
 
     static #validateCells(cells) {
-        const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
+        const { cellSet, duplicateCellKeys } = Cell.cellSetAndDuplicatesOf(cells);
         if (duplicateCellKeys.length > 0) {
             Cage.#throwValidationError(`${duplicateCellKeys.length} duplicate cell(s): ${joinForReadability(duplicateCellKeys)}`);
         }

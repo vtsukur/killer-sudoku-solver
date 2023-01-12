@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { joinForReadability } from '../util/readableMessages';
-import { cellSetAndDuplicatesOf } from '../util/uniqueCells';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
@@ -18,7 +17,7 @@ export class Puzzle {
     }
 
     static #validateCageCells(cells) {
-        const { cellSet, duplicateCellKeys } = cellSetAndDuplicatesOf(cells);
+        const { cellSet, duplicateCellKeys } = Cell.cellSetAndDuplicatesOf(cells);
         if (cellSet.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
         const missingCellKeys = Puzzle.#findMissingCellKeys(cellSet);
