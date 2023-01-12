@@ -26,7 +26,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 const log = logFactory.withLabel('Puzzle Recognition via Computer Vision');
 
 export async function recognize(imagePath, taskId) {
-    const paths = new Paths(taskId).recreateDirSync();
+    const paths = new Paths(taskId).recreateBaseDirSync();
 
     // read image using Jimp.
     const jimpSrc = await Jimp.read(imagePath);

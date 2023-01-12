@@ -10,7 +10,7 @@ describe('TempFilePaths tests', () => {
     });
 
     test('Recreate base dir', async () => {
-        paths.recreateDirSync();
+        paths.recreateBaseDirSync();
         expect(fs.existsSync(baseDir)).toBeTruthy();
     });
 });
