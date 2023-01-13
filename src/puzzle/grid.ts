@@ -1,3 +1,4 @@
+import { Cell } from './cell';
 import { House } from './house';
 
 export namespace Grid {
@@ -17,24 +18,30 @@ export namespace Grid {
         return new Array(House.SIZE).fill(undefined).map(() => new Array(House.SIZE));
     }
 
-    export function iterator() {
+    export function cellsIterator(): CellsIterator {
         let i = 0;
-        return {
-            [Symbol.iterator]() { return this; },
-            next() {
-                const abs = i++;
-                if (abs < Grid.CELL_COUNT) {
-                    return {
-                        value: {
-                            row: Grid.rowFromAbs(abs),
-                            col: Grid.colFromAbs(abs),
-                            i: abs
-                        },
-                        done: false
-                    };
-                } else {
-                    return { value: undefined, done: true };
-                }
+        return new CellsIterator();
+    }
+
+    class CellsIterator implements Iterator<Cell> {
+        private i: number = 0;
+
+        [Symbol.iterator](): Iterator<Cell> {
+            return this;
+        }
+
+        next(): IteratorResult<Cell> {
+            const abs = this.i++;
+            if (abs < Grid.CELL_COUNT) {
+                return {
+                    value: Cell.at(
+                        Grid.rowFromAbs(abs),
+                        Grid.colFromAbs(abs),
+                    ),
+                    done: false
+                };
+            } else {
+                return { value: undefined, done: true };
             }
         }
     }

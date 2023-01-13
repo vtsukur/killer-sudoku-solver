@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Grid } from '../../../src/puzzle/grid';
 
 describe('Grid tests', () => {
@@ -15,13 +15,13 @@ describe('Grid tests', () => {
     });
 
     test('Iterate over rows and columns', () => {
-        const rowsAndColsTouchMarks = new Array(Grid.SIDE_LENGTH).fill().map(() => new Array(Grid.SIDE_LENGTH).fill(0));
+        const rowsAndColsTouchMarks = new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH).fill(0));
         const iTouchMarks = new Array(Grid.CELL_COUNT).fill(0);
 
         let totalCount = 0;
-        for (const { row, col, i } of Grid.iterator()) {
+        for (const { row, col, absIdx } of Grid.cellsIterator()) {
             rowsAndColsTouchMarks[row][col]++;
-            iTouchMarks[i]++;
+            iTouchMarks[absIdx]++;
             totalCount++;
         }
 
