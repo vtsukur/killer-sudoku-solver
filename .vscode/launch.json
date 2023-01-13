@@ -130,7 +130,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "puzzle.test.js"
+                "puzzle.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
