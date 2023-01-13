@@ -11,7 +11,7 @@ describe('Grid tests', () => {
     });
 
     test('Sum of all cells in the grid is 405', () => {
-        expect(Grid.SIDE_LENGTH).toEqual(9);
+        expect(Grid.TOTAL_SUM).toEqual(405);
     });
 
     test('Iterate over rows and columns', () => {
