@@ -1,5 +1,5 @@
 export class Nonet {
-    static SIDE_LENGTH = 3;
+    static readonly SIDE_LENGTH = 3;
 
     private constructor() {
         //
