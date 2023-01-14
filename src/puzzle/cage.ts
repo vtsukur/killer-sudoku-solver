@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
-import { joinArray, joinSet } from '../util/readableMessages';
+import { joinArray } from '../util/readableMessages';
 import { Cell } from './cell';
-import { CellsKeys } from './cellsKeys';
 import { Grid } from './grid';
 
 export class Cage {
@@ -13,28 +12,9 @@ export class Cage {
 
     private constructor(sum: number, cells: Array<Cell>) {
         this.sum = sum;
-        this.cells = [...Cage.validateCells(cells)];
+        this.cells = [...cells];
         this.cells.sort();
         this.key = `${this.sum} [${joinArray(this.cells)}]`;
-    }
-
-    private static validateSum(val: number) {
-        if (!_.inRange(val, 1, Cage.MAX_SUM_EXCLUSIVE)) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_EXCLUSIVE}). Actual: ${val}`);
-        }
-        return val;
-    }
-
-    private static validateCells(val: Array<Cell>) {
-        const { hasDuplicates, duplicates } = new CellsKeys(val);
-        if (hasDuplicates) {
-            Cage.throwValidationError(`Found ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
-        }
-        return val;
-    }
-
-    private static throwValidationError(detailedMessage: string) {
-        throw `Invalid cage. ${detailedMessage}`;
     }
 
     static ofSum(sum: number) {
@@ -44,23 +24,26 @@ export class Cage {
     
     private static Builder = class {
         private sum: number;
-        private cells: Array<Cell>;
+        private cells: Array<Cell> = [];
+        private cellKeys: Set<string> = new Set();
 
         constructor(sum: number) {
             this.sum = sum;
-            this.cells = [];
         }
 
         at(row: number, col: number) {
-            this.cells.push(Cell.at(row, col));
-            return this;
+            return this.cell(Cell.at(row, col));
         }
 
-        cell(aCell: Cell) {
-            if (!aCell || !(aCell instanceof Cell)) {
-                throw `Invalid cell value. Expected to be instance of Cage. Actual: ${aCell}`;
+        cell(val: Cell) {
+            if (!val) {
+                throw `Invalid cell value: ${val}`;
             }
-            this.cells.push(aCell);
+            if (this.cellKeys.has(val.key)) {
+                Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
+            }
+            this.cells.push(val);
+            this.cellKeys.add(val.key);
             return this;
         }
 
@@ -73,6 +56,17 @@ export class Cage {
         }
     };
     
+    private static validateSum(val: number) {
+        if (!_.inRange(val, 1, Cage.MAX_SUM_EXCLUSIVE)) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_EXCLUSIVE}). Actual: ${val}`);
+        }
+        return val;
+    }
+
+    private static throwValidationError(detailedMessage: string) {
+        throw `Invalid cage. ${detailedMessage}`;
+    }
+
     get cellCount() {
         return this.cells.length;
     }
