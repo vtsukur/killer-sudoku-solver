@@ -3,7 +3,6 @@ import { joinArray, joinSet } from '../util/readableMessages';
 import { Cell } from './cell';
 import { CellsKeys } from './cellsKeys';
 import { Grid } from './grid';
-import { House } from './house';
 
 export class Cage {
     readonly sum: number;
@@ -26,15 +25,12 @@ export class Cage {
         return val;
     }
 
-    private static validateCells(cells: Array<Cell>) {
-        const { unique, hasDuplicates, duplicates } = new CellsKeys(cells);
+    private static validateCells(val: Array<Cell>) {
+        const { hasDuplicates, duplicates } = new CellsKeys(val);
         if (hasDuplicates) {
             Cage.throwValidationError(`Found ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
         }
-        if (unique.size > House.SIZE) {
-            Cage.throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${unique.size}`);
-        }
-        return cells;
+        return val;
     }
 
     private static throwValidationError(detailedMessage: string) {
