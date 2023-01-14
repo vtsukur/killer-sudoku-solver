@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
-import { Grid } from '../../../src/puzzle/grid';
 
 describe('Cell tests', () => {
     test('Construction of cell storing row, column and computing nonet, key, toString representation and index within grid', () => {
