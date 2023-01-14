@@ -1,5 +1,6 @@
 import { joinArray, joinSet } from '../util/readableMessages';
-import { Cell, CellsKeys } from './cell';
+import { Cell } from './cell';
+import { CellsKeys } from './cellsKeys';
 import { House } from './house';
 
 export class Cage {

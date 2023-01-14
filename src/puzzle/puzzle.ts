@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
 import { Cage } from './cage';
-import { Cell, CellsKeys } from './cell';
+import { Cell } from './cell';
+import { CellsKeys } from './cellsKeys';
 import { Grid } from './grid';
 
 export class Puzzle {
