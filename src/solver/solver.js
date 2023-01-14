@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { MasterModel } from './models/masterModel';
 import { Context } from './strategies/context';
 import { masterStrategy } from './strategies/masterStrategy';
