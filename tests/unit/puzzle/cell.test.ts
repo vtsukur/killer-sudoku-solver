@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cell tests', () => {

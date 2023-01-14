@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Solution } from '../../../src/puzzle/solution';
 
 describe('Solution tests', () => {

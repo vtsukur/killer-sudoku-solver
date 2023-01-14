@@ -1,4 +1,4 @@
-import { Cell } from "./cell";
+import { Cell } from './cell';
 
 export class CellsKeys {
     readonly unique: ReadonlySet<string>;

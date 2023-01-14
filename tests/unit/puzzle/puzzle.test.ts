@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Cage } from '../../../src/puzzle/cage';
 import { Puzzle } from '../../../src/puzzle/puzzle';
 import { samplePuzzle } from './realPuzzleSamples';

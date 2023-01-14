@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const joinSet = (set: ReadonlySet<any>) => {
     return joinArray(Array.from(set));
 };
