@@ -1,4 +1,8 @@
-export namespace House {
-    export const SIZE = 9;
-    export const SUM = 45;
+export class House {
+    static readonly SIZE = 9;
+    static readonly SUM = 45;
+
+    private constructor() {
+        //
+    }
 }
