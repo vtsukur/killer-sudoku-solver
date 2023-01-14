@@ -14,12 +14,12 @@ export class Grid {
         return row * Grid.SIDE_LENGTH + col;
     }
 
-    static newMatrix() {
-        return new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH));
-    }
-
     static cellsIterator(): CellsIterator {
         return new CellsIterator();
+    }
+
+    static newMatrix() {
+        return new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH));
     }
 }
 

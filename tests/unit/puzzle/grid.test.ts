@@ -14,7 +14,7 @@ describe('Grid tests', () => {
         expect(Grid.TOTAL_SUM).toEqual(405);
     });
 
-    test('Cell indices within grid', () => {
+    test('Determination of cell indices within grid', () => {
         let indexWithinGrid = 0;
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
@@ -47,5 +47,17 @@ describe('Grid tests', () => {
         _.range(Grid.CELL_COUNT).forEach(i => {
             expect(indexWithinGridCounters[i]).toBe(1);
         });
+    });
+
+    test('Creation of Grid matrix', () => {
+        const matrix = Grid.newMatrix();
+
+        expect(matrix.length).toBe(Grid.SIDE_LENGTH);
+        for (const row of matrix) {
+            expect(row.length).toBe(Grid.SIDE_LENGTH);
+            for (const el of row) {
+                expect(el).toBeUndefined();
+            }
+        }
     });
 });
