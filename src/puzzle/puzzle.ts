@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { joinSetForReadability } from '../util/readableMessages';
+import { joinSet } from '../util/readableMessages';
 import { Cage } from './cage';
 import { Cell, CellsKeys } from './cell';
 import { Grid } from './grid';
@@ -23,9 +23,9 @@ export class Puzzle {
 
         const missingCellKeys = Puzzle.findMissingCellKeys(all);
 
-        let message = `${missingCellKeys.size} missing cell(s): ${joinSetForReadability(missingCellKeys)}`;
+        let message = `${missingCellKeys.size} missing cell(s): ${joinSet(missingCellKeys)}`;
         if (duplicates.size > 0) {
-            message = `${message}. ${duplicates.size} duplicate cell(s): ${joinSetForReadability(duplicates)}`;
+            message = `${message}. ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`;
         }
         Puzzle.throwValidationError(message);
     }

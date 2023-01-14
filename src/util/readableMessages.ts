@@ -1,7 +1,7 @@
-export const joinSetForReadability = (set: ReadonlySet<any>) => {
-    return joinArrForReadability(Array.from(set));
+export const joinSet = (set: ReadonlySet<any>) => {
+    return joinArray(Array.from(set));
 };
 
-export const joinArrForReadability = (array: ReadonlyArray<any>) => {
+export const joinArray = (array: ReadonlyArray<any>) => {
     return array.join(', ');
 };
