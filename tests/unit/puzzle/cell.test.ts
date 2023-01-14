@@ -2,13 +2,14 @@ import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cell tests', () => {
-    test('Construction of cell storing row, column and computing nonet, key and toString representation', () => {
+    test('Construction of cell storing row, column and computing nonet, key, toString representation and single-dimensional grid index', () => {
         const cell = Cell.at(4, 5);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(5);
         expect(cell.nonet).toBe(4);
         expect(cell.key).toBe('(4, 5)');
         expect(cell.toString()).toBe('(4, 5)');
+        expect(cell.singleDimensionalGridIndex).toBe(41);
     });
 
     test('Construction of invalid cell with row outside of the range: <0', () => {
