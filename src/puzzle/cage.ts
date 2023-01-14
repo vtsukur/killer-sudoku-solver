@@ -12,7 +12,7 @@ export class Cage {
     private static MAX_SUM_EXCLUSIVE = Grid.TOTAL_SUM + 1;
 
     private constructor(sum: number, cells: Array<Cell>) {
-        this.sum = Cage.validateSum(sum);
+        this.sum = sum;
         this.cells = [...Cage.validateCells(cells)];
         this.cells.sort();
         this.key = `${this.sum} [${joinArray(this.cells)}]`;
@@ -38,6 +38,7 @@ export class Cage {
     }
 
     static ofSum(sum: number) {
+        Cage.validateSum(sum);
         return new this.Builder(sum);
     }
     
