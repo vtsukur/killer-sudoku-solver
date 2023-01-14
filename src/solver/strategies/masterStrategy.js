@@ -27,5 +27,5 @@ export function masterStrategy() {
         this.run(findSameNumberOptsInSameCellsStrategy);
         this.run(deepTryOptionsStrategy);
     }
-    while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms)
+    while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms);
 }

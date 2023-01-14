@@ -15,7 +15,7 @@ export function reduceCageNumOptsBySolvedCellsStrategy() {
                     cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...cellM.withinCageModels]);
                 }
             }    
-        };
+        }
     });
     return cageModelsToReduceSet;
 }

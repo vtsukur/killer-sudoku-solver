@@ -90,7 +90,7 @@ export class MasterModel {
                     this.cellModelsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key));
                 }
             });
-        })
+        });
 
         // rewire cell models to cage models and cage models to cell models
         for (const cageM of this.cageModelsMap.values()) {
@@ -103,7 +103,7 @@ export class MasterModel {
         this.#solution = Grid.newMatrix();
         model.#solution.forEach((row, idx) => {
             this.#solution[idx] = [...row];
-        })
+        });
         this.#placedNumCount = model.#placedNumCount;
 
         // no need to copy immutable data, just reference it
@@ -111,8 +111,8 @@ export class MasterModel {
         this.#cellsToInputCagesMatrix = model.#cellsToInputCagesMatrix;
 
         const validate = function(bool) {
-            if (!bool) throw `false`;
-        }
+            if (!bool) throw 'false';
+        };
         _.range(House.SIZE).forEach(row => {
             _.range(House.SIZE).forEach(col => {
                 validate(this.cellModelAt(row, col) !== model.cellModelAt(row, col));

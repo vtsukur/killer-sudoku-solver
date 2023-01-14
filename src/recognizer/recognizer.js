@@ -237,7 +237,7 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesse
         const cageBuilder = Cage.ofSum(sum);
         cageContour.cells.forEach(cell => cageBuilder.cell(cell));
         cages.push(cageBuilder.mk());
-    };
+    }
 
     return cages;
 }

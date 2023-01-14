@@ -116,5 +116,5 @@ class CageBorders {
     static #SIDES = 3;
     static get SIDES() {
         return CageBorders.#SIDES;
-    };
+    }
 }

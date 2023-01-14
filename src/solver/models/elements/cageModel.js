@@ -58,7 +58,7 @@ export class CageModel {
         #isSameForAll(whatFn) {
             return new Set(this.cells.map(whatFn)).size === 1;
         }
-    }
+    };
 
     get canHaveDuplicateNums() {
         return this.#canHaveDuplicateNums;
@@ -75,7 +75,7 @@ export class CageModel {
             const comboValue = Array.from(combo);
             const comboKey = comboValue.join();
             this.#combosMap.set(comboKey, comboValue);
-        })
+        });
         this.cellModels.forEach(cellM => cellM.reduceNumOptions(nums));
     }
 

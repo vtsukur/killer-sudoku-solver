@@ -37,7 +37,7 @@ export class HouseModel {
                     return { value: max, done: true };
                 }
             }
-        }
+        };
     }
     
     static newHouseIterator(valueOfFn) {

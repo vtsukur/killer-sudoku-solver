@@ -10,7 +10,7 @@ export function findAndSliceResidualSumsStrategy() {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
             }, (row) => {
-                return this.model.rowModels[row].cellIterator()
+                return this.model.rowModels[row].cellIterator();
             });
         });
     });
@@ -19,7 +19,7 @@ export function findAndSliceResidualSumsStrategy() {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel, rightIdxExclusive) => {
                 return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
             }, (col) => {
-                return this.model.columnModels[col].cellIterator()
+                return this.model.columnModels[col].cellIterator();
             });
         });
     });
@@ -30,7 +30,7 @@ export function findAndSliceResidualSumsStrategy() {
             return this.model.nonetModels[nonet].cellIterator();
         });
     });
-};
+}
 
 function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, withinHouseFn, cellIteratorFn) {
     const nHouseCellCount = n * House.SIZE;

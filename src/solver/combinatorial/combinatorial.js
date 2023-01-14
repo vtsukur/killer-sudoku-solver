@@ -12,7 +12,7 @@ _.range(House.SIZE).forEach(count => {
         MIN_SUMS_PER_COUNT[count] = MIN_SUMS_PER_COUNT[count - 1] + (count + 1);
         MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (House.SIZE - count);
     }
-})
+});
 
 export function findNumCombinationsForSum(sum, count) {
     if (typeof (sum) !== 'number' || !sum || sum <= 0) {
@@ -82,7 +82,7 @@ export function clusterCagesByOverlap(cages, cells, absMaxAreaCellCount = House.
     const cellsToCagesMap = new Map();
     cells.forEach(cell => {
         cellsToCagesMap.set(cell.key, new Set());
-    })
+    });
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
             cellsToCagesMap.get(cell.key).add(cage);

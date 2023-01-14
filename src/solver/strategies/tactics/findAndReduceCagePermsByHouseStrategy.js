@@ -201,7 +201,7 @@ const reduceByHouse = (cageModel, house, model, combo) => {
     }
 
     return cageModelsToReduce;
-}
+};
 
 const checkAssumptionCage = (assumptionCage, combos, cell, num, model) => {
     const positioningFlags = CageModel.positioningFlagsFor(assumptionCage.cells);
@@ -236,7 +236,7 @@ const checkAssumptionCage = (assumptionCage, combos, cell, num, model) => {
     }
 
     return new Set();
-}
+};
 
 const checkIfHouseStaysValidWithLeftoverCage = (houseM, leftoverCage, leftOverCageCombos) => {
     const leftoverCageCellKeys = new Set(leftoverCage.cells.map(cell => cell.key));
@@ -283,7 +283,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM, leftoverCage, leftOverCa
 
     const valid = (noLongerValidCombos.length !== leftOverCageCombos.length);
     return valid;
-}
+};
 
 const reduceNonetBasedByRowOrColumn = (houseM, num, nonetM, model) => {
     let cageModelsToReduce = new Set();
@@ -293,7 +293,7 @@ const reduceNonetBasedByRowOrColumn = (houseM, num, nonetM, model) => {
         if (cellM.cell.nonet === nonetM.idx) continue;
         if (cellM.hasNumOpt(num)) {
             cellM.deleteNumOpt(num);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels])
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
         }
     }
 
