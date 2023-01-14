@@ -13,14 +13,6 @@ describe('Cell tests', () => {
         expect(cell.indexWithinGrid).toBe(41);
     });
 
-    test('Computation of index within grid for all cells', () => {
-        let indexWithinGrid = 0;
-        for (const cell of Grid.cellsIterator()) {
-            expect(cell.indexWithinGrid).toBe(indexWithinGrid);
-            indexWithinGrid++;
-        }    
-    });
-
     test('Construction of invalid cell with row outside of the range: <0', () => {
         expect(() => Cell.at(-1, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: -1');
     });

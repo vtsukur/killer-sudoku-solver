@@ -18,13 +18,15 @@ describe('Grid tests', () => {
         const rowsAndColsTouchMarks = new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH).fill(0));
         const iTouchMarks = new Array(Grid.CELL_COUNT).fill(0);
 
-        let totalCount = 0;
+        let index = 0;
         for (const { row, col, indexWithinGrid } of Grid.cellsIterator()) {
             rowsAndColsTouchMarks[row][col]++;
             iTouchMarks[indexWithinGrid]++;
-            totalCount++;
+            expect(indexWithinGrid).toBe(index);
+            index++;
         }
 
+        const totalCount = index;
         expect(totalCount).toBe(Grid.CELL_COUNT);
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {

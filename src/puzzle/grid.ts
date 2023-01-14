@@ -14,6 +14,10 @@ export namespace Grid {
         return idx % House.SIZE;
     }
 
+    export function indexWithinGrid(row: number, col: number) {
+        return row * Grid.SIDE_LENGTH + col;
+    }
+
     export function newMatrix() {
         return new Array(House.SIZE).fill(undefined).map(() => new Array(House.SIZE));
     }

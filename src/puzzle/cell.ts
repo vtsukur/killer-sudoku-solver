@@ -14,7 +14,7 @@ export class Cell {
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.indexWithinGrid = Cell.computeIndexWithinGrid(row, col);
+        this.indexWithinGrid = Grid.indexWithinGrid(row, col);
     }
 
     private static validateRow(val: number) {
@@ -35,10 +35,6 @@ export class Cell {
 
     static keyOf(row: number, col: number) {
         return `(${row}, ${col})`;
-    }
-
-    private static computeIndexWithinGrid(row: number, col: number) {
-        return row * Grid.SIDE_LENGTH + col;
     }
 
     static at(row: number, col: number) {
