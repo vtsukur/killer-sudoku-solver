@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
+import { Grid } from '../../../src/puzzle/grid';
 
 describe('Cell tests', () => {
-    test('Construction of cell storing row, column and computing nonet, key, toString representation and single-dimensional grid index', () => {
+    test('Construction of cell storing row, column and computing nonet, key, toString representation and index within grid', () => {
         const cell = Cell.at(4, 5);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(5);
@@ -10,6 +11,14 @@ describe('Cell tests', () => {
         expect(cell.key).toBe('(4, 5)');
         expect(cell.toString()).toBe('(4, 5)');
         expect(cell.indexWithinGrid).toBe(41);
+    });
+
+    test('Computation of index within grid for all cells', () => {
+        let indexWithinGrid = 0;
+        for (const cell of Grid.cellsIterator()) {
+            expect(cell.indexWithinGrid).toBe(indexWithinGrid);
+            indexWithinGrid++;
+        }    
     });
 
     test('Construction of invalid cell with row outside of the range: <0', () => {
