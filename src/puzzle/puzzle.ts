@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import { joinForReadability } from '../util/readableMessages';
+import { joinSetForReadability } from '../util/readableMessages';
 import { Cage } from './cage';
-import { Cell } from './cell';
+import { Cell, CellsKeys } from './cell';
 import { Grid } from './grid';
 
 export class Puzzle {
@@ -18,25 +18,25 @@ export class Puzzle {
     }
 
     private static validateCageCells(cells: Array<Cell>) {
-        const { set, duplicateKeys } = Cell.setAndDuplicateKeysOf(cells);
-        if (set.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
+        const { all, duplicates } = new CellsKeys(cells);
+        if (all.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
-        const missingCellKeys = Puzzle.findMissingCellKeys(set);
+        const missingCellKeys = Puzzle.findMissingCellKeys(all);
 
-        let message = `${missingCellKeys.length} missing cell(s): ${joinForReadability(missingCellKeys)}`;
-        if (duplicateKeys.length > 0) {
-            message = `${message}. ${duplicateKeys.length} duplicate cell(s): ${joinForReadability(duplicateKeys)}`;
+        let message = `${missingCellKeys.size} missing cell(s): ${joinSetForReadability(missingCellKeys)}`;
+        if (duplicates.size > 0) {
+            message = `${message}. ${duplicates.size} duplicate cell(s): ${joinSetForReadability(duplicates)}`;
         }
         Puzzle.throwValidationError(message);
     }
 
-    private static findMissingCellKeys(cellSet: Set<string>) {
-        const missing = new Array<string>();
+    private static findMissingCellKeys(cellSet: ReadonlySet<string>): ReadonlySet<string> {
+        const missing = new Set<string>();
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
                 const cellKey = Cell.keyOf(row, col);
                 if (!cellSet.has(cellKey)) {
-                    missing.push(cellKey);
+                    missing.add(cellKey);
                 }
             });
         });

@@ -1,5 +1,5 @@
-import { joinForReadability } from '../util/readableMessages';
-import { Cell } from './cell';
+import { joinArrForReadability, joinSetForReadability } from '../util/readableMessages';
+import { Cell, CellsKeys } from './cell';
 import { House } from './house';
 
 export class Cage {
@@ -11,7 +11,7 @@ export class Cage {
         this.sum = Cage.validateSum(sum);
         this.cells = [...Cage.validateCells(cells)];
         this.cells.sort();
-        this.key = `${this.sum} [${joinForReadability(this.cells)}]`;
+        this.key = `${this.sum} [${joinArrForReadability(this.cells)}]`;
     }
 
     private static validateSum(sum: number) {
@@ -22,12 +22,12 @@ export class Cage {
     }
 
     private static validateCells(cells: Array<Cell>) {
-        const { set, duplicateKeys } = Cell.setAndDuplicateKeysOf(cells);
-        if (duplicateKeys.length > 0) {
-            Cage.throwValidationError(`${duplicateKeys.length} duplicate cell(s): ${joinForReadability(duplicateKeys)}`);
+        const { all, duplicates } = new CellsKeys(cells);
+        if (duplicates.size > 0) {
+            Cage.throwValidationError(`${duplicates.size} duplicate cell(s): ${joinSetForReadability(duplicates)}`);
         }
-        if (set.size > House.SIZE) {
-            Cage.throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${set.size}`);
+        if (all.size > House.SIZE) {
+            Cage.throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${all.size}`);
         }
         return cells;
     }

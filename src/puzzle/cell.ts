@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { House } from './house';
+import { Grid } from './grid';
 import { Nonet } from './nonet';
 
 export class Cell {
@@ -10,23 +10,27 @@ export class Cell {
     readonly singleDimensionalGridIndex: number;
 
     constructor(row: number, col: number) {
-        this.row = Cell.validateIndex('Row', row);
-        this.col = Cell.validateIndex('Column', col);
+        this.row = Cell.validateRow(row);
+        this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.singleDimensionalGridIndex = row * House.SIZE + col;
+        this.singleDimensionalGridIndex = row * Grid.SIDE_LENGTH + col;
     }
 
-    private static validateIndex(type: string, index: number) {
-        if (!Cell.indexWithinRange(index)) {
-            throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${House.SIZE}). Actual: ${index}`;
+    private static validateRow(val: number) {
+        return this.validate2DIndex('Row', val);
+    }
+
+    private static validateCol(val: number) {
+        return this.validate2DIndex('Column', val);
+    }
+
+    private static validate2DIndex(type: string, val: number) {
+        if (!_.inRange(val, 0, Grid.SIDE_LENGTH)) {
+            throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_LENGTH}). Actual: ${val}`;
         } else {
-            return index;
+            return val;
         }
-    }
-
-    private static indexWithinRange(index: number) {
-        return _.inRange(index, 0, House.SIZE);
     }
 
     static at(row: number, col: number) {
@@ -34,23 +38,29 @@ export class Cell {
     }
 
     static keyOf(row: number, col: number) {
-        return `(${row}, ${col})`
+        return `(${row}, ${col})`;
     }
 
     toString() {
         return this.key;
     }
+}
 
-    static setAndDuplicateKeysOf = (cells: Cell[]) => {
-        const set = new Set<string>();
-        const duplicateKeys = new Array<string>();
-        cells.forEach(cell => {
-            if (set.has(cell.key)) {
-                duplicateKeys.push(cell.key);
+export class CellsKeys {
+    readonly all: ReadonlySet<string>;
+    readonly duplicates: ReadonlySet<string>;
+
+    constructor(cells: Array<Cell>) {
+        const all = new Set<string>();
+        const duplicates = new Set<string>();
+        for (const cell of cells) {
+            if (all.has(cell.key)) {
+                duplicates.add(cell.key);
             } else {
-                set.add(cell.key);
+                all.add(cell.key);
             }
-        });
-        return { set, duplicateKeys };
+        }
+        this.all = all;
+        this.duplicates = duplicates;
     }
 }
