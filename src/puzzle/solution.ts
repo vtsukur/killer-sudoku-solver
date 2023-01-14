@@ -1,7 +1,7 @@
 import { EOL } from 'os';
 
 export class Solution {
-    readonly data: number[][];
+    readonly data: Array<Array<number>>;
     private asString: string;
 
     constructor(data: number[][]) {
@@ -13,7 +13,7 @@ export class Solution {
         return this.asString;
     }
 
-    private static toString(data: number[][]): string {
+    private static toString(data: Array<Array<number>>): string {
         return data.map(numRow => numRow.join(' ')).join(EOL);
     }
 }
