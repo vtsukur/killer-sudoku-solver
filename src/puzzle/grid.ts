@@ -1,27 +1,25 @@
 import { Cell } from './cell';
 import { House } from './house';
 
-export class Grid {
-    static readonly SIDE_LENGTH = 9;
-    static readonly CELL_COUNT = Grid.SIDE_LENGTH * Grid.SIDE_LENGTH;
-    static readonly TOTAL_SUM = Grid.SIDE_LENGTH * House.SUM;
+class GridSingletonType {
+    readonly SIDE_LENGTH = 9;
+    readonly CELL_COUNT = this.SIDE_LENGTH * this.SIDE_LENGTH;
+    readonly TOTAL_SUM = this.SIDE_LENGTH * House.SUM;
 
-    private constructor() {
-        // Non-constructible
+    indexOfCellAt(row: number, col: number) {
+        return row * this.SIDE_LENGTH + col;
     }
 
-    static indexOfCellAt(row: number, col: number) {
-        return row * Grid.SIDE_LENGTH + col;
-    }
-
-    static cellsIterator(): CellsIterator {
+    cellsIterator(): CellsIterator {
         return new CellsIterator();
     }
 
-    static newMatrix() {
-        return new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH));
+    newMatrix() {
+        return new Array(this.SIDE_LENGTH).fill(undefined).map(() => new Array(this.SIDE_LENGTH));
     }
 }
+
+export const Grid = new GridSingletonType();
 
 class CellsIterator implements Iterator<Cell> {
     private indexWithinGrid = 0;

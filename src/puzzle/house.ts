@@ -1,8 +1,4 @@
-export class House {
-    static readonly SIZE = 9;
-    static readonly SUM = 45;
-
-    private constructor() {
-        // Non-constructible
-    }
-}
+export const House = Object.freeze({
+    SIZE: 9,
+    SUM: 45
+});
