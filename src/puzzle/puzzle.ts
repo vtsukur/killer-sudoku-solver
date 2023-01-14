@@ -19,10 +19,10 @@ export class Puzzle {
     }
 
     private static validateCageCells(cells: Array<Cell>) {
-        const { all, duplicates } = new CellsKeys(cells);
-        if (all.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
+        const { unique, duplicates } = new CellsKeys(cells);
+        if (unique.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
 
-        const missingCellKeys = Puzzle.findMissingCellKeys(all);
+        const missingCellKeys = Puzzle.findMissingCellKeys(unique);
 
         let message = `${missingCellKeys.size} missing cell(s): ${joinSet(missingCellKeys)}`;
         if (duplicates.size > 0) {

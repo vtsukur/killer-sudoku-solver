@@ -80,6 +80,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [puzzle/cellsKeys]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cellsKeys"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzle/grid]",
             "request": "launch",
             "runtimeArgs": [
