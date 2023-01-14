@@ -10,20 +10,12 @@ export class Grid {
         //
     }
 
-    static rowFromAbs(idx: number) {
-        return Math.floor(idx / House.SIZE);
-    }
-
-    static colFromAbs(idx: number) {
-        return idx % House.SIZE;
-    }
-
     static indexWithinGrid(row: number, col: number) {
         return row * Grid.SIDE_LENGTH + col;
     }
 
     static newMatrix() {
-        return new Array(House.SIZE).fill(undefined).map(() => new Array(House.SIZE));
+        return new Array(Grid.SIDE_LENGTH).fill(undefined).map(() => new Array(Grid.SIDE_LENGTH));
     }
 
     static cellsIterator(): CellsIterator {
@@ -43,13 +35,24 @@ class CellsIterator implements Iterator<Cell> {
         if (abs < Grid.CELL_COUNT) {
             return {
                 value: Cell.at(
-                    Grid.rowFromAbs(abs),
-                    Grid.colFromAbs(abs),
+                    rowFromAbs(abs),
+                    colFromAbs(abs),
                 ),
                 done: false
             };
         } else {
-            return { value: undefined, done: true };
+            return {
+                value: undefined,
+                done: true
+            };
         }
     }
+}
+
+function rowFromAbs(idx: number) {
+    return Math.floor(idx / Grid.SIDE_LENGTH);
+}
+
+function colFromAbs(idx: number) {
+    return idx % Grid.SIDE_LENGTH;
 }
