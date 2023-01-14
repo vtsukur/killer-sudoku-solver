@@ -6,6 +6,10 @@ export class Grid {
     static readonly CELL_COUNT = Grid.SIDE_LENGTH * Grid.SIDE_LENGTH;
     static readonly TOTAL_SUM = Grid.SIDE_LENGTH * House.SUM;
 
+    private constructor() {
+        //
+    }
+
     static rowFromAbs(idx: number) {
         return Math.floor(idx / House.SIZE);
     }
