@@ -14,7 +14,7 @@ describe('Grid tests', () => {
         expect(Grid.TOTAL_SUM).toEqual(405);
     });
 
-    test('Determination of cell indices within grid', () => {
+    test('Determination of Cell indices within grid', () => {
         let indexWithinGrid = 0;
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
