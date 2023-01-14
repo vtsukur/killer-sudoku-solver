@@ -27,9 +27,9 @@ export class Cage {
     }
 
     private static validateCells(cells: Array<Cell>) {
-        const { unique, duplicates } = new CellsKeys(cells);
-        if (duplicates.size > 0) {
-            Cage.throwValidationError(`${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
+        const { unique, hasDuplicates, duplicates } = new CellsKeys(cells);
+        if (hasDuplicates) {
+            Cage.throwValidationError(`Found ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
         }
         if (unique.size > House.SIZE) {
             Cage.throwValidationError(`Cell count should be <= ${House.SIZE}. Actual cell count: ${unique.size}`);

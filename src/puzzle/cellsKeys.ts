@@ -17,4 +17,8 @@ export class CellsKeys {
         this.unique = unique;
         this.duplicates = duplicates;
     }
+
+    get hasDuplicates() {
+        return this.duplicates.size > 0;
+    }
 }
