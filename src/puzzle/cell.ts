@@ -9,7 +9,7 @@ export class Cell {
     readonly nonet: number;
     readonly indexWithinGrid: number;
 
-    constructor(row: number, col: number) {
+    private constructor(row: number, col: number) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
