@@ -7,14 +7,14 @@ export class Cell {
     readonly col: number;
     readonly key: string;
     readonly nonet: number;
-    readonly singleDimensionalGridIndex: number;
+    readonly indexWithinGrid: number;
 
     constructor(row: number, col: number) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.singleDimensionalGridIndex = Cell.computeSingleDimensionalGridIndex(row, col);
+        this.indexWithinGrid = Cell.computeIndexWithinGrid(row, col);
     }
 
     private static validateRow(val: number) {
@@ -37,7 +37,7 @@ export class Cell {
         return `(${row}, ${col})`;
     }
 
-    private static computeSingleDimensionalGridIndex(row: number, col: number) {
+    private static computeIndexWithinGrid(row: number, col: number) {
         return row * Grid.SIDE_LENGTH + col;
     }
 

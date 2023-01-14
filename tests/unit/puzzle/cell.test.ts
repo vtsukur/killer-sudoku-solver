@@ -9,7 +9,7 @@ describe('Cell tests', () => {
         expect(cell.nonet).toBe(4);
         expect(cell.key).toBe('(4, 5)');
         expect(cell.toString()).toBe('(4, 5)');
-        expect(cell.singleDimensionalGridIndex).toBe(41);
+        expect(cell.indexWithinGrid).toBe(41);
     });
 
     test('Construction of invalid cell with row outside of the range: <0', () => {
