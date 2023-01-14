@@ -18,7 +18,7 @@ describe('Grid tests', () => {
         let indexWithinGrid = 0;
         _.range(Grid.SIDE_LENGTH).forEach(row => {
             _.range(Grid.SIDE_LENGTH).forEach(col => {
-                expect(Grid.cellIndexAt(row, col)).toBe(indexWithinGrid);
+                expect(Grid.indexOfCellAt(row, col)).toBe(indexWithinGrid);
                 indexWithinGrid++;
             });
         });
