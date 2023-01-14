@@ -2,7 +2,7 @@ export class Nonet {
     static readonly SIDE_LENGTH = 3;
 
     private constructor() {
-        //
+        // Non-constructible
     }
 
     static indexOf(row: number, col: number) {

@@ -3,6 +3,6 @@ export class House {
     static readonly SUM = 45;
 
     private constructor() {
-        //
+        // Non-constructible
     }
 }

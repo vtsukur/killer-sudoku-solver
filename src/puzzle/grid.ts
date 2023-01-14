@@ -7,7 +7,7 @@ export class Grid {
     static readonly TOTAL_SUM = Grid.SIDE_LENGTH * House.SUM;
 
     private constructor() {
-        //
+        // Non-constructible
     }
 
     static cellIndexAt(row: number, col: number) {
