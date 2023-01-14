@@ -14,7 +14,7 @@ export class Cell {
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.singleDimensionalGridIndex = row * Grid.SIDE_LENGTH + col;
+        this.singleDimensionalGridIndex = Cell.computeSingleDimensionalGridIndex(row, col);
     }
 
     private static validateRow(val: number) {
@@ -33,12 +33,16 @@ export class Cell {
         }
     }
 
-    static at(row: number, col: number) {
-        return new Cell(row, col);
-    }
-
     static keyOf(row: number, col: number) {
         return `(${row}, ${col})`;
+    }
+
+    private static computeSingleDimensionalGridIndex(row: number, col: number) {
+        return row * Grid.SIDE_LENGTH + col;
+    }
+
+    static at(row: number, col: number) {
+        return new Cell(row, col);
     }
 
     toString() {
