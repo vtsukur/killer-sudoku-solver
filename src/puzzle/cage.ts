@@ -8,13 +8,15 @@ export class Cage {
     readonly cells: Array<Cell>;
     readonly key: string;
 
-    private static MAX_SUM_EXCLUSIVE = Grid.TOTAL_SUM + 1;
-
     private constructor(sum: number, cells: Array<Cell>) {
         this.sum = sum;
         this.cells = [...cells];
         this.cells.sort();
-        this.key = `${this.sum} [${joinArray(this.cells)}]`;
+        this.key = Cage.keyOf(sum, this.cells);
+    }
+
+    private static keyOf(sum: number, cells: Array<Cell>) {
+        return `${sum} [${joinArray(cells)}]`;
     }
 
     static ofSum(sum: number) {
@@ -56,9 +58,10 @@ export class Cage {
         }
     };
     
+    private static MAX_SUM_RANGE_EXCLUSIVE = Grid.TOTAL_SUM + 1;
     private static validateSum(val: number) {
-        if (!_.inRange(val, 1, Cage.MAX_SUM_EXCLUSIVE)) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_EXCLUSIVE}). Actual: ${val}`);
+        if (!_.inRange(val, 1, Cage.MAX_SUM_RANGE_EXCLUSIVE)) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_RANGE_EXCLUSIVE}). Actual: ${val}`);
         }
         return val;
     }
