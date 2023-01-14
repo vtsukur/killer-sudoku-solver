@@ -18,11 +18,11 @@ export class Cell {
     }
 
     private static validateRow(val: number) {
-        return this.validate2DIndex('Row', val);
+        return Cell.validate2DIndex('Row', val);
     }
 
     private static validateCol(val: number) {
-        return this.validate2DIndex('Column', val);
+        return Cell.validate2DIndex('Column', val);
     }
 
     private static validate2DIndex(type: string, val: number) {
