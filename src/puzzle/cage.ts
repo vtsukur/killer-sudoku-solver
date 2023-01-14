@@ -70,7 +70,7 @@ export class Cage {
         mk() {
             return new Cage(this.sum, this.cells);
         }
-    }
+    };
     
     get cellCount() {
         return this.cells.length;

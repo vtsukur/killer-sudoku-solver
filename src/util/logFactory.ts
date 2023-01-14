@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import * as config from 'config';
 import { createLogger, format, transports, Logger } from 'winston';
 
-const logLevel: string = config.get('logLevel')
+const logLevel: string = config.get('logLevel');
 const isDebugGlobal: boolean = logLevel === 'debug';
 
 class Log {
