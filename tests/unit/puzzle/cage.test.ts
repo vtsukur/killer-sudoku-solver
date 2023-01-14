@@ -2,8 +2,17 @@ import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cage tests', () => {
-    test('Construction of Cage storing sum, Cells, Cell count and computing key and toString representation', () => {
+    test('Construction of Cage using `at` method storing sum, Cells, Cell count and computing key and toString representation', () => {
         const cage = Cage.ofSum(10).at(4, 4).at(4, 5).mk();
+        expect(cage.sum).toBe(10);
+        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
+        expect(cage.cellCount).toBe(2);
+        expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
+        expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
+    });
+
+    test('Construction of Cage using `cell` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+        const cage = Cage.ofSum(10).cell(Cell.at(4, 4)).cell(Cell.at(4, 5)).mk();
         expect(cage.sum).toBe(10);
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.cellCount).toBe(2);
