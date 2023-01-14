@@ -44,8 +44,9 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, 
         }
     }
     const cagesAreaModel = new CagesAreaModel(cages, nHouseCellCount);
-    if (n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) {
-        const residualCageBuilder = Cage.ofSum(nHouseSum - cagesAreaModel.sum);
+    const sum = nHouseSum - cagesAreaModel.sum;
+    if ((n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) && sum) {
+        const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIdx, rightIdxExclusive).forEach(idx => {
             for (const { row, col } of cellIteratorFn(idx)) {
                 if (!cagesAreaModel.hasNonOverlapping(ctx.model.cellAt(row, col))) {
@@ -60,8 +61,6 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx, n, leftIdx, 
             ctx.run(reduceCageNumOptsBySolvedCellsStrategy);
         }
         
-        if (residualCageBuilder.cellCount) {
-            ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());
-        }
+        ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());
     }
 }
