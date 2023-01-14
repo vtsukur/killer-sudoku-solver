@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { joinArray, joinSet } from '../util/readableMessages';
 import { Cell } from './cell';
 import { CellsKeys } from './cellsKeys';
@@ -9,6 +10,8 @@ export class Cage {
     readonly cells: Array<Cell>;
     readonly key: string;
 
+    private static MAX_SUM_EXCLUSIVE = Grid.TOTAL_SUM + 1;
+
     private constructor(sum: number, cells: Array<Cell>) {
         this.sum = Cage.validateSum(sum);
         this.cells = [...Cage.validateCells(cells)];
@@ -16,11 +19,11 @@ export class Cage {
         this.key = `${this.sum} [${joinArray(this.cells)}]`;
     }
 
-    private static validateSum(sum: number) {
-        if (sum < 1 || sum > Grid.TOTAL_SUM) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Grid.TOTAL_SUM}]. Actual: ${sum}`);
+    private static validateSum(val: number) {
+        if (!_.inRange(val, 1, Cage.MAX_SUM_EXCLUSIVE)) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_EXCLUSIVE}). Actual: ${val}`);
         }
-        return sum;
+        return val;
     }
 
     private static validateCells(cells: Array<Cell>) {
