@@ -10,7 +10,7 @@ export class Grid {
         //
     }
 
-    static indexWithinGrid(row: number, col: number) {
+    static cellIndexAt(row: number, col: number) {
         return row * Grid.SIDE_LENGTH + col;
     }
 

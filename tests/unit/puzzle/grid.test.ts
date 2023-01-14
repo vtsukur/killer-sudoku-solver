@@ -14,6 +14,16 @@ describe('Grid tests', () => {
         expect(Grid.TOTAL_SUM).toEqual(405);
     });
 
+    test('Cell indices within grid', () => {
+        let indexWithinGrid = 0;
+        _.range(Grid.SIDE_LENGTH).forEach(row => {
+            _.range(Grid.SIDE_LENGTH).forEach(col => {
+                expect(Grid.cellIndexAt(row, col)).toBe(indexWithinGrid);
+                indexWithinGrid++;
+            });
+        });
+    });
+
     test('Iterate over rows and columns', () => {
         const rowsAndColsIterationCounters = new Array(Grid.SIDE_LENGTH).fill(undefined)
             .map(() => new Array(Grid.SIDE_LENGTH).fill(0));

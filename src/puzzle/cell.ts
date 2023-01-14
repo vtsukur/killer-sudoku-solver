@@ -14,7 +14,7 @@ export class Cell {
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.indexWithinGrid = Grid.indexWithinGrid(row, col);
+        this.indexWithinGrid = Grid.cellIndexAt(row, col);
     }
 
     private static validateRow(val: number) {
