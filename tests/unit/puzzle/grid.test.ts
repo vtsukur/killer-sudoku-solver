@@ -19,9 +19,9 @@ describe('Grid tests', () => {
         const iTouchMarks = new Array(Grid.CELL_COUNT).fill(0);
 
         let totalCount = 0;
-        for (const { row, col, absIndex } of Grid.cellsIterator()) {
+        for (const { row, col, singleDimensionalGridIndex } of Grid.cellsIterator()) {
             rowsAndColsTouchMarks[row][col]++;
-            iTouchMarks[absIndex]++;
+            iTouchMarks[singleDimensionalGridIndex]++;
             totalCount++;
         }
 

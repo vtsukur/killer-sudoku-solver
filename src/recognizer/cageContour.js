@@ -17,7 +17,7 @@ export class CageContour {
     }
 
     #updateTopLeftCellContour(cellContour) {
-        if (_.isUndefined(this.#topLeftCellContour) || cellContour.cell.absIndex < this.#topLeftCellContour.cell.absIndex) {
+        if (_.isUndefined(this.#topLeftCellContour) || cellContour.cell.singleDimensionalGridIndex < this.#topLeftCellContour.cell.singleDimensionalGridIndex) {
             this.#topLeftCellContour = cellContour;
         }
     }

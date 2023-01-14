@@ -7,14 +7,14 @@ export class Cell {
     readonly col: number;
     readonly key: string;
     readonly nonet: number;
-    readonly absIndex: number;
+    readonly singleDimensionalGridIndex: number;
 
     constructor(row: number, col: number) {
         this.row = Cell.validateIndex('Row', row);
         this.col = Cell.validateIndex('Column', col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexOf(row, col);
-        this.absIndex = row * House.SIZE + col;
+        this.singleDimensionalGridIndex = row * House.SIZE + col;
     }
 
     private static validateIndex(type: string, index: number) {
