@@ -24,28 +24,35 @@ export class Grid {
 }
 
 class CellsIterator implements Iterator<Cell> {
-    private i = 0;
+    private indexWithinGrid = 0;
 
     [Symbol.iterator](): Iterator<Cell> {
         return this;
     }
 
     next(): IteratorResult<Cell> {
-        const abs = this.i++;
-        if (abs < Grid.CELL_COUNT) {
-            return {
-                value: Cell.at(
-                    rowFromAbs(abs),
-                    colFromAbs(abs),
-                ),
-                done: false
-            };
+        if (this.indexWithinGrid < Grid.CELL_COUNT) {
+            return CellsIterator.nextIterableResult(this.indexWithinGrid++);
         } else {
-            return {
-                value: undefined,
-                done: true
-            };
+            return CellsIterator.final();
         }
+    }
+
+    private static nextIterableResult(indexWithinGrid: number) {
+        return {
+            value: Cell.at(
+                rowFromAbs(indexWithinGrid),
+                colFromAbs(indexWithinGrid),
+            ),
+            done: false
+        };
+    }
+
+    private static final(): IteratorResult<Cell> {
+        return {
+            value: undefined,
+            done: true
+        };
     }
 }
 
