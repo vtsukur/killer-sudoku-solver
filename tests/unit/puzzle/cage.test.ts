@@ -25,13 +25,13 @@ describe('Cage tests', () => {
 
     test('Construction of invalid cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1).at(4, 4).at(4, 5).mk()).toThrow(
-            'Invalid cage. Sum outside of range. Expected to be within [1, 45]. Actual: -1'
+            'Invalid cage. Sum outside of range. Expected to be within [1, 405]. Actual: -1'
         );
     });
 
-    test('Construction of invalid cage with sum outside of the range: >45', () => {
-        expect(() => Cage.ofSum(46).at(4, 4).at(4, 5).mk()).toThrow(
-            'Invalid cage. Sum outside of range. Expected to be within [1, 45]. Actual: 46'
+    test('Construction of invalid cage with sum outside of the range: >405', () => {
+        expect(() => Cage.ofSum(406).at(4, 4).at(4, 5).mk()).toThrow(
+            'Invalid cage. Sum outside of range. Expected to be within [1, 405]. Actual: 406'
         );
     });
 

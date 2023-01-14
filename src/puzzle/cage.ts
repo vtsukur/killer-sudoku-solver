@@ -1,6 +1,7 @@
 import { joinArray, joinSet } from '../util/readableMessages';
 import { Cell } from './cell';
 import { CellsKeys } from './cellsKeys';
+import { Grid } from './grid';
 import { House } from './house';
 
 export class Cage {
@@ -16,8 +17,8 @@ export class Cage {
     }
 
     private static validateSum(sum: number) {
-        if (sum < 1 || sum > House.SUM) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${House.SUM}]. Actual: ${sum}`);
+        if (sum < 1 || sum > Grid.TOTAL_SUM) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Grid.TOTAL_SUM}]. Actual: ${sum}`);
         }
         return sum;
     }
