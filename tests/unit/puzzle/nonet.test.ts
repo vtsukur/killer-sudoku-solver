@@ -6,7 +6,7 @@ describe('Nonet tests', () => {
         expect(Nonet.SIDE_LENGTH).toEqual(3);
     });
 
-    test('Determination of Nonet index', () => {
+    test('Determination of Nonet index by Cell', () => {
         // north-west nonet (0)
         _.range(0, 3).forEach((row: number) => {
             _.range(0, 3).forEach((col: number) => {
