@@ -55,7 +55,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "cage"
+                "cage.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
