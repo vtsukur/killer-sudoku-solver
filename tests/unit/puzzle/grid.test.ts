@@ -24,7 +24,7 @@ describe('Grid tests', () => {
         });
     });
 
-    test('Iterate over rows and columns', () => {
+    test('Iteration over rows and columns', () => {
         const rowsAndColsIterationCounters = new Array(Grid.SIDE_LENGTH).fill(undefined)
             .map(() => new Array(Grid.SIDE_LENGTH).fill(0));
         const indexWithinGridCounters = new Array(Grid.CELL_COUNT).fill(0);
