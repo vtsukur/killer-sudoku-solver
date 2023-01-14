@@ -13,7 +13,7 @@ export class Cell {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
-        this.nonet = Nonet.indexOf(row, col);
+        this.nonet = Nonet.indexForCellAt(row, col);
         this.indexWithinGrid = Grid.indexOfCellAt(row, col);
     }
 
