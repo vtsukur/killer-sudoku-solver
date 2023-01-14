@@ -38,9 +38,6 @@ export class Cage {
         }
 
         cell(val: Cell) {
-            if (!val) {
-                throw `Invalid cell value: ${val}`;
-            }
             if (this.cellKeys.has(val.key)) {
                 Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
             }
