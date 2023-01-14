@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const joinSet = (set: ReadonlySet<any>) => {
+export function joinSet<T>(set: ReadonlySet<T>) {
     return joinArray(Array.from(set));
-};
+}
 
-export const joinArray = (array: ReadonlyArray<any>) => {
+export function joinArray<T>(array: ReadonlyArray<T>) {
     return array.join(', ');
-};
+}
