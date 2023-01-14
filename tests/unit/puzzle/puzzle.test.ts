@@ -10,39 +10,60 @@ const replaceLastCageInCorrectPuzzleWith = function(lastCage: Cage) {
 };
 
 describe('Puzzle tests', () => {
-    test('Construction of puzzle storing cages', () => {
+    test('Construction of Puzzle storing Cages', () => {
         const correctPuzzle = new Puzzle(samplePuzzle.cages);
         expect(correctPuzzle.cages).toEqual(samplePuzzle.cages);
     });
 
-    test('Construction of invalid puzzle with a missing cell', () => {
+    test('Construction of invalid Puzzle with a missing Cell', () => {
         expect(() =>
             replaceLastCageInCorrectPuzzleWith(
+                // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
                 Cage.ofSum(16).at(8, 6).at(8, 7).mk()
             )
-        ).toThrow('Invalid puzzle. 1 missing cell(s): (8, 8)');
+        ).toThrow('Invalid puzzle. Found 1 missing cell(s): (8, 8)');
     });
 
-    test('Construction of invalid puzzle with two missing cells', () => {
+    test('Construction of invalid Puzzle with 2 missing Cells', () => {
         expect(() =>
             replaceLastCageInCorrectPuzzleWith(
+                // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
                 Cage.ofSum(9).at(8, 6).mk()
             )
-        ).toThrow('Invalid puzzle. 2 missing cell(s): (8, 7), (8, 8)');
+        ).toThrow('Invalid puzzle. Found 2 missing cell(s): (8, 7), (8, 8)');
     });
 
-    test('Construction of invalid puzzle with both a missing cell and a duplicate cell', () => {
+    test('Construction of invalid Puzzle with a duplicate Cell', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
-                Cage.ofSum(16).at(8, 6)/* here comes the duplicate: */.at(0, 0).at(8, 8).mk()
+                // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
+                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here is the duplicate: */.at(0, 0).mk()
             )
-        ).toThrow('Invalid puzzle. 1 missing cell(s): (8, 7). 1 duplicate cell(s): (0, 0)');
+        ).toThrow('Invalid puzzle. Found 1 duplicate cell(s): (0, 0)');
     });
 
-    test('Construction of invalid puzzle in which sum of all cages does not add up to 405', () => {
+    test('Construction of invalid Puzzle with 2 duplicate Cells', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
-                // abnormal cage on the field: 116 instead of 16
+                // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
+                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here are the duplicates: */.at(0, 0).at(0, 1).mk()
+            )
+        ).toThrow('Invalid puzzle. Found 2 duplicate cell(s): (0, 0), (0, 1)');
+    });
+
+    test('Construction of invalid Puzzle with both a missing Cell and a duplicate Cell with only missing Cells reported', () => {
+        expect(() =>
+        replaceLastCageInCorrectPuzzleWith(
+                // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
+                Cage.ofSum(16).at(8, 6).at(8, 8)/* and here comes the duplicate: */.at(0, 0).mk()
+            )
+        ).toThrow('Invalid puzzle. Found 1 missing cell(s): (8, 7)');
+    });
+
+    test('Construction of invalid Puzzle in which sum of all Cages does not add up to 405', () => {
+        expect(() =>
+        replaceLastCageInCorrectPuzzleWith(
+                // Abnormal Cage on the field: 116 instead of 16
                 Cage.ofSum(17).at(8, 6).at(8, 7).at(8, 8).mk()
             )
         ).toThrow('Invalid puzzle. Expected sum of all cages to be 405. Actual: 406');

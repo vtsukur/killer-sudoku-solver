@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
 import { Cage } from './cage';
 import { Cell } from './cell';
-import { CellsKeys } from './cellsKeys';
 import { Grid } from './grid';
 
 export class Puzzle {
@@ -19,39 +18,64 @@ export class Puzzle {
     }
 
     private static validateCageCells(cells: Array<Cell>) {
-        const { unique, duplicates } = new CellsKeys(cells);
-        if (unique.size === Grid.CELL_COUNT) return; // cellSet size cannot be >Grid.CELL_COUNT since Cell and Cage construction control that
+        const { hasDuplicates, duplicates, hasMissing, missing } = new CellKeysWithinGrid(cells);
 
-        const missingCellKeys = Puzzle.findMissingCellKeys(unique);
-
-        let message = `${missingCellKeys.size} missing cell(s): ${joinSet(missingCellKeys)}`;
-        if (duplicates.size > 0) {
-            message = `${message}. ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`;
+        if (hasMissing) {
+            Puzzle.throwValidationError(`Found ${missing.size} missing cell(s): ${joinSet(missing)}`);
         }
-        Puzzle.throwValidationError(message);
-    }
-
-    private static findMissingCellKeys(cellSet: ReadonlySet<string>): ReadonlySet<string> {
-        const missing = new Set<string>();
-        _.range(Grid.SIDE_LENGTH).forEach(row => {
-            _.range(Grid.SIDE_LENGTH).forEach(col => {
-                const cellKey = Cell.keyOf(row, col);
-                if (!cellSet.has(cellKey)) {
-                    missing.add(cellKey);
-                }
-            });
-        });
-        return missing;
+        if (hasDuplicates) {
+            Puzzle.throwValidationError(`Found ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
+        }
     }
 
     private static validateCages(cages: Array<Cage>) {
-        const actualGridSum = _.sum(cages.map(cage => cage.sum));
-        if (actualGridSum !== Grid.TOTAL_SUM) {
-            this.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${actualGridSum}`);
+        const totalSumOfCages = _.sum(cages.map(cage => cage.sum));
+        if (totalSumOfCages !== Grid.TOTAL_SUM) {
+            this.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
         }
     }
 
     static throwValidationError(detailedMessage: string) {
         throw `Invalid puzzle. ${detailedMessage}`;
+    }
+}
+
+class CellKeysWithinGrid {
+    readonly unique: ReadonlySet<string>;
+    readonly duplicates: ReadonlySet<string>;
+    readonly missing: ReadonlySet<string>;
+
+    constructor(cells: Array<Cell>) {
+        const unique = this.unique = new Set<string>();
+        const duplicates = this.duplicates = new Set<string>();
+        const missing = this.missing = new Set<string>();
+
+        for (const cell of cells) {
+            if (unique.has(cell.key)) {
+                duplicates.add(cell.key);
+            } else {
+                unique.add(cell.key);
+            }
+        }
+
+        if (unique.size < Grid.CELL_COUNT) {
+            for (const { key } of Grid.cellsIterator()) {
+                if (!unique.has(key)) {
+                    missing.add(key);
+                }
+            }    
+        }
+    }
+
+    get hasDuplicates() {
+        return CellKeysWithinGrid.isNotEmpty(this.duplicates);
+    }
+
+    get hasMissing() {
+        return CellKeysWithinGrid.isNotEmpty(this.missing);
+    }
+
+    private static isNotEmpty(set: ReadonlySet<string>) {
+        return set.size > 0;
     }
 }
