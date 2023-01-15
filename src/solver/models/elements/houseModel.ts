@@ -8,22 +8,26 @@ type HouseCellProducer = (i: number) => Cell;
 export class HouseModel {
     readonly idx: number;
     readonly cells: ReadonlyArray<Cell>;
-    cageModels: Array<CageModel>;
+    private _cageModels: Array<CageModel>;
     readonly cellIteratorFn: HouseCellIteratorProducer;
 
     constructor(idx: number, cells: Array<Cell>, cellIteratorFn: HouseCellIteratorProducer) {
         this.idx = idx;
         this.cells = cells;
-        this.cageModels = [];
+        this._cageModels = [];
         this.cellIteratorFn = cellIteratorFn;
     }
 
+    get cageModels(): ReadonlyArray<CageModel> {
+        return this._cageModels;
+    }
+
     addCageModel(newCageModel: CageModel) {
-        this.cageModels.push(newCageModel);
+        this._cageModels.push(newCageModel);
     }
 
     removeCageModel(cageModelToRemove: CageModel) {
-        this.cageModels = this.cageModels.filter(cageModel => cageModel !== cageModelToRemove);
+        this._cageModels = this.cageModels.filter(cageModel => cageModel !== cageModelToRemove);
     }
 
     cellIterator() {
