@@ -46,6 +46,10 @@ export class Cage {
             return this;
         }
 
+        get cells() {
+            return this._cells;
+        }
+
         get cellCount() {
             return this._cells.length;
         }
