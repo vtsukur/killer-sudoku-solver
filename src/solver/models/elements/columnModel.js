@@ -6,7 +6,7 @@ export class ColumnModel extends HouseModel {
     }
 
     static iteratorFor(idx) {
-        return HouseModel.newHouseIterator(row => {
+        return HouseModel.newCellsIterator(row => {
             return { row, col: idx };
         });
     }

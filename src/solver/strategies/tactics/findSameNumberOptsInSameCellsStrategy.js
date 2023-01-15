@@ -17,7 +17,7 @@ export function findSameNumberOptsInSameCellsStrategy() {
         const cellRowsByNum = Array(House.SIZE).fill().map(() => []);
         const cellColsByNum = Array(House.SIZE).fill().map(() => []);
         const cellMMap = new Map();
-        for (const { row, col } of houseM.cellIterator()) {
+        for (const { row, col } of houseM.cellsIterator()) {
             const key = Cell.keyOf(row, col);
             const cellM = this.model.cellModelAt(row, col);
             cellMMap.set(key, cellM);

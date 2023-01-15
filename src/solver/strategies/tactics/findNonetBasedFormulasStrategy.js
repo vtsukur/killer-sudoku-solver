@@ -96,7 +96,7 @@ class ExpandableNonOverlappingNonetAreaModel {
 
     unfilledInnerCellMs(model) {
         const result = new Set();
-        for (const { row, col } of this.#nonetM.cellIterator()) {
+        for (const { row, col } of this.#nonetM.cellsIterator()) {
             if (!this.#cellKeys.has(Cell.keyOf(row, col))) {
                 result.add(model.cellModelAt(row, col));
             }
@@ -172,7 +172,7 @@ function findAreaWithSingleInnieOrOutieCell(nonetM, model) {
 
     if (areaModel.innerCellMs.size === House.SIZE && areaModel.outerCellMs.size === 0) return areaModel;
 
-    for (const { row, col } of nonetM.cellIterator()) {
+    for (const { row, col } of nonetM.cellsIterator()) {
         if (areaModel.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);

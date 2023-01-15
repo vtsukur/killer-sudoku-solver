@@ -7,7 +7,7 @@ export class NonetModel extends HouseModel {
     }
 
     static iteratorFor(idx) {
-        return HouseModel.newHouseIterator(i => {
+        return HouseModel.newCellsIterator(i => {
             const nonetStartingRow = Math.floor(idx / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const nonetStartingCol = (idx % Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const row = nonetStartingRow + Math.floor(i / Nonet.SIDE_LENGTH);

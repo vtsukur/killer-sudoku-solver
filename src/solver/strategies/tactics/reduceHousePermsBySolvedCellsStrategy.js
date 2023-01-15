@@ -8,7 +8,7 @@ export function reduceHousePermsBySolvedCellsStrategy() {
             this.model.columnModels[cellModel.cell.col],
             this.model.nonetModels[cellModel.cell.nonet]
         ].forEach(houseModel => {
-            for (const { row, col } of houseModel.cellIterator()) {
+            for (const { row, col } of houseModel.cellsIterator()) {
                 if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
     
                 const aCellModel = this.model.cellModelAt(row, col);
