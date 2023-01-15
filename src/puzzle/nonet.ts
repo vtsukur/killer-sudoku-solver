@@ -2,7 +2,7 @@ class NonetAPI {
     readonly SIDE_LENGTH = 3;
 
     indexForCellAt(row: number, col: number) {
-        return Math.floor(row / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH + Math.floor(col / Nonet.SIDE_LENGTH);
+        return Math.floor(row / this.SIDE_LENGTH) * this.SIDE_LENGTH + Math.floor(col / this.SIDE_LENGTH);
     }
 }
 
