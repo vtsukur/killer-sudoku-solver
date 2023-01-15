@@ -20,11 +20,13 @@ describe('Cage tests', () => {
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
     });
 
-    test('Cage.Builder stores Cell count', () => {
+    test('Cage.Builder stores Cells and their count', () => {
         const cageBuilder = Cage.ofSum(10);
         expect(cageBuilder.cellCount).toBe(0);
+        expect(cageBuilder.cells).toEqual([]);
         cageBuilder.at(4, 4).at(4, 5);
         expect(cageBuilder.cellCount).toBe(2);
+        expect(cageBuilder.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
     test('Construction of invalid Cage with sum outside of the range: <1', () => {
