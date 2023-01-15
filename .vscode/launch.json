@@ -336,6 +336,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [util/dimensionalMatrixMath]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "dimensionalMatrixMath"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [util/readableMessages]",
             "request": "launch",
             "runtimeArgs": [
