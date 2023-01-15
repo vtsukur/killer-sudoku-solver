@@ -46,7 +46,7 @@ export class Cage {
             return this;
         }
 
-        get cells() {
+        get cells(): ReadonlyArray<Cell> {
             return this._cells;
         }
 
