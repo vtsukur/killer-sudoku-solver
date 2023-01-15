@@ -14,8 +14,8 @@ class GridAPI {
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                rowFrom1DIndex(index),
-                colFrom1DIndex(index),
+                rowFromSingleDimensionalIndex(index),
+                colFromSingleDimensionalIndex(index),
             );
         }, Grid.CELL_COUNT);
     }
@@ -25,12 +25,12 @@ class GridAPI {
     }
 }
 
-function rowFrom1DIndex(idx: number) {
-    return Math.floor(idx / Grid.SIDE_LENGTH);
+function rowFromSingleDimensionalIndex(val: number) {
+    return Math.floor(val / Grid.SIDE_LENGTH);
 }
 
-function colFrom1DIndex(idx: number) {
-    return idx % Grid.SIDE_LENGTH;
+function colFromSingleDimensionalIndex(val: number) {
+    return val % Grid.SIDE_LENGTH;
 }
 
 export const Grid = new GridAPI();
