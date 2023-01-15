@@ -4,10 +4,10 @@ import { HouseModel } from './houseModel';
 
 export class NonetModel extends HouseModel {
     constructor(idx: number, cells: ReadonlyArray<Cell>) {
-        super(idx, cells, NonetModel.iteratorFor);
+        super(idx, cells, NonetModel.cellsIteratorFor);
     }
 
-    static iteratorFor(idx: number) {
+    static cellsIteratorFor(idx: number) {
         return HouseModel.newCellsIterator((i: number) => {
             const nonetStartingRow = Math.floor(idx / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const nonetStartingCol = (idx % Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;

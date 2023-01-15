@@ -3,10 +3,10 @@ import { HouseModel } from './houseModel';
 
 export class RowModel extends HouseModel {
     constructor(idx: number, cells: ReadonlyArray<Cell>) {
-        super(idx, cells, RowModel.iteratorFor);
+        super(idx, cells, RowModel.cellsIteratorFor);
     }
 
-    static iteratorFor(idx: number) {
+    static cellsIteratorFor(idx: number) {
         return HouseModel.newCellsIterator((col: number) => {
             return Cell.at(idx, col);
         });
