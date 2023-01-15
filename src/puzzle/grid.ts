@@ -1,4 +1,5 @@
 import { Cell } from './cell';
+import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 class GridAPI {
@@ -11,44 +12,16 @@ class GridAPI {
     }
 
     cellsIterator(): CellsIterator {
-        return new CellsIterator();
+        return new CellsIterator((index: number) => {
+            return Cell.at(
+                rowFromAbs(index),
+                colFromAbs(index),
+            );
+        }, Grid.CELL_COUNT);
     }
 
     newMatrix() {
         return new Array(this.SIDE_LENGTH).fill(undefined).map(() => new Array(this.SIDE_LENGTH));
-    }
-}
-
-class CellsIterator implements Iterator<Cell> {
-    private _indexWithinGrid = 0;
-
-    [Symbol.iterator](): Iterator<Cell> {
-        return this;
-    }
-
-    next(): IteratorResult<Cell> {
-        if (this._indexWithinGrid < Grid.CELL_COUNT) {
-            return CellsIterator.nextIterableResult(this._indexWithinGrid++);
-        } else {
-            return CellsIterator.final();
-        }
-    }
-
-    private static nextIterableResult(indexWithinGrid: number) {
-        return {
-            value: Cell.at(
-                rowFromAbs(indexWithinGrid),
-                colFromAbs(indexWithinGrid),
-            ),
-            done: false
-        };
-    }
-
-    private static final(): IteratorResult<Cell> {
-        return {
-            value: undefined,
-            done: true
-        };
     }
 }
 
