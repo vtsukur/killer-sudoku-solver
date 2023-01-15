@@ -80,6 +80,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [puzzle/cellsIterator]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cellsIterator.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzle/column]",
             "request": "launch",
             "runtimeArgs": [
