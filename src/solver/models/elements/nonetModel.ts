@@ -1,18 +1,19 @@
+import { Cell } from '../../../puzzle/cell';
 import { Nonet } from '../../../puzzle/nonet';
 import { HouseModel } from './houseModel';
 
 export class NonetModel extends HouseModel {
-    constructor(idx, cells) {
+    constructor(idx: number, cells: ReadonlyArray<Cell>) {
         super(idx, cells, NonetModel.iteratorFor);
     }
 
-    static iteratorFor(idx) {
-        return HouseModel.newCellsIterator(i => {
+    static iteratorFor(idx: number) {
+        return HouseModel.newCellsIterator((i: number) => {
             const nonetStartingRow = Math.floor(idx / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const nonetStartingCol = (idx % Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const row = nonetStartingRow + Math.floor(i / Nonet.SIDE_LENGTH);
             const col = nonetStartingCol + i % Nonet.SIDE_LENGTH;
-            return { row, col };
+            return Cell.at(row, col);
         });
     }
 
