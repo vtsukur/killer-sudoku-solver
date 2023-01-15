@@ -215,14 +215,13 @@
             "type": "node"
         },
         {
-            "name": "npm run test [solver/**/solver*]",
+            "name": "npm run test [solver/*]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/solver*",
-                "tests/unit/solver/puzzles/*"
+                "tests/unit/solver/*"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
