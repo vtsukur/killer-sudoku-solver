@@ -2,15 +2,15 @@ import { EOL } from 'os';
 
 export class Solution {
     readonly data: Array<Array<number>>;
-    private asString: string;
+    private readonly _asString: string;
 
     constructor(data: number[][]) {
         this.data = data;
-        this.asString = Solution.toString(data);
+        this._asString = Solution.toString(data);
     }
 
     toString(): string {
-        return this.asString;
+        return this._asString;
     }
 
     private static toString(data: Array<Array<number>>): string {

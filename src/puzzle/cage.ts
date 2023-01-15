@@ -25,12 +25,12 @@ export class Cage {
     }
     
     private static Builder = class {
-        private sum: number;
-        private cells: Array<Cell> = [];
-        private cellKeys: Set<string> = new Set();
+        private readonly _sum: number;
+        private readonly _cells: Array<Cell> = [];
+        private readonly _cellKeys: Set<string> = new Set();
 
         constructor(sum: number) {
-            this.sum = sum;
+            this._sum = sum;
         }
 
         at(row: number, col: number) {
@@ -38,20 +38,20 @@ export class Cage {
         }
 
         cell(val: Cell) {
-            if (this.cellKeys.has(val.key)) {
+            if (this._cellKeys.has(val.key)) {
                 Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
             }
-            this.cells.push(val);
-            this.cellKeys.add(val.key);
+            this._cells.push(val);
+            this._cellKeys.add(val.key);
             return this;
         }
 
         get cellCount() {
-            return this.cells.length;
+            return this._cells.length;
         }
 
         mk() {
-            return new Cage(this.sum, this.cells);
+            return new Cage(this._sum, this._cells);
         }
     };
     

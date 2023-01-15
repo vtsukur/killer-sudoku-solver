@@ -20,15 +20,15 @@ class GridAPI {
 }
 
 class CellsIterator implements Iterator<Cell> {
-    private indexWithinGrid = 0;
+    private _indexWithinGrid = 0;
 
     [Symbol.iterator](): Iterator<Cell> {
         return this;
     }
 
     next(): IteratorResult<Cell> {
-        if (this.indexWithinGrid < Grid.CELL_COUNT) {
-            return CellsIterator.nextIterableResult(this.indexWithinGrid++);
+        if (this._indexWithinGrid < Grid.CELL_COUNT) {
+            return CellsIterator.nextIterableResult(this._indexWithinGrid++);
         } else {
             return CellsIterator.final();
         }
