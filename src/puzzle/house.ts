@@ -1,4 +1,6 @@
-export const House = Object.freeze({
-    SIZE: 9,
-    SUM: 45
-});
+class HouseAPI {
+    readonly SIZE = 9;
+    readonly SUM = 45;
+}
+
+export const House = new HouseAPI();
