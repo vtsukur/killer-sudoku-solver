@@ -27,7 +27,10 @@ export class HouseModel {
     }
 
     removeCageModel(cageModelToRemove: CageModel) {
-        this._cageModels = this.cageModels.filter(cageModel => cageModel !== cageModelToRemove);
+        const indexToRemove = this._cageModels.indexOf(cageModelToRemove);
+        if (indexToRemove !== -1) {
+            this._cageModels.splice(indexToRemove, 1);
+        }
     }
 
     cellIterator() {
