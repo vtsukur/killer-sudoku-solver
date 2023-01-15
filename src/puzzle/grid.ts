@@ -1,3 +1,4 @@
+import { xFrom1DIndex, yFrom1DIndex } from '../util/dimensionalMatrixMath';
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
@@ -14,8 +15,8 @@ class GridAPI {
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                rowFromSingleDimensionalIndex(index),
-                colFromSingleDimensionalIndex(index),
+                yFrom1DIndex(index, Grid.SIDE_LENGTH),
+                xFrom1DIndex(index, Grid.SIDE_LENGTH),
             );
         }, Grid.CELL_COUNT);
     }
@@ -23,14 +24,6 @@ class GridAPI {
     newMatrix() {
         return new Array(this.SIDE_LENGTH).fill(undefined).map(() => new Array(this.SIDE_LENGTH));
     }
-}
-
-function rowFromSingleDimensionalIndex(val: number) {
-    return Math.floor(val / Grid.SIDE_LENGTH);
-}
-
-function colFromSingleDimensionalIndex(val: number) {
-    return val % Grid.SIDE_LENGTH;
 }
 
 export const Grid = new GridAPI();
