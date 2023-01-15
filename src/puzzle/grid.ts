@@ -1,7 +1,7 @@
 import { Cell } from './cell';
 import { House } from './house';
 
-class GridSingletonType {
+class GridAPI {
     readonly SIDE_LENGTH = 9;
     readonly CELL_COUNT = this.SIDE_LENGTH * this.SIDE_LENGTH;
     readonly TOTAL_SUM = this.SIDE_LENGTH * House.SUM;
@@ -18,8 +18,6 @@ class GridSingletonType {
         return new Array(this.SIDE_LENGTH).fill(undefined).map(() => new Array(this.SIDE_LENGTH));
     }
 }
-
-export const Grid = new GridSingletonType();
 
 class CellsIterator implements Iterator<Cell> {
     private indexWithinGrid = 0;
@@ -61,3 +59,5 @@ function rowFromAbs(idx: number) {
 function colFromAbs(idx: number) {
     return idx % Grid.SIDE_LENGTH;
 }
+
+export const Grid = new GridAPI();
