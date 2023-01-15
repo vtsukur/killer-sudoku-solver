@@ -8,50 +8,51 @@ type HouseCellProducer = (i: number) => Cell;
 export class HouseModel {
     readonly idx: number;
     readonly cells: ReadonlyArray<Cell>;
-    private _cageModels: Array<CageModel>;
-    readonly cellIteratorFn: HouseCellIteratorProducer;
 
-    constructor(idx: number, cells: Array<Cell>, cellIteratorFn: HouseCellIteratorProducer) {
+    private readonly _cageModels: Array<CageModel>;
+    private readonly _cellIteratorProducer: HouseCellIteratorProducer;
+
+    constructor(idx: number, cells: Array<Cell>, cellIteratorProducer: HouseCellIteratorProducer) {
         this.idx = idx;
         this.cells = cells;
         this._cageModels = [];
-        this.cellIteratorFn = cellIteratorFn;
+        this._cellIteratorProducer = cellIteratorProducer;
     }
 
     get cageModels(): ReadonlyArray<CageModel> {
         return this._cageModels;
     }
 
-    addCageModel(newCageModel: CageModel) {
-        this._cageModels.push(newCageModel);
+    addCageModel(val: CageModel) {
+        this._cageModels.push(val);
     }
 
-    removeCageModel(cageModelToRemove: CageModel) {
-        const indexToRemove = this._cageModels.indexOf(cageModelToRemove);
+    removeCageModel(val: CageModel) {
+        const indexToRemove = this._cageModels.indexOf(val);
         if (indexToRemove !== -1) {
             this._cageModels.splice(indexToRemove, 1);
         }
     }
 
     cellIterator() {
-        return this.cellIteratorFn(this.idx);
+        return this._cellIteratorProducer(this.idx);
+    }
+    
+    static newHouseIterator(valueOfFn: HouseCellProducer) {
+        return HouseModel.newAreaIterator(valueOfFn, House.SIZE);
     }
 
-    private static newAreaIterator(valueOfFn: HouseCellProducer, max: number) {
+    private static newAreaIterator(houseCellProducer: HouseCellProducer, max: number) {
         let i = 0;
         return {
             [Symbol.iterator]() { return this; },
             next() {
                 if (i < max) {
-                    return { value: valueOfFn(i++), done: false };
+                    return { value: houseCellProducer(i++), done: false };
                 } else {
                     return { value: max, done: true };
                 }
             }
         };
-    }
-    
-    static newHouseIterator(valueOfFn: HouseCellProducer) {
-        return HouseModel.newAreaIterator(valueOfFn, House.SIZE);
     }
 }
