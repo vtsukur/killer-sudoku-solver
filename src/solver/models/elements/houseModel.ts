@@ -7,7 +7,7 @@ type HouseCellProducer = (i: number) => Cell;
 
 export class HouseModel {
     readonly idx: number;
-    readonly cells: Array<Cell>;
+    readonly cells: ReadonlyArray<Cell>;
     cageModels: Array<CageModel>;
     readonly cellIteratorFn: HouseCellIteratorProducer;
 
