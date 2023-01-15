@@ -70,7 +70,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "cell"
+                "cell.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -85,7 +85,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "grid"
+                "grid.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -100,7 +100,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "house"
+                "house.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -115,7 +115,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "nonet"
+                "nonet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -145,7 +145,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "solution"
+                "solution.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
