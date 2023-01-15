@@ -200,6 +200,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [solver/invalidSolverStepError]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "invalidSolverStepError"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [solver]",
             "request": "launch",
             "runtimeArgs": [
