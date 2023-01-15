@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Grid } from '../../puzzle/grid';
 import { House } from '../../puzzle/house';
+import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
@@ -42,7 +43,7 @@ export class MasterModel {
         _.range(House.SIZE).forEach(i => {
             this.rowModels.push(new RowModel(i, this.#collectHouseCells(RowModel.cellsIterator(i))));
             this.columnModels.push(new ColumnModel(i, this.#collectHouseCells(ColumnModel.cellsIterator(i))));
-            this.nonetModels.push(new NonetModel(i, this.#collectHouseCells(NonetModel.cellsIterator(i))));
+            this.nonetModels.push(new NonetModel(i, this.#collectHouseCells(Nonet.cellsIterator(i))));
         });
 
         this.cellModelsMatrix = Grid.newMatrix();
