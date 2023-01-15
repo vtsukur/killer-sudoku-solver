@@ -1,13 +1,14 @@
+import { Cell } from '../../../puzzle/cell';
 import { HouseModel } from './houseModel';
 
 export class RowModel extends HouseModel {
-    constructor(idx, cells) {
+    constructor(idx: number, cells: ReadonlyArray<Cell>) {
         super(idx, cells, RowModel.iteratorFor);
     }
 
-    static iteratorFor(idx) {
-        return HouseModel.newCellsIterator(col => {
-            return { row: idx, col };
+    static iteratorFor(idx: number) {
+        return HouseModel.newCellsIterator((col: number) => {
+            return Cell.at(idx, col);
         });
     }
 
