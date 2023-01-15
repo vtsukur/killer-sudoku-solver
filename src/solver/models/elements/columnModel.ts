@@ -1,15 +1,17 @@
 import { Cell } from '../../../puzzle/cell';
+import { CellsIterator } from '../../../puzzle/cellsIterator';
+import { House } from '../../../puzzle/house';
 import { HouseModel } from './houseModel';
 
 export class ColumnModel extends HouseModel {
     constructor(idx: number, cells: ReadonlyArray<Cell>) {
-        super(idx, cells, ColumnModel.cellsIteratorFor);
+        super(idx, cells, ColumnModel.cellsIterator);
     }
 
-    static cellsIteratorFor(idx: number) {
-        return HouseModel.newCellsIterator((row: number) => {
-            return Cell.at(row, idx);
-        });
+    static cellsIterator(col: number) {
+        return new CellsIterator((row: number) => {
+            return Cell.at(row, col);
+        }, House.SIZE);
     }
 
     deepCopyWithoutCageModels() {

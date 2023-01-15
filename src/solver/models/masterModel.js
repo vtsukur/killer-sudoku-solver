@@ -40,9 +40,9 @@ export class MasterModel {
         this.columnModels = [];
         this.nonetModels = [];
         _.range(House.SIZE).forEach(i => {
-            this.rowModels.push(new RowModel(i, this.#collectHouseCells(RowModel.cellsIteratorFor(i))));
-            this.columnModels.push(new ColumnModel(i, this.#collectHouseCells(ColumnModel.cellsIteratorFor(i))));
-            this.nonetModels.push(new NonetModel(i, this.#collectHouseCells(NonetModel.cellsIteratorFor(i))));
+            this.rowModels.push(new RowModel(i, this.#collectHouseCells(RowModel.cellsIterator(i))));
+            this.columnModels.push(new ColumnModel(i, this.#collectHouseCells(ColumnModel.cellsIterator(i))));
+            this.nonetModels.push(new NonetModel(i, this.#collectHouseCells(NonetModel.cellsIterator(i))));
         });
 
         this.cellModelsMatrix = Grid.newMatrix();
