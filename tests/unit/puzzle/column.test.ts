@@ -18,7 +18,7 @@ describe('Column tests', () => {
     
             for (const counter of rowIterationCounters) {
                 expect(counter).toBe(1);
-            }    
+            }
         });
     });
 });

@@ -18,7 +18,7 @@ describe('Row tests', () => {
     
             for (const counter of colIterationCounters) {
                 expect(counter).toBe(1);
-            }    
+            }
         });
     });
 });
