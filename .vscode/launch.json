@@ -140,6 +140,21 @@
             "type": "node"
         },
         {
+            "name": "npm run test [puzzle/row]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "row.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node"
+        },
+        {
             "name": "npm run test [puzzle/solution]",
             "request": "launch",
             "runtimeArgs": [
