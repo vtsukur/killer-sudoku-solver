@@ -1,6 +1,6 @@
 import { Cell } from './cell';
 
-type CellProducer = (index: number) => Cell;
+export type CellProducer = (index: number) => Cell;
 
 export class CellsIterator implements Iterator<Cell> {
     private _index = 0;

@@ -1,5 +1,4 @@
 import { Cell } from './cell';
-import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 class NonetAPI {
@@ -10,13 +9,13 @@ class NonetAPI {
     }
 
     cellsIterator(nonet: number) {
-        return new CellsIterator((index: number) => {
+        return House.cellsIterator((index: number) => {
             const nonetStartingRow = Math.floor(nonet / Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const nonetStartingCol = (nonet % Nonet.SIDE_LENGTH) * Nonet.SIDE_LENGTH;
             const row = nonetStartingRow + Math.floor(index / Nonet.SIDE_LENGTH);
             const col = nonetStartingCol + index % Nonet.SIDE_LENGTH;
             return Cell.at(row, col);
-        }, House.SIZE);
+        });
     }
 }
 
