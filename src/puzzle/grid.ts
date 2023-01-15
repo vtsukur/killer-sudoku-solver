@@ -14,8 +14,8 @@ class GridAPI {
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                rowFromAbs(index),
-                colFromAbs(index),
+                rowFrom1DIndex(index),
+                colFrom1DIndex(index),
             );
         }, Grid.CELL_COUNT);
     }
@@ -25,11 +25,11 @@ class GridAPI {
     }
 }
 
-function rowFromAbs(idx: number) {
+function rowFrom1DIndex(idx: number) {
     return Math.floor(idx / Grid.SIDE_LENGTH);
 }
 
-function colFromAbs(idx: number) {
+function colFrom1DIndex(idx: number) {
     return idx % Grid.SIDE_LENGTH;
 }
 
