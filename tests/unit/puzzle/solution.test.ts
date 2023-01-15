@@ -1,7 +1,7 @@
 import { Solution } from '../../../src/puzzle/solution';
 
 describe('Solution tests', () => {
-    test('Construction of Solution with data and checking both data and toString representation', () => {
+    test('Construction of Solution storing data and checking both data and toString representation', () => {
         const solution = new Solution([
             [ 5, 1, 3, 9, 2, 8, 4, 7, 6 ],
             [ 2, 4, 8, 3, 7, 6, 1, 9, 5 ],
