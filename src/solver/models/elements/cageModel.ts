@@ -23,9 +23,9 @@ type Context = {
     processedNums: Set<number>,
     numbersStack: Array<number>,
     cellModelsStack: Array<CellModel>,
-    processCell: (cellModel: CellModel, step: number, fn: () => any) => any;
+    processCell: (cellModel: CellModel, step: number, fn: () => boolean | void) => boolean | void;
     mayNotProceedWithNum: (num: number) => boolean;
-    processNum: (num: number, step: number, fn: () => any) => any;
+    processNum: (num: number, step: number, fn: () => boolean | void) => boolean | void;
     remainingCellModel: () => CellModel;
 };
 
@@ -285,7 +285,7 @@ export class CageModel {
             processedNums: new Set(),
             numbersStack: new Array(this._cellCount),
             cellModelsStack: new Array(this._cellCount),
-            processCell: function(cellModel: CellModel, step: number, fn: () => any) {
+            processCell: function(cellModel: CellModel, step: number, fn: () => boolean | void) {
                 if (this.processedCellModels.has(cellModel)) return;
                 this.processedCellModels.add(cellModel); this.remainingCellModels.delete(cellModel);
                 this.cellModelsStack[step] = cellModel;
@@ -297,7 +297,7 @@ export class CageModel {
             mayNotProceedWithNum: function(num: number) {
                 return this.canHaveDuplicateNums ? false : this.processedNums.has(num);
             },
-            processNum: function(num: number, step: number, fn: () => any) {
+            processNum: function(num: number, step: number, fn: () => boolean | void) {
                 if (this.mayNotProceedWithNum(num)) return;
                 this.processedNums.add(num);
                 this.numbersStack[step] = num;
