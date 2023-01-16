@@ -2,11 +2,11 @@ import { Cage } from '../../../../src/puzzle/cage';
 import { Cell } from '../../../../src/puzzle/cell';
 import { House } from '../../../../src/puzzle/house';
 import { MasterModel } from '../../../../src/solver/models/masterModel';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for master model', () => {
     test('Construction of master model (shallow coverage)', () => {
-        const model = new MasterModel(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const model = new MasterModel(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
 
         expect(model.cellAt(2, 3)).toEqual(Cell.at(2, 3));
         expect(model.rowModels.length).toBe(House.SIZE);

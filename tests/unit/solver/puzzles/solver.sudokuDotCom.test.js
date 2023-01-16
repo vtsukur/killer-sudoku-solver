@@ -1,11 +1,13 @@
 import _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Solver } from '../../../../src/solver/solver';
-import { sudokuDotCom_dailyChallengeOf_2022_04_06, sudokuDotCom_dailyChallengeOf_2022_08_12, sudokuDotCom_dailyChallengeOf_2022_08_30, sudokuDotCom_dailyChallengeOf_2022_10_18, sudokuDotCom_dailyChallengeOf_2022_10_19, sudokuDotCom_dailyChallengeOf_2022_10_22, sudokuDotCom_dailyChallengeOf_2022_10_25, sudokuDotCom_dailyChallengeOf_2022_11_01, sudokuDotCom_dailyChallengeOf_2022_11_10, sudokuDotCom_randomExpertLevelChallenge } from '../../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../../puzzle/realPuzzleSamples';
 
-describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
+describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
+    const sudokuDotCom = puzzleSamples.sudokuDotCom;
+
     test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_04_06);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_04_06);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -22,7 +24,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-08-12) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_08_12);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_08_12);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -39,7 +41,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-08-30) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_08_30);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_08_30);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -56,7 +58,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-10-18) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_10_18);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_18);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -73,7 +75,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-10-19) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_10_19);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_19);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -90,7 +92,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_10_22);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_22);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -107,7 +109,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-10-25) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_10_25);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_25);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -124,7 +126,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-11-01) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_01);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -141,7 +143,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for Daily Challenge (2022-11-10) by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_10);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_10);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -158,7 +160,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for random expert level challenge by Sudoku.com', () => {
-        const solver = new Solver(sudokuDotCom_randomExpertLevelChallenge);
+        const solver = new Solver(sudokuDotCom.randomExpertLevelChallenge);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -175,7 +177,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution (whitebox verification of the model)', () => {
-        const solver = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01);
+        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_01);
         solver.solve();
 
         const model = solver.model;

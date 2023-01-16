@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { sudokuDotCom_dailyChallengeOf_2022_11_01 } from '../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../puzzle/realPuzzleSamples';
 import { Cell } from '../../../src/puzzle/cell';
 import { Cage } from '../../../src/puzzle/cage';
 import { Solver } from '../../../src/solver/solver';
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {
-    const model = new Solver(sudokuDotCom_dailyChallengeOf_2022_11_01).model;
+    const model = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01).model;
 
     test('Initialize Row Models', () => {
         expectHouseModel(model.rowModel(0), {
