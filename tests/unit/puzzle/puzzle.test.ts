@@ -1,9 +1,9 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Puzzle } from '../../../src/puzzle/puzzle';
-import { samplePuzzle } from './realPuzzleSamples';
+import { puzzleSamples } from './realPuzzleSamples';
 
 const replaceLastCageInCorrectPuzzleWith = function(lastCage: Cage) {
-    const cages = [...samplePuzzle.cages];
+    const cages = [...puzzleSamples.reference.cages];
     cages.pop();
     cages.push(lastCage);
     return new Puzzle(cages);
@@ -11,8 +11,8 @@ const replaceLastCageInCorrectPuzzleWith = function(lastCage: Cage) {
 
 describe('Puzzle tests', () => {
     test('Construction of Puzzle storing Cages', () => {
-        const correctPuzzle = new Puzzle(samplePuzzle.cages);
-        expect(correctPuzzle.cages).toEqual(samplePuzzle.cages);
+        const correctPuzzle = new Puzzle(puzzleSamples.reference.cages);
+        expect(correctPuzzle.cages).toEqual(puzzleSamples.reference.cages);
     });
 
     test('Construction of invalid Puzzle with a missing Cell', () => {

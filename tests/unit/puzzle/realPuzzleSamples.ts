@@ -1,7 +1,7 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Puzzle } from '../../../src/puzzle/puzzle';
 
-export const samplePuzzle = new Puzzle([
+const samplePuzzle = new Puzzle([
     // upper nonets
     Cage.ofSum(17).at(0, 0).at(1, 0).at(1, 1).mk(),
     Cage.ofSum(7).at(0, 1).mk(),
@@ -578,3 +578,9 @@ export const dailyKillerSudokuDotCom_puzzle24919_difficulty10 = new Puzzle([
     Cage.ofSum(13).at(7, 5).at(7, 6).at(8, 5).mk(),
     Cage.ofSum(27).at(6, 8).at(7, 7).at(7, 8).at(8, 6).at(8, 7).at(8, 8).mk()
 ]);
+
+class PuzzleSamplesAPI {
+    readonly reference = samplePuzzle;
+}
+
+export const puzzleSamples = Object.freeze(new PuzzleSamplesAPI());
