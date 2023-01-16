@@ -367,12 +367,12 @@
         },
 
         {
-            "name": "npm run test [puzzleRecognizer]",
+            "name": "npm run test [recognizer]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "puzzleRecognizer"
+                "tests/unit/recognizer/recognizer.test.js"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
