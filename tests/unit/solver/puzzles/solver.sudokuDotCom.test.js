@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Solver } from '../../../../src/solver/solver';
-import { puzzleSamples } from '../../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;

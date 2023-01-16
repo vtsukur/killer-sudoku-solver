@@ -1,6 +1,6 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Puzzle } from '../../../src/puzzle/puzzle';
-import { puzzleSamples } from './realPuzzleSamples';
+import { puzzleSamples } from './puzzleSamples';
 
 const replaceLastCageInCorrectPuzzleWith = function(lastCage: Cage) {
     const cages = [...puzzleSamples.reference.cages];

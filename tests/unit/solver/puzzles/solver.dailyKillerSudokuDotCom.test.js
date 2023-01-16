@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Solver } from '../../../../src/solver/solver';
-import { puzzleSamples } from '../../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;

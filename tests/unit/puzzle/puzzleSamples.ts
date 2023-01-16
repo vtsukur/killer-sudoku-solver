@@ -581,7 +581,6 @@ class DailyKillerSudokuDotComSamples {
         Cage.ofSum(13).at(7, 5).at(7, 6).at(8, 5).mk(),
         Cage.ofSum(27).at(6, 8).at(7, 7).at(7, 8).at(8, 6).at(8, 7).at(8, 8).mk()
     ]);
-
 }
 
 class PuzzleSamplesAPI {

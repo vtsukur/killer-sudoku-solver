@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
 import { Solver } from '../../../src/solver/solver';
-import { puzzleSamples } from '../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../puzzle/puzzleSamples';
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {
     const model = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01).model;
