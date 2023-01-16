@@ -16,23 +16,41 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "_"
+            }
         },
         {
-            "name": "npm run test [combinatorial]",
+            "name": "npm run profile",
             "request": "launch",
             "runtimeArgs": [
                 "run",
-                "test",
-                "combinatorial"
+                "profile"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "_"
+            }
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/src/index.js",
+            "presentation": {
+                "group": "_"
+            }
+        },
+
         {
             "name": "npm run test [puzzle/*]",
             "request": "launch",
@@ -47,7 +65,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/cage]",
@@ -62,7 +83,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/cell]",
@@ -77,7 +101,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/cellsIterator]",
@@ -92,7 +119,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/column]",
@@ -107,7 +137,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/grid]",
@@ -122,7 +155,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/house]",
@@ -137,7 +173,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/nonet]",
@@ -152,7 +191,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/puzzle]",
@@ -167,7 +209,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/row]",
@@ -182,7 +227,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
         {
             "name": "npm run test [puzzle/solution]",
@@ -197,68 +245,12 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "puzzle"
+            }
         },
-        {
-            "name": "npm run test [masterModel]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "masterModel"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [models/cageModel]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "cageModel"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [puzzleRecognizer]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "puzzleRecognizer"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run test [solver/invalidSolverStepError]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "invalidSolverStepError"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
+
         {
             "name": "npm run test [solver/*]",
             "request": "launch",
@@ -273,7 +265,28 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/combinatorial]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "combinatorial"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
         },
         {
             "name": "npm run test [solver/house]",
@@ -288,7 +301,64 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/invalidSolverStepError]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "invalidSolverStepError"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/models/cageModel]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "cageModel"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/models/masterModel]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "masterModel"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
         },
         {
             "name": "npm run test [solver/solver (single)]",
@@ -302,7 +372,29 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+
+        {
+            "name": "npm run test [puzzleRecognizer]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "puzzleRecognizer"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "recognizer"
+            }
         },
         {
             "name": "npm run test [e2e.puzzleRecognizerAndSolver]",
@@ -317,8 +409,12 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "e2e"
+            }
         },
+
         {
             "name": "npm run test [util/*]",
             "request": "launch",
@@ -333,7 +429,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "util"
+            }
         },
         {
             "name": "npm run test [util/dimensionalMatrixMath]",
@@ -348,7 +447,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "util"
+            }
         },
         {
             "name": "npm run test [util/readableMessages]",
@@ -363,7 +465,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
+            "type": "node",
+            "presentation": {
+                "group": "util"
+            }
         },
         {
             "name": "npm run test [util/tempFilePaths]",
@@ -378,30 +483,10 @@
                 "<node_internals>/**"
             ],
             "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
-            "name": "npm run profile",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "profile"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node"
-        },
-        {
             "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/index.js"
+            "presentation": {
+                "group": "util"
+            }
         }
     ]
 }
