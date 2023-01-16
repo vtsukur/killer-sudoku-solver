@@ -38,18 +38,6 @@
                 "group": "_"
             }
         },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/index.js",
-            "presentation": {
-                "group": "_"
-            }
-        },
 
         {
             "name": "npm run test [puzzle/*]",
