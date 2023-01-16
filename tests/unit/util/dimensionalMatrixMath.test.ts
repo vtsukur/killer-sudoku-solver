@@ -18,7 +18,7 @@ describe('Dimensional matrix math tests', () => {
 
     test('Determining single-dimensional coordinate by row and column', () => {
         expect(to1D(0, 0, 9)).toBe(0);
-        expect(to1D(3, 4, 9)).toBe(39);
+        expect(to1D(3, 4, 9)).toBe(31);
         expect(to1D(8, 8, 9)).toBe(80);
     });
 });
