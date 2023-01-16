@@ -1,11 +1,11 @@
-export function xFrom1D(val: number, sideLength: number) {
+export function rowFrom1D(val: number, sideLength: number) {
     return val % sideLength;
 }
 
-export function yFrom1D(val: number, sideLength: number) {
+export function colFrom1D(val: number, sideLength: number) {
     return Math.floor(val / sideLength);
 }
 
-export function to1D(x: number, y: number, sideLength: number) {
-    return y * sideLength + x;
+export function to1D(row: number, col: number, sideLength: number) {
+    return row * sideLength + col;
 }

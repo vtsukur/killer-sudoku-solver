@@ -1,4 +1,4 @@
-import { xFrom1D, yFrom1D } from '../util/dimensionalMatrixMath';
+import { rowFrom1D, colFrom1D } from '../util/dimensionalMatrixMath';
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
@@ -15,8 +15,8 @@ class GridAPI {
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                yFrom1D(index, Grid.SIDE_LENGTH),
-                xFrom1D(index, Grid.SIDE_LENGTH),
+                colFrom1D(index, Grid.SIDE_LENGTH),
+                rowFrom1D(index, Grid.SIDE_LENGTH),
             );
         }, Grid.CELL_COUNT);
     }
