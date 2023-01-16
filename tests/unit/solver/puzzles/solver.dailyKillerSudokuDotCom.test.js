@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import { Solver } from '../../../../src/solver/solver';
-import { dailyKillerSudokuDotCom_puzzle24789_difficulty10, dailyKillerSudokuDotCom_puzzle24889_difficulty10, dailyKillerSudokuDotCom_puzzle24914_difficulty10, dailyKillerSudokuDotCom_puzzle24919_difficulty10 } from '../../puzzle/realPuzzleSamples';
+import { puzzleSamples } from '../../puzzle/realPuzzleSamples';
 
 describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
+    const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
+
     test('Find solution for puzzle 24789 of difficulty 10 by DailyKillerSudoku.com', () => {
-        const solver = new Solver(dailyKillerSudokuDotCom_puzzle24789_difficulty10);
+        const solver = new Solver(dailyKillerSudokuDotCom.puzzle24789_difficulty10);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -21,7 +23,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for puzzle 24889 of difficulty 10 by DailyKillerSudoku.com', () => {
-        const solver = new Solver(dailyKillerSudokuDotCom_puzzle24889_difficulty10);
+        const solver = new Solver(dailyKillerSudokuDotCom.puzzle24889_difficulty10);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -38,7 +40,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for puzzle 24914 of difficulty 10 by DailyKillerSudoku.com', () => {
-        const solver = new Solver(dailyKillerSudokuDotCom_puzzle24914_difficulty10);
+        const solver = new Solver(dailyKillerSudokuDotCom.puzzle24914_difficulty10);
         const { data } = solver.solve();
 
         expect(data).toEqual([
@@ -55,7 +57,7 @@ describe('Tests for solver applied to DailyKillerSudoku.com tasks', () => {
     });
 
     test('Find solution for puzzle 24919 of difficulty 10 by DailyKillerSudoku.com', () => {
-        const solver = new Solver(dailyKillerSudokuDotCom_puzzle24919_difficulty10);
+        const solver = new Solver(dailyKillerSudokuDotCom.puzzle24919_difficulty10);
         const { data } = solver.solve();
 
         expect(data).toEqual([
