@@ -27,4 +27,4 @@ class NonetAPI {
     }
 }
 
-export const Nonet = new NonetAPI();
+export const Nonet = Object.freeze(new NonetAPI());

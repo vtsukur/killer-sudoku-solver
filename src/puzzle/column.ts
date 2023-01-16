@@ -9,4 +9,4 @@ class ColumnAPI {
     }
 }
 
-export const Column = new ColumnAPI();
+export const Column = Object.freeze(new ColumnAPI());

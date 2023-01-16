@@ -10,4 +10,4 @@ class HouseAPI {
     }
 }
 
-export const House = new HouseAPI();
+export const House = Object.freeze(new HouseAPI());

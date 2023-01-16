@@ -9,4 +9,4 @@ class RowAPI {
     }
 }
 
-export const Row = new RowAPI();
+export const Row = Object.freeze(new RowAPI());

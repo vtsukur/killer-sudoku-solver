@@ -26,4 +26,4 @@ class GridAPI {
     }
 }
 
-export const Grid = new GridAPI();
+export const Grid = Object.freeze(new GridAPI());
