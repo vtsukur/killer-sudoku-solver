@@ -1,23 +1,57 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
+import { Cage } from '../../../puzzle/cage';
+import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
+import { CellModel } from './cellModel';
+
+type Clue = {
+    num: number;
+    row?: number;
+    col?: number;
+    nonet?: number;
+    singleCellForNum?: Cell;
+    singleCellForNumCombos?: Array<Array<number>>;
+    presentInAllCombos?: boolean;
+}
+
+type Context = {
+    canHaveDuplicateNums: boolean;
+    processedCellModels: Set<CellModel>;
+    remainingCellModels: Set<CellModel>,
+    processedNums: Set<number>,
+    numbersStack: Array<number>,
+    cellModelsStack: Array<CellModel>,
+    processCell: (cellModel: CellModel, step: number, fn: () => any) => any;
+    mayNotProceedWithNum: (num: number) => boolean;
+    processNum: (num: number, step: number, fn: () => any) => any;
+    remainingCellModel: () => CellModel;
+};
 
 export class CageModel {
-    #firstCell;
-    #cellsSet;
-    #cellCount;
-    #combosMap;
-    #canHaveDuplicateNums;
-    #derivedFromInputCage;
+    readonly cage;
+    readonly positioningFlags;
+    readonly cellModels;
+    minRow;
+    minCol;
+    maxRow;
+    maxCol;
 
-    constructor(cage, cellModels, canHaveDuplicateNums, derivedFromInputCage) {
+    private _firstCell;
+    private _cellsSet;
+    private _cellCount;
+    private _combosMap;
+    private _canHaveDuplicateNums;
+    private _derivedFromInputCage;
+
+    constructor(cage: Cage, cellModels: ReadonlyArray<CellModel>, canHaveDuplicateNums: boolean, derivedFromInputCage: boolean) {
         this.cage = cage;
-        this.#cellsSet = new Set(cage.cells.map(cell => cell.key));
+        this._cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
-        this.#firstCell = cage.cells[0];
+        this._firstCell = cage.cells[0];
         this.cellModels = cellModels;
-        this.#canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
+        this._canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
         this.minRow = House.SIZE + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -28,75 +62,82 @@ export class CageModel {
             this.minCol = Math.min(this.minCol, cell.col);
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
-        this.#cellCount = cage.cellCount;
-        this.#combosMap = new Map();
-        this.#derivedFromInputCage = derivedFromInputCage;
+        this._cellCount = cage.cellCount;
+        this._combosMap = new Map();
+        this._derivedFromInputCage = derivedFromInputCage;
     }
 
     deepCopyWithSameCellModels() {
-        const copy = new CageModel(this.cage, [...this.cellModels], this.#canHaveDuplicateNums, this.#derivedFromInputCage);
-        for (const entry of this.#combosMap.entries()) {
-            copy.#combosMap.set(entry[0], [...entry[1]]);
+        const copy = new CageModel(this.cage, [...this.cellModels], this._canHaveDuplicateNums, this._derivedFromInputCage);
+        for (const entry of this._combosMap.entries()) {
+            copy._combosMap.set(entry[0], [...entry[1]]);
         }
         return copy;
     }
 
-    static positioningFlagsFor(cells) {
+    static positioningFlagsFor(cells: ReadonlyArray<Cell>) {
         return new CageModel.#PositioningFlags(cells);
     }
 
     static #PositioningFlags = class {
-        constructor(cells) {
+        readonly cells;
+        readonly isSingleCellCage;
+        readonly isWithinRow;
+        readonly isWithinColumn;
+        readonly isWithinNonet;
+        readonly isWithinHouse;
+
+        constructor(cells: ReadonlyArray<Cell>) {
             this.cells = cells;
             this.isSingleCellCage = cells.length === 1;
-            this.isWithinRow = this.isSingleCellCage || this.#isSameForAll(cell => cell.row);
-            this.isWithinColumn = this.isSingleCellCage || this.#isSameForAll(cell => cell.col);
-            this.isWithinNonet = this.isSingleCellCage || this.#isSameForAll(cell => cell.nonet);
+            this.isWithinRow = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.row);
+            this.isWithinColumn = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.col);
+            this.isWithinNonet = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.nonet);
             this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         }
 
-        #isSameForAll(whatFn) {
+        private isSameForAll(whatFn: (cell: Cell) => number) {
             return new Set(this.cells.map(whatFn)).size === 1;
         }
     };
 
     get canHaveDuplicateNums() {
-        return this.#canHaveDuplicateNums;
+        return this._canHaveDuplicateNums;
     }
 
     initialReduce() {
-        if (this.#canHaveDuplicateNums) return;
+        if (this._canHaveDuplicateNums) return;
 
         const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
-        let nums = new Set();
+        let nums = new Set<number>();
         combos.forEach(combo => {
             nums = new Set([...nums, ...combo]);
 
             const comboValue = Array.from(combo);
             const comboKey = comboValue.join();
-            this.#combosMap.set(comboKey, comboValue);
+            this._combosMap.set(comboKey, comboValue);
         });
         this.cellModels.forEach(cellM => cellM.reduceNumOptions(nums));
     }
 
     anyRow() {
-        return this.#firstCell.row;
+        return this._firstCell.row;
     }
 
     anyColumn() {
-        return this.#firstCell.col;
+        return this._firstCell.col;
     }
 
     anyNonet() {
-        return this.#firstCell.nonet;
+        return this._firstCell.nonet;
     }
 
-    hasCellAt(row, col) {
+    hasCellAt(row: number, col: number) {
         return this.cellModels.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    updateCombinations(combos) {
-        const numOpts = new Set();
+    updateCombinations(combos: ReadonlyArray<ReadonlySet<number>>) {
+        const numOpts = new Set<number>();
         [...combos].forEach(comboSet => {
             [...comboSet].forEach(num => {
                 numOpts.add(num);
@@ -108,10 +149,10 @@ export class CageModel {
 
     reduce() {
         if (this.#isEligibleForReductionOfSmallSize()) {
-            if (!this.#canHaveDuplicateNums && _.inRange(this.#cellCount, 2, 4)) {
-                if (this.#cellCount === 2) {
+            if (!this._canHaveDuplicateNums && _.inRange(this._cellCount, 2, 4)) {
+                if (this._cellCount === 2) {
                     return this.#reduceOptimalForSize2();
-                } else if (this.#cellCount === 3) {
+                } else if (this._cellCount === 3) {
                     return this.#reduceOptimalForSize3();
                 } else {
                     // remove for refactoring
@@ -120,7 +161,7 @@ export class CageModel {
             } else {
                 return this.#reduceSmallCage();
             }
-        } else if (!this.#canHaveDuplicateNums) {
+        } else if (!this._canHaveDuplicateNums) {
             return this.#reduceLargeCage();
         } else {
             return new Set();
@@ -128,7 +169,7 @@ export class CageModel {
     }
 
     #isEligibleForReductionOfSmallSize() {
-        return _.inRange(this.#cellCount, 2, 5);
+        return _.inRange(this._cellCount, 2, 5);
     }
 
     #reduceOptimalForSize2() {
@@ -185,7 +226,7 @@ export class CageModel {
             for (const num0 of cellM0.numOpts()) {
                 let numStands = false;
                 for (const combo of this.#combosForNumArr(num0)) {
-                    const num0Index = combo.findIndex(n => n === num0);
+                    const num0Index = combo.findIndex((n: number) => n === num0);
                     const remainingNums = [...combo];
                     remainingNums.splice(num0Index, 1);
                     const num1 = remainingNums[0];
@@ -205,7 +246,7 @@ export class CageModel {
             }
         }
 
-        for (const combo of this.#combosMap.values()) {
+        for (const combo of this._combosMap.values()) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
                 const cellM0HasIt = cellMs[0].hasNumOpt(combo[perm[0]]);
@@ -222,46 +263,46 @@ export class CageModel {
         return modifiedCellMs;
     }
 
-    #combosForNumArr(num) {
+    #combosForNumArr(num: number) {
         const combosArr = [];
-        for (const combo of this.#combosMap.values()) {
-            if (combo.some(n => n === num)) {
+        for (const combo of this._combosMap.values()) {
+            if (combo.some((n: number) => n === num)) {
                 combosArr.push(combo);
             }
         }
         return combosArr;
     }
 
-    #deleteComboArr(combo) {
-        this.#combosMap.delete(combo.join());
+    #deleteComboArr(combo: ReadonlyArray<number>) {
+        this._combosMap.delete(combo.join());
     }
 
     #reduceSmallCage() {
-        const context = {
+        const context: Context = {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellModels: new Set(),
             remainingCellModels: new Set(this.cellModels),
             processedNums: new Set(),
-            numbersStack: new Array(this.#cellCount),
-            cellModelsStack: new Array(this.#cellCount),
-            processCell: function(cellModel, step, fn) {
+            numbersStack: new Array(this._cellCount),
+            cellModelsStack: new Array(this._cellCount),
+            processCell: function(cellModel: CellModel, step: number, fn: () => any) {
                 if (this.processedCellModels.has(cellModel)) return;
                 this.processedCellModels.add(cellModel); this.remainingCellModels.delete(cellModel);
                 this.cellModelsStack[step] = cellModel;
                 const retVal = fn();
-                this.cellModelsStack[step] = undefined;
+                // this.cellModelsStack[step] = undefined;
                 this.processedCellModels.delete(cellModel); this.remainingCellModels.add(cellModel);    
                 return retVal;
             },
-            mayNotProceedWithNum: function(num) {
+            mayNotProceedWithNum: function(num: number) {
                 return this.canHaveDuplicateNums ? false : this.processedNums.has(num);
             },
-            processNum: function(num, step, fn) {
+            processNum: function(num: number, step: number, fn: () => any) {
                 if (this.mayNotProceedWithNum(num)) return;
                 this.processedNums.add(num);
                 this.numbersStack[step] = num;
                 const retVal = fn();
-                this.numbersStack[step] = undefined;
+                // this.numbersStack[step] = undefined;
                 this.processedNums.delete(num);
                 return retVal;
             },
@@ -270,7 +311,7 @@ export class CageModel {
             }
         };
 
-        this.#combosMap = new Map();
+        this._combosMap = new Map();
 
         const modifiedCellModels = new Set();
         this.cellModels.forEach(cellModel => {
@@ -289,22 +330,22 @@ export class CageModel {
         return modifiedCellModels;
     }
 
-    #hasSumMatchingPermutationsRecursive(currentSum, step, context) {
+    #hasSumMatchingPermutationsRecursive(currentSum: number, step: number, context: Context) {
         if (currentSum > this.cage.sum) { return false; }
 
         let has = false;
 
-        if (step === (this.#cellCount - 1)) {
+        if (step === (this._cellCount - 1)) {
             const lastNum = this.cage.sum - currentSum;
             if (context.mayNotProceedWithNum(lastNum)) return false;
             const lastCellModel = context.remainingCellModel();
             has = lastCellModel.hasNumOpt(lastNum);
             if (has) {
                 const sortedNums = [...context.numbersStack];
-                sortedNums[this.#cellCount - 1] = lastNum;
+                sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const comboKey = sortedNums.join();
-                this.#combosMap.set(comboKey, sortedNums);
+                this._combosMap.set(comboKey, sortedNums);
             }
         } else {
             this.cellModels.forEach(cellModel => {
@@ -330,7 +371,7 @@ export class CageModel {
         const commonComboNums = new Set();
         _.range(1, House.SIZE + 1).forEach(num => {
             let hasNumInAllCombos = true;
-            for (const combo of this.#combosMap.values()) {
+            for (const combo of this._combosMap.values()) {
                 const comboSet = new Set(combo); // avoid creating set and use cache instead
                 hasNumInAllCombos = hasNumInAllCombos && comboSet.has(num);
             }
@@ -348,8 +389,8 @@ export class CageModel {
         const validCombos = [];
         let validComboNums = new Set();
         const noLongerValidCombos = [];
-        let noLongerValidComboNums = new Set();
-        for (const combo of this.#combosMap.values()) {
+        let noLongerValidComboNums = new Set<number>();
+        for (const combo of this._combosMap.values()) {
             let validCombo = true;
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
@@ -371,7 +412,7 @@ export class CageModel {
 
         const modifiedCellMs = new Set();
         if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new Set();
+            const numOptsToDelete = new Set<number>();
             for (const num of noLongerValidComboNums) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
@@ -388,16 +429,16 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this.#combosMap.delete(noLongerValidCombo.join());
+                this._combosMap.delete(noLongerValidCombo.join());
             }
         }
 
         return modifiedCellMs;
     }
 
-    findNumPlacementClues(forNum) {
+    findNumPlacementClues(forNum: number) {
         const numToCells = new Map();
-        const numOptsFn = (cellM) => {
+        const numOptsFn = (cellM: CellModel) => {
             if (_.isUndefined(forNum)) {
                 return cellM.numOpts();
             } else if (cellM.numOpts().has(forNum)) {
@@ -415,12 +456,12 @@ export class CageModel {
             }
         }
 
-        const clues = [];
+        const clues = new Array<Clue>();
         for (const numToCellsEntry of numToCells.entries()) {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
             const positioningFlags = CageModel.positioningFlagsFor(cells);
-            const clue = { num };
+            const clue: Clue = { num };
             if (positioningFlags.isWithinHouse) {
                 if (positioningFlags.isWithinRow) {
                     clue.row = cells[0].row;
@@ -434,7 +475,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this.#combosMap.values()) {
+                for (const combo of this._combosMap.values()) {
                     if (new Set(combo).has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -442,7 +483,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (positioningFlags.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this.#combosMap.values()).every(combo => {
+                clue.presentInAllCombos = Array.from(this._combosMap.values()).every(combo => {
                     return new Set(combo).has(num);
                 });
                 clues.push(clue);
@@ -452,17 +493,17 @@ export class CageModel {
         return clues;
     }
 
-    reduceToCombinationsContaining(withNum) {
-        if (this.hasSingleCombination() || !this.#combosMap.size) return [];
+    reduceToCombinationsContaining(withNum: number) {
+        if (this.hasSingleCombination() || !this._combosMap.size) return [];
 
         const newCombosMap = new Map();
         const removedCombos = [];
-        let newNumOptions = new Set();
+        let newNumOptions = new Set<number>();
 
-        for (const comboEntry of this.#combosMap.entries()) {
+        for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = new Set(value);
+            const numSet = new Set<number>(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
                 newNumOptions = new Set([...newNumOptions, ...numSet]);
@@ -472,8 +513,8 @@ export class CageModel {
         }
 
         if (removedCombos.length > 0) {
-            this.#combosMap = newCombosMap;
-            const reducedCellModels = [];
+            this._combosMap = newCombosMap;
+            const reducedCellModels = new Array<CellModel>();
             this.cellModels.forEach(cellModel => {
                 if (cellModel.reduceNumOptions(newNumOptions).size > 0) {
                     reducedCellModels.push(cellModel);
@@ -487,22 +528,22 @@ export class CageModel {
     }
 
     hasSingleCombination() {
-        return this.#combosMap.size === 1;
+        return this._combosMap.size === 1;
     }
 
     get cellCount() {
-        return this.#cellsSet.size;
+        return this._cellsSet.size;
     }
 
     get combos() {
-        return this.#combosMap.values();
+        return this._combosMap.values();
     }
 
     get comboCount() {
-        return this.#combosMap.size;
+        return this._combosMap.size;
     }
 
     get derivedFromInputCage() {
-        return this.#derivedFromInputCage;
+        return this._derivedFromInputCage;
     }
 }
