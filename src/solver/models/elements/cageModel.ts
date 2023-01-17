@@ -45,7 +45,7 @@ export class CageModel {
     private _canHaveDuplicateNums;
     private _derivedFromInputCage;
 
-    constructor(cage: Cage, cellModels: ReadonlyArray<CellModel>, canHaveDuplicateNums: boolean, derivedFromInputCage: boolean) {
+    constructor(cage: Cage, cellModels: Array<CellModel>, canHaveDuplicateNums: boolean, derivedFromInputCage: boolean) {
         this.cage = cage;
         this._cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);

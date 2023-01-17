@@ -7,7 +7,7 @@ import { CageModel } from './cageModel';
 export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
-    private readonly _withinCageModels;
+    private readonly _withinCageModels: Set<CageModel>;
     private _numOpts;
     private _solved: boolean;
 
@@ -35,7 +35,7 @@ export class CellModel {
         this._withinCageModels.delete(val);
     }
 
-    get withinCageModels() {
+    get withinCageModels(): ReadonlySet<CageModel> {
         return this._withinCageModels;
     }
 
