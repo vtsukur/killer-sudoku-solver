@@ -1,8 +1,9 @@
 import { Cage } from '../../../puzzle/cage';
 import { House } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
+import { Context } from '../context';
 
-export function findRedundantNonetSumsStrategy() {
+export function findRedundantNonetSumsStrategy(this: Context) {
     const nonetCageMsMap = new Map();
     this.model.nonetModels.forEach(nonetM => {
         nonetCageMsMap.set(nonetM.idx, new Set());
