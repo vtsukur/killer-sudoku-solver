@@ -182,7 +182,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyArray<Cage>) {
         return [];
     }
 
-    const combos = new Array<Array<number>>();
+    const combos = new Array<Array<Set<number>>>();
     const combosForCages = cages.map(cage => findNumCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
     const checkingSet = new Set();
@@ -213,7 +213,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyArray<Cage>) {
 function doFindForOverlappingCages(cages: ReadonlyArray<Cage>) {
     if (cages.length === 0) return [];
 
-    const combos = new Array<Array<number>>();
+    const combos = new Array<Array<Set<number>>>();
     const combosForCages = cages.map(cage => findNumCombinationsForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
 
@@ -234,12 +234,12 @@ function doFindForOverlappingCages(cages: ReadonlyArray<Cage>) {
     return combos;
 }
 
-function merge(combosForNonOverlappingCages: Array<Array<number>>, combosForOverlappingCages: Array<Array<number>>) {
+function merge(combosForNonOverlappingCages: Array<Array<Set<number>>>, combosForOverlappingCages: Array<Array<Set<number>>>) {
     if (combosForOverlappingCages.length === 0) {
         return combosForNonOverlappingCages;
     }
     else {
-        const merged = new Array<Array<number>>();
+        const merged = new Array<Array<Set<number>>>();
         combosForNonOverlappingCages.forEach(combosLeft => {
             combosForOverlappingCages.forEach(combosRight => {
                 merged.push(combosLeft.concat(combosRight));
@@ -249,12 +249,12 @@ function merge(combosForNonOverlappingCages: Array<Array<number>>, combosForOver
     }
 }
 
-function preserveOrder(combinedCombos: Array<Array<number>>, cages: ReadonlyArray<Cage>, nonOverlappingCages: ReadonlyArray<Cage>, overlappingCages: ReadonlyArray<Cage>) {
+function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: ReadonlyArray<Cage>, nonOverlappingCages: ReadonlyArray<Cage>, overlappingCages: ReadonlyArray<Cage>) {
     if (overlappingCages.length === 0) {
         return combinedCombos;
     }
     else {
-        const orderPreservedCombos = new Array<Array<number>>();
+        const orderPreservedCombos = new Array<Array<Set<number>>>();
 
         const cageIndexResolvers = new Array(cages.length);
         nonOverlappingCages.forEach((cage, idx) => {
