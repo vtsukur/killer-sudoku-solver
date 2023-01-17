@@ -1,12 +1,12 @@
 import { findSumCombinationsForHouse } from '../../combinatorial/combinatorial';
+import { Context } from '../context';
 
-export function initPermsForCagesStrategy() {
+export function initPermsForCagesStrategy(this: Context) {
     this.model.houseModels.forEach(houseModel => {
         const combosForHouse = findSumCombinationsForHouse(houseModel);
-        houseModel.debugCombosForHouse = combosForHouse;
         houseModel.cageModels.forEach((cageModel, idx) => {
             const combosKeySet = new Set();
-            const combos = [];
+            const combos = new Array<Set<number>>();
             combosForHouse.forEach(combo => {
                 const comboSet = combo[idx];
                 const key = Array.from(combo[idx]).join();
@@ -19,5 +19,5 @@ export function initPermsForCagesStrategy() {
         });
     });
 
-    this.cageModelsToReevaluatePerms = this.model.cageModelsMap.values();
+    this.cageModelsToReevaluatePerms = Array.from(this.model.cageModelsMap.values());
 }
