@@ -1,54 +1,61 @@
 import { Cage } from '../../puzzle/cage';
+import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { CageModel } from '../models/elements/cageModel';
+import { MasterModel } from '../models/masterModel';
+
+type CageInSlicing = {
+    cage: Cage;
+    canHaveDuplicateNums: boolean;
+};
 
 export class CageSlicer {
-    #model;
+    readonly model;
 
-    constructor(model) {
-        this.#model = model;
+    constructor(model: MasterModel) {
+        this.model = model;
     }
 
-    addAndSliceResidualCageRecursively(initialResidualCage) {
+    addAndSliceResidualCageRecursively(initialResidualCage: Cage) {
         let residualCages = [ { cage: initialResidualCage, canHaveDuplicateNums: !CageModel.positioningFlagsFor(initialResidualCage.cells).isWithinHouse } ];
 
         while (residualCages.length > 0) {
-            const nextResidualCages = [];
+            const nextResidualCages = new Array<CageInSlicing>();
 
             residualCages.forEach(entry => {
                 const residualCage = entry.cage;
-                if (this.#model.cageModelsMap.has(residualCage.key)) return;
+                if (this.model.cageModelsMap.has(residualCage.key)) return;
 
-                const cageModelsForResidualCage = this.#getCageModelsFullyContainingResidualCage(residualCage);
-                const cagesToUnregister = [];
+                const cageModelsForResidualCage = this.getCageModelsFullyContainingResidualCage(residualCage);
+                const cagesToUnregister = new Array<Cage>();
                 let canHaveDuplicateNums = entry.canHaveDuplicateNums;
-                cageModelsForResidualCage.forEach(cageModel => {
+                cageModelsForResidualCage.forEach((cageModel: CageModel) => {
                     const secondChunkCage = CageSlicer.slice(cageModel.cage, residualCage);
                     cagesToUnregister.push(cageModel.cage);
                     nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageModel.canHaveDuplicateNums });
                     canHaveDuplicateNums = canHaveDuplicateNums && cageModel.canHaveDuplicateNums;
                 });
 
-                this.#model.registerCage(residualCage, canHaveDuplicateNums);
+                this.model.registerCage(residualCage, canHaveDuplicateNums);
 
-                cagesToUnregister.forEach(cage => this.#model.unregisterCage(cage));
+                cagesToUnregister.forEach(cage => this.model.unregisterCage(cage));
             });
 
             residualCages = nextResidualCages;
         }
     }
 
-    #getCageModelsFullyContainingResidualCage(residualCage) {
-        let allAssociatedCageModelsSet = new Set();
+    private getCageModelsFullyContainingResidualCage(residualCage: Cage) {
+        let allAssociatedCageModelsSet = new Set<CageModel>();
         residualCage.cells.forEach(cell => {
-            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.#model.cellModelOf(cell).withinCageModels]);
+            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.model.cellModelOf(cell).withinCageModels]);
         });
-        allAssociatedCageModelsSet.delete(this.#model.cageModelsMap.get(residualCage.key));
+        allAssociatedCageModelsSet.delete(this.model.cageModelsMap.get(residualCage.key) as CageModel);
 
-        const result = [];
+        const result = new Array<CageModel>();
         for (const associatedCageModel of allAssociatedCageModelsSet.values()) {
             const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
-                return this.#model.cellModelOf(cell).withinCageModels.has(associatedCageModel);
+                return this.model.cellModelOf(cell).withinCageModels.has(associatedCageModel);
             });
             if (associatedCageFullyContainsResidualCage) {
                 result.push(associatedCageModel);
@@ -58,7 +65,7 @@ export class CageSlicer {
         return result;
     }
 
-    static slice(cageToSlice, firstChunkCage) {
+    static slice(cageToSlice: Cage, firstChunkCage: Cage) {
         const secondChunkCageBuilder = Cage.ofSum(cageToSlice.sum - firstChunkCage.sum);
         cageToSlice.cells.forEach(cell => {
             if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
@@ -68,9 +75,10 @@ export class CageSlicer {
         return secondChunkCageBuilder.mk();
     }
 
-    static sliceBy(cageToSlice, sliceIndexFn) {
-        const slices = Array(House.SIZE).fill().map(() => []);
-        cageToSlice.cells.forEach(cell => {
+    static sliceBy(cageToSlice: Cage, sliceIndexFn: (cell: Cell) => number) {
+        const slices: Array<Array<Cell>> = new Array(House.SIZE).fill([]).map(() => []);
+        slices[0].push(Cell.at(0, 0));
+        cageToSlice.cells.forEach((cell: Cell) => {
             const idx = sliceIndexFn(cell);
             slices[idx].push(cell);
         });
