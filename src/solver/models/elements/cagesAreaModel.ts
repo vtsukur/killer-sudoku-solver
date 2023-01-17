@@ -1,26 +1,31 @@
+import { Cage } from '../../../puzzle/cage';
+import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { clusterCagesByOverlap } from '../../combinatorial/combinatorial';
 
 export class CagesAreaModel {
-    constructor(cages, absMaxAreaCellCount = House.SIZE) {
+    readonly cages;
+    readonly cellsSet = new Set<Cell>();
+    readonly nonOverlappingCellsSet = new Set<Cell>();
+    sum = 0;
+
+    constructor(cages: ReadonlyArray<Cage>, absMaxAreaCellCount = House.SIZE) {
         this.cages = cages;
-        this.cellsSet = new Set();
-        this.nonOverlappingCellsSet = new Set();
-        this.sum = 0;
+
         cages.forEach(cage => {
             cage.cells.forEach(cell => {
                 this.cellsSet.add(cell);
             });
         });
 
-        const { nonOverlappingCages } = clusterCagesByOverlap(cages, new Set(this.cellsSet), absMaxAreaCellCount);
+        const { nonOverlappingCages } = clusterCagesByOverlap(cages, Array.from(this.cellsSet), absMaxAreaCellCount);
         nonOverlappingCages.forEach(cage => {
             this.sum += cage.sum;
             cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
         });
     }
 
-    hasNonOverlapping(cell) {
+    hasNonOverlapping(cell: Cell) {
         return this.nonOverlappingCellsSet.has(cell);
     }
 }
