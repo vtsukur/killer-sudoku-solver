@@ -11,6 +11,7 @@ export class Context {
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
+    skipInit = false;
 
     constructor(model: MasterModel, cageSlicer: CageSlicer) {
         this.model = model;
