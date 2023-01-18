@@ -1,56 +1,41 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
+import { Cell } from '../puzzle/cell';
 import { Rect } from './rect';
 
 export class CellContour {
-    #cell;
-    #rect;
-    #cageBorders;
-    #cageFound;
-    #dottedCageContourRects;
+    readonly cell;
+    readonly rect;
+    readonly cageBorders;
+    cageFound;
+    private readonly _dottedCageContourRects: Array<Rect>;
 
-    constructor(cell, rect) {
-        this.#cell = cell;
-        this.#rect = rect;
-        this.#cageBorders = new CageBorders();
-        this.#cageFound = false;
-        this.#dottedCageContourRects = [];
+    constructor(cell: Cell, rect: Rect) {
+        this.cell = cell;
+        this.rect = rect;
+        this.cageBorders = new CageBorders();
+        this.cageFound = false;
+        this._dottedCageContourRects = [];
     }
 
-    get cell() {
-        return this.#cell;
-    }
-
-    get rect() {
-        return this.#rect;
-    }
-
-    get cageBorders() {
-        return this.#cageBorders;
-    }
-
-    get cageFound() {
-        return this.#cageFound;
-    }
-
-    addDottedCageContourRect(dottedCageContourRect) {
-        this.#dottedCageContourRects.push(dottedCageContourRect);
+    addDottedCageContourRect(dottedCageContourRect: Rect) {
+        this._dottedCageContourRects.push(dottedCageContourRect);
     }
 
     computeSumAreaRect() {
         const DEVIATION = 5;
         const ALIGNMENT = 2;
 
-        let leftmostDotX = (this.#rect.x + this.#rect.width);
-        let leftmostDotY = (this.#rect.y + this.#rect.height);
+        let leftmostDotX = (this.rect.x + this.rect.width);
+        let leftmostDotY = (this.rect.y + this.rect.height);
         let topmostDotX = leftmostDotX;
         let topmostDotY = leftmostDotY;
 
-        for (const dottedCageContourRect of this.#dottedCageContourRects) {
+        for (const dottedCageContourRect of this._dottedCageContourRects) {
             leftmostDotX = Math.min(leftmostDotX, dottedCageContourRect.x);
             topmostDotY = Math.min(topmostDotY, dottedCageContourRect.y);
         }
 
-        for (const dottedCageContourRect of this.#dottedCageContourRects) {
+        for (const dottedCageContourRect of this._dottedCageContourRects) {
             if (_.inRange(dottedCageContourRect.x, leftmostDotX - DEVIATION, leftmostDotX + DEVIATION)) {
                 leftmostDotY = Math.min(leftmostDotY, dottedCageContourRect.y);
             }
@@ -67,18 +52,14 @@ export class CellContour {
         return new Rect(leftmostDotX, topmostDotY, topmostDotX - leftmostDotX, leftmostDotY - topmostDotY);
     }
 
-    setCageFound() {
-        this.#cageFound = true;
-    }
+    markCageContour(rect: Rect) {
+        const relativeX = rect.x - this.rect.x + rect.width / 2;
+        const relativeY = rect.y - this.rect.y + rect.height / 2;
 
-    markCageContour(rect) {
-        const relativeX = rect.x - this.#rect.x + rect.width / 2;
-        const relativeY = rect.y - this.#rect.y + rect.height / 2;
+        const cageBorderXSize = this.rect.width / CageBorders.SIDES;
+        const cageBorderYSize = this.rect.height / CageBorders.SIDES;
 
-        const cageBorderXSize = this.#rect.width / CageBorders.SIDES;
-        const cageBorderYSize = this.#rect.height / CageBorders.SIDES;
-
-        this.#cageBorders.setHasAt(Math.floor(relativeY / cageBorderYSize), Math.floor(relativeX / cageBorderXSize));
+        this.cageBorders.setHasAt(Math.floor(relativeY / cageBorderYSize), Math.floor(relativeX / cageBorderXSize));
     }
 }
 
@@ -93,7 +74,7 @@ class CageBorders {
         ];
     }
 
-    setHasAt(x, y) {
+    setHasAt(x: number, y: number) {
         this.#matrix[x][y] = true;
     }
 

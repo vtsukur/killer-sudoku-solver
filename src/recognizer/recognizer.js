@@ -201,7 +201,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     if (cellContour.cageFound) return;
 
     cageContour.addCellContour(cellContour);
-    cellContour.setCageFound();
+    cellContour.cageFound = true;
 
     if (!cellContour.cageBorders.hasAtRight) {
         determineCageContoursByCellsDFS(cellContoursMatrix, row, col + 1, cageContour);
