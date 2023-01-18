@@ -1,8 +1,9 @@
-import cv from '@techstark/opencv-js';
-import Jimp from 'jimp';
-import _ from 'lodash';
-import tesseract from 'node-tesseract-ocr'; // use native port instead
-import { createWorker } from 'tesseract.js';
+import * as cv from '@techstark/opencv-js';
+import { Mat, MatVector } from '@techstark/opencv-js';
+import * as Jimp from 'jimp';
+import * as _ from 'lodash';
+// import tesseract from 'node-tesseract-ocr'; // use native port instead
+import { createWorker, PSM, Worker } from 'tesseract.js';
 import { Cage } from '../puzzle/cage';
 import { Cell } from '../puzzle/cell';
 import { Grid } from '../puzzle/grid';
@@ -25,7 +26,7 @@ const TMP_CONTOUR_THICKNESS = 2;
 
 const log = logFactory.withLabel('Puzzle Recognition via Computer Vision');
 
-export async function recognize(imagePath, taskId) {
+export async function recognize(imagePath: string, taskId: number) {
     const paths = new Paths(taskId).recreateBaseDirSync();
 
     // read image using Jimp.
@@ -69,7 +70,7 @@ export async function recognize(imagePath, taskId) {
     tesseractWorker.setParameters({
         tessedit_char_whitelist: '0123456789',
         tessedit_ocr_engine_mode: 0,
-        tessedit_pageseg_mode: 6
+        tessedit_pageseg_mode: PSM.SINGLE_BLOCK
     });
     const cages = await prepareCageSumImages(cageContours, jimpSrc, paths, tesseractWorker);
     await tesseractWorker.terminate();
@@ -82,7 +83,7 @@ export async function recognize(imagePath, taskId) {
     };
 }
 
-function prepareSourceMat(src) {
+function prepareSourceMat(src: Mat) {
     // convert to grayscale
     cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
 
@@ -90,12 +91,12 @@ function prepareSourceMat(src) {
     cv.Canny(src, src, CANNY_THRESHOLD_MIN, CANNY_THRESHOLD_MAX);
 }
 
-function findDottedCageContours(src, contoursMatVector) {
+function findDottedCageContours(src: Mat, contoursMatVector: MatVector) {
     cv.findContours(src, contoursMatVector, new cv.Mat(), cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
 
-    const dottedCageContours = [];
+    const dottedCageContours = new Array<Mat>();
     const contoursBoundingRectsSet = new Set();
-    _.range(contoursMatVector.size()).forEach(i => {
+    _.range(contoursMatVector.size() as unknown as number).forEach(i => {
         const contour = contoursMatVector.get(i);
         const cvRect = Rect.from(cv.boundingRect(contour));
 
@@ -111,11 +112,11 @@ function findDottedCageContours(src, contoursMatVector) {
     return dottedCageContours;
 }
 
-function findGridContour(dottedCageContours) {
-    const leftXMap = new Map();
-    const rightXMap = new Map();
-    const topYMap = new Map();
-    const bottomYMap = new Map();
+function findGridContour(dottedCageContours: Array<Mat>) {
+    const leftXMap = new Map<number, number>();
+    const rightXMap = new Map<number, number>();
+    const topYMap = new Map<number, number>();
+    const bottomYMap = new Map<number, number>();
 
     for (const dottedCageContour of dottedCageContours) {
         const cvRect = cv.boundingRect(dottedCageContour);
@@ -138,23 +139,23 @@ function findGridContour(dottedCageContours) {
     ));
 }
 
-function accumCoordEntry(map, coord) {
+function accumCoordEntry(map: Map<number, number>, coord: number) {
     if (map.has(coord)) {
-        map.set(coord, map.get(coord) + 1);
+        map.set(coord, map.get(coord) as number + 1);
     } else {
         map.set(coord, 1);
     }
 }
 
-function findFirstSignificantCoord(map, isReverse) {
+function findFirstSignificantCoord(map: Map<number, number>, isReverse = false) {
     const arr = Array.from(map.keys()).sort((a, b) => a - b);
-    const isSignificantFn = coord => map.get(coord) > 10;
-    const significant = isReverse ? arr.findLast(isSignificantFn) : arr.find(isSignificantFn);
+    const isSignificantFn = (coord: number) => map.get(coord) as number > 10;
+    const significant = isReverse ? _.reverse([...arr]).find(isSignificantFn) : arr.find(isSignificantFn);
 
     return significant ? significant : arr[isReverse ? arr.length - 1 : 0];
 }
 
-function createCellContours(gridContour) {
+function createCellContours(gridContour: GridContour) {
     const cellContoursMatrix = Grid.newMatrix();
 
     _.range(House.SIZE).forEach(row => {
@@ -166,7 +167,7 @@ function createCellContours(gridContour) {
     return cellContoursMatrix;
 }
 
-function groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridContour) {
+function groupCageContoursByCells(cellContoursMatrix: Array<Array<CellContour>>, dottedCageContours: Array<Mat>, gridContour: GridContour) {
     for (const dottedCageContour of dottedCageContours) {
         const cvRect = cv.boundingRect(dottedCageContour);
         const cell = gridContour.cellFromRect(cvRect);
@@ -177,8 +178,8 @@ function groupCageContoursByCells(cellContoursMatrix, dottedCageContours, gridCo
     }
 }
 
-function determineCageContoursByCells(cellContoursMatrix) {
-    const cageContours = [];
+function determineCageContoursByCells(cellContoursMatrix: Array<Array<CellContour>>) {
+    const cageContours = new Array<CageContour>();
 
     _.range(House.SIZE).forEach(row => {
         _.range(House.SIZE).forEach(col => {
@@ -194,7 +195,7 @@ function determineCageContoursByCells(cellContoursMatrix) {
     return cageContours;
 }
 
-function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageContour) {
+function determineCageContoursByCellsDFS(cellContoursMatrix: Array<Array<CellContour>>, row: number, col: number, cageContour: CageContour) {
     if (!_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
 
     const cellContour = cellContoursMatrix[row][col];
@@ -217,7 +218,7 @@ function determineCageContoursByCellsDFS(cellContoursMatrix, row, col, cageConto
     }
 }
 
-async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesseractWorker) {
+async function prepareCageSumImages(cageContours: Array<CageContour>, srcImage: Jimp, tempFilePaths: Paths, tesseractWorker: Worker) {
     const cages = [];
 
     let idx = 0;
@@ -226,12 +227,12 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesse
         log.info(`Image processing of text area for cage contour ${idx}. Cells: ${cageContour.cells}`);
 
         await simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
-        let sum = await ocr(cageContour.sumImagePath, tesseractWorker);
+        let sum = await ocr(cageContour.sumImagePath as string, tesseractWorker);
 
         if (isNaN(sum)) {
             log.info('Simple sum text detection failed. Trying diligent OpenCV-based image post processor');
             await diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths);
-            sum = await ocr(cageContour.sumImagePath, tesseractWorker);
+            sum = await ocr(cageContour.sumImagePath as string, tesseractWorker);
         }
 
         const cageBuilder = Cage.ofSum(sum);
@@ -242,8 +243,8 @@ async function prepareCageSumImages(cageContours, srcImage, tempFilePaths, tesse
     return cages;
 }
 
-async function ocr(sumImagePath, tesseractWorker) {
-    const { data: { text } } = await tesseractWorker.recognize(sumImagePath, 'eng');
+async function ocr(sumImagePath: string, tesseractWorker: Worker) {
+    const { data: { text } } = await tesseractWorker.recognize(sumImagePath);
     log.info(`Detected sum text for cage via OCR: ${text.trim()}`);
     return parseInt(text);
     // return await tesseract.recognize(sumImagePath, {
@@ -256,8 +257,8 @@ async function ocr(sumImagePath, tesseractWorker) {
     // });
 }
 
-async function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
-    const sumAreaRect = cageContour.topLeftCellContour.computeSumAreaRect();
+async function simplifiedCageSumImageReader(cageContour: CageContour, idx: number, srcImage: Jimp, tempFilePaths: Paths) {
+    const sumAreaRect = (cageContour.topLeftCellContour as CellContour).computeSumAreaRect();
 
     const scaledSum = new Jimp(srcImage).crop(sumAreaRect.x, sumAreaRect.y, sumAreaRect.width, sumAreaRect.height);
     const scaledWidth = sumAreaRect.width * 2;
@@ -270,8 +271,8 @@ async function simplifiedCageSumImageReader(cageContour, idx, srcImage, tempFile
     cageContour.sumImagePath = cageSumTextFilePath;
 }
 
-async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, srcImage, tempFilePaths) {
-    const topLeftCellContourRect = cageContour.topLeftCellContour.rect;
+async function diligentOpenCVPostProcessingCageSumImageReader(cageContour: CageContour, idx: number, srcImage: Jimp, tempFilePaths: Paths) {
+    const topLeftCellContourRect = (cageContour.topLeftCellContour as CellContour).rect;
 
     const leftX = topLeftCellContourRect.x + 3;
     const width = topLeftCellContourRect.width * 0.35;
@@ -310,9 +311,9 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, 
     const allContoursMat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
     const textContoursMat = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
 
-    let maxContourRect = undefined;
-    const potentialTextContourRects = [];
-    _.range(contoursMatVector.size()).forEach(i => {
+    let maxContourRect: cv.Rect | undefined = undefined;
+    const potentialTextContourRects = new Array<cv.Rect>();
+    _.range(contoursMatVector.size() as unknown as number).forEach(i => {
         const contour = contoursMatVector.get(i);
         const cvRect = cv.boundingRect(contour);
         const topLeft = new cv.Point(cvRect.x, cvRect.y);
@@ -329,7 +330,7 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, 
         }
     });
 
-    const maxContourRectSize = maxContourRect.width * maxContourRect.height;
+    const maxContourRectSize = (maxContourRect as unknown as cv.Rect).width * (maxContourRect as unknown as Rect).height;
     const textContourRects = [];
     let masterRectLeftX = scaledWidth;
     let masterRectRightX = 0;
@@ -379,7 +380,7 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour, idx, 
     cageContour.sumImagePath = finalPath;
 }
 
-async function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix, outputPath) {
+async function dumpTmpContoursOutput(src: Mat, dottedCageContours: Array<Mat>, cellContoursMatrix: Array<Array<CellContour>>, outputPath: string) {
     if (!log.isDebug) return;
 
     log.debug('Writing dotted cage contours and cell contours file');
@@ -412,7 +413,7 @@ async function dumpTmpContoursOutput(src, dottedCageContours, cellContoursMatrix
 }
 
 class Paths extends TempFilePaths {
-    constructor(taskId) {
+    constructor(taskId: number) {
         super(`./tmp/puzzle-recognizer/${taskId}`);
     }
 
@@ -420,7 +421,7 @@ class Paths extends TempFilePaths {
         return this.filePath('puzzle-image-significant-contours.png');
     }
 
-    cageSumTextFilePath(id, classifier) {
+    cageSumTextFilePath(id: number, classifier: string) {
         return this.filePath(`${id}/cage-sum_${classifier}.png`);
     }
 }
