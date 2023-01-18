@@ -1,21 +1,25 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
+import { CageModel } from '../../models/elements/cageModel';
+import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
+import { HouseModel } from '../../models/elements/houseModel';
 import { RowModel } from '../../models/elements/rowModel';
+import { Context } from '../context';
 
-export function findSameNumberOptsInSameCellsStrategy() {
+export function findSameNumberOptsInSameCellsStrategy(this: Context) {
     if (this.hasCageModelsToReevaluatePerms) return;
 
-    let cageModelsToReduceSet = new Set();
+    let cageModelsToReduceSet = new Set<CageModel>();
 
-    const colNumMapForRows = new Map();
-    const rowNumMapForCols = new Map();
+    const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
+    const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
 
     this.model.houseModels.forEach(houseM => {
-        const cellKeysByNum = Array(House.SIZE).fill().map(() => []);
-        const cellRowsByNum = Array(House.SIZE).fill().map(() => []);
-        const cellColsByNum = Array(House.SIZE).fill().map(() => []);
+        const cellKeysByNum: Array<Array<string>> = new Array(House.SIZE).fill([]).map(() => []);
+        const cellRowsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
+        const cellColsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
         const cellMMap = new Map();
         for (const { row, col } of houseM.cellsIterator()) {
             const key = Cell.keyOf(row, col);
@@ -72,32 +76,32 @@ export function findSameNumberOptsInSameCellsStrategy() {
     const rowBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
         this.model.rowModels,
         colNumMapForRows,
-        (directHouseIdx, perpendicularHouseIdx) => this.model.cellModelAt(directHouseIdx, perpendicularHouseIdx)
+        (directHouseIdx: number, perpendicularHouseIdx: number) => this.model.cellModelAt(directHouseIdx, perpendicularHouseIdx)
     );
     cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...rowBasedCageMsToReduce]);
 
     const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
         this.model.columnModels,
         rowNumMapForCols,
-        (directHouseIdx, perpendicularHouseIdx) => this.model.cellModelAt(perpendicularHouseIdx, directHouseIdx)
+        (directHouseIdx: number, perpendicularHouseIdx: number) => this.model.cellModelAt(perpendicularHouseIdx, directHouseIdx)
     );
 
     cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...colBasedCageMsToReduce]);
 
     if (cageModelsToReduceSet.size > 0) {
-        this.cageModelsToReevaluatePerms = cageModelsToReduceSet;
+        this.cageModelsToReevaluatePerms = Array.from(cageModelsToReduceSet);
     }
 }
 
-function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs, numMap, getCellMFn) {
-    let cageModelsToReduceSet = new Set();
+function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIdx: number, perpendicularHouseIdx: number) => CellModel) {
+    let cageModelsToReduceSet = new Set<CageModel>();
 
     _.range(0, House.SIZE).forEach(numIdx => {
         const num = numIdx + 1;
 
         const numOccurencesKeyToHouseMap = new Map();
         houseMs.forEach(houseM => {
-            const numToHouseIndicesMap = numMap.get(houseM);
+            const numToHouseIndicesMap = numMap.get(houseM) as Array<Array<number>>;
             const houseIndicesArr = numToHouseIndicesMap[numIdx];
             const key = houseIndicesArr.join('');
             if (!numOccurencesKeyToHouseMap.has(key)) {
@@ -112,7 +116,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs, numMap, getCe
         
         for (const entry of numOccurencesKeyToHouseMap.values()) {
             if (entry.perpendicularHouseIndices.length === 2 && entry.perpendicularHouseIndices.length === entry.houses.size) {
-                const directHouseIndicesSet = new Set(Array.from(entry.houses).map(houseM => houseM.idx));
+                const directHouseIndicesSet = new Set<number>(Array.from<HouseModel>(entry.houses).map(houseM => houseM.idx));
                 _.range(0, House.SIZE).forEach(directHouseIdx => {
                     if (directHouseIndicesSet.has(directHouseIdx)) return;
 
