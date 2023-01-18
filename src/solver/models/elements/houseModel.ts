@@ -1,7 +1,7 @@
 import { Cell } from '../../../puzzle/cell';
 import { CageModel } from './cageModel';
 
-type HouseCellsIteratorProducer = (idx: number) => Iterator<Cell>;
+type HouseCellsIteratorProducer = (idx: number) => Iterable<Cell>;
 
 export class HouseModel {
     readonly idx: number;
@@ -31,7 +31,7 @@ export class HouseModel {
         }
     }
 
-    cellsIterator() {
+    cellsIterator(): Iterable<Cell> {
         return this._cellsIteratorProducer(this.idx);
     }
 }

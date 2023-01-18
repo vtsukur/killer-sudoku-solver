@@ -63,7 +63,7 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new Map();
+        this._combosMap = new Map<string, Array<number>>();
         this._derivedFromInputCage = derivedFromInputCage;
     }
 
@@ -436,7 +436,7 @@ export class CageModel {
         return modifiedCellMs;
     }
 
-    findNumPlacementClues(forNum: number) {
+    findNumPlacementClues(forNum?: number) {
         const numToCells = new Map();
         const numOptsFn = (cellM: CellModel) => {
             if (_.isUndefined(forNum)) {
