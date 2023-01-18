@@ -1,6 +1,7 @@
-import config from 'config';
-import open from 'open';
-import puppeteer from 'puppeteer';
+import * as config from 'config';
+import * as open from 'open';
+import puppeteer, { Browser } from 'puppeteer';
+import { Puzzle } from '../../src/puzzle/puzzle';
 import { recognize } from '../../src/recognizer/recognizer';
 import { Solver } from '../../src/solver/solver';
 import { logFactory } from '../../src/util/logFactory';
@@ -12,7 +13,7 @@ const log = logFactory.withLabel('E2E Puzzle Reader & Solver');
 const OPEN_IMAGE_FILES = config.get('openImageFiles');
 
 describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
-    let browser;
+    let browser: Browser;
 
     const puzzleIds = [
         24914
@@ -50,28 +51,28 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
     });
 });
 
-const recognizePuzzle = async (puzzleSourceImagePath, taskId) => {
+const recognizePuzzle = async (puzzleSourceImagePath: string, taskId: number) => {
     log.info('Recognizing puzzle ...');
     const result = await recognize(puzzleSourceImagePath, taskId);
     log.info('Puzzle recognized successfully');
     return result;
 };
 
-const solvePuzzle = (puzzle) => {
+const solvePuzzle = (puzzle: Puzzle) => {
     log.info('Solving puzzle ...');
     const solution = new Solver(puzzle).solve();
     log.info('Solution for puzzle found!');
     return solution;
 };
 
-const openImageIfNecessary = (path) => {
+const openImageIfNecessary = (path: string) => {
     if (OPEN_IMAGE_FILES) {
         open(path);
     }
 };
 
 class Paths extends TempFilePaths {
-    constructor(taskId) {
+    constructor(taskId: number) {
         super(`./tmp/e2e-tests/${taskId}`);
     }
 
@@ -83,7 +84,7 @@ class Paths extends TempFilePaths {
         return this.#screenshotFilePath('solved-puzzle-page');
     }
 
-    #screenshotFilePath(classifier) {
-        return this.filePath(`screeshot-of-${classifier}.png`);;
+    #screenshotFilePath(classifier: string) {
+        return this.filePath(`screeshot-of-${classifier}.png`);
     }
 }
