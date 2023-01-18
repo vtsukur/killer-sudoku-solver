@@ -1,8 +1,11 @@
-export function reduceHousePermsBySolvedCellsStrategy() {
-    let cageModelsToReduceSet = new Set();
+import { CageModel } from '../../models/elements/cageModel';
+import { Context } from '../context';
+
+export function reduceHousePermsBySolvedCellsStrategy(this: Context) {
+    let cageModelsToReduceSet = new Set<CageModel>();
 
     this.recentlySolvedCellModels.forEach(cellModel => {
-        const num = cellModel.placedNum;
+        const num = cellModel.placedNum as number;
         [
             this.model.rowModels[cellModel.cell.row],
             this.model.columnModels[cellModel.cell.col],
@@ -22,9 +25,9 @@ export function reduceHousePermsBySolvedCellsStrategy() {
 
     if (cageModelsToReduceSet.size > 0) {
         if (this.hasCageModelsToReevaluatePerms) {
-            this.cageModelsToReevaluatePerms = new Set([...this.cageModelsToReduceSet, ...cageModelsToReduceSet]);
+            this.cageModelsToReevaluatePerms = Array.from(new Set([...this.cageModelsToReevaluatePerms as Array<CageModel>, ...cageModelsToReduceSet]));
         } else {
-            this.cageModelsToReevaluatePerms = cageModelsToReduceSet;
+            this.cageModelsToReevaluatePerms = Array.from(cageModelsToReduceSet);
         }
     }
 }
