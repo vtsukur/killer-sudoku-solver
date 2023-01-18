@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Solver } from '../../../../src/solver/solver';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
