@@ -147,7 +147,7 @@ export class CageModel {
         this.cellModels.forEach(cellModel => cellModel.reduceNumOptions(numOpts));
     }
 
-    reduce() {
+    reduce(): Set<CellModel> {
         if (this.#isEligibleForReductionOfSmallSize()) {
             if (!this._canHaveDuplicateNums && _.inRange(this._cellCount, 2, 4)) {
                 if (this._cellCount === 2) {
@@ -173,7 +173,7 @@ export class CageModel {
     }
 
     #reduceOptimalForSize2() {
-        const modifiedCellMs = new Set();
+        const modifiedCellMs = new Set<CellModel>();
         const combosToPotentiallyRemoveMap = new Map();
 
         for (const oneCellM of this.cellModels) {
@@ -203,7 +203,7 @@ export class CageModel {
     }
 
     #reduceOptimalForSize3() {
-        const modifiedCellMs = new Set();
+        const modifiedCellMs = new Set<CellModel>();
 
         const PERMS_OF_3 = [
             [0, 1, 2],
@@ -313,7 +313,7 @@ export class CageModel {
 
         this._combosMap = new Map();
 
-        const modifiedCellModels = new Set();
+        const modifiedCellModels = new Set<CellModel>();
         this.cellModels.forEach(cellModel => {
             context.processCell(cellModel, 0, () => {
                 Array.from(cellModel.numOpts()).forEach(num => {
@@ -410,7 +410,7 @@ export class CageModel {
             }
         }
 
-        const modifiedCellMs = new Set();
+        const modifiedCellMs = new Set<CellModel>();
         if (noLongerValidCombos.length > 0) {
             const numOptsToDelete = new Set<number>();
             for (const num of noLongerValidComboNums) {
