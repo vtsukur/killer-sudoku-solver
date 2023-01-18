@@ -1,3 +1,4 @@
+import { Context } from './context';
 import { deepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { findAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
@@ -10,7 +11,7 @@ import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/r
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
-export function masterStrategy() {
+export function masterStrategy(this: Context) {
     if (!this.skipInit) {
         this.run(findRedundantNonetSumsStrategy);
         this.run(findAndSliceResidualSumsStrategy);

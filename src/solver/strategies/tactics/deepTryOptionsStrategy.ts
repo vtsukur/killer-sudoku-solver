@@ -1,12 +1,14 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { House } from '../../../puzzle/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { masterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
+import { Context } from '../context';
+import { MasterModel } from '../../models/masterModel';
 
 const log = logFactory.withLabel(`Advanced Solver - ${deepTryOptionsStrategy.name}`);
 
-export function deepTryOptionsStrategy() {
+export function deepTryOptionsStrategy(this: Context) {
     if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;
 
     const cellMTarget = findCellMTarget(this.model);
@@ -18,7 +20,7 @@ export function deepTryOptionsStrategy() {
         const ctxCpy = this.deepCopyForDeepTry();
         const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
         cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-        ctxCpy.cageModelsToReevaluatePerms = cellMTargetCpy.withinCageModels;
+        ctxCpy.cageModelsToReevaluatePerms = Array.from(cellMTargetCpy.withinCageModels);
 
         try {
             ctxCpy.skipInit = true;
@@ -53,7 +55,7 @@ export function deepTryOptionsStrategy() {
 
     if (!_.isUndefined(solution)) {
         if (this.depth === 0) {
-            this.model.applySolution(solution);
+            this.model.applySolution(solution as Array<Array<number>>);
         } else {
             this.foundSolution = solution;
         }
@@ -62,12 +64,12 @@ export function deepTryOptionsStrategy() {
     }
 }
 
-function findCellMTarget(model) {
+function findCellMTarget(model: MasterModel) {
     const cellNumOptsMap = new Map();
-    _.range(House.SIZE).forEach(idx => cellNumOptsMap.set(idx + 1, []));
+    _.range(House.SIZE).forEach((idx: number) => cellNumOptsMap.set(idx + 1, []));
 
-    _.range(House.SIZE).forEach(row => {
-        _.range(House.SIZE).forEach(col => {
+    _.range(House.SIZE).forEach((row: number) => {
+        _.range(House.SIZE).forEach((col: number) => {
             const cellM = model.cellModelAt(row, col);
             cellNumOptsMap.get(cellM.numOpts().size).push(cellM);
         });
