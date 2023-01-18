@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Solver } from '../../../../src/solver/solver';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
