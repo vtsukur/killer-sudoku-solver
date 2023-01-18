@@ -1,17 +1,17 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { findNumCombinationsForSum } from '../../../../src/solver/combinatorial/combinatorial';
 
 describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 1 cell', () => {
         _.range(1, 10).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 1)).toEqual([ new Set([cage]) ]);
-        })
+        });
     });
 
     test('Num combinations to form a cage in 2 cells', () => {
         _.range(1, 3).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 2)).toEqual([]);
-        })
+        });
         expect(findNumCombinationsForSum(3, 2)).toEqual([ new Set([1, 2]) ]);
         expect(findNumCombinationsForSum(4, 2)).toEqual([ new Set([1, 3]) ]);
         expect(findNumCombinationsForSum(5, 2)).toEqual([ new Set([1, 4]), new Set([2, 3]) ]);
@@ -47,7 +47,7 @@ describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 3 cells', () => {
         _.range(1, 6).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 3)).toEqual([]);
-        })
+        });
         expect(findNumCombinationsForSum(6, 3)).toEqual([ new Set([1, 2, 3]) ]);
         expect(findNumCombinationsForSum(7, 3)).toEqual([ new Set([1, 2, 4]) ]);
         expect(findNumCombinationsForSum(8, 3)).toEqual([ new Set([1, 2, 5]), new Set([1, 3, 4]) ]);
@@ -142,7 +142,7 @@ describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 4 cells', () => {
         _.range(1, 10).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 4)).toEqual([]);
-        })
+        });
         expect(findNumCombinationsForSum(10, 4)).toEqual([ new Set([1, 2, 3, 4]) ]);
         expect(findNumCombinationsForSum(11, 4)).toEqual([ new Set([1, 2, 3, 5]) ]);
         expect(findNumCombinationsForSum(12, 4)).toEqual([ new Set([1, 2, 3, 6]), new Set([1, 2, 4, 5]) ]);
@@ -296,7 +296,7 @@ describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 5 cells (shallow coverage)', () => {
         _.range(1, 15).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 5)).toEqual([]);
-        })
+        });
         expect(findNumCombinationsForSum(15, 5)).toEqual([ new Set([1, 2, 3, 4, 5]) ]);
         expect(findNumCombinationsForSum(30, 5)).toEqual(
             [
@@ -315,7 +315,7 @@ describe('Tests for the finder of number combinations to form a cage', () => {
     test('Num combinations to form a cage in 6 cells (shallow coverage)', () => {
         _.range(1, 21).forEach(cage => {
             expect(findNumCombinationsForSum(cage, 6)).toEqual([]);
-        })
+        });
         expect(findNumCombinationsForSum(21, 6)).toEqual([ new Set([1, 2, 3, 4, 5, 6]) ]);
         expect(findNumCombinationsForSum(30, 6)).toEqual(
             [
@@ -365,20 +365,10 @@ describe('Tests for the finder of number combinations to form a cage', () => {
     test('Invalid cage', () => {
         expect(() => findNumCombinationsForSum(0, 2)).toThrow('Invalid cage: 0');
         expect(() => findNumCombinationsForSum(-1, 2)).toThrow('Invalid cage: -1');
-        expect(() => findNumCombinationsForSum('3', 2)).toThrow('Invalid cage: 3');
-        expect(() => findNumCombinationsForSum({}, 2)).toThrow('Invalid cage: [object Object]');
-        expect(() => findNumCombinationsForSum(undefined, 2)).toThrow('Invalid cage: undefined');
-        expect(() => findNumCombinationsForSum(null, 2)).toThrow('Invalid cage: null');
-        expect(() => findNumCombinationsForSum(() => {}, 2)).toThrow('Invalid cage: () => {}');
     });
 
     test('Invalid count', () => {
         expect(() => findNumCombinationsForSum(3, 0)).toThrow('Invalid count: 0');
         expect(() => findNumCombinationsForSum(3, -1)).toThrow('Invalid count: -1');
-        expect(() => findNumCombinationsForSum(3, '2')).toThrow('Invalid count: 2');
-        expect(() => findNumCombinationsForSum(3, {})).toThrow('Invalid count: [object Object]');
-        expect(() => findNumCombinationsForSum(3, null)).toThrow('Invalid count: null');
-        expect(() => findNumCombinationsForSum(3, undefined)).toThrow('Invalid count: undefined');
-        expect(() => findNumCombinationsForSum(3, () => {})).toThrow('Invalid count: () => {}');
     });
 });
