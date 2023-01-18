@@ -1,8 +1,15 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
+import { HouseModel } from '../../../src/solver/models/elements/houseModel';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../puzzle/puzzleSamples';
+
+type ExpectedHouse = {
+    idx: number;
+    cells: Array<Cell>;
+    cages: Array<Cage>;
+};
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {
     const model = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01).model;
@@ -288,7 +295,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
         });
     });
 
-    const expectHouseModel = (houseM, expected) => {
+    const expectHouseModel = (houseM: HouseModel, expected: ExpectedHouse) => {
         expect(houseM).toEqual(expect.objectContaining({
             idx: expected.idx,
             cells: expected.cells
