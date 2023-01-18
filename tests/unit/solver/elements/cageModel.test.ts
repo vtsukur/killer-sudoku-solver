@@ -1,8 +1,7 @@
-import { CageModel } from '../../../../src/solver/models/elements/cageModel';
-import { CellModel } from '../../../../src/solver/models/elements/cellModel';
 import { Cage } from '../../../../src/puzzle/cage';
 import { Cell } from '../../../../src/puzzle/cell';
-import _ from 'lodash';
+import { CageModel } from '../../../../src/solver/models/elements/cageModel';
+import { CellModel } from '../../../../src/solver/models/elements/cellModel';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
@@ -100,29 +99,6 @@ describe('CageModel tests', () => {
             [ 3, 8 ],
             [ 4, 7 ]
         ]);
-    });
-
-    test('Reduction for CageModel of size 3 with many combinations', () => {
-        // _.range(1, 10000).forEach(() => {
-        const cellModel1 = new CellModel(cell1);
-        const cellModel2 = new CellModel(cell2);
-        const cellModel3 = new CellModel(cell3);
-        const cage = Cage.ofSum(14).cell(cell1).cell(cell2).cell(cell3).mk();
-        const cageModel = new CageModel(cage, [ cellModel1, cellModel2, cellModel3 ]);
-
-        cageModel.initialReduce();
-
-        // cellModel1.deleteNumOpt(5);
-        // cellModel2.deleteNumOpt(5);
-        const modifiedCellMs = cageModel.reduce();
-
-        // expect(cellModel1.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
-        // expect(cellModel2.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
-        // expect(cellModel3.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
-        // expect(Array.from(cageModel.combos)).toEqual([
-        //     [ 7, 8, 9 ]
-        // ]);
-        // });
     });
 
     test('Reduction for CageModel of size 7 and sum 31 with 2 combinations after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {

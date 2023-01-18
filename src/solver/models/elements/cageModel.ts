@@ -42,10 +42,10 @@ export class CageModel {
     private _cellsSet;
     private _cellCount;
     private _combosMap;
-    private _canHaveDuplicateNums;
-    private _derivedFromInputCage;
+    private _canHaveDuplicateNums: boolean;
+    private _derivedFromInputCage: boolean;
 
-    constructor(cage: Cage, cellModels: Array<CellModel>, canHaveDuplicateNums: boolean, derivedFromInputCage: boolean) {
+    constructor(cage: Cage, cellModels: Array<CellModel>, canHaveDuplicateNums?: boolean, derivedFromInputCage?: boolean) {
         this.cage = cage;
         this._cellsSet = new Set(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -64,7 +64,7 @@ export class CageModel {
         });
         this._cellCount = cage.cellCount;
         this._combosMap = new Map<string, Array<number>>();
-        this._derivedFromInputCage = derivedFromInputCage;
+        this._derivedFromInputCage = derivedFromInputCage ? derivedFromInputCage : false;
     }
 
     deepCopyWithSameCellModels() {
