@@ -1,10 +1,12 @@
-import _ from 'lodash';
-import { findSumCombinationsForHouse } from '../../../../src/solver/combinatorial/combinatorial';
 import { Cage } from '../../../../src/puzzle/cage';
+import { Cell } from '../../../../src/puzzle/cell';
+import { Row } from '../../../../src/puzzle/row';
+import { findSumCombinationsForHouse } from '../../../../src/solver/combinatorial/combinatorial';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
+import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 
-const houseModelOf = (cages) => {
-    let cellsMap = new Map();
+const houseModelOf = (cages: Array<Cage>) => {
+    const cellsMap: Map<string, Cell> = new Map();
     if (Array.isArray(cages)) {
         cages.forEach(cage => {
             cage.cells.forEach(cell => {
@@ -13,8 +15,12 @@ const houseModelOf = (cages) => {
         });
     }
     const cageModels = cages.map(cage => new CageModel(cage, []));
-    return { cageModels, cells: Array.from(cellsMap.values()) };
-}
+    const houseModel = new HouseModel(0, Array.from(cellsMap.values()), () => Row.cellsIterator(0));
+    for (const cageModel of cageModels) {
+        houseModel.addCageModel(cageModel);
+    }
+    return houseModel;
+};
 
 describe('Tests for the finder of number combinations to form a house model out of cages', () => {
     test('Multiple combinations of numbers to form a complete house model with non-overlapping cages', () => {
@@ -65,14 +71,6 @@ describe('Tests for the finder of number combinations to form a house model out 
             [ new Set([2, 6]), new Set([8]), new Set([1, 3]), new Set([1, 3, 4, 5, 7, 9]) ],
             [ new Set([3, 5]), new Set([8]), new Set([1, 3]), new Set([1, 2, 4, 6, 7, 9]) ]
         ]);
-    });
-
-    test('Combinations of numbers to form a house model out of invalid house model', () => {
-        expect(() => findSumCombinationsForHouse(undefined)).toThrow('Invalid houseModel: undefined');
-        expect(() => findSumCombinationsForHouse(null)).toThrow('Invalid houseModel: null');
-        expect(() => findSumCombinationsForHouse(1)).toThrow('Invalid houseModel: 1');
-        expect(() => findSumCombinationsForHouse('string')).toThrow('Invalid houseModel: string');
-        expect(() => findSumCombinationsForHouse(() => {})).toThrow('Invalid houseModel: () => {}');
     });
 
     test('Combinations of numbers to form a house model out of no cages', () => {
