@@ -2,21 +2,21 @@ import * as _ from 'lodash';
 import { Context } from '../context';
 
 export function reduceCageNumOptsBySolvedCellsStrategy(this: Context) {
-    let cageModelsToReduceSet = new Set();
+    let cageMsToReduceSet = new Set();
     this.recentlySolvedCellModels.forEach(solvedCellM => {
         const num = solvedCellM.placedNum as number;
-        for (const cageModel of solvedCellM.withinCageModels) {
-            if (cageModel.canHaveDuplicateNums) continue;
+        for (const cageM of solvedCellM.withinCageModels) {
+            if (cageM.canHaveDuplicateNums) continue;
 
-            for (const cellM of cageModel.cellMs) {
+            for (const cellM of cageM.cellMs) {
                 if (!_.isUndefined(cellM.placedNum)) continue;
     
                 if (cellM.hasNumOpt(num)) {
                     cellM.deleteNumOpt(num);
-                    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...cellM.withinCageModels]);
+                    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
                 }
             }    
         }
     });
-    return cageModelsToReduceSet;
+    return cageMsToReduceSet;
 }

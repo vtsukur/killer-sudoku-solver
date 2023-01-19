@@ -12,24 +12,24 @@ import { Context } from '../context';
 export function findAndReduceCagePermsByHouseStrategy(this: Context) {
     if (this.hasCageModelsToReevaluatePerms) return;
 
-    let cageModelsToReduce = new Set<CageModel>();
+    let cageMsToReduce = new Set<CageModel>();
 
     this.model.houseModels.forEach(houseModel => {
         _.range(1, House.SIZE + 1).forEach((num: number) => {
-            const cageModelsWithNum = new Array<CageModel>();
+            const cageMsWithNum = new Array<CageModel>();
             // consider overlapping vs non-overlapping cages
-            houseModel.cageModels.forEach(cageModel => {
-                if (cageModel.positioningFlags.isSingleCellCage) return;
-                const hasNumInCells = cageModel.cellMs.some(cellM => cellM.hasNumOpt(num));
+            houseModel.cageModels.forEach(cageM => {
+                if (cageM.positioningFlags.isSingleCellCage) return;
+                const hasNumInCells = cageM.cellMs.some(cellM => cellM.hasNumOpt(num));
                 if (hasNumInCells) {
-                    cageModelsWithNum.push(cageModel);
+                    cageMsWithNum.push(cageM);
                 }
             });
-            if (cageModelsWithNum.length !== 1) return;
+            if (cageMsWithNum.length !== 1) return;
 
-            const cageModelToReDefine = cageModelsWithNum[0];
+            const cageMToReDefine = cageMsWithNum[0];
 
-            const numPlacementClues = cageModelToReDefine.findNumPlacementClues(num);
+            const numPlacementClues = cageMToReDefine.findNumPlacementClues(num);
             let singleCellForNum: Cell | undefined = undefined;
             for (const clue of numPlacementClues) {
                 if (!_.isUndefined(clue.singleCellForNum)) {
@@ -42,93 +42,93 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
                 singleOptionCellM.reduceNumOptions(new Set([num]));
             }
 
-            const reducedCellMs = cageModelToReDefine.reduceToCombinationsContaining(num);
+            const reducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);
             
             if (!reducedCellMs.length) return;
             reducedCellMs.forEach(cellM => {
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
             });
         });
     });
 
     // reduce house by cages with single combination
-    for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination() || !cageModel.positioningFlags.isWithinHouse) continue;
+    for (const cageM of this.model.cageModelsMap.values()) {
+        if (cageM.positioningFlags.isSingleCellCage || !cageM.hasSingleCombination() || !cageM.positioningFlags.isWithinHouse) continue;
 
-        const combo = cageModel.combos.next().value;
+        const combo = cageM.combos.next().value;
 
-        if (cageModel.positioningFlags.isWithinRow) {
-            const rowReduced = reduceByHouse(cageModel, this.model.rowModels[cageModel.anyRow()], this.model, combo);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
-        } else if (cageModel.positioningFlags.isWithinColumn) {
-            const columnReduced = reduceByHouse(cageModel, this.model.columnModels[cageModel.anyColumn()], this.model, combo);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
+        if (cageM.positioningFlags.isWithinRow) {
+            const rowReduced = reduceByHouse(cageM, this.model.rowModels[cageM.anyRow()], this.model, combo);
+            cageMsToReduce = new Set([...cageMsToReduce, ...rowReduced]);
+        } else if (cageM.positioningFlags.isWithinColumn) {
+            const columnReduced = reduceByHouse(cageM, this.model.columnModels[cageM.anyColumn()], this.model, combo);
+            cageMsToReduce = new Set([...cageMsToReduce, ...columnReduced]);
         }
 
-        if (cageModel.positioningFlags.isWithinNonet) {
-            const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[cageModel.anyNonet()], this.model, combo);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
+        if (cageM.positioningFlags.isWithinNonet) {
+            const nonetReduced = reduceByHouse(cageM, this.model.nonetModels[cageM.anyNonet()], this.model, combo);
+            cageMsToReduce = new Set([...cageMsToReduce, ...nonetReduced]);
         }
     }
 
     // reduce house by cages where numbers are within specific row/column/nonet
-    for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.positioningFlags.isSingleCellCage || !cageModel.hasSingleCombination()) continue;
+    for (const cageM of this.model.cageModelsMap.values()) {
+        if (cageM.positioningFlags.isSingleCellCage || !cageM.hasSingleCombination()) continue;
 
-        for (const numPlacementClue of cageModel.findNumPlacementClues()) {
+        for (const numPlacementClue of cageM.findNumPlacementClues()) {
             if (!_.isUndefined(numPlacementClue.row)) {
-                const rowReduced = reduceByHouse(cageModel, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
+                const rowReduced = reduceByHouse(cageM, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...rowReduced]);
             } else if (!_.isUndefined(numPlacementClue.col)) {
-                const columnReduced = reduceByHouse(cageModel, this.model.columnModels[numPlacementClue.col], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
+                const columnReduced = reduceByHouse(cageM, this.model.columnModels[numPlacementClue.col], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...columnReduced]);
             }
 
             if (!_.isUndefined(numPlacementClue.nonet)) {
-                const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[numPlacementClue.nonet], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
+                const nonetReduced = reduceByHouse(cageM, this.model.nonetModels[numPlacementClue.nonet], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...nonetReduced]);
             }
         }
     }
 
     // reduce house by cages where numbers are a part of all combinations and within specific row/column/nonet
-    for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.canHaveDuplicateNums || cageModel.hasSingleCombination() || cageModel.positioningFlags.isWithinHouse) continue;
+    for (const cageM of this.model.cageModelsMap.values()) {
+        if (cageM.canHaveDuplicateNums || cageM.hasSingleCombination() || cageM.positioningFlags.isWithinHouse) continue;
 
-        for (const numPlacementClue of cageModel.findNumPlacementClues()) {
+        for (const numPlacementClue of cageM.findNumPlacementClues()) {
             if (!numPlacementClue.presentInAllCombos) continue;
 
             if (!_.isUndefined(numPlacementClue.row)) {
-                const rowReduced = reduceByHouse(cageModel, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...rowReduced]);
+                const rowReduced = reduceByHouse(cageM, this.model.rowModels[numPlacementClue.row], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...rowReduced]);
             } else if (!_.isUndefined(numPlacementClue.col)) {
-                const columnReduced = reduceByHouse(cageModel, this.model.columnModels[numPlacementClue.col], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...columnReduced]);
+                const columnReduced = reduceByHouse(cageM, this.model.columnModels[numPlacementClue.col], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...columnReduced]);
             }
 
             if (!_.isUndefined(numPlacementClue.nonet)) {
-                const nonetReduced = reduceByHouse(cageModel, this.model.nonetModels[numPlacementClue.nonet], this.model, [ numPlacementClue.num ]);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...nonetReduced]);
+                const nonetReduced = reduceByHouse(cageM, this.model.nonetModels[numPlacementClue.nonet], this.model, [ numPlacementClue.num ]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...nonetReduced]);
             }
         }
     }
 
     // reduce house by cages where numbers are only within specific cell
-    for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.positioningFlags.isSingleCellCage || cageModel.positioningFlags.isWithinHouse || cageModel.comboCount < 2) continue;
-        for (const numPlacementClue of cageModel.findNumPlacementClues()) {
+    for (const cageM of this.model.cageModelsMap.values()) {
+        if (cageM.positioningFlags.isSingleCellCage || cageM.positioningFlags.isWithinHouse || cageM.comboCount < 2) continue;
+        for (const numPlacementClue of cageM.findNumPlacementClues()) {
             if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
-                const cageLeft = CageSlicer.slice(cageModel.cage, Cage.ofSum(numPlacementClue.num).cell(numPlacementClue.singleCellForNum).mk());
+                const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).cell(numPlacementClue.singleCellForNum).mk());
                 const furtherReduce = checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as Array<Array<number>>, numPlacementClue.singleCellForNum, numPlacementClue.num, this.model);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...furtherReduce]);
             }
         }
     }
 
-    for (const cageModel of this.model.cageModelsMap.values()) {
-        if (cageModel.positioningFlags.isSingleCellCage || cageModel.positioningFlags.isWithinHouse || cageModel.comboCount !== 1 || cageModel.cellCount > 5) continue;
+    for (const cageM of this.model.cageModelsMap.values()) {
+        if (cageM.positioningFlags.isSingleCellCage || cageM.positioningFlags.isWithinHouse || cageM.comboCount !== 1 || cageM.cellCount > 5) continue;
 
-        const slices = CageSlicer.sliceBy(cageModel.cage, (cell) => cell.row);
+        const slices = CageSlicer.sliceBy(cageM.cage, (cell) => cell.row);
         if (slices.length > 2) continue;
 
         const firstSingleCellSlice = slices.find((sliceCells) => sliceCells.length === 1);
@@ -136,16 +136,16 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
 
         const firstSingleCell = firstSingleCellSlice[0];
         const firstSingleCellM = this.model.cellModelOf(firstSingleCell);
-        const firstSingleCellMCombo = new Set<number>(cageModel.combos.next().value);
+        const firstSingleCellMCombo = new Set<number>(cageM.combos.next().value);
 
         for (const num of firstSingleCellM.numOpts()) {
             const shortComboSet = new Set<number>(firstSingleCellMCombo);
             shortComboSet.delete(num);
             const shortCombo = Array.from(shortComboSet);
 
-            const cageLeft = CageSlicer.slice(cageModel.cage, Cage.ofSum(num).cell(firstSingleCell).mk());
+            const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).cell(firstSingleCell).mk());
             const furtherReduce = checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this.model);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
+            cageMsToReduce = new Set([...cageMsToReduce, ...furtherReduce]);
         }
     }
 
@@ -173,24 +173,24 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
             if (entry.rows.size === 1) {
                 const index = entry.rows.values().next().value;
                 const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.rowModels[index], num, nonetM, this.model);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...furtherReduce]);
             }
             if (entry.cols.size === 1) {
                 const index = entry.cols.values().next().value;
                 const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.columnModels[index], num, nonetM, this.model);
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
+                cageMsToReduce = new Set([...cageMsToReduce, ...furtherReduce]);
             }
         });
     });
 
-    this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? Array.from(cageModelsToReduce.values()) : undefined;
+    this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
 }
 
-const reduceByHouse = (cageModel: CageModel, house: HouseModel, model: MasterModel, combo: Array<number>) => {
-    let cageModelsToReduce = new Set<CageModel>();
+const reduceByHouse = (cageM: CageModel, house: HouseModel, model: MasterModel, combo: Array<number>) => {
+    let cageMsToReduce = new Set<CageModel>();
 
     for (const { row, col } of house.cellsIterator()) {
-        if (cageModel.hasCellAt(row, col)) continue;
+        if (cageM.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);
         let shouldReduce = false;
@@ -201,11 +201,11 @@ const reduceByHouse = (cageModel: CageModel, house: HouseModel, model: MasterMod
             }
         }
         if (shouldReduce) {
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
         }
     }
 
-    return cageModelsToReduce;
+    return cageMsToReduce;
 };
 
 const checkAssumptionCage = (assumptionCage: Cage, combos: Array<Array<number>>, cell: Cell, num: number, model: MasterModel) => {
@@ -291,16 +291,16 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
 };
 
 const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel) => {
-    let cageModelsToReduce = new Set<CageModel>();
+    let cageMsToReduce = new Set<CageModel>();
 
     for (const { row, col } of houseM.cellsIterator()) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {
             cellM.deleteNumOpt(num);
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
         }
     }
 
-    return cageModelsToReduce;
+    return cageMsToReduce;
 };

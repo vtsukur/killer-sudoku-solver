@@ -26,14 +26,14 @@ export class CageSlicer {
                 const residualCage = entry.cage;
                 if (this.model.cageModelsMap.has(residualCage.key)) return;
 
-                const cageModelsForResidualCage = this.getCageModelsFullyContainingResidualCage(residualCage);
+                const cageMsForResidualCage = this.getCageMsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = new Array<Cage>();
                 let canHaveDuplicateNums = entry.canHaveDuplicateNums;
-                cageModelsForResidualCage.forEach((cageModel: CageModel) => {
-                    const secondChunkCage = CageSlicer.slice(cageModel.cage, residualCage);
-                    cagesToUnregister.push(cageModel.cage);
-                    nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageModel.canHaveDuplicateNums });
-                    canHaveDuplicateNums = canHaveDuplicateNums && cageModel.canHaveDuplicateNums;
+                cageMsForResidualCage.forEach((cageM: CageModel) => {
+                    const secondChunkCage = CageSlicer.slice(cageM.cage, residualCage);
+                    cagesToUnregister.push(cageM.cage);
+                    nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageM.canHaveDuplicateNums });
+                    canHaveDuplicateNums = canHaveDuplicateNums && cageM.canHaveDuplicateNums;
                 });
 
                 this.model.registerCage(residualCage, canHaveDuplicateNums);
@@ -45,20 +45,20 @@ export class CageSlicer {
         }
     }
 
-    private getCageModelsFullyContainingResidualCage(residualCage: Cage) {
-        let allAssociatedCageModelsSet = new Set<CageModel>();
+    private getCageMsFullyContainingResidualCage(residualCage: Cage) {
+        let allAssociatedCageMsSet = new Set<CageModel>();
         residualCage.cells.forEach(cell => {
-            allAssociatedCageModelsSet = new Set([...allAssociatedCageModelsSet, ...this.model.cellModelOf(cell).withinCageModels]);
+            allAssociatedCageMsSet = new Set([...allAssociatedCageMsSet, ...this.model.cellModelOf(cell).withinCageModels]);
         });
-        allAssociatedCageModelsSet.delete(this.model.cageModelsMap.get(residualCage.key) as CageModel);
+        allAssociatedCageMsSet.delete(this.model.cageModelsMap.get(residualCage.key) as CageModel);
 
         const result = new Array<CageModel>();
-        for (const associatedCageModel of allAssociatedCageModelsSet.values()) {
+        for (const associatedCageM of allAssociatedCageMsSet.values()) {
             const associatedCageFullyContainsResidualCage = residualCage.cells.every(cell => {
-                return this.model.cellModelOf(cell).withinCageModels.has(associatedCageModel);
+                return this.model.cellModelOf(cell).withinCageModels.has(associatedCageM);
             });
             if (associatedCageFullyContainsResidualCage) {
-                result.push(associatedCageModel);
+                result.push(associatedCageM);
             }
         }
 

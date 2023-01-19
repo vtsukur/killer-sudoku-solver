@@ -8,18 +8,18 @@ export function reducePermsInCagesStrategy(this: Context) {
     while (iterate) {
         let modifiedCellMs = new Set<CellModel>();
 
-        for (const cageModel of this.cageModelsToReevaluatePerms as Array<CageModel>) {
-            const currentlyModifiedCellMs = cageModel.reduce();
+        for (const cageM of this.cageModelsToReevaluatePerms as Array<CageModel>) {
+            const currentlyModifiedCellMs = cageM.reduce();
             modifiedCellMs = new Set([...modifiedCellMs, ...currentlyModifiedCellMs]);
         }
 
-        let moreCageModelsToReduce = new Set<CageModel>();
+        let moreCageMsToReduce = new Set<CageModel>();
         for (const modifiedCellM of modifiedCellMs.values()) {
-            moreCageModelsToReduce = new Set([...moreCageModelsToReduce, ...modifiedCellM.withinCageModels]);
+            moreCageMsToReduce = new Set([...moreCageMsToReduce, ...modifiedCellM.withinCageModels]);
         }
 
-        this.cageModelsToReevaluatePerms = Array.from(moreCageModelsToReduce.values());
-        iterate = moreCageModelsToReduce.size > 0;
+        this.cageModelsToReevaluatePerms = Array.from(moreCageMsToReduce.values());
+        iterate = moreCageMsToReduce.size > 0;
     }
 
     this.clearCageModelsToReevaluatePerms();

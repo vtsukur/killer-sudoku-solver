@@ -7,7 +7,7 @@ import { CageModel } from './cageModel';
 export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
-    private readonly _withinCageModels: Set<CageModel>;
+    private readonly _withinCageMs: Set<CageModel>;
     private _numOpts;
     private _solved: boolean;
 
@@ -16,7 +16,7 @@ export class CellModel {
         this._solved = false;
 
         this._numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
-        this._withinCageModels = new Set();
+        this._withinCageMs = new Set();
     }
 
     deepCopyWithoutCageModels() {
@@ -28,15 +28,15 @@ export class CellModel {
     }
 
     addWithinCageModel(val: CageModel) {
-        this._withinCageModels.add(val);
+        this._withinCageMs.add(val);
     }
 
     removeWithinCageModel(val: CageModel) {
-        this._withinCageModels.delete(val);
+        this._withinCageMs.delete(val);
     }
 
     get withinCageModels(): ReadonlySet<CageModel> {
-        return this._withinCageModels;
+        return this._withinCageMs;
     }
 
     numOpts(): ReadonlySet<number> {

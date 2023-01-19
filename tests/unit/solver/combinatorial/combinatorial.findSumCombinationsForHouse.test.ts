@@ -14,10 +14,10 @@ const houseModelOf = (cages: Array<Cage>) => {
             });
         });
     }
-    const cageModels = cages.map(cage => new CageModel(cage, []));
+    const cageMs = cages.map(cage => new CageModel(cage, []));
     const houseModel = new HouseModel(0, Array.from(cellsMap.values()), () => Row.cellsIterator(0));
-    for (const cageModel of cageModels) {
-        houseModel.addCageModel(cageModel);
+    for (const cageM of cageMs) {
+        houseModel.addCageModel(cageM);
     }
     return houseModel;
 };

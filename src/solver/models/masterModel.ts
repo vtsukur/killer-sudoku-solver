@@ -86,11 +86,11 @@ export class MasterModel {
         this.nonetModels = Array(House.SIZE);
         _.range(House.SIZE).forEach(index => {
             this.rowModels[index] = model.rowModels[index].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.rowModels[index], this.rowModels[index]);
+            this.copyHouseCageMs(model.rowModels[index], this.rowModels[index]);
             this.columnModels[index] = model.columnModels[index].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.columnModels[index], this.columnModels[index]);
+            this.copyHouseCageMs(model.columnModels[index], this.columnModels[index]);
             this.nonetModels[index] = model.nonetModels[index].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.nonetModels[index], this.nonetModels[index]);
+            this.copyHouseCageMs(model.nonetModels[index], this.nonetModels[index]);
         });
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
 
@@ -144,7 +144,7 @@ export class MasterModel {
         });
     }
 
-    private copyHouseCageModels(sourceM: HouseModel, targetM: HouseModel) {
+    private copyHouseCageMs(sourceM: HouseModel, targetM: HouseModel) {
         sourceM.cageModels.forEach(cageM => {
             targetM.addCageModel(this.cageModelsMap.get(cageM.cage.key) as CageModel);
         });
@@ -155,22 +155,22 @@ export class MasterModel {
     }
 
     registerCage(cage: Cage, canHaveDuplicateNums: boolean) {
-        const cageModel = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums, this.isDerivedFromInputCage(cage));
-        cageModel.initialReduce();
-        if (cageModel.positioningFlags.isWithinRow) {
-            this.rowModels[cageModel.anyRow()].addCageModel(cageModel);
+        const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums, this.isDerivedFromInputCage(cage));
+        cageM.initialReduce();
+        if (cageM.positioningFlags.isWithinRow) {
+            this.rowModels[cageM.anyRow()].addCageModel(cageM);
         }
-        if (cageModel.positioningFlags.isWithinColumn) {
-            this.columnModels[cageModel.anyColumn()].addCageModel(cageModel);
+        if (cageM.positioningFlags.isWithinColumn) {
+            this.columnModels[cageM.anyColumn()].addCageModel(cageM);
         }
-        if (cageModel.positioningFlags.isWithinNonet) {
-            this.nonetModels[cageModel.anyNonet()].addCageModel(cageModel);
+        if (cageM.positioningFlags.isWithinNonet) {
+            this.nonetModels[cageM.anyNonet()].addCageModel(cageM);
         }
         cage.cells.forEach((cell: Cell) => {
-            this.cellModelOf(cell).addWithinCageModel(cageModel);
+            this.cellModelOf(cell).addWithinCageModel(cageM);
         });
-        this.cageModelsMap.set(cage.key, cageModel);
-        return cageModel;
+        this.cageModelsMap.set(cage.key, cageM);
+        return cageM;
     }
 
     private isDerivedFromInputCage(cage: Cage) {
@@ -179,18 +179,18 @@ export class MasterModel {
     }
 
     unregisterCage(cage: Cage) {
-        const cageModel = this.cageModelsMap.get(cage.key) as CageModel;
-        if (cageModel.positioningFlags.isWithinRow) {
-            this.rowModels[cageModel.anyRow()].removeCageModel(cageModel);
+        const cageM = this.cageModelsMap.get(cage.key) as CageModel;
+        if (cageM.positioningFlags.isWithinRow) {
+            this.rowModels[cageM.anyRow()].removeCageModel(cageM);
         }
-        if (cageModel.positioningFlags.isWithinColumn) {
-            this.columnModels[cageModel.anyColumn()].removeCageModel(cageModel);
+        if (cageM.positioningFlags.isWithinColumn) {
+            this.columnModels[cageM.anyColumn()].removeCageModel(cageM);
         }
-        if (cageModel.positioningFlags.isWithinNonet) {
-            this.nonetModels[cageModel.anyNonet()].removeCageModel(cageModel);
+        if (cageM.positioningFlags.isWithinNonet) {
+            this.nonetModels[cageM.anyNonet()].removeCageModel(cageM);
         }
         cage.cells.forEach((cell: Cell) => {
-            this.cellModelOf(cell).removeWithinCageModel(cageModel);
+            this.cellModelOf(cell).removeWithinCageModel(cageM);
         });
         this.cageModelsMap.delete(cage.key);
     }

@@ -11,7 +11,7 @@ import { Context } from '../context';
 export function findSameNumberOptsInSameCellsStrategy(this: Context) {
     if (this.hasCageModelsToReevaluatePerms) return;
 
-    let cageModelsToReduceSet = new Set<CageModel>();
+    let cageMsToReduceSet = new Set<CageModel>();
 
     const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
     const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
@@ -64,7 +64,7 @@ export function findSameNumberOptsInSameCellsStrategy(this: Context) {
                         for (const num of cellM.numOpts()) {
                             if (!entry.nums.has(num)) {
                                 cellM.deleteNumOpt(num);
-                                cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...cellM.withinCageModels]);
+                                cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
                             }
                         }
                     }
@@ -78,7 +78,7 @@ export function findSameNumberOptsInSameCellsStrategy(this: Context) {
         colNumMapForRows,
         (directHouseIndex: number, perpendicularHouseIndex: number) => this.model.cellModelAt(directHouseIndex, perpendicularHouseIndex)
     );
-    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...rowBasedCageMsToReduce]);
+    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...rowBasedCageMsToReduce]);
 
     const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
         this.model.columnModels,
@@ -86,15 +86,15 @@ export function findSameNumberOptsInSameCellsStrategy(this: Context) {
         (directHouseIndex: number, perpendicularHouseIndex: number) => this.model.cellModelAt(perpendicularHouseIndex, directHouseIndex)
     );
 
-    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...colBasedCageMsToReduce]);
+    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
 
-    if (cageModelsToReduceSet.size > 0) {
-        this.cageModelsToReevaluatePerms = Array.from(cageModelsToReduceSet);
+    if (cageMsToReduceSet.size > 0) {
+        this.cageModelsToReevaluatePerms = Array.from(cageMsToReduceSet);
     }
 }
 
 function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel) {
-    let cageModelsToReduceSet = new Set<CageModel>();
+    let cageMsToReduceSet = new Set<CageModel>();
 
     _.range(0, House.SIZE).forEach(numIndex => {
         const num = numIndex + 1;
@@ -124,7 +124,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
                         const cellM = getCellMFn(directHouseIndex, perpendicularHouseIndex);
                         if (cellM.hasNumOpt(num)) {
                             cellM.deleteNumOpt(num);
-                            cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...cellM.withinCageModels]);
+                            cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
                         }
                     }
                 });
@@ -132,5 +132,5 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
         }
     });
 
-    return cageModelsToReduceSet;
+    return cageMsToReduceSet;
 }

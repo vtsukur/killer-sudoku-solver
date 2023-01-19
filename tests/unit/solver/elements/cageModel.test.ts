@@ -12,13 +12,13 @@ describe('CageModel tests', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(17).cell(cell1).cell(cell2).mk();
-        const cageModel = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
         expect(cellM1.numOpts()).toEqual(new Set([ 8, 9 ]));
         expect(cellM2.numOpts()).toEqual(new Set([ 8, 9 ]));
-        expect(Array.from(cageModel.combos)).toEqual([
+        expect(Array.from(cageM.combos)).toEqual([
             [ 8, 9 ]
         ]);
     });
@@ -27,13 +27,13 @@ describe('CageModel tests', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(13).cell(cell1).cell(cell2).mk();
-        const cageModel = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
         expect(cellM1.numOpts()).toEqual(new Set([ 4, 5, 6, 7, 8, 9 ]));
         expect(cellM2.numOpts()).toEqual(new Set([ 4, 5, 6, 7, 8, 9 ]));
-        expect(Array.from(cageModel.combos)).toEqual([
+        expect(Array.from(cageM.combos)).toEqual([
             [ 4, 9 ],
             [ 5, 8 ],
             [ 6, 7 ]
@@ -45,14 +45,14 @@ describe('CageModel tests', () => {
         const cellM2 = new CellModel(cell2);
         const cellM3 = new CellModel(cell3);
         const cage = Cage.ofSum(24).cell(cell1).cell(cell2).cell(cell3).mk();
-        const cageModel = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
+        const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
         expect(cellM1.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
         expect(cellM2.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
         expect(cellM3.numOpts()).toEqual(new Set([ 7, 8, 9 ]));
-        expect(Array.from(cageModel.combos)).toEqual([
+        expect(Array.from(cageM.combos)).toEqual([
             [ 7, 8, 9 ]
         ]);
     });
@@ -61,17 +61,17 @@ describe('CageModel tests', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).cell(cell1).cell(cell2).mk();
-        const cageModel = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
         cellM1.deleteNumOpt(5);
-        const modifiedCellMs = cageModel.reduce();
+        const modifiedCellMs = cageM.reduce();
 
         expect(modifiedCellMs).toEqual(new Set([ cellM2 ]));
         expect(cellM1.numOpts()).toEqual(new Set([ 2, 3, 4, 6, 7, 8, 9 ]));
         expect(cellM2.numOpts()).toEqual(new Set([ 2, 3, 4, 5, 7, 8, 9 ]));
-        expect(Array.from(cageModel.combos)).toEqual([
+        expect(Array.from(cageM.combos)).toEqual([
             [ 2, 9 ],
             [ 3, 8 ],
             [ 4, 7 ],
@@ -83,18 +83,18 @@ describe('CageModel tests', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).cell(cell1).cell(cell2).mk();
-        const cageModel = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
         cellM1.deleteNumOpt(5);
         cellM2.deleteNumOpt(5);
-        const modifiedCellMs = cageModel.reduce();
+        const modifiedCellMs = cageM.reduce();
 
         expect(modifiedCellMs).toEqual(new Set([ cellM1, cellM2 ]));
         expect(cellM1.numOpts()).toEqual(new Set([ 2, 3, 4, 7, 8, 9 ]));
         expect(cellM2.numOpts()).toEqual(new Set([ 2, 3, 4, 7, 8, 9 ]));
-        expect(Array.from(cageModel.combos)).toEqual([
+        expect(Array.from(cageM.combos)).toEqual([
             [ 2, 9 ],
             [ 3, 8 ],
             [ 4, 7 ]
@@ -124,11 +124,11 @@ describe('CageModel tests', () => {
             .cell(cell_04).cell(cell_05).cell(cell_06)
             .cell(cell_13).cell(cell_14).cell(cell_15).cell(cell_16)
             .mk();
-        const cageModel = new CageModel(cage, cellMs, false);
+        const cageM = new CageModel(cage, cellMs, false);
 
-        cageModel.initialReduce();
+        cageM.initialReduce();
 
-        const initialCombos = Array.from(cageModel.combos);
+        const initialCombos = Array.from(cageM.combos);
         expect(initialCombos).toEqual([
             [ 1, 2, 3, 4, 5, 7, 9 ],
             [ 1, 2, 3, 4, 6, 7, 8 ]
@@ -142,9 +142,9 @@ describe('CageModel tests', () => {
         cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
         cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
 
-        cageModel.reduce();
+        cageM.reduce();
 
-        const afterReductionCombos = Array.from(cageModel.combos);
+        const afterReductionCombos = Array.from(cageM.combos);
         expect(afterReductionCombos).toEqual([
             [ 1, 2, 3, 4, 6, 7, 8 ]
         ]);

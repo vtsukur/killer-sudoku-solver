@@ -30,15 +30,15 @@ export function findNonetBasedFormulasStrategy(this: Context) {
         }
     });
 
-    let cageModelsToReduce = new Set<CageModel>();
+    let cageMsToReduce = new Set<CageModel>();
     for (const formula of formulas.toArray()) {
         const reducedCellMs = reduceByFormula(formula);
         reducedCellMs.forEach(cellM => {
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
         });
     }
 
-    this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? Array.from(cageModelsToReduce.values()) : undefined;
+    this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
 
     return formulas;
 }

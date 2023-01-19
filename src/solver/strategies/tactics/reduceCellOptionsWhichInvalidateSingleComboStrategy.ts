@@ -11,7 +11,7 @@ const TARGET_CELL_NUM_OPTS_COUNT = 2;
 export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Context) {
     if (this.hasCageModelsToReevaluatePerms) return;
 
-    let cageModelsToReduce = new Set<CageModel>();
+    let cageMsToReduce = new Set<CageModel>();
 
     _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
         _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
@@ -19,7 +19,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
             if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
 
             const cellMsToCheck = collectCellMsToCheck(cellM, this.model);
-            const cageMsToCheck = collectCageModelsToCheck(cellMsToCheck);
+            const cageMsToCheck = collectCageMsToCheck(cellMsToCheck);
 
             if (cageMsToCheck.size > 0) {
                 for (const cageMToCheck of cageMsToCheck) {
@@ -27,7 +27,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
                     for (const num of cellM.numOpts()) {
                         if (comboSet.has(num)) {
                             cellM.deleteNumOpt(num);
-                            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
+                            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
                         }
                     }
                 }
@@ -35,7 +35,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
         });
     });
 
-    this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? Array.from(cageModelsToReduce.values()) : undefined;
+    this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
 }
 
 function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {
@@ -53,7 +53,7 @@ function addCellsFromHouse(cellMs: Set<CellModel>, houseM: HouseModel, model: Ma
     }
 }
 
-function collectCageModelsToCheck(cellMs: Set<CellModel>) {
+function collectCageMsToCheck(cellMs: Set<CellModel>) {
     const cageMs = new Set<CageModel>();
     for (const cellM of cellMs) {
         if (cellM.solved) continue;

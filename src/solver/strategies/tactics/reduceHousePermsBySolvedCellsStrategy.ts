@@ -2,7 +2,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { Context } from '../context';
 
 export function reduceHousePermsBySolvedCellsStrategy(this: Context) {
-    let cageModelsToReduceSet = new Set<CageModel>();
+    let cageMsToReduceSet = new Set<CageModel>();
 
     this.recentlySolvedCellModels.forEach(cellM => {
         const num = cellM.placedNum as number;
@@ -17,17 +17,17 @@ export function reduceHousePermsBySolvedCellsStrategy(this: Context) {
                 const aCellM = this.model.cellModelAt(row, col);
                 if (aCellM.hasNumOpt(num)) {
                     aCellM.deleteNumOpt(num);
-                    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellM.withinCageModels]);
+                    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...aCellM.withinCageModels]);
                 }
             }    
         });
     });
 
-    if (cageModelsToReduceSet.size > 0) {
+    if (cageMsToReduceSet.size > 0) {
         if (this.hasCageModelsToReevaluatePerms) {
-            this.cageModelsToReevaluatePerms = Array.from(new Set([...this.cageModelsToReevaluatePerms as Array<CageModel>, ...cageModelsToReduceSet]));
+            this.cageModelsToReevaluatePerms = Array.from(new Set([...this.cageModelsToReevaluatePerms as Array<CageModel>, ...cageMsToReduceSet]));
         } else {
-            this.cageModelsToReevaluatePerms = Array.from(cageModelsToReduceSet);
+            this.cageModelsToReevaluatePerms = Array.from(cageMsToReduceSet);
         }
     }
 }

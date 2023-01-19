@@ -7,7 +7,7 @@ export class HouseModel {
     readonly index: number;
     readonly cells: ReadonlyArray<Cell>;
 
-    private readonly _cageModels: Array<CageModel> = [];
+    private readonly _cageMs: Array<CageModel> = [];
     private readonly _cellsIteratorProducer: HouseCellsIteratorProducer;
 
     constructor(index: number, cells: ReadonlyArray<Cell>, cellsIteratorProducer: HouseCellsIteratorProducer) {
@@ -17,17 +17,17 @@ export class HouseModel {
     }
 
     get cageModels(): ReadonlyArray<CageModel> {
-        return this._cageModels;
+        return this._cageMs;
     }
 
     addCageModel(val: CageModel) {
-        this._cageModels.push(val);
+        this._cageMs.push(val);
     }
 
     removeCageModel(val: CageModel) {
-        const indexToRemove = this._cageModels.indexOf(val);
+        const indexToRemove = this._cageMs.indexOf(val);
         if (indexToRemove !== -1) {
-            this._cageModels.splice(indexToRemove, 1);
+            this._cageMs.splice(indexToRemove, 1);
         }
     }
 
