@@ -1,5 +1,9 @@
 import { Context } from './context';
 
+interface StrategyFactory {
+    new(context: Context): Strategy;
+}
+
 export abstract class Strategy {
     protected readonly _context: Context;
 
@@ -9,8 +13,8 @@ export abstract class Strategy {
 
     abstract execute(): void;
 
-    executeAnother(strategy: Strategy): void {
-        strategy.execute();
+    executeAnother(StrategyClass: StrategyFactory): void {
+        new StrategyClass(this._context).execute();
     }
 
     executeAnotherFn(strategyFn: () => void): void {

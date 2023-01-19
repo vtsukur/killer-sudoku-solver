@@ -27,7 +27,7 @@ export class MasterStrategy extends Strategy {
             this.executeAnotherFn(reduceCellOptionsWhichInvalidateSingleComboStrategy);
             this.executeAnotherFn(findNonetBasedFormulasStrategy);
             this.executeAnotherFn(findSameNumberOptsInSameCellsStrategy);
-            new DeepTryOptionsStrategy(this._context).execute();
+            this.executeAnother(DeepTryOptionsStrategy);
         }
         while (!this._context.model.isSolved && this._context.hasCageModelsToReevaluatePerms);       
     }
