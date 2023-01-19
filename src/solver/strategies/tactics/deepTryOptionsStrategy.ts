@@ -3,64 +3,66 @@ import { House } from '../../../puzzle/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { MasterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
-import { Context } from '../context';
 import { MasterModel } from '../../models/masterModel';
+import { Strategy } from '../strategy';
 
-const log = logFactory.withLabel(`Advanced Solver - ${deepTryOptionsStrategy.name}`);
+const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 
-export function deepTryOptionsStrategy(this: Context) {
-    if (this.hasCageModelsToReevaluatePerms || this.model.isSolved) return;
+export class DeepTryOptionsStrategy extends Strategy {
+    execute() {
+        if (this._context.hasCageModelsToReevaluatePerms || this._context.model.isSolved) return;
 
-    const cellMTarget = findCellMTarget(this.model);
-    if (_.isUndefined(cellMTarget)) return;
-
-    const size = cellMTarget.numOpts().size;
-    let solution;
-    for (const tryNum of cellMTarget.numOpts()) {
-        const ctxCpy = this.deepCopyForDeepTry();
-        const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-        cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-        ctxCpy.cageModelsToReevaluatePerms = Array.from(cellMTargetCpy.withinCageModels);
-
-        try {
-            ctxCpy.skipInit = true;
-            if (ctxCpy.depth === 1) {
-                log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
-            }
-            new MasterStrategy(ctxCpy).execute();
-            if (ctxCpy.depth === 1) {
-                log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
-            }
-        } catch(e) {
-            if (e instanceof InvalidSolverStepError) {
+        const cellMTarget = findCellMTarget(this._context.model);
+        if (_.isUndefined(cellMTarget)) return;
+    
+        const size = cellMTarget.numOpts().size;
+        let solution;
+        for (const tryNum of cellMTarget.numOpts()) {
+            const ctxCpy = this._context.deepCopyForDeepTry();
+            const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
+            cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
+            ctxCpy.cageModelsToReevaluatePerms = Array.from(cellMTargetCpy.withinCageModels);
+    
+            try {
+                ctxCpy.skipInit = true;
                 if (ctxCpy.depth === 1) {
-                    log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
+                    log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
                 }
-                cellMTarget.deleteNumOpt(tryNum);
-                continue;
-            } else {
-                throw e;
+                new MasterStrategy(ctxCpy).execute();
+                if (ctxCpy.depth === 1) {
+                    log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
+                }
+            } catch(e) {
+                if (e instanceof InvalidSolverStepError) {
+                    if (ctxCpy.depth === 1) {
+                        log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
+                    }
+                    cellMTarget.deleteNumOpt(tryNum);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
+    
+            if (ctxCpy.model.isSolved) {
+                solution = ctxCpy.model.solution;
+                cellMTarget.reduceNumOptions(new Set([ tryNum ]));
+                break;
+            } else if (ctxCpy.isSolutionFound) {
+                solution = ctxCpy.foundSolution;
+                break;
             }
         }
-
-        if (ctxCpy.model.isSolved) {
-            solution = ctxCpy.model.solution;
-            cellMTarget.reduceNumOptions(new Set([ tryNum ]));
-            break;
-        } else if (ctxCpy.isSolutionFound) {
-            solution = ctxCpy.foundSolution;
-            break;
-        }
-    }
-
-    if (!_.isUndefined(solution)) {
-        if (this.depth === 0) {
-            this.model.applySolution(solution as Array<Array<number>>);
-        } else {
-            this.foundSolution = solution;
-        }
-    } else if (cellMTarget.numOpts().size < size) {
-        this.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
+    
+        if (!_.isUndefined(solution)) {
+            if (this._context.depth === 0) {
+                this._context.model.applySolution(solution as Array<Array<number>>);
+            } else {
+                this._context.foundSolution = solution;
+            }
+        } else if (cellMTarget.numOpts().size < size) {
+            this._context.cageModelsToReevaluatePerms = cellMTarget.withinCageModels;
+        }    
     }
 }
 

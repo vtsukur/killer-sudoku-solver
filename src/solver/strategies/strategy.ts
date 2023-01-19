@@ -9,6 +9,10 @@ export abstract class Strategy {
 
     abstract execute(): void;
 
+    executeAnother(strategy: Strategy): void {
+        strategy.execute();
+    }
+
     executeAnotherFn(strategyFn: () => void): void {
         this._context.run(strategyFn);
     }
