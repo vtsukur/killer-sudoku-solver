@@ -20,7 +20,7 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
             // consider overlapping vs non-overlapping cages
             houseModel.cageModels.forEach(cageModel => {
                 if (cageModel.positioningFlags.isSingleCellCage) return;
-                const hasNumInCells = cageModel.cellMs.some(cellModel => cellModel.hasNumOpt(num));
+                const hasNumInCells = cageModel.cellMs.some(cellM => cellM.hasNumOpt(num));
                 if (hasNumInCells) {
                     cageModelsWithNum.push(cageModel);
                 }
@@ -45,8 +45,8 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
             const reducedCellMs = cageModelToReDefine.reduceToCombinationsContaining(num);
             
             if (!reducedCellMs.length) return;
-            reducedCellMs.forEach(cellModel => {
-                cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
+            reducedCellMs.forEach(cellM => {
+                cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
             });
         });
     });

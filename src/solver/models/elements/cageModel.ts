@@ -23,7 +23,7 @@ type Context = {
     processedNums: Set<number>,
     numbersStack: Array<number>,
     cellMsStack: Array<CellModel>,
-    processCell: (cellModel: CellModel, step: number, fn: () => boolean | void) => boolean | void;
+    processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
     mayNotProceedWithNum: (num: number) => boolean;
     processNum: (num: number, step: number, fn: () => boolean | void) => boolean | void;
     remainingCellM: () => CellModel;
@@ -144,7 +144,7 @@ export class CageModel {
             });
         });
 
-        this.cellMs.forEach(cellModel => cellModel.reduceNumOptions(numOpts));
+        this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
     }
 
     reduce(): Set<CellModel> {
@@ -285,13 +285,13 @@ export class CageModel {
             processedNums: new Set(),
             numbersStack: new Array(this._cellCount),
             cellMsStack: new Array(this._cellCount),
-            processCell: function(cellModel: CellModel, step: number, fn: () => boolean | void) {
-                if (this.processedCellMs.has(cellModel)) return;
-                this.processedCellMs.add(cellModel); this.remainingCellMs.delete(cellModel);
-                this.cellMsStack[step] = cellModel;
+            processCell: function(cellM: CellModel, step: number, fn: () => boolean | void) {
+                if (this.processedCellMs.has(cellM)) return;
+                this.processedCellMs.add(cellM); this.remainingCellMs.delete(cellM);
+                this.cellMsStack[step] = cellM;
                 const retVal = fn();
                 // this.cellMsStack[step] = undefined;
-                this.processedCellMs.delete(cellModel); this.remainingCellMs.add(cellModel);    
+                this.processedCellMs.delete(cellM); this.remainingCellMs.add(cellM);    
                 return retVal;
             },
             mayNotProceedWithNum: function(num: number) {
@@ -314,13 +314,13 @@ export class CageModel {
         this._combosMap = new Map();
 
         const modifiedCellMs = new Set<CellModel>();
-        this.cellMs.forEach(cellModel => {
-            context.processCell(cellModel, 0, () => {
-                Array.from(cellModel.numOpts()).forEach(num => {
+        this.cellMs.forEach(cellM => {
+            context.processCell(cellM, 0, () => {
+                Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            cellModel.deleteNumOpt(num);
-                            modifiedCellMs.add(cellModel);
+                            cellM.deleteNumOpt(num);
+                            modifiedCellMs.add(cellM);
                         }    
                     });
                 });
@@ -348,9 +348,9 @@ export class CageModel {
                 this._combosMap.set(comboKey, sortedNums);
             }
         } else {
-            this.cellMs.forEach(cellModel => {
-                context.processCell(cellModel, step, () => {
-                    Array.from(cellModel.numOpts()).forEach(num => {
+            this.cellMs.forEach(cellM => {
+                context.processCell(cellM, step, () => {
+                    Array.from(cellM.numOpts()).forEach(num => {
                         context.processNum(num, step, () => {
                             has = this.#hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
                         });
@@ -515,9 +515,9 @@ export class CageModel {
         if (removedCombos.length > 0) {
             this._combosMap = newCombosMap;
             const reducedCellMs = new Array<CellModel>();
-            this.cellMs.forEach(cellModel => {
-                if (cellModel.reduceNumOptions(newNumOptions).size > 0) {
-                    reducedCellMs.push(cellModel);
+            this.cellMs.forEach(cellM => {
+                if (cellM.reduceNumOptions(newNumOptions).size > 0) {
+                    reducedCellMs.push(cellM);
                 }
             });
             return reducedCellMs;

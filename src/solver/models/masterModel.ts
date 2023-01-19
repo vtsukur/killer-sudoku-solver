@@ -196,8 +196,8 @@ export class MasterModel {
     }
 
     placeNum(cell: Cell, num: number) {
-        const cellModel = this.cellModelOf(cell);
-        cellModel.placeNum(num);
+        const cellM = this.cellModelOf(cell);
+        cellM.placeNum(num);
 
         this._solution[cell.row][cell.col] = num;
         this._placedNumCount++;

@@ -33,8 +33,8 @@ export function findNonetBasedFormulasStrategy(this: Context) {
     let cageModelsToReduce = new Set<CageModel>();
     for (const formula of formulas.toArray()) {
         const reducedCellMs = reduceByFormula(formula);
-        reducedCellMs.forEach((cellModel: CellModel) => {
-            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
+        reducedCellMs.forEach(cellM => {
+            cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);
         });
     }
 

@@ -8,10 +8,10 @@ export function placeNumsForSingleOptionCellsStrategy(this: Context) {
 
     _.range(House.SIZE).forEach((row: number) => {
         _.range(House.SIZE).forEach((col: number) => {
-            const cellModel = this.model.cellModelAt(row, col);
-            if (cellModel.numOpts().size === 1 && !cellModel.solved) {
-                this.model.placeNum(cellModel.cell, cellModel.numOpts().values().next().value);
-                solved.push(cellModel);
+            const cellM = this.model.cellModelAt(row, col);
+            if (cellM.numOpts().size === 1 && !cellM.solved) {
+                this.model.placeNum(cellM.cell, cellM.numOpts().values().next().value);
+                solved.push(cellM);
             }
         });
     });

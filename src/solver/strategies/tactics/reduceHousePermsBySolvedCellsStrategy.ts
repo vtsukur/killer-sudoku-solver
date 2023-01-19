@@ -4,15 +4,15 @@ import { Context } from '../context';
 export function reduceHousePermsBySolvedCellsStrategy(this: Context) {
     let cageModelsToReduceSet = new Set<CageModel>();
 
-    this.recentlySolvedCellModels.forEach(cellModel => {
-        const num = cellModel.placedNum as number;
+    this.recentlySolvedCellModels.forEach(cellM => {
+        const num = cellM.placedNum as number;
         [
-            this.model.rowModels[cellModel.cell.row],
-            this.model.columnModels[cellModel.cell.col],
-            this.model.nonetModels[cellModel.cell.nonet]
+            this.model.rowModels[cellM.cell.row],
+            this.model.columnModels[cellM.cell.col],
+            this.model.nonetModels[cellM.cell.nonet]
         ].forEach(houseModel => {
             for (const { row, col } of houseModel.cellsIterator()) {
-                if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
+                if (row === cellM.cell.row && col === cellM.cell.col) continue;
     
                 const aCellM = this.model.cellModelAt(row, col);
                 if (aCellM.hasNumOpt(num)) {
