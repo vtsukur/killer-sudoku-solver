@@ -1,4 +1,4 @@
-import { Context } from './context';
+import { Strategy } from './strategy';
 import { deepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { findAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
@@ -11,22 +11,24 @@ import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/r
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
-export function masterStrategy(this: Context) {
-    if (!this.skipInit) {
-        this.run(findRedundantNonetSumsStrategy);
-        this.run(findAndSliceResidualSumsStrategy);
-        this.run(initPermsForCagesStrategy);    
+export class MasterStrategy extends Strategy {
+    execute() {
+        if (!this._context.skipInit) {
+            this.executeAnotherFn(findRedundantNonetSumsStrategy);
+            this.executeAnotherFn(findAndSliceResidualSumsStrategy);
+            this.executeAnotherFn(initPermsForCagesStrategy);    
+        }
+    
+        do {
+            this.executeAnotherFn(reducePermsInCagesStrategy);
+            this.executeAnotherFn(placeNumsForSingleOptionCellsStrategy);
+            this.executeAnotherFn(reflectSolvedCellsStrategy);
+            this.executeAnotherFn(findAndReduceCagePermsByHouseStrategy);
+            this.executeAnotherFn(reduceCellOptionsWhichInvalidateSingleComboStrategy);
+            this.executeAnotherFn(findNonetBasedFormulasStrategy);
+            this.executeAnotherFn(findSameNumberOptsInSameCellsStrategy);
+            this.executeAnotherFn(deepTryOptionsStrategy);
+        }
+        while (!this._context.model.isSolved && this._context.hasCageModelsToReevaluatePerms);       
     }
-
-    do {
-        this.run(reducePermsInCagesStrategy);
-        this.run(placeNumsForSingleOptionCellsStrategy);
-        this.run(reflectSolvedCellsStrategy);
-        this.run(findAndReduceCagePermsByHouseStrategy);
-        this.run(reduceCellOptionsWhichInvalidateSingleComboStrategy);
-        this.run(findNonetBasedFormulasStrategy);
-        this.run(findSameNumberOptsInSameCellsStrategy);
-        this.run(deepTryOptionsStrategy);
-    }
-    while (!this.model.isSolved && this.hasCageModelsToReevaluatePerms);
 }

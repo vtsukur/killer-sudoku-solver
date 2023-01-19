@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { House } from '../../../puzzle/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
-import { masterStrategy } from '../masterStrategy';
+import { MasterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
 import { Context } from '../context';
 import { MasterModel } from '../../models/masterModel';
@@ -27,7 +27,7 @@ export function deepTryOptionsStrategy(this: Context) {
             if (ctxCpy.depth === 1) {
                 log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}`);
             }
-            ctxCpy.run(masterStrategy);
+            new MasterStrategy(ctxCpy).execute();
             if (ctxCpy.depth === 1) {
                 log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
             }
