@@ -1,17 +1,17 @@
 import { Cell } from '../../../puzzle/cell';
 import { CageModel } from './cageModel';
 
-type HouseCellsIteratorProducer = (idx: number) => Iterable<Cell>;
+type HouseCellsIteratorProducer = (index: number) => Iterable<Cell>;
 
 export class HouseModel {
-    readonly idx: number;
+    readonly index: number;
     readonly cells: ReadonlyArray<Cell>;
 
     private readonly _cageModels: Array<CageModel> = [];
     private readonly _cellsIteratorProducer: HouseCellsIteratorProducer;
 
-    constructor(idx: number, cells: ReadonlyArray<Cell>, cellsIteratorProducer: HouseCellsIteratorProducer) {
-        this.idx = idx;
+    constructor(index: number, cells: ReadonlyArray<Cell>, cellsIteratorProducer: HouseCellsIteratorProducer) {
+        this.index = index;
         this.cells = cells;
         this._cellsIteratorProducer = cellsIteratorProducer;
     }
@@ -32,6 +32,6 @@ export class HouseModel {
     }
 
     cellsIterator(): Iterable<Cell> {
-        return this._cellsIteratorProducer(this.idx);
+        return this._cellsIteratorProducer(this.index);
     }
 }

@@ -257,16 +257,16 @@ function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: Readonl
         const orderPreservedCombos = new Array<Array<Set<number>>>();
 
         const cageIndexResolvers = new Array(cages.length);
-        nonOverlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[idx] = cages.findIndex(originalCage => originalCage === cage);
+        nonOverlappingCages.forEach((cage, index) => {
+            cageIndexResolvers[index] = cages.findIndex(originalCage => originalCage === cage);
         });
-        overlappingCages.forEach((cage, idx) => {
-            cageIndexResolvers[nonOverlappingCages.length + idx] = cages.findIndex(originalCage => originalCage === cage);
+        overlappingCages.forEach((cage, index) => {
+            cageIndexResolvers[nonOverlappingCages.length + index] = cages.findIndex(originalCage => originalCage === cage);
         });
         combinedCombos.forEach(comboSets => {
             const preservedOrderCombo = new Array(comboSets.length);
-            comboSets.forEach((numbersSet, idx) => {
-                preservedOrderCombo[cageIndexResolvers[idx]] = numbersSet;
+            comboSets.forEach((numbersSet, index) => {
+                preservedOrderCombo[cageIndexResolvers[index]] = numbersSet;
             });
             orderPreservedCombos.push(preservedOrderCombo);
         });

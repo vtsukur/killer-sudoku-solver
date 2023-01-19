@@ -84,13 +84,13 @@ export class MasterModel {
         this.rowModels = Array(House.SIZE);
         this.columnModels = Array(House.SIZE);
         this.nonetModels = Array(House.SIZE);
-        _.range(House.SIZE).forEach(idx => {
-            this.rowModels[idx] = model.rowModels[idx].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.rowModels[idx], this.rowModels[idx]);
-            this.columnModels[idx] = model.columnModels[idx].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.columnModels[idx], this.columnModels[idx]);
-            this.nonetModels[idx] = model.nonetModels[idx].deepCopyWithoutCageModels();
-            this.copyHouseCageModels(model.nonetModels[idx], this.nonetModels[idx]);
+        _.range(House.SIZE).forEach(index => {
+            this.rowModels[index] = model.rowModels[index].deepCopyWithoutCageModels();
+            this.copyHouseCageModels(model.rowModels[index], this.rowModels[index]);
+            this.columnModels[index] = model.columnModels[index].deepCopyWithoutCageModels();
+            this.copyHouseCageModels(model.columnModels[index], this.columnModels[index]);
+            this.nonetModels[index] = model.nonetModels[index].deepCopyWithoutCageModels();
+            this.copyHouseCageModels(model.nonetModels[index], this.nonetModels[index]);
         });
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
 
@@ -107,15 +107,15 @@ export class MasterModel {
 
         // rewire cell models to cage models and cage models to cell models
         for (const cageM of this.cageModelsMap.values()) {
-            cageM.cellModels.forEach((cellM, idx) => {
-                cageM.cellModels[idx] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
+            cageM.cellModels.forEach((cellM, index) => {
+                cageM.cellModels[index] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
             });
         }
 
         // copy solution
         this._solution = Grid.newMatrix();
-        model._solution.forEach((row: Array<number>, idx: number) => {
-            this._solution[idx] = [...row];
+        model._solution.forEach((row: Array<number>, index: number) => {
+            this._solution[index] = [...row];
         });
         this._placedNumCount = model._placedNumCount;
 
@@ -235,16 +235,16 @@ export class MasterModel {
         return this._cellsToInputCagesMatrix[cell.row][cell.col];
     }
 
-    rowModel(idx: number) {
-        return this.rowModels[idx];
+    rowModel(index: number) {
+        return this.rowModels[index];
     }
 
-    columnModel(idx: number) {
-        return this.columnModels[idx];
+    columnModel(index: number) {
+        return this.columnModels[index];
     }
 
-    nonetModel(idx: number) {
-        return this.nonetModels[idx];
+    nonetModel(index: number) {
+        return this.nonetModels[index];
     }
 
     deepCopy() {

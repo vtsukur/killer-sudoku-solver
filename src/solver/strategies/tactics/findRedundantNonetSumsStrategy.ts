@@ -6,7 +6,7 @@ import { Context } from '../context';
 export function findRedundantNonetSumsStrategy(this: Context) {
     const nonetCageMsMap = new Map();
     this.model.nonetModels.forEach(nonetM => {
-        nonetCageMsMap.set(nonetM.idx, new Set());
+        nonetCageMsMap.set(nonetM.index, new Set());
     });
 
     for (const cageM of this.model.cageModelsMap.values()) {
@@ -16,7 +16,7 @@ export function findRedundantNonetSumsStrategy(this: Context) {
     }
 
     for (const entry of nonetCageMsMap.entries()) {
-        const idx = entry[0];
+        const index = entry[0];
         const cageMs = entry[1];
 
         const redundantCells = [];
@@ -24,7 +24,7 @@ export function findRedundantNonetSumsStrategy(this: Context) {
         for (const cageM of cageMs) {
             for (const cellM of cageM.cellModels) {
                 const cell = cellM.cell;
-                if (cell.nonet !== idx) {
+                if (cell.nonet !== index) {
                     redundantCells.push(cell);
                 }
             }

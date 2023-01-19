@@ -9,40 +9,40 @@ import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySol
 
 export function findAndSliceResidualSumsStrategy(this: Context) {
     _.range(1, 5).reverse().forEach((n: number) => {
-        _.range(House.SIZE - n + 1).forEach((leftIdx: number) => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel: CageModel, rightIdxExclusive: number) => {
-                return cageModel.minRow >= leftIdx && cageModel.maxRow < rightIdxExclusive;
+        _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIndex, (cageModel: CageModel, rightIndexExclusive: number) => {
+                return cageModel.minRow >= leftIndex && cageModel.maxRow < rightIndexExclusive;
             }, (row: number) => {
                 return this.model.rowModels[row].cellsIterator();
             });
         });
     });
     _.range(1, 5).reverse().forEach(n => {
-        _.range(House.SIZE - n + 1).forEach((leftIdx: number) => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIdx, (cageModel: CageModel, rightIdxExclusive: number) => {
-                return cageModel.minCol >= leftIdx && cageModel.maxCol < rightIdxExclusive;
+        _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIndex, (cageModel: CageModel, rightIndexExclusive: number) => {
+                return cageModel.minCol >= leftIndex && cageModel.maxCol < rightIndexExclusive;
             }, (col: number) => {
                 return this.model.columnModels[col].cellsIterator();
             });
         });
     });
-    _.range(House.SIZE).forEach((leftIdx: number) => {
-        doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, 1, leftIdx, (cageModel: CageModel) => {
-            return cageModel.positioningFlags.isWithinNonet && cageModel.cage.cells[0].nonet === leftIdx;
+    _.range(House.SIZE).forEach((leftIndex: number) => {
+        doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, 1, leftIndex, (cageModel: CageModel) => {
+            return cageModel.positioningFlags.isWithinNonet && cageModel.cage.cells[0].nonet === leftIndex;
         }, (nonet: number) => {
             return this.model.nonetModels[nonet].cellsIterator();
         });
     });
 }
 
-function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIdx: number, withinHouseFn: (cageModel: CageModel, rightIdxExclusive: number) => boolean, cellIteratorFn: (idx: number) => Iterable<Cell>) {
+function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageModel: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
     const nHouseCellCount = n * House.SIZE;
     const nHouseSum = n * House.SUM;
 
-    const rightIdxExclusive = leftIdx + n;
+    const rightIndexExclusive = leftIndex + n;
     let cages = new Array<Cage>();
     for (const cageModel of ctx.model.cageModelsMap.values()) {
-        if (withinHouseFn(cageModel, rightIdxExclusive)) {
+        if (withinHouseFn(cageModel, rightIndexExclusive)) {
             cages = cages.concat(cageModel.cage);
         }
     }
@@ -50,8 +50,8 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
     const sum = nHouseSum - cagesAreaModel.sum;
     if ((n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
-        _.range(leftIdx, rightIdxExclusive).forEach(idx => {
-            for (const { row, col } of cellIteratorFn(idx)) {
+        _.range(leftIndex, rightIndexExclusive).forEach(index => {
+            for (const { row, col } of cellIteratorFn(index)) {
                 if (!cagesAreaModel.hasNonOverlapping(ctx.model.cellAt(row, col))) {
                     residualCageBuilder.cell(ctx.model.cellAt(row, col));
                 }

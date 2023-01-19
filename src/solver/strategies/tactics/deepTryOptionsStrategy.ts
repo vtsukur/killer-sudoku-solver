@@ -66,7 +66,7 @@ export function deepTryOptionsStrategy(this: Context) {
 
 function findCellMTarget(model: MasterModel) {
     const cellNumOptsMap = new Map();
-    _.range(House.SIZE).forEach((idx: number) => cellNumOptsMap.set(idx + 1, []));
+    _.range(House.SIZE).forEach((index: number) => cellNumOptsMap.set(index + 1, []));
 
     _.range(House.SIZE).forEach((row: number) => {
         _.range(House.SIZE).forEach((col: number) => {

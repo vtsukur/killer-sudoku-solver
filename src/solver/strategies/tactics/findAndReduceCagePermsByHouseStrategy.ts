@@ -171,13 +171,13 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
         _.range(1, House.SIZE + 1).forEach(num => {
             const entry = numMap.get(num);
             if (entry.rows.size === 1) {
-                const idx = entry.rows.values().next().value;
-                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.rowModels[idx], num, nonetM, this.model);
+                const index = entry.rows.values().next().value;
+                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.rowModels[index], num, nonetM, this.model);
                 cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
             }
             if (entry.cols.size === 1) {
-                const idx = entry.cols.values().next().value;
-                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.columnModels[idx], num, nonetM, this.model);
+                const index = entry.cols.values().next().value;
+                const furtherReduce = reduceNonetBasedByRowOrColumn(this.model.columnModels[index], num, nonetM, this.model);
                 cageModelsToReduce = new Set([...cageModelsToReduce, ...furtherReduce]);
             }
         });
@@ -295,7 +295,7 @@ const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: 
 
     for (const { row, col } of houseM.cellsIterator()) {
         const cellM = model.cellModelAt(row, col);
-        if (cellM.cell.nonet === nonetM.idx) continue;
+        if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {
             cellM.deleteNumOpt(num);
             cageModelsToReduce = new Set([...cageModelsToReduce, ...cellM.withinCageModels]);

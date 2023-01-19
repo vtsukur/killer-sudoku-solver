@@ -13,8 +13,8 @@ export function findNonetBasedFormulasStrategy(this: Context) {
 
     const formulas = new Formulas();
 
-    _.range(0, House.SIZE).forEach((idx: number) => {
-        const nonetM = this.model.nonetModels[idx];
+    _.range(0, House.SIZE).forEach((index: number) => {
+        const nonetM = this.model.nonetModels[index];
         const area = findAreaWithSingleInnieOrOutieCell(nonetM, this.model);
         if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
             const outerCageMs = new Set<CageModel>(area.outerCageMs);
@@ -69,7 +69,7 @@ class ExpandableNonOverlappingNonetAreaModel {
         cageM.cellModels.forEach(cellM => {
             this.#cellMs.add(cellM);
             this.#cellKeys.add(cellM.cell.key);
-            if (cellM.cell.nonet == this.#nonetM.idx) {
+            if (cellM.cell.nonet == this.#nonetM.index) {
                 this.#innerCellMs.add(cellM);
             } else {
                 this.#outerCellMs.add(cellM);

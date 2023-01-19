@@ -79,8 +79,8 @@ export class CageSlicer {
         const slices: Array<Array<Cell>> = new Array(House.SIZE).fill([]).map(() => []);
         slices[0].push(Cell.at(0, 0));
         cageToSlice.cells.forEach((cell: Cell) => {
-            const idx = sliceIndexFn(cell);
-            slices[idx].push(cell);
+            const index = sliceIndexFn(cell);
+            slices[index].push(cell);
         });
         return slices.filter(cells => cells.length > 0);
     }
