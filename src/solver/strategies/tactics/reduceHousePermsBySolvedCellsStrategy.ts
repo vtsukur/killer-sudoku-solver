@@ -14,10 +14,10 @@ export function reduceHousePermsBySolvedCellsStrategy(this: Context) {
             for (const { row, col } of houseModel.cellsIterator()) {
                 if (row === cellModel.cell.row && col === cellModel.cell.col) continue;
     
-                const aCellModel = this.model.cellModelAt(row, col);
-                if (aCellModel.hasNumOpt(num)) {
-                    aCellModel.deleteNumOpt(num);
-                    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellModel.withinCageModels]);
+                const aCellM = this.model.cellModelAt(row, col);
+                if (aCellM.hasNumOpt(num)) {
+                    aCellM.deleteNumOpt(num);
+                    cageModelsToReduceSet = new Set([...cageModelsToReduceSet, ...aCellM.withinCageModels]);
                 }
             }    
         });

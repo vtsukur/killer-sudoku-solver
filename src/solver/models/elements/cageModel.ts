@@ -338,8 +338,8 @@ export class CageModel {
         if (step === (this._cellCount - 1)) {
             const lastNum = this.cage.sum - currentSum;
             if (context.mayNotProceedWithNum(lastNum)) return false;
-            const lastCellModel = context.remainingCellM();
-            has = lastCellModel.hasNumOpt(lastNum);
+            const lastCellM = context.remainingCellM();
+            has = lastCellM.hasNumOpt(lastNum);
             if (has) {
                 const sortedNums = [...context.numbersStack];
                 sortedNums[this._cellCount - 1] = lastNum;

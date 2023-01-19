@@ -18,7 +18,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
             const cellM = this.model.cellMsMatrix[row][col];
             if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
 
-            const cellMsToCheck = collectCellModelsToCheck(cellM, this.model);
+            const cellMsToCheck = collectCellMsToCheck(cellM, this.model);
             const cageMsToCheck = collectCageModelsToCheck(cellMsToCheck);
 
             if (cageMsToCheck.size > 0) {
@@ -38,7 +38,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
     this.cageModelsToReevaluatePerms = cageModelsToReduce.size > 0 ? Array.from(cageModelsToReduce.values()) : undefined;
 }
 
-function collectCellModelsToCheck(cellM: CellModel, model: MasterModel) {
+function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {
     const cellMs = new Set<CellModel>();
     addCellsFromHouse(cellMs, model.rowModels[cellM.cell.row], model);
     addCellsFromHouse(cellMs, model.columnModels[cellM.cell.col], model);

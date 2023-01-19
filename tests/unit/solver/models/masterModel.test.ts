@@ -16,10 +16,10 @@ describe('Tests for master model', () => {
         expect(model.nonetModels.length).toBe(House.SIZE);
         expect(model.nonetModels[1].cageModels[2].cage).toEqual(Cage.ofSum(11).at(2, 3).at(2, 4).mk());
 
-        const aCellModelerminator = model.cellModelAt(2, 3);
-        expect(aCellModelerminator.cell).toEqual(Cell.at(2, 3));
-        expect(aCellModelerminator.placedNum).toBe(undefined);
-        expect(aCellModelerminator.numOpts()).toEqual(new Set([ 2, 3, 4, 5, 6, 7, 8, 9 ]));
-        // expect(aCellModelerminator.withinCageModels).toEqual(new Set([ model.inputCageAt(2, 3) ]));
+        const aCellModel = model.cellModelAt(2, 3);
+        expect(aCellModel.cell).toEqual(Cell.at(2, 3));
+        expect(aCellModel.placedNum).toBe(undefined);
+        expect(aCellModel.numOpts()).toEqual(new Set([ 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        // expect(aCellModel.withinCageModels).toEqual(new Set([ model.inputCageAt(2, 3) ]));
     });
 });
