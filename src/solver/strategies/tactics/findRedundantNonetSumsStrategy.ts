@@ -10,7 +10,7 @@ export function findRedundantNonetSumsStrategy(this: Context) {
     });
 
     for (const cageM of this.model.cageModelsMap.values()) {
-        for (const cellM of cageM.cellModels) {
+        for (const cellM of cageM.cellMs) {
             nonetCageMsMap.get(cellM.cell.nonet).add(cageM);
         }
     }
@@ -22,7 +22,7 @@ export function findRedundantNonetSumsStrategy(this: Context) {
         const redundantCells = [];
         let cagesSum = 0;
         for (const cageM of cageMs) {
-            for (const cellM of cageM.cellModels) {
+            for (const cellM of cageM.cellMs) {
                 const cell = cellM.cell;
                 if (cell.nonet !== index) {
                     redundantCells.push(cell);

@@ -22,7 +22,7 @@ export class MasterModel {
     houseModels: Array<HouseModel> = [];
     cellsMatrix: Array<Array<Cell>> = [];
     cageModelsMap: Map<string, CageModel> = new Map();
-    cellModelsMatrix: Array<Array<CellModel>> = [];
+    cellMsMatrix: Array<Array<CellModel>> = [];
     private _solution: Array<Array<number>> = [];
     private _placedNumCount = 0;
     private _cellsToInputCagesMatrix: Array<Array<Cage>> = [];
@@ -60,10 +60,10 @@ export class MasterModel {
             this.nonetModels.push(new NonetModel(i, this.collectHouseCells(Nonet.cellsIterator(i))));
         });
 
-        this.cellModelsMatrix = Grid.newMatrix();
+        this.cellMsMatrix = Grid.newMatrix();
         const cells = puzzle.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellModelsMatrix[cell.row][cell.col] = new CellModel(cell);
+            this.cellMsMatrix[cell.row][cell.col] = new CellModel(cell);
         });
 
         puzzle.cages.forEach(cage => {
@@ -95,20 +95,20 @@ export class MasterModel {
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
 
         // copy cell models
-        this.cellModelsMatrix = Grid.newMatrix();
-        model.cellModelsMatrix.forEach((cellModelsRow, row) => {
-            cellModelsRow.forEach((cellM, col) => {
-                this.cellModelsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
+        this.cellMsMatrix = Grid.newMatrix();
+        model.cellMsMatrix.forEach((cellMsRow, row) => {
+            cellMsRow.forEach((cellM, col) => {
+                this.cellMsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
                 for (const cageM of cellM.withinCageModels) {
-                    this.cellModelsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key) as CageModel);
+                    this.cellMsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key) as CageModel);
                 }
             });
         });
 
         // rewire cell models to cage models and cage models to cell models
         for (const cageM of this.cageModelsMap.values()) {
-            cageM.cellModels.forEach((cellM, index) => {
-                cageM.cellModels[index] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
+            cageM.cellMs.forEach((cellM, index) => {
+                cageM.cellMs[index] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
             });
         }
 
@@ -132,12 +132,12 @@ export class MasterModel {
 
                 const cellM = model.cellModelAt(row, col);
                 for (const cageM of this.cellModelAt(row, col).withinCageModels) {
-                    cageM.cellModels.every((aCellM: CellModel) => validate(aCellM !== cellM));
+                    cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== cellM));
                 }
 
                 const reverseCellM = this.cellModelAt(row, col);
                 for (const cageM of model.cellModelAt(row, col).withinCageModels) {
-                    cageM.cellModels.every((aCellM: CellModel) => validate(aCellM !== reverseCellM));
+                    cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== reverseCellM));
                 }
 
             });    
@@ -228,7 +228,7 @@ export class MasterModel {
     }
 
     cellModelAt(row: number, col: number) {
-        return this.cellModelsMatrix[row][col];
+        return this.cellMsMatrix[row][col];
     }
 
     private inputCageOf(cell: Cell) {

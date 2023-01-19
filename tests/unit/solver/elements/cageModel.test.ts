@@ -110,21 +110,21 @@ describe('CageModel tests', () => {
         const cell_15 = Cell.at(1, 5);
         const cell_16 = Cell.at(1, 6);
 
-        const cellModel_04 = new CellModel(cell_04);
-        const cellModel_05 = new CellModel(cell_05);
-        const cellModel_06 = new CellModel(cell_06);
-        const cellModel_13 = new CellModel(cell_13);
-        const cellModel_14 = new CellModel(cell_14);
-        const cellModel_15 = new CellModel(cell_15);
-        const cellModel_16 = new CellModel(cell_16);
-        const cellModels = [ cellModel_04, cellModel_05, cellModel_06,
-            cellModel_13, cellModel_14, cellModel_15, cellModel_16 ];
+        const cellM_04 = new CellModel(cell_04);
+        const cellM_05 = new CellModel(cell_05);
+        const cellM_06 = new CellModel(cell_06);
+        const cellM_13 = new CellModel(cell_13);
+        const cellM_14 = new CellModel(cell_14);
+        const cellM_15 = new CellModel(cell_15);
+        const cellM_16 = new CellModel(cell_16);
+        const cellMs = [ cellM_04, cellM_05, cellM_06,
+            cellM_13, cellM_14, cellM_15, cellM_16 ];
 
         const cage = Cage.ofSum(31)
             .cell(cell_04).cell(cell_05).cell(cell_06)
             .cell(cell_13).cell(cell_14).cell(cell_15).cell(cell_16)
             .mk();
-        const cageModel = new CageModel(cage, cellModels, false);
+        const cageModel = new CageModel(cage, cellMs, false);
 
         cageModel.initialReduce();
 
@@ -134,13 +134,13 @@ describe('CageModel tests', () => {
             [ 1, 2, 3, 4, 6, 7, 8 ]
         ]);
 
-        cellModel_04.deleteNumOpt(3); cellModel_04.deleteNumOpt(9);
-        cellModel_05.deleteNumOpt(3); cellModel_05.deleteNumOpt(9);
-        cellModel_06.deleteNumOpt(3); cellModel_06.deleteNumOpt(9);
-        cellModel_13.deleteNumOpt(4); cellModel_13.deleteNumOpt(8); cellModel_13.deleteNumOpt(9);
-        cellModel_14.deleteNumOpt(4); cellModel_14.deleteNumOpt(8); cellModel_14.deleteNumOpt(9);
-        cellModel_15.deleteNumOpt(4); cellModel_15.deleteNumOpt(8); cellModel_15.deleteNumOpt(9);
-        cellModel_16.deleteNumOpt(4); cellModel_16.deleteNumOpt(7); cellModel_16.deleteNumOpt(8); cellModel_16.deleteNumOpt(9);
+        cellM_04.deleteNumOpt(3); cellM_04.deleteNumOpt(9);
+        cellM_05.deleteNumOpt(3); cellM_05.deleteNumOpt(9);
+        cellM_06.deleteNumOpt(3); cellM_06.deleteNumOpt(9);
+        cellM_13.deleteNumOpt(4); cellM_13.deleteNumOpt(8); cellM_13.deleteNumOpt(9);
+        cellM_14.deleteNumOpt(4); cellM_14.deleteNumOpt(8); cellM_14.deleteNumOpt(9);
+        cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
+        cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
 
         cageModel.reduce();
 

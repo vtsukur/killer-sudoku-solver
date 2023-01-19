@@ -8,7 +8,7 @@ export function reduceCageNumOptsBySolvedCellsStrategy(this: Context) {
         for (const cageModel of solvedCellM.withinCageModels) {
             if (cageModel.canHaveDuplicateNums) continue;
 
-            for (const cellM of cageModel.cellModels) {
+            for (const cellM of cageModel.cellMs) {
                 if (!_.isUndefined(cellM.placedNum)) continue;
     
                 if (cellM.hasNumOpt(num)) {

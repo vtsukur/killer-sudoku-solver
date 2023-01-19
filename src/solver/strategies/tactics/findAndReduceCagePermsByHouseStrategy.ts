@@ -20,7 +20,7 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
             // consider overlapping vs non-overlapping cages
             houseModel.cageModels.forEach(cageModel => {
                 if (cageModel.positioningFlags.isSingleCellCage) return;
-                const hasNumInCells = cageModel.cellModels.some(cellModel => cellModel.hasNumOpt(num));
+                const hasNumInCells = cageModel.cellMs.some(cellModel => cellModel.hasNumOpt(num));
                 if (hasNumInCells) {
                     cageModelsWithNum.push(cageModel);
                 }
@@ -42,10 +42,10 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
                 singleOptionCellM.reduceNumOptions(new Set([num]));
             }
 
-            const reducedCellModels = cageModelToReDefine.reduceToCombinationsContaining(num);
+            const reducedCellMs = cageModelToReDefine.reduceToCombinationsContaining(num);
             
-            if (!reducedCellModels.length) return;
-            reducedCellModels.forEach(cellModel => {
+            if (!reducedCellMs.length) return;
+            reducedCellMs.forEach(cellModel => {
                 cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
             });
         });
@@ -250,7 +250,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
         if (cageM.positioningFlags.isSingleCellCage) return;
 
         let overlaps = false;
-        for (const cellM of cageM.cellModels) {
+        for (const cellM of cageM.cellMs) {
             if (leftoverCageCellKeys.has(cellM.cell.key)) {
                 overlaps = true;
                 break;

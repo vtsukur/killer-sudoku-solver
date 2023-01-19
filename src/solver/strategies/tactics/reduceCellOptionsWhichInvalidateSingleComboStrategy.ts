@@ -15,7 +15,7 @@ export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Contex
 
     _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
         _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
-            const cellM = this.model.cellModelsMatrix[row][col];
+            const cellM = this.model.cellMsMatrix[row][col];
             if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
 
             const cellMsToCheck = collectCellModelsToCheck(cellM, this.model);
@@ -61,7 +61,7 @@ function collectCageModelsToCheck(cellMs: Set<CellModel>) {
         for (const cageM of cellM.withinCageModels) {
             if (cageM.comboCount !== 1 || cageM.positioningFlags.isWithinHouse) continue;
 
-            const withinArea = cageM.cellModels.every(aCellM => cellMs.has(aCellM));
+            const withinArea = cageM.cellMs.every(aCellM => cellMs.has(aCellM));
             if (!withinArea) continue;
 
             cageMs.add(cageM);

@@ -32,8 +32,8 @@ export function findNonetBasedFormulasStrategy(this: Context) {
 
     let cageModelsToReduce = new Set<CageModel>();
     for (const formula of formulas.toArray()) {
-        const reducedCellModels = reduceByFormula(formula);
-        reducedCellModels.forEach((cellModel: CellModel) => {
+        const reducedCellMs = reduceByFormula(formula);
+        reducedCellMs.forEach((cellModel: CellModel) => {
             cageModelsToReduce = new Set([...cageModelsToReduce, ...cellModel.withinCageModels]);
         });
     }
@@ -66,7 +66,7 @@ class ExpandableNonOverlappingNonetAreaModel {
 
     addCageM(cageM: CageModel) {
         this.#cageMs.add(cageM);
-        cageM.cellModels.forEach(cellM => {
+        cageM.cellMs.forEach(cellM => {
             this.#cellMs.add(cellM);
             this.#cellKeys.add(cellM.cell.key);
             if (cellM.cell.nonet == this.#nonetM.index) {
@@ -82,7 +82,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     removeCageM(cageM: CageModel) {
         this.#cageMs.delete(cageM);
         this.#outerCageMs.delete(cageM);
-        cageM.cellModels.forEach(cellM => {
+        cageM.cellMs.forEach(cellM => {
             this.#cellMs.delete(cellM);
             this.#cellKeys.delete(cellM.cell.key);
             this.#innerCellMs.delete(cellM);
