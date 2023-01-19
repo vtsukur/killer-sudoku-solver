@@ -15,7 +15,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
     const model = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01).model;
 
     test('Initialize Row Models', () => {
-        expectHouseModel(model.rowModel(0), {
+        expectHouseM(model.rowModel(0), {
             index: 0,
             cells: _.range(9).map(col => Cell.at(0, col)),
             cages: [
@@ -24,7 +24,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(1), {
+        expectHouseM(model.rowModel(1), {
             index: 1,
             cells: _.range(9).map(col => Cell.at(1, col)),
             cages: [
@@ -33,7 +33,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(2), {
+        expectHouseM(model.rowModel(2), {
             index: 2,
             cells: _.range(9).map(col => Cell.at(2, col)),
             cages: [
@@ -43,7 +43,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(3), {
+        expectHouseM(model.rowModel(3), {
             index: 3,
             cells: _.range(9).map(col => Cell.at(3, col)),
             cages: [
@@ -53,7 +53,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(4), {
+        expectHouseM(model.rowModel(4), {
             index: 4,
             cells: _.range(9).map(col => Cell.at(4, col)),
             cages: [
@@ -61,13 +61,13 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(5), {
+        expectHouseM(model.rowModel(5), {
             index: 5,
             cells: _.range(9).map(col => Cell.at(5, col)),
             cages: []
         });
 
-        expectHouseModel(model.rowModel(6), {
+        expectHouseM(model.rowModel(6), {
             index: 6,
             cells: _.range(9).map(col => Cell.at(6, col)),
             cages: [
@@ -75,7 +75,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(7), {
+        expectHouseM(model.rowModel(7), {
             index: 7,
             cells: _.range(9).map(col => Cell.at(7, col)),
             cages: [
@@ -84,7 +84,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.rowModel(8), {
+        expectHouseM(model.rowModel(8), {
             index: 8,
             cells: _.range(9).map(col => Cell.at(8, col)),
             cages: [
@@ -94,7 +94,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
     });
 
     test('Initialize ColumnModels', () => {
-        expectHouseModel(model.columnModel(0), {
+        expectHouseM(model.columnModel(0), {
             index: 0,
             cells: _.range(9).map(row => Cell.at(row, 0)),
             cages: [
@@ -102,13 +102,13 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(1), {
+        expectHouseM(model.columnModel(1), {
             index: 1,
             cells: _.range(9).map(row => Cell.at(row, 1)),
             cages: []
         });
 
-        expectHouseModel(model.columnModel(2), {
+        expectHouseM(model.columnModel(2), {
             index: 2,
             cells: _.range(9).map(row => Cell.at(row, 2)),
             cages: [
@@ -117,7 +117,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(3), {
+        expectHouseM(model.columnModel(3), {
             index: 3,
             cells: _.range(9).map(row => Cell.at(row, 3)),
             cages: [
@@ -126,13 +126,13 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(4), {
+        expectHouseM(model.columnModel(4), {
             index: 4,
             cells: _.range(9).map(row => Cell.at(row, 4)),
             cages: []
         });
 
-        expectHouseModel(model.columnModel(5), {
+        expectHouseM(model.columnModel(5), {
             index: 5,
             cells: _.range(9).map(row => Cell.at(row, 5)),
             cages: [
@@ -141,7 +141,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(6), {
+        expectHouseM(model.columnModel(6), {
             index: 6,
             cells: _.range(9).map(row => Cell.at(row, 6)),
             cages: [
@@ -149,7 +149,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(7), {
+        expectHouseM(model.columnModel(7), {
             index: 7,
             cells: _.range(9).map(row => Cell.at(row, 7)),
             cages: [
@@ -157,7 +157,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.columnModel(8), {
+        expectHouseM(model.columnModel(8), {
             index: 8,
             cells: _.range(9).map(row => Cell.at(row, 8)),
             cages: [
@@ -169,7 +169,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
     });
 
     test('Initialize NonetModels', () => {
-        expectHouseModel(model.nonetModel(0), {
+        expectHouseM(model.nonetModel(0), {
             index: 0,
             cells: [
                 Cell.at(0, 0), Cell.at(0, 1), Cell.at(0, 2),
@@ -184,7 +184,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(1), {
+        expectHouseM(model.nonetModel(1), {
             index: 1,
             cells: [
                 Cell.at(0, 3), Cell.at(0, 4), Cell.at(0, 5),
@@ -198,7 +198,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(2), {
+        expectHouseM(model.nonetModel(2), {
             index: 2,
             cells: [
                 Cell.at(0, 6), Cell.at(0, 7), Cell.at(0, 8),
@@ -212,7 +212,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(3), {
+        expectHouseM(model.nonetModel(3), {
             index: 3,
             cells: [
                 Cell.at(3, 0), Cell.at(3, 1), Cell.at(3, 2),
@@ -226,7 +226,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(4), {
+        expectHouseM(model.nonetModel(4), {
             index: 4,
             cells: [
                 Cell.at(3, 3), Cell.at(3, 4), Cell.at(3, 5),
@@ -239,7 +239,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(5), {
+        expectHouseM(model.nonetModel(5), {
             index: 5,
             cells: [
                 Cell.at(3, 6), Cell.at(3, 7), Cell.at(3, 8),
@@ -252,7 +252,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(6), {
+        expectHouseM(model.nonetModel(6), {
             index: 6,
             cells: [
                 Cell.at(6, 0), Cell.at(6, 1), Cell.at(6, 2),
@@ -265,7 +265,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(7), {
+        expectHouseM(model.nonetModel(7), {
             index: 7,
             cells: [
                 Cell.at(6, 3), Cell.at(6, 4), Cell.at(6, 5),
@@ -280,7 +280,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
             ]
         });
 
-        expectHouseModel(model.nonetModel(8), {
+        expectHouseM(model.nonetModel(8), {
             index: 8,
             cells: [
                 Cell.at(6, 6), Cell.at(6, 7), Cell.at(6, 8),
@@ -295,7 +295,7 @@ describe('Tests for creation and initialization of row, column and nonet models'
         });
     });
 
-    const expectHouseModel = (houseM: HouseModel, expected: ExpectedHouse) => {
+    const expectHouseM = (houseM: HouseModel, expected: ExpectedHouse) => {
         expect(houseM).toEqual(expect.objectContaining({
             index: expected.index,
             cells: expected.cells

@@ -14,11 +14,11 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
 
     let cageMsToReduce = new Set<CageModel>();
 
-    this.model.houseModels.forEach(houseModel => {
+    this.model.houseModels.forEach(houseM => {
         _.range(1, House.SIZE + 1).forEach((num: number) => {
             const cageMsWithNum = new Array<CageModel>();
             // consider overlapping vs non-overlapping cages
-            houseModel.cageModels.forEach(cageM => {
+            houseM.cageModels.forEach(cageM => {
                 if (cageM.positioningFlags.isSingleCellCage) return;
                 const hasNumInCells = cageM.cellMs.some(cellM => cellM.hasNumOpt(num));
                 if (hasNumInCells) {
@@ -186,10 +186,10 @@ export function findAndReduceCagePermsByHouseStrategy(this: Context) {
     this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
 }
 
-const reduceByHouse = (cageM: CageModel, house: HouseModel, model: MasterModel, combo: Array<number>) => {
+const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Array<number>) => {
     let cageMsToReduce = new Set<CageModel>();
 
-    for (const { row, col } of house.cellsIterator()) {
+    for (const { row, col } of houseM.cellsIterator()) {
         if (cageM.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);

@@ -56,13 +56,9 @@ export function findNumCombinationsForSum(sum: number, count: number) {
     return combos;
 }
 
-export function findSumCombinationsForHouse(houseModel: HouseModel) {
-    if (typeof(houseModel) !== 'object' || !houseModel) {
-        throw `Invalid houseModel: ${houseModel}`;
-    }
-
-    const cages = houseModel.cageModels.map(cageM => cageM.cage);
-    const cells = houseModel.cells;
+export function findSumCombinationsForHouse(houseM: HouseModel) {
+    const cages = houseM.cageModels.map(cageM => cageM.cage);
+    const cells = houseM.cells;
 
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
