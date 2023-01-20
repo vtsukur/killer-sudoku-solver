@@ -8,7 +8,7 @@ import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberO
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
-import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
+import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends Strategy {
@@ -20,7 +20,7 @@ export class MasterStrategy extends Strategy {
         }
     
         do {
-            this.executeAnotherFn(reducePermsInCagesStrategy);
+            this.executeAnother(ReducePermsInCagesStrategy);
             this.executeAnotherFn(placeNumsForSingleOptionCellsStrategy);
             this.executeAnotherFn(reflectSolvedCellsStrategy);
             this.executeAnother(FindAndReduceCagePermsByHouseStrategy);
