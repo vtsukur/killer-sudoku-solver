@@ -22,7 +22,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-            ctxCpy.setCageModelsToTryReduceForBy(new ReducedCellModels().addOne(cellMTargetCpy));
+            ctxCpy.setCageModelsToTryReduceForBy(ReducedCellModels.forOne(cellMTargetCpy));
     
             try {
                 ctxCpy.skipInit = true;
@@ -62,8 +62,8 @@ export class DeepTryOptionsStrategy extends Strategy {
                 this._context.foundSolution = solution;
             }
         } else if (cellMTarget.numOpts().size < size) {
-            this._context.cageModelsToTryReduceFor = cellMTarget.withinCageModels;
-        }    
+            this._context.setCageModelsToTryReduceForBy(ReducedCellModels.forOne(cellMTarget));
+        }
     }
 }
 

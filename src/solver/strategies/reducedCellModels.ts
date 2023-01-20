@@ -29,4 +29,8 @@ export class ReducedCellModels {
     get impactedCageModels(): ReadonlySet<CageModel> {
         return this._impactedCageMs;
     }
+
+    static forOne(cellM: CellModel) {
+        return new ReducedCellModels().addOne(cellM);
+    }
 }
