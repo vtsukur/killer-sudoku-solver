@@ -6,7 +6,7 @@ import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulas
 import { FindRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
 import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
-import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
+import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
@@ -21,7 +21,7 @@ export class MasterStrategy extends Strategy {
     
         do {
             this.executeAnother(ReducePermsInCagesStrategy);
-            this.executeAnotherFn(placeNumsForSingleOptionCellsStrategy);
+            this.executeAnother(PlaceNumsForSingleOptionCellsStrategy);
             this.executeAnotherFn(reflectSolvedCellsStrategy);
             this.executeAnother(FindAndReduceCagePermsByHouseStrategy);
             this.executeAnotherFn(reduceCellOptionsWhichInvalidateSingleComboStrategy);
