@@ -184,7 +184,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             });
         });
     
-        this._context.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
+        this._context.cageModelsToReevaluatePerms = Array.from(cageMsToReduce.values());
     }    
 }
 

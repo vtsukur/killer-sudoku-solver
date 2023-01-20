@@ -3,11 +3,13 @@ import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
+import { ReducedModels } from './reducedModels';
 
 export class Context {
     readonly model;
     readonly cageSlicer;
-    cageModelsToReevaluatePerms?: Array<CageModel>;
+    reducedModels = new ReducedModels();
+    private _cageModelsToReevaluatePerms = new Array<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -16,7 +18,6 @@ export class Context {
     constructor(model: MasterModel, cageSlicer: CageSlicer) {
         this.model = model;
         this.cageSlicer = cageSlicer;
-        this.cageModelsToReevaluatePerms = undefined;
         this.recentlySolvedCellModels = [];
         this.depth = 0;
         this.foundSolution = undefined;
@@ -29,11 +30,20 @@ export class Context {
     }
 
     get hasModelsTouchedByReduction() {
-        return !_.isUndefined(this.cageModelsToReevaluatePerms) && this.cageModelsToReevaluatePerms.length > 0;
+        return this._cageModelsToReevaluatePerms.length > 0;
+    }
+
+    get cageModelsToReevaluatePerms(): Array<CageModel> {
+        return this._cageModelsToReevaluatePerms;
+    }
+
+    set cageModelsToReevaluatePerms(val: Array<CageModel>) {
+        this._cageModelsToReevaluatePerms = val;
     }
 
     clearCageModelsToReevaluatePerms() {
-        this.cageModelsToReevaluatePerms = undefined;
+        // fix private field to be cleared
+        this._cageModelsToReevaluatePerms = [];
     }
 
     get hasRecentlySolvedCellModels() {
@@ -41,7 +51,7 @@ export class Context {
     }
 
     clearRecentlySolvedCellModels() {
-        this.cageModelsToReevaluatePerms = [];
+        this._cageModelsToReevaluatePerms = [];
     }
 
     get isSolutionFound() {
