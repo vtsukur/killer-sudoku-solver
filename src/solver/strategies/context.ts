@@ -3,12 +3,12 @@ import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
-import { ReducedModels } from './reducedModels';
+import { ReducedCellModels } from './reducedCellModels';
 
 export class Context {
     readonly model;
     readonly cageSlicer;
-    reducedModels = new ReducedModels();
+    reducedModels = new ReducedCellModels();
     private _cageModelsToReevaluatePerms = new Array<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;

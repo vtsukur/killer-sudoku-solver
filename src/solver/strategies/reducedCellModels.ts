@@ -1,15 +1,15 @@
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
-export class ReducedModels {
+export class ReducedCellModels {
     private _cellMs: Set<CellModel> = new Set();
     private _cageMs: Set<CageModel> = new Set();
 
     addCellModels(val: Set<CellModel>): void {
-        this._cellMs = ReducedModels.combine(this._cellMs, val);
+        this._cellMs = ReducedCellModels.combine(this._cellMs, val);
 
         for (const cellM of this._cellMs) {
-            this._cageMs = ReducedModels.combine(this._cageMs, cellM.withinCageModels);
+            this._cageMs = ReducedCellModels.combine(this._cageMs, cellM.withinCageModels);
         }
     }
 
@@ -21,7 +21,7 @@ export class ReducedModels {
         return this._cageMs.size > 0;
     }
 
-    get cageModels(): ReadonlySet<CageModel> {
+    get cageModelsToReduce(): ReadonlySet<CageModel> {
         return this._cageMs;
     }
 }
