@@ -11,7 +11,7 @@ import { Strategy } from '../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToReevaluatePerms) return;
+        if (this._context.hasModelsTouchedByReduction) return;
     
         let cageMsToReduce = new Set<CageModel>();
     

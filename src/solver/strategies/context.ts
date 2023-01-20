@@ -28,7 +28,7 @@ export class Context {
         }
     }
 
-    get hasCageModelsToReevaluatePerms() {
+    get hasModelsTouchedByReduction() {
         return !_.isUndefined(this.cageModelsToReevaluatePerms);
     }
 

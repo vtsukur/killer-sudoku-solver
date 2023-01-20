@@ -10,7 +10,7 @@ import { Strategy } from '../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToReevaluatePerms) return;
+        if (this._context.hasModelsTouchedByReduction) return;
     
         const formulas = new Formulas();
     

@@ -10,7 +10,7 @@ const TARGET_CELL_NUM_OPTS_COUNT = 2;
 
 export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToReevaluatePerms) return;
+        if (this._context.hasModelsTouchedByReduction) return;
 
         let cageMsToReduce = new Set<CageModel>();
     
