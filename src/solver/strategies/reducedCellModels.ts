@@ -5,7 +5,7 @@ export class ReducedCellModels {
     private _cellMs: Set<CellModel> = new Set();
     private _cageMs: Set<CageModel> = new Set();
 
-    addCellModels(val: Set<CellModel>): void {
+    add(val: Set<CellModel>): void {
         this._cellMs = ReducedCellModels.combine(this._cellMs, val);
 
         for (const cellM of this._cellMs) {

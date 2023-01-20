@@ -10,7 +10,7 @@ import { Strategy } from '../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
     execute() {
-        if (this._context.hasModelsTouchedByReduction) return;
+        if (this._context.hasCageModelsToTryReduceFor) return;
 
         let cageMsToReduceSet = new Set<CageModel>();
     
@@ -90,7 +90,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
         cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
     
         if (cageMsToReduceSet.size > 0) {
-            this._context.cageModelsToReevaluatePerms = Array.from(cageMsToReduceSet);
+            this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduceSet);
         }            
     }
 }

@@ -11,7 +11,7 @@ import { Strategy } from '../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
     execute() {
-        if (this._context.hasModelsTouchedByReduction) return;
+        if (this._context.hasCageModelsToTryReduceFor) return;
     
         let cageMsToReduce = new Set<CageModel>();
     
@@ -184,7 +184,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             });
         });
     
-        this._context.cageModelsToReevaluatePerms = Array.from(cageMsToReduce.values());
+        this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduce.values());
     }    
 }
 

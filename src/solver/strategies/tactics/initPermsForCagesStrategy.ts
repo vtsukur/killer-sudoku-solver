@@ -20,6 +20,6 @@ export class InitPermsForCagesStrategy extends Strategy {
             });
         });
     
-        this._context.cageModelsToReevaluatePerms = Array.from(this._model.cageModelsMap.values());
+        this._context.cageModelsToTryReduceFor = Array.from(this._model.cageModelsMap.values());
     }    
 }

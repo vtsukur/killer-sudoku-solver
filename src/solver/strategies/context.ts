@@ -9,7 +9,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    private _cageModelsToReevaluatePerms = new Array<CageModel>();
+    private _cageModelsToTryReduceFor = new Array<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -29,20 +29,20 @@ export class Context {
         }
     }
 
-    get hasModelsTouchedByReduction() {
-        return this._cageModelsToReevaluatePerms.length > 0;
+    get hasCageModelsToTryReduceFor() {
+        return this._cageModelsToTryReduceFor.length > 0;
     }
 
-    get cageModelsToReevaluatePerms(): Array<CageModel> {
-        return this._cageModelsToReevaluatePerms;
+    get cageModelsToTryReduceFor(): Array<CageModel> {
+        return this._cageModelsToTryReduceFor;
     }
 
-    set cageModelsToReevaluatePerms(val: Array<CageModel>) {
-        this._cageModelsToReevaluatePerms = val;
+    set cageModelsToTryReduceFor(val: Array<CageModel>) {
+        this._cageModelsToTryReduceFor = val;
     }
 
-    clearCageModelsToReevaluatePerms() {
-        this._cageModelsToReevaluatePerms = [];
+    clearCageModelsToReduce() {
+        this._cageModelsToTryReduceFor = [];
     }
 
     get hasRecentlySolvedCellModels() {
