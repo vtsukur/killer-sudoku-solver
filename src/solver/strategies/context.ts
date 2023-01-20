@@ -45,9 +45,8 @@ export class Context {
         this._cageModelsToTryReduceFor = reducedCellMs.impactedCageModels;
     }
 
-    // name & param to be changed to work with ReducedCellModels
-    addCageModelsToTryReduceFor(cageMs: ReadonlySet<CageModel>) {
-        this._cageModelsToTryReduceFor = new Set([...this._cageModelsToTryReduceFor, ...cageMs]);
+    addCageModelsToTryReduceForBy(reducedCellMs: ReducedCellModels) {
+        this._cageModelsToTryReduceFor = new Set([...this._cageModelsToTryReduceFor, ...reducedCellMs.impactedCageModels]);
     }
 
     get hasRecentlySolvedCellModels() {
