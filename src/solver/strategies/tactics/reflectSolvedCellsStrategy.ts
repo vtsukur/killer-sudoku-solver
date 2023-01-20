@@ -1,12 +1,12 @@
 import { Strategy } from '../strategy';
-import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
+import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 import { reduceHousePermsBySolvedCellsStrategy } from './reduceHousePermsBySolvedCellsStrategy';
 import { sliceCagesForSolvedCellsStrategy } from './sliceCagesForSolvedCellsStrategy';
 
 export class ReflectSolvedCellsStrategy extends Strategy {
-    execute(): void {
+    execute() {
         if (this._context.hasRecentlySolvedCellModels) {
-            this.executeAnotherFn(reduceCageNumOptsBySolvedCellsStrategy);
+            this.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
             this.executeAnotherFn(reduceHousePermsBySolvedCellsStrategy);
             this.executeAnotherFn(sliceCagesForSolvedCellsStrategy);
             this._context.clearRecentlySolvedCellModels();
