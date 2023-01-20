@@ -5,7 +5,7 @@ import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidual
 import { findNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
 import { FindRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
 import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
-import { initPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
+import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { placeNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { reducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
@@ -16,7 +16,7 @@ export class MasterStrategy extends Strategy {
         if (!this._context.skipInit) {
             this.executeAnother(FindRedundantNonetSumsStrategy);
             this.executeAnother(FindAndSliceResidualSumsStrategy);
-            this.executeAnotherFn(initPermsForCagesStrategy);    
+            this.executeAnother(InitPermsForCagesStrategy);    
         }
     
         do {
