@@ -22,7 +22,7 @@ export class MasterModel {
     houseModels: Array<HouseModel> = [];
     cellsMatrix: Array<Array<Cell>> = [];
     cageModelsMap: Map<string, CageModel> = new Map();
-    cellMsMatrix: Array<Array<CellModel>> = [];
+    cellModelsMatrix: Array<Array<CellModel>> = [];
     private _solution: Array<Array<number>> = [];
     private _placedNumCount = 0;
     private _cellsToInputCagesMatrix: Array<Array<Cage>> = [];
@@ -60,10 +60,10 @@ export class MasterModel {
             this.nonetModels.push(new NonetModel(i, this.collectHouseCells(Nonet.cellsIterator(i))));
         });
 
-        this.cellMsMatrix = Grid.newMatrix();
+        this.cellModelsMatrix = Grid.newMatrix();
         const cells = puzzle.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
-            this.cellMsMatrix[cell.row][cell.col] = new CellModel(cell);
+            this.cellModelsMatrix[cell.row][cell.col] = new CellModel(cell);
         });
 
         puzzle.cages.forEach(cage => {
@@ -95,12 +95,12 @@ export class MasterModel {
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
 
         // copy cell models
-        this.cellMsMatrix = Grid.newMatrix();
-        model.cellMsMatrix.forEach((cellMsRow, row) => {
+        this.cellModelsMatrix = Grid.newMatrix();
+        model.cellModelsMatrix.forEach((cellMsRow, row) => {
             cellMsRow.forEach((cellM, col) => {
-                this.cellMsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
+                this.cellModelsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
                 for (const cageM of cellM.withinCageModels) {
-                    this.cellMsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key) as CageModel);
+                    this.cellModelsMatrix[row][col].addWithinCageModel(this.cageModelsMap.get(cageM.cage.key) as CageModel);
                 }
             });
         });
@@ -228,7 +228,7 @@ export class MasterModel {
     }
 
     cellModelAt(row: number, col: number) {
-        return this.cellMsMatrix[row][col];
+        return this.cellModelsMatrix[row][col];
     }
 
     private inputCageOf(cell: Cell) {
