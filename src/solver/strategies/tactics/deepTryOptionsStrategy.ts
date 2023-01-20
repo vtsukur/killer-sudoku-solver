@@ -5,6 +5,7 @@ import { MasterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
 import { MasterModel } from '../../models/masterModel';
 import { Strategy } from '../strategy';
+import { ReducedCellModels } from '../reducedCellModels';
 
 const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 
@@ -21,7 +22,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-            ctxCpy.cageModelsToTryReduceFor = cellMTargetCpy.withinCageModels;
+            ctxCpy.setCageModelsToTryReduceForBy(new ReducedCellModels().addOne(cellMTargetCpy));
     
             try {
                 ctxCpy.skipInit = true;

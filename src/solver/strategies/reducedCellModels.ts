@@ -5,12 +5,17 @@ export class ReducedCellModels {
     private _cellMs: Set<CellModel> = new Set();
     private _impactedCageMs: Set<CageModel> = new Set();
 
-    add(val: Set<CellModel>): void {
-        this._cellMs = ReducedCellModels.combine(this._cellMs, val);
-
-        for (const cellM of this._cellMs) {
-            this._impactedCageMs = ReducedCellModels.combine(this._impactedCageMs, cellM.withinCageModels);
+    add(val: Set<CellModel>) {
+        for (const cellM of val) {
+            this.addOne(cellM);
         }
+        return this;
+    }
+    
+    addOne(val: CellModel) {
+        this._cellMs.add(val);
+        this._impactedCageMs = ReducedCellModels.combine(this._impactedCageMs, val.withinCageModels);
+        return this;
     }
 
     private static combine<T>(set: ReadonlySet<T>, andSet: ReadonlySet<T>) {
