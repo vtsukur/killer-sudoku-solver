@@ -42,7 +42,6 @@ export class Context {
     }
 
     clearCageModelsToReevaluatePerms() {
-        // fix private field to be cleared
         this._cageModelsToReevaluatePerms = [];
     }
 
@@ -51,7 +50,7 @@ export class Context {
     }
 
     clearRecentlySolvedCellModels() {
-        this._cageModelsToReevaluatePerms = [];
+        this.recentlySolvedCellModels = [];
     }
 
     get isSolutionFound() {
