@@ -6,41 +6,44 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { NonetModel } from '../../models/elements/nonetModel';
 import { MasterModel } from '../../models/masterModel';
-import { Context } from '../context';
+import { Strategy } from '../strategy';
 
-export function findNonetBasedFormulasStrategy(this: Context) {
-    if (this.hasCageModelsToReevaluatePerms) return;
-
-    const formulas = new Formulas();
-
-    _.range(0, House.SIZE).forEach((index: number) => {
-        const nonetM = this.model.nonetModels[index];
-        const area = findAreaWithSingleInnieOrOutieCell(nonetM, this.model);
-        if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
-            const outerCageMs = new Set<CageModel>(area.outerCageMs);
-            for (const outerCageM of outerCageMs) {
-                area.removeCageM(outerCageM);
-                const unfilledInnerCellMs = area.unfilledInnerCellMs(this.model);
-                const outerCellMs = area.outerCellMs;
-                if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
-                    formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
+export class FindNonetBasedFormulasStrategy extends Strategy {
+    execute() {
+        if (this._context.hasCageModelsToReevaluatePerms) return;
+    
+        const formulas = new Formulas();
+    
+        _.range(0, House.SIZE).forEach((index: number) => {
+            const nonetM = this._model.nonetModels[index];
+            const area = findAreaWithSingleInnieOrOutieCell(nonetM, this._model);
+            if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
+                const outerCageMs = new Set<CageModel>(area.outerCageMs);
+                for (const outerCageM of outerCageMs) {
+                    area.removeCageM(outerCageM);
+                    const unfilledInnerCellMs = area.unfilledInnerCellMs(this._model);
+                    const outerCellMs = area.outerCellMs;
+                    if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
+                        formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
+                    }
+                    area.addCageM(outerCageM);
                 }
-                area.addCageM(outerCageM);
             }
-        }
-    });
-
-    let cageMsToReduce = new Set<CageModel>();
-    for (const formula of formulas.toArray()) {
-        const reducedCellMs = reduceByFormula(formula);
-        reducedCellMs.forEach(cellM => {
-            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
         });
+    
+        let cageMsToReduce = new Set<CageModel>();
+        for (const formula of formulas.toArray()) {
+            const reducedCellMs = reduceByFormula(formula);
+            reducedCellMs.forEach(cellM => {
+                cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
+            });
+        }
+    
+        this._context.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
+    
+        return formulas;
     }
-
-    this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
-
-    return formulas;
+    
 }
 
 class ExpandableNonOverlappingNonetAreaModel {
