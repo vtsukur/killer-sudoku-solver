@@ -3,7 +3,7 @@ import { Strategy } from '../strategy';
 
 export class ReducePermsInCagesStrategy extends Strategy {
     execute() {
-        do {    
+        do { 
             const reducedCellMs = new ReducedCellModels();
 
             for (const cageM of this._context.cageModelsToTryReduceFor) {
@@ -13,5 +13,5 @@ export class ReducePermsInCagesStrategy extends Strategy {
     
             this._context.setCageModelsToTryReduceForBy(reducedCellMs);
         } while (this._context.hasCageModelsToTryReduceFor);
-    }    
+    }
 }

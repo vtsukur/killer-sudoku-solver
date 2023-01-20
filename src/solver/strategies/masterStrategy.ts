@@ -16,9 +16,9 @@ export class MasterStrategy extends Strategy {
         if (!this._context.skipInit) {
             this.executeAnother(FindRedundantNonetSumsStrategy);
             this.executeAnother(FindAndSliceResidualSumsStrategy);
-            this.executeAnother(InitPermsForCagesStrategy);    
+            this.executeAnother(InitPermsForCagesStrategy);
         }
-    
+
         do {
             this.executeAnother(ReducePermsInCagesStrategy);
             this.executeAnother(PlaceNumsForSingleOptionCellsStrategy);
@@ -29,6 +29,6 @@ export class MasterStrategy extends Strategy {
             this.executeAnother(FindSameNumberOptsInSameCellsStrategy);
             this.executeAnother(DeepTryOptionsStrategy);
         }
-        while (!this._model.isSolved && this._context.hasCageModelsToTryReduceFor);       
+        while (!this._model.isSolved && this._context.hasCageModelsToTryReduceFor);
     }
 }
