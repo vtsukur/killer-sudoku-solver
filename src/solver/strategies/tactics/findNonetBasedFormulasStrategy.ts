@@ -42,8 +42,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
         this._context.cageModelsToTryReduceFor = cageMsToReduce;
     
         return formulas;
-    }
-    
+    }   
 }
 
 class ExpandableNonOverlappingNonetAreaModel {

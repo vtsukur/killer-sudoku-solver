@@ -9,7 +9,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    cageModelsToTryReduceFor: ReadonlySet<CageModel> = new Set<CageModel>();
+    private _cageModelsToTryReduceFor: ReadonlySet<CageModel> = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -30,11 +30,23 @@ export class Context {
     }
 
     get hasCageModelsToTryReduceFor() {
-        return this.cageModelsToTryReduceFor.size > 0;
+        return this._cageModelsToTryReduceFor.size > 0;
     }
 
-    clearCageModelsToReduce() {
-        this.cageModelsToTryReduceFor = new Set();
+    get cageModelsToTryReduceFor() {
+        return this._cageModelsToTryReduceFor;
+    }
+
+    set cageModelsToTryReduceFor(val: ReadonlySet<CageModel>) {
+        this._cageModelsToTryReduceFor = val;
+    }
+
+    setCageModelsToTryReduceForBy(reducedCellMs: ReducedCellModels) {
+        this._cageModelsToTryReduceFor = reducedCellMs.impactedCageModels;
+    }
+
+    addCageModelsToTryReduceFor(cageMs: ReadonlySet<CageModel>) {
+        this._cageModelsToTryReduceFor = new Set([...this._cageModelsToTryReduceFor, ...cageMs]);
     }
 
     get hasRecentlySolvedCellModels() {

@@ -3,13 +3,13 @@ import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
     private _cellMs: Set<CellModel> = new Set();
-    private _cageMs: Set<CageModel> = new Set();
+    private _impactedCageMs: Set<CageModel> = new Set();
 
     add(val: Set<CellModel>): void {
         this._cellMs = ReducedCellModels.combine(this._cellMs, val);
 
         for (const cellM of this._cellMs) {
-            this._cageMs = ReducedCellModels.combine(this._cageMs, cellM.withinCageModels);
+            this._impactedCageMs = ReducedCellModels.combine(this._impactedCageMs, cellM.withinCageModels);
         }
     }
 
@@ -18,10 +18,10 @@ export class ReducedCellModels {
     }
 
     get isNotEmpty(): boolean {
-        return this._cageMs.size > 0;
+        return this._impactedCageMs.size > 0;
     }
 
-    get cageModelsToReduce(): ReadonlySet<CageModel> {
-        return this._cageMs;
+    get impactedCageModels(): ReadonlySet<CageModel> {
+        return this._impactedCageMs;
     }
 }
