@@ -4,6 +4,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { MasterModel } from '../../models/masterModel';
+import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
@@ -12,7 +13,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
     execute() {
         if (this._context.hasCageModelsToTryReduceFor) return;
 
-        let cageMsToReduce = new Set<CageModel>();
+        const reducedCellMs = new ReducedCellModels();
     
         _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
             _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
@@ -28,7 +29,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
                         for (const num of cellM.numOpts()) {
                             if (comboSet.has(num)) {
                                 cellM.deleteNumOpt(num);
-                                cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
+                                reducedCellMs.addOne(cellM);
                             }
                         }
                     }
@@ -36,7 +37,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
             });
         });
     
-        this._context.cageModelsToTryReduceFor = cageMsToReduce;
+        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
     }
 }
 
