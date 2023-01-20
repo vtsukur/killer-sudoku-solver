@@ -5,13 +5,13 @@ import { Strategy } from '../strategy';
 export class ReducePermsInCagesStrategy extends Strategy {
     execute() {
         do {    
-            const reducedModels = new ReducedCellModels();
+            const reducedCellMs = new ReducedCellModels();
             for (const cageM of this._context.cageModelsToReevaluatePerms as Array<CageModel>) {
-                const reducedCellMs = cageM.reduce();
-                reducedModels.addCellModels(reducedCellMs);
+                const reducedCellMsSet = cageM.reduce();
+                reducedCellMs.addCellModels(reducedCellMsSet);
             }
     
-            this._context.cageModelsToReevaluatePerms = Array.from(reducedModels.cageModelsToReduce);
+            this._context.cageModelsToReevaluatePerms = Array.from(reducedCellMs.cageModelsToReduce);
         } while (this._context.hasModelsTouchedByReduction);
     }    
 }
