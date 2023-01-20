@@ -6,7 +6,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
-import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
+import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
 export class FindAndSliceResidualSumsStrategy extends Strategy {
     execute() {
@@ -16,7 +16,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                 }, (row: number) => {
                     return this._model.rowModels[row].cellsIterator();
-                });
+                }, this);
             });
         });
         _.range(1, 5).reverse().forEach(n => {
@@ -25,7 +25,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                 }, (col: number) => {
                     return this._model.columnModels[col].cellsIterator();
-                });
+                }, this);
             });
         });
         _.range(House.SIZE).forEach((leftIndex: number) => {
@@ -33,12 +33,12 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
             }, (nonet: number) => {
                 return this._model.nonetModels[nonet].cellsIterator();
-            });
+            }, this);
         });
     }
 }
 
-function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
+function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy) {
     const nHouseCellCount = n * House.SIZE;
     const nHouseSum = n * House.SUM;
 
@@ -64,7 +64,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             const cellM = ctx.model.cellModelOf(residualCageBuilder.cells[0]);
             cellM.placedNum = residualCageBuilder.mk().sum;
             ctx.recentlySolvedCellModels = [ cellM ];
-            ctx.run(reduceCageNumOptsBySolvedCellsStrategy);
+            strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
         }
         
         ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());

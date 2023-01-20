@@ -16,7 +16,7 @@ export abstract class Strategy {
 
     abstract execute(): void;
 
-    protected executeAnother(StrategyClass: StrategyFactory): void {
+    executeAnother(StrategyClass: StrategyFactory): void {
         new StrategyClass(this._context).execute();
     }
 
