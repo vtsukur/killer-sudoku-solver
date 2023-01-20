@@ -29,7 +29,7 @@ export class Context {
     }
 
     get hasModelsTouchedByReduction() {
-        return !_.isUndefined(this.cageModelsToReevaluatePerms);
+        return !_.isUndefined(this.cageModelsToReevaluatePerms) && this.cageModelsToReevaluatePerms.length > 0;
     }
 
     clearCageModelsToReevaluatePerms() {
