@@ -21,7 +21,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-            ctxCpy.cageModelsToTryReduceFor = Array.from(cellMTargetCpy.withinCageModels);
+            ctxCpy.cageModelsToTryReduceFor = cellMTargetCpy.withinCageModels;
     
             try {
                 ctxCpy.skipInit = true;

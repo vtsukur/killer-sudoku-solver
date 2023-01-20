@@ -184,7 +184,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             });
         });
     
-        this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduce.values());
+        this._context.cageModelsToTryReduceFor = cageMsToReduce;
     }    
 }
 

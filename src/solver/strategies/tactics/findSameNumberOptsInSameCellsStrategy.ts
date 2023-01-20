@@ -90,7 +90,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
         cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
     
         if (cageMsToReduceSet.size > 0) {
-            this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduceSet);
+            this._context.cageModelsToTryReduceFor = cageMsToReduceSet;
         }            
     }
 }

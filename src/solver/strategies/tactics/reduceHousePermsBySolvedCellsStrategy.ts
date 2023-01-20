@@ -26,9 +26,9 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
     
         if (cageMsToReduceSet.size > 0) {
             if (this._context.hasCageModelsToTryReduceFor) {
-                this._context.cageModelsToTryReduceFor = Array.from(new Set([...this._context.cageModelsToTryReduceFor as Array<CageModel>, ...cageMsToReduceSet]));
+                this._context.cageModelsToTryReduceFor = new Set([...this._context.cageModelsToTryReduceFor, ...cageMsToReduceSet]);
             } else {
-                this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduceSet);
+                this._context.cageModelsToTryReduceFor = cageMsToReduceSet;
             }
         }
     }

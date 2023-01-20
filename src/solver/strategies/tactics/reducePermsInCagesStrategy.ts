@@ -10,7 +10,7 @@ export class ReducePermsInCagesStrategy extends Strategy {
                 reducedCellMs.add(reducedCellMsSet);
             }
     
-            this._context.cageModelsToTryReduceFor = Array.from(reducedCellMs.cageModelsToReduce);
+            this._context.cageModelsToTryReduceFor = reducedCellMs.cageModelsToReduce;
         } while (this._context.hasCageModelsToTryReduceFor);
     }    
 }

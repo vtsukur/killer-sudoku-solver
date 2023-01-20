@@ -36,7 +36,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
             });
         });
     
-        this._context.cageModelsToTryReduceFor = Array.from(cageMsToReduce.values());
+        this._context.cageModelsToTryReduceFor = cageMsToReduce;
     }
 }
 
