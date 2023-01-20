@@ -9,7 +9,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    private _cageModelsToTryReduceFor: ReadonlySet<CageModel> = new Set<CageModel>();
+    private _cageModelsToReduce: ReadonlySet<CageModel> = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -29,24 +29,24 @@ export class Context {
         }
     }
 
-    get hasCageModelsToTryReduceFor() {
-        return this._cageModelsToTryReduceFor.size > 0;
+    get hasCageModelsToReduce() {
+        return this._cageModelsToReduce.size > 0;
     }
 
-    get cageModelsToTryReduceFor() {
-        return this._cageModelsToTryReduceFor;
+    get cageModelsToReduce() {
+        return this._cageModelsToReduce;
     }
 
-    setCageModelsToTryReduceForToAll() {
-        this._cageModelsToTryReduceFor = new Set(this.model.cageModelsMap.values());
+    setCageModelsToReduceToAll() {
+        this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
     }
 
-    setCageModelsToTryReduceForBy(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToTryReduceFor = reducedCellMs.impactedCageModels;
+    setCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
+        this._cageModelsToReduce = reducedCellMs.impactedCageModels;
     }
 
-    addCageModelsToTryReduceForBy(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToTryReduceFor = new Set([...this._cageModelsToTryReduceFor, ...reducedCellMs.impactedCageModels]);
+    addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
+        this._cageModelsToReduce = new Set([...this._cageModelsToReduce, ...reducedCellMs.impactedCageModels]);
     }
 
     get hasRecentlySolvedCellModels() {

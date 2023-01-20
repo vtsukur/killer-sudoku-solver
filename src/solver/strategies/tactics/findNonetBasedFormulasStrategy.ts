@@ -11,7 +11,7 @@ import { Strategy } from '../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToTryReduceFor) return;
+        if (this._context.hasCageModelsToReduce) return;
     
         const formulas = new Formulas();
     
@@ -36,7 +36,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
         for (const formula of formulas.toArray()) {
             reducedCellMs.add(reduceByFormula(formula));
         }
-        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
+        this._context.setCageModelsToReduceFrom(reducedCellMs);
     
         return formulas;
     }   

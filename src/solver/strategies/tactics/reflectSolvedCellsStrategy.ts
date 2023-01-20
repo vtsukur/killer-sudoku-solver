@@ -10,7 +10,7 @@ export class ReflectSolvedCellsStrategy extends Strategy {
             this.executeAnother(ReduceHousePermsBySolvedCellsStrategy);
             this.executeAnother(SliceCagesForSolvedCellsStrategy);
             this._context.clearRecentlySolvedCellModels();
-            this._context.setCageModelsToTryReduceForToAll();
+            this._context.setCageModelsToReduceToAll();
         }            
     }
 }

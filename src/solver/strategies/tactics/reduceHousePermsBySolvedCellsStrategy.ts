@@ -24,6 +24,6 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
             });
         });
     
-        this._context.addCageModelsToTryReduceForBy(reducedCellMs);
+        this._context.addCageModelsToReduceFrom(reducedCellMs);
     }
 }

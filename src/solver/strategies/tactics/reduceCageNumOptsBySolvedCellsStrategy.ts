@@ -20,6 +20,6 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
                 }    
             }
         });
-        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
+        this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
 }

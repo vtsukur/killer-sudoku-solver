@@ -10,7 +10,7 @@ import { Strategy } from '../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToTryReduceFor) return;
+        if (this._context.hasCageModelsToReduce) return;
 
         const reducedCellMs = new ReducedCellModels();
     
@@ -88,7 +88,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             reducedCellMs
         );
 
-        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
+        this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
 }
 

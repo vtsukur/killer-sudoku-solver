@@ -11,7 +11,7 @@ const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 
 export class DeepTryOptionsStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToTryReduceFor || this._model.isSolved) return;
+        if (this._context.hasCageModelsToReduce || this._model.isSolved) return;
 
         const cellMTarget = findCellMTarget(this._model);
         if (_.isUndefined(cellMTarget)) return;
@@ -22,7 +22,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
-            ctxCpy.setCageModelsToTryReduceForBy(ReducedCellModels.forOne(cellMTargetCpy));
+            ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
     
             try {
                 ctxCpy.skipInit = true;
@@ -62,7 +62,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                 this._context.foundSolution = solution;
             }
         } else if (cellMTarget.numOpts().size < size) {
-            this._context.setCageModelsToTryReduceForBy(ReducedCellModels.forOne(cellMTarget));
+            this._context.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTarget));
         }
     }
 }

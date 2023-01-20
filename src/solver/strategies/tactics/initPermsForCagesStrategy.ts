@@ -20,6 +20,6 @@ export class InitPermsForCagesStrategy extends Strategy {
             });
         });
     
-        this._context.setCageModelsToTryReduceForToAll();
+        this._context.setCageModelsToReduceToAll();
     }    
 }

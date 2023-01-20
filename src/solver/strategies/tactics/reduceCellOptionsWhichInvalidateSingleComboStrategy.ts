@@ -11,7 +11,7 @@ const TARGET_CELL_NUM_OPTS_COUNT = 2;
 
 export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToTryReduceFor) return;
+        if (this._context.hasCageModelsToReduce) return;
 
         const reducedCellMs = new ReducedCellModels();
     
@@ -37,7 +37,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
             });
         });
     
-        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
+        this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
 }
 
