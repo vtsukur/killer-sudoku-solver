@@ -4,38 +4,40 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { MasterModel } from '../../models/masterModel';
-import { Context } from '../context';
+import { Strategy } from '../strategy';
 
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
 
-export function reduceCellOptionsWhichInvalidateSingleComboStrategy(this: Context) {
-    if (this.hasCageModelsToReevaluatePerms) return;
+export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strategy {
+    execute() {
+        if (this._context.hasCageModelsToReevaluatePerms) return;
 
-    let cageMsToReduce = new Set<CageModel>();
-
-    _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
-        _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
-            const cellM = this.model.cellMsMatrix[row][col];
-            if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
-
-            const cellMsToCheck = collectCellMsToCheck(cellM, this.model);
-            const cageMsToCheck = collectCageMsToCheck(cellMsToCheck);
-
-            if (cageMsToCheck.size > 0) {
-                for (const cageMToCheck of cageMsToCheck) {
-                    const comboSet = new Set(cageMToCheck.combos.next().value);
-                    for (const num of cellM.numOpts()) {
-                        if (comboSet.has(num)) {
-                            cellM.deleteNumOpt(num);
-                            cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
+        let cageMsToReduce = new Set<CageModel>();
+    
+        _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
+            _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
+                const cellM = this._model.cellMsMatrix[row][col];
+                if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
+    
+                const cellMsToCheck = collectCellMsToCheck(cellM, this._model);
+                const cageMsToCheck = collectCageMsToCheck(cellMsToCheck);
+    
+                if (cageMsToCheck.size > 0) {
+                    for (const cageMToCheck of cageMsToCheck) {
+                        const comboSet = new Set(cageMToCheck.combos.next().value);
+                        for (const num of cellM.numOpts()) {
+                            if (comboSet.has(num)) {
+                                cellM.deleteNumOpt(num);
+                                cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
+                            }
                         }
                     }
                 }
-            }
+            });
         });
-    });
-
-    this.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;
+    
+        this._context.cageModelsToReevaluatePerms = cageMsToReduce.size > 0 ? Array.from(cageMsToReduce.values()) : undefined;            
+    }
 }
 
 function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {

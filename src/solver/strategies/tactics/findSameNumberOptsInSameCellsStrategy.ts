@@ -6,90 +6,92 @@ import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { RowModel } from '../../models/elements/rowModel';
-import { Context } from '../context';
+import { Strategy } from '../strategy';
 
-export function findSameNumberOptsInSameCellsStrategy(this: Context) {
-    if (this.hasCageModelsToReevaluatePerms) return;
+export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
+    execute() {
+        if (this._context.hasCageModelsToReevaluatePerms) return;
 
-    let cageMsToReduceSet = new Set<CageModel>();
-
-    const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
-    const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
-
-    this.model.houseModels.forEach(houseM => {
-        const cellKeysByNum: Array<Array<string>> = new Array(House.SIZE).fill([]).map(() => []);
-        const cellRowsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
-        const cellColsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
-        const cellMMap = new Map();
-        for (const { row, col } of houseM.cellsIterator()) {
-            const key = Cell.keyOf(row, col);
-            const cellM = this.model.cellModelAt(row, col);
-            cellMMap.set(key, cellM);
-            for (const num of cellM.numOpts()) {
-                const index = num - 1;
-                cellKeysByNum[index].push(key);
-                cellRowsByNum[index].push(row);
-                cellColsByNum[index].push(col);
+        let cageMsToReduceSet = new Set<CageModel>();
+    
+        const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
+        const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
+    
+        this._model.houseModels.forEach(houseM => {
+            const cellKeysByNum: Array<Array<string>> = new Array(House.SIZE).fill([]).map(() => []);
+            const cellRowsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
+            const cellColsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
+            const cellMMap = new Map();
+            for (const { row, col } of houseM.cellsIterator()) {
+                const key = Cell.keyOf(row, col);
+                const cellM = this._model.cellModelAt(row, col);
+                cellMMap.set(key, cellM);
+                for (const num of cellM.numOpts()) {
+                    const index = num - 1;
+                    cellKeysByNum[index].push(key);
+                    cellRowsByNum[index].push(row);
+                    cellColsByNum[index].push(col);
+                }
             }
-        }
-        cellKeysByNum.forEach(keys => keys.sort());
-        cellRowsByNum.forEach(rows => rows.sort());
-        cellColsByNum.forEach(cols => cols.sort());
-        if (houseM instanceof RowModel) {
-            colNumMapForRows.set(houseM, cellColsByNum);
-        }
-        if (houseM instanceof ColumnModel) {
-            rowNumMapForCols.set(houseM, cellRowsByNum);
-        }
-
-        const cellKeysByNumMap = new Map();
-        cellKeysByNum.forEach((keys, index) => {
-            const keysKey = keys.join('');
-            const num = index + 1;
-            if (!cellKeysByNumMap.has(keysKey)) {
-                const entry = {
-                    keys: keys,
-                    nums: new Set()
-                };
-                cellKeysByNumMap.set(keysKey, entry);
+            cellKeysByNum.forEach(keys => keys.sort());
+            cellRowsByNum.forEach(rows => rows.sort());
+            cellColsByNum.forEach(cols => cols.sort());
+            if (houseM instanceof RowModel) {
+                colNumMapForRows.set(houseM, cellColsByNum);
             }
-            cellKeysByNumMap.get(keysKey).nums.add(num);
-        });
-
-        for (const entry of cellKeysByNumMap.values()) {
-            if (entry.keys.length > 1 && entry.keys.length === entry.nums.size) {
-                for (const key of entry.keys) {
-                    const cellM = cellMMap.get(key);
-                    if (cellM.numOpts().size > entry.keys.length) {
-                        for (const num of cellM.numOpts()) {
-                            if (!entry.nums.has(num)) {
-                                cellM.deleteNumOpt(num);
-                                cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
+            if (houseM instanceof ColumnModel) {
+                rowNumMapForCols.set(houseM, cellRowsByNum);
+            }
+    
+            const cellKeysByNumMap = new Map();
+            cellKeysByNum.forEach((keys, index) => {
+                const keysKey = keys.join('');
+                const num = index + 1;
+                if (!cellKeysByNumMap.has(keysKey)) {
+                    const entry = {
+                        keys: keys,
+                        nums: new Set()
+                    };
+                    cellKeysByNumMap.set(keysKey, entry);
+                }
+                cellKeysByNumMap.get(keysKey).nums.add(num);
+            });
+    
+            for (const entry of cellKeysByNumMap.values()) {
+                if (entry.keys.length > 1 && entry.keys.length === entry.nums.size) {
+                    for (const key of entry.keys) {
+                        const cellM = cellMMap.get(key);
+                        if (cellM.numOpts().size > entry.keys.length) {
+                            for (const num of cellM.numOpts()) {
+                                if (!entry.nums.has(num)) {
+                                    cellM.deleteNumOpt(num);
+                                    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-    });
-
-    const rowBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
-        this.model.rowModels,
-        colNumMapForRows,
-        (directHouseIndex: number, perpendicularHouseIndex: number) => this.model.cellModelAt(directHouseIndex, perpendicularHouseIndex)
-    );
-    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...rowBasedCageMsToReduce]);
-
-    const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
-        this.model.columnModels,
-        rowNumMapForCols,
-        (directHouseIndex: number, perpendicularHouseIndex: number) => this.model.cellModelAt(perpendicularHouseIndex, directHouseIndex)
-    );
-
-    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
-
-    if (cageMsToReduceSet.size > 0) {
-        this.cageModelsToReevaluatePerms = Array.from(cageMsToReduceSet);
+        });
+    
+        const rowBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
+            this._model.rowModels,
+            colNumMapForRows,
+            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(directHouseIndex, perpendicularHouseIndex)
+        );
+        cageMsToReduceSet = new Set([...cageMsToReduceSet, ...rowBasedCageMsToReduce]);
+    
+        const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
+            this._model.columnModels,
+            rowNumMapForCols,
+            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(perpendicularHouseIndex, directHouseIndex)
+        );
+    
+        cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
+    
+        if (cageMsToReduceSet.size > 0) {
+            this._context.cageModelsToReevaluatePerms = Array.from(cageMsToReduceSet);
+        }            
     }
 }
 

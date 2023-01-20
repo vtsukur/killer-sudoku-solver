@@ -4,10 +4,10 @@ import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCa
 import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
 import { FindRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
-import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
+import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
-import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
+import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
@@ -24,9 +24,9 @@ export class MasterStrategy extends Strategy {
             this.executeAnother(PlaceNumsForSingleOptionCellsStrategy);
             this.executeAnother(ReflectSolvedCellsStrategy);
             this.executeAnother(FindAndReduceCagePermsByHouseStrategy);
-            this.executeAnotherFn(reduceCellOptionsWhichInvalidateSingleComboStrategy);
+            this.executeAnother(ReduceCellOptionsWhichInvalidateSingleComboStrategy);
             this.executeAnother(FindNonetBasedFormulasStrategy);
-            this.executeAnotherFn(findSameNumberOptsInSameCellsStrategy);
+            this.executeAnother(FindSameNumberOptsInSameCellsStrategy);
             this.executeAnother(DeepTryOptionsStrategy);
         }
         while (!this._model.isSolved && this._context.hasCageModelsToReevaluatePerms);       
