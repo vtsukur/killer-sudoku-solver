@@ -1,9 +1,10 @@
 import * as _ from 'lodash';
+import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
     execute() {
-        let cageMsToReduceSet = new Set();
+        const reducedCellMs = new ReducedCellModels();
         this._context.recentlySolvedCellModels.forEach(solvedCellM => {
             const num = solvedCellM.placedNum as number;
             for (const cageM of solvedCellM.withinCageModels) {
@@ -14,11 +15,11 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
         
                     if (cellM.hasNumOpt(num)) {
                         cellM.deleteNumOpt(num);
-                        cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
+                        reducedCellMs.addOne(cellM);
                     }
                 }    
             }
         });
-        return cageMsToReduceSet;
+        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
     }
 }
