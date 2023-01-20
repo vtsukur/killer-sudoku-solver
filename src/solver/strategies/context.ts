@@ -37,9 +37,8 @@ export class Context {
         return this._cageModelsToTryReduceFor;
     }
 
-    // to be removed
-    set cageModelsToTryReduceFor(val: ReadonlySet<CageModel>) {
-        this._cageModelsToTryReduceFor = val;
+    setCageModelsToTryReduceForToAll() {
+        this._cageModelsToTryReduceFor = new Set(this.model.cageModelsMap.values());
     }
 
     setCageModelsToTryReduceForBy(reducedCellMs: ReducedCellModels) {
