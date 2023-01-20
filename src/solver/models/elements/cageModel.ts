@@ -493,8 +493,8 @@ export class CageModel {
         return clues;
     }
 
-    reduceToCombinationsContaining(withNum: number) {
-        if (this.hasSingleCombination() || !this._combosMap.size) return [];
+    reduceToCombinationsContaining(withNum: number): Set<CellModel> {
+        if (this.hasSingleCombination() || !this._combosMap.size) return new Set();
 
         const newCombosMap = new Map();
         const removedCombos = [];
@@ -514,16 +514,16 @@ export class CageModel {
 
         if (removedCombos.length > 0) {
             this._combosMap = newCombosMap;
-            const reducedCellMs = new Array<CellModel>();
+            const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
                 if (cellM.reduceNumOptions(newNumOptions).size > 0) {
-                    reducedCellMs.push(cellM);
+                    reducedCellMs.add(cellM);
                 }
             });
             return reducedCellMs;
         }
         else {
-            return [];            
+            return new Set();            
         }
     }
 
