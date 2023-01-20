@@ -6,6 +6,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { NonetModel } from '../../models/elements/nonetModel';
 import { MasterModel } from '../../models/masterModel';
+import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
@@ -31,15 +32,11 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             }
         });
     
-        let cageMsToReduce = new Set<CageModel>();
+        const reducedCellMs = new ReducedCellModels();
         for (const formula of formulas.toArray()) {
-            const reducedCellMs = reduceByFormula(formula);
-            reducedCellMs.forEach(cellM => {
-                cageMsToReduce = new Set([...cageMsToReduce, ...cellM.withinCageModels]);
-            });
+            reducedCellMs.add(reduceByFormula(formula));
         }
-    
-        this._context.cageModelsToTryReduceFor = cageMsToReduce;
+        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
     
         return formulas;
     }   
