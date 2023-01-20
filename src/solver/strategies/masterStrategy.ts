@@ -1,7 +1,7 @@
 import { Strategy } from './strategy';
 import { DeepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
-import { findAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
+import { FindAndSliceResidualSumsStrategy } from './tactics/findAndSliceResidualSumsStrategy';
 import { findNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
 import { findRedundantNonetSumsStrategy } from './tactics/findRedundantNonetSumsStrategy';
 import { findSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
@@ -15,7 +15,7 @@ export class MasterStrategy extends Strategy {
     execute() {
         if (!this._context.skipInit) {
             this.executeAnotherFn(findRedundantNonetSumsStrategy);
-            this.executeAnotherFn(findAndSliceResidualSumsStrategy);
+            this.executeAnother(FindAndSliceResidualSumsStrategy);
             this.executeAnotherFn(initPermsForCagesStrategy);    
         }
     

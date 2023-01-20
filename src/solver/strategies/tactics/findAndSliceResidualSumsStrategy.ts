@@ -5,34 +5,37 @@ import { House } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { Context } from '../context';
+import { Strategy } from '../strategy';
 import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
-export function findAndSliceResidualSumsStrategy(this: Context) {
-    _.range(1, 5).reverse().forEach((n: number) => {
-        _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
-            }, (row: number) => {
-                return this.model.rowModels[row].cellsIterator();
+export class FindAndSliceResidualSumsStrategy extends Strategy {
+    execute() {
+        _.range(1, 5).reverse().forEach((n: number) => {
+            _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+                doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                    return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
+                }, (row: number) => {
+                    return this._model.rowModels[row].cellsIterator();
+                });
             });
         });
-    });
-    _.range(1, 5).reverse().forEach(n => {
-        _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
-            }, (col: number) => {
-                return this.model.columnModels[col].cellsIterator();
+        _.range(1, 5).reverse().forEach(n => {
+            _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+                doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                    return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
+                }, (col: number) => {
+                    return this._model.columnModels[col].cellsIterator();
+                });
             });
         });
-    });
-    _.range(House.SIZE).forEach((leftIndex: number) => {
-        doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this, 1, leftIndex, (cageM: CageModel) => {
-            return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
-        }, (nonet: number) => {
-            return this.model.nonetModels[nonet].cellsIterator();
+        _.range(House.SIZE).forEach((leftIndex: number) => {
+            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, 1, leftIndex, (cageM: CageModel) => {
+                return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
+            }, (nonet: number) => {
+                return this._model.nonetModels[nonet].cellsIterator();
+            });
         });
-    });
+    }
 }
 
 function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
