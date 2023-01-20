@@ -1,18 +1,18 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { RowModel } from '../../models/elements/rowModel';
+import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToTryReduceFor) return;
 
-        let cageMsToReduceSet = new Set<CageModel>();
+        const reducedCellMs = new ReducedCellModels();
     
         const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
@@ -65,7 +65,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                             for (const num of cellM.numOpts()) {
                                 if (!entry.nums.has(num)) {
                                     cellM.deleteNumOpt(num);
-                                    cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
+                                    reducedCellMs.addOne(cellM);
                                 }
                             }
                         }
@@ -74,30 +74,25 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             }
         });
     
-        const rowBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
+        findSameNumberOptsInSameCellsAcrossRowsOrColumns(
             this._model.rowModels,
             colNumMapForRows,
-            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(directHouseIndex, perpendicularHouseIndex)
+            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(directHouseIndex, perpendicularHouseIndex),
+            reducedCellMs
         );
-        cageMsToReduceSet = new Set([...cageMsToReduceSet, ...rowBasedCageMsToReduce]);
     
-        const colBasedCageMsToReduce = findSameNumberOptsInSameCellsAcrossRowsOrColumns(
+        findSameNumberOptsInSameCellsAcrossRowsOrColumns(
             this._model.columnModels,
             rowNumMapForCols,
-            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(perpendicularHouseIndex, directHouseIndex)
+            (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(perpendicularHouseIndex, directHouseIndex),
+            reducedCellMs
         );
-    
-        cageMsToReduceSet = new Set([...cageMsToReduceSet, ...colBasedCageMsToReduce]);
-    
-        if (cageMsToReduceSet.size > 0) {
-            this._context.cageModelsToTryReduceFor = cageMsToReduceSet;
-        }            
+
+        this._context.setCageModelsToTryReduceForBy(reducedCellMs);
     }
 }
 
-function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel) {
-    let cageMsToReduceSet = new Set<CageModel>();
-
+function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reducedCellMs: ReducedCellModels) {
     _.range(0, House.SIZE).forEach(numIndex => {
         const num = numIndex + 1;
 
@@ -126,13 +121,11 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
                         const cellM = getCellMFn(directHouseIndex, perpendicularHouseIndex);
                         if (cellM.hasNumOpt(num)) {
                             cellM.deleteNumOpt(num);
-                            cageMsToReduceSet = new Set([...cageMsToReduceSet, ...cellM.withinCageModels]);
+                            reducedCellMs.addOne(cellM);
                         }
                     }
                 });
             }
         }
     });
-
-    return cageMsToReduceSet;
 }
