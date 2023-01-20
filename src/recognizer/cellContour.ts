@@ -64,10 +64,10 @@ export class CellContour {
 }
 
 class CageBorders {
-    #matrix;
+    private readonly _matrix;
 
     constructor() {
-        this.#matrix = [
+        this._matrix = [
             [ false, false, false ],
             [ false, false, false ],
             [ false, false, false ]
@@ -75,27 +75,24 @@ class CageBorders {
     }
 
     setHasAt(x: number, y: number) {
-        this.#matrix[x][y] = true;
+        this._matrix[x][y] = true;
     }
 
     get hasAtTop() {
-        return this.#matrix[0][1];
+        return this._matrix[0][1];
     }
 
     get hasAtBottom() {
-        return this.#matrix[2][1];
+        return this._matrix[2][1];
     }
 
     get hasAtLeft() {
-        return this.#matrix[1][0];
+        return this._matrix[1][0];
     }
 
     get hasAtRight() {
-        return this.#matrix[1][2];
+        return this._matrix[1][2];
     }
 
-    static #SIDES = 3;
-    static get SIDES() {
-        return CageBorders.#SIDES;
-    }
+    static readonly SIDES = 3;
 }

@@ -47,65 +47,65 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
 }
 
 class ExpandableNonOverlappingNonetAreaModel {
-    #nonetM;
-    #sum;
-    #cageMs;
-    #cellMs;
-    #cellKeys;
-    #innerCellMs;
-    #outerCellMs;
-    #outerCageMs;
+    private _nonetM;
+    private _sum;
+    private _cageMs;
+    private _cellMs;
+    private _cellKeys;
+    private _innerCellMs;
+    private _outerCellMs;
+    private _outerCageMs;
 
     constructor(nonetM: NonetModel) {
-        this.#nonetM = nonetM;
-        this.#sum = 0;
-        this.#cageMs = new Set<CageModel>();
-        this.#cellMs = new Set<CellModel>();
-        this.#cellKeys = new Set<string>();
-        this.#innerCellMs = new Set<CellModel>();
-        this.#outerCellMs = new Set<CellModel>();
-        this.#outerCageMs = new Set<CageModel>();
+        this._nonetM = nonetM;
+        this._sum = 0;
+        this._cageMs = new Set<CageModel>();
+        this._cellMs = new Set<CellModel>();
+        this._cellKeys = new Set<string>();
+        this._innerCellMs = new Set<CellModel>();
+        this._outerCellMs = new Set<CellModel>();
+        this._outerCageMs = new Set<CageModel>();
     }
 
     addCageM(cageM: CageModel) {
-        this.#cageMs.add(cageM);
+        this._cageMs.add(cageM);
         cageM.cellMs.forEach(cellM => {
-            this.#cellMs.add(cellM);
-            this.#cellKeys.add(cellM.cell.key);
-            if (cellM.cell.nonet == this.#nonetM.index) {
-                this.#innerCellMs.add(cellM);
+            this._cellMs.add(cellM);
+            this._cellKeys.add(cellM.cell.key);
+            if (cellM.cell.nonet == this._nonetM.index) {
+                this._innerCellMs.add(cellM);
             } else {
-                this.#outerCellMs.add(cellM);
-                this.#outerCageMs.add(cageM);
+                this._outerCellMs.add(cellM);
+                this._outerCageMs.add(cageM);
             }
         });
-        this.#sum += cageM.cage.sum;
+        this._sum += cageM.cage.sum;
     }
 
     removeCageM(cageM: CageModel) {
-        this.#cageMs.delete(cageM);
-        this.#outerCageMs.delete(cageM);
+        this._cageMs.delete(cageM);
+        this._outerCageMs.delete(cageM);
         cageM.cellMs.forEach(cellM => {
-            this.#cellMs.delete(cellM);
-            this.#cellKeys.delete(cellM.cell.key);
-            this.#innerCellMs.delete(cellM);
-            this.#outerCellMs.delete(cellM);
+            this._cellMs.delete(cellM);
+            this._cellKeys.delete(cellM.cell.key);
+            this._innerCellMs.delete(cellM);
+            this._outerCellMs.delete(cellM);
         });
-        this.#sum -= cageM.cage.sum;
+        this._sum -= cageM.cage.sum;
     }
 
     hasCellAt(row: number, col: number) {
-        return this.#cellKeys.has(Cell.keyOf(row, col));
+        return this._cellKeys.has(Cell.keyOf(row, col));
     }
 
     get innerCellMs() {
-        return this.#innerCellMs;
+        return this._innerCellMs;
     }
 
     unfilledInnerCellMs(model: MasterModel) {
         const result = new Set();
-        for (const { row, col } of this.#nonetM.cellsIterator()) {
-            if (!this.#cellKeys.has(Cell.keyOf(row, col))) {
+        for (const { row, col } of this._nonetM.cellsIterator()) {
+            if (!this._cellKeys.has(Cell.keyOf(row, col))) {
                 result.add(model.cellModelAt(row, col));
             }
         }
@@ -113,15 +113,15 @@ class ExpandableNonOverlappingNonetAreaModel {
     }
 
     get deltaBetweenOuterAndInner() {
-        return this.#sum - House.SUM;
+        return this._sum - House.SUM;
     }
 
     get outerCellMs() {
-        return this.#outerCellMs;
+        return this._outerCellMs;
     }
 
     get outerCageMs() {
-        return this.#outerCageMs;
+        return this._outerCageMs;
     }
 }
 

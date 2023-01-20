@@ -76,10 +76,10 @@ export class CageModel {
     }
 
     static positioningFlagsFor(cells: ReadonlyArray<Cell>) {
-        return new CageModel.#PositioningFlags(cells);
+        return new CageModel.PositioningFlags(cells);
     }
 
-    static #PositioningFlags = class {
+    private static PositioningFlags = class {
         readonly cells;
         readonly isSingleCellCage;
         readonly isWithinRow;
@@ -148,38 +148,38 @@ export class CageModel {
     }
 
     reduce(): Set<CellModel> {
-        if (this.#isEligibleForReductionOfSmallSize()) {
+        if (this.isEligibleForReductionOfSmallSize()) {
             if (!this._canHaveDuplicateNums && _.inRange(this._cellCount, 2, 4)) {
                 if (this._cellCount === 2) {
-                    return this.#reduceOptimalForSize2();
+                    return this.reduceOptimalForSize2();
                 } else if (this._cellCount === 3) {
-                    return this.#reduceOptimalForSize3();
+                    return this.reduceOptimalForSize3();
                 } else {
                     // remove for refactoring
                     throw 'Should not reach here';
                 }
             } else {
-                return this.#reduceSmallCage();
+                return this.reduceSmallCage();
             }
         } else if (!this._canHaveDuplicateNums) {
-            return this.#reduceLargeCage();
+            return this.reduceLargeCage();
         } else {
             return new Set();
         }
     }
 
-    #isEligibleForReductionOfSmallSize() {
+    private isEligibleForReductionOfSmallSize() {
         return _.inRange(this._cellCount, 2, 5);
     }
 
-    #reduceOptimalForSize2() {
+    private reduceOptimalForSize2() {
         const modifiedCellMs = new Set<CellModel>();
         const combosToPotentiallyRemoveMap = new Map();
 
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
             for (const oneNum of oneCellM.numOpts()) {
-                for (const combo of this.#combosForNumArr(oneNum)) {
+                for (const combo of this.combosForNumArr(oneNum)) {
                     const anotherNum = combo[0] === oneNum ? combo[1] : combo[0];
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
@@ -195,14 +195,14 @@ export class CageModel {
                     !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove[1]) &&
                     !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove[0]) &&
                     !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove[1])) {
-                this.#deleteComboArr(comboToPotentiallyRemove);
+                this.deleteComboArr(comboToPotentiallyRemove);
             }
         }
 
         return modifiedCellMs;
     }
 
-    #reduceOptimalForSize3() {
+    private reduceOptimalForSize3() {
         const modifiedCellMs = new Set<CellModel>();
 
         const PERMS_OF_3 = [
@@ -225,7 +225,7 @@ export class CageModel {
 
             for (const num0 of cellM0.numOpts()) {
                 let numStands = false;
-                for (const combo of this.#combosForNumArr(num0)) {
+                for (const combo of this.combosForNumArr(num0)) {
                     const num0Index = combo.findIndex((n: number) => n === num0);
                     const remainingNums = [...combo];
                     remainingNums.splice(num0Index, 1);
@@ -256,14 +256,14 @@ export class CageModel {
                 comboStands = comboStands || someCellHasIt;
             }
             if (!comboStands) {
-                this.#deleteComboArr(combo);
+                this.deleteComboArr(combo);
             }
         }
         
         return modifiedCellMs;
     }
 
-    #combosForNumArr(num: number) {
+    private combosForNumArr(num: number) {
         const combosArr = [];
         for (const combo of this._combosMap.values()) {
             if (combo.some((n: number) => n === num)) {
@@ -273,11 +273,11 @@ export class CageModel {
         return combosArr;
     }
 
-    #deleteComboArr(combo: ReadonlyArray<number>) {
+    private deleteComboArr(combo: ReadonlyArray<number>) {
         this._combosMap.delete(combo.join());
     }
 
-    #reduceSmallCage() {
+    private reduceSmallCage() {
         const context: Context = {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellMs: new Set(),
@@ -318,7 +318,7 @@ export class CageModel {
             context.processCell(cellM, 0, () => {
                 Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
-                        if (!this.#hasSumMatchingPermutationsRecursive(num, 1, context)) {
+                        if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             cellM.deleteNumOpt(num);
                             modifiedCellMs.add(cellM);
                         }    
@@ -330,7 +330,7 @@ export class CageModel {
         return modifiedCellMs;
     }
 
-    #hasSumMatchingPermutationsRecursive(currentSum: number, step: number, context: Context) {
+    private hasSumMatchingPermutationsRecursive(currentSum: number, step: number, context: Context) {
         if (currentSum > this.cage.sum) { return false; }
 
         let has = false;
@@ -352,7 +352,7 @@ export class CageModel {
                 context.processCell(cellM, step, () => {
                     Array.from(cellM.numOpts()).forEach(num => {
                         context.processNum(num, step, () => {
-                            has = this.#hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
+                            has = this.hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
                         });
                     });
                 });
@@ -362,7 +362,7 @@ export class CageModel {
         return has;
     }
 
-    #reduceLargeCage() {
+    private reduceLargeCage() {
         let presentNums = new Set();
         this.cellMs.forEach(cellM => {
             presentNums = new Set([...presentNums, ...cellM.numOpts()]);

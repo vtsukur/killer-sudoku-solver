@@ -77,14 +77,14 @@ class Paths extends TempFilePaths {
     }
 
     get imageOfUnsolvedPuzzle() {
-        return this.#screenshotFilePath('unsolved-puzzle');
+        return this.screenshotFilePath('unsolved-puzzle');
     }
 
     get imageOfPageWithSolvedPuzzle() {
-        return this.#screenshotFilePath('solved-puzzle-page');
+        return this.screenshotFilePath('solved-puzzle-page');
     }
 
-    #screenshotFilePath(classifier: string) {
+    private screenshotFilePath(classifier: string) {
         return this.filePath(`screeshot-of-${classifier}.png`);
     }
 }

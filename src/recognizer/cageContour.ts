@@ -14,10 +14,10 @@ export class CageContour {
 
     addCellContour(cellContour: CellContour) {
         this._cellContours.push(cellContour);
-        this.#updateTopLeftCellContour(cellContour);
+        this.updateTopLeftCellContour(cellContour);
     }
 
-    #updateTopLeftCellContour(cellContour: CellContour) {
+    private updateTopLeftCellContour(cellContour: CellContour) {
         if (_.isUndefined(this.topLeftCellContour) || cellContour.cell.indexWithinGrid < (this.topLeftCellContour as CellContour).cell.indexWithinGrid) {
             this.topLeftCellContour = cellContour;
         }
