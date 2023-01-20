@@ -10,9 +10,9 @@ const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 
 export class DeepTryOptionsStrategy extends Strategy {
     execute() {
-        if (this._context.hasCageModelsToReevaluatePerms || this._context.model.isSolved) return;
+        if (this._context.hasCageModelsToReevaluatePerms || this._model.isSolved) return;
 
-        const cellMTarget = findCellMTarget(this._context.model);
+        const cellMTarget = findCellMTarget(this._model);
         if (_.isUndefined(cellMTarget)) return;
     
         const size = cellMTarget.numOpts().size;
@@ -56,7 +56,7 @@ export class DeepTryOptionsStrategy extends Strategy {
     
         if (!_.isUndefined(solution)) {
             if (this._context.depth === 0) {
-                this._context.model.applySolution(solution as Array<Array<number>>);
+                this._model.applySolution(solution as Array<Array<number>>);
             } else {
                 this._context.foundSolution = solution;
             }
