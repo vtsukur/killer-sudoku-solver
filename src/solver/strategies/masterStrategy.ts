@@ -9,7 +9,7 @@ import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { reduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
-import { reflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
+import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends Strategy {
     execute() {
@@ -22,7 +22,7 @@ export class MasterStrategy extends Strategy {
         do {
             this.executeAnother(ReducePermsInCagesStrategy);
             this.executeAnother(PlaceNumsForSingleOptionCellsStrategy);
-            this.executeAnotherFn(reflectSolvedCellsStrategy);
+            this.executeAnother(ReflectSolvedCellsStrategy);
             this.executeAnother(FindAndReduceCagePermsByHouseStrategy);
             this.executeAnotherFn(reduceCellOptionsWhichInvalidateSingleComboStrategy);
             this.executeAnother(FindNonetBasedFormulasStrategy);

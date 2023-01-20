@@ -1,14 +1,16 @@
-import { Context } from '../context';
+import { Strategy } from '../strategy';
 import { reduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 import { reduceHousePermsBySolvedCellsStrategy } from './reduceHousePermsBySolvedCellsStrategy';
 import { sliceCagesForSolvedCellsStrategy } from './sliceCagesForSolvedCellsStrategy';
 
-export function reflectSolvedCellsStrategy(this: Context) {
-    if (this.hasRecentlySolvedCellModels) {
-        this.run(reduceCageNumOptsBySolvedCellsStrategy);
-        this.run(reduceHousePermsBySolvedCellsStrategy);
-        this.run(sliceCagesForSolvedCellsStrategy);
-        this.clearRecentlySolvedCellModels();
-        this.cageModelsToReevaluatePerms = Array.from(this.model.cageModelsMap.values());
+export class ReflectSolvedCellsStrategy extends Strategy {
+    execute(): void {
+        if (this._context.hasRecentlySolvedCellModels) {
+            this.executeAnotherFn(reduceCageNumOptsBySolvedCellsStrategy);
+            this.executeAnotherFn(reduceHousePermsBySolvedCellsStrategy);
+            this.executeAnotherFn(sliceCagesForSolvedCellsStrategy);
+            this._context.clearRecentlySolvedCellModels();
+            this._context.cageModelsToReevaluatePerms = Array.from(this._model.cageModelsMap.values());
+        }            
     }
 }
