@@ -4,79 +4,88 @@ import { Cage } from './cage';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
-type Cages = ReadonlyArray<Cage>;
-type CellKeysSet = ReadonlySet<string>;
+type ReadonlyCages = ReadonlyArray<Cage>;
+type ReadonlyCells = ReadonlyArray<Cell>;
+type ReadonlyCellKeysSet = ReadonlySet<string>;
 
 class Validator {
-    validate(cages: Cages) {
-        this.validateCells(cages.flatMap(cage => cage.cells));
-        this.validateCages(cages);
+    validate(cages: ReadonlyCages) {
+        Validator.validateCells(cages.flatMap(cage => cage.cells));
+        Validator.validateCages(cages);
         return cages;
     }
 
-    private validateCells(cells: Array<Cell>) {
+    private static validateCells(cells: ReadonlyCells) {
         const { hasDuplicates, duplicates, hasMissing, missing } = new CellKeysWithinGrid(cells);
 
         if (hasMissing) {
-            this.throwCellsValidationError(missing, 'missing');
+            Validator.throwCellsValidationError(missing, 'missing');
         }
         if (hasDuplicates) {
-            this.throwCellsValidationError(duplicates, 'duplicate');
+            Validator.throwCellsValidationError(duplicates, 'duplicate');
         }
     }
 
-    private throwCellsValidationError(errored: ReadonlySet<string>, type: string) {
-        this.throwValidationError(`Found ${errored.size} ${type} cell(s): ${joinSet(errored)}`);
+    private static throwCellsValidationError(erroredKeys: ReadonlyCellKeysSet, type: string) {
+        Validator.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
     }
 
-    private validateCages(cages: Cages) {
+    private static validateCages(cages: ReadonlyCages) {
         const totalSumOfCages = _.sum(cages.map(cage => cage.sum));
         if (totalSumOfCages !== Grid.TOTAL_SUM) {
-            this.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
+            Validator.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
         }
     }
 
-    private throwValidationError(detailedMessage: string) {
+    private static throwValidationError(detailedMessage: string) {
         throw `Invalid puzzle. ${detailedMessage}`;
     }
 }
 
 class CellKeysWithinGrid {
-    readonly unique: CellKeysSet;
-    readonly duplicates: CellKeysSet;
-    readonly missing: CellKeysSet;
+    private readonly _unique = new Set<string>();
+    private readonly _duplicates = new Set<string>();
+    private readonly _missing = new Set<string>();
 
-    constructor(cells: Array<Cell>) {
-        const unique = this.unique = new Set<string>();
-        const duplicates = this.duplicates = new Set<string>();
-        const missing = this.missing = new Set<string>();
-
+    constructor(cells: ReadonlyCells) {
         for (const cell of cells) {
-            if (unique.has(cell.key)) {
-                duplicates.add(cell.key);
+            if (this._unique.has(cell.key)) {
+                this._duplicates.add(cell.key);
             } else {
-                unique.add(cell.key);
+                this._unique.add(cell.key);
             }
         }
 
-        if (unique.size < Grid.CELL_COUNT) {
+        if (this._unique.size < Grid.CELL_COUNT) {
             for (const { key } of Grid.cellsIterator()) {
-                if (!unique.has(key)) {
-                    missing.add(key);
+                if (!this._unique.has(key)) {
+                    this._missing.add(key);
                 }
             }    
         }
     }
 
+    get unique(): ReadonlyCellKeysSet {
+        return this._unique;
+    }
+
     get hasDuplicates() {
-        return CellKeysWithinGrid.isNotEmpty(this.duplicates);
+        return CellKeysWithinGrid.isNotEmpty(this._duplicates);
+    }
+
+    get duplicates(): ReadonlyCellKeysSet {
+        return this._duplicates;
     }
 
     get hasMissing() {
-        return CellKeysWithinGrid.isNotEmpty(this.missing);
+        return CellKeysWithinGrid.isNotEmpty(this._missing);
     }
 
-    private static isNotEmpty(set: CellKeysSet) {
+    get missing(): ReadonlyCellKeysSet {
+        return this._missing;
+    }
+
+    private static isNotEmpty(set: ReadonlyCellKeysSet) {
         return set.size > 0;
     }
 }
@@ -84,9 +93,9 @@ class CellKeysWithinGrid {
 export class Puzzle {
     private static readonly _validator = new Validator();
 
-    readonly cages: Cages;
+    readonly cages: ReadonlyCages;
 
-    constructor(cages: Cages) {
+    constructor(cages: ReadonlyCages) {
         this.cages = [...Puzzle._validator.validate(cages)];
     }
 }
