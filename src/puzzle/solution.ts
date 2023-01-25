@@ -1,10 +1,12 @@
 import { EOL } from 'os';
 
+type NumbersMatrix = number[][];
+
 export class Solution {
-    readonly data: Array<Array<number>>;
+    readonly data: NumbersMatrix;
     private readonly _asString: string;
 
-    constructor(data: number[][]) {
+    constructor(data: NumbersMatrix) {
         this.data = data;
         this._asString = Solution.toString(data);
     }
@@ -13,7 +15,7 @@ export class Solution {
         return this._asString;
     }
 
-    private static toString(data: Array<Array<number>>): string {
+    private static toString(data: NumbersMatrix): string {
         return data.map(numRow => numRow.join(' ')).join(EOL);
     }
 }
