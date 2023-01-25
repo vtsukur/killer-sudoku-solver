@@ -9,8 +9,8 @@ export class GridContour {
 
     constructor(rect: Rect) {
         this.rect = rect;
-        this.cellWidth = rect.width / House.SIZE;
-        this.cellHeight = rect.height / House.SIZE;
+        this.cellWidth = rect.width / House.CELL_COUNT;
+        this.cellHeight = rect.height / House.CELL_COUNT;
     }
 
     cellRect(row: number, col: number) {

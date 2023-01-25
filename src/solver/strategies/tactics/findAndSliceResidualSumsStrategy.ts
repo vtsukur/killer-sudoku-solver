@@ -11,7 +11,7 @@ import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySol
 export class FindAndSliceResidualSumsStrategy extends Strategy {
     execute() {
         _.range(1, 5).reverse().forEach((n: number) => {
-            _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                 }, (row: number) => {
@@ -20,7 +20,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
             });
         });
         _.range(1, 5).reverse().forEach(n => {
-            _.range(House.SIZE - n + 1).forEach((leftIndex: number) => {
+            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                 }, (col: number) => {
@@ -28,7 +28,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                 }, this);
             });
         });
-        _.range(House.SIZE).forEach((leftIndex: number) => {
+        _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, 1, leftIndex, (cageM: CageModel) => {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
             }, (nonet: number) => {
@@ -39,7 +39,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
 }
 
 function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy) {
-    const nHouseCellCount = n * House.SIZE;
+    const nHouseCellCount = n * House.CELL_COUNT;
     const nHouseSum = n * House.SUM;
 
     const rightIndexExclusive = leftIndex + n;

@@ -88,10 +88,10 @@ export class DailyKillerSudokuPuzzlePage {
         log.info('Reflecting puzzle solution by sending input commands ...');
 
         const solutionCommands = new Array<KeyboardCommand>();
-        _.range(House.SIZE).forEach((row: number) => {
-            _.range(House.SIZE).forEach((col: number) => {
+        _.range(House.CELL_COUNT).forEach((row: number) => {
+            _.range(House.CELL_COUNT).forEach((col: number) => {
                 const num = solution.data[row][col];
-                const n = row * House.SIZE + col + 1;
+                const n = row * House.CELL_COUNT + col + 1;
                 solutionCommands.push({
                     selector: SELECTOR_NTH_CELL(n),
                     press: `${num}` as KeyInput

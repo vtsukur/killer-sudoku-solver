@@ -5,8 +5,8 @@ describe('House tests', () => {
         expect(House.COUNT_OF_ONE_TYPE).toEqual(9);
     });
 
-    test('House size is 9', () => {
-        expect(House.SIZE).toEqual(9);
+    test('House Cell count is 9', () => {
+        expect(House.CELL_COUNT).toEqual(9);
     });
 
     test('House sum is 45', () => {

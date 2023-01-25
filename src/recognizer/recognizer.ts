@@ -158,8 +158,8 @@ function findFirstSignificantCoord(map: Map<number, number>, isReverse = false) 
 function createCellContours(gridContour: GridContour) {
     const cellContoursMatrix = Grid.newMatrix();
 
-    _.range(House.SIZE).forEach(row => {
-        _.range(House.SIZE).forEach(col => {
+    _.range(House.CELL_COUNT).forEach(row => {
+        _.range(House.CELL_COUNT).forEach(col => {
             cellContoursMatrix[row][col] = new CellContour(Cell.at(row, col), gridContour.cellRect(row, col));
         });
     });
@@ -181,8 +181,8 @@ function groupCageContoursByCells(cellContoursMatrix: Array<Array<CellContour>>,
 function determineCageContoursByCells(cellContoursMatrix: Array<Array<CellContour>>) {
     const cageContours = new Array<CageContour>();
 
-    _.range(House.SIZE).forEach(row => {
-        _.range(House.SIZE).forEach(col => {
+    _.range(House.CELL_COUNT).forEach(row => {
+        _.range(House.CELL_COUNT).forEach(col => {
             const cellContour = cellContoursMatrix[row][col];
             if (!cellContour.cageFound) {
                 const cageContour = new CageContour();
@@ -196,7 +196,7 @@ function determineCageContoursByCells(cellContoursMatrix: Array<Array<CellContou
 }
 
 function determineCageContoursByCellsDFS(cellContoursMatrix: Array<Array<CellContour>>, row: number, col: number, cageContour: CageContour) {
-    if (!_.inRange(row, 0, House.SIZE) || !_.inRange(col, 0, House.SIZE)) return;
+    if (!_.inRange(row, 0, House.CELL_COUNT) || !_.inRange(col, 0, House.CELL_COUNT)) return;
 
     const cellContour = cellContoursMatrix[row][col];
     if (cellContour.cageFound) return;

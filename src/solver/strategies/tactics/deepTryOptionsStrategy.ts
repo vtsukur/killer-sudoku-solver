@@ -69,10 +69,10 @@ export class DeepTryOptionsStrategy extends Strategy {
 
 function findCellMTarget(model: MasterModel) {
     const cellNumOptsMap = new Map();
-    _.range(House.SIZE).forEach((index: number) => cellNumOptsMap.set(index + 1, []));
+    _.range(House.CELL_COUNT).forEach((index: number) => cellNumOptsMap.set(index + 1, []));
 
-    _.range(House.SIZE).forEach((row: number) => {
-        _.range(House.SIZE).forEach((col: number) => {
+    _.range(House.CELL_COUNT).forEach((row: number) => {
+        _.range(House.CELL_COUNT).forEach((col: number) => {
             const cellM = model.cellModelAt(row, col);
             cellNumOptsMap.get(cellM.numOpts().size).push(cellM);
         });

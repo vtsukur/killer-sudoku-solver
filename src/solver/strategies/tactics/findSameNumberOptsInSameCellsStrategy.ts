@@ -18,9 +18,9 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
     
         this._model.houseModels.forEach(houseM => {
-            const cellKeysByNum: Array<Array<string>> = new Array(House.SIZE).fill([]).map(() => []);
-            const cellRowsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
-            const cellColsByNum: Array<Array<number>> = new Array(House.SIZE).fill([]).map(() => []);
+            const cellKeysByNum: Array<Array<string>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
+            const cellRowsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
+            const cellColsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellMMap = new Map();
             for (const { row, col } of houseM.cellsIterator()) {
                 const key = Cell.keyOf(row, col);
@@ -93,7 +93,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
 }
 
 function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reducedCellMs: ReducedCellModels) {
-    _.range(0, House.SIZE).forEach(numIndex => {
+    _.range(0, House.CELL_COUNT).forEach(numIndex => {
         const num = numIndex + 1;
 
         const numOccurencesKeyToHouseMap = new Map();
@@ -114,7 +114,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
         for (const entry of numOccurencesKeyToHouseMap.values()) {
             if (entry.perpendicularHouseIndices.length === 2 && entry.perpendicularHouseIndices.length === entry.houses.size) {
                 const directHouseIndicesSet = new Set<number>(Array.from<HouseModel>(entry.houses).map(houseM => houseM.index));
-                _.range(0, House.SIZE).forEach(directHouseIndex => {
+                _.range(0, House.CELL_COUNT).forEach(directHouseIndex => {
                     if (directHouseIndicesSet.has(directHouseIndex)) return;
 
                     for (const perpendicularHouseIndex of entry.perpendicularHouseIndices) {

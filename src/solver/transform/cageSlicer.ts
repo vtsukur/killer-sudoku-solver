@@ -76,7 +76,7 @@ export class CageSlicer {
     }
 
     static sliceBy(cageToSlice: Cage, sliceIndexFn: (cell: Cell) => number) {
-        const slices: Array<Array<Cell>> = new Array(House.SIZE).fill([]).map(() => []);
+        const slices: Array<Array<Cell>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
         slices[0].push(Cell.at(0, 0));
         cageToSlice.cells.forEach((cell: Cell) => {
             const index = sliceIndexFn(cell);

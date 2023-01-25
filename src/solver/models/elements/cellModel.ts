@@ -15,7 +15,7 @@ export class CellModel {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new Set(_.range(House.SIZE).map(i => i + 1));
+        this._numOpts = new Set(_.range(House.CELL_COUNT).map(i => i + 1));
         this._withinCageMs = new Set();
     }
 

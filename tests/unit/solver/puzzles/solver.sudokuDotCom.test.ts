@@ -184,10 +184,10 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);
         expect(model.cellModelAt(2, 7).solved).toBe(true);
 
-        _.range(House.SIZE).forEach(index => {
-            expect(model.rowModel(index).cageModels.length).toBe(House.SIZE);
-            expect(model.columnModel(index).cageModels.length).toBe(House.SIZE);
-            expect(model.nonetModel(index).cageModels.length).toBe(House.SIZE);
+        _.range(House.CELL_COUNT).forEach(index => {
+            expect(model.rowModel(index).cageModels.length).toBe(House.CELL_COUNT);
+            expect(model.columnModel(index).cageModels.length).toBe(House.CELL_COUNT);
+            expect(model.nonetModel(index).cageModels.length).toBe(House.CELL_COUNT);
         });
     });
 });

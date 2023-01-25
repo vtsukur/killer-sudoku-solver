@@ -9,7 +9,7 @@ export class CagesAreaModel {
     readonly nonOverlappingCellsSet = new Set<Cell>();
     sum = 0;
 
-    constructor(cages: ReadonlyArray<Cage>, absMaxAreaCellCount = House.SIZE) {
+    constructor(cages: ReadonlyArray<Cage>, absMaxAreaCellCount = House.CELL_COUNT) {
         this.cages = cages;
 
         cages.forEach(cage => {

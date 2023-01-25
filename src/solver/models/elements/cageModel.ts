@@ -52,7 +52,7 @@ export class CageModel {
         this._firstCell = cage.cells[0];
         this.cellMs = cellMs;
         this._canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
-        this.minRow = House.SIZE + 1;
+        this.minRow = House.CELL_COUNT + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
         this.maxCol = this.maxRow;
@@ -369,7 +369,7 @@ export class CageModel {
         });
 
         const commonComboNums = new Set();
-        _.range(1, House.SIZE + 1).forEach(num => {
+        _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
             for (const combo of this._combosMap.values()) {
                 const comboSet = new Set(combo); // avoid creating set and use cache instead

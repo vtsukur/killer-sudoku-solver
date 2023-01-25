@@ -15,7 +15,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
     
         const formulas = new Formulas();
     
-        _.range(0, House.SIZE).forEach((index: number) => {
+        _.range(0, House.CELL_COUNT).forEach((index: number) => {
             const nonetM = this._model.nonetModels[index];
             const area = findAreaWithSingleInnieOrOutieCell(nonetM, this._model);
             if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
@@ -158,7 +158,7 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
     nonetM.cageModels.filter(cageM => cageM.derivedFromInputCage).
         forEach(cageM => areaModel.addCageM(cageM));
 
-    if (areaModel.innerCellMs.size === House.SIZE && areaModel.outerCellMs.size === 0) return areaModel;
+    if (areaModel.innerCellMs.size === House.CELL_COUNT && areaModel.outerCellMs.size === 0) return areaModel;
 
     for (const { row, col } of nonetM.cellsIterator()) {
         if (areaModel.hasCellAt(row, col)) continue;

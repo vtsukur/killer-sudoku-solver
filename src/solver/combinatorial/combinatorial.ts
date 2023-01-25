@@ -5,15 +5,15 @@ import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
 
-const MIN_SUMS_PER_COUNT = new Array(House.SIZE);
-const MAX_SUMS_PER_COUNT = new Array(House.SIZE);
-_.range(House.SIZE).forEach((count: number) => {
+const MIN_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
+const MAX_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
+_.range(House.CELL_COUNT).forEach((count: number) => {
     if (count == 0) {
         MIN_SUMS_PER_COUNT[count] = 1;
-        MAX_SUMS_PER_COUNT[count] = House.SIZE;
+        MAX_SUMS_PER_COUNT[count] = House.CELL_COUNT;
     } else {
         MIN_SUMS_PER_COUNT[count] = MIN_SUMS_PER_COUNT[count - 1] + (count + 1);
-        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (House.SIZE - count);
+        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (House.CELL_COUNT - count);
     }
 });
 
@@ -38,7 +38,7 @@ export function findNumCombinationsForSum(sum: number, count: number) {
                 combos.push(new Set(numbers));
             }
         } else {
-            for (let i = startWith; i <= House.SIZE; ++i) {
+            for (let i = startWith; i <= House.CELL_COUNT; ++i) {
                 if (currentSum + i > sum) {
                     return;
                 } else {
@@ -70,7 +70,7 @@ export function findSumCombinationsForHouse(houseM: HouseModel) {
     return preservedCageOrderCombos;
 }
 
-export function clusterCagesByOverlap(cages: ReadonlyArray<Cage>, cells: ReadonlyArray<Cell>, absMaxAreaCellCount = House.SIZE) {
+export function clusterCagesByOverlap(cages: ReadonlyArray<Cage>, cells: ReadonlyArray<Cell>, absMaxAreaCellCount = House.CELL_COUNT) {
     if (!cages.length) {
         return { nonOverlappingCages: [], overlappingCages: [] };
     }

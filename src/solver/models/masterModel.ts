@@ -54,7 +54,7 @@ export class MasterModel {
         this.rowModels = [];
         this.columnModels = [];
         this.nonetModels = [];
-        _.range(House.SIZE).forEach(i => {
+        _.range(House.CELL_COUNT).forEach(i => {
             this.rowModels.push(new RowModel(i, this.collectHouseCells(Row.cellsIterator(i))));
             this.columnModels.push(new ColumnModel(i, this.collectHouseCells(Column.cellsIterator(i))));
             this.nonetModels.push(new NonetModel(i, this.collectHouseCells(Nonet.cellsIterator(i))));
@@ -81,10 +81,10 @@ export class MasterModel {
         }
 
         // copy house models
-        this.rowModels = Array(House.SIZE);
-        this.columnModels = Array(House.SIZE);
-        this.nonetModels = Array(House.SIZE);
-        _.range(House.SIZE).forEach(index => {
+        this.rowModels = Array(House.CELL_COUNT);
+        this.columnModels = Array(House.CELL_COUNT);
+        this.nonetModels = Array(House.CELL_COUNT);
+        _.range(House.CELL_COUNT).forEach(index => {
             this.rowModels[index] = model.rowModels[index].deepCopyWithoutCageModels();
             this.copyHouseCageMs(model.rowModels[index], this.rowModels[index]);
             this.columnModels[index] = model.columnModels[index].deepCopyWithoutCageModels();
@@ -126,8 +126,8 @@ export class MasterModel {
         const validate = function(bool: boolean) {
             if (!bool) throw 'false';
         };
-        _.range(House.SIZE).forEach(row => {
-            _.range(House.SIZE).forEach(col => {
+        _.range(House.CELL_COUNT).forEach(row => {
+            _.range(House.CELL_COUNT).forEach(col => {
                 validate(this.cellModelAt(row, col) !== model.cellModelAt(row, col));
 
                 const cellM = model.cellModelAt(row, col);
@@ -204,8 +204,8 @@ export class MasterModel {
     }
 
     applySolution(solution: Array<Array<number>>) {
-        _.range(House.SIZE).forEach(row => {
-            _.range(House.SIZE).forEach(col => {
+        _.range(House.CELL_COUNT).forEach(row => {
+            _.range(House.CELL_COUNT).forEach(col => {
                 this.placeNum(this.cellsMatrix[row][col], solution[row][col]);
             });
         });

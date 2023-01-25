@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
         const reducedCellMs = new ReducedCellModels();
     
         this._model.houseModels.forEach(houseM => {
-            _.range(1, House.SIZE + 1).forEach((num: number) => {
+            _.range(1, House.CELL_COUNT + 1).forEach((num: number) => {
                 const cageMsWithNum = new Array<CageModel>();
                 // consider overlapping vs non-overlapping cages
                 houseM.cageModels.forEach(cageM => {
@@ -140,7 +140,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
         // reduce house when specific number are within nonet's row or column
         this._model.nonetModels.forEach(nonetM => {
             const numMap = new Map();
-            _.range(1, House.SIZE + 1).forEach(num => numMap.set(num, {
+            _.range(1, House.CELL_COUNT + 1).forEach(num => numMap.set(num, {
                 rows: new Set(),
                 cols: new Set()
             }));
@@ -156,7 +156,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 }
             }
     
-            _.range(1, House.SIZE + 1).forEach(num => {
+            _.range(1, House.CELL_COUNT + 1).forEach(num => {
                 const entry = numMap.get(num);
                 if (entry.rows.size === 1) {
                     const index = entry.rows.values().next().value;
