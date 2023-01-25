@@ -4,8 +4,11 @@ import { Cage } from './cage';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
+type Cages = ReadonlyArray<Cage>;
+type CellKeysSet = ReadonlySet<string>;
+
 class Validator {
-    validate(cages: Array<Cage>) {
+    validate(cages: Cages) {
         this.validateCells(cages.flatMap(cage => cage.cells));
         this.validateCages(cages);
         return cages;
@@ -26,7 +29,7 @@ class Validator {
         this.throwValidationError(`Found ${errored.size} ${type} cell(s): ${joinSet(errored)}`);
     }
 
-    private validateCages(cages: Array<Cage>) {
+    private validateCages(cages: Cages) {
         const totalSumOfCages = _.sum(cages.map(cage => cage.sum));
         if (totalSumOfCages !== Grid.TOTAL_SUM) {
             this.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
@@ -39,9 +42,9 @@ class Validator {
 }
 
 class CellKeysWithinGrid {
-    readonly unique: ReadonlySet<string>;
-    readonly duplicates: ReadonlySet<string>;
-    readonly missing: ReadonlySet<string>;
+    readonly unique: CellKeysSet;
+    readonly duplicates: CellKeysSet;
+    readonly missing: CellKeysSet;
 
     constructor(cells: Array<Cell>) {
         const unique = this.unique = new Set<string>();
@@ -73,17 +76,17 @@ class CellKeysWithinGrid {
         return CellKeysWithinGrid.isNotEmpty(this.missing);
     }
 
-    private static isNotEmpty(set: ReadonlySet<string>) {
+    private static isNotEmpty(set: CellKeysSet) {
         return set.size > 0;
     }
 }
 
 export class Puzzle {
-    readonly cages: Array<Cage>;
-
     private static readonly _validator = new Validator();
 
-    constructor(cages: Array<Cage>) {
+    readonly cages: Cages;
+
+    constructor(cages: Cages) {
         this.cages = [...Puzzle._validator.validate(cages)];
     }
 }
