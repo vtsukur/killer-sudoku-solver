@@ -4,38 +4,36 @@ import { Cage } from './cage';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
-export class Puzzle {
-    readonly cages: Array<Cage>;
-
-    constructor(cages: Array<Cage>) {
-        this.cages = [...Puzzle.validate(cages)];
-    }
-
-    private static validate(cages: Array<Cage>) {
-        Puzzle.validateCageCells(cages.flatMap(cage => cage.cells));
-        Puzzle.validateCages(cages);
+class Validator {
+    validate(cages: Array<Cage>) {
+        this.validateCells(cages.flatMap(cage => cage.cells));
+        this.validateCages(cages);
         return cages;
     }
 
-    private static validateCageCells(cells: Array<Cell>) {
+    private validateCells(cells: Array<Cell>) {
         const { hasDuplicates, duplicates, hasMissing, missing } = new CellKeysWithinGrid(cells);
 
         if (hasMissing) {
-            Puzzle.throwValidationError(`Found ${missing.size} missing cell(s): ${joinSet(missing)}`);
+            this.throwCellsValidationError(missing, 'missing');
         }
         if (hasDuplicates) {
-            Puzzle.throwValidationError(`Found ${duplicates.size} duplicate cell(s): ${joinSet(duplicates)}`);
+            this.throwCellsValidationError(duplicates, 'duplicate');
         }
     }
 
-    private static validateCages(cages: Array<Cage>) {
+    private throwCellsValidationError(errored: ReadonlySet<string>, type: string) {
+        this.throwValidationError(`Found ${errored.size} ${type} cell(s): ${joinSet(errored)}`);
+    }
+
+    private validateCages(cages: Array<Cage>) {
         const totalSumOfCages = _.sum(cages.map(cage => cage.sum));
         if (totalSumOfCages !== Grid.TOTAL_SUM) {
             this.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
         }
     }
 
-    static throwValidationError(detailedMessage: string) {
+    private throwValidationError(detailedMessage: string) {
         throw `Invalid puzzle. ${detailedMessage}`;
     }
 }
@@ -77,5 +75,15 @@ class CellKeysWithinGrid {
 
     private static isNotEmpty(set: ReadonlySet<string>) {
         return set.size > 0;
+    }
+}
+
+export class Puzzle {
+    readonly cages: Array<Cage>;
+
+    private static readonly _validator = new Validator();
+
+    constructor(cages: Array<Cage>) {
+        this.cages = [...Puzzle._validator.validate(cages)];
     }
 }
