@@ -1,24 +1,22 @@
 import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
 import { ReadonlyCages } from './cage';
-import { CellKeysSet, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
+import { ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 
 export class Puzzle {
     readonly cages: ReadonlyCages;
 
     constructor(cages: ReadonlyCages) {
-        Puzzle.validateCellsForDuplicatesAndOrMissing(cages.flatMap(cage => cage.cells));
+        Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
         Puzzle.validateCagesTotalSumToBeGridSum(cages);
         this.cages = [...cages];
     }
 
-    private static validateCellsForDuplicatesAndOrMissing(val: ReadonlyCells) {
-        const unique: CellKeysSet = new Set();
-        const duplicates: CellKeysSet = new Set();
-        const missing: CellKeysSet = new Set();
-
-        for (const cell of val) {
+    private static validateForDuplicateAndMissingCells(cells: ReadonlyCells) {
+        const unique = new Set<string>();
+        const duplicates = new Set<string>();
+        for (const cell of cells) {
             if (unique.has(cell.key)) {
                 duplicates.add(cell.key);
             } else {
@@ -29,6 +27,7 @@ export class Puzzle {
             this.throwCellsValidationError(duplicates, 'duplicate');
         }
 
+        const missing = new Set<string>();
         if (unique.size < Grid.CELL_COUNT) {
             for (const { key } of Grid.cellsIterator()) {
                 if (!unique.has(key)) {
