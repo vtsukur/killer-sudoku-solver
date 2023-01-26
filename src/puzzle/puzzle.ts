@@ -1,12 +1,10 @@
 import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
 import { Cage } from './cage';
-import { Cell } from './cell';
+import { ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 
 type ReadonlyCages = ReadonlyArray<Cage>;
-type ReadonlyCells = ReadonlyArray<Cell>;
-type ReadonlyCellKeysSet = ReadonlySet<string>;
 
 class Validator {
     validate(cages: ReadonlyCages) {

@@ -1,9 +1,7 @@
 import * as _ from 'lodash';
 import { joinArray } from '../util/readableMessages';
-import { Cell } from './cell';
+import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
-
-type ReadonlyCells = ReadonlyArray<Cell>;
 
 export class Cage {
     readonly sum: number;
@@ -27,8 +25,8 @@ export class Cage {
     
     private static Builder = class {
         private readonly _sum: number;
-        private readonly _cells: Array<Cell> = [];
-        private readonly _cellKeys: Set<string> = new Set();
+        private readonly _cells: Cells = [];
+        private readonly _cellKeys: CellKeysSet = new Set();
 
         constructor(sum: number) {
             this._sum = sum;

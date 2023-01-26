@@ -45,3 +45,9 @@ export class Cell {
         return this.key;
     }
 }
+
+export type Cells = Array<Cell>;
+export type ReadonlyCells = ReadonlyArray<Cell>;
+
+export type CellKeysSet = Set<string>;
+export type ReadonlyCellKeysSet = ReadonlySet<string>;
