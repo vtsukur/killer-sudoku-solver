@@ -8,12 +8,12 @@ export class Puzzle {
     readonly cages: ReadonlyCages;
 
     constructor(cages: ReadonlyCages) {
-        Puzzle.validateCells(cages.flatMap(cage => cage.cells));
-        Puzzle.validateCages(cages);
+        Puzzle.validateCellsForDuplicatesAndOrMissing(cages.flatMap(cage => cage.cells));
+        Puzzle.validateCagesTotalSumToBeGridSum(cages);
         this.cages = [...cages];
     }
 
-    private static validateCells(val: ReadonlyCells) {
+    private static validateCellsForDuplicatesAndOrMissing(val: ReadonlyCells) {
         const unique: CellKeysSet = new Set();
         const duplicates: CellKeysSet = new Set();
         const missing: CellKeysSet = new Set();
@@ -45,7 +45,7 @@ export class Puzzle {
         Puzzle.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
     }
 
-    private static validateCages(val: ReadonlyCages) {
+    private static validateCagesTotalSumToBeGridSum(val: ReadonlyCages) {
         const totalSumOfCages = _.sum(val.map(cage => cage.sum));
         if (totalSumOfCages !== Grid.TOTAL_SUM) {
             Puzzle.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
