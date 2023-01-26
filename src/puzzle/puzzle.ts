@@ -4,94 +4,55 @@ import { ReadonlyCages } from './cage';
 import { CellKeysSet, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 
-class Validator {
-    validate(cages: ReadonlyCages) {
-        Validator.validateCells(cages.flatMap(cage => cage.cells));
-        Validator.validateCages(cages);
-        return cages;
+export class Puzzle {
+    readonly cages: ReadonlyCages;
+
+    constructor(cages: ReadonlyCages) {
+        Puzzle.validateCells(cages.flatMap(cage => cage.cells));
+        Puzzle.validateCages(cages);
+        this.cages = [...cages];
     }
 
-    private static validateCells(cells: ReadonlyCells) {
-        const { hasDuplicates, duplicates, hasMissing, missing } = new CellKeysWithinGrid(cells);
+    private static validateCells(val: ReadonlyCells) {
+        const unique: CellKeysSet = new Set();
+        const duplicates: CellKeysSet = new Set();
+        const missing: CellKeysSet = new Set();
 
-        if (hasMissing) {
-            Validator.throwCellsValidationError(missing, 'missing');
+        for (const cell of val) {
+            if (unique.has(cell.key)) {
+                duplicates.add(cell.key);
+            } else {
+                unique.add(cell.key);
+            }
         }
-        if (hasDuplicates) {
-            Validator.throwCellsValidationError(duplicates, 'duplicate');
+        if (duplicates.size > 0) {
+            this.throwCellsValidationError(duplicates, 'duplicate');
+        }
+
+        if (unique.size < Grid.CELL_COUNT) {
+            for (const { key } of Grid.cellsIterator()) {
+                if (!unique.has(key)) {
+                    missing.add(key);
+                }
+            }    
+            if (missing.size > 0) {
+                this.throwCellsValidationError(missing, 'missing');
+            }
         }
     }
 
     private static throwCellsValidationError(erroredKeys: ReadonlyCellKeysSet, type: string) {
-        Validator.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
+        Puzzle.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
     }
 
-    private static validateCages(cages: ReadonlyCages) {
-        const totalSumOfCages = _.sum(cages.map(cage => cage.sum));
+    private static validateCages(val: ReadonlyCages) {
+        const totalSumOfCages = _.sum(val.map(cage => cage.sum));
         if (totalSumOfCages !== Grid.TOTAL_SUM) {
-            Validator.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
+            Puzzle.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
         }
     }
 
     private static throwValidationError(detailedMessage: string) {
         throw `Invalid puzzle. ${detailedMessage}`;
-    }
-}
-
-class CellKeysWithinGrid {
-    private readonly _unique: CellKeysSet = new Set();
-    private readonly _duplicates: CellKeysSet = new Set();
-    private readonly _missing: CellKeysSet = new Set();
-
-    constructor(cells: ReadonlyCells) {
-        for (const cell of cells) {
-            if (this._unique.has(cell.key)) {
-                this._duplicates.add(cell.key);
-            } else {
-                this._unique.add(cell.key);
-            }
-        }
-
-        if (this._unique.size < Grid.CELL_COUNT) {
-            for (const { key } of Grid.cellsIterator()) {
-                if (!this._unique.has(key)) {
-                    this._missing.add(key);
-                }
-            }    
-        }
-    }
-
-    get unique(): ReadonlyCellKeysSet {
-        return this._unique;
-    }
-
-    get hasDuplicates() {
-        return CellKeysWithinGrid.isNotEmpty(this._duplicates);
-    }
-
-    get duplicates(): ReadonlyCellKeysSet {
-        return this._duplicates;
-    }
-
-    get hasMissing() {
-        return CellKeysWithinGrid.isNotEmpty(this._missing);
-    }
-
-    get missing(): ReadonlyCellKeysSet {
-        return this._missing;
-    }
-
-    private static isNotEmpty(set: ReadonlyCellKeysSet) {
-        return set.size > 0;
-    }
-}
-
-export class Puzzle {
-    private static readonly _validator = new Validator();
-
-    readonly cages: ReadonlyCages;
-
-    constructor(cages: ReadonlyCages) {
-        this.cages = [...Puzzle._validator.validate(cages)];
     }
 }

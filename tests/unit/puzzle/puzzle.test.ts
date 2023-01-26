@@ -57,7 +57,7 @@ describe('Puzzle tests', () => {
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
                 Cage.ofSum(16).at(8, 6).at(8, 8)/* and here comes the duplicate: */.at(0, 0).mk()
             )
-        ).toThrow('Invalid puzzle. Found 1 missing cell(s): (8, 7)');
+        ).toThrow('Invalid puzzle. Found 1 duplicate cell(s): (0, 0)');
     });
 
     test('Construction of invalid Puzzle in which sum of all Cages does not add up to 405', () => {
