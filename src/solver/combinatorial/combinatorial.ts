@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../puzzle/cage';
-import { Cell } from '../../puzzle/cell';
+import { ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
@@ -70,7 +70,7 @@ export function findSumCombinationsForHouse(houseM: HouseModel) {
     return preservedCageOrderCombos;
 }
 
-export function clusterCagesByOverlap(cages: ReadonlyArray<Cage>, cells: ReadonlyArray<Cell>, absMaxAreaCellCount = House.CELL_COUNT) {
+export function clusterCagesByOverlap(cages: ReadonlyArray<Cage>, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
     if (!cages.length) {
         return { nonOverlappingCages: [], overlappingCages: [] };
     }

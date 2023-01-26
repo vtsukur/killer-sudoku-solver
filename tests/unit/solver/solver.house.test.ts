@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../src/puzzle/cage';
-import { Cell } from '../../../src/puzzle/cell';
+import { Cell, Cells } from '../../../src/puzzle/cell';
 import { HouseModel } from '../../../src/solver/models/elements/houseModel';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
     index: number;
-    cells: Array<Cell>;
+    cells: Cells;
     cages: Array<Cage>;
 };
 

@@ -1,16 +1,16 @@
-import { Cell } from '../../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { CageModel } from './cageModel';
 
 type HouseCellsIteratorProducer = (index: number) => Iterable<Cell>;
 
 export class HouseModel {
     readonly index: number;
-    readonly cells: ReadonlyArray<Cell>;
+    readonly cells: ReadonlyCells;
 
     private readonly _cageMs: Array<CageModel> = [];
     private readonly _cellsIteratorProducer: HouseCellsIteratorProducer;
 
-    constructor(index: number, cells: ReadonlyArray<Cell>, cellsIteratorProducer: HouseCellsIteratorProducer) {
+    constructor(index: number, cells: ReadonlyCells, cellsIteratorProducer: HouseCellsIteratorProducer) {
         this.index = index;
         this.cells = cells;
         this._cellsIteratorProducer = cellsIteratorProducer;

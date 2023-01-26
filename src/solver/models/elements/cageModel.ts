@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Cell } from '../../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
@@ -75,7 +75,7 @@ export class CageModel {
         return copy;
     }
 
-    static positioningFlagsFor(cells: ReadonlyArray<Cell>) {
+    static positioningFlagsFor(cells: ReadonlyCells) {
         return new CageModel.PositioningFlags(cells);
     }
 
@@ -87,7 +87,7 @@ export class CageModel {
         readonly isWithinNonet;
         readonly isWithinHouse;
 
-        constructor(cells: ReadonlyArray<Cell>) {
+        constructor(cells: ReadonlyCells) {
             this.cells = cells;
             this.isSingleCellCage = cells.length === 1;
             this.isWithinRow = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.row);

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../puzzle/cage';
-import { Cell } from '../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Column } from '../../puzzle/column';
 import { Grid } from '../../puzzle/grid';
 import { House } from '../../puzzle/house';
@@ -150,7 +150,7 @@ export class MasterModel {
         });
     }
 
-    private collectHouseCells(iterator: Iterable<Cell>): Array<Cell> {
+    private collectHouseCells(iterator: Iterable<Cell>): ReadonlyCells {
         return Array.from(iterator).map((coords: Cell) => this.cellAt(coords.row, coords.col));
     }
 
