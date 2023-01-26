@@ -78,3 +78,5 @@ export class Cage {
         return this.key;
     }
 }
+
+export type ReadonlyCages = ReadonlyArray<Cage>;

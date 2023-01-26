@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../puzzle/cage';
-import { ReadonlyCells } from '../../puzzle/cell';
+import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
@@ -116,7 +116,7 @@ type Context = {
     cagesStack: Set<Cage>;
     remainingCagesStack: Set<Cage>;
     overlappingCagesStack: Set<Cage>;
-    areaCellKeysStack: Set<string>;
+    areaCellKeysStack: CellKeysSet;
     absMaxAreaCellCount: number;
 }
 

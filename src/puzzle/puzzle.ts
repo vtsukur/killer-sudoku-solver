@@ -1,10 +1,8 @@
 import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
-import { Cage } from './cage';
-import { ReadonlyCellKeysSet, ReadonlyCells } from './cell';
+import { ReadonlyCages } from './cage';
+import { CellKeysSet, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
-
-type ReadonlyCages = ReadonlyArray<Cage>;
 
 class Validator {
     validate(cages: ReadonlyCages) {
@@ -41,9 +39,9 @@ class Validator {
 }
 
 class CellKeysWithinGrid {
-    private readonly _unique = new Set<string>();
-    private readonly _duplicates = new Set<string>();
-    private readonly _missing = new Set<string>();
+    private readonly _unique: CellKeysSet = new Set();
+    private readonly _duplicates: CellKeysSet = new Set();
+    private readonly _missing: CellKeysSet = new Set();
 
     constructor(cells: ReadonlyCells) {
         for (const cell of cells) {

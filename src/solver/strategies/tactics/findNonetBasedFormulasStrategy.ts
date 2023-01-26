@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cell } from '../../../puzzle/cell';
+import { Cell, CellKeysSet } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { CageModel } from '../../models/elements/cageModel';
@@ -47,7 +47,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     private _sum;
     private _cageMs;
     private _cellMs;
-    private _cellKeys;
+    private _cellKeys: CellKeysSet;
     private _innerCellMs;
     private _outerCellMs;
     private _outerCageMs;
@@ -57,7 +57,7 @@ class ExpandableNonOverlappingNonetAreaModel {
         this._sum = 0;
         this._cageMs = new Set<CageModel>();
         this._cellMs = new Set<CellModel>();
-        this._cellKeys = new Set<string>();
+        this._cellKeys = new Set();
         this._innerCellMs = new Set<CellModel>();
         this._outerCellMs = new Set<CellModel>();
         this._outerCageMs = new Set<CageModel>();
