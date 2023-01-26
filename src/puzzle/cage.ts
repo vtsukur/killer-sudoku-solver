@@ -3,19 +3,20 @@ import { joinArray } from '../util/readableMessages';
 import { Cell } from './cell';
 import { Grid } from './grid';
 
+type ReadonlyCells = ReadonlyArray<Cell>;
+
 export class Cage {
     readonly sum: number;
-    readonly cells: Array<Cell>;
+    readonly cells: ReadonlyCells;
     readonly key: string;
 
-    private constructor(sum: number, cells: Array<Cell>) {
+    private constructor(sum: number, cells: ReadonlyCells) {
         this.sum = sum;
-        this.cells = [...cells];
-        this.cells.sort();
+        this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
     }
 
-    private static keyOf(sum: number, cells: Array<Cell>) {
+    private static keyOf(sum: number, cells: ReadonlyCells) {
         return `${sum} [${joinArray(cells)}]`;
     }
 
@@ -46,7 +47,7 @@ export class Cage {
             return this;
         }
 
-        get cells(): ReadonlyArray<Cell> {
+        get cells(): ReadonlyCells {
             return this._cells;
         }
 
@@ -59,10 +60,10 @@ export class Cage {
         }
     };
     
-    private static MAX_SUM_RANGE_EXCLUSIVE = Grid.TOTAL_SUM + 1;
+    private static _MAX_SUM_RANGE_EXCLUSIVE = Grid.TOTAL_SUM + 1;
     private static validateSum(val: number) {
-        if (!_.inRange(val, 1, Cage.MAX_SUM_RANGE_EXCLUSIVE)) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage.MAX_SUM_RANGE_EXCLUSIVE}). Actual: ${val}`);
+        if (!_.inRange(val, 1, Cage._MAX_SUM_RANGE_EXCLUSIVE)) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage._MAX_SUM_RANGE_EXCLUSIVE}). Actual: ${val}`);
         }
         return val;
     }
