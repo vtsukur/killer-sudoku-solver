@@ -18,14 +18,14 @@ export class Cell {
     }
 
     private static validateRow(val: number) {
-        return Cell.validate2DIndex('Row', val);
+        return Cell.validate2DIndex(val, 'Row');
     }
 
     private static validateCol(val: number) {
-        return Cell.validate2DIndex('Column', val);
+        return Cell.validate2DIndex(val, 'Column');
     }
 
-    private static validate2DIndex(type: string, val: number) {
+    private static validate2DIndex(val: number, type: string) {
         if (!_.inRange(val, 0, Grid.SIDE_LENGTH)) {
             throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_LENGTH}). Actual: ${val}`;
         } else {
