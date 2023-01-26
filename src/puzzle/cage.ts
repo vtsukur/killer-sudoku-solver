@@ -58,7 +58,7 @@ export class Cage {
         }
     };
     
-    private static _MAX_SUM_RANGE_EXCLUSIVE = Grid.TOTAL_SUM + 1;
+    private static _MAX_SUM_RANGE_EXCLUSIVE = Grid.SUM + 1;
     private static validateSum(val: number) {
         if (!_.inRange(val, 1, Cage._MAX_SUM_RANGE_EXCLUSIVE)) {
             Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage._MAX_SUM_RANGE_EXCLUSIVE}). Actual: ${val}`);

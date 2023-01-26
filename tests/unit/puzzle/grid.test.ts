@@ -12,7 +12,7 @@ describe('Grid tests', () => {
     });
 
     test('Sum of all cells in the grid is 405', () => {
-        expect(Grid.TOTAL_SUM).toEqual(405);
+        expect(Grid.SUM).toEqual(405);
     });
 
     test('Determination of Cell indices within Grid', () => {

@@ -9,7 +9,7 @@ export class Puzzle {
 
     constructor(cages: ReadonlyCages) {
         Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
-        Puzzle.validateCagesTotalSumToBeGridSum(cages);
+        Puzzle.validateSumOfCagesToEqualGridSum(cages);
         this.cages = [...cages];
     }
 
@@ -44,10 +44,10 @@ export class Puzzle {
         Puzzle.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
     }
 
-    private static validateCagesTotalSumToBeGridSum(val: ReadonlyCages) {
-        const totalSumOfCages = _.sum(val.map(cage => cage.sum));
-        if (totalSumOfCages !== Grid.TOTAL_SUM) {
-            Puzzle.throwValidationError(`Expected sum of all cages to be ${Grid.TOTAL_SUM}. Actual: ${totalSumOfCages}`);
+    private static validateSumOfCagesToEqualGridSum(cages: ReadonlyCages) {
+        const sumOfCages = _.sum(cages.map(cage => cage.sum));
+        if (sumOfCages !== Grid.SUM) {
+            Puzzle.throwValidationError(`Expected sum of cages to equal grid sum of ${Grid.SUM}. Actual: ${sumOfCages}`);
         }
     }
 

@@ -66,6 +66,6 @@ describe('Puzzle tests', () => {
                 // Abnormal Cage on the field: 116 instead of 16
                 Cage.ofSum(17).at(8, 6).at(8, 7).at(8, 8).mk()
             )
-        ).toThrow('Invalid puzzle. Expected sum of all cages to be 405. Actual: 406');
+        ).toThrow('Invalid puzzle. Expected sum of cages to equal grid sum of 405. Actual: 406');
     });
 });
