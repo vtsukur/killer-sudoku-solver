@@ -7,7 +7,7 @@ const NONET_SIDE_LENGTH = 3;
 class NonetAPI {
     readonly SIDE_LENGTH = NONET_SIDE_LENGTH;
 
-    indexForCellAt(row: number, col: number) {
+    forCellAt(row: number, col: number) {
         return to1D(
             colFrom1D(row, NONET_SIDE_LENGTH),
             colFrom1D(col, NONET_SIDE_LENGTH),
