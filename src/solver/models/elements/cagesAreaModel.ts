@@ -1,4 +1,4 @@
-import { Cage } from '../../../puzzle/cage';
+import { ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { clusterCagesByOverlap } from '../../combinatorial/combinatorial';
@@ -9,7 +9,7 @@ export class CagesAreaModel {
     readonly nonOverlappingCellsSet = new Set<Cell>();
     sum = 0;
 
-    constructor(cages: ReadonlyArray<Cage>, absMaxAreaCellCount = House.CELL_COUNT) {
+    constructor(cages: ReadonlyCages, absMaxAreaCellCount = House.CELL_COUNT) {
         this.cages = cages;
 
         cages.forEach(cage => {

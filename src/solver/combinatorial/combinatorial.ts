@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cage } from '../../puzzle/cage';
+import { Cage, Cages, ReadonlyCages } from '../../puzzle/cage';
 import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
@@ -70,7 +70,7 @@ export function findSumCombinationsForHouse(houseM: HouseModel) {
     return preservedCageOrderCombos;
 }
 
-export function clusterCagesByOverlap(cages: ReadonlyArray<Cage>, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
+export function clusterCagesByOverlap(cages: Cages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
     if (!cages.length) {
         return { nonOverlappingCages: [], overlappingCages: [] };
     }
@@ -121,7 +121,7 @@ type Context = {
 }
 
 // there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
-function findMaxNonOverlappingCagesArea(cages: ReadonlyArray<Cage>, absMaxAreaCellCount: number) {
+function findMaxNonOverlappingCagesArea(cages: ReadonlyCages, absMaxAreaCellCount: number) {
     const context: Context = {
         allCagesSet: new Set(cages),
         maxAreaSet: new Set(),
@@ -169,7 +169,7 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
     context.cagesStack.delete(cage);
 }
 
-function doFindForNonOverlappingCages(cages: ReadonlyArray<Cage>) {
+function doFindForNonOverlappingCages(cages: ReadonlyCages) {
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
     if (totalSum > House.SUM) {
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
@@ -206,7 +206,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyArray<Cage>) {
     return combos;
 }
 
-function doFindForOverlappingCages(cages: ReadonlyArray<Cage>) {
+function doFindForOverlappingCages(cages: ReadonlyCages) {
     if (cages.length === 0) return [];
 
     const combos = new Array<Array<Set<number>>>();
@@ -245,7 +245,7 @@ function merge(combosForNonOverlappingCages: Array<Array<Set<number>>>, combosFo
     }
 }
 
-function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: ReadonlyArray<Cage>, nonOverlappingCages: ReadonlyArray<Cage>, overlappingCages: ReadonlyArray<Cage>) {
+function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: ReadonlyCages, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages) {
     if (overlappingCages.length === 0) {
         return combinedCombos;
     }

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cage } from '../../../src/puzzle/cage';
+import { Cage, Cages } from '../../../src/puzzle/cage';
 import { Cell, Cells } from '../../../src/puzzle/cell';
 import { HouseModel } from '../../../src/solver/models/elements/houseModel';
 import { Solver } from '../../../src/solver/solver';
@@ -8,7 +8,7 @@ import { puzzleSamples } from '../puzzle/puzzleSamples';
 type ExpectedHouse = {
     index: number;
     cells: Cells;
-    cages: Array<Cage>;
+    cages: Cages;
 };
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {

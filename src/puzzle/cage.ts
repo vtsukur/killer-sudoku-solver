@@ -79,4 +79,5 @@ export class Cage {
     }
 }
 
+export type Cages = Array<Cage>;
 export type ReadonlyCages = ReadonlyArray<Cage>;
