@@ -7,7 +7,7 @@ import { InvalidProblemDefError } from './invalidProblemDefError';
 
 /**
  * Problem definition for Killer Sudoku puzzle described by {@link Cage}s.
- * 
+ *
  * @public
  */
 export class Puzzle {
@@ -18,7 +18,7 @@ export class Puzzle {
      * Constructs new Puzzle with the given {@link Cage}s validating that they construct valid problem definition.
      *
      * @param cages - Cages.
-     * 
+     *
      * @throws {@link InvalidProblemDefError} if:
      *  - `cages` have duplicate {@link Cell}s;
      *  - `cages` do not cover full {@link Grid};
@@ -58,7 +58,7 @@ export class Puzzle {
                 if (!unique.has(key)) {
                     missingKeys.add(key);
                 }
-            }    
+            }
             if (missingKeys.size > 0) {
                 this.throwCellsValidationError(missingKeys, 'missing');
             }
