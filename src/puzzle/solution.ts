@@ -40,7 +40,7 @@ export class Solution {
     /**
      * Returns human-readable string representation of the solution
      * in the form of matrix where each number in the row is separated by a space
-     * and rows are separated by OS-specific EOL (end-of-line) character.
+     * and rows are separated by OS-specific EOL (end of line) character.
      *
      * Sample representation:
      * ```
