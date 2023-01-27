@@ -22,7 +22,7 @@ export class Cage {
         Cage.validateSum(sum);
         return new this.Builder(sum);
     }
-    
+
     private static Builder = class {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
@@ -57,7 +57,7 @@ export class Cage {
             return new Cage(this._sum, this._cells);
         }
     };
-    
+
     private static _MAX_SUM_RANGE_EXCLUSIVE = Grid.SUM + 1;
     private static validateSum(val: number) {
         if (!_.inRange(val, 1, Cage._MAX_SUM_RANGE_EXCLUSIVE)) {

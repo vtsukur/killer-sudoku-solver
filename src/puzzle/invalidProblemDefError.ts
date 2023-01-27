@@ -1,6 +1,6 @@
 /**
  * Error signifying invalid definition of Killer Sudoku puzzle or its part.
- * 
+ *
  * @public
  */
 export class InvalidProblemDefError extends Error {
