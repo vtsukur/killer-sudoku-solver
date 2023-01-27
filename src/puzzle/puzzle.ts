@@ -14,28 +14,36 @@ export class Puzzle {
     }
 
     private static validateForDuplicateAndMissingCells(cells: ReadonlyCells) {
-        const unique = new Set<string>();
-        const duplicates = new Set<string>();
+        const uniqueKeys = this.validateForDuplicateCells(cells);
+        this.validateForMissingCells(uniqueKeys);
+    }
+
+    private static validateForDuplicateCells(cells: ReadonlyCells) {
+        const uniqueKeys = new Set<string>();
+        const duplicateKeys = new Set<string>();
         for (const cell of cells) {
-            if (unique.has(cell.key)) {
-                duplicates.add(cell.key);
+            if (uniqueKeys.has(cell.key)) {
+                duplicateKeys.add(cell.key);
             } else {
-                unique.add(cell.key);
+                uniqueKeys.add(cell.key);
             }
         }
-        if (duplicates.size > 0) {
-            this.throwCellsValidationError(duplicates, 'duplicate');
+        if (duplicateKeys.size > 0) {
+            this.throwCellsValidationError(duplicateKeys, 'duplicate');
         }
+        return uniqueKeys;
+    }
 
-        const missing = new Set<string>();
+    private static validateForMissingCells(unique: ReadonlyCellKeysSet) {
+        const missingKeys = new Set<string>();
         if (unique.size < Grid.CELL_COUNT) {
             for (const { key } of Grid.cellsIterator()) {
                 if (!unique.has(key)) {
-                    missing.add(key);
+                    missingKeys.add(key);
                 }
             }    
-            if (missing.size > 0) {
-                this.throwCellsValidationError(missing, 'missing');
+            if (missingKeys.size > 0) {
+                this.throwCellsValidationError(missingKeys, 'missing');
             }
         }
     }
