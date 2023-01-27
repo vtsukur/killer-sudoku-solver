@@ -4,9 +4,25 @@ import { ReadonlyCages } from './cage';
 import { CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 
+/**
+ * Problem definition for Killer Sudoku puzzle described by {@link Cage}s.
+ * 
+ * @public
+ */
 export class Puzzle {
+    /** Cages. */
     readonly cages: ReadonlyCages;
 
+    /**
+     * Constructs new Puzzle with the given {@link Cage}s validating that they construct valid problem definition.
+     *
+     * @param {ReadonlyCages} cages - Cages.
+     * 
+     * @throws Will throw error if:
+     * 1) `cages` have duplicate {@link Cell}s;
+     * 2) `cages` do not cover full {@link Grid};
+     * 3) total sum of `cages` is not equal to {@link Grid}'s sum.
+     */
     constructor(cages: ReadonlyCages) {
         Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
         Puzzle.validateSumOfCagesToEqualGridSum(cages);
