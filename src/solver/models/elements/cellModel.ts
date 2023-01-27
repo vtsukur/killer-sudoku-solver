@@ -76,4 +76,4 @@ export class CellModel {
         this._numOpts = new Set([val]);
         this._solved = true;
     }
-}   
+}

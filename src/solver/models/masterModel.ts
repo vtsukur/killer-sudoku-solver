@@ -140,7 +140,7 @@ export class MasterModel {
                     cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== reverseCellM));
                 }
 
-            });    
+            });
         });
     }
 

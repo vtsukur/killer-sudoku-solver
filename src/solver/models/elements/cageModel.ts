@@ -259,7 +259,7 @@ export class CageModel {
                 this.deleteComboArr(combo);
             }
         }
-        
+
         return modifiedCellMs;
     }
 
@@ -291,7 +291,7 @@ export class CageModel {
                 this.cellMsStack[step] = cellM;
                 const retVal = fn();
                 // this.cellMsStack[step] = undefined;
-                this.processedCellMs.delete(cellM); this.remainingCellMs.add(cellM);    
+                this.processedCellMs.delete(cellM); this.remainingCellMs.add(cellM);
                 return retVal;
             },
             mayNotProceedWithNum: function(num: number) {
@@ -321,7 +321,7 @@ export class CageModel {
                         if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
                             cellM.deleteNumOpt(num);
                             modifiedCellMs.add(cellM);
-                        }    
+                        }
                     });
                 });
             });
@@ -356,7 +356,7 @@ export class CageModel {
                         });
                     });
                 });
-            });    
+            });
         }
 
         return has;
@@ -523,7 +523,7 @@ export class CageModel {
             return reducedCellMs;
         }
         else {
-            return new Set();            
+            return new Set();
         }
     }
 
