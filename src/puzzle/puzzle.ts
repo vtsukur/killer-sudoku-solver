@@ -3,6 +3,7 @@ import { joinSet } from '../util/readableMessages';
 import { ReadonlyCages } from './cage';
 import { CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
+import { InvalidProblemDefError } from './invalidProblemDefError';
 
 /**
  * Problem definition for Killer Sudoku puzzle described by {@link Cage}s.
@@ -18,10 +19,10 @@ export class Puzzle {
      *
      * @param {ReadonlyCages} cages - Cages.
      * 
-     * @throws Will throw error if:
-     * 1) `cages` have duplicate {@link Cell}s;
-     * 2) `cages` do not cover full {@link Grid};
-     * 3) total sum of `cages` is not equal to {@link Grid}'s sum.
+     * @throws {@link InvalidProblemDefError} if:
+     *  - `cages` have duplicate {@link Cell}s;
+     *  - `cages` do not cover full {@link Grid};
+     *  - total sum of `cages` is not equal to {@link Grid}'s sum.
      */
     constructor(cages: ReadonlyCages) {
         Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
@@ -76,6 +77,6 @@ export class Puzzle {
     }
 
     private static throwValidationError(detailedMessage: string) {
-        throw `Invalid puzzle. ${detailedMessage}`;
+        throw new InvalidProblemDefError(`Invalid puzzle. ${detailedMessage}`);
     }
 }
