@@ -1,7 +1,7 @@
 import { Solution } from '../../../src/puzzle/solution';
 
 describe('Solution tests', () => {
-    test('Construction of Solution storing data and checking both data and toString representation', () => {
+    test('Construction of Solution storing numbers matrix and checking both numbers and `toString` representation', () => {
         const solution = new Solution([
             [ 5, 1, 3, 9, 2, 8, 4, 7, 6 ],
             [ 2, 4, 8, 3, 7, 6, 1, 9, 5 ],
@@ -14,7 +14,7 @@ describe('Solution tests', () => {
             [ 8, 5, 4, 1, 3, 9, 2, 6, 7 ]
         ]);
 
-        expect(solution.data).toEqual([
+        expect(solution.numbers).toEqual([
             [ 5, 1, 3, 9, 2, 8, 4, 7, 6 ],
             [ 2, 4, 8, 3, 7, 6, 1, 9, 5 ],
             [ 6, 7, 9, 4, 5, 1, 8, 2, 3 ],

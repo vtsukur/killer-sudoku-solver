@@ -90,7 +90,7 @@ export class DailyKillerSudokuPuzzlePage {
         const solutionCommands = new Array<KeyboardCommand>();
         _.range(House.CELL_COUNT).forEach((row: number) => {
             _.range(House.CELL_COUNT).forEach((col: number) => {
-                const num = solution.data[row][col];
+                const num = solution.numbers[row][col];
                 const n = row * House.CELL_COUNT + col + 1;
                 solutionCommands.push({
                     selector: SELECTOR_NTH_CELL(n),

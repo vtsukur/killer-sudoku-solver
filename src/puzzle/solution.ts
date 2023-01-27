@@ -3,7 +3,8 @@ import { EOL } from 'os';
 type NumbersMatrix = ReadonlyArray<ReadonlyArray<number>>;
 
 /**
- * Solution for Killer Sudoku puzzle in the form of numbers matrix.
+ * Solution for Killer Sudoku puzzle in the form of numbers matrix (array of arrays) indexed by row and then by column
+ * with support of human-readable string representation which may be accessed via {@link Solution#toString}.
  *
  * @public
  */
@@ -14,10 +15,10 @@ export class Solution {
      * For example, accessing last number (column index 8) in the second row (row index 1) looks as follows:
      * ```ts
      * const solution: Solution = ...;
-     * const lastNumberInSecondRow = solution.data[1][8];
+     * const lastNumberInSecondRow = solution.numbers[1][8];
      * ```
      */
-    readonly data: NumbersMatrix;
+    readonly numbers: NumbersMatrix;
 
     private readonly _asString: string;
 
@@ -27,11 +28,11 @@ export class Solution {
     /**
      * Constructs new Solution with the given numbers matrix.
      *
-     * @param data - Numbers matrix (array of arrays) which should be indexed by row and then by column.
+     * @param numbers - Numbers matrix (array of arrays) which should be indexed by row and then by column.
      */
-    constructor(data: NumbersMatrix) {
-        this.data = data;
-        this._asString = data.map(numRow => {
+    constructor(numbers: NumbersMatrix) {
+        this.numbers = numbers;
+        this._asString = numbers.map(numRow => {
             return numRow.join(Solution.COLUMN_SEPARATOR);
         }).join(Solution.ROW_SEPARATOR);
     }

@@ -8,7 +8,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_04_06);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 4, 3, 7, 8, 9, 1, 6, 2, 5 ],
@@ -25,7 +25,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-08-12) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_08_12);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 1, 3, 2, 9, 4, 7, 6, 8, 5 ],
@@ -42,7 +42,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-08-30) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_08_30);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 7, 6, 2, 8, 5, 1, 9, 4, 3 ],
@@ -59,7 +59,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-10-18) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_18);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 2, 6, 9, 3, 7, 8, 4, 1, 5 ],
@@ -76,7 +76,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-10-19) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_19);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 9, 4, 8, 6, 7, 2, 5, 3, 1 ],
@@ -93,7 +93,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-10-22) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_22);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 5, 6, 1, 3, 7, 4, 8, 2, 9 ],
@@ -110,7 +110,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-10-25) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_10_25);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 6, 5, 8, 4, 7, 9, 1, 2, 3 ],
@@ -127,7 +127,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-11-01) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_01);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 8, 7, 1, 9, 2, 6, 4, 3, 5 ],
@@ -144,7 +144,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for Daily Challenge (2022-11-10) by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_10);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 2, 5, 6, 4, 7, 3, 8, 9, 1 ],
@@ -161,7 +161,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
 
     test('Find solution for random expert level challenge by Sudoku.com', () => {
         const solver = new Solver(sudokuDotCom.randomExpertLevelChallenge);
-        const { data } = solver.solve();
+        const { numbers: data } = solver.solve();
 
         expect(data).toEqual([
             [ 6, 8, 5, 1, 3, 2, 4, 7, 9 ],
