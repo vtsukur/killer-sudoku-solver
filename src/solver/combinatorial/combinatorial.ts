@@ -99,7 +99,7 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
             } else {
                 overlappingCages.push(cage);
             }
-        });    
+        });
     }
 
     return {
@@ -194,7 +194,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
                     stack[step] = comboForSum;
 
                     comboForSumArr.forEach(num => checkingSet.add(num));
-                    combosRecursive(step + 1);    
+                    combosRecursive(step + 1);
                     comboForSumArr.forEach(num => checkingSet.delete(num));
                 }
             }
@@ -220,7 +220,7 @@ function doFindForOverlappingCages(cages: ReadonlyCages) {
             const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum) {
                 stack[step] = comboForSum;
-                combosRecursive(step + 1);    
+                combosRecursive(step + 1);
             }
         }
     }
@@ -240,7 +240,7 @@ function merge(combosForNonOverlappingCages: Array<Array<Set<number>>>, combosFo
             combosForOverlappingCages.forEach(combosRight => {
                 merged.push(combosLeft.concat(combosRight));
             });
-        });    
+        });
         return merged;
     }
 }
@@ -266,7 +266,7 @@ function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: Readonl
             });
             orderPreservedCombos.push(preservedOrderCombo);
         });
-        
+
         return orderPreservedCombos;
     }
 }
