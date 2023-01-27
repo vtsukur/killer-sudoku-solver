@@ -39,7 +39,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
             openImageIfNecessary(paths.imageOfPageWithSolvedPuzzle);
         });
     });
-    
+
     beforeEach(async () => {
         log.info('Launching Puppeteer with headless Chrome');
         browser = await puppeteer.launch();

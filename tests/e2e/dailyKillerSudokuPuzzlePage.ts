@@ -52,7 +52,7 @@ export class DailyKillerSudokuPuzzlePage {
         log.info(`Opening page ${url} ...`);
         await this._browserPage.goto(url);
         log.info('Page loaded');
-        
+
         await this.removeCookieBanner();
     }
 
