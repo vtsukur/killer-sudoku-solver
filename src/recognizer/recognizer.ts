@@ -41,8 +41,8 @@ export async function recognize(imagePath: string, taskId: number) {
     log.info('Detecting dotted cage contours ...');
     const contoursMatVector = new cv.MatVector();
     const dottedCageContours = findDottedCageContours(src, contoursMatVector);
-    log.info(`Detected ${dottedCageContours.length} dotted cage contours`);    
-    
+    log.info(`Detected ${dottedCageContours.length} dotted cage contours`);
+
     // find grid contour
     const gridContour = findGridContour(dottedCageContours);
     log.info(`Detected grid contour: ${gridContour}`);
