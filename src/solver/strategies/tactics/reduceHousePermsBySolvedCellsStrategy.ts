@@ -14,16 +14,16 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
             ].forEach(houseM => {
                 for (const { row, col } of houseM.cellsIterator()) {
                     if (row === cellM.cell.row && col === cellM.cell.col) continue;
-        
+
                     const aCellM = this._model.cellModelAt(row, col);
                     if (aCellM.hasNumOpt(num)) {
                         aCellM.deleteNumOpt(num);
                         reducedCellMs.addOne(aCellM);
                     }
-                }    
+                }
             });
         });
-    
+
         this._context.addCageModelsToReduceFrom(reducedCellMs);
     }
 }

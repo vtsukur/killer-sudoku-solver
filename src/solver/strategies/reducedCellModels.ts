@@ -11,7 +11,7 @@ export class ReducedCellModels {
         }
         return this;
     }
-    
+
     addOne(val: CellModel) {
         this._cellMs.add(val);
         this._impactedCageMs = ReducedCellModels.combine(this._impactedCageMs, val.withinCageModels);

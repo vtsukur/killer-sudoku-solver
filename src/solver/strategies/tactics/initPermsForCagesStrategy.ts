@@ -19,7 +19,7 @@ export class InitPermsForCagesStrategy extends Strategy {
                 cageModel.updateCombinations(combos);
             });
         });
-    
+
         this._context.setCageModelsToReduceToAll();
-    }    
+    }
 }

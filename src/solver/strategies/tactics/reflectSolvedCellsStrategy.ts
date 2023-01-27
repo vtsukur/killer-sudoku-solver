@@ -11,6 +11,6 @@ export class ReflectSolvedCellsStrategy extends Strategy {
             this.executeAnother(SliceCagesForSolvedCellsStrategy);
             this._context.clearRecentlySolvedCellModels();
             this._context.setCageModelsToReduceToAll();
-        }            
+        }
     }
 }

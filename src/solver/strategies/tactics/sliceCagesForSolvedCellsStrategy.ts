@@ -9,6 +9,6 @@ export class SliceCagesForSolvedCellsStrategy extends Strategy {
                 const firstChunkCage = Cage.ofSum(cellM.placedNum as number).at(cellM.cell.row, cellM.cell.col).mk();
                 this._context.cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
             }
-        });            
+        });
     }
 }

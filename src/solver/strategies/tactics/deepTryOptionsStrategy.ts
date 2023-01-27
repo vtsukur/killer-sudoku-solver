@@ -15,7 +15,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
         const cellMTarget = findCellMTarget(this._model);
         if (_.isUndefined(cellMTarget)) return;
-    
+
         const size = cellMTarget.numOpts().size;
         let solution;
         for (const tryNum of cellMTarget.numOpts()) {
@@ -23,7 +23,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOptions(new Set([ tryNum ]));
             ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
-    
+
             try {
                 ctxCpy.skipInit = true;
                 if (ctxCpy.depth === 1) {
@@ -44,7 +44,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                     throw e;
                 }
             }
-    
+
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
                 cellMTarget.reduceNumOptions(new Set([ tryNum ]));
@@ -54,7 +54,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                 break;
             }
         }
-    
+
         if (!_.isUndefined(solution)) {
             if (this._context.depth === 0) {
                 this._model.applySolution(solution as Array<Array<number>>);

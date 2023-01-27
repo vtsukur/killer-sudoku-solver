@@ -13,10 +13,10 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
         if (this._context.hasCageModelsToReduce) return;
 
         const reducedCellMs = new ReducedCellModels();
-    
+
         const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
-    
+
         this._model.houseModels.forEach(houseM => {
             const cellKeysByNum: Array<Array<CellKey>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellRowsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
@@ -42,7 +42,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             if (houseM instanceof ColumnModel) {
                 rowNumMapForCols.set(houseM, cellRowsByNum);
             }
-    
+
             const cellKeysByNumMap = new Map();
             cellKeysByNum.forEach((keys, index) => {
                 const keysKey = keys.join('');
@@ -56,7 +56,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                 }
                 cellKeysByNumMap.get(keysKey).nums.add(num);
             });
-    
+
             for (const entry of cellKeysByNumMap.values()) {
                 if (entry.keys.length > 1 && entry.keys.length === entry.nums.size) {
                     for (const key of entry.keys) {
@@ -73,14 +73,14 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                 }
             }
         });
-    
+
         findSameNumberOptsInSameCellsAcrossRowsOrColumns(
             this._model.rowModels,
             colNumMapForRows,
             (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(directHouseIndex, perpendicularHouseIndex),
             reducedCellMs
         );
-    
+
         findSameNumberOptsInSameCellsAcrossRowsOrColumns(
             this._model.columnModels,
             rowNumMapForCols,
@@ -110,7 +110,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
             }
             numOccurencesKeyToHouseMap.get(key).houses.add(houseM);
         });
-        
+
         for (const entry of numOccurencesKeyToHouseMap.values()) {
             if (entry.perpendicularHouseIndices.length === 2 && entry.perpendicularHouseIndices.length === entry.houses.size) {
                 const directHouseIndicesSet = new Set<number>(Array.from<HouseModel>(entry.houses).map(houseM => houseM.index));

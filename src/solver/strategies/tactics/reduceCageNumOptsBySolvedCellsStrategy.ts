@@ -9,15 +9,15 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
             const num = solvedCellM.placedNum as number;
             for (const cageM of solvedCellM.withinCageModels) {
                 if (cageM.canHaveDuplicateNums) continue;
-    
+
                 for (const cellM of cageM.cellMs) {
                     if (!_.isUndefined(cellM.placedNum)) continue;
-        
+
                     if (cellM.hasNumOpt(num)) {
                         cellM.deleteNumOpt(num);
                         reducedCellMs.addOne(cellM);
                     }
-                }    
+                }
             }
         });
         this._context.setCageModelsToReduceFrom(reducedCellMs);

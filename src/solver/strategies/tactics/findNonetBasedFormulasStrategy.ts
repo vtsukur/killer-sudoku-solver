@@ -12,9 +12,9 @@ import { Strategy } from '../strategy';
 export class FindNonetBasedFormulasStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
-    
+
         const formulas = new Formulas();
-    
+
         _.range(0, House.CELL_COUNT).forEach((index: number) => {
             const nonetM = this._model.nonetModels[index];
             const area = findAreaWithSingleInnieOrOutieCell(nonetM, this._model);
@@ -31,15 +31,15 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
                 }
             }
         });
-    
+
         const reducedCellMs = new ReducedCellModels();
         for (const formula of formulas.toArray()) {
             reducedCellMs.add(reduceByFormula(formula));
         }
         this._context.setCageModelsToReduceFrom(reducedCellMs);
-    
+
         return formulas;
-    }   
+    }
 }
 
 class ExpandableNonOverlappingNonetAreaModel {

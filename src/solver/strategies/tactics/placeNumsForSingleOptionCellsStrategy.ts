@@ -16,7 +16,7 @@ export class PlaceNumsForSingleOptionCellsStrategy extends Strategy {
                 }
             });
         });
-    
-        this._context.recentlySolvedCellModels = solved;    
+
+        this._context.recentlySolvedCellModels = solved;
     }
 }

@@ -66,7 +66,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             ctx.recentlySolvedCellModels = [ cellM ];
             strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
         }
-        
+
         ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());
     }
 }

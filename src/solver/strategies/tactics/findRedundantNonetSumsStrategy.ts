@@ -9,17 +9,17 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
         this._model.nonetModels.forEach(nonetM => {
             nonetCageMsMap.set(nonetM.index, new Set());
         });
-    
+
         for (const cageM of this._model.cageModelsMap.values()) {
             for (const cellM of cageM.cellMs) {
                 nonetCageMsMap.get(cellM.cell.nonet).add(cageM);
             }
         }
-    
+
         for (const entry of nonetCageMsMap.entries()) {
             const index = entry[0];
             const cageMs = entry[1];
-    
+
             const redundantCells = [];
             let cagesSum = 0;
             for (const cageM of cageMs) {
@@ -31,14 +31,14 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
                 }
                 cagesSum += cageM.cage.sum;
             }
-    
+
             if (redundantCells.length > 0 && redundantCells.length <= 5) {
                 const cageBuilder = Cage.ofSum(cagesSum - House.SUM);
                 redundantCells.forEach(cell => cageBuilder.cell(cell));
                 const cage = cageBuilder.mk();
-    
+
                 this._model.registerCage(cage, !CageModel.positioningFlagsFor(cage.cells).isWithinHouse);
             }
         }
-    }    
+    }
 }

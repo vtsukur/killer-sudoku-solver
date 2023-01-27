@@ -14,15 +14,15 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
         if (this._context.hasCageModelsToReduce) return;
 
         const reducedCellMs = new ReducedCellModels();
-    
+
         _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
             _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
                 const cellM = this._model.cellModelsMatrix[row][col];
                 if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
-    
+
                 const cellMsToCheck = collectCellMsToCheck(cellM, this._model);
                 const cageMsToCheck = collectCageMsToCheck(cellMsToCheck);
-    
+
                 if (cageMsToCheck.size > 0) {
                     for (const cageMToCheck of cageMsToCheck) {
                         const comboSet = new Set(cageMToCheck.combos.next().value);
@@ -36,7 +36,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
                 }
             });
         });
-    
+
         this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
 }

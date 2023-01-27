@@ -22,7 +22,7 @@ export class Context {
         this.depth = 0;
         this.foundSolution = undefined;
     }
-    
+
     run(strategyFn: () => void) {
         if (!this.isSolutionFound) {
             strategyFn.apply(this);
