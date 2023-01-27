@@ -9,14 +9,12 @@ export class Cell {
     readonly col: number;
     readonly key: CellKey;
     readonly nonet: number;
-    readonly indexWithinGrid: number;
 
     private constructor(row: number, col: number) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
         this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.forCellAt(row, col);
-        this.indexWithinGrid = Grid.indexOfCellAt(row, col);
     }
 
     private static validateRow(val: number) {

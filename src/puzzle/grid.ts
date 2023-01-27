@@ -3,14 +3,29 @@ import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
-class GridAPI {
+/**
+ * Meta class for Killer Sudoku puzzle's grid
+ * which holds useful constants that describe grid's mathematical properties
+ * as well as utility methods that simplify iteration over grid's cells
+ * and creation of matrices with grid's size.
+ *
+ * @public
+ */
+class GridMeta {
+    /**
+     * Length of Grid's side in cells.
+     */
     readonly SIDE_LENGTH = 9;
-    readonly CELL_COUNT = this.SIDE_LENGTH * this.SIDE_LENGTH;
-    readonly SUM = this.SIDE_LENGTH * House.SUM;
 
-    indexOfCellAt(row: number, col: number) {
-        return row * this.SIDE_LENGTH + col;
-    }
+    /**
+     * Total amount of {@link Cell}s on the Grid.
+     */
+    readonly CELL_COUNT = this.SIDE_LENGTH * this.SIDE_LENGTH;
+
+    /**
+     * Total sum of all numbers on the Grid.
+     */
+    readonly SUM = this.SIDE_LENGTH * House.SUM;
 
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
@@ -26,4 +41,4 @@ class GridAPI {
     }
 }
 
-export const Grid = Object.freeze(new GridAPI());
+export const Grid = Object.freeze(new GridMeta());

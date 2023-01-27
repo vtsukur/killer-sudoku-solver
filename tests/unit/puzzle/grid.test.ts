@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
 
@@ -13,16 +12,6 @@ describe('Grid tests', () => {
 
     test('Sum of all cells in the grid is 405', () => {
         expect(Grid.SUM).toEqual(405);
-    });
-
-    test('Determination of Cell indices within Grid', () => {
-        let indexWithinGrid = 0;
-        _.range(Grid.SIDE_LENGTH).forEach(row => {
-            _.range(Grid.SIDE_LENGTH).forEach(col => {
-                expect(Grid.indexOfCellAt(row, col)).toBe(indexWithinGrid);
-                indexWithinGrid++;
-            });
-        });
     });
 
     test('Iteration over Cells', () => {
