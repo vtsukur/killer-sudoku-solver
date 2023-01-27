@@ -22,7 +22,7 @@ export class Puzzle {
      * @throws {@link InvalidProblemDefError} if:
      *  - `cages` have duplicate {@link Cell}s;
      *  - `cages` do not cover full {@link Grid};
-     *  - total sum of `cages` is not equal to {@link Grid}'s sum.
+     *  - sums of `cages` add up to {@link Grid}'s sum.
      */
     constructor(cages: ReadonlyCages) {
         Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
