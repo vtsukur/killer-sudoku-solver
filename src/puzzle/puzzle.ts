@@ -17,7 +17,7 @@ export class Puzzle {
     /**
      * Constructs new Puzzle with the given {@link Cage}s validating that they construct valid problem definition.
      *
-     * @param {ReadonlyCages} cages - Cages.
+     * @param cages - Cages.
      * 
      * @throws {@link InvalidProblemDefError} if:
      *  - `cages` have duplicate {@link Cell}s;
