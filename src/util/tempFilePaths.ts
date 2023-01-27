@@ -9,8 +9,8 @@ export class TempFilePaths {
 
     recreateBaseDirSync() {
         fs.rmSync(this.baseDir, { recursive: true, force: true });
-        fs.mkdirSync(this.baseDir, { recursive: true });   
-        return this; 
+        fs.mkdirSync(this.baseDir, { recursive: true });
+        return this;
     }
 
     filePath(shortFileName: string) {
