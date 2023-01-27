@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cell } from '../../../puzzle/cell';
+import { Cell, CellKey } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
@@ -18,7 +18,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
     
         this._model.houseModels.forEach(houseM => {
-            const cellKeysByNum: Array<Array<string>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
+            const cellKeysByNum: Array<Array<CellKey>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellRowsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellColsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellMMap = new Map();

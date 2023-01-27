@@ -2,10 +2,12 @@ import * as _ from 'lodash';
 import { Grid } from './grid';
 import { Nonet } from './nonet';
 
+export type CellKey = string;
+
 export class Cell {
     readonly row: number;
     readonly col: number;
-    readonly key: string;
+    readonly key: CellKey;
     readonly nonet: number;
     readonly indexWithinGrid: number;
 
@@ -33,7 +35,7 @@ export class Cell {
         }
     }
 
-    static keyOf(row: number, col: number) {
+    static keyOf(row: number, col: number): CellKey {
         return `(${row}, ${col})`;
     }
 
@@ -49,5 +51,5 @@ export class Cell {
 export type Cells = Array<Cell>;
 export type ReadonlyCells = ReadonlyArray<Cell>;
 
-export type CellKeysSet = Set<string>;
-export type ReadonlyCellKeysSet = ReadonlySet<string>;
+export type CellKeysSet = Set<CellKey>;
+export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;

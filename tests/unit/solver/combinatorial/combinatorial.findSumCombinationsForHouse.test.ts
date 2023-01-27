@@ -1,12 +1,12 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
-import { Cell } from '../../../../src/puzzle/cell';
+import { Cell, CellKey } from '../../../../src/puzzle/cell';
 import { Row } from '../../../../src/puzzle/row';
 import { findSumCombinationsForHouse } from '../../../../src/solver/combinatorial/combinatorial';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 
 const houseMOf = (cages: ReadonlyCages) => {
-    const cellsMap: Map<string, Cell> = new Map();
+    const cellsMap: Map<CellKey, Cell> = new Map();
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
             cellsMap.set(cell.key, cell);
