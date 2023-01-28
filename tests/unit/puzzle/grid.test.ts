@@ -15,7 +15,7 @@ describe('Grid tests', () => {
     });
 
     test('Iteration over Cells', () => {
-        const cells = Array.from(Grid.cellsIterator());
+        const cells = Array.from(Grid.newCellsIterator());
 
         expect(cells).toEqual([
             Cell.at(0, 0), Cell.at(0, 1), Cell.at(0, 2), Cell.at(0, 3), Cell.at(0, 4), Cell.at(0, 5), Cell.at(0, 6), Cell.at(0, 7), Cell.at(0, 8),

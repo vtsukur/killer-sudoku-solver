@@ -33,7 +33,7 @@ export class Grid {
     }
 
     /**
-     * Produces new iterator over Grid's {@link Cell}s
+     * Constructs new iterator over Grid's {@link Cell}s
      * which consequently iterates from 'top left' `Cell` of the Grid to the 'right bottom' one.
      *
      * Rows are iterated consequently from first to last.
@@ -46,7 +46,7 @@ export class Grid {
      *
      * @returns new iterator over Grid's {@link Cell}s.
      */
-    static cellsIterator(): CellsIterator {
+    static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
                 colFrom1D(index, Grid.SIDE_CELL_COUNT),
@@ -55,6 +55,11 @@ export class Grid {
         }, Grid.CELL_COUNT);
     }
 
+    /**
+     * Constructs new matrix (array of arrays) of Grid's size indexed by row and then by column.
+     *
+     * @returns new matrix (array of arrays) of Grid's size indexed by row and then by column.
+     */
     static newMatrix() {
         return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => new Array(this.SIDE_CELL_COUNT));
     }
