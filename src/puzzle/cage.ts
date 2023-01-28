@@ -39,9 +39,16 @@ export class Cage {
      * Produces new `Cage` builder with the given sum of `Cage` `Cell`s
      * that can be further used to construct `Cage` by enumerating `Cell`s which denote the group.
      *
+     * Sample usage:
+     * ```ts
+     * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).mk();
+     * ```
+     *
      * @param sum - Sum of `Cage` `Cell`s.
      *
      * @returns new `Cage` builder with the given sum of `Cage` `Cell`s.
+     *
+     * @throws {@link InvalidProblemDefError} if `sum` is not within [1, `Grid.SUM`) range.
      */
     static ofSum(sum: number) {
         Cage.validateSum(sum);
@@ -67,7 +74,7 @@ export class Cage {
         return `${sum} [${joinArray(cells)}]`;
     }
 
-    private static Builder = class {
+    static Builder = class {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
         private readonly _cellKeys: CellKeysSet = new Set();
