@@ -43,7 +43,7 @@ export class Cage {
      *
      * Sample of complete and valid `Cage` construction:
      * ```ts
-     * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).mk();
+     * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).new();
      * ```
      *
      * @param sum - Sum of `Cage` `Cell`s.
@@ -93,7 +93,7 @@ export class Cage {
          *
          * Sample of complete and valid `Cage` construction:
          * ```ts
-         * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).mk();
+         * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).new();
          *
          * ```
          * @param sum - Sum of `Cage` `Cell`s.
