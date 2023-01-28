@@ -8,6 +8,8 @@ export type CellProducer = (index: number) => Cell;
 /**
  * Iterator over {@link Cell}s within a specific context like a `Grid` or a `House`.
  *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators
+ *
  * @public
  */
 export class CellsIterator implements Iterator<Cell> {
