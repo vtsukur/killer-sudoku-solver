@@ -27,7 +27,7 @@ export class CageContour {
     }
 
     private static cellIndexWithinGrid(cell: Cell) {
-        return cell.row * Grid.SIDE_LENGTH + cell.col;
+        return cell.row * Grid.SIDE_CELL_COUNT + cell.col;
     }
 
     get cells() {

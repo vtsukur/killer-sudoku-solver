@@ -15,8 +15,8 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
 
         const reducedCellMs = new ReducedCellModels();
 
-        _.range(0, Grid.SIDE_LENGTH).forEach((row: number) => {
-            _.range(0, Grid.SIDE_LENGTH).forEach((col: number) => {
+        _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: number) => {
+            _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: number) => {
                 const cellM = this._model.cellModelsMatrix[row][col];
                 if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
 

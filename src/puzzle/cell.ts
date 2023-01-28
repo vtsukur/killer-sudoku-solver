@@ -26,8 +26,8 @@ export class Cell {
     }
 
     private static validate2DIndex(val: number, type: string) {
-        if (!_.inRange(val, 0, Grid.SIDE_LENGTH)) {
-            throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_LENGTH}). Actual: ${val}`;
+        if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
+            throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`;
         } else {
             return val;
         }

@@ -3,7 +3,7 @@ import { Grid } from '../../../src/puzzle/grid';
 
 describe('Grid tests', () => {
     test('Grid side length is 9', () => {
-        expect(Grid.SIDE_LENGTH).toEqual(9);
+        expect(Grid.SIDE_CELL_COUNT).toEqual(9);
     });
 
     test('Grid has 81 cells', () => {
@@ -33,9 +33,9 @@ describe('Grid tests', () => {
     test('Creation of Grid matrix', () => {
         const matrix = Grid.newMatrix();
 
-        expect(matrix.length).toBe(Grid.SIDE_LENGTH);
+        expect(matrix.length).toBe(Grid.SIDE_CELL_COUNT);
         for (const row of matrix) {
-            expect(row.length).toBe(Grid.SIDE_LENGTH);
+            expect(row.length).toBe(Grid.SIDE_CELL_COUNT);
             for (const el of row) {
                 expect(el).toBeUndefined();
             }

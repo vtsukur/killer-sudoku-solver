@@ -4,8 +4,8 @@ import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 /**
- * Meta class for Killer Sudoku puzzle's grid
- * which holds useful constants that describe grid's mathematical properties
+ * Meta class for Killer Sudoku puzzle grid
+ * which holds useful constants that describe mathematical properties of any puzzle grid
  * as well as utility methods that simplify iteration over grid's cells
  * and creation of matrices with grid's size.
  *
@@ -13,31 +13,31 @@ import { House } from './house';
  */
 class GridMeta {
     /**
-     * Length of Grid's side in cells.
+     * Amount of {@link Cell}s on Grid's side.
      */
-    readonly SIDE_LENGTH = 9;
+    readonly SIDE_CELL_COUNT = 9;
 
     /**
      * Total amount of {@link Cell}s on the Grid.
      */
-    readonly CELL_COUNT = this.SIDE_LENGTH * this.SIDE_LENGTH;
+    readonly CELL_COUNT = this.SIDE_CELL_COUNT * this.SIDE_CELL_COUNT;
 
     /**
      * Total sum of all numbers on the Grid.
      */
-    readonly SUM = this.SIDE_LENGTH * House.SUM;
+    readonly SUM = this.SIDE_CELL_COUNT * House.SUM;
 
     cellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                colFrom1D(index, Grid.SIDE_LENGTH),
-                rowFrom1D(index, Grid.SIDE_LENGTH),
+                colFrom1D(index, Grid.SIDE_CELL_COUNT),
+                rowFrom1D(index, Grid.SIDE_CELL_COUNT),
             );
         }, Grid.CELL_COUNT);
     }
 
     newMatrix() {
-        return new Array(this.SIDE_LENGTH).fill(undefined).map(() => new Array(this.SIDE_LENGTH));
+        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => new Array(this.SIDE_CELL_COUNT));
     }
 }
 
