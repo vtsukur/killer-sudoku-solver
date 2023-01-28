@@ -3,7 +3,20 @@ import { Grid } from './grid';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 
+/**
+ * Human-readable key describing square's unique position on the `Grid`.
+ */
 export type CellKey = string;
+
+/**
+ * Mutable `Set` of human-readable `Cell` keys: {@link Cell#key}.
+ */
+export type CellKeysSet = Set<CellKey>;
+
+/**
+ * Readonly `Set` of human-readable `Cell` keys: {@link Cell#key}.
+ */
+export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
 
 /**
  * Single square on the Killer Sudoku `Grid`.
@@ -98,8 +111,12 @@ export class Cell {
     }
 }
 
+/**
+ * Mutable array of `Cell`s.
+ */
 export type Cells = Array<Cell>;
-export type ReadonlyCells = ReadonlyArray<Cell>;
 
-export type CellKeysSet = Set<CellKey>;
-export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
+/**
+ * Readonly array of `Cell`s.
+ */
+export type ReadonlyCells = ReadonlyArray<Cell>;
