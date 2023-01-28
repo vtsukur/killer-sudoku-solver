@@ -6,7 +6,7 @@ import { Row } from '../../../src/puzzle/row';
 describe('Row tests', () => {
     test('Iteration over Cells', () => {
         const cells = _.range(House.COUNT_OF_ONE_TYPE).map((row) => {
-            return Array.from(Row.cellsIterator(row));
+            return Array.from(Row.newCellsIterator(row));
         });
 
         expect(cells[0]).toEqual([

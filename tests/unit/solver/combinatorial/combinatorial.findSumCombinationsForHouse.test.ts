@@ -13,7 +13,7 @@ const houseMOf = (cages: ReadonlyCages) => {
         });
     });
     const cageMs = cages.map(cage => new CageModel(cage, []));
-    const houseM = new HouseModel(0, Array.from(cellsMap.values()), () => Row.cellsIterator(0));
+    const houseM = new HouseModel(0, Array.from(cellsMap.values()), () => Row.newCellsIterator(0));
     for (const cageM of cageMs) {
         houseM.addCageModel(cageM);
     }
