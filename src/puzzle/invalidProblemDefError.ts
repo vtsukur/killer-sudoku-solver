@@ -4,6 +4,7 @@
  * @public
  */
 export class InvalidProblemDefError extends Error {
+
     /**
      * Constructs new error with the given message.
      *
