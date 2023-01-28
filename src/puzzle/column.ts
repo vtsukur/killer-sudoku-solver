@@ -3,7 +3,7 @@ import { House } from './house';
 
 /**
  * Supportive class for Killer Sudoku puzzle `Column`
- * which holds utility method that simplifies iteration over `Column`'s {@link Cell}s.
+ * which holds utility method that simplifies iteration over `Column` {@link Cell}s.
  *
  * @public
  */

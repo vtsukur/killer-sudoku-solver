@@ -4,7 +4,7 @@ import { House } from './house';
 
 /**
  * Supportive class for Killer Sudoku puzzle `Nonet`
- * which holds utility method that simplifies iteration over `Nonet`'s {@link Cell}s.
+ * which holds utility method that simplifies iteration over `Nonet` {@link Cell}s.
  *
  * @public
  */
@@ -55,7 +55,7 @@ export class Nonet {
      * (3, 0) -> (3, 1) -> (3, 2) -> (4, 0) -> (4, 1) -> (4, 2) -> (5, 0) -> (5, 1) -> (5, 2) -> done
      * ```
      *
-     * @param col - Index of the `Nonet` to iterate `Cell`s for.
+     * @param nonet - Index of the `Nonet` to iterate `Cell`s for.
      *
      * @returns new iterator over {@link Cell}s for a `Nonet` with the given index.
      */
