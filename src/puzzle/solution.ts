@@ -1,5 +1,8 @@
 import { EOL } from 'os';
 
+/**
+ * Numbers matrix (array of arrays) indexed by row and then by column.
+ */
 type NumbersMatrix = ReadonlyArray<ReadonlyArray<number>>;
 
 /**
