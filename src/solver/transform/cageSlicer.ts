@@ -69,7 +69,7 @@ export class CageSlicer {
         const secondChunkCageBuilder = Cage.ofSum(cageToSlice.sum - firstChunkCage.sum);
         cageToSlice.cells.forEach(cell => {
             if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
-                secondChunkCageBuilder.cell(cell);
+                secondChunkCageBuilder.withCell(cell);
             }
         });
         return secondChunkCageBuilder.mk();

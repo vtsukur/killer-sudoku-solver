@@ -34,7 +34,7 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
 
             if (redundantCells.length > 0 && redundantCells.length <= 5) {
                 const cageBuilder = Cage.ofSum(cagesSum - House.SUM);
-                redundantCells.forEach(cell => cageBuilder.cell(cell));
+                redundantCells.forEach(cell => cageBuilder.withCell(cell));
                 const cage = cageBuilder.mk();
 
                 this._model.registerCage(cage, !CageModel.positioningFlagsFor(cage.cells).isWithinHouse);

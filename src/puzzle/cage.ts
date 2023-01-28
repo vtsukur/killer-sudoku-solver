@@ -116,7 +116,7 @@ export class Cage {
          * @throws {@link InvalidProblemDefError} if the given `Cell` describes invalid or duplicate `Cell`.
          */
         at(row: HouseIndex, col: HouseIndex) {
-            return this.cell(Cell.at(row, col));
+            return this.withCell(Cell.at(row, col));
         }
 
         /**
@@ -128,7 +128,7 @@ export class Cage {
          *
          * @throws {@link InvalidProblemDefError} if the given `Cell` describes duplicate `Cell`.
          */
-        cell(val: Cell) {
+        withCell(val: Cell) {
             if (this._cellKeys.has(val.key)) {
                 Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
             }

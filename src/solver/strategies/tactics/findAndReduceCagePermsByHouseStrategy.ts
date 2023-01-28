@@ -108,7 +108,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             if (cageM.positioningFlags.isSingleCellCage || cageM.positioningFlags.isWithinHouse || cageM.comboCount < 2) continue;
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
-                    const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).cell(numPlacementClue.singleCellForNum).mk());
+                    const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).withCell(numPlacementClue.singleCellForNum).mk());
                     checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as Array<Array<number>>, numPlacementClue.singleCellForNum, numPlacementClue.num, this._model, reducedCellMs);
                 }
             }
@@ -132,7 +132,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 shortComboSet.delete(num);
                 const shortCombo = Array.from(shortComboSet);
 
-                const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).cell(firstSingleCell).mk());
+                const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).withCell(firstSingleCell).mk());
                 checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this._model, reducedCellMs);
             }
         }

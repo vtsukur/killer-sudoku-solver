@@ -236,7 +236,7 @@ async function prepareCageSumImages(cageContours: Array<CageContour>, srcImage: 
         }
 
         const cageBuilder = Cage.ofSum(sum);
-        cageContour.cells.forEach(cell => cageBuilder.cell(cell));
+        cageContour.cells.forEach(cell => cageBuilder.withCell(cell));
         cages.push(cageBuilder.mk());
     }
 
