@@ -27,7 +27,7 @@ export class Row {
      * @returns new iterator over {@link Cell}s for a `Row` with the given index.
      */
     static newCellsIterator(row: number) {
-        return House.cellsIterator((col: number) => {
+        return House.newCellsIterator((col: number) => {
             return Cell.at(row, col);
         });
     }

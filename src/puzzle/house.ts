@@ -1,13 +1,11 @@
 import { CellProducer, CellsIterator } from './cellsIterator';
 
-class HouseAPI {
-    readonly COUNT_OF_ONE_TYPE = 9;
-    readonly CELL_COUNT = 9;
-    readonly SUM = 45;
+export class House {
+    static readonly COUNT_OF_ONE_TYPE = 9;
+    static readonly CELL_COUNT = 9;
+    static readonly SUM = 45;
 
-    cellsIterator(cellProducer: CellProducer) {
-        return new CellsIterator(cellProducer, House.COUNT_OF_ONE_TYPE);
+    static newCellsIterator(cellProducer: CellProducer) {
+        return new CellsIterator(cellProducer, this.COUNT_OF_ONE_TYPE);
     }
 }
-
-export const House = Object.freeze(new HouseAPI());

@@ -60,7 +60,7 @@ export class Nonet {
      * @returns new iterator over {@link Cell}s for a `Nonet` with the given index.
      */
     static newCellsIterator(nonet: number) {
-        return House.cellsIterator((index: number) => {
+        return House.newCellsIterator((index: number) => {
             const row = to1D(
                 colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
                 colFrom1D(index, Nonet.SIDE_CELL_COUNT),
