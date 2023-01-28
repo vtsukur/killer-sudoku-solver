@@ -22,7 +22,7 @@ export class Column {
      * (0, 3) -> (1, 3) -> (2, 3) -> ...  -> (7, 3) -> (8, 3)
      * ```
      *
-     * @param row - Index of the `Column` to iterate `Cell`s for.
+     * @param col - Index of the `Column` to iterate `Cell`s for.
      *
      * @returns new iterator over {@link Cell}s for a `Column` with the given index.
      */
