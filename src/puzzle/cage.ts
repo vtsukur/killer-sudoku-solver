@@ -180,5 +180,12 @@ export class Cage {
     }
 }
 
+/**
+ * Mutable array of `Cage`s.
+ */
 export type Cages = Array<Cage>;
+
+/**
+ * Readonly array of `Cage`s.
+ */
 export type ReadonlyCages = ReadonlyArray<Cage>;
