@@ -27,7 +27,7 @@ export class Nonet {
      *
      * @returns index of `Nonet` to which given {@link Cell} belongs to.
      */
-    static forCellAt(row: number, col: number) {
+    static indexForCellAt(row: number, col: number) {
         return to1D(
             colFrom1D(row, Nonet.SIDE_CELL_COUNT),
             colFrom1D(col, Nonet.SIDE_CELL_COUNT),
