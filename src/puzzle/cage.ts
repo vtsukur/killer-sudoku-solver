@@ -36,10 +36,10 @@ export class Cage {
     readonly key: string;
 
     /**
-     * Produces new `Cage` builder with the given sum of `Cage` `Cell`s
+     * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s
      * that can be further used to construct `Cage` by enumerating `Cell`s which denote the group.
      *
-     * Sample usage:
+     * Sample of complete and valid `Cage` construction:
      * ```ts
      * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).mk();
      * ```
@@ -48,7 +48,7 @@ export class Cage {
      *
      * @returns new `Cage` builder with the given sum of `Cage` `Cell`s.
      *
-     * @throws {@link InvalidProblemDefError} if `sum` is not within [1, `Grid.SUM`) range.
+     * @throws {@link InvalidProblemDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
      */
     static ofSum(sum: number) {
         Cage.validateSum(sum);
@@ -74,19 +74,56 @@ export class Cage {
         return `${sum} [${joinArray(cells)}]`;
     }
 
+    /**
+     * `Cage` Builder with fluent API that validates sum and `Cell`s which denote the group to not duplicate.
+     */
     static Builder = class {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
         private readonly _cellKeys: CellKeysSet = new Set();
 
+        /**
+         * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s.
+         *
+         * Sample of complete and valid `Cage` construction:
+         * ```ts
+         * const cage = Cage.ofSum(8).at(1, 3).at(1, 4).mk();
+         *
+         * ```
+         * @param sum - Sum of `Cage` `Cell`s.
+         *
+         * @returns new `Cage` builder with the given sum of `Cage` `Cell`s.
+         *
+         * @throws {@link InvalidProblemDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
+         */
         constructor(sum: number) {
+            Cage.validateSum(sum);
             this._sum = sum;
         }
 
+        /**
+         * Adds `Cell` to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         *
+         * @param row - Index of a `Row` that the `Cell` resides on.
+         * @param col - Index of a `Column` that the `Cell` resides on.
+         *
+         * @returns this Builder.
+         *
+         * @throws {@link InvalidProblemDefError} if the given `Cell` describes invalid or duplicate `Cell`.
+         */
         at(row: HouseIndex, col: HouseIndex) {
             return this.cell(Cell.at(row, col));
         }
 
+        /**
+         * Adds `Cell` to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         *
+         * @param val - `Cell` to add to `Cage` grouping.
+         *
+         * @returns this Builder.
+         *
+         * @throws {@link InvalidProblemDefError} if the given `Cell` describes duplicate `Cell`.
+         */
         cell(val: Cell) {
             if (this._cellKeys.has(val.key)) {
                 Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
@@ -96,14 +133,27 @@ export class Cage {
             return this;
         }
 
+        /**
+         * `Cell`s which denote the group that are currently accumulated by the Builder.
+         */
         get cells(): ReadonlyCells {
             return this._cells;
         }
 
+        /**
+         * Amount of `Cell`s which denote the group that are currently accumulated by the Builder.
+         */
         get cellCount() {
             return this._cells.length;
         }
 
+        /**
+         * Constructs new `Cage` with accumulated `Cell`s which denote a group and sum of these `Cell`s.
+         *
+         * @returns new `Cage` with accumulated `Cell`s which denote a group and sum of these `Cell`s.
+         *
+         * @throws {@link InvalidProblemDefError} if no `Cell`s were added to this Builder.
+         */
         mk() {
             return new Cage(this._sum, this._cells);
         }
