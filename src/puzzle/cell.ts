@@ -21,13 +21,13 @@ export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
 /**
  * Single square on the Killer Sudoku `Grid`.
  *
- * `Cell` API opens access to indices of a `Row` ({@link Cell#row}),
+ * `Cell` API provides access to indices of a `Row` ({@link Cell#row}),
  * `Column` ({@link Cell#col}) and `Nonet` ({@link Cell#nonet}) that a `Cell` resides on.
  *
  * It also provides {@link Cell#key} which can be used both
  * as a unique `Cell` id within a `Grid` as well as human-readable representation of `Cell` position.
  *
- * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the number of the square.
+ * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the number in the square.
  *
  * @public
  */
