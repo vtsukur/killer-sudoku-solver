@@ -28,8 +28,9 @@ export class Grid {
      */
     static readonly SUM = this.SIDE_CELL_COUNT * House.SUM;
 
+    /* istanbul ignore next */
     private constructor() {
-        // Non-contructible.
+        throw new Error('Non-contructible');
     }
 
     /**

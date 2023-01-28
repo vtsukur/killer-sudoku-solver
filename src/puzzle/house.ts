@@ -24,8 +24,9 @@ export class House {
      */
     static readonly SUM = 45;
 
+    /* istanbul ignore next */
     private constructor() {
-        // Non-contructible.
+        throw new Error('Non-contructible');
     }
 
     /**

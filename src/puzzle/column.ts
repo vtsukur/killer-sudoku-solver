@@ -8,8 +8,9 @@ import { House } from './house';
  * @public
  */
 export class Column {
+    /* istanbul ignore next */
     private constructor() {
-        // Non-contructible.
+        throw new Error('Non-contructible');
     }
 
     /**

@@ -15,8 +15,9 @@ export class Nonet {
      */
     static readonly SIDE_CELL_COUNT = 3;
 
+    /* istanbul ignore next */
     private constructor() {
-        // Non-contructible.
+        throw new Error('Non-contructible');
     }
 
     /**
