@@ -51,7 +51,6 @@ export class Cage {
      * @throws {@link InvalidProblemDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
      */
     static ofSum(sum: number) {
-        Cage.validateSum(sum);
         return new this.Builder(sum);
     }
 
@@ -61,7 +60,12 @@ export class Cage {
         if (!_.inRange(val, 1, Cage._MAX_SUM_RANGE_EXCLUSIVE)) {
             Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Cage._MAX_SUM_RANGE_EXCLUSIVE}). Actual: ${val}`);
         }
-        return val;
+    }
+
+    private static validateCells(val: ReadonlyCells) {
+        if (!val.length) {
+            Cage.throwValidationError('No cells registered. At least one cell should be a part of cage grouping');
+        }
     }
 
     private constructor(sum: number, cells: ReadonlyCells) {
@@ -155,6 +159,7 @@ export class Cage {
          * @throws {@link InvalidProblemDefError} if no `Cell`s were added to this Builder.
          */
         mk() {
+            Cage.validateCells(this._cells);
             return new Cage(this._sum, this._cells);
         }
     };
