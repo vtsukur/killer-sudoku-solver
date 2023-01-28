@@ -9,12 +9,24 @@ import { House } from './house';
  * @public
  */
 export class Nonet {
+
+    /**
+     * Amount of {@link Cell}s on `Nonet`'s side.
+     */
     static readonly SIDE_CELL_COUNT = 3;
 
     private constructor() {
         // Non-contructible.
     }
 
+    /**
+     * Determines index of `Nonet` to which given {@link Cell} belongs to.
+     *
+     * @param row - `Cell`'s row index.
+     * @param col - `Cell`'s column index.
+     *
+     * @returns index of `Nonet` to which given {@link Cell} belongs to.
+     */
     static forCellAt(row: number, col: number) {
         return to1D(
             colFrom1D(row, Nonet.SIDE_CELL_COUNT),
