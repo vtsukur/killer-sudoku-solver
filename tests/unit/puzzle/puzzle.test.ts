@@ -20,7 +20,7 @@ describe('Puzzle tests', () => {
         expect(() =>
             replaceLastCageInCorrectPuzzleWith(
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
-                Cage.ofSum(16).at(8, 6).at(8, 7).mk()
+                Cage.ofSum(16).at(8, 6).at(8, 7).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Found 1 missing Cell(s): (8, 8)'));
     });
@@ -29,7 +29,7 @@ describe('Puzzle tests', () => {
         expect(() =>
             replaceLastCageInCorrectPuzzleWith(
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
-                Cage.ofSum(9).at(8, 6).mk()
+                Cage.ofSum(9).at(8, 6).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Found 2 missing Cell(s): (8, 7), (8, 8)'));
     });
@@ -38,7 +38,7 @@ describe('Puzzle tests', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
-                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here is the duplicate: */.at(0, 0).mk()
+                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here is the duplicate: */.at(0, 0).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Found 1 duplicate Cell(s): (0, 0)'));
     });
@@ -47,7 +47,7 @@ describe('Puzzle tests', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
-                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here are the duplicates: */.at(0, 0).at(0, 1).mk()
+                Cage.ofSum(16).at(8, 6).at(8, 7).at(8, 8)/* here are the duplicates: */.at(0, 0).at(0, 1).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Found 2 duplicate Cell(s): (0, 0), (0, 1)'));
     });
@@ -56,7 +56,7 @@ describe('Puzzle tests', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
                 // Proper Cage is of sum 16 with Cells at (8, 6), (8, 7) and (8, 8).
-                Cage.ofSum(16).at(8, 6).at(8, 8)/* and here comes the duplicate: */.at(0, 0).mk()
+                Cage.ofSum(16).at(8, 6).at(8, 8)/* and here comes the duplicate: */.at(0, 0).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Found 1 duplicate Cell(s): (0, 0)'));
     });
@@ -65,7 +65,7 @@ describe('Puzzle tests', () => {
         expect(() =>
         replaceLastCageInCorrectPuzzleWith(
                 // Abnormal Cage on the field: 116 instead of 16
-                Cage.ofSum(17).at(8, 6).at(8, 7).at(8, 8).mk()
+                Cage.ofSum(17).at(8, 6).at(8, 7).at(8, 8).new()
             )
         ).toThrow(new InvalidProblemDefError('Invalid Puzzle. Expected sum of Cages to add up to Grid sum of 405. Actual: 406'));
     });

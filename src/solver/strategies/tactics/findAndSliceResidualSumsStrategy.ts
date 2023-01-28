@@ -62,11 +62,11 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
         });
         if (residualCageBuilder.cellCount == 1) {
             const cellM = ctx.model.cellModelOf(residualCageBuilder.cells[0]);
-            cellM.placedNum = residualCageBuilder.mk().sum;
+            cellM.placedNum = residualCageBuilder.new().sum;
             ctx.recentlySolvedCellModels = [ cellM ];
             strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
         }
 
-        ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.mk());
+        ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
     }
 }

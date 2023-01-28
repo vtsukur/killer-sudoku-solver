@@ -181,7 +181,7 @@ export class Cage {
          *
          * @throws {@link InvalidProblemDefError} if no `Cell`s were added to this Builder.
          */
-        mk() {
+        new() {
             Cage.validateCells(this._cells);
             return new Cage(this._sum, this._cells);
         }

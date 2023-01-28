@@ -11,7 +11,7 @@ describe('CageModel tests', () => {
     test('Initial reduction for CageModel of size 2 with a single combination', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).mk();
+        const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cageM.initialReduce();
@@ -26,7 +26,7 @@ describe('CageModel tests', () => {
     test('Initial reduction for CageModel of size 2 with several combinations', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(13).withCell(cell1).withCell(cell2).mk();
+        const cage = Cage.ofSum(13).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cageM.initialReduce();
@@ -44,7 +44,7 @@ describe('CageModel tests', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cellM3 = new CellModel(cell3);
-        const cage = Cage.ofSum(24).withCell(cell1).withCell(cell2).withCell(cell3).mk();
+        const cage = Cage.ofSum(24).withCell(cell1).withCell(cell2).withCell(cell3).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
 
         cageM.initialReduce();
@@ -60,7 +60,7 @@ describe('CageModel tests', () => {
     test('Reduction for CageModel of size 2 with several combinations after removing one of the cell options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).mk();
+        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cageM.initialReduce();
@@ -82,7 +82,7 @@ describe('CageModel tests', () => {
     test('Reduction for CageModel of size 2 with several combinations after removing few cell options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).mk();
+        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cageM.initialReduce();
@@ -123,7 +123,7 @@ describe('CageModel tests', () => {
         const cage = Cage.ofSum(31)
             .withCell(cell_04).withCell(cell_05).withCell(cell_06)
             .withCell(cell_13).withCell(cell_14).withCell(cell_15).withCell(cell_16)
-            .mk();
+            .new();
         const cageM = new CageModel(cage, cellMs, false);
 
         cageM.initialReduce();

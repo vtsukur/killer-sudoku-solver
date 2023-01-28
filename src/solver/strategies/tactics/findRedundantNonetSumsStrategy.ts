@@ -33,7 +33,7 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
             }
 
             if (redundantCells.length > 0 && redundantCells.length <= 5) {
-                const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).mk();
+                const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).new();
                 this._model.registerCage(cage, !CageModel.positioningFlagsFor(cage.cells).isWithinHouse);
             }
         }
