@@ -2,8 +2,6 @@ import { to1D, rowFrom1D, colFrom1D } from '../util/dimensionalMatrixMath';
 import { Cell } from './cell';
 import { House } from './house';
 
-const NONET_SIDE_LENGTH = 3;
-
 /**
  * Supportive class for Killer Sudoku puzzle `Nonet`
  * which holds utility method that simplifies iteration over `Nonet`'s {@link Cell}s.
@@ -11,7 +9,7 @@ const NONET_SIDE_LENGTH = 3;
  * @public
  */
 export class Nonet {
-    static readonly SIDE_CELL_COUNT = NONET_SIDE_LENGTH;
+    static readonly SIDE_CELL_COUNT = 3;
 
     private constructor() {
         // Non-contructible.
@@ -19,9 +17,9 @@ export class Nonet {
 
     static forCellAt(row: number, col: number) {
         return to1D(
-            colFrom1D(row, NONET_SIDE_LENGTH),
-            colFrom1D(col, NONET_SIDE_LENGTH),
-            NONET_SIDE_LENGTH);
+            colFrom1D(row, Nonet.SIDE_CELL_COUNT),
+            colFrom1D(col, Nonet.SIDE_CELL_COUNT),
+            Nonet.SIDE_CELL_COUNT);
     }
 
     /**
@@ -45,13 +43,13 @@ export class Nonet {
     static newCellsIterator(nonet: number) {
         return House.cellsIterator((index: number) => {
             const row = to1D(
-                colFrom1D(nonet, NONET_SIDE_LENGTH),
-                colFrom1D(index, NONET_SIDE_LENGTH),
-                NONET_SIDE_LENGTH);
+                colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
+                colFrom1D(index, Nonet.SIDE_CELL_COUNT),
+                Nonet.SIDE_CELL_COUNT);
             const col = to1D(
-                rowFrom1D(nonet, NONET_SIDE_LENGTH),
-                rowFrom1D(index, NONET_SIDE_LENGTH),
-                NONET_SIDE_LENGTH);
+                rowFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
+                rowFrom1D(index, Nonet.SIDE_CELL_COUNT),
+                Nonet.SIDE_CELL_COUNT);
             return Cell.at(row, col);
         });
     }
