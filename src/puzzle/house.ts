@@ -8,8 +8,20 @@ import { CellProducer, CellsIterator } from './cellsIterator';
  * @public
  */
 export class House {
-    static readonly COUNT_OF_ONE_TYPE = 9;
+
+    /**
+     * Amount of `House`s of one type (`Row`s, `Column`s or `Nonet`s) within a `Grid`.
+     */
+    static readonly COUNT_OF_ONE_TYPE_PER_GRID = 9;
+
+    /**
+     * Amount of {@link Cell}s in a `House`.
+     */
     static readonly CELL_COUNT = 9;
+
+    /**
+     * Sum of all numbers in a `House`.
+     */
     static readonly SUM = 45;
 
     private constructor() {

@@ -19,12 +19,12 @@ export class Grid {
     static readonly SIDE_CELL_COUNT = 9;
 
     /**
-     * Total amount of {@link Cell}s on the `Grid`.
+     * Total amount of {@link Cell}s in a `Grid`.
      */
     static readonly CELL_COUNT = this.SIDE_CELL_COUNT * this.SIDE_CELL_COUNT;
 
     /**
-     * Total sum of all numbers on the `Grid`.
+     * Total sum of all numbers in a `Grid`.
      */
     static readonly SUM = this.SIDE_CELL_COUNT * House.SUM;
 
