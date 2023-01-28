@@ -29,6 +29,12 @@ describe('Cage tests', () => {
         expect(cageBuilder.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
+    test('Construction of invalid Cage with no Cells', () => {
+        expect(() => Cage.ofSum(8).mk()).toThrow(
+            'Invalid cage. No cells registered. At least one cell should be a part of cage grouping'
+        );
+    });
+
     test('Construction of invalid Cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1)).toThrow(
             'Invalid cage. Sum outside of range. Expected to be within [1, 406). Actual: -1'
