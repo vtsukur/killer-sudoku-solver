@@ -4,17 +4,45 @@ import { House } from './house';
 
 const NONET_SIDE_LENGTH = 3;
 
-class NonetAPI {
-    readonly SIDE_LENGTH = NONET_SIDE_LENGTH;
+/**
+ * Supportive class for Killer Sudoku puzzle `Nonet`
+ * which holds utility method that simplifies iteration over `Nonet`'s {@link Cell}s.
+ *
+ * @public
+ */
+export class Nonet {
+    static readonly SIDE_CELL_COUNT = NONET_SIDE_LENGTH;
 
-    forCellAt(row: number, col: number) {
+    private constructor() {
+        // Non-contructible.
+    }
+
+    static forCellAt(row: number, col: number) {
         return to1D(
             colFrom1D(row, NONET_SIDE_LENGTH),
             colFrom1D(col, NONET_SIDE_LENGTH),
             NONET_SIDE_LENGTH);
     }
 
-    cellsIterator(nonet: number) {
+    /**
+     * Constructs new iterator over {@link Cell}s for a `Nonet` with the given index
+     * which iterates consequently from _top left_ `Cell` of the `Nonet` to the _right bottom_ one.
+     *
+     * Rows are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
+     * Each row is iterated starting with its first column consequently to the last one (a.k.a. _left_ to _right_).
+     * Row is iterated fully before proceeding to the next one.
+     *
+     * Sample iteration for `Nonet` with index 3 looks as follows:
+     * ```
+     * // (row, column)
+     * (3, 0) -> (3, 1) -> (3, 2) -> (4, 0) -> (4, 1) -> (4, 2) -> (5, 0) -> (5, 1) -> (5, 2) -> done
+     * ```
+     *
+     * @param col - Index of the `Nonet` to iterate `Cell`s for.
+     *
+     * @returns new iterator over {@link Cell}s for a `Nonet` with the given index.
+     */
+    static newCellsIterator(nonet: number) {
         return House.cellsIterator((index: number) => {
             const row = to1D(
                 colFrom1D(nonet, NONET_SIDE_LENGTH),
@@ -28,5 +56,3 @@ class NonetAPI {
         });
     }
 }
-
-export const Nonet = Object.freeze(new NonetAPI());

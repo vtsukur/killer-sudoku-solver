@@ -36,14 +36,14 @@ export class Grid {
      * Constructs new iterator over `Grid`'s {@link Cell}s
      * which iterates consequently from _top left_ `Cell` of the `Grid` to the _right bottom_ one.
      *
-     * Rows are iterated consequently from first to last (a.k.a. _top_ to 'bottom').
+     * Rows are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
      * Each row is iterated starting with its first column consequently to the last one (a.k.a. _left_ to _right_).
      * Row is iterated fully before proceeding to the next one.
      *
      * Iteration looks as follows:
      * ```
      * // (row, column)
-     * (0, 0) -> (0, 1) -> (0, 2) -> ...  -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8)
+     * (0, 0) -> (0, 1) -> (0, 2) -> ...  -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
      * ```
      *
      * @returns new iterator over `Grid`'s {@link Cell}s.

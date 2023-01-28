@@ -5,7 +5,7 @@ import { Nonet } from '../../../src/puzzle/nonet';
 
 describe('Nonet tests', () => {
     test('Nonet side length is 3', () => {
-        expect(Nonet.SIDE_LENGTH).toEqual(3);
+        expect(Nonet.SIDE_CELL_COUNT).toEqual(3);
     });
 
     test('Determination of Nonet index by Cell', () => {
@@ -75,7 +75,7 @@ describe('Nonet tests', () => {
 
     test('Iteration over Cells', () => {
         const cells = _.range(House.COUNT_OF_ONE_TYPE).map((nonet) => {
-            return Array.from(Nonet.cellsIterator(nonet));
+            return Array.from(Nonet.newCellsIterator(nonet));
         });
 
         // north-west nonet (0)

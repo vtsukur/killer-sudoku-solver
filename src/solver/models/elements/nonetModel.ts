@@ -4,7 +4,7 @@ import { HouseModel } from './houseModel';
 
 export class NonetModel extends HouseModel {
     constructor(index: number, cells: ReadonlyCells) {
-        super(index, cells, Nonet.cellsIterator);
+        super(index, cells, Nonet.newCellsIterator);
     }
 
     deepCopyWithoutCageModels() {
