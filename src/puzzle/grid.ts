@@ -64,6 +64,8 @@ export class Grid {
      * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      */
     static newMatrix() {
-        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => new Array(this.SIDE_CELL_COUNT));
+        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => {
+            return new Array(this.SIDE_CELL_COUNT);
+        });
     }
 }

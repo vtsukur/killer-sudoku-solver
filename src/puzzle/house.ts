@@ -1,6 +1,11 @@
 import { CellProducer, CellsIterator } from './cellsIterator';
 
 /**
+ * Index of a `House` (`Row`, `Column` or `Nonet`) represented as a number between 0 and 8 (inclusive).
+ */
+export type HouseIndex = number | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+/**
  * Supportive class for Killer Sudoku `House` (generalization over `Row`, `Column` and `Nonet`)
  * which holds useful constants that describe mathematical properties of any `House`
  * as well as utility methods that simplify iteration over `House` {@link Cell}s.

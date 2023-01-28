@@ -1,31 +1,32 @@
 import * as _ from 'lodash';
 import { Grid } from './grid';
+import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 
 export type CellKey = string;
 
 export class Cell {
-    readonly row: number;
-    readonly col: number;
+    readonly row: HouseIndex;
+    readonly col: HouseIndex;
+    readonly nonet: HouseIndex;
     readonly key: CellKey;
-    readonly nonet: number;
 
-    private constructor(row: number, col: number) {
+    private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
-        this.key = Cell.keyOf(row, col);
         this.nonet = Nonet.indexForCellAt(row, col);
+        this.key = Cell.keyOf(row, col);
     }
 
-    private static validateRow(val: number) {
+    private static validateRow(val: HouseIndex) {
         return Cell.validate2DIndex(val, 'Row');
     }
 
-    private static validateCol(val: number) {
+    private static validateCol(val: HouseIndex) {
         return Cell.validate2DIndex(val, 'Column');
     }
 
-    private static validate2DIndex(val: number, type: string) {
+    private static validate2DIndex(val: HouseIndex, type: string) {
         if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
             throw `Invalid cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`;
         } else {
@@ -33,11 +34,11 @@ export class Cell {
         }
     }
 
-    static keyOf(row: number, col: number): CellKey {
+    static keyOf(row: HouseIndex, col: HouseIndex): CellKey {
         return `(${row}, ${col})`;
     }
 
-    static at(row: number, col: number) {
+    static at(row: HouseIndex, col: HouseIndex) {
         return new Cell(row, col);
     }
 

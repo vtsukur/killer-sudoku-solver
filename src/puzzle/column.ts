@@ -1,5 +1,5 @@
 import { Cell } from './cell';
-import { House } from './house';
+import { House, HouseIndex } from './house';
 
 /**
  * Supportive class for Killer Sudoku `Column`
@@ -27,8 +27,8 @@ export class Column {
      *
      * @returns new iterator over {@link Cell}s for a `Column` with the given index.
      */
-    static newCellsIterator(col: number) {
-        return House.newCellsIterator((row: number) => {
+    static newCellsIterator(col: HouseIndex) {
+        return House.newCellsIterator((row: HouseIndex) => {
             return Cell.at(row, col);
         });
     }

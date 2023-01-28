@@ -1,6 +1,6 @@
 import { to1D, rowFrom1D, colFrom1D } from '../util/dimensionalMatrixMath';
 import { Cell } from './cell';
-import { House } from './house';
+import { House, HouseIndex } from './house';
 
 /**
  * Supportive class for Killer Sudoku `Nonet`
@@ -35,7 +35,7 @@ export class Nonet {
      *
      * @returns index of `Nonet` to which given {@link Cell} belongs to.
      */
-    static indexForCellAt(row: number, col: number) {
+    static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
         return to1D(
             colFrom1D(row, Nonet.SIDE_CELL_COUNT),
             colFrom1D(col, Nonet.SIDE_CELL_COUNT),
@@ -60,7 +60,7 @@ export class Nonet {
      *
      * @returns new iterator over {@link Cell}s for a `Nonet` with the given index.
      */
-    static newCellsIterator(nonet: number) {
+    static newCellsIterator(nonet: HouseIndex) {
         return House.newCellsIterator((index: number) => {
             const row = to1D(
                 colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
