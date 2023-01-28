@@ -14,17 +14,17 @@ import { House } from './house';
 export class Grid {
 
     /**
-     * Amount of {@link Cell}s on Grid's side.
+     * Amount of {@link Cell}s on `Grid`'s side.
      */
     static readonly SIDE_CELL_COUNT = 9;
 
     /**
-     * Total amount of {@link Cell}s on the Grid.
+     * Total amount of {@link Cell}s on the `Grid`.
      */
     static readonly CELL_COUNT = this.SIDE_CELL_COUNT * this.SIDE_CELL_COUNT;
 
     /**
-     * Total sum of all numbers on the Grid.
+     * Total sum of all numbers on the `Grid`.
      */
     static readonly SUM = this.SIDE_CELL_COUNT * House.SUM;
 
@@ -33,8 +33,8 @@ export class Grid {
     }
 
     /**
-     * Constructs new iterator over Grid's {@link Cell}s
-     * which consequently iterates from 'top left' `Cell` of the Grid to the 'right bottom' one.
+     * Constructs new iterator over `Grid`'s {@link Cell}s
+     * which consequently iterates from 'top left' `Cell` of the `Grid` to the 'right bottom' one.
      *
      * Rows are iterated consequently from first to last.
      * Each row is iterated starting with its first column consequently to the last one.
@@ -44,7 +44,7 @@ export class Grid {
      * (0, 0) -> (0, 1) -> (0, 2) -> ...  -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8)
      * ```
      *
-     * @returns new iterator over Grid's {@link Cell}s.
+     * @returns new iterator over `Grid`'s {@link Cell}s.
      */
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
@@ -56,9 +56,9 @@ export class Grid {
     }
 
     /**
-     * Constructs new matrix (array of arrays) of Grid's size indexed by row and then by column.
+     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      *
-     * @returns new matrix (array of arrays) of Grid's size indexed by row and then by column.
+     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      */
     static newMatrix() {
         return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => new Array(this.SIDE_CELL_COUNT));

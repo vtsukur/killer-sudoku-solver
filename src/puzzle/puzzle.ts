@@ -18,7 +18,7 @@ export class Puzzle {
     readonly cages: ReadonlyCages;
 
     /**
-     * Constructs new Puzzle with the given {@link Cage}s validating that they construct valid problem definition.
+     * Constructs new `Puzzle` with the given {@link Cage}s validating that they construct valid problem definition.
      *
      * @param cages - Cages.
      *

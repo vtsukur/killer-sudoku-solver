@@ -27,7 +27,7 @@ export class Solution {
     private static ROW_SEPARATOR = EOL;
 
     /**
-     * Constructs new Solution with the given numbers matrix.
+     * Constructs new `Solution` with the given numbers matrix.
      *
      * @param numbers - Numbers matrix (array of arrays) which should be indexed by row and then by column.
      */
@@ -39,7 +39,7 @@ export class Solution {
     }
 
     /**
-     * Returns human-readable string representation of the solution
+     * Returns human-readable string representation of the `Solution`
      * in the form of matrix where each number in the row is separated by a space
      * and rows are separated by OS-specific EOL (end of line) character.
      *
@@ -56,7 +56,7 @@ export class Solution {
      * 8 5 4 1 3 9 2 6 7
      * ```
      *
-     * @returns human-readable string representation of the solution.
+     * @returns human-readable string representation of the `Solution`.
      */
     toString() {
         return this._asString;
