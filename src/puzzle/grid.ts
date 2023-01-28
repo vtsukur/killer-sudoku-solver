@@ -4,14 +4,14 @@ import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 /**
- * Meta class for Killer Sudoku puzzle grid
+ * Supportive class for Killer Sudoku puzzle grid
  * which holds useful constants that describe mathematical properties of any puzzle grid
  * as well as utility methods that simplify iteration over grid's cells
  * and creation of matrices with grid's size.
  *
  * @public
  */
-class GridMeta {
+class GridObject {
     /**
      * Amount of {@link Cell}s on Grid's side.
      */
@@ -41,4 +41,4 @@ class GridMeta {
     }
 }
 
-export const Grid = Object.freeze(new GridMeta());
+export const Grid = Object.freeze(new GridObject());
