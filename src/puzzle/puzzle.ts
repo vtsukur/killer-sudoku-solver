@@ -69,17 +69,17 @@ export class Puzzle {
     }
 
     private static throwCellsValidationError(erroredKeys: ReadonlyCellKeysSet, type: string) {
-        Puzzle.throwValidationError(`Found ${erroredKeys.size} ${type} cell(s): ${joinSet(erroredKeys)}`);
+        Puzzle.throwValidationError(`Found ${erroredKeys.size} ${type} Cell(s): ${joinSet(erroredKeys)}`);
     }
 
     private static validateSumOfCagesToEqualGridSum(cages: ReadonlyCages) {
         const sumOfCages = _.sum(cages.map(cage => cage.sum));
         if (sumOfCages !== Grid.SUM) {
-            Puzzle.throwValidationError(`Expected sum of cages to equal grid sum of ${Grid.SUM}. Actual: ${sumOfCages}`);
+            Puzzle.throwValidationError(`Expected sum of Cages to add up to Grid sum of ${Grid.SUM}. Actual: ${sumOfCages}`);
         }
     }
 
     private static throwValidationError(detailedMessage: string) {
-        throw new InvalidProblemDefError(`Invalid puzzle. ${detailedMessage}`);
+        throw new InvalidProblemDefError(`Invalid Puzzle. ${detailedMessage}`);
     }
 }

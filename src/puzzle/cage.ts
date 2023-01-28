@@ -66,7 +66,7 @@ export class Cage {
 
     private static validateCells(val: ReadonlyCells) {
         if (!val.length) {
-            Cage.throwValidationError('No cells registered. At least one cell should be a part of cage grouping');
+            Cage.throwValidationError('No Cells registered. At least one Cell should be a part of Cage grouping');
         }
     }
 
@@ -136,7 +136,7 @@ export class Cage {
          */
         withCell(val: Cell) {
             if (this._cellKeys.has(val.key)) {
-                Cage.throwValidationError(`Found duplicate cell: ${val.key}`);
+                Cage.throwValidationError(`Found duplicate Cell: ${val.key}`);
             }
             this._cells.push(val);
             this._cellKeys.add(val.key);
@@ -188,7 +188,7 @@ export class Cage {
     };
 
     private static throwValidationError(detailedMessage: string) {
-        throw `Invalid cage. ${detailedMessage}`;
+        throw `Invalid Cage. ${detailedMessage}`;
     }
 
     /**

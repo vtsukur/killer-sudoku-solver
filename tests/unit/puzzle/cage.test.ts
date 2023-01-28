@@ -38,32 +38,32 @@ describe('Cage tests', () => {
         expect(cageBuilder.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
-    test('Construction of invalid Cage with no Cells', () => {
-        expect(() => Cage.ofSum(8).mk()).toThrow(
-            'Invalid cage. No cells registered. At least one cell should be a part of cage grouping'
-        );
-    });
-
     test('Construction of invalid Cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1)).toThrow(
-            'Invalid cage. Sum outside of range. Expected to be within [1, 406). Actual: -1'
+            'Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1'
         );
     });
 
     test('Construction of invalid Cage with sum outside of the range: >405', () => {
         expect(() => Cage.ofSum(406)).toThrow(
-            'Invalid cage. Sum outside of range. Expected to be within [1, 406). Actual: 406'
+            'Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: 406'
         );
     });
 
     test('Construction of invalid Cage with a duplicate Cell', () => {
         expect(() => Cage.ofSum(9).at(4, 4).at(4, 4).mk()).toThrow(
-            'Invalid cage. Found duplicate cell: (4, 4)'
+            'Invalid Cage. Found duplicate Cell: (4, 4)'
         );
     });
 
     test('Cage key stays the same regardless of Cell order', () => {
         expect(Cage.ofSum(10).at(4, 4).at(4, 5).mk().key).toBe(
             Cage.ofSum(10).at(4, 5).at(4, 4).mk().key);
+    });
+
+    test('Construction of invalid Cage with no Cells', () => {
+        expect(() => Cage.ofSum(8).mk()).toThrow(
+            'Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping'
+        );
     });
 });

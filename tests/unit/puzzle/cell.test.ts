@@ -1,7 +1,7 @@
 import { Cell } from '../../../src/puzzle/cell';
 
 describe('Cell tests', () => {
-    test('Construction of Cell storing row, column and computing nonet, key, toString representation and index within grid', () => {
+    test('Construction of Cell storing row, column and computing nonet, key, toString representation and index within Grid', () => {
         const cell = Cell.at(4, 5);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(5);
@@ -11,18 +11,18 @@ describe('Cell tests', () => {
     });
 
     test('Construction of invalid Cell with row outside of the range: <0', () => {
-        expect(() => Cell.at(-1, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: -1');
+        expect(() => Cell.at(-1, 4)).toThrow('Invalid Cell. Row outside of range. Expected to be within [0, 9). Actual: -1');
     });
 
     test('Construction of invalid Cell with row outside of the range: >8', () => {
-        expect(() => Cell.at(9, 4)).toThrow('Invalid cell. Row outside of range. Expected to be within [0, 9). Actual: 9');
+        expect(() => Cell.at(9, 4)).toThrow('Invalid Cell. Row outside of range. Expected to be within [0, 9). Actual: 9');
     });
 
     test('Construction of invalid Cell with column outside of the range: <0', () => {
-        expect(() => Cell.at(4, -1)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: -1');
+        expect(() => Cell.at(4, -1)).toThrow('Invalid Cell. Column outside of range. Expected to be within [0, 9). Actual: -1');
     });
 
     test('Construction of invalid Cell with column outside of the range: >8', () => {
-        expect(() => Cell.at(4, 9)).toThrow('Invalid cell. Column outside of range. Expected to be within [0, 9). Actual: 9');
+        expect(() => Cell.at(4, 9)).toThrow('Invalid Cell. Column outside of range. Expected to be within [0, 9). Actual: 9');
     });
 });
