@@ -106,27 +106,31 @@ export class Cage {
         }
 
         /**
-         * Adds `Cell` to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         * Adds given `Cell` by its `Row` and `Column` indices to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         *
+         * Used mainly for concise and readable Builder chaining when applied to static problem definitions.
          *
          * @param row - Index of a `Row` that the `Cell` resides on.
          * @param col - Index of a `Column` that the `Cell` resides on.
          *
          * @returns this Builder.
          *
-         * @throws {@link InvalidProblemDefError} if the given `Cell` describes invalid or duplicate `Cell`.
+         * @throws {@link InvalidProblemDefError} if the given `Cell` describes invalid or duplicate `Cell`
+         * in respect to Builder's accumulated `Cell`s.
          */
         at(row: HouseIndex, col: HouseIndex) {
             return this.withCell(Cell.at(row, col));
         }
 
         /**
-         * Adds `Cell` to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         * Adds given `Cell` to `Cage` grouping for this Builder without constructing a `Cage` just yet.
          *
          * @param val - `Cell` to add to `Cage` grouping.
          *
          * @returns this Builder.
          *
-         * @throws {@link InvalidProblemDefError} if the given `Cell` describes duplicate `Cell`.
+         * @throws {@link InvalidProblemDefError} if the given `Cell` describes duplicate `Cell`
+         * in respect to Builder's accumulated `Cell`s.
          */
         withCell(val: Cell) {
             if (this._cellKeys.has(val.key)) {
@@ -134,6 +138,23 @@ export class Cage {
             }
             this._cells.push(val);
             this._cellKeys.add(val.key);
+            return this;
+        }
+
+        /**
+         * Adds given `Cell`s to `Cage` grouping for this Builder without constructing a `Cage` just yet.
+         *
+         * @param val - `Cell`s to add to `Cage` grouping.
+         *
+         * @returns this Builder.
+         *
+         * @throws {@link InvalidProblemDefError} if at least one of given `Cell`s describe duplicate `Cell`
+         * in respect to Builder's accumulated `Cell`s.
+         */
+        withCells(val: ReadonlyCells) {
+            for (const cell of val) {
+                this.withCell(cell);
+            }
             return this;
         }
 

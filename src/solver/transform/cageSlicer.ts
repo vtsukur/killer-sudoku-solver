@@ -66,13 +66,8 @@ export class CageSlicer {
     }
 
     static slice(cageToSlice: Cage, firstChunkCage: Cage) {
-        const secondChunkCageBuilder = Cage.ofSum(cageToSlice.sum - firstChunkCage.sum);
-        cageToSlice.cells.forEach(cell => {
-            if (firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1) {
-                secondChunkCageBuilder.withCell(cell);
-            }
-        });
-        return secondChunkCageBuilder.mk();
+        const cells = cageToSlice.cells.filter(cell => firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1);
+        return Cage.ofSum(cageToSlice.sum - firstChunkCage.sum).withCells(cells).mk();
     }
 
     static sliceBy(cageToSlice: Cage, sliceIndexFn: (cell: Cell) => number) {

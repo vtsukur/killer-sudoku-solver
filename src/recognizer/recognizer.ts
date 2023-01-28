@@ -235,9 +235,7 @@ async function prepareCageSumImages(cageContours: Array<CageContour>, srcImage: 
             sum = await ocr(cageContour.sumImagePath as string, tesseractWorker);
         }
 
-        const cageBuilder = Cage.ofSum(sum);
-        cageContour.cells.forEach(cell => cageBuilder.withCell(cell));
-        cages.push(cageBuilder.mk());
+        cages.push(Cage.ofSum(sum).withCells(cageContour.cells).mk());
     }
 
     return cages;

@@ -20,6 +20,15 @@ describe('Cage tests', () => {
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
     });
 
+    test('Construction of Cage using `withCells` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+        const cage = Cage.ofSum(10).withCells([ Cell.at(4, 4), Cell.at(4, 5) ]).mk();
+        expect(cage.sum).toBe(10);
+        expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
+        expect(cage.cellCount).toBe(2);
+        expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
+        expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
+    });
+
     test('Cage.Builder stores Cells and their count', () => {
         const cageBuilder = Cage.ofSum(10);
         expect(cageBuilder.cellCount).toBe(0);
