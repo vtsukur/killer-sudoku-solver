@@ -11,6 +11,7 @@ import { InvalidProblemDefError } from './invalidProblemDefError';
  * @public
  */
 export class Puzzle {
+
     /**
      * Cages.
      */

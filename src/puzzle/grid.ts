@@ -12,6 +12,7 @@ import { House } from './house';
  * @public
  */
 export class Grid {
+
     /**
      * Amount of {@link Cell}s on Grid's side.
      */

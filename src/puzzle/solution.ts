@@ -9,6 +9,7 @@ type NumbersMatrix = ReadonlyArray<ReadonlyArray<number>>;
  * @public
  */
 export class Solution {
+
     /**
      * Numbers matrix (array of arrays) indexed by row and then by column.
      *
