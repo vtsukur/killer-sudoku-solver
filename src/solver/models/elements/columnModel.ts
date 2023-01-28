@@ -4,7 +4,7 @@ import { HouseModel } from './houseModel';
 
 export class ColumnModel extends HouseModel {
     constructor(index: number, cells: ReadonlyCells) {
-        super(index, cells, Column.cellsIterator);
+        super(index, cells, Column.newCellsIterator);
     }
 
     deepCopyWithoutCageModels() {

@@ -56,7 +56,7 @@ export class MasterModel {
         this.nonetModels = [];
         _.range(House.CELL_COUNT).forEach(i => {
             this.rowModels.push(new RowModel(i, this.collectHouseCells(Row.newCellsIterator(i))));
-            this.columnModels.push(new ColumnModel(i, this.collectHouseCells(Column.cellsIterator(i))));
+            this.columnModels.push(new ColumnModel(i, this.collectHouseCells(Column.newCellsIterator(i))));
             this.nonetModels.push(new NonetModel(i, this.collectHouseCells(Nonet.cellsIterator(i))));
         });
 

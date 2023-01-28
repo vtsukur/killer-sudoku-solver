@@ -6,7 +6,7 @@ import { House } from '../../../src/puzzle/house';
 describe('Column tests', () => {
     test('Iteration over Cells', () => {
         const cells = _.range(House.COUNT_OF_ONE_TYPE).map((col) => {
-            return Array.from(Column.cellsIterator(col));
+            return Array.from(Column.newCellsIterator(col));
         });
 
         expect(cells[0]).toEqual([
