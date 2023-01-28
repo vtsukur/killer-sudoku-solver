@@ -44,7 +44,7 @@ export class Cell {
     readonly col: HouseIndex;
 
     /**
-     * Index of a `Nonet` that this `Cell` resides on.
+     * Index of a `Nonet` that this `Cell` resides on which is computed from `Row` and `Column` indices.
      */
     readonly nonet: HouseIndex;
 
