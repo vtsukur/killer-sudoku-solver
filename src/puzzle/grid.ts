@@ -52,8 +52,8 @@ export class Grid {
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                colFrom1D(index, Grid.SIDE_CELL_COUNT),
                 rowFrom1D(index, Grid.SIDE_CELL_COUNT),
+                colFrom1D(index, Grid.SIDE_CELL_COUNT),
             );
         }, Grid.CELL_COUNT);
     }

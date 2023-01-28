@@ -39,8 +39,8 @@ export class Nonet {
      */
     static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
         return to1D(
-            colFrom1D(row, Nonet.SIDE_CELL_COUNT),
-            colFrom1D(col, Nonet.SIDE_CELL_COUNT),
+            rowFrom1D(row, Nonet.SIDE_CELL_COUNT),
+            rowFrom1D(col, Nonet.SIDE_CELL_COUNT),
             Nonet.SIDE_CELL_COUNT);
     }
 
@@ -65,12 +65,12 @@ export class Nonet {
     static newCellsIterator(nonet: HouseIndex) {
         return House.newCellsIterator((index: number) => {
             const row = to1D(
-                colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
-                colFrom1D(index, Nonet.SIDE_CELL_COUNT),
-                Nonet.SIDE_CELL_COUNT);
-            const col = to1D(
                 rowFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
                 rowFrom1D(index, Nonet.SIDE_CELL_COUNT),
+                Nonet.SIDE_CELL_COUNT);
+            const col = to1D(
+                colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
+                colFrom1D(index, Nonet.SIDE_CELL_COUNT),
                 Nonet.SIDE_CELL_COUNT);
             return Cell.at(row, col);
         });
