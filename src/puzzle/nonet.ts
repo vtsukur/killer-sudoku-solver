@@ -3,10 +3,12 @@ import { Cell } from './cell';
 import { House, HouseIndex } from './house';
 
 /**
- * Supportive class for Killer Sudoku `Nonet`
+ * Supportive class for Killer Sudoku `Nonet` (also called a `Box`)
  * which holds utility method that simplifies iteration over `Nonet` {@link Cell}s.
  *
  * @public
+ *
+ * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Nonet {
 

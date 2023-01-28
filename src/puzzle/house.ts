@@ -11,6 +11,8 @@ export type HouseIndex = number | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
  * as well as utility methods that simplify iteration over `House` {@link Cell}s.
  *
  * @public
+ *
+ * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class House {
 

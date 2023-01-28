@@ -30,6 +30,8 @@ export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
  * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the number in the square.
  *
  * @public
+ *
+ * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Cell {
 

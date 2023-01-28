@@ -6,6 +6,8 @@ import { House, HouseIndex } from './house';
  * which holds utility method that simplifies iteration over `Row` {@link Cell}s.
  *
  * @public
+ *
+ * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Row {
     /* istanbul ignore next */
