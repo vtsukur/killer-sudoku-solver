@@ -3,7 +3,7 @@ import { Cell } from './cell';
 import { House } from './house';
 
 /**
- * Supportive class for Killer Sudoku puzzle `Nonet`
+ * Supportive class for Killer Sudoku `Nonet`
  * which holds utility method that simplifies iteration over `Nonet` {@link Cell}s.
  *
  * @public

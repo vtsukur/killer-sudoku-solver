@@ -6,7 +6,7 @@ import { Grid } from './grid';
 import { InvalidProblemDefError } from './invalidProblemDefError';
 
 /**
- * Problem definition for Killer Sudoku puzzle described by {@link Cage}s.
+ * Problem definition for Killer Sudoku `Puzzle` described by {@link Cage}s.
  *
  * @public
  */

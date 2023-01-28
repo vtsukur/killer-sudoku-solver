@@ -4,7 +4,7 @@ import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 /**
- * Supportive class for Killer Sudoku puzzle `Grid`
+ * Supportive class for Killer Sudoku `Grid`
  * which holds useful constants that describe mathematical properties of any `Grid`
  * as well as utility methods that simplify iteration over `Grid` {@link Cell}s
  * and creation of matrices with `Grid`'s size.

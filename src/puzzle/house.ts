@@ -1,7 +1,7 @@
 import { CellProducer, CellsIterator } from './cellsIterator';
 
 /**
- * Supportive class for Killer Sudoku puzzle `House` (generalization over `Row`, `Column` and `Nonet`)
+ * Supportive class for Killer Sudoku `House` (generalization over `Row`, `Column` and `Nonet`)
  * which holds useful constants that describe mathematical properties of any `House`
  * as well as utility methods that simplify iteration over `House` {@link Cell}s.
  *
