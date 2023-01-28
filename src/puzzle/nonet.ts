@@ -22,6 +22,13 @@ export class Nonet {
     /**
      * Determines index of `Nonet` to which given {@link Cell} belongs to.
      *
+     * `Nonet`s are indexed from _left_ to _right_ and from _top_ to _bottom_ as follows:
+     * ```
+     * 0 1 2
+     * 3 4 5
+     * 6 7 8
+     * ```
+     *
      * @param row - `Cell`'s row index.
      * @param col - `Cell`'s column index.
      *
