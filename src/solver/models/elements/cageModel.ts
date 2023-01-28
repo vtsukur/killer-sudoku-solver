@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
@@ -132,7 +132,7 @@ export class CageModel {
         return this._firstCell.nonet;
     }
 
-    hasCellAt(row: number, col: number) {
+    hasCellAt(row: HouseIndex, col: HouseIndex) {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 

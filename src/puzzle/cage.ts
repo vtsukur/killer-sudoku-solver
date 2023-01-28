@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
+import { HouseIndex } from './house';
 
 export class Cage {
     readonly sum: number;
@@ -32,7 +33,7 @@ export class Cage {
             this._sum = sum;
         }
 
-        at(row: number, col: number) {
+        at(row: HouseIndex, col: HouseIndex) {
             return this.cell(Cell.at(row, col));
         }
 

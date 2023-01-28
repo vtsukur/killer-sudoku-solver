@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
 import { Context } from '../context';
@@ -14,7 +14,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
             _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
-                }, (row: number) => {
+                }, (row: HouseIndex) => {
                     return this._model.rowModels[row].cellsIterator();
                 }, this);
             });
@@ -23,7 +23,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
             _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
-                }, (col: number) => {
+                }, (col: HouseIndex) => {
                     return this._model.columnModels[col].cellsIterator();
                 }, this);
             });
@@ -31,7 +31,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
         _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
             doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, 1, leftIndex, (cageM: CageModel) => {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
-            }, (nonet: number) => {
+            }, (nonet: HouseIndex) => {
                 return this._model.nonetModels[nonet].cellsIterator();
             }, this);
         });

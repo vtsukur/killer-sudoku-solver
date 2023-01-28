@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 import { InvalidSolverStepError } from '../../invalidSolverStateError';
 import { MasterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
@@ -71,8 +71,8 @@ function findCellMTarget(model: MasterModel) {
     const cellNumOptsMap = new Map();
     _.range(House.CELL_COUNT).forEach((index: number) => cellNumOptsMap.set(index + 1, []));
 
-    _.range(House.CELL_COUNT).forEach((row: number) => {
-        _.range(House.CELL_COUNT).forEach((col: number) => {
+    _.range(House.CELL_COUNT).forEach((row: HouseIndex) => {
+        _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
             const cellM = model.cellModelAt(row, col);
             cellNumOptsMap.get(cellM.numOpts().size).push(cellM);
         });

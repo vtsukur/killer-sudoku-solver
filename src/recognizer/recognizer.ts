@@ -7,7 +7,7 @@ import { createWorker, PSM, Worker } from 'tesseract.js';
 import { Cage } from '../puzzle/cage';
 import { Cell } from '../puzzle/cell';
 import { Grid } from '../puzzle/grid';
-import { House } from '../puzzle/house';
+import { House, HouseIndex } from '../puzzle/house';
 import { Puzzle } from '../puzzle/puzzle';
 import { logFactory } from '../util/logFactory';
 import { TempFilePaths } from '../util/tempFilePaths';
@@ -195,7 +195,7 @@ function determineCageContoursByCells(cellContoursMatrix: Array<Array<CellContou
     return cageContours;
 }
 
-function determineCageContoursByCellsDFS(cellContoursMatrix: Array<Array<CellContour>>, row: number, col: number, cageContour: CageContour) {
+function determineCageContoursByCellsDFS(cellContoursMatrix: Array<Array<CellContour>>, row: HouseIndex, col: HouseIndex, cageContour: CageContour) {
     if (!_.inRange(row, 0, House.CELL_COUNT) || !_.inRange(col, 0, House.CELL_COUNT)) return;
 
     const cellContour = cellContoursMatrix[row][col];

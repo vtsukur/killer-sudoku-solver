@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cell, CellKeysSet } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
@@ -90,7 +90,7 @@ class ExpandableNonOverlappingNonetAreaModel {
         this._sum -= cageM.cage.sum;
     }
 
-    hasCellAt(row: number, col: number) {
+    hasCellAt(row: HouseIndex, col: HouseIndex) {
         return this._cellKeys.has(Cell.keyOf(row, col));
     }
 

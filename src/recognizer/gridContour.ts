@@ -1,5 +1,5 @@
 import { Cell } from '../puzzle/cell';
-import { House } from '../puzzle/house';
+import { House, HouseIndex } from '../puzzle/house';
 import { Rect } from './rect';
 
 export class GridContour {
@@ -13,7 +13,7 @@ export class GridContour {
         this.cellHeight = rect.height / House.CELL_COUNT;
     }
 
-    cellRect(row: number, col: number) {
+    cellRect(row: HouseIndex, col: HouseIndex) {
         return new Rect(
             this.rect.x + col * this.cellWidth,
             this.rect.y + row * this.cellHeight,

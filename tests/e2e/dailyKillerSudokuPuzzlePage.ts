@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Browser, KeyInput, Page } from 'puppeteer';
-import { House } from '../../src/puzzle/house';
+import { House, HouseIndex } from '../../src/puzzle/house';
 import { Solution } from '../../src/puzzle/solution';
 import { Rect } from '../../src/recognizer/rect';
 import { logFactory } from '../../src/util/logFactory';
@@ -88,8 +88,8 @@ export class DailyKillerSudokuPuzzlePage {
         log.info('Reflecting puzzle solution by sending input commands ...');
 
         const solutionCommands = new Array<KeyboardCommand>();
-        _.range(House.CELL_COUNT).forEach((row: number) => {
-            _.range(House.CELL_COUNT).forEach((col: number) => {
+        _.range(House.CELL_COUNT).forEach((row: HouseIndex) => {
+            _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
                 const num = solution.numbers[row][col];
                 const n = row * House.CELL_COUNT + col + 1;
                 solutionCommands.push({

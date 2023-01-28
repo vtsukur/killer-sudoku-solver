@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { Grid } from '../../../puzzle/grid';
+import { HouseIndex } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -15,8 +16,8 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
 
         const reducedCellMs = new ReducedCellModels();
 
-        _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: number) => {
-            _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: number) => {
+        _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: HouseIndex) => {
+            _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: HouseIndex) => {
                 const cellM = this._model.cellModelsMatrix[row][col];
                 if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
 

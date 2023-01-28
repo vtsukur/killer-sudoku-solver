@@ -3,7 +3,7 @@ import { Cage } from '../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Column } from '../../puzzle/column';
 import { Grid } from '../../puzzle/grid';
-import { House } from '../../puzzle/house';
+import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
 import { Row } from '../../puzzle/row';
@@ -219,7 +219,7 @@ export class MasterModel {
         return this._solution;
     }
 
-    cellAt(row: number, col: number) {
+    cellAt(row: HouseIndex, col: HouseIndex) {
         return this.cellsMatrix[row][col];
     }
 
@@ -227,7 +227,7 @@ export class MasterModel {
         return this.cellModelAt(cell.row, cell.col);
     }
 
-    cellModelAt(row: number, col: number) {
+    cellModelAt(row: HouseIndex, col: HouseIndex) {
         return this.cellModelsMatrix[row][col];
     }
 
