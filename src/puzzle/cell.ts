@@ -28,7 +28,7 @@ export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
  * Single square on the Killer Sudoku `Grid`.
  *
  * `Cell` API provides access to indices of a `Row` ({@link Cell#row}),
- * `Column` ({@link Cell#col}) and `Nonet` ({@link Cell#nonet}) that a `Cell` resides on.
+ * `Column` ({@link Cell#col}) and `Nonet` ({@link Cell#nonet}) that a `Cell` is positioned at.
  *
  * It also provides {@link Cell#key} which can be used both
  * as a unique `Cell` id within a `Grid` as well as human-readable representation of `Cell` position.
@@ -42,12 +42,12 @@ export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
 export class Cell {
 
     /**
-     * Index of a `Row` that this `Cell` resides on.
+     * Index of a `Row` that this `Cell` is positioned at.
      */
     readonly row: HouseIndex;
 
     /**
-     * Index of a `Column` that this `Cell` resides on.
+     * Index of a `Column` that this `Cell` is positioned at.
      */
     readonly col: HouseIndex;
 
@@ -57,12 +57,12 @@ export class Cell {
     readonly key: CellKey;
 
     /**
-     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
-     * @param row - Index of a `Row` that this `Cell` resides on.
-     * @param col - Index of a `Column` that this `Cell` resides on.
+     * @param row - Index of a `Row` that this `Cell` is positioned at.
+     * @param col - Index of a `Column` that this `Cell` is positioned at.
      *
-     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
@@ -81,11 +81,11 @@ export class Cell {
     }
 
     /**
-     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @param val - Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
      *
-     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
@@ -100,7 +100,9 @@ export class Cell {
     }
 
     /**
-     * Index of a `Nonet` that this `Cell` resides on which is computed from `Row` and `Column` indices.
+     * Index of a `Nonet` that this `Cell` is positioned at.
+     *
+     * `Nonet` index is computed from `Row` and `Column` indices.
      */
     get nonet() {
         return Nonet.indexForCellAt(this.row, this.col);
@@ -108,10 +110,10 @@ export class Cell {
 
     /**
      * Generates human-readable key describing square's unique position on the `Grid`
-     * by the given indices of a `Row` and `Column` the `Cell` resides on.
+     * by the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
-     * @param row - Index of a `Row` that this `Cell` resides on.
-     * @param col - Index of a `Column` that this `Cell` resides on.
+     * @param row - Index of a `Row` that this `Cell` is positioned at.
+     * @param col - Index of a `Column` that this `Cell` is positioned at.
      *
      * @returns Human-readable key describing square's unique position on the `Grid`.
      */

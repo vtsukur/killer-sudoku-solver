@@ -112,8 +112,8 @@ export class Cage {
          *
          * Used mainly for concise and readable Builder chaining when applied to static problem definitions.
          *
-         * @param row - Index of a `Row` that the `Cell` resides on.
-         * @param col - Index of a `Column` that the `Cell` resides on.
+         * @param row - Index of a `Row` that the `Cell` is positioned at.
+         * @param col - Index of a `Column` that the `Cell` is positioned at.
          *
          * @returns this Builder.
          *
