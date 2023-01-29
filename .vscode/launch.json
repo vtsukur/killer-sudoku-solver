@@ -277,24 +277,6 @@
             }
         },
         {
-            "name": "npm run test [solver/house]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "solver.house"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
             "name": "npm run test [solver/invalidSolverStepError]",
             "request": "launch",
             "runtimeArgs": [
