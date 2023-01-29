@@ -17,7 +17,7 @@ describe('House tests', () => {
     test('Iterating over Cells', () => {
         const firstRowCellsIterator = House.newCellsIterator((index) => Cell.at(0, index));
         const cells = Array.from(firstRowCellsIterator);
-        expect(cells[0]).toEqual([
+        expect(cells).toEqual([
             Cell.at(0, 0), Cell.at(0, 1), Cell.at(0, 2),
             Cell.at(0, 3), Cell.at(0, 4), Cell.at(0, 5),
             Cell.at(0, 6), Cell.at(0, 7), Cell.at(0, 8)
