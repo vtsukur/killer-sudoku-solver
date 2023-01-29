@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Cell, RowAndCol } from './cell';
 import { Grid } from './grid';
 import { House, HouseIndex } from './house';
@@ -82,12 +81,12 @@ export class Nonet {
     private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<RowAndCol>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const cache: Array<Array<RowAndCol>> = _.range(Grid.SIDE_CELL_COUNT).map(() => []);
-        for (const row of _.range(Grid.SIDE_CELL_COUNT)) {
-            for (const col of _.range(Grid.SIDE_CELL_COUNT)) {
-                cache[this._GRID_CELLS_TO_NONETS[row][col]].push([row, col]);
+        const val: Array<Array<RowAndCol>> = Grid.zeroTo8Range().map(() => []);
+        for (const row of Grid.zeroTo8Range()) {
+            for (const col of Grid.zeroTo8Range()) {
+                val[this._GRID_CELLS_TO_NONETS[row][col]].push([row, col]);
             }
         }
-        return cache;
+        return val;
     }
 }

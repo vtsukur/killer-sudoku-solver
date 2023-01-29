@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
@@ -66,5 +67,15 @@ export class Grid {
         return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => {
             return new Array(this.SIDE_CELL_COUNT);
         });
+    }
+
+    /**
+     * Constructs new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
+     *
+     * @returns new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
+     *
+     */
+    static zeroTo8Range(): ReadonlyArray<number> {
+        return _.range(Grid.SIDE_CELL_COUNT);
     }
 }
