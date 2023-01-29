@@ -3,6 +3,7 @@ import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
+import { InvalidProblemDefError } from './invalidProblemDefError';
 
 /**
  * The grouping of `Cell`s in Killer Sudoku.
@@ -188,7 +189,7 @@ export class Cage {
     };
 
     private static throwValidationError(detailedMessage: string) {
-        throw `Invalid Cage. ${detailedMessage}`;
+        throw new InvalidProblemDefError(`Invalid Cage. ${detailedMessage}`);
     }
 
     /**
