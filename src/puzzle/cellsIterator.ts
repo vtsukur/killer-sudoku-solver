@@ -1,9 +1,9 @@
 import { Cell } from './cell';
 
 /**
- * Function which produces `Cell` by its index within iteration context.
+ * Function which provides `Cell` by its index within iteration context.
  */
-export type CellProducer = (index: number) => Cell;
+export type CellProvider = (index: number) => Cell;
 
 /**
  * Iterator over {@link Cell}s within a specific context like a `Grid` or a `House`.
@@ -14,17 +14,17 @@ export type CellProducer = (index: number) => Cell;
  */
 export class CellsIterator implements Iterator<Cell> {
     private _index = 0;
-    private readonly _cellProducer: CellProducer;
+    private readonly _cellProvider: CellProvider;
     private readonly _count: number;
 
     /**
-     * Constructs new `CellsIterator` with the given {@link CellProducer} and iteration count.
+     * Constructs new `CellsIterator` with the given {@link CellProvider} and iteration count.
      *
-     * @param cellProducer - Function which produces `Cell` by its index within iteration context.
+     * @param cellProvider - Function which provides `Cell` by its index within iteration context.
      * @param count - Amount of `Cell`s within iteration context which determines the number of iterations.
      */
-    constructor(cellProducer: CellProducer, count: number) {
-        this._cellProducer = cellProducer;
+    constructor(cellProvider: CellProvider, count: number) {
+        this._cellProvider = cellProvider;
         this._count = count;
     }
 
@@ -57,7 +57,7 @@ export class CellsIterator implements Iterator<Cell> {
 
     private nextIterableResult(index: number) {
         return {
-            value: this._cellProducer(index),
+            value: this._cellProvider(index),
             done: false
         };
     }

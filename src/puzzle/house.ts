@@ -1,4 +1,4 @@
-import { CellProducer, CellsIterator } from './cellsIterator';
+import { CellProvider, CellsIterator } from './cellsIterator';
 
 /**
  * Index of a `House` (`Row`, `Column` or `Nonet`) represented as a number between 0 and 8 (inclusive).
@@ -37,14 +37,14 @@ export class House {
     }
 
     /**
-     * Constructs new iterator over {@link Cell}s for a `House` with the given {@link CellProducer}
+     * Constructs new iterator over {@link Cell}s for a `House` with the given {@link CellProvider}
      * guaranteeing that amount of iterations matches amount of `Cell`s in a `House`.
      *
-     * @param cellProducer - Function which produces `Cell` by its index within the `House`.
+     * @param cellProvider - Function which provides `Cell` by its index within the `House`.
      *
-     * @returns new iterator over {@link Cell}s for a `House` with the given {@link CellProducer}.
+     * @returns new iterator over {@link Cell}s for a `House` with the given {@link CellProvider}.
      */
-    static newCellsIterator(cellProducer: CellProducer) {
-        return new CellsIterator(cellProducer, this.CELL_COUNT);
+    static newCellsIterator(cellProvider: CellProvider) {
+        return new CellsIterator(cellProvider, this.CELL_COUNT);
     }
 }
