@@ -3,7 +3,7 @@ import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
-import { InvalidProblemDefError } from './invalidProblemDefError';
+import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
 
 /**
  * The grouping of `Cell`s in Killer Sudoku.
@@ -51,7 +51,7 @@ export class Cage {
      *
      * @returns new `Cage` builder with the given sum of `Cage` `Cell`s.
      *
-     * @throws {@link InvalidProblemDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
+     * @throws {@link InvalidPuzzleDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
      */
     static ofSum(sum: number) {
         return new this.Builder(sum);
@@ -101,7 +101,7 @@ export class Cage {
          *
          * @returns new `Cage` builder with the given sum of `Cage` `Cell`s.
          *
-         * @throws {@link InvalidProblemDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
+         * @throws {@link InvalidPuzzleDefError} if the given `sum` is not within [1, `Grid.SUM`) range.
          */
         constructor(sum: number) {
             Cage.validateSum(sum);
@@ -118,7 +118,7 @@ export class Cage {
          *
          * @returns this Builder.
          *
-         * @throws {@link InvalidProblemDefError} if the given `Cell` describes invalid or duplicate `Cell`
+         * @throws {@link InvalidPuzzleDefError} if the given `Cell` describes invalid or duplicate `Cell`
          * in respect to Builder's accumulated `Cell`s.
          */
         at(row: HouseIndex, col: HouseIndex) {
@@ -132,7 +132,7 @@ export class Cage {
          *
          * @returns this Builder.
          *
-         * @throws {@link InvalidProblemDefError} if the given `Cell` describes duplicate `Cell`
+         * @throws {@link InvalidPuzzleDefError} if the given `Cell` describes duplicate `Cell`
          * in respect to Builder's accumulated `Cell`s.
          */
         withCell(val: Cell) {
@@ -151,7 +151,7 @@ export class Cage {
          *
          * @returns this Builder.
          *
-         * @throws {@link InvalidProblemDefError} if at least one of given `Cell`s describe duplicate `Cell`
+         * @throws {@link InvalidPuzzleDefError} if at least one of given `Cell`s describe duplicate `Cell`
          * in respect to Builder's accumulated `Cell`s.
          */
         withCells(val: ReadonlyCells) {
@@ -180,7 +180,7 @@ export class Cage {
          *
          * @returns new `Cage` with accumulated `Cell`s which denote a group and sum of these `Cell`s.
          *
-         * @throws {@link InvalidProblemDefError} if no `Cell`s were added to this Builder.
+         * @throws {@link InvalidPuzzleDefError} if no `Cell`s were added to this Builder.
          */
         new() {
             Cage.validateCells(this._cells);
@@ -189,7 +189,7 @@ export class Cage {
     };
 
     private static throwValidationError(detailedMessage: string) {
-        throw new InvalidProblemDefError(`Invalid Cage. ${detailedMessage}`);
+        throw new InvalidPuzzleDefError(`Invalid Cage. ${detailedMessage}`);
     }
 
     /**

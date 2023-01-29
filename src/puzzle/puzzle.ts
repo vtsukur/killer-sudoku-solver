@@ -3,7 +3,7 @@ import { joinSet } from '../util/readableMessages';
 import { ReadonlyCages } from './cage';
 import { CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
-import { InvalidProblemDefError } from './invalidProblemDefError';
+import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
 
 /**
  * Problem definition for Killer Sudoku `Puzzle` described by {@link Cage}s.
@@ -22,7 +22,7 @@ export class Puzzle {
      *
      * @param cages - Cages.
      *
-     * @throws {@link InvalidProblemDefError} if:
+     * @throws {@link InvalidPuzzleDefError} if:
      *  - `cages` have duplicate {@link Cell}s;
      *  - `cages` do not cover full {@link Grid};
      *  - sums of `cages` add up to {@link Grid}'s sum.
@@ -80,6 +80,6 @@ export class Puzzle {
     }
 
     private static throwValidationError(detailedMessage: string) {
-        throw new InvalidProblemDefError(`Invalid Puzzle. ${detailedMessage}`);
+        throw new InvalidPuzzleDefError(`Invalid Puzzle. ${detailedMessage}`);
     }
 }

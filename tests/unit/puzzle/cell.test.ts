@@ -1,5 +1,5 @@
 import { Cell } from '../../../src/puzzle/cell';
-import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
+import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
 
 describe('Cell tests', () => {
     test('Construction of Cell using `at` method storing Row, Column and computing Nonet, key and `toString` representation', () => {
@@ -24,22 +24,22 @@ describe('Cell tests', () => {
     });
 
     test('Construction of invalid Cell with Row outside of the range: <0', () => {
-        expect(() => Cell.at(-1, 4)).toThrow(new InvalidProblemDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1'));
+        expect(() => Cell.at(-1, 4)).toThrow(new InvalidPuzzleDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1'));
     });
 
     test('Construction of invalid Cell with Row outside of the range: >8', () => {
-        expect(() => Cell.at(9, 4)).toThrow(new InvalidProblemDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: 9'));
+        expect(() => Cell.at(9, 4)).toThrow(new InvalidPuzzleDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: 9'));
     });
 
     test('Construction of invalid Cell with Column outside of the range: <0', () => {
-        expect(() => Cell.at(4, -1)).toThrow(new InvalidProblemDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: -1'));
+        expect(() => Cell.at(4, -1)).toThrow(new InvalidPuzzleDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: -1'));
     });
 
     test('Construction of invalid Cell with Column outside of the range: >8', () => {
-        expect(() => Cell.at(4, 9)).toThrow(new InvalidProblemDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: 9'));
+        expect(() => Cell.at(4, 9)).toThrow(new InvalidPuzzleDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: 9'));
     });
 
     test('Construction of invalid Cell using `atPosition` method', () => {
-        expect(() => Cell.atPosition([ -1, 4 ])).toThrow(new InvalidProblemDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1'));
+        expect(() => Cell.atPosition([ -1, 4 ])).toThrow(new InvalidPuzzleDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1'));
     });
 });

@@ -1,6 +1,6 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
-import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
+import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
 
 describe('Cage tests', () => {
     test('Construction of Cage using `Cage.Builder.at` method storing sum, Cells, Cell count and computing key and `toString` representation', () => {
@@ -40,25 +40,25 @@ describe('Cage tests', () => {
 
     test('Construction of invalid Cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1)).toThrow(
-            new InvalidProblemDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1')
+            new InvalidPuzzleDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1')
         );
     });
 
     test('Construction of invalid Cage with sum outside of the range: >405', () => {
         expect(() => Cage.ofSum(406)).toThrow(
-            new InvalidProblemDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: 406')
+            new InvalidPuzzleDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: 406')
         );
     });
 
     test('Construction of invalid Cage with a duplicate Cell', () => {
         expect(() => Cage.ofSum(9).at(4, 4).at(4, 4).new()).toThrow(
-            new InvalidProblemDefError('Invalid Cage. Found duplicate Cell: (4, 4)')
+            new InvalidPuzzleDefError('Invalid Cage. Found duplicate Cell: (4, 4)')
         );
     });
 
     test('Construction of invalid Cage with no Cells', () => {
         expect(() => Cage.ofSum(8).new()).toThrow(
-            new InvalidProblemDefError('Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping')
+            new InvalidPuzzleDefError('Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping')
         );
     });
 });

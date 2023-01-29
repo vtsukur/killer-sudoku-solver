@@ -3,7 +3,7 @@
  *
  * @public
  */
-export class InvalidProblemDefError extends Error {
+export class InvalidPuzzleDefError extends Error {
 
     /**
      * Constructs new error with the given message.
