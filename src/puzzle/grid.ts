@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cell } from './cell';
+import { Cell, RowAndCol } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
@@ -51,11 +51,21 @@ export class Grid {
      */
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
-            return Cell.at(
-                Math.floor(index / Grid.SIDE_CELL_COUNT),
-                index % Grid.SIDE_CELL_COUNT
-            );
+            const rowAndCol = this._CELLS_ITERATOR_CACHE[index];
+            return Cell.at(rowAndCol[0], rowAndCol[1]);
         }, Grid.CELL_COUNT);
+    }
+
+    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<RowAndCol> = this.buildIterationCache();
+
+    private static buildIterationCache() {
+        const val: Array<RowAndCol> = [];
+        for (const row of Grid.zeroTo8Range()) {
+            for (const col of Grid.zeroTo8Range()) {
+                val.push([row, col]);
+            }
+        }
+        return val;
     }
 
     /**
