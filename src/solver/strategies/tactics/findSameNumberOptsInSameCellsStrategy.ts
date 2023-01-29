@@ -23,7 +23,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             const cellColsByNum: Array<Array<number>> = new Array(House.CELL_COUNT).fill([]).map(() => []);
             const cellMMap = new Map();
             for (const { row, col } of houseM.cellsIterator()) {
-                const key = Cell.keyOf(row, col);
+                const key = Cell.at(row, col).key;
                 const cellM = this._model.cellModelAt(row, col);
                 cellMMap.set(key, cellM);
                 for (const num of cellM.numOpts()) {

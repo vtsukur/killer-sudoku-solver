@@ -108,16 +108,7 @@ export class Cell {
         return Nonet.indexForCellAt(this.row, this.col);
     }
 
-    /**
-     * Generates human-readable key describing square's unique position on the `Grid`
-     * by the given indices of a `Row` and `Column` the `Cell` is positioned at.
-     *
-     * @param row - Index of a `Row` that this `Cell` is positioned at.
-     * @param col - Index of a `Column` that this `Cell` is positioned at.
-     *
-     * @returns Human-readable key describing square's unique position on the `Grid`.
-     */
-    static keyOf(row: HouseIndex, col: HouseIndex): CellKey {
+    private static keyOf(row: HouseIndex, col: HouseIndex): CellKey {
         return `(${row}, ${col})`;
     }
 

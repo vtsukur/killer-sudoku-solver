@@ -91,7 +91,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     }
 
     hasCellAt(row: HouseIndex, col: HouseIndex) {
-        return this._cellKeys.has(Cell.keyOf(row, col));
+        return this._cellKeys.has(Cell.at(row, col).key);
     }
 
     get innerCellMs() {
@@ -101,7 +101,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     unfilledInnerCellMs(model: MasterModel) {
         const result = new Set();
         for (const { row, col } of this._nonetM.cellsIterator()) {
-            if (!this._cellKeys.has(Cell.keyOf(row, col))) {
+            if (!this._cellKeys.has(Cell.at(row, col).key)) {
                 result.add(model.cellModelAt(row, col));
             }
         }
