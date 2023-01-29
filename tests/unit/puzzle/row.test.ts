@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 import { House } from '../../../src/puzzle/house';
+import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
 import { Row } from '../../../src/puzzle/row';
 
 describe('Row tests', () => {
@@ -54,5 +55,17 @@ describe('Row tests', () => {
             Cell.at(8, 3), Cell.at(8, 4), Cell.at(8, 5),
             Cell.at(8, 6), Cell.at(8, 7), Cell.at(8, 8)
         ]);
+    });
+
+    test('Invalid iteration over Cells with Row outside of the range: <0', () => {
+        expect(() => Row.newCellsIterator(-1)).toThrow(
+            new InvalidProblemDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1')
+        );
+    });
+
+    test('Invalid iteration over Cells with Row outside of the range: >8', () => {
+        expect(() => Row.newCellsIterator(9)).toThrow(
+            new InvalidProblemDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: 9')
+        );
     });
 });

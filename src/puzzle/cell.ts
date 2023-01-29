@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
+import { Column } from './column';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
-import { InvalidProblemDefError } from './invalidProblemDefError';
 import { Nonet } from './nonet';
+import { Row } from './row';
 
 /**
  * Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
@@ -67,25 +67,9 @@ export class Cell {
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
     static at(row: HouseIndex, col: HouseIndex) {
-        Cell.validateRow(row);
-        Cell.validateCol(col);
+        Row.validateIndex(row);
+        Column.validateIndex(col);
         return this._CELLS[row][col];
-    }
-
-    private static validateRow(val: HouseIndex) {
-        Cell.validate2DIndex(val, 'Row');
-    }
-
-    private static validateCol(val: HouseIndex) {
-        Cell.validate2DIndex(val, 'Column');
-    }
-
-    private static validate2DIndex(val: HouseIndex, type: string) {
-        if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
-            throw new InvalidProblemDefError(`Invalid Cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`);
-        } else {
-            return val;
-        }
     }
 
     private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();

@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 import { House } from '../../../src/puzzle/house';
+import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
 import { Nonet } from '../../../src/puzzle/nonet';
 
 describe('Nonet tests', () => {
@@ -140,5 +141,17 @@ describe('Nonet tests', () => {
             Cell.at(7, 6), Cell.at(7, 7), Cell.at(7, 8),
             Cell.at(8, 6), Cell.at(8, 7), Cell.at(8, 8)
         ]);
+    });
+
+    test('Invalid iteration over Cells with Nonet outside of the range: <0', () => {
+        expect(() => Nonet.newCellsIterator(-1)).toThrow(
+            new InvalidProblemDefError('Invalid House index. Nonet outside of range. Expected to be within [0, 9). Actual: -1')
+        );
+    });
+
+    test('Invalid iteration over Cells with Nonet outside of the range: >8', () => {
+        expect(() => Nonet.newCellsIterator(9)).toThrow(
+            new InvalidProblemDefError('Invalid House index. Nonet outside of range. Expected to be within [0, 9). Actual: 9')
+        );
     });
 });

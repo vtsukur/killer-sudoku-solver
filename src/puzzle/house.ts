@@ -1,4 +1,6 @@
+import * as _ from 'lodash';
 import { CellProvider, CellsIterator } from './cellsIterator';
+import { InvalidProblemDefError } from './invalidProblemDefError';
 
 /**
  * Index of a `House` (`Row`, `Column` or `Nonet`) represented as a number between 0 and 8 (inclusive).
@@ -46,5 +48,14 @@ export class House {
      */
     static newCellsIterator(cellProvider: CellProvider) {
         return new CellsIterator(cellProvider, this.CELL_COUNT);
+    }
+
+    /**
+     * @internal
+     */
+    static validateIndex(val: HouseIndex, type: string) {
+        if (!_.inRange(val, 0, this.CELL_COUNT)) {
+            throw new InvalidProblemDefError(`Invalid House index. ${type} outside of range. Expected to be within [0, ${this.CELL_COUNT}). Actual: ${val}`);
+        }
     }
 }

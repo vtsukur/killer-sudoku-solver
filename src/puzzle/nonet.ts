@@ -70,8 +70,11 @@ export class Nonet {
      * @param nonet - Index of the `Nonet` to iterate `Cell`s for.
      *
      * @returns new iterator over {@link Cell}s for a `Nonet` with the given index.
+     *
+     * @throws {InvalidProblemDefError} if `Nonet` index is outside of valid [0, 9) range.
      */
     static newCellsIterator(nonet: HouseIndex) {
+        Nonet.validateIndex(nonet);
         return House.newCellsIterator((index: number) => {
             return Cell.atPosition(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
         });
@@ -85,5 +88,12 @@ export class Nonet {
             val[this._GRID_CELLS_TO_NONETS[cellPosition[0]][cellPosition[1]]].push(cellPosition);
         });
         return val;
+    }
+
+    /**
+     * @internal
+     */
+    static validateIndex(val: HouseIndex) {
+        House.validateIndex(val, 'Nonet');
     }
 }

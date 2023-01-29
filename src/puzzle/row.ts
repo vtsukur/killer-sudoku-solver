@@ -28,10 +28,20 @@ export class Row {
      * @param row - Index of the `Row` to iterate `Cell`s for.
      *
      * @returns new iterator over {@link Cell}s for a `Row` with the given index.
+     *
+     * @throws {InvalidProblemDefError} if `Row` index is outside of valid [0, 9) range.
      */
     static newCellsIterator(row: HouseIndex) {
+        Row.validateIndex(row);
         return House.newCellsIterator((col: HouseIndex) => {
             return Cell.at(row, col);
         });
+    }
+
+    /**
+     * @internal
+     */
+    static validateIndex(val: HouseIndex) {
+        House.validateIndex(val, 'Row');
     }
 }
