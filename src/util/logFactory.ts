@@ -33,6 +33,7 @@ class Log {
         this.logger.info(msg);
     }
 
+    /* istanbul ignore next */
     debug(msg: string) {
         this.logger.log('debug', msg);
     }
