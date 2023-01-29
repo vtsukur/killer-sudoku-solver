@@ -1,5 +1,5 @@
 /**
- * Error signifying invalid definition of Killer Sudoku puzzle or its part.
+ * Error signifying invalid definition of Killer Sudoku `Puzzle` or its part.
  *
  * @public
  */

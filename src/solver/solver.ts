@@ -18,6 +18,8 @@ export class Solver {
      * @param puzzle - Problem definition for Killer Sudoku `Puzzle` described by {@link Cage}s.
      *
      * @returns Solution for Killer Sudoku `Puzzle` in the form of numbers matrix (array of arrays) indexed by row and then by column.
+     *
+     * @throws {InvalidSolverStateError} if `Solver` is stuck in a state that treats `Puzzle` as unsolvable.
      */
     solve(puzzle: Puzzle) {
         const model = new MasterModel(puzzle);

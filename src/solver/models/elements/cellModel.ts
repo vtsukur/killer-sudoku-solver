@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { InvalidSolverStepError } from '../../invalidSolverStateError';
+import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from './cageModel';
 
 export class CellModel {
@@ -49,7 +49,7 @@ export class CellModel {
 
     deleteNumOpt(val: number) {
         if (this._numOpts.size === 1 && this._numOpts.has(val)) {
-            throw new InvalidSolverStepError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
+            throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
         return this._numOpts.delete(val);
     }

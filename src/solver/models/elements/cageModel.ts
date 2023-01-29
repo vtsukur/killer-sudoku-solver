@@ -3,7 +3,7 @@ import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
-import { InvalidSolverStepError } from '../../invalidSolverStateError';
+import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -382,7 +382,7 @@ export class CageModel {
 
         for (const commonNum of commonComboNums) {
             if (!presentNums.has(commonNum)) {
-                throw new InvalidSolverStepError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
+                throw new InvalidSolverStateError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
             }
         }
 
