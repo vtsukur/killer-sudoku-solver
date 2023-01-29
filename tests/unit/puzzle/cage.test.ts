@@ -1,8 +1,9 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
+import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
 
 describe('Cage tests', () => {
-    test('Construction of Cage using `at` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+    test('Construction of Cage using `Cage.Builder.at` method storing sum, Cells, Cell count and computing key and toString representation', () => {
         const cage = Cage.ofSum(10).at(4, 4).at(4, 5).new();
         expect(cage.sum).toBe(10);
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
@@ -11,22 +12,16 @@ describe('Cage tests', () => {
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
     });
 
-    test('Construction of Cage using `withCell` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+    test('Construction of Cage using `Cage.Builder.withCell` method', () => {
         const cage = Cage.ofSum(10).withCell(Cell.at(4, 4)).withCell(Cell.at(4, 5)).new();
-        expect(cage.sum).toBe(10);
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.cellCount).toBe(2);
-        expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
-        expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
     });
 
-    test('Construction of Cage using `withCells` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+    test('Construction of Cage using `Cage.Builder.withCells` method', () => {
         const cage = Cage.ofSum(10).withCells([ Cell.at(4, 4), Cell.at(4, 5) ]).new();
-        expect(cage.sum).toBe(10);
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.cellCount).toBe(2);
-        expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
-        expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
     });
 
     test('Cage.Builder stores Cells and their count', () => {
@@ -38,32 +33,32 @@ describe('Cage tests', () => {
         expect(cageBuilder.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
     });
 
-    test('Construction of invalid Cage with sum outside of the range: <1', () => {
-        expect(() => Cage.ofSum(-1)).toThrow(
-            'Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1'
-        );
-    });
-
-    test('Construction of invalid Cage with sum outside of the range: >405', () => {
-        expect(() => Cage.ofSum(406)).toThrow(
-            'Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: 406'
-        );
-    });
-
-    test('Construction of invalid Cage with a duplicate Cell', () => {
-        expect(() => Cage.ofSum(9).at(4, 4).at(4, 4).new()).toThrow(
-            'Invalid Cage. Found duplicate Cell: (4, 4)'
-        );
-    });
-
     test('Cage key stays the same regardless of Cell order', () => {
         expect(Cage.ofSum(10).at(4, 4).at(4, 5).new().key).toBe(
             Cage.ofSum(10).at(4, 5).at(4, 4).new().key);
     });
 
+    test('Construction of invalid Cage with sum outside of the range: <1', () => {
+        expect(() => Cage.ofSum(-1)).toThrow(
+            new InvalidProblemDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1')
+        );
+    });
+
+    test('Construction of invalid Cage with sum outside of the range: >405', () => {
+        expect(() => Cage.ofSum(406)).toThrow(
+            new InvalidProblemDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: 406')
+        );
+    });
+
+    test('Construction of invalid Cage with a duplicate Cell', () => {
+        expect(() => Cage.ofSum(9).at(4, 4).at(4, 4).new()).toThrow(
+            new InvalidProblemDefError('Invalid Cage. Found duplicate Cell: (4, 4)')
+        );
+    });
+
     test('Construction of invalid Cage with no Cells', () => {
         expect(() => Cage.ofSum(8).new()).toThrow(
-            'Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping'
+            new InvalidProblemDefError('Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping')
         );
     });
 });
