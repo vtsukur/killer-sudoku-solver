@@ -1,4 +1,3 @@
-import { rowFrom1D, colFrom1D } from '../util/dimensionalMatrixMath';
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
@@ -52,8 +51,8 @@ export class Grid {
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.at(
-                rowFrom1D(index, Grid.SIDE_CELL_COUNT),
-                colFrom1D(index, Grid.SIDE_CELL_COUNT),
+                Math.floor(index / Grid.SIDE_CELL_COUNT),
+                index % Grid.SIDE_CELL_COUNT
             );
         }, Grid.CELL_COUNT);
     }
