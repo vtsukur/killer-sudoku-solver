@@ -72,6 +72,30 @@ export class Cell {
         return this._CELLS[row][col];
     }
 
+    private static validateRow(val: HouseIndex) {
+        Cell.validate2DIndex(val, 'Row');
+    }
+
+    private static validateCol(val: HouseIndex) {
+        Cell.validate2DIndex(val, 'Column');
+    }
+
+    private static validate2DIndex(val: HouseIndex, type: string) {
+        if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
+            throw new InvalidProblemDefError(`Invalid Cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`);
+        } else {
+            return val;
+        }
+    }
+
+    private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();
+
+    static {
+        Grid.forEachCellPosition(([row, col]) => {
+            this._CELLS[row][col] = new Cell(row, col);
+        });
+    }
+
     /**
      * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
      *
@@ -85,34 +109,10 @@ export class Cell {
         return Cell.at(val[0], val[1]);
     }
 
-    private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();
-
-    static {
-        Grid.forEachCellPosition(([row, col]) => {
-            this._CELLS[row][col] = new Cell(row, col);
-        });
-    }
-
     private constructor(row: HouseIndex, col: HouseIndex) {
-        this.row = Cell.validateRow(row);
-        this.col = Cell.validateCol(col);
+        this.row = row;
+        this.col = col;
         this.key = Cell.keyOf(row, col);
-    }
-
-    private static validateRow(val: HouseIndex) {
-        return Cell.validate2DIndex(val, 'Row');
-    }
-
-    private static validateCol(val: HouseIndex) {
-        return Cell.validate2DIndex(val, 'Column');
-    }
-
-    private static validate2DIndex(val: HouseIndex, type: string) {
-        if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
-            throw new InvalidProblemDefError(`Invalid Cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`);
-        } else {
-            return val;
-        }
     }
 
     /**
