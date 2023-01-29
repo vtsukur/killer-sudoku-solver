@@ -6,7 +6,7 @@ import { EOL } from 'os';
 type NumbersMatrix = ReadonlyArray<ReadonlyArray<number>>;
 
 /**
- * Solution for Killer Sudoku puzzle in the form of numbers matrix (array of arrays) indexed by row and then by column
+ * Solution for Killer Sudoku `Puzzle` in the form of numbers matrix (array of arrays) indexed by row and then by column
  * with support of human-readable string representation which may be accessed via {@link Solution#toString}.
  *
  * @public
