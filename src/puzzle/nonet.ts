@@ -1,5 +1,6 @@
-import { to1D, rowFrom1D, colFrom1D } from '../util/dimensionalMatrixMath';
-import { Cell } from './cell';
+import * as _ from 'lodash';
+import { Cell, RowAndCol } from './cell';
+import { Grid } from './grid';
 import { House, HouseIndex } from './house';
 
 /**
@@ -16,18 +17,6 @@ export class Nonet {
      * Amount of {@link Cell}s on `Nonet`'s side.
      */
     static readonly SIDE_CELL_COUNT = 3;
-
-    private static GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
-    ];
 
     /* istanbul ignore next */
     private constructor() {
@@ -50,8 +39,20 @@ export class Nonet {
      * @returns index of `Nonet` to which given {@link Cell} belongs to.
      */
     static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
-        return this.GRID_CELLS_TO_NONETS[row][col];
+        return this._GRID_CELLS_TO_NONETS[row][col];
     }
+
+    private static readonly _GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
+    ];
 
     /**
      * Constructs new iterator over {@link Cell}s for a `Nonet` with the given index
@@ -73,15 +74,20 @@ export class Nonet {
      */
     static newCellsIterator(nonet: HouseIndex) {
         return House.newCellsIterator((index: number) => {
-            const row = to1D(
-                rowFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
-                rowFrom1D(index, Nonet.SIDE_CELL_COUNT),
-                Nonet.SIDE_CELL_COUNT);
-            const col = to1D(
-                colFrom1D(nonet, Nonet.SIDE_CELL_COUNT),
-                colFrom1D(index, Nonet.SIDE_CELL_COUNT),
-                Nonet.SIDE_CELL_COUNT);
-            return Cell.at(row, col);
+            const rowAndCol = Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
+            return Cell.at(rowAndCol[0], rowAndCol[1]);
         });
+    }
+
+    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<RowAndCol>> = this.buildIterationCache();
+
+    private static buildIterationCache() {
+        const cache: Array<Array<RowAndCol>> = _.range(Grid.SIDE_CELL_COUNT).map(() => []);
+        for (const row of _.range(Grid.SIDE_CELL_COUNT)) {
+            for (const col of _.range(Grid.SIDE_CELL_COUNT)) {
+                cache[this._GRID_CELLS_TO_NONETS[row][col]].push([row, col]);
+            }
+        }
+        return cache;
     }
 }

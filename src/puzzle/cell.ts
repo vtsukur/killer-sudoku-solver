@@ -4,6 +4,11 @@ import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 
 /**
+ * Tuple of `Cell` `Row` and `Column` indices.
+ */
+export type RowAndCol = [ HouseIndex, HouseIndex ];
+
+/**
  * Human-readable key describing square's unique position on the `Grid`.
  */
 export type CellKey = string;
@@ -46,23 +51,9 @@ export class Cell {
     readonly col: HouseIndex;
 
     /**
-     * Index of a `Nonet` that this `Cell` resides on which is computed from `Row` and `Column` indices.
-     */
-    readonly nonet: HouseIndex;
-
-    /**
      * Human-readable key describing square's unique position on the `Grid`.
      */
     readonly key: CellKey;
-
-    private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();
-    static {
-        _.range(9).forEach((row: HouseIndex) => {
-            _.range(9).forEach((col: HouseIndex) => {
-                this._CELLS[row][col] = new Cell(row, col);
-            });
-        });
-    }
 
     /**
      * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
@@ -79,7 +70,6 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
-        this.nonet = Nonet.indexForCellAt(row, col);
         this.key = Cell.keyOf(row, col);
     }
 
@@ -97,6 +87,13 @@ export class Cell {
         } else {
             return val;
         }
+    }
+
+    /**
+     * Index of a `Nonet` that this `Cell` resides on which is computed from `Row` and `Column` indices.
+     */
+    get nonet() {
+        return Nonet.indexForCellAt(this.row, this.col);
     }
 
     /**
