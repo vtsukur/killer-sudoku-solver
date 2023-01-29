@@ -4,10 +4,15 @@ import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
 /**
+ * Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
+ */
+export type CellPositionCallback = (cellPosition: CellPosition) => void;
+
+/**
  * Supportive class for Killer Sudoku `Grid`
  * which holds useful constants that describe mathematical properties of any `Grid`
- * as well as utility methods that simplify iteration over `Grid` {@link Cell}s
- * and creation of matrices with `Grid`'s size.
+ * as well as utility methods that simplify iteration over `Grid` {@link Cell}s,
+ * {@link CellPosition}s and creation of supplementary ranges and matrices with `Grid`'s size.
  *
  * @public
  */
@@ -87,10 +92,13 @@ export class Grid {
     }
 
     /**
+     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellPosition}.
      *
-     * @param callback
+     * Iteration sequence is the same way as in `newCellsIterator` method.
+     *
+     * @param callback - Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
      */
-    static forEachCellPosition(callback: (cellPosition: CellPosition) => void) {
+    static forEachCellPosition(callback: CellPositionCallback) {
         for (const row of Grid.zeroTo8Range()) {
             for (const col of Grid.zeroTo8Range()) {
                 callback([ row, col ]);
