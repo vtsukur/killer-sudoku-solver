@@ -44,7 +44,7 @@ export class House {
      *
      * @returns new iterator over {@link Cell}s for a `House` with the given {@link CellProvider}.
      */
-    protected static newCellsIterator(cellProvider: CellProvider) {
+    static newCellsIterator(cellProvider: CellProvider) {
         return new CellsIterator(cellProvider, this.CELL_COUNT);
     }
 }
