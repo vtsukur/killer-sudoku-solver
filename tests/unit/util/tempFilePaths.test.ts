@@ -5,7 +5,7 @@ describe('TempFilePaths tests', () => {
     const baseDir = './tmp/tempFilePaths-test';
     const paths = new TempFilePaths(baseDir);
 
-    test('Determine file path taking base dir into account', async () => {
+    test('Determine file path with base dir', async () => {
         expect(paths.filePath('file.tmp')).toBe('./tmp/tempFilePaths-test/file.tmp');
     });
 
