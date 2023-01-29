@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
+import { InvalidProblemDefError } from './invalidProblemDefError';
 import { Nonet } from './nonet';
 
 /**
@@ -62,9 +63,13 @@ export class Cell {
      * @param col - Index of a `Column` that this `Cell` resides on.
      *
      * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     *
+     * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
     static at(row: HouseIndex, col: HouseIndex) {
-        return new Cell(row, col);
+        Cell.validateRow(row);
+        Cell.validateCol(col);
+        return this._CELLS[row][col];
     }
 
     /**
@@ -73,9 +78,19 @@ export class Cell {
      * @param val - Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
      *
      * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     *
+     * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
     static atPosition(val: CellPosition) {
         return Cell.at(val[0], val[1]);
+    }
+
+    private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();
+
+    static {
+        Grid.forEachCellPosition(([row, col]) => {
+            this._CELLS[row][col] = new Cell(row, col);
+        });
     }
 
     private constructor(row: HouseIndex, col: HouseIndex) {
@@ -94,7 +109,7 @@ export class Cell {
 
     private static validate2DIndex(val: HouseIndex, type: string) {
         if (!_.inRange(val, 0, Grid.SIDE_CELL_COUNT)) {
-            throw `Invalid Cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`;
+            throw new InvalidProblemDefError(`Invalid Cell. ${type} outside of range. Expected to be within [0, ${Grid.SIDE_CELL_COUNT}). Actual: ${val}`);
         } else {
             return val;
         }
