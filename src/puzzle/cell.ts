@@ -4,9 +4,9 @@ import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 
 /**
- * Tuple of `Cell` `Row` and `Column` indices.
+ * Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
  */
-export type RowAndCol = [ HouseIndex, HouseIndex ];
+export type CellPosition = [ HouseIndex, HouseIndex ];
 
 /**
  * Human-readable key describing square's unique position on the `Grid`.
@@ -70,12 +70,12 @@ export class Cell {
     /**
      * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
      *
-     * @param rowAndCol - Tuple of `Cell` `Row` and `Column` indices.
+     * @param val - Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
      *
      * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
      */
-    static fromTuple(rowAndCol: RowAndCol) {
-        return Cell.at(rowAndCol[0], rowAndCol[1]);
+    static atPosition(val: CellPosition) {
+        return Cell.at(val[0], val[1]);
     }
 
     private constructor(row: HouseIndex, col: HouseIndex) {

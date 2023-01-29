@@ -1,4 +1,4 @@
-import { Cell, RowAndCol } from './cell';
+import { Cell, CellPosition } from './cell';
 import { Grid } from './grid';
 import { House, HouseIndex } from './house';
 
@@ -73,19 +73,17 @@ export class Nonet {
      */
     static newCellsIterator(nonet: HouseIndex) {
         return House.newCellsIterator((index: number) => {
-            return Cell.fromTuple(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
+            return Cell.atPosition(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
         });
     }
 
-    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<RowAndCol>> = this.buildIterationCache();
+    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellPosition>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<Array<RowAndCol>> = Grid.zeroTo8Range().map(() => []);
-        for (const row of Grid.zeroTo8Range()) {
-            for (const col of Grid.zeroTo8Range()) {
-                val[this._GRID_CELLS_TO_NONETS[row][col]].push([row, col]);
-            }
-        }
+        const val: Array<Array<CellPosition>> = Grid.zeroTo8Range().map(() => []);
+        Grid.forEachCellPosition(cellPosition => {
+            val[this._GRID_CELLS_TO_NONETS[cellPosition[0]][cellPosition[1]]].push(cellPosition);
+        });
         return val;
     }
 }

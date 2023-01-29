@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Cell, RowAndCol } from './cell';
+import { Cell, CellPosition } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { House } from './house';
 
@@ -51,19 +51,17 @@ export class Grid {
      */
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
-            return Cell.fromTuple(this._CELLS_ITERATOR_CACHE[index]);
+            return Cell.atPosition(this._CELLS_ITERATOR_CACHE[index]);
         }, Grid.CELL_COUNT);
     }
 
-    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<RowAndCol> = this.buildIterationCache();
+    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<CellPosition> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<RowAndCol> = [];
-        for (const row of Grid.zeroTo8Range()) {
-            for (const col of Grid.zeroTo8Range()) {
-                val.push([row, col]);
-            }
-        }
+        const val: Array<CellPosition> = [];
+        Grid.forEachCellPosition(cellPosition => {
+            val.push(cellPosition);
+        });
         return val;
     }
 
@@ -86,5 +84,17 @@ export class Grid {
      */
     static zeroTo8Range(): ReadonlyArray<number> {
         return _.range(Grid.SIDE_CELL_COUNT);
+    }
+
+    /**
+     *
+     * @param callback
+     */
+    static forEachCellPosition(callback: (cellPosition: CellPosition) => void) {
+        for (const row of Grid.zeroTo8Range()) {
+            for (const col of Grid.zeroTo8Range()) {
+                callback([ row, col ]);
+            }
+        }
     }
 }
