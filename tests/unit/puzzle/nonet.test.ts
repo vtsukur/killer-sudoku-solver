@@ -4,7 +4,7 @@ import { House } from '../../../src/puzzle/house';
 import { Nonet } from '../../../src/puzzle/nonet';
 
 describe('Nonet tests', () => {
-    test('Amount of Cells on Nonet side is 3', () => {
+    test('Amount of Cells on Nonet\'s side is 3', () => {
         expect(Nonet.SIDE_CELL_COUNT).toEqual(3);
     });
 

@@ -71,14 +71,18 @@ export class Grid {
     }
 
     /**
-     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
+     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellPosition}.
      *
-     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
+     * Iteration sequence is the same way as in `newCellsIterator` method.
+     *
+     * @param callback - Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
      */
-    static newMatrix() {
-        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => {
-            return new Array(this.SIDE_CELL_COUNT);
-        });
+    static forEachCellPosition(callback: CellPositionCallback) {
+        for (const row of Grid.new0To8Range()) {
+            for (const col of Grid.new0To8Range()) {
+                callback([ row, col ]);
+            }
+        }
     }
 
     /**
@@ -87,22 +91,18 @@ export class Grid {
      * @returns new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
      *
      */
-    static zeroTo8Range(): ReadonlyArray<number> {
+    static new0To8Range(): ReadonlyArray<number> {
         return _.range(Grid.SIDE_CELL_COUNT);
     }
 
     /**
-     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellPosition}.
+     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      *
-     * Iteration sequence is the same way as in `newCellsIterator` method.
-     *
-     * @param callback - Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
+     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      */
-    static forEachCellPosition(callback: CellPositionCallback) {
-        for (const row of Grid.zeroTo8Range()) {
-            for (const col of Grid.zeroTo8Range()) {
-                callback([ row, col ]);
-            }
-        }
+    static newMatrix() {
+        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => {
+            return new Array(this.SIDE_CELL_COUNT);
+        });
     }
 }

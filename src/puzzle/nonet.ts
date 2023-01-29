@@ -80,7 +80,7 @@ export class Nonet {
     private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellPosition>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<Array<CellPosition>> = Grid.zeroTo8Range().map(() => []);
+        const val: Array<Array<CellPosition>> = Grid.new0To8Range().map(() => []);
         Grid.forEachCellPosition(cellPosition => {
             val[this._GRID_CELLS_TO_NONETS[cellPosition[0]][cellPosition[1]]].push(cellPosition);
         });
