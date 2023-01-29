@@ -17,6 +17,18 @@ export class Nonet {
      */
     static readonly SIDE_CELL_COUNT = 3;
 
+    private static GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
+    ];
+
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
@@ -38,10 +50,7 @@ export class Nonet {
      * @returns index of `Nonet` to which given {@link Cell} belongs to.
      */
     static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
-        return to1D(
-            rowFrom1D(row, Nonet.SIDE_CELL_COUNT),
-            rowFrom1D(col, Nonet.SIDE_CELL_COUNT),
-            Nonet.SIDE_CELL_COUNT);
+        return this.GRID_CELLS_TO_NONETS[row][col];
     }
 
     /**
