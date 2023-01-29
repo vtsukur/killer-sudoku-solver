@@ -38,6 +38,16 @@ export class Grid {
         throw new Error('Non-contructible');
     }
 
+    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<CellPosition> = this.buildIterationCache();
+
+    private static buildIterationCache() {
+        const val: Array<CellPosition> = [];
+        Grid.forEachCellPosition(cellPosition => {
+            val.push(cellPosition);
+        });
+        return val;
+    }
+
     /**
      * Constructs new iterator over `Grid`'s {@link Cell}s
      * which iterates consequently from _top left_ `Cell` of the `Grid` to the _right bottom_ one.
@@ -58,16 +68,6 @@ export class Grid {
         return new CellsIterator((index: number) => {
             return Cell.atPosition(this._CELLS_ITERATOR_CACHE[index]);
         }, Grid.CELL_COUNT);
-    }
-
-    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<CellPosition> = this.buildIterationCache();
-
-    private static buildIterationCache() {
-        const val: Array<CellPosition> = [];
-        Grid.forEachCellPosition(cellPosition => {
-            val.push(cellPosition);
-        });
-        return val;
     }
 
     /**

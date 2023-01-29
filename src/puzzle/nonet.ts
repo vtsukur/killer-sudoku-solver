@@ -53,6 +53,16 @@ export class Nonet {
         [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
     ];
 
+    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellPosition>> = this.buildIterationCache();
+
+    private static buildIterationCache() {
+        const val: Array<Array<CellPosition>> = Grid.new0To8Range().map(() => []);
+        Grid.forEachCellPosition(cellPosition => {
+            val[this._GRID_CELLS_TO_NONETS[cellPosition[0]][cellPosition[1]]].push(cellPosition);
+        });
+        return val;
+    }
+
     /**
      * Constructs new iterator over {@link Cell}s for a `Nonet` with the given index
      * which iterates consequently from _top left_ `Cell` of the `Nonet` to the _right bottom_ one.
@@ -78,16 +88,6 @@ export class Nonet {
         return House.newCellsIterator((index: number) => {
             return Cell.atPosition(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
         });
-    }
-
-    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellPosition>> = this.buildIterationCache();
-
-    private static buildIterationCache() {
-        const val: Array<Array<CellPosition>> = Grid.new0To8Range().map(() => []);
-        Grid.forEachCellPosition(cellPosition => {
-            val[this._GRID_CELLS_TO_NONETS[cellPosition[0]][cellPosition[1]]].push(cellPosition);
-        });
-        return val;
     }
 
     /**
