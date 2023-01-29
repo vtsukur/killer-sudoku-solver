@@ -51,8 +51,7 @@ export class Grid {
      */
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
-            const rowAndCol = this._CELLS_ITERATOR_CACHE[index];
-            return Cell.at(rowAndCol[0], rowAndCol[1]);
+            return Cell.fromTuple(this._CELLS_ITERATOR_CACHE[index]);
         }, Grid.CELL_COUNT);
     }
 

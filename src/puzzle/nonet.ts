@@ -73,8 +73,7 @@ export class Nonet {
      */
     static newCellsIterator(nonet: HouseIndex) {
         return House.newCellsIterator((index: number) => {
-            const rowAndCol = Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
-            return Cell.at(rowAndCol[0], rowAndCol[1]);
+            return Cell.fromTuple(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
         });
     }
 

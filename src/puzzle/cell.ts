@@ -67,6 +67,17 @@ export class Cell {
         return new Cell(row, col);
     }
 
+    /**
+     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     *
+     * @param rowAndCol - Tuple of `Cell` `Row` and `Column` indices.
+     *
+     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` resides on.
+     */
+    static fromTuple(rowAndCol: RowAndCol) {
+        return Cell.at(rowAndCol[0], rowAndCol[1]);
+    }
+
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = Cell.validateRow(row);
         this.col = Cell.validateCol(col);
