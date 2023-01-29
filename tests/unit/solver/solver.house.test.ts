@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Cage, Cages } from '../../../src/puzzle/cage';
 import { Cell, Cells } from '../../../src/puzzle/cell';
+import { House } from '../../../src/puzzle/house';
 import { HouseModel } from '../../../src/solver/models/elements/houseModel';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../puzzle/puzzleSamples';
@@ -292,6 +293,21 @@ describe('Tests for creation and initialization of row, column and nonet models'
                 Cage.ofSum(10).at(7, 6).at(7, 7).new(),
                 Cage.ofSum(7).at(8, 6).at(8, 7).new()
             ]
+        });
+    });
+
+    test('Find solution (whitebox verification of the model)', () => {
+        const solver = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
+        solver.solve();
+
+        const model = solver.model;
+        expect(model.cellModelAt(2, 7).placedNum).toBe(8);
+        expect(model.cellModelAt(2, 7).solved).toBe(true);
+
+        _.range(House.CELL_COUNT).forEach(index => {
+            expect(model.rowModel(index).cageModels.length).toBe(House.CELL_COUNT);
+            expect(model.columnModel(index).cageModels.length).toBe(House.CELL_COUNT);
+            expect(model.nonetModel(index).cageModels.length).toBe(House.CELL_COUNT);
         });
     });
 

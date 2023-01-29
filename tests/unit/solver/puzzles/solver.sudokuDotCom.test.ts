@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-import { House } from '../../../../src/puzzle/house';
 import { Solver } from '../../../../src/solver/solver';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
@@ -174,20 +172,5 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
             [ 3, 4, 2, 9, 1, 5, 6, 8, 7 ],
             [ 1, 9, 7, 6, 8, 3, 2, 5, 4 ]
         ]);
-    });
-
-    test('Find solution (whitebox verification of the model)', () => {
-        const solver = new Solver(sudokuDotCom.dailyChallengeOf_2022_11_01);
-        solver.solve();
-
-        const model = solver.model;
-        expect(model.cellModelAt(2, 7).placedNum).toBe(8);
-        expect(model.cellModelAt(2, 7).solved).toBe(true);
-
-        _.range(House.CELL_COUNT).forEach(index => {
-            expect(model.rowModel(index).cageModels.length).toBe(House.CELL_COUNT);
-            expect(model.columnModel(index).cageModels.length).toBe(House.CELL_COUNT);
-            expect(model.nonetModel(index).cageModels.length).toBe(House.CELL_COUNT);
-        });
     });
 });
