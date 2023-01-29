@@ -60,7 +60,7 @@ const recognizePuzzle = async (puzzleSourceImagePath: string, taskId: number) =>
 
 const solvePuzzle = (puzzle: Puzzle) => {
     log.info('Solving puzzle ...');
-    const solution = new Solver(puzzle).solve();
+    const solution = new Solver().solve(puzzle);
     log.info('Solution for puzzle found!');
     return solution;
 };

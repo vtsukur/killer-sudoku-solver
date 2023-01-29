@@ -3,7 +3,10 @@ import { Cage, Cages } from '../../../src/puzzle/cage';
 import { Cell, Cells } from '../../../src/puzzle/cell';
 import { House } from '../../../src/puzzle/house';
 import { HouseModel } from '../../../src/solver/models/elements/houseModel';
-import { Solver } from '../../../src/solver/solver';
+import { MasterModel } from '../../../src/solver/models/masterModel';
+import { Context } from '../../../src/solver/strategies/context';
+import { MasterStrategy } from '../../../src/solver/strategies/masterStrategy';
+import { CageSlicer } from '../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
@@ -13,7 +16,7 @@ type ExpectedHouse = {
 };
 
 describe('Tests for creation and initialization of row, column and nonet models', () => {
-    const model = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01).model;
+    const model = new MasterModel(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
 
     test('Initialize Row Models', () => {
         expectHouseM(model.rowModel(0), {
@@ -297,10 +300,13 @@ describe('Tests for creation and initialization of row, column and nonet models'
     });
 
     test('Find solution (whitebox verification of the model)', () => {
-        const solver = new Solver(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
-        solver.solve();
+        const puzzle = puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01;
 
-        const model = solver.model;
+        // emulating Solver
+        const model = new MasterModel(puzzle);
+        const ctx = new Context(model, new CageSlicer(model));
+        new MasterStrategy(ctx).execute();
+
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);
         expect(model.cellModelAt(2, 7).solved).toBe(true);
 
