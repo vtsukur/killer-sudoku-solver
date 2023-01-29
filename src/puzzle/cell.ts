@@ -59,7 +59,7 @@ export class Cell {
     private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = Grid.newMatrix();
 
     static {
-        Grid.forEachCellPosition(([row, col]) => {
+        Grid.forEachCellPosition(([ row, col ]) => {
             this._CACHED_INSTANCES[row][col] = new Cell(row, col);
         });
     }
