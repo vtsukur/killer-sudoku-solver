@@ -3,7 +3,7 @@ import { Cell } from '../../../src/puzzle/cell';
 import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
 
 describe('Cage tests', () => {
-    test('Construction of Cage using `Cage.Builder.at` method storing sum, Cells, Cell count and computing key and toString representation', () => {
+    test('Construction of Cage using `Cage.Builder.at` method storing sum, Cells, Cell count and computing key and `toString` representation', () => {
         const cage = Cage.ofSum(10).at(4, 4).at(4, 5).new();
         expect(cage.sum).toBe(10);
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);

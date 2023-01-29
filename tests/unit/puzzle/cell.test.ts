@@ -2,7 +2,7 @@ import { Cell } from '../../../src/puzzle/cell';
 import { InvalidProblemDefError } from '../../../src/puzzle/invalidProblemDefError';
 
 describe('Cell tests', () => {
-    test('Construction of Cell using `at` method storing Row, Column and computing Nonet, key and toString representation', () => {
+    test('Construction of Cell using `at` method storing Row, Column and computing Nonet, key and `toString` representation', () => {
         const cell = Cell.at(4, 5);
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(5);
