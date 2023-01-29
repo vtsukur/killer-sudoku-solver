@@ -56,36 +56,36 @@ export class Cell {
      */
     readonly key: CellKey;
 
+    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = Grid.newMatrix();
+
+    static {
+        Grid.forEachCellPosition(([row, col]) => {
+            this._CACHED_INSTANCES[row][col] = new Cell(row, col);
+        });
+    }
+
     /**
-     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
+     * Produces `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @param row - Index of a `Row` that this `Cell` is positioned at.
      * @param col - Index of a `Column` that this `Cell` is positioned at.
      *
-     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
+     * @returns `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
     static at(row: HouseIndex, col: HouseIndex) {
         Row.validateIndex(row);
         Column.validateIndex(col);
-        return this._CELLS[row][col];
-    }
-
-    private static readonly _CELLS: Array<Array<Cell>> = Grid.newMatrix();
-
-    static {
-        Grid.forEachCellPosition(([row, col]) => {
-            this._CELLS[row][col] = new Cell(row, col);
-        });
+        return this._CACHED_INSTANCES[row][col];
     }
 
     /**
-     * Constructs new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
+     * Produces `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @param val - Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
      *
-     * @returns new `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
+     * @returns `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
