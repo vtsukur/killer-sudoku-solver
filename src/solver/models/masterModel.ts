@@ -20,7 +20,6 @@ export class MasterModel {
     columnModels: Array<ColumnModel> = [];
     nonetModels: Array<NonetModel> = [];
     houseModels: Array<HouseModel> = [];
-    cellsMatrix: Array<Array<Cell>> = [];
     cageModelsMap: Map<string, CageModel> = new Map();
     cellModelsMatrix: Array<Array<CellModel>> = [];
     private _solution: Array<Array<number>> = [];
@@ -39,14 +38,12 @@ export class MasterModel {
 
     private initWithPuzzle(puzzle: Puzzle) {
         this.cageModelsMap = new Map();
-        this.cellsMatrix = Grid.newMatrix();
         this._cellsToInputCagesMatrix = Grid.newMatrix();
         this._solution = Grid.newMatrix();
         this._placedNumCount = 0;
 
         puzzle.cages.forEach(cage => {
             cage.cells.forEach(cell => {
-                this.cellsMatrix[cell.row][cell.col] = cell;
                 this._cellsToInputCagesMatrix[cell.row][cell.col] = cage;
             });
         });
@@ -120,7 +117,6 @@ export class MasterModel {
         this._placedNumCount = model._placedNumCount;
 
         // no need to copy immutable data, just reference it
-        this.cellsMatrix = model.cellsMatrix;
         this._cellsToInputCagesMatrix = model._cellsToInputCagesMatrix;
 
         const validate = function(bool: boolean) {
@@ -151,7 +147,7 @@ export class MasterModel {
     }
 
     private collectHouseCells(iterator: Iterable<Cell>): ReadonlyCells {
-        return Array.from(iterator).map((coords: Cell) => this.cellAt(coords.row, coords.col));
+        return Array.from(iterator).map((coords: Cell) => Cell.at(coords.row, coords.col));
     }
 
     registerCage(cage: Cage, canHaveDuplicateNums: boolean) {
@@ -206,7 +202,7 @@ export class MasterModel {
     applySolution(solution: Array<Array<number>>) {
         _.range(House.CELL_COUNT).forEach(row => {
             _.range(House.CELL_COUNT).forEach(col => {
-                this.placeNum(this.cellsMatrix[row][col], solution[row][col]);
+                this.placeNum(Cell.at(row, col), solution[row][col]);
             });
         });
     }
@@ -217,10 +213,6 @@ export class MasterModel {
 
     get solution() {
         return this._solution;
-    }
-
-    cellAt(row: HouseIndex, col: HouseIndex) {
-        return this.cellsMatrix[row][col];
     }
 
     cellModelOf(cell: Cell) {
