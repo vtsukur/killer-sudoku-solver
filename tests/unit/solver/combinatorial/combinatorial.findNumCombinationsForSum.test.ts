@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
+import { Numbers } from '../../../../src/puzzle/numbers';
 import { findNumCombinationsForSum } from '../../../../src/solver/combinatorial/combinatorial';
 
 describe('Tests for the finder of number combinations to form a cage', () => {
-    test('Num combinations to form a cage in 1 cell', () => {
-        _.range(1, 10).forEach(cage => {
-            expect(findNumCombinationsForSum(cage, 1)).toEqual([ new Set([cage]) ]);
+    test('Number combinations to form a Cage in 1 Cell', () => {
+        _.range(1, Numbers.MAX + 1).forEach(num => {
+            expect(findNumCombinationsForSum(num, 1)).toEqual([ new Set([ num ]) ]);
         });
     });
 
