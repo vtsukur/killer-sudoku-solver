@@ -20,9 +20,9 @@ export class MasterModel {
     columnModels: Array<ColumnModel> = [];
     nonetModels: Array<NonetModel> = [];
     houseModels: Array<HouseModel> = [];
-    cageModelsMap: Map<string, CageModel> = new Map();
+    readonly cageModelsMap: Map<string, CageModel> = new Map();
     cellModelsMatrix: Array<Array<CellModel>> = [];
-    private _solution: Array<Array<number>> = [];
+    private readonly _solution: Array<Array<number>> = Grid.newMatrix();
     private _placedNumCount = 0;
     private _cellsToInputCagesMatrix: Array<Array<Cage>> = [];
 
@@ -37,9 +37,7 @@ export class MasterModel {
     }
 
     private initWithPuzzle(puzzle: Puzzle) {
-        this.cageModelsMap = new Map();
         this._cellsToInputCagesMatrix = Grid.newMatrix();
-        this._solution = Grid.newMatrix();
         this._placedNumCount = 0;
 
         puzzle.cages.forEach(cage => {
@@ -72,7 +70,6 @@ export class MasterModel {
 
     private initWithMasterModel(model: MasterModel) {
         // copy cage models
-        this.cageModelsMap = new Map();
         for (const entry of model.cageModelsMap.entries()) {
             this.cageModelsMap.set(entry[0], entry[1].deepCopyWithSameCellModels());
         }
@@ -110,7 +107,6 @@ export class MasterModel {
         }
 
         // copy solution
-        this._solution = Grid.newMatrix();
         model._solution.forEach((row: Array<number>, index: number) => {
             this._solution[index] = [...row];
         });
