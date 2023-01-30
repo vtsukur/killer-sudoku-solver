@@ -19,7 +19,7 @@ export class MasterModel {
     readonly rowModels: Array<RowModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
     readonly columnModels: Array<ColumnModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
     readonly nonetModels: Array<NonetModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
-    houseModels: Array<HouseModel> = [];
+    readonly houseModels: Array<HouseModel>;
     readonly cageModelsMap: Map<string, CageModel> = new Map();
     cellModelsMatrix: Array<Array<CellModel>> = [];
     private readonly _solution: Array<Array<number>> = Grid.newMatrix();
@@ -34,6 +34,7 @@ export class MasterModel {
             this.puzzle = puzzleOrMasterModel.puzzle;
             this.initWithMasterModel(puzzleOrMasterModel);
         }
+        this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
     private initWithPuzzle(puzzle: Puzzle) {
@@ -61,8 +62,6 @@ export class MasterModel {
         puzzle.cages.forEach(cage => {
             this.registerCage(cage, false);
         });
-
-        this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
     private initWithMasterModel(model: MasterModel) {
@@ -80,7 +79,6 @@ export class MasterModel {
             this.nonetModels[index] = model.nonetModels[index].deepCopyWithoutCageModels();
             this.copyHouseCageMs(model.nonetModels[index], this.nonetModels[index]);
         });
-        this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
 
         // copy cell models
         this.cellModelsMatrix = Grid.newMatrix();
