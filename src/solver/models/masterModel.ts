@@ -16,9 +16,9 @@ import { RowModel } from './elements/rowModel';
 
 export class MasterModel {
     readonly puzzle: Puzzle;
-    rowModels: Array<RowModel> = [];
-    columnModels: Array<ColumnModel> = [];
-    nonetModels: Array<NonetModel> = [];
+    readonly rowModels: Array<RowModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+    readonly columnModels: Array<ColumnModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+    readonly nonetModels: Array<NonetModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
     houseModels: Array<HouseModel> = [];
     readonly cageModelsMap: Map<string, CageModel> = new Map();
     cellModelsMatrix: Array<Array<CellModel>> = [];
@@ -46,13 +46,10 @@ export class MasterModel {
             });
         });
 
-        this.rowModels = [];
-        this.columnModels = [];
-        this.nonetModels = [];
         _.range(House.CELL_COUNT).forEach(i => {
-            this.rowModels.push(new RowModel(i, this.collectHouseCells(Row.newCellsIterator(i))));
-            this.columnModels.push(new ColumnModel(i, this.collectHouseCells(Column.newCellsIterator(i))));
-            this.nonetModels.push(new NonetModel(i, this.collectHouseCells(Nonet.newCellsIterator(i))));
+            this.rowModels[i] = new RowModel(i, this.collectHouseCells(Row.newCellsIterator(i)));
+            this.columnModels[i] = new ColumnModel(i, this.collectHouseCells(Column.newCellsIterator(i)));
+            this.nonetModels[i] = new NonetModel(i, this.collectHouseCells(Nonet.newCellsIterator(i)));
         });
 
         this.cellModelsMatrix = Grid.newMatrix();
@@ -75,9 +72,6 @@ export class MasterModel {
         }
 
         // copy house models
-        this.rowModels = Array(House.CELL_COUNT);
-        this.columnModels = Array(House.CELL_COUNT);
-        this.nonetModels = Array(House.CELL_COUNT);
         _.range(House.CELL_COUNT).forEach(index => {
             this.rowModels[index] = model.rowModels[index].deepCopyWithoutCageModels();
             this.copyHouseCageMs(model.rowModels[index], this.rowModels[index]);
