@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { findNumCombinationsForSum } from '../../combinatorial/combinatorial';
+import { combosForSum } from '../../combinatorial/combinatorial';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -108,7 +108,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        const combos = findNumCombinationsForSum(this.cage.sum, this.cage.cellCount);
+        const combos = combosForSum(this.cage.sum, this.cage.cellCount);
         let nums = new Set<number>();
         combos.forEach(combo => {
             nums = new Set([...nums, ...combo]);
