@@ -15,7 +15,7 @@ import { NonetModel } from './elements/nonetModel';
 import { RowModel } from './elements/rowModel';
 
 export class MasterModel {
-    puzzle: Puzzle;
+    readonly puzzle: Puzzle;
     rowModels: Array<RowModel> = [];
     columnModels: Array<ColumnModel> = [];
     nonetModels: Array<NonetModel> = [];
