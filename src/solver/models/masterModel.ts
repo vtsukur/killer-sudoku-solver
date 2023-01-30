@@ -21,7 +21,8 @@ export class MasterModel {
     readonly nonetModels: Array<NonetModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
     readonly houseModels: Array<HouseModel>;
     readonly cageModelsMap: Map<string, CageModel> = new Map();
-    cellModelsMatrix: Array<Array<CellModel>> = [];
+    readonly cellModelsMatrix: Array<Array<CellModel>> = Grid.newMatrix();
+
     private readonly _solution: Array<Array<number>> = Grid.newMatrix();
     private _placedNumCount = 0;
     private _cellsToInputCagesMatrix: Array<Array<Cage>> = [];
@@ -53,7 +54,6 @@ export class MasterModel {
             this.nonetModels[i] = new NonetModel(i, this.collectHouseCells(Nonet.newCellsIterator(i)));
         });
 
-        this.cellModelsMatrix = Grid.newMatrix();
         const cells = puzzle.cages.map(cage => cage.cells).flat();
         cells.forEach(cell => {
             this.cellModelsMatrix[cell.row][cell.col] = new CellModel(cell);
@@ -81,7 +81,6 @@ export class MasterModel {
         });
 
         // copy cell models
-        this.cellModelsMatrix = Grid.newMatrix();
         model.cellModelsMatrix.forEach((cellMsRow, row) => {
             cellMsRow.forEach((cellM, col) => {
                 this.cellModelsMatrix[row][col] = cellM.deepCopyWithoutCageModels();
