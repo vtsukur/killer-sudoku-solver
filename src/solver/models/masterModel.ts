@@ -25,21 +25,22 @@ export class MasterModel {
 
     private readonly _solution: Array<Array<number>> = Grid.newMatrix();
     private _placedNumCount = 0;
-    private _cellsToInputCagesMatrix: Array<Array<Cage>> = [];
+    private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
 
     constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
         if (puzzleOrMasterModel instanceof Puzzle) {
             this.puzzle = puzzleOrMasterModel;
+            this._cellsToInputCagesMatrix = Grid.newMatrix();
             this.initWithPuzzle(puzzleOrMasterModel);
         } else {
             this.puzzle = puzzleOrMasterModel.puzzle;
+            this._cellsToInputCagesMatrix = puzzleOrMasterModel._cellsToInputCagesMatrix;
             this.initWithMasterModel(puzzleOrMasterModel);
         }
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
     private initWithPuzzle(puzzle: Puzzle) {
-        this._cellsToInputCagesMatrix = Grid.newMatrix();
         this._placedNumCount = 0;
 
         puzzle.cages.forEach(cage => {
@@ -102,9 +103,6 @@ export class MasterModel {
             this._solution[index] = [...row];
         });
         this._placedNumCount = model._placedNumCount;
-
-        // no need to copy immutable data, just reference it
-        this._cellsToInputCagesMatrix = model._cellsToInputCagesMatrix;
 
         const validate = function(bool: boolean) {
             if (!bool) throw 'false';
