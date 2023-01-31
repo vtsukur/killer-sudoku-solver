@@ -1,4 +1,4 @@
-import { combosForHouse } from '../../combinatorial/combinatorial';
+import { combosForHouse } from '../../combinatorial/combosForHouse';
 import { Combo } from '../../combinatorial/combo';
 import { Strategy } from '../strategy';
 
