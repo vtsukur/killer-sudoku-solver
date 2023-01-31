@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Numbers } from '../../../../src/puzzle/numbers';
-import { combosForSum } from '../../../../src/solver/combinatorial/combinatorial';
+import { combosForSum } from '../../../../src/solver/combinatorial/combosForSum';
 import { Combo, ReadonlyCombos } from '../../../../src/solver/combinatorial/combo';
 
 describe('Tests for the number combinations to form a sum', () => {

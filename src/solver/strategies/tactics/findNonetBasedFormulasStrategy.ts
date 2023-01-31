@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell, CellKeysSet } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { combosForSum } from '../../combinatorial/combinatorial';
+import { combosForSum } from '../../combinatorial/combosForSum';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { NonetModel } from '../../models/elements/nonetModel';
