@@ -6,6 +6,11 @@
 export class Numbers {
 
     /**
+     * Minimum number in a {@link Cell}.
+     */
+    static readonly MIN = 1;
+
+    /**
      * Maximum number in a {@link Cell}.
      */
     static readonly MAX = 9;
