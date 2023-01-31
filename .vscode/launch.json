@@ -277,6 +277,24 @@
             }
         },
         {
+            "name": "npm run test [solver/combinatorial#combosForSum]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "combinatorial.combosForSum"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/invalidSolverStepError]",
             "request": "launch",
             "runtimeArgs": [

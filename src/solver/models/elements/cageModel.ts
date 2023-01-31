@@ -3,6 +3,7 @@ import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { combosForSum } from '../../combinatorial/combinatorial';
+import { Combo } from '../../combinatorial/combo';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -12,7 +13,7 @@ type Clue = {
     col?: number;
     nonet?: number;
     singleCellForNum?: Cell;
-    singleCellForNumCombos?: Array<Array<number>>;
+    singleCellForNumCombos?: Array<ReadonlyArray<number>>;
     presentInAllCombos?: boolean;
 }
 
@@ -63,7 +64,7 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new Map<string, Array<number>>();
+        this._combosMap = new Map<string, ReadonlyArray<number>>();
         this._derivedFromInputCage = derivedFromInputCage ? derivedFromInputCage : false;
     }
 
@@ -111,11 +112,8 @@ export class CageModel {
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
         let nums = new Set<number>();
         combos.forEach(combo => {
-            nums = new Set([...nums, ...combo]);
-
-            const comboValue = Array.from(combo);
-            const comboKey = comboValue.join();
-            this._combosMap.set(comboKey, comboValue);
+            nums = new Set([...nums, ...combo.nums]);
+            this._combosMap.set(combo.nums.join(), combo.nums);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
     }
@@ -136,10 +134,10 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    updateCombinations(combos: ReadonlyArray<ReadonlySet<number>>) {
+    updateCombinations(combos: ReadonlyArray<Combo>) {
         const numOpts = new Set<number>();
-        [...combos].forEach(comboSet => {
-            [...comboSet].forEach(num => {
+        [...combos].forEach(combo => {
+            combo.nums.forEach(num => {
                 numOpts.add(num);
             });
         });

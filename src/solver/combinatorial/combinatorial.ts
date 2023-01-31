@@ -2,8 +2,10 @@ import * as _ from 'lodash';
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
+import { Numbers } from '../../puzzle/numbers';
 import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
+import { Combo, ReadonlyCombos } from './combo';
 
 const MIN_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
 const MAX_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
@@ -17,25 +19,25 @@ _.range(House.CELL_COUNT).forEach((count: number) => {
     }
 });
 
-export function combosForSum(sum: number, count: number) {
-    if (typeof (sum) !== 'number' || !sum || sum <= 0) {
-        throw `Invalid cage: ${sum}`;
+export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
+    if (sum < Numbers.MIN || sum > House.SUM) {
+        throw `Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`;
     }
-    if (typeof (count) !== 'number' || !count || count <= 0) {
-        throw `Invalid count: ${count}`;
+    if (numCount < 1 || numCount > House.CELL_COUNT) {
+        throw `Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`;
     }
-    if (sum < MIN_SUMS_PER_COUNT[count - 1] || sum > MAX_SUMS_PER_COUNT[count - 1]) {
+    if (sum < MIN_SUMS_PER_COUNT[numCount - 1] || sum > MAX_SUMS_PER_COUNT[numCount - 1]) {
         return [];
     }
 
-    const combos = new Array<ReadonlySet<number>>();
-    const numbers = new Array(count);
+    const combos = new Array<Combo>();
+    const numbers = new Array<number>(numCount);
     let currentSum = 0;
 
     function combosRecursive(level: number, startWith: number) {
-        if (level > count) {
+        if (level > numCount) {
             if (currentSum === sum) {
-                combos.push(new Set(numbers));
+                combos.push(Combo.of(...numbers));
             }
         } else {
             for (let i = startWith; i <= House.CELL_COUNT; ++i) {
@@ -56,7 +58,7 @@ export function combosForSum(sum: number, count: number) {
     return combos;
 }
 
-export function findSumCombinationsForHouse(houseM: HouseModel) {
+export function findSumCombinationsForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 
@@ -178,7 +180,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
         return [];
     }
 
-    const combos = new Array<Array<Set<number>>>();
+    const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
     const checkingSet = new Set();
@@ -189,7 +191,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
         } else {
             const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum) {
-                const comboForSumArr = [...comboForSum];
+                const comboForSumArr = [...comboForSum.nums];
                 if (comboForSumArr.every(num => !checkingSet.has(num))) {
                     stack[step] = comboForSum;
 
@@ -209,7 +211,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
 function doFindForOverlappingCages(cages: ReadonlyCages) {
     if (cages.length === 0) return [];
 
-    const combos = new Array<Array<Set<number>>>();
+    const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
 
@@ -230,12 +232,12 @@ function doFindForOverlappingCages(cages: ReadonlyCages) {
     return combos;
 }
 
-function merge(combosForNonOverlappingCages: Array<Array<Set<number>>>, combosForOverlappingCages: Array<Array<Set<number>>>) {
+function merge(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>) {
     if (combosForOverlappingCages.length === 0) {
         return combosForNonOverlappingCages;
     }
     else {
-        const merged = new Array<Array<Set<number>>>();
+        const merged = new Array<ReadonlyCombos>();
         combosForNonOverlappingCages.forEach(combosLeft => {
             combosForOverlappingCages.forEach(combosRight => {
                 merged.push(combosLeft.concat(combosRight));
@@ -245,12 +247,12 @@ function merge(combosForNonOverlappingCages: Array<Array<Set<number>>>, combosFo
     }
 }
 
-function preserveOrder(combinedCombos: Array<Array<Set<number>>>, cages: ReadonlyCages, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages) {
+function preserveOrder(combinedCombos: ReadonlyArray<ReadonlyCombos>, cages: ReadonlyCages, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
     if (overlappingCages.length === 0) {
         return combinedCombos;
     }
     else {
-        const orderPreservedCombos = new Array<Array<Set<number>>>();
+        const orderPreservedCombos = new Array<Array<Combo>>();
 
         const cageIndexResolvers = new Array(cages.length);
         nonOverlappingCages.forEach((cage, index) => {
