@@ -1,5 +1,4 @@
-import { combosForHouse } from '../../combinatorial/combosForHouse';
-import { Combo } from '../../combinatorial/combo';
+import { Combo, combosForHouse } from '../../combinatorial';
 import { Strategy } from '../strategy';
 
 export class InitPermsForCagesStrategy extends Strategy {
