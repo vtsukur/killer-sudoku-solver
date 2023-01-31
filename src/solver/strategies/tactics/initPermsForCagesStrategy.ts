@@ -1,15 +1,15 @@
-import { findSumCombinationsForHouse } from '../../combinatorial/combinatorial';
+import { combosForHouse } from '../../combinatorial/combinatorial';
 import { Combo } from '../../combinatorial/combo';
 import { Strategy } from '../strategy';
 
 export class InitPermsForCagesStrategy extends Strategy {
     execute() {
         this._model.houseModels.forEach(houseM => {
-            const combosForHouse = findSumCombinationsForHouse(houseM);
+            const houseCombos = combosForHouse(houseM);
             houseM.cageModels.forEach((cageModel, index) => {
                 const combosKeySet = new Set();
                 const combos = new Array<Combo>();
-                combosForHouse.forEach(comboRow => {
+                houseCombos.forEach(comboRow => {
                     const combo = comboRow[index];
                     const key = combo.key;
                     if (!combosKeySet.has(key)) {

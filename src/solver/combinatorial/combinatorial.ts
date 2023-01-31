@@ -58,7 +58,7 @@ export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
     return combos;
 }
 
-export function findSumCombinationsForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
+export function combosForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 

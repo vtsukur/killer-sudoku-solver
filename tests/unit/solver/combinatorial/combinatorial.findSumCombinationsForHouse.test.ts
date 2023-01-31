@@ -1,7 +1,7 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
 import { Row } from '../../../../src/puzzle/row';
-import { findSumCombinationsForHouse } from '../../../../src/solver/combinatorial/combinatorial';
+import { combosForHouse } from '../../../../src/solver/combinatorial/combinatorial';
 import { Combo } from '../../../../src/solver/combinatorial/combo';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
@@ -23,7 +23,7 @@ const houseMOf = (cages: ReadonlyCages) => {
 
 describe('Tests for the finder of number combinations to form a house model out of cages', () => {
     test('Multiple combinations of numbers to form a complete house model with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseMOf([
+        expect(combosForHouse(houseMOf([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
             Cage.ofSum(10).at(1, 3).at(2, 3).new(),
             Cage.ofSum(7).at(2, 1).at(2, 2).new(),
@@ -38,7 +38,7 @@ describe('Tests for the finder of number combinations to form a house model out 
     });
 
     test('Combination of numbers to form a complete house model with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseMOf([
+        expect(combosForHouse(houseMOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(7).at(1, 6).at(1, 7).new(),
@@ -49,7 +49,7 @@ describe('Tests for the finder of number combinations to form a house model out 
     });
 
     test('Combinations of numbers to form an incomplete house model with non-overlapping cages', () => {
-        expect(findSumCombinationsForHouse(houseMOf([
+        expect(combosForHouse(houseMOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(9).at(1, 6).at(1, 7).new()
         ]))).toEqual([
@@ -59,7 +59,7 @@ describe('Tests for the finder of number combinations to form a house model out 
     });
 
     test('Combinations of numbers to form a house model with overlapping cage', () => {
-        expect(findSumCombinationsForHouse(houseMOf([
+        expect(combosForHouse(houseMOf([
             Cage.ofSum(8).at(2, 5).at(3, 5).new(),
             Cage.ofSum(8).at(7, 5).new(),
             // overlapping cage
@@ -73,11 +73,11 @@ describe('Tests for the finder of number combinations to form a house model out 
     });
 
     test('Combinations of numbers to form a house model out of no cages', () => {
-        expect(findSumCombinationsForHouse(houseMOf([]))).toEqual([]);
+        expect(combosForHouse(houseMOf([]))).toEqual([]);
     });
 
     test('Combinations of numbers to form a house model out of cages with non-overlapping cells whose total sum is greater than house max', () => {
-        expect(() => findSumCombinationsForHouse(houseMOf([
+        expect(() => combosForHouse(houseMOf([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(12).at(1, 6).at(1, 7).new(),
