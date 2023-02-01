@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { NumSet, ComboKey, combosForSum, ReadonlyNumSets } from '../../combinatorial';
+import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../combinatorial';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -12,7 +12,7 @@ type Clue = {
     col?: number;
     nonet?: number;
     singleCellForNum?: Cell;
-    singleCellForNumCombos?: ReadonlyNumSets;
+    singleCellForNumCombos?: ReadonlyCombos;
     presentInAllCombos?: boolean;
 }
 
@@ -63,7 +63,7 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new Map<ComboKey, NumSet>();
+        this._combosMap = new Map<ComboKey, Combo>();
         this._derivedFromInputCage = derivedFromInputCage ? derivedFromInputCage : false;
     }
 
@@ -133,7 +133,7 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    updateCombinations(combos: ReadonlyArray<NumSet>) {
+    updateCombinations(combos: ReadonlyArray<Combo>) {
         const numOpts = new Set<number>();
         [...combos].forEach(combo => {
             combo.nums.forEach(num => {
@@ -342,7 +342,7 @@ export class CageModel {
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const comboKey = sortedNums.join();
-                this._combosMap.set(comboKey, NumSet.of(...sortedNums));
+                this._combosMap.set(comboKey, Combo.of(...sortedNums));
             }
         } else {
             this.cellMs.forEach(cellM => {
