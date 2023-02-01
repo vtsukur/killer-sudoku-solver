@@ -2,8 +2,27 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
+import { CombinatorialError } from './combinatorialError';
 import { Combo, ReadonlyCombos } from './combo';
 
+/**
+ * Determines combinations of unique numbers to form a sum using precomputed values.
+ *
+ * Sample usage:
+ * ```ts
+ * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
+ * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+ * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
+ * ```
+ *
+ * @param sum - The sum to find combinations for. Should be within [1, 45] range.
+ * @param numCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+ *
+ * @returns Readonly array of distinct combinations of unique numbers to form a sum.
+ * If there are no combinations found, empty array is returned.
+ *
+ * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
+ */
 export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
     validate(sum, numCount);
 
@@ -194,6 +213,24 @@ storePrecomputed(`
     45: 123456789
 `, 9);
 
+/**
+ * Computes combinations of unique numbers to form a sum by avoiding precomputed values.
+ *
+ * Sample usage:
+ * ```ts
+ * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
+ * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+ * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
+ * ```
+ *
+ * @param sum - The sum to find combinations for. Should be within [1, 45] range.
+ * @param numCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+ *
+ * @returns Readonly array of distinct combinations of unique numbers to form a sum.
+ * If there are no combinations found, empty array is returned.
+ *
+ * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
+ */
 export function computeComboForSum(sum: number, numCount: number): ReadonlyCombos {
     validate(sum, numCount);
 
@@ -231,10 +268,10 @@ export function computeComboForSum(sum: number, numCount: number): ReadonlyCombo
 
 const validate = (sum: number, numCount: number) => {
     if (sum < Numbers.MIN || sum > House.SUM) {
-        throw `Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`;
+        throw new CombinatorialError(`Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`);
     }
     if (numCount < 1 || numCount > House.CELL_COUNT) {
-        throw `Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`;
+        throw new CombinatorialError(`Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`);
     }
 };
 
