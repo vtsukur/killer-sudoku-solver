@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../combinatorial';
+import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 

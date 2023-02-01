@@ -1,7 +1,7 @@
 import { ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { clusterCagesByOverlap } from '../../combinatorial';
+import { clusterCagesByOverlap } from '../../math';
 
 export class CagesAreaModel {
     readonly cages;

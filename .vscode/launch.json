@@ -259,12 +259,13 @@
             }
         },
         {
-            "name": "npm run test [solver/combinatorial]",
+            "name": "npm run test [solver/math]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "combos"
+                "--findRelatedTests",
+                "tests/unit/solver/math/*"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -277,7 +278,7 @@
             }
         },
         {
-            "name": "npm run test [solver/combinatorial/combosForSum]",
+            "name": "npm run test [solver/math/combosForSum]",
             "request": "launch",
             "runtimeArgs": [
                 "run",

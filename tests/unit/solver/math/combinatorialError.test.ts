@@ -1,4 +1,4 @@
-import { CombinatorialError } from '../../../../src/solver/combinatorial';
+import { CombinatorialError } from '../../../../src/solver/math';
 
 describe('CombinatorialError tests', () => {
     test('Construction of CombinatorialError storing message', () => {

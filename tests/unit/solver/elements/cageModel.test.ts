@@ -1,6 +1,6 @@
 import { Cage } from '../../../../src/puzzle/cage';
 import { Cell } from '../../../../src/puzzle/cell';
-import { Combo } from '../../../../src/solver/combinatorial';
+import { Combo } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../src/solver/models/elements/cellModel';
 

@@ -1,7 +1,7 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
 import { Row } from '../../../../src/puzzle/row';
-import { Combo, combosForHouse } from '../../../../src/solver/combinatorial';
+import { Combo, combosForHouse } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 

@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Numbers } from '../../../../src/puzzle/numbers';
-import { Combo, ReadonlyCombos, combosForSum } from '../../../../src/solver/combinatorial';
-import { computeComboForSum } from '../../../../src/solver/combinatorial/combosForSum';
+import { Combo, ReadonlyCombos, combosForSum } from '../../../../src/solver/math';
+import { computeComboForSum } from '../../../../src/solver/math/combosForSum';
 
 describe('Tests for the unique number combinations to form a sum', () => {
     [
