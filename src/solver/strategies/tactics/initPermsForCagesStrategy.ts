@@ -1,4 +1,4 @@
-import { Combo, combosForHouse } from '../../combinatorial';
+import { NumSet, combosForHouse } from '../../combinatorial';
 import { Strategy } from '../strategy';
 
 export class InitPermsForCagesStrategy extends Strategy {
@@ -7,7 +7,7 @@ export class InitPermsForCagesStrategy extends Strategy {
             const houseCombos = combosForHouse(houseM);
             houseM.cageModels.forEach((cageModel, index) => {
                 const combosKeySet = new Set();
-                const combos = new Array<Combo>();
+                const combos = new Array<NumSet>();
                 houseCombos.forEach(comboRow => {
                     const combo = comboRow[index];
                     const key = combo.key;

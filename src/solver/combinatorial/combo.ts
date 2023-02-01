@@ -2,13 +2,13 @@ import { joinArray } from '../../util/readableMessages';
 
 export type ComboKey = string;
 
-export class Combo {
+export class NumSet {
     readonly nums: ReadonlyArray<number>;
     private readonly numSet: ReadonlySet<number>;
     readonly key: ComboKey;
 
     static of(...nums: ReadonlyArray<number>) {
-        return new Combo(nums);
+        return new NumSet(nums);
     }
 
     has(num: number) {
@@ -22,4 +22,4 @@ export class Combo {
     }
 }
 
-export type ReadonlyCombos = ReadonlyArray<Combo>;
+export type ReadonlyNumSets = ReadonlyArray<NumSet>;

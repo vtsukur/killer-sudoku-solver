@@ -3,15 +3,15 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { CombinatorialError } from './combinatorialError';
-import { Combo, ComboKey, ReadonlyCombos } from './combo';
+import { NumSet, ComboKey, ReadonlyNumSets } from './combo';
 
 /**
  * Determines combinations of unique numbers to form a sum using precomputed values.
  *
  * Sample usage:
  * ```ts
- * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
- * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+ * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ NumSet.of(1, 6), NumSet.of(2, 5), NumSet.of(3, 4) ]
+ * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ NumSet.of(1, 2, 3, 4, 5, 6, 9), NumSet.of(1, 2, 3, 4, 5, 7, 8) ]
  * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
  * ```
  *
@@ -23,12 +23,12 @@ import { Combo, ComboKey, ReadonlyCombos } from './combo';
  *
  * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
-export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
+export function combosForSum(sum: number, numCount: number): ReadonlyNumSets {
     validate(sum, numCount);
 
     const key = precomputeKey(sum, numCount);
     if (PRECOMPUTED.has(key)) {
-        return PRECOMPUTED.get(key) as ReadonlyCombos;
+        return PRECOMPUTED.get(key) as ReadonlyNumSets;
     } else {
         return [];
     }
@@ -43,19 +43,19 @@ const storePrecomputed = (source: string, numCount: number) => {
     for (const line of lines) {
         const sumAndCombos = line.split(': ');
         const sum = parseInt(sumAndCombos[0].trim());
-        const combos = new Array<Combo>();
+        const combos = new Array<NumSet>();
         for (const combosStr of sumAndCombos[1].split(' ')) {
             const comboNumbers = new Array<number>();
             for (const char of combosStr.trim()) {
                 comboNumbers.push(parseInt(char));
             }
-            combos.push(Combo.of(...comboNumbers));
+            combos.push(NumSet.of(...comboNumbers));
         }
         PRECOMPUTED.set(precomputeKey(sum, numCount), combos);
     }
 };
 
-const PRECOMPUTED = new Map<ComboKey, ReadonlyCombos>();
+const PRECOMPUTED = new Map<ComboKey, ReadonlyNumSets>();
 
 storePrecomputed(`
     1: 1
@@ -218,8 +218,8 @@ storePrecomputed(`
  *
  * Sample usage:
  * ```ts
- * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
- * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+ * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ NumSet.of(1, 6), NumSet.of(2, 5), NumSet.of(3, 4) ]
+ * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ NumSet.of(1, 2, 3, 4, 5, 6, 9), NumSet.of(1, 2, 3, 4, 5, 7, 8) ]
  * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
  * ```
  *
@@ -231,21 +231,21 @@ storePrecomputed(`
  *
  * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
-export function computeComboForSum(sum: number, numCount: number): ReadonlyCombos {
+export function computeComboForSum(sum: number, numCount: number): ReadonlyNumSets {
     validate(sum, numCount);
 
     if (sum < MIN_SUMS_PER_COUNT[numCount - 1] || sum > MAX_SUMS_PER_COUNT[numCount - 1]) {
         return [];
     }
 
-    const combos = new Array<Combo>();
+    const combos = new Array<NumSet>();
     const numbers = new Array<number>(numCount);
     let currentSum = 0;
 
     function combosRecursive(level: number, startWith: number) {
         if (level > numCount) {
             if (currentSum === sum) {
-                combos.push(Combo.of(...numbers));
+                combos.push(NumSet.of(...numbers));
             }
         } else {
             for (let i = startWith; i <= House.CELL_COUNT; ++i) {
