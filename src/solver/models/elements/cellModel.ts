@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
+import { NumSet } from '../../math';
 import { CageModel } from './cageModel';
 
 export class CellModel {
@@ -54,7 +55,7 @@ export class CellModel {
         return this._numOpts.delete(val);
     }
 
-    reduceNumOptions(val: ReadonlySet<number>) {
+    reduceNumOptions(val: NumSet) {
         const removedNumOptions = new Set<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {

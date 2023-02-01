@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
+import { Combo, ComboKey, combosForSum, NumSet, ReadonlyCombos } from '../../math';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -109,9 +109,9 @@ export class CageModel {
         if (this._canHaveDuplicateNums) return;
 
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
-        let nums = new Set<number>();
+        const nums = new NumSet();
         combos.forEach(combo => {
-            nums = new Set([...nums, ...combo.nums]);
+            nums.add(...combo.nums);
             this._combosMap.set(combo.nums.join(), combo);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
@@ -134,11 +134,9 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        const numOpts = new Set<number>();
+        const numOpts = new NumSet();
         [...combos].forEach(combo => {
-            combo.nums.forEach(num => {
-                numOpts.add(num);
-            });
+            numOpts.add(...combo.nums);
         });
 
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
@@ -495,15 +493,15 @@ export class CageModel {
 
         const newCombosMap = new Map();
         const removedCombos = [];
-        let newNumOptions = new Set<number>();
+        const newNumOptions = new NumSet();
 
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = new Set<number>(value.nums);
+            const numSet = new NumSet(...value.nums);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
-                newNumOptions = new Set([...newNumOptions, ...numSet]);
+                newNumOptions.mergeWith(numSet);
             } else {
                 removedCombos.push(value);
             }
