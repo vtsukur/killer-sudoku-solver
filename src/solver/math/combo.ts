@@ -1,9 +1,8 @@
 import { joinArray } from '../../util/readableMessages';
-import { NumSet } from './numSet';
 
 export type ComboKey = string;
 
-export class Combo {
+export class Combo implements Iterable<number> {
     readonly nums: ReadonlyArray<number>;
     readonly key: ComboKey;
 
@@ -13,12 +12,21 @@ export class Combo {
         return new Combo(nums);
     }
 
+    [Symbol.iterator](): Iterator<number> {
+        return this.nums.values();
+    }
+
     has(num: number) {
         return this._numSet.has(num);
     }
 
-    hasAnyFrom(val: NumSet) {
-        return this.nums.some(num => val.has(num));
+    hasAnyFrom(val: Iterable<number>) {
+        for (const num of val) {
+            if (this._numSet.has(num)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private constructor(nums: ReadonlyArray<number>) {

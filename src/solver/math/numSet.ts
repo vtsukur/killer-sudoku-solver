@@ -1,8 +1,12 @@
-export class NumSet {
+export class NumSet implements Iterable<number> {
     private readonly _set: Set<number>;
 
     constructor(...val: ReadonlyArray<number>) {
         this._set = new Set(val);
+    }
+
+    [Symbol.iterator](): Iterator<number> {
+        return this._set.values();
     }
 
     has(val: number) {
