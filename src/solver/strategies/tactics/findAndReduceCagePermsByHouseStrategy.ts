@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { Combo } from '../../combinatorial';
+import { Combo, ReadonlyCombos } from '../../combinatorial';
 import { CageModel } from '../../models/elements/cageModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { NonetModel } from '../../models/elements/nonetModel';
@@ -110,7 +110,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
                     const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).withCell(numPlacementClue.singleCellForNum).new());
-                    checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as Array<Array<number>>, numPlacementClue.singleCellForNum, numPlacementClue.num, this._model, reducedCellMs);
+                    checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as ReadonlyCombos, numPlacementClue.singleCellForNum, numPlacementClue.num, this._model, reducedCellMs);
                 }
             }
         }
@@ -134,7 +134,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 const shortCombo = Array.from(shortComboSet);
 
                 const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).withCell(firstSingleCell).new());
-                checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this._model, reducedCellMs);
+                checkAssumptionCage(cageLeft, [ Combo.of(...shortCombo) ], firstSingleCell, num, this._model, reducedCellMs);
             }
         }
 
@@ -192,12 +192,12 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
     }
 };
 
-const checkAssumptionCage = (assumptionCage: Cage, combos: Array<Array<number>>, cell: Cell, num: number, model: MasterModel, reducedCellMs: ReducedCellModels) => {
+const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: ReducedCellModels) => {
     const positioningFlags = CageModel.positioningFlagsFor(assumptionCage.cells);
     if (positioningFlags.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Array<number>>();
         for (const combo of combos) {
-            const comboSet = new Set<number>(combo);
+            const comboSet = new Set<number>(combo.nums);
             comboSet.delete(num);
             reducedSingleCellForNumCombos.push(Array.from(comboSet));
         }

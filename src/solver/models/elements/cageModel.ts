@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { Combo, ComboKey, combosForSum } from '../../combinatorial';
+import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../combinatorial';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -12,7 +12,7 @@ type Clue = {
     col?: number;
     nonet?: number;
     singleCellForNum?: Cell;
-    singleCellForNumCombos?: Array<ReadonlyArray<number>>;
+    singleCellForNumCombos?: ReadonlyCombos;
     presentInAllCombos?: boolean;
 }
 
@@ -477,7 +477,7 @@ export class CageModel {
                         singleCellForNumCombos.push(combo);
                     }
                 }
-                clue.singleCellForNumCombos = singleCellForNumCombos.map(val => val.nums);
+                clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (positioningFlags.isWithinHouse || cells.length === 1) {
                 clue.presentInAllCombos = Array.from(this._combosMap.values()).every(combo => {
