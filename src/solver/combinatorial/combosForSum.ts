@@ -3,7 +3,7 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { CombinatorialError } from './combinatorialError';
-import { Combo, ReadonlyCombos } from './combo';
+import { Combo, ComboKey, ReadonlyCombos } from './combo';
 
 /**
  * Determines combinations of unique numbers to form a sum using precomputed values.
@@ -55,7 +55,7 @@ const storePrecomputed = (source: string, numCount: number) => {
     }
 };
 
-const PRECOMPUTED = new Map<string, ReadonlyCombos>();
+const PRECOMPUTED = new Map<ComboKey, ReadonlyCombos>();
 
 storePrecomputed(`
     1: 1
