@@ -264,7 +264,7 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "combinatorial"
+                "combos"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -277,12 +277,12 @@
             }
         },
         {
-            "name": "npm run test [solver/combinatorial#combosForSum]",
+            "name": "npm run test [solver/combinatorial/combosForSum]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "combinatorial.combosForSum"
+                "combosForSum"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
