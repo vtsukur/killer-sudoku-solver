@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { Combo, combosForSum } from '../../combinatorial';
+import { Combo, ComboKey, combosForSum } from '../../combinatorial';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CellModel } from './cellModel';
 
@@ -63,7 +63,7 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new Map<string, ReadonlyArray<number>>();
+        this._combosMap = new Map<ComboKey, ReadonlyArray<number>>();
         this._derivedFromInputCage = derivedFromInputCage ? derivedFromInputCage : false;
     }
 
