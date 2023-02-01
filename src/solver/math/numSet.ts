@@ -21,6 +21,12 @@ export class NumSet {
         }
     }
 
+    delete(...val: ReadonlyArray<number>) {
+        for (const num of val) {
+            this._set.delete(num);
+        }
+    }
+
     get nums(): ReadonlySet<number> {
         return this._set;
     }

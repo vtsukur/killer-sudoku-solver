@@ -5,6 +5,7 @@ import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
+import { NumSet } from './numSet';
 
 export function combosForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
@@ -131,7 +132,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
     const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
-    const checkingSet = new Set();
+    const checkingSet = new NumSet();
 
     function combosRecursive(step: number) {
         if (step === cages.length) {
@@ -139,13 +140,12 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
         } else {
             const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum) {
-                const comboForSumArr = [...comboForSum.nums];
-                if (comboForSumArr.every(num => !checkingSet.has(num))) {
+                if (!comboForSum.hasAnyFrom(checkingSet)) {
                     stack[step] = comboForSum;
 
-                    comboForSumArr.forEach(num => checkingSet.add(num));
+                    checkingSet.add(...comboForSum.nums);
                     combosRecursive(step + 1);
-                    comboForSumArr.forEach(num => checkingSet.delete(num));
+                    checkingSet.delete(...comboForSum.nums);
                 }
             }
         }

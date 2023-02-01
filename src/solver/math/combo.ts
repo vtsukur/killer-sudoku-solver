@@ -1,4 +1,5 @@
 import { joinArray } from '../../util/readableMessages';
+import { NumSet } from './numSet';
 
 export type ComboKey = string;
 
@@ -14,6 +15,10 @@ export class Combo {
 
     has(num: number) {
         return this._numSet.has(num);
+    }
+
+    hasAnyFrom(val: NumSet) {
+        return this.nums.some(num => val.has(num));
     }
 
     private constructor(nums: ReadonlyArray<number>) {
