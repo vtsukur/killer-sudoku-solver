@@ -533,7 +533,7 @@ export class CageModel {
     }
 
     get combos() {
-        return this._combosMap.values();
+        return Array.from(this._combosMap.values()).map(val => Combo.of(...val));
     }
 
     get comboCount() {
