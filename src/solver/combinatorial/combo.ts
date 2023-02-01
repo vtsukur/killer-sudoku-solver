@@ -11,6 +11,10 @@ export class Combo {
         return new Combo(nums);
     }
 
+    has(num: number) {
+        return this.numSet.has(num);
+    }
+
     private constructor(nums: ReadonlyArray<number>) {
         this.nums = nums;
         this.numSet = new Set(nums);
