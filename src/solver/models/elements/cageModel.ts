@@ -112,7 +112,7 @@ export class CageModel {
         const nums = new NumSet();
         combos.forEach(combo => {
             nums.add(...combo.nums);
-            this._combosMap.set(combo.nums.join(), combo);
+            this._combosMap.set(combo.key, combo);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
     }
@@ -169,7 +169,7 @@ export class CageModel {
 
     private reduceOptimalForSize2() {
         const modifiedCellMs = new Set<CellModel>();
-        const combosToPotentiallyRemoveMap = new Map();
+        const combosToPotentiallyRemoveMap = new Map<string, Combo>();
 
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
@@ -179,17 +179,17 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
                         modifiedCellMs.add(oneCellM);
-                        combosToPotentiallyRemoveMap.set(combo.nums.join(), combo.nums);
+                        combosToPotentiallyRemoveMap.set(combo.key, combo);
                     }
                 }
             }
         }
 
         for (const comboToPotentiallyRemove of combosToPotentiallyRemoveMap.values()) {
-            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyRemove[0]) &&
-                    !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove[1]) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove[0]) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove[1])) {
+            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.nums[0]) &&
+                    !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.nums[1]) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.nums[0]) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.nums[1])) {
                 this.deleteComboArr(comboToPotentiallyRemove);
             }
         }
@@ -251,7 +251,7 @@ export class CageModel {
                 comboStands = comboStands || someCellHasIt;
             }
             if (!comboStands) {
-                this.deleteComboArr(combo.nums);
+                this.deleteComboArr(combo);
             }
         }
 
@@ -268,8 +268,8 @@ export class CageModel {
         return combosArr;
     }
 
-    private deleteComboArr(combo: ReadonlyArray<number>) {
-        this._combosMap.delete(combo.join());
+    private deleteComboArr(combo: Combo) {
+        this._combosMap.delete(combo.key);
     }
 
     private reduceSmallCage() {
@@ -339,8 +339,8 @@ export class CageModel {
                 const sortedNums = [...context.numbersStack];
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
-                const comboKey = sortedNums.join();
-                this._combosMap.set(comboKey, Combo.of(...sortedNums));
+                const combo = Combo.of(...sortedNums);
+                this._combosMap.set(combo.key, combo);
             }
         } else {
             this.cellMs.forEach(cellM => {
@@ -424,7 +424,7 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this._combosMap.delete(noLongerValidCombo.nums.join());
+                this._combosMap.delete(noLongerValidCombo.key);
             }
         }
 
