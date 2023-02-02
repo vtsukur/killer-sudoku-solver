@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { NumSet } from '../../../util/richSet';
+import { RichSet } from '../../../util/richSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
 import { CellModel } from './cellModel';
@@ -21,7 +21,7 @@ type Context = {
     canHaveDuplicateNums: boolean;
     processedCellMs: Set<CellModel>;
     remainingCellMs: Set<CellModel>,
-    processedNums: NumSet,
+    processedNums: RichSet<number>,
     numbersStack: Array<number>,
     cellMsStack: Array<CellModel>,
     processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
@@ -110,9 +110,9 @@ export class CageModel {
         if (this._canHaveDuplicateNums) return;
 
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
-        const nums = new NumSet();
+        const nums = new RichSet<number>();
         combos.forEach(combo => {
-            nums.add(combo);
+            nums.addCollection(combo);
             this._combosMap.set(combo.key, combo);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
@@ -135,9 +135,9 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        const numOpts = new NumSet();
+        const numOpts = new RichSet<number>();
         [...combos].forEach(combo => {
-            numOpts.add(combo);
+            numOpts.addCollection(combo);
         });
 
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
@@ -270,7 +270,7 @@ export class CageModel {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
-            processedNums: new NumSet(),
+            processedNums: new RichSet(),
             numbersStack: new Array(this._cellCount),
             cellMsStack: new Array(this._cellCount),
             processCell: function(cellM: CellModel, step: number, fn: () => boolean | void) {
@@ -351,12 +351,12 @@ export class CageModel {
     }
 
     private reduceLargeCage() {
-        const presentNums = new NumSet();
+        const presentNums = new RichSet<number>();
         this.cellMs.forEach(cellM => {
-            presentNums.add(cellM.numOpts());
+            presentNums.addCollection(cellM.numOpts());
         });
 
-        const commonComboNums = new NumSet();
+        const commonComboNums = new RichSet<number>();
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
             for (const combo of this._combosMap.values()) {
@@ -374,9 +374,9 @@ export class CageModel {
         }
 
         const validCombos = [];
-        const validComboNums = new NumSet();
+        const validComboNums = new RichSet<number>();
         const noLongerValidCombos = [];
-        const noLongerValidComboNums = new NumSet();
+        const noLongerValidComboNums = new RichSet<number>();
         for (const combo of this._combosMap.values()) {
             let validCombo = true;
             for (const num of combo) {
@@ -390,16 +390,16 @@ export class CageModel {
 
             if (validCombo) {
                 validCombos.push(combo);
-                validComboNums.add(combo);
+                validComboNums.addCollection(combo);
             } else {
                 noLongerValidCombos.push(combo);
-                noLongerValidComboNums.add(combo);
+                noLongerValidComboNums.addCollection(combo);
             }
         }
 
         const modifiedCellMs = new Set<CellModel>();
         if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new NumSet();
+            const numOptsToDelete = new RichSet<number>();
             for (const num of noLongerValidComboNums) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
@@ -485,15 +485,15 @@ export class CageModel {
 
         const newCombosMap = new Map();
         const removedCombos = [];
-        const newNumOptions = new NumSet();
+        const newNumOptions = new RichSet<number>();
 
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = new NumSet(value);
+            const numSet = new RichSet(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
-                newNumOptions.add(numSet);
+                newNumOptions.addCollection(numSet);
             } else {
                 removedCombos.push(value);
             }

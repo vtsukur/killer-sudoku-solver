@@ -1,53 +1,43 @@
-export type OneOrManyNumbers = number | Iterable<number>;
+export class RichSet<T> implements Iterable<T> {
+    private readonly _set: Set<T>;
 
-export class NumSet implements Iterable<number> {
-    private readonly _set: Set<number>;
-
-    constructor(val?: OneOrManyNumbers) {
-        this._set = new Set(typeof val === 'number' ? [ val ] : val);
+    constructor(val?: Iterable<T>) {
+        this._set = new Set(val);
     }
 
-    [Symbol.iterator](): Iterator<number> {
+    [Symbol.iterator](): Iterator<T> {
         return this._set.values();
     }
 
-    has(val: number) {
+    has(val: T) {
         return this._set.has(val);
     }
 
-    add(val: OneOrManyNumbers) {
-        if (typeof val === 'number') {
-            this.doAdd(val);
-        } else {
-            for (const num of val) {
-                this.doAdd(num);
-            }
-        }
-    }
-
-    private doAdd(val: number) {
+    add(val: T) {
         this._set.add(val);
     }
 
-    delete(val: OneOrManyNumbers) {
-        if (typeof val === 'number') {
-            this.doDelete(val);
-        } else {
-            for (const num of val) {
-                this.doDelete(num);
-            }
+    addCollection(val: Iterable<T>) {
+        for (const oneOf of val) {
+            this.add(oneOf);
         }
     }
 
-    private doDelete(val: number) {
+    delete(val: T) {
         this._set.delete(val);
     }
 
-    get nums(): ReadonlySet<number> {
+    deleteCollection(val: Iterable<T>) {
+        for (const oneOf of val) {
+            this.delete(oneOf);
+        }
+    }
+
+    get values(): ReadonlySet<T> {
         return this._set;
     }
 
-    get firstNum(): number {
+    get first(): T {
         return this._set.values().next().value;
     }
 
@@ -55,7 +45,7 @@ export class NumSet implements Iterable<number> {
         return this._set.size;
     }
 
-    static of(...val: ReadonlyArray<number>) {
-        return new NumSet(val);
+    static of<T>(...val: ReadonlyArray<T>) {
+        return new RichSet(val);
     }
 }

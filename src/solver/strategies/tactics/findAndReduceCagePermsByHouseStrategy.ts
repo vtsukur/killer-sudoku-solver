@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { NumSet } from '../../../util/richSet';
+import { RichSet } from '../../../util/richSet';
 import { Combo, ReadonlyCombos } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -43,7 +43,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 if (!_.isUndefined(singleCellForNum)) {
                     const singleOptionCellM = this._model.cellModelOf(singleCellForNum as Cell);
-                    singleOptionCellM.reduceNumOptions(new NumSet(num));
+                    singleOptionCellM.reduceNumOptions(RichSet.of(num));
                 }
 
                 const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);

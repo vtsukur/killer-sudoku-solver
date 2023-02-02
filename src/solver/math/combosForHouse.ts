@@ -2,7 +2,7 @@ import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
-import { NumSet } from '../../util/richSet';
+import { RichSet } from '../../util/richSet';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
@@ -132,7 +132,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
     const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
-    const checkingSet = new NumSet();
+    const checkingSet = new RichSet<number>();
 
     function combosRecursive(step: number) {
         if (step === cages.length) {
@@ -143,9 +143,9 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
                 if (!comboForSum.hasSome(checkingSet)) {
                     stack[step] = comboForSum;
 
-                    checkingSet.add(comboForSum);
+                    checkingSet.addCollection(comboForSum);
                     combosRecursive(step + 1);
-                    checkingSet.delete(comboForSum);
+                    checkingSet.deleteCollection(comboForSum);
                 }
             }
         }

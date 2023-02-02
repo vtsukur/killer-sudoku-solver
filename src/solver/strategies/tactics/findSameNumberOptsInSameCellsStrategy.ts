@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell, CellKey } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { NumSet } from '../../../util/richSet';
+import { RichSet } from '../../../util/richSet';
 import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -51,7 +51,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                 if (!cellKeysByNumMap.has(keysKey)) {
                     const entry = {
                         keys: keys,
-                        nums: new NumSet()
+                        nums: new RichSet<number>()
                     };
                     cellKeysByNumMap.set(keysKey, entry);
                 }

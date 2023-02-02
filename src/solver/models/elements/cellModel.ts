@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { NumSet } from '../../../util/richSet';
+import { RichSet } from '../../../util/richSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from './cageModel';
 
@@ -9,14 +9,14 @@ export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
-    private _numOpts;
+    private _numOpts: RichSet<number>;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new NumSet(_.range(House.CELL_COUNT).map(i => i + 1));
+        this._numOpts = new RichSet(_.range(House.CELL_COUNT).map(i => i + 1));
         this._withinCageMs = new Set();
     }
 
@@ -24,7 +24,7 @@ export class CellModel {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new NumSet(this._numOpts);
+        copy._numOpts = new RichSet(this._numOpts);
         return copy;
     }
 
@@ -40,7 +40,7 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): NumSet {
+    numOpts(): RichSet<number> {
         return this._numOpts;
     }
 
@@ -55,7 +55,7 @@ export class CellModel {
         return this._numOpts.delete(val);
     }
 
-    reduceNumOptions(val: NumSet) {
+    reduceNumOptions(val: RichSet<number>) {
         const removedNumOptions = new Set<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {
@@ -74,7 +74,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOpts = new NumSet(val);
+        this._numOpts = RichSet.of(val);
         this._solved = true;
     }
 }
