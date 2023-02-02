@@ -175,7 +175,7 @@ export class CageModel {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
             for (const oneNum of oneCellM.numOpts()) {
                 for (const combo of this.combosWithNum(oneNum)) {
-                    const anotherNum = combo.first === oneNum ? combo.second : combo.first;
+                    const anotherNum = combo.number0 === oneNum ? combo.number1 : combo.number0;
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
                         modifiedCellMs.add(oneCellM);
@@ -186,10 +186,10 @@ export class CageModel {
         }
 
         for (const comboToPotentiallyRemove of combosToPotentiallyRemoveMap.values()) {
-            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.first) &&
-                    !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.second) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.first) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.second)) {
+            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.number0) &&
+                    !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.number1) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.number0) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.number1)) {
                 this.deleteCombo(comboToPotentiallyRemove);
             }
         }
@@ -222,8 +222,8 @@ export class CageModel {
                 let numStands = false;
                 for (const combo of this.combosWithNum(num0)) {
                     const reducedCombo = combo.reduce(num0);
-                    const num1 = reducedCombo.first;
-                    const num2 = reducedCombo.second;
+                    const num1 = reducedCombo.number0;
+                    const num2 = reducedCombo.number1;
 
                     const hasFirstPerm = cellM1.hasNumOpt(num1) && cellM2.hasNumOpt(num2);
                     const hasSecondPerm = cellM1.hasNumOpt(num2) && cellM2.hasNumOpt(num1);
@@ -242,9 +242,9 @@ export class CageModel {
         for (const combo of this._combosMap.values()) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
-                const cellM0HasIt = cellMs[0].hasNumOpt(combo.nums[perm[0]]);
-                const cellM1HasIt = cellMs[1].hasNumOpt(combo.nums[perm[1]]);
-                const cellM2HasIt = cellMs[2].hasNumOpt(combo.nums[perm[2]]);
+                const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
+                const cellM1HasIt = cellMs[1].hasNumOpt(combo.nthNumber(perm[1]));
+                const cellM2HasIt = cellMs[2].hasNumOpt(combo.nthNumber(perm[2]));
                 const someCellHasIt = cellM0HasIt && cellM1HasIt && cellM2HasIt;
                 comboStands = comboStands || someCellHasIt;
             }
