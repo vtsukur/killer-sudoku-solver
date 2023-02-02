@@ -56,7 +56,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     constructor(nonetM: NonetModel) {
         this._nonetM = nonetM;
         this._sum = 0;
-        this._cageMs = new Set<CageModel>();
+        this._cageMs = new RichSet<CageModel>();
         this._cellMs = new Set<CellModel>();
         this._cellKeys = new Set();
         this._innerCellMs = new Set<CellModel>();
