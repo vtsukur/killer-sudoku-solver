@@ -31,7 +31,7 @@ export class Puzzle {
     constructor(cages: ReadonlyCages) {
         Puzzle.validateForDuplicateAndMissingCells(cages.flatMap(cage => cage.cells));
         Puzzle.validateSumOfCagesToEqualGridSum(cages);
-        this.cages = [...cages];
+        this.cages = cages;
     }
 
     private static validateForDuplicateAndMissingCells(cells: ReadonlyCells) {
