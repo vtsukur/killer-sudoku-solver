@@ -1,5 +1,5 @@
+import { MutableSet } from '../../util/mutableSet';
 import { joinArray } from '../../util/readableMessages';
-import { RichSet } from '../../util/richSet';
 
 export type ComboKey = string;
 
@@ -55,7 +55,7 @@ export class Combo implements Iterable<number> {
 
     constructor(nums: ReadonlyArray<number>) {
         this._nums = [...nums];
-        this._numSet = new RichSet(nums);
+        this._numSet = new MutableSet(nums);
         this.key = joinArray(nums);
     }
 }

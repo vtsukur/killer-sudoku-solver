@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { logFactory } from '../../../util/logFactory';
-import { RichSet } from '../../../util/richSet';
+import { MutableSet } from '../../../util/mutableSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { MasterModel } from '../../models/masterModel';
 import { MasterStrategy } from '../masterStrategy';
@@ -22,7 +22,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-            cellMTargetCpy.reduceNumOptions(RichSet.of(tryNum));
+            cellMTargetCpy.reduceNumOptions(MutableSet.of(tryNum));
             ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
 
             try {
@@ -48,7 +48,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
-                cellMTarget.reduceNumOptions(RichSet.of(tryNum));
+                cellMTarget.reduceNumOptions(MutableSet.of(tryNum));
                 break;
             } else if (ctxCpy.isSolutionFound) {
                 solution = ctxCpy.foundSolution;

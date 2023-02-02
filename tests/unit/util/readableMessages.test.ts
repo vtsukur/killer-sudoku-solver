@@ -1,5 +1,5 @@
+import { MutableSet } from '../../../src/util/mutableSet';
 import { joinArray, joinSet } from '../../../src/util/readableMessages';
-import { RichSet } from '../../../src/util/richSet';
 
 describe('Readable messages util tests', () => {
     test('Join array', () => {
@@ -7,6 +7,6 @@ describe('Readable messages util tests', () => {
     });
 
     test('Join set', () => {
-        expect(joinSet(new RichSet([ 'a', 1, true ]))).toBe('a, 1, true');
+        expect(joinSet(new MutableSet([ 'a', 1, true ]))).toBe('a, 1, true');
     });
 });

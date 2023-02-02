@@ -1,10 +1,10 @@
-import { RichSet } from '../../util/richSet';
+import { MutableSet } from '../../util/mutableSet';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
-    private _cellMs = new RichSet<CellModel>();
-    private _impactedCageMs = new RichSet<CageModel>();
+    private _cellMs = new MutableSet<CellModel>();
+    private _impactedCageMs = new MutableSet<CageModel>();
 
     add(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {

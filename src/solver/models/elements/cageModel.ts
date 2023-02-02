@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, CellKey, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { RichSet } from '../../../util/richSet';
+import { MutableSet } from '../../../util/mutableSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
 import { CellModel } from './cellModel';
@@ -19,9 +19,9 @@ type Clue = {
 
 type Context = {
     canHaveDuplicateNums: boolean;
-    processedCellMs: RichSet<CellModel>;
-    remainingCellMs: RichSet<CellModel>,
-    processedNums: RichSet<number>,
+    processedCellMs: MutableSet<CellModel>;
+    remainingCellMs: MutableSet<CellModel>,
+    processedNums: MutableSet<number>,
     numbersStack: Array<number>,
     cellMsStack: Array<CellModel>,
     processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
@@ -48,7 +48,7 @@ export class CageModel {
 
     constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, derivedFromInputCage?: boolean) {
         this.cage = cage;
-        this._cellsSet = new RichSet<CellKey>(cage.cells.map(cell => cell.key));
+        this._cellsSet = new MutableSet<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this._firstCell = cage.cells[0];
         this.cellMs = cellMs;
@@ -98,7 +98,7 @@ export class CageModel {
         }
 
         private isSameForAll(whatFn: (cell: Cell) => number) {
-            return new RichSet(this.cells.map(whatFn)).size === 1;
+            return new MutableSet(this.cells.map(whatFn)).size === 1;
         }
     };
 
@@ -110,7 +110,7 @@ export class CageModel {
         if (this._canHaveDuplicateNums) return;
 
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
-        const nums = new RichSet<number>();
+        const nums = new MutableSet<number>();
         combos.forEach(combo => {
             nums.addCollection(combo);
             this._combosMap.set(combo.key, combo);
@@ -135,7 +135,7 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        const numOpts = new RichSet<number>();
+        const numOpts = new MutableSet<number>();
         [...combos].forEach(combo => {
             numOpts.addCollection(combo);
         });
@@ -160,7 +160,7 @@ export class CageModel {
         } else if (!this._canHaveDuplicateNums) {
             return this.reduceLargeCage();
         } else {
-            return new RichSet();
+            return new MutableSet();
         }
     }
 
@@ -169,7 +169,7 @@ export class CageModel {
     }
 
     private reduceOptimalForSize2() {
-        const modifiedCellMs = new RichSet<CellModel>();
+        const modifiedCellMs = new MutableSet<CellModel>();
         const combosToPotentiallyRemoveMap = new Map<string, Combo>();
 
         for (const oneCellM of this.cellMs) {
@@ -199,7 +199,7 @@ export class CageModel {
     }
 
     private reduceOptimalForSize3() {
-        const modifiedCellMs = new RichSet<CellModel>();
+        const modifiedCellMs = new MutableSet<CellModel>();
 
         const PERMS_OF_3 = [
             [0, 1, 2],
@@ -268,9 +268,9 @@ export class CageModel {
     private reduceSmallCage() {
         const context: Context = {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
-            processedCellMs: new RichSet(),
-            remainingCellMs: new RichSet(this.cellMs),
-            processedNums: new RichSet(),
+            processedCellMs: new MutableSet(),
+            remainingCellMs: new MutableSet(this.cellMs),
+            processedNums: new MutableSet(),
             numbersStack: new Array(this._cellCount),
             cellMsStack: new Array(this._cellCount),
             processCell: function(cellM: CellModel, step: number, fn: () => boolean | void) {
@@ -301,7 +301,7 @@ export class CageModel {
 
         this._combosMap = new Map();
 
-        const modifiedCellMs = new RichSet<CellModel>();
+        const modifiedCellMs = new MutableSet<CellModel>();
         this.cellMs.forEach(cellM => {
             context.processCell(cellM, 0, () => {
                 Array.from(cellM.numOpts()).forEach(num => {
@@ -351,12 +351,12 @@ export class CageModel {
     }
 
     private reduceLargeCage() {
-        const presentNums = new RichSet<number>();
+        const presentNums = new MutableSet<number>();
         this.cellMs.forEach(cellM => {
             presentNums.addCollection(cellM.numOpts());
         });
 
-        const commonComboNums = new RichSet<number>();
+        const commonComboNums = new MutableSet<number>();
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
             for (const combo of this._combosMap.values()) {
@@ -374,9 +374,9 @@ export class CageModel {
         }
 
         const validCombos = [];
-        const validComboNums = new RichSet<number>();
+        const validComboNums = new MutableSet<number>();
         const noLongerValidCombos = [];
-        const noLongerValidComboNums = new RichSet<number>();
+        const noLongerValidComboNums = new MutableSet<number>();
         for (const combo of this._combosMap.values()) {
             let validCombo = true;
             for (const num of combo) {
@@ -397,9 +397,9 @@ export class CageModel {
             }
         }
 
-        const modifiedCellMs = new RichSet<CellModel>();
+        const modifiedCellMs = new MutableSet<CellModel>();
         if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new RichSet<number>();
+            const numOptsToDelete = new MutableSet<number>();
             for (const num of noLongerValidComboNums) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
@@ -429,9 +429,9 @@ export class CageModel {
             if (_.isUndefined(forNum)) {
                 return cellM.numOpts();
             } else if (cellM.numOpts().has(forNum)) {
-                return RichSet.of(forNum);
+                return MutableSet.of(forNum);
             } else {
-                return new RichSet();
+                return new MutableSet();
             }
         };
         for (const cellM of this.cellMs) {
@@ -481,16 +481,16 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
-        if (this.hasSingleCombination() || !this._combosMap.size) return new RichSet();
+        if (this.hasSingleCombination() || !this._combosMap.size) return new MutableSet();
 
         const newCombosMap = new Map();
         const removedCombos = [];
-        const newNumOptions = new RichSet<number>();
+        const newNumOptions = new MutableSet<number>();
 
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = new RichSet(value);
+            const numSet = new MutableSet(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
                 newNumOptions.addCollection(numSet);
@@ -501,7 +501,7 @@ export class CageModel {
 
         if (removedCombos.length > 0) {
             this._combosMap = newCombosMap;
-            const reducedCellMs = new RichSet<CellModel>();
+            const reducedCellMs = new MutableSet<CellModel>();
             this.cellMs.forEach(cellM => {
                 if (cellM.reduceNumOptions(newNumOptions).size > 0) {
                     reducedCellMs.add(cellM);
@@ -510,7 +510,7 @@ export class CageModel {
             return reducedCellMs;
         }
         else {
-            return new RichSet();
+            return new MutableSet();
         }
     }
 

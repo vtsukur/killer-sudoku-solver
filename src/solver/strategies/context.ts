@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { RichSet } from '../../util/richSet';
+import { MutableSet } from '../../util/mutableSet';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
@@ -10,7 +10,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    private _cageModelsToReduce = new RichSet<CageModel>();
+    private _cageModelsToReduce = new MutableSet<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -39,11 +39,11 @@ export class Context {
     }
 
     setCageModelsToReduceToAll() {
-        this._cageModelsToReduce = new RichSet(this.model.cageModelsMap.values());
+        this._cageModelsToReduce = new MutableSet(this.model.cageModelsMap.values());
     }
 
     setCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToReduce = new RichSet(reducedCellMs.impactedCageModels);
+        this._cageModelsToReduce = new MutableSet(reducedCellMs.impactedCageModels);
     }
 
     addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {

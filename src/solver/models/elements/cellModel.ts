@@ -1,30 +1,30 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { RichSet } from '../../../util/richSet';
+import { MutableSet } from '../../../util/mutableSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from './cageModel';
 
 export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
-    private readonly _withinCageMs: RichSet<CageModel>;
-    private _numOpts: RichSet<number>;
+    private readonly _withinCageMs: MutableSet<CageModel>;
+    private _numOpts: MutableSet<number>;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new RichSet(_.range(House.CELL_COUNT).map(i => i + 1));
-        this._withinCageMs = new RichSet();
+        this._numOpts = new MutableSet(_.range(House.CELL_COUNT).map(i => i + 1));
+        this._withinCageMs = new MutableSet();
     }
 
     deepCopyWithoutCageModels() {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new RichSet(this._numOpts);
+        copy._numOpts = new MutableSet(this._numOpts);
         return copy;
     }
 
@@ -40,7 +40,7 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): RichSet<number> {
+    numOpts(): MutableSet<number> {
         return this._numOpts;
     }
 
@@ -55,8 +55,8 @@ export class CellModel {
         return this._numOpts.delete(val);
     }
 
-    reduceNumOptions(val: RichSet<number>) {
-        const removedNumOptions = new RichSet<number>();
+    reduceNumOptions(val: MutableSet<number>) {
+        const removedNumOptions = new MutableSet<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {
                 removedNumOptions.add(existingNumOption);
@@ -74,7 +74,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOpts = RichSet.of(val);
+        this._numOpts = MutableSet.of(val);
         this._solved = true;
     }
 }

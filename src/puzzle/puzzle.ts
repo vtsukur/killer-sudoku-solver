@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
+import { MutableSet } from '../util/mutableSet';
 import { joinSet } from '../util/readableMessages';
-import { RichSet } from '../util/richSet';
 import { ReadonlyCages } from './cage';
 import { CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
@@ -40,8 +40,8 @@ export class Puzzle {
     }
 
     private static validateForDuplicateCells(cells: ReadonlyCells) {
-        const uniqueKeys = new RichSet<CellKey>();
-        const duplicateKeys = new RichSet<CellKey>();
+        const uniqueKeys = new MutableSet<CellKey>();
+        const duplicateKeys = new MutableSet<CellKey>();
         for (const cell of cells) {
             if (uniqueKeys.has(cell.key)) {
                 duplicateKeys.add(cell.key);
@@ -56,7 +56,7 @@ export class Puzzle {
     }
 
     private static validateForMissingCells(unique: ReadonlyCellKeysSet) {
-        const missingKeys = new RichSet<CellKey>();
+        const missingKeys = new MutableSet<CellKey>();
         if (unique.size < Grid.CELL_COUNT) {
             for (const { key } of Grid.newCellsIterator()) {
                 if (!unique.has(key)) {

@@ -3,7 +3,7 @@ import { Cell } from '../../../../src/puzzle/cell';
 import { Combo } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../src/solver/models/elements/cellModel';
-import { RichSet } from '../../../../src/util/richSet';
+import { MutableSet } from '../../../../src/util/mutableSet';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
@@ -18,8 +18,8 @@ describe('CageModel tests', () => {
 
         cageM.initialReduce();
 
-        expect(cellM1.numOpts()).toEqual(RichSet.of(8, 9));
-        expect(cellM2.numOpts()).toEqual(RichSet.of(8, 9));
+        expect(cellM1.numOpts()).toEqual(MutableSet.of(8, 9));
+        expect(cellM2.numOpts()).toEqual(MutableSet.of(8, 9));
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(8, 9)
         ]);
@@ -33,8 +33,8 @@ describe('CageModel tests', () => {
 
         cageM.initialReduce();
 
-        expect(cellM1.numOpts()).toEqual(RichSet.of(4, 5, 6, 7, 8, 9));
-        expect(cellM2.numOpts()).toEqual(RichSet.of(4, 5, 6, 7, 8, 9));
+        expect(cellM1.numOpts()).toEqual(MutableSet.of(4, 5, 6, 7, 8, 9));
+        expect(cellM2.numOpts()).toEqual(MutableSet.of(4, 5, 6, 7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(4, 9),
             Combo.of(5, 8),
@@ -51,9 +51,9 @@ describe('CageModel tests', () => {
 
         cageM.initialReduce();
 
-        expect(cellM1.numOpts()).toEqual(RichSet.of(7, 8, 9));
-        expect(cellM2.numOpts()).toEqual(RichSet.of(7, 8, 9));
-        expect(cellM3.numOpts()).toEqual(RichSet.of(7, 8, 9));
+        expect(cellM1.numOpts()).toEqual(MutableSet.of(7, 8, 9));
+        expect(cellM2.numOpts()).toEqual(MutableSet.of(7, 8, 9));
+        expect(cellM3.numOpts()).toEqual(MutableSet.of(7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(7, 8, 9)
         ]);
@@ -70,9 +70,9 @@ describe('CageModel tests', () => {
         cellM1.deleteNumOpt(5);
         const modifiedCellMs = cageM.reduce();
 
-        expect(new RichSet(modifiedCellMs)).toEqual(new RichSet([ cellM2 ]));
-        expect(cellM1.numOpts()).toEqual(RichSet.of(2, 3, 4, 6, 7, 8, 9));
-        expect(cellM2.numOpts()).toEqual(RichSet.of(2, 3, 4, 5, 7, 8, 9));
+        expect(new MutableSet(modifiedCellMs)).toEqual(new MutableSet([ cellM2 ]));
+        expect(cellM1.numOpts()).toEqual(MutableSet.of(2, 3, 4, 6, 7, 8, 9));
+        expect(cellM2.numOpts()).toEqual(MutableSet.of(2, 3, 4, 5, 7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(2, 9),
             Combo.of(3, 8),
@@ -93,9 +93,9 @@ describe('CageModel tests', () => {
         cellM2.deleteNumOpt(5);
         const modifiedCellMs = cageM.reduce();
 
-        expect(new RichSet(modifiedCellMs)).toEqual(new RichSet([ cellM1, cellM2 ]));
-        expect(cellM1.numOpts()).toEqual(RichSet.of(2, 3, 4, 7, 8, 9));
-        expect(cellM2.numOpts()).toEqual(RichSet.of(2, 3, 4, 7, 8, 9));
+        expect(new MutableSet(modifiedCellMs)).toEqual(new MutableSet([ cellM1, cellM2 ]));
+        expect(cellM1.numOpts()).toEqual(MutableSet.of(2, 3, 4, 7, 8, 9));
+        expect(cellM2.numOpts()).toEqual(MutableSet.of(2, 3, 4, 7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(2, 9),
             Combo.of(3, 8),

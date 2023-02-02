@@ -1,13 +1,13 @@
 import { ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { RichSet } from '../../../util/richSet';
+import { MutableSet } from '../../../util/mutableSet';
 import { clusterCagesByOverlap } from '../../math';
 
 export class CagesAreaModel {
     readonly cages;
-    readonly cellsSet = new RichSet<Cell>();
-    readonly nonOverlappingCellsSet = new RichSet<Cell>();
+    readonly cellsSet = new MutableSet<Cell>();
+    readonly nonOverlappingCellsSet = new MutableSet<Cell>();
     sum = 0;
 
     constructor(cages: ReadonlyCages, absMaxAreaCellCount = House.CELL_COUNT) {

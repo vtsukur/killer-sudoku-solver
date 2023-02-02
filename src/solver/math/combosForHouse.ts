@@ -1,8 +1,8 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
+import { MutableSet } from '../../util/mutableSet';
 import { joinArray } from '../../util/readableMessages';
-import { RichSet } from '../../util/richSet';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
@@ -29,13 +29,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
     let nonOverlappingCages = new Array<Cage>();
     const overlappingCages = new Array<Cage>();
 
-    const cellsToCagesMap = new Map<CellKey, RichSet<Cage>>();
+    const cellsToCagesMap = new Map<CellKey, MutableSet<Cage>>();
     cells.forEach(cell => {
-        cellsToCagesMap.set(cell.key, new RichSet());
+        cellsToCagesMap.set(cell.key, new MutableSet());
     });
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
-            (cellsToCagesMap.get(cell.key) as RichSet<Cage>).add(cage);
+            (cellsToCagesMap.get(cell.key) as MutableSet<Cage>).add(cage);
         });
     });
 
@@ -60,13 +60,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
 }
 
 type Context = {
-    allCagesSet: RichSet<Cage>;
-    maxAreaSet: RichSet<Cage>;
+    allCagesSet: MutableSet<Cage>;
+    maxAreaSet: MutableSet<Cage>;
     maxAreaCellCount: number;
     cellCount: number;
-    cagesStack: RichSet<Cage>;
-    remainingCagesStack: RichSet<Cage>;
-    overlappingCagesStack: RichSet<Cage>;
+    cagesStack: MutableSet<Cage>;
+    remainingCagesStack: MutableSet<Cage>;
+    overlappingCagesStack: MutableSet<Cage>;
     areaCellKeysStack: CellKeysSet;
     absMaxAreaCellCount: number;
 }
@@ -74,14 +74,14 @@ type Context = {
 // there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
 function findMaxNonOverlappingCagesArea(cages: ReadonlyCages, absMaxAreaCellCount: number) {
     const context: Context = {
-        allCagesSet: new RichSet(cages),
-        maxAreaSet: new RichSet(),
+        allCagesSet: new MutableSet(cages),
+        maxAreaSet: new MutableSet(),
         maxAreaCellCount: 0,
         cellCount: 0,
-        cagesStack: new RichSet(),
-        remainingCagesStack: new RichSet(cages),
-        overlappingCagesStack: new RichSet(),
-        areaCellKeysStack: new RichSet(),
+        cagesStack: new MutableSet(),
+        remainingCagesStack: new MutableSet(cages),
+        overlappingCagesStack: new MutableSet(),
+        areaCellKeysStack: new MutableSet(),
         absMaxAreaCellCount: absMaxAreaCellCount
     };
 
@@ -107,7 +107,7 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
 
     if (context.cellCount >= context.absMaxAreaCellCount ||
         (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
-        context.maxAreaSet = new RichSet<Cage>(context.cagesStack);
+        context.maxAreaSet = new MutableSet<Cage>(context.cagesStack);
         context.maxAreaCellCount = context.cellCount;
     }
 
@@ -132,7 +132,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
     const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
-    const checkingSet = new RichSet<number>();
+    const checkingSet = new MutableSet<number>();
 
     function combosRecursive(step: number) {
         if (step === cages.length) {

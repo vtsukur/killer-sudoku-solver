@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { RichSet } from '../../../util/richSet';
+import { MutableSet } from '../../../util/mutableSet';
 import { Combo, ReadonlyCombos } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -43,7 +43,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 if (!_.isUndefined(singleCellForNum)) {
                     const singleOptionCellM = this._model.cellModelOf(singleCellForNum as Cell);
-                    singleOptionCellM.reduceNumOptions(RichSet.of(num));
+                    singleOptionCellM.reduceNumOptions(MutableSet.of(num));
                 }
 
                 const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);
@@ -140,8 +140,8 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
         this._model.nonetModels.forEach(nonetM => {
             const numMap = new Map();
             _.range(1, House.CELL_COUNT + 1).forEach(num => numMap.set(num, {
-                rows: new RichSet(),
-                cols: new RichSet()
+                rows: new MutableSet(),
+                cols: new MutableSet()
             }));
 
             for (const { row, col } of nonetM.cellsIterator()) {
@@ -222,7 +222,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
 };
 
 const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage: Cage, leftOverCageCombos: Array<Combo>) => {
-    const leftoverCageCellKeys = new RichSet(leftoverCage.cells.map(cell => cell.key));
+    const leftoverCageCellKeys = new MutableSet(leftoverCage.cells.map(cell => cell.key));
     const cageMsWithoutLeftover = new Array<CageModel>();
     houseM.cageModels.forEach((cageM: CageModel) => {
         if (cageM.positioningFlags.isSingleCellCage) return;

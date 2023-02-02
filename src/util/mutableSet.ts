@@ -1,4 +1,4 @@
-export class RichSet<T> extends Set<T> {
+export class MutableSet<T> extends Set<T> {
     constructor(val?: Iterable<T>) {
         super(val);
     }
@@ -20,6 +20,6 @@ export class RichSet<T> extends Set<T> {
     }
 
     static of<T>(...val: ReadonlyArray<T>) {
-        return new RichSet(val);
+        return new MutableSet(val);
     }
 }
