@@ -1,7 +1,7 @@
 /**
- * Extends standard {@link Set} with API
- * to add and remove collection of elements in the form of {@link Iterable}s
- * as well as construct instances out of rest parameters using {@link of}
+ * Extends standard {@link Set} with capabilities
+ * to add and remove {@link Iterable} of elements using {@link addCollection} and {@link deleteCollection}
+ * as well as construct instances out of `rest` parameters using {@link of}
  * and get first element in the set using {@link first}.
  *
  * @see {@link Set}
@@ -58,10 +58,13 @@ export class MutableSet<T> extends Set<T> {
         for (const oneOf of val) {
             this.delete(oneOf);
         }
+        return this;
     }
 
     /**
      * Returns first element in the set according to insertion order.
+     *
+     * @returns first element in the set according to insertion order.
      *
      * @throws {Error} if set has no values.
      */

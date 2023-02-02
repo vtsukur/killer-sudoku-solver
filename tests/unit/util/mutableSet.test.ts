@@ -9,14 +9,14 @@ describe('MutableSet tests', () => {
 
         set.add(1);
         set.add(2);
-        set.addCollection([ 1, 3, 4 ]);
+        expect(set.addCollection([ 1, 3, 4 ])).toBe(set);
 
         expectSetWithValues(set, [ 1, 2, 3, 4 ]);
         expect(set.first).toBe(1);
         expect(set.has(5)).toBeFalsy();
 
         set.delete(2);
-        set.deleteCollection([ 1, 4 ]);
+        expect(set.deleteCollection([ 1, 4 ])).toBe(set);
 
         expectSetWithValues(set, [ 3 ]);
         expect(set.first).toBe(3);
