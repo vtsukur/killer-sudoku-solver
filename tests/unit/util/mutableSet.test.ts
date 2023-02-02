@@ -44,7 +44,7 @@ describe('MutableSet tests', () => {
         expect(() => set.first).toThrow(new Error('Can\'t get first element: MutableSet has no values'));
     });
 
-    const expectSetWithValues = (set: MutableSet<number>, values: ReadonlyArray<number>) => {
+    const expectSetWithValues = <T>(set: MutableSet<T>, values: ReadonlyArray<T>) => {
         expect(set.size).toBe(values.length);
 
         expect(Array.from(set)).toEqual(values);
@@ -56,14 +56,14 @@ describe('MutableSet tests', () => {
             expect(set.has(el)).toBeTruthy();
         }
 
-        const collectedViaForEach = new Array<number>();
-        const collector = (val: number) => {
+        const collectedViaForEach = new Array<T>();
+        const collector = (val: T) => {
             collectedViaForEach.push(val);
         };
         set.forEach(collector);
         expect(collectedViaForEach).toEqual(values);
 
-        const collectedViaForOf = new Array<number>();
+        const collectedViaForOf = new Array<T>();
         for (const val of set) {
             collectedViaForOf.push(val);
         }
