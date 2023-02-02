@@ -1,7 +1,9 @@
+type OneOrManyNumbers = number | Iterable<number>;
+
 export class NumSet implements Iterable<number> {
     private readonly _set: Set<number>;
 
-    constructor(val?: number | Iterable<number>) {
+    constructor(val?: OneOrManyNumbers) {
         if (typeof val === 'undefined') {
             this._set = new Set();
         } else {
@@ -17,7 +19,7 @@ export class NumSet implements Iterable<number> {
         return this._set.has(val);
     }
 
-    add(val: number | Iterable<number>) {
+    add(val: OneOrManyNumbers) {
         if (typeof val === 'number') {
             this.doAdd(val);
         } else {
@@ -31,7 +33,7 @@ export class NumSet implements Iterable<number> {
         this._set.add(val);
     }
 
-    delete(val: number | Iterable<number>) {
+    delete(val: OneOrManyNumbers) {
         if (typeof val === 'number') {
             this.doDelete(val);
         } else {
