@@ -140,7 +140,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
         } else {
             const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum) {
-                if (!comboForSum.hasAnyFrom(checkingSet)) {
+                if (!comboForSum.has(checkingSet)) {
                     stack[step] = comboForSum;
 
                     checkingSet.add(comboForSum);

@@ -1,4 +1,4 @@
-type OneOrManyNumbers = number | Iterable<number>;
+export type OneOrManyNumbers = number | Iterable<number>;
 
 export class NumSet implements Iterable<number> {
     private readonly _set: Set<number>;

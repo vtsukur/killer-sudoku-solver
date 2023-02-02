@@ -1,4 +1,5 @@
 import { joinArray } from '../../util/readableMessages';
+import { OneOrManyNumbers } from './numSet';
 
 export type ComboKey = string;
 
@@ -16,17 +17,17 @@ export class Combo implements Iterable<number> {
         return this._nums.values();
     }
 
-    has(num: number) {
-        return this._numSet.has(num);
-    }
-
-    hasAnyFrom(val: Iterable<number>) {
-        for (const num of val) {
-            if (this._numSet.has(num)) {
-                return true;
+    has(val: OneOrManyNumbers) {
+        if (typeof val === 'number') {
+            return this._numSet.has(val);
+        } else {
+            for (const num of val) {
+                if (this._numSet.has(num)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
 
     reduce(num: number): Combo {
