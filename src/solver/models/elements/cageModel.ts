@@ -111,7 +111,7 @@ export class CageModel {
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
         const nums = new NumSet();
         combos.forEach(combo => {
-            nums.add(...combo.nums);
+            nums.mergeWith(combo);
             this._combosMap.set(combo.key, combo);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
@@ -136,7 +136,7 @@ export class CageModel {
     updateCombinations(combos: ReadonlyArray<Combo>) {
         const numOpts = new NumSet();
         [...combos].forEach(combo => {
-            numOpts.add(...combo.nums);
+            numOpts.mergeWith(combo);
         });
 
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
