@@ -192,9 +192,9 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
 const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: ReducedCellModels) => {
     const positioningFlags = CageModel.positioningFlagsFor(assumptionCage.cells);
     if (positioningFlags.isWithinHouse) {
-        const reducedSingleCellForNumCombos = new Array<Array<number>>();
+        const reducedSingleCellForNumCombos = new Array<Combo>();
         for (const combo of combos) {
-            reducedSingleCellForNumCombos.push(Array.from(combo.reduce(num)));
+            reducedSingleCellForNumCombos.push(combo.reduce(num));
         }
         let reduce = false;
         if (positioningFlags.isWithinRow) {
@@ -220,7 +220,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
     }
 };
 
-const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage: Cage, leftOverCageCombos: Array<Array<number>>) => {
+const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage: Cage, leftOverCageCombos: Array<Combo>) => {
     const leftoverCageCellKeys = new Set(leftoverCage.cells.map(cell => cell.key));
     const cageMsWithoutLeftover = new Array<CageModel>();
     houseM.cageModels.forEach((cageM: CageModel) => {
