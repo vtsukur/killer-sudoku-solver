@@ -2,12 +2,12 @@ import * as _ from 'lodash';
 import { Cage, Cages } from '../../../../src/puzzle/cage';
 import { Cell, Cells } from '../../../../src/puzzle/cell';
 import { House } from '../../../../src/puzzle/house';
-import { NumSet } from '../../../../src/solver/math';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { Context } from '../../../../src/solver/strategies/context';
 import { MasterStrategy } from '../../../../src/solver/strategies/masterStrategy';
 import { CageSlicer } from '../../../../src/solver/transform/cageSlicer';
+import { NumSet } from '../../../../src/util/richSet';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 type ExpectedHouse = {

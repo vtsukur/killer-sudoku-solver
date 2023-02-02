@@ -2,8 +2,9 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { Combo, ComboKey, combosForSum, NumSet, ReadonlyCombos } from '../../math';
+import { NumSet } from '../../../util/richSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
+import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
 import { CellModel } from './cellModel';
 
 type Clue = {

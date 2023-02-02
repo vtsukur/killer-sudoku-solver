@@ -1,8 +1,9 @@
 import { Cage } from '../../../../src/puzzle/cage';
 import { Cell } from '../../../../src/puzzle/cell';
-import { Combo, NumSet } from '../../../../src/solver/math';
+import { Combo } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../src/solver/models/elements/cellModel';
+import { NumSet } from '../../../../src/util/richSet';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);

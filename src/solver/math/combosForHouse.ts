@@ -2,10 +2,10 @@ import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
+import { NumSet } from '../../util/richSet';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
-import { NumSet } from './numSet';
 
 export function combosForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
     const cages = houseM.cageModels.map(cageM => cageM.cage);

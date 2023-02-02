@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
+import { NumSet } from '../../../util/richSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { NumSet } from '../../math';
 import { CageModel } from './cageModel';
 
 export class CellModel {

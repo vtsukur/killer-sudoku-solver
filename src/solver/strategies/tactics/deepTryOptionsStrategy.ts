@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { MasterStrategy } from '../masterStrategy';
 import { logFactory } from '../../../util/logFactory';
+import { NumSet } from '../../../util/richSet';
+import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { MasterModel } from '../../models/masterModel';
-import { Strategy } from '../strategy';
+import { MasterStrategy } from '../masterStrategy';
 import { ReducedCellModels } from '../reducedCellModels';
-import { NumSet } from '../../math';
+import { Strategy } from '../strategy';
 
 const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell, CellKey } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { NumSet } from '../../math';
+import { NumSet } from '../../../util/richSet';
 import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { HouseModel } from '../../models/elements/houseModel';
