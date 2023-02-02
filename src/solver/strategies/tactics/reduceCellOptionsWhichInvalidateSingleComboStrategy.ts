@@ -43,7 +43,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
 }
 
 function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {
-    const cellMs = new Set<CellModel>();
+    const cellMs = new RichSet<CellModel>();
     addCellsFromHouse(cellMs, model.rowModels[cellM.cell.row], model);
     addCellsFromHouse(cellMs, model.columnModels[cellM.cell.col], model);
     addCellsFromHouse(cellMs, model.nonetModels[cellM.cell.nonet], model);
@@ -51,13 +51,13 @@ function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {
     return cellMs;
 }
 
-function addCellsFromHouse(cellMs: Set<CellModel>, houseM: HouseModel, model: MasterModel) {
+function addCellsFromHouse(cellMs: RichSet<CellModel>, houseM: HouseModel, model: MasterModel) {
     for (const { row, col } of houseM.cellsIterator()) {
         cellMs.add(model.cellModelAt(row, col));
     }
 }
 
-function collectCageMsToCheck(cellMs: Set<CellModel>) {
+function collectCageMsToCheck(cellMs: ReadonlySet<CellModel>) {
     const cageMs = new RichSet<CageModel>();
     for (const cellM of cellMs) {
         if (cellM.solved) continue;

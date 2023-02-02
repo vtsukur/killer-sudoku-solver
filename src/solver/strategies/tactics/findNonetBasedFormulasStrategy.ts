@@ -26,7 +26,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
                     const unfilledInnerCellMs = area.unfilledInnerCellMs(this._model);
                     const outerCellMs = area.outerCellMs;
                     if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
-                        formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
+                        formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new RichSet<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
                     }
                     area.addCageM(outerCageM);
                 }
@@ -57,10 +57,10 @@ class ExpandableNonOverlappingNonetAreaModel {
         this._nonetM = nonetM;
         this._sum = 0;
         this._cageMs = new RichSet<CageModel>();
-        this._cellMs = new Set<CellModel>();
-        this._cellKeys = new Set();
-        this._innerCellMs = new Set<CellModel>();
-        this._outerCellMs = new Set<CellModel>();
+        this._cellMs = new RichSet<CellModel>();
+        this._cellKeys = new RichSet();
+        this._innerCellMs = new RichSet<CellModel>();
+        this._outerCellMs = new RichSet<CellModel>();
         this._outerCageMs = new RichSet<CageModel>();
     }
 
@@ -144,7 +144,7 @@ class Formula {
     readonly withDelta;
     readonly key;
 
-    constructor(cellM: CellModel, equalToCellMs: Set<CellModel>, withDelta: number) {
+    constructor(cellM: CellModel, equalToCellMs: ReadonlySet<CellModel>, withDelta: number) {
         this.cellM = cellM;
         this.equalToCellMs = equalToCellMs;
         const keysArr = [ cellM.cell ].concat(Array.from(equalToCellMs).map(cellM => cellM.cell)).map(cell => cell.key);
@@ -172,10 +172,10 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
     return areaModel;
 }
 
-function reduceByFormula(formula: Formula): Set<CellModel> {
+function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
     if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
 
-    const reduced = new Set<CellModel>();
+    const reduced = new RichSet<CellModel>();
 
     const checkingNumOpts = new Map();
     formula.equalToCellMs.forEach(cellM => {

@@ -3,10 +3,10 @@ import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
-    private _cellMs: Set<CellModel> = new Set();
+    private _cellMs = new RichSet<CellModel>();
     private _impactedCageMs = new RichSet<CageModel>();
 
-    add(val: Set<CellModel>) {
+    add(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {
             this.addOne(cellM);
         }
