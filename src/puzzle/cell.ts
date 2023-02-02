@@ -1,3 +1,4 @@
+import { RichSet } from '../util/richSet';
 import { Column } from './column';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
@@ -17,7 +18,7 @@ export type CellKey = string;
 /**
  * Mutable `Set` of human-readable `Cell` keys: {@link Cell#key}.
  */
-export type CellKeysSet = Set<CellKey>;
+export type CellKeysSet = RichSet<CellKey>;
 
 /**
  * Readonly `Set` of human-readable `Cell` keys: {@link Cell#key}.

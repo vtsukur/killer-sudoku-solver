@@ -10,6 +10,7 @@ import { Grid } from '../puzzle/grid';
 import { House, HouseIndex } from '../puzzle/house';
 import { Puzzle } from '../puzzle/puzzle';
 import { logFactory } from '../util/logFactory';
+import { RichSet } from '../util/richSet';
 import { TempFilePaths } from '../util/tempFilePaths';
 import { CageContour } from './cageContour';
 import { CellContour } from './cellContour';
@@ -95,7 +96,7 @@ function findDottedCageContours(src: Mat, contoursMatVector: MatVector) {
     cv.findContours(src, contoursMatVector, new cv.Mat(), cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
 
     const dottedCageContours = new Array<Mat>();
-    const contoursBoundingRectsSet = new Set();
+    const contoursBoundingRectsSet = new RichSet<string>();
     _.range(contoursMatVector.size() as unknown as number).forEach(i => {
         const contour = contoursMatVector.get(i);
         const cvRect = Rect.from(cv.boundingRect(contour));

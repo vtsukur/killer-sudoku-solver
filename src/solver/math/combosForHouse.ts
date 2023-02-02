@@ -1,5 +1,5 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
-import { CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
+import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
 import { RichSet } from '../../util/richSet';
@@ -29,13 +29,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
     let nonOverlappingCages = new Array<Cage>();
     const overlappingCages = new Array<Cage>();
 
-    const cellsToCagesMap = new Map();
+    const cellsToCagesMap = new Map<CellKey, RichSet<Cage>>();
     cells.forEach(cell => {
-        cellsToCagesMap.set(cell.key, new Set());
+        cellsToCagesMap.set(cell.key, new RichSet());
     });
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
-            cellsToCagesMap.get(cell.key).add(cage);
+            (cellsToCagesMap.get(cell.key) as RichSet<Cage>).add(cage);
         });
     });
 
@@ -60,13 +60,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
 }
 
 type Context = {
-    allCagesSet: Set<Cage>;
-    maxAreaSet: Set<Cage>;
+    allCagesSet: RichSet<Cage>;
+    maxAreaSet: RichSet<Cage>;
     maxAreaCellCount: number;
     cellCount: number;
-    cagesStack: Set<Cage>;
-    remainingCagesStack: Set<Cage>;
-    overlappingCagesStack: Set<Cage>;
+    cagesStack: RichSet<Cage>;
+    remainingCagesStack: RichSet<Cage>;
+    overlappingCagesStack: RichSet<Cage>;
     areaCellKeysStack: CellKeysSet;
     absMaxAreaCellCount: number;
 }
@@ -74,14 +74,14 @@ type Context = {
 // there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
 function findMaxNonOverlappingCagesArea(cages: ReadonlyCages, absMaxAreaCellCount: number) {
     const context: Context = {
-        allCagesSet: new Set(cages),
-        maxAreaSet: new Set(),
+        allCagesSet: new RichSet(cages),
+        maxAreaSet: new RichSet(),
         maxAreaCellCount: 0,
         cellCount: 0,
-        cagesStack: new Set(),
-        remainingCagesStack: new Set(cages),
-        overlappingCagesStack: new Set(),
-        areaCellKeysStack: new Set(),
+        cagesStack: new RichSet(),
+        remainingCagesStack: new RichSet(cages),
+        overlappingCagesStack: new RichSet(),
+        areaCellKeysStack: new RichSet(),
         absMaxAreaCellCount: absMaxAreaCellCount
     };
 
@@ -107,7 +107,7 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
 
     if (context.cellCount >= context.absMaxAreaCellCount ||
         (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
-        context.maxAreaSet = new Set(context.cagesStack);
+        context.maxAreaSet = new RichSet<Cage>(context.cagesStack);
         context.maxAreaCellCount = context.cellCount;
     }
 

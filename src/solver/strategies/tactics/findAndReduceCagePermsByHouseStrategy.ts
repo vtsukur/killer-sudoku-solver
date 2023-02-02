@@ -140,8 +140,8 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
         this._model.nonetModels.forEach(nonetM => {
             const numMap = new Map();
             _.range(1, House.CELL_COUNT + 1).forEach(num => numMap.set(num, {
-                rows: new Set(),
-                cols: new Set()
+                rows: new RichSet(),
+                cols: new RichSet()
             }));
 
             for (const { row, col } of nonetM.cellsIterator()) {
@@ -222,7 +222,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
 };
 
 const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage: Cage, leftOverCageCombos: Array<Combo>) => {
-    const leftoverCageCellKeys = new Set(leftoverCage.cells.map(cell => cell.key));
+    const leftoverCageCellKeys = new RichSet(leftoverCage.cells.map(cell => cell.key));
     const cageMsWithoutLeftover = new Array<CageModel>();
     houseM.cageModels.forEach((cageM: CageModel) => {
         if (cageM.positioningFlags.isSingleCellCage) return;

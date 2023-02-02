@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Cell, ReadonlyCells } from '../../../puzzle/cell';
+import { Cell, CellKey, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { RichSet } from '../../../util/richSet';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
@@ -48,7 +48,7 @@ export class CageModel {
 
     constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, derivedFromInputCage?: boolean) {
         this.cage = cage;
-        this._cellsSet = new Set(cage.cells.map(cell => cell.key));
+        this._cellsSet = new RichSet<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this._firstCell = cage.cells[0];
         this.cellMs = cellMs;
@@ -98,7 +98,7 @@ export class CageModel {
         }
 
         private isSameForAll(whatFn: (cell: Cell) => number) {
-            return new Set(this.cells.map(whatFn)).size === 1;
+            return new RichSet(this.cells.map(whatFn)).size === 1;
         }
     };
 
@@ -160,7 +160,7 @@ export class CageModel {
         } else if (!this._canHaveDuplicateNums) {
             return this.reduceLargeCage();
         } else {
-            return new Set();
+            return new RichSet();
         }
     }
 
@@ -429,9 +429,9 @@ export class CageModel {
             if (_.isUndefined(forNum)) {
                 return cellM.numOpts();
             } else if (cellM.numOpts().has(forNum)) {
-                return new Set([ forNum ]);
+                return RichSet.of(forNum);
             } else {
-                return new Set();
+                return new RichSet();
             }
         };
         for (const cellM of this.cellMs) {
@@ -481,7 +481,7 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
-        if (this.hasSingleCombination() || !this._combosMap.size) return new Set();
+        if (this.hasSingleCombination() || !this._combosMap.size) return new RichSet();
 
         const newCombosMap = new Map();
         const removedCombos = [];
@@ -510,7 +510,7 @@ export class CageModel {
             return reducedCellMs;
         }
         else {
-            return new Set();
+            return new RichSet();
         }
     }
 

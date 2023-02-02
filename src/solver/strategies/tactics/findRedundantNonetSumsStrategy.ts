@@ -1,5 +1,6 @@
 import { Cage } from '../../../puzzle/cage';
 import { House } from '../../../puzzle/house';
+import { RichSet } from '../../../util/richSet';
 import { CageModel } from '../../models/elements/cageModel';
 import { Strategy } from '../strategy';
 
@@ -7,7 +8,7 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
     execute() {
         const nonetCageMsMap = new Map();
         this._model.nonetModels.forEach(nonetM => {
-            nonetCageMsMap.set(nonetM.index, new Set());
+            nonetCageMsMap.set(nonetM.index, new RichSet());
         });
 
         for (const cageM of this._model.cageModelsMap.values()) {

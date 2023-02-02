@@ -105,7 +105,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
             if (!numOccurencesKeyToHouseMap.has(key)) {
                 const entry = {
                     perpendicularHouseIndices: houseIndicesArr,
-                    houses: new Set()
+                    houses: new RichSet()
                 };
                 numOccurencesKeyToHouseMap.set(key, entry);
             }

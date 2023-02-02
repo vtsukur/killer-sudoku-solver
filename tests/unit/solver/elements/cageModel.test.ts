@@ -70,7 +70,7 @@ describe('CageModel tests', () => {
         cellM1.deleteNumOpt(5);
         const modifiedCellMs = cageM.reduce();
 
-        expect(new Set(modifiedCellMs)).toEqual(new Set([ cellM2 ]));
+        expect(new RichSet(modifiedCellMs)).toEqual(new RichSet([ cellM2 ]));
         expect(cellM1.numOpts()).toEqual(RichSet.of(2, 3, 4, 6, 7, 8, 9));
         expect(cellM2.numOpts()).toEqual(RichSet.of(2, 3, 4, 5, 7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([
@@ -93,7 +93,7 @@ describe('CageModel tests', () => {
         cellM2.deleteNumOpt(5);
         const modifiedCellMs = cageM.reduce();
 
-        expect(new Set(modifiedCellMs)).toEqual(new Set([ cellM1, cellM2 ]));
+        expect(new RichSet(modifiedCellMs)).toEqual(new RichSet([ cellM1, cellM2 ]));
         expect(cellM1.numOpts()).toEqual(RichSet.of(2, 3, 4, 7, 8, 9));
         expect(cellM2.numOpts()).toEqual(RichSet.of(2, 3, 4, 7, 8, 9));
         expect(Array.from(cageM.combos)).toEqual([

@@ -100,7 +100,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     }
 
     unfilledInnerCellMs(model: MasterModel) {
-        const result = new Set();
+        const result = new RichSet();
         for (const { row, col } of this._nonetM.cellsIterator()) {
             if (!this._cellKeys.has(Cell.at(row, col).key)) {
                 result.add(model.cellModelAt(row, col));
@@ -173,13 +173,13 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
 }
 
 function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
-    if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
+    if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new RichSet();
 
     const reduced = new RichSet<CellModel>();
 
     const checkingNumOpts = new Map();
     formula.equalToCellMs.forEach(cellM => {
-        checkingNumOpts.set(cellM, new Set());
+        checkingNumOpts.set(cellM, new RichSet());
     });
 
     // also check for duplicate nums possibility?

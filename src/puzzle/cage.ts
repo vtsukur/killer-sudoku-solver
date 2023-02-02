@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { joinArray } from '../util/readableMessages';
+import { RichSet } from '../util/richSet';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
@@ -87,7 +88,7 @@ export class Cage {
     static Builder = class {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
-        private readonly _cellKeys: CellKeysSet = new Set();
+        private readonly _cellKeys: CellKeysSet = new RichSet();
 
         /**
          * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s.
