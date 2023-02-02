@@ -22,14 +22,14 @@ describe('MutableSet tests', () => {
         expect(set.first).toBe(3);
     });
 
-    test('Construction from elements specified as `rest` parameters', () => {
+    test('Construction of MutableSet from elements specified as `rest` parameters', () => {
         const set = MutableSet.of(3, 2, 1);
 
         expectSetWithValues(set, [ 3, 2, 1 ]);
         expect(set.first).toBe(3);
     });
 
-    test('Construction from `Iterable`', () => {
+    test('Construction of MutableSet from `Iterable`', () => {
         const set = new MutableSet([ 3, 2, 1 ]);
 
         expectSetWithValues(set, [ 3, 2, 1 ]);
