@@ -29,11 +29,16 @@ describe('MutableSet tests', () => {
         expect(set.first).toBe(3);
     });
 
-    test('Construction of MutableSet from elements specified as `rest` parameters', () => {
+    test('Construction of MutableSet using `of` static factory method', () => {
         const set = MutableSet.of(3, 2, 1);
 
         expectSetWithValues(set, [ 3, 2, 1 ]);
         expect(set.first).toBe(3);
+    });
+
+    test('Construction of empty MutableSet', () => {
+        expectSetWithValues(new MutableSet([]), []);
+        expectSetWithValues(MutableSet.of(), []);
     });
 
     test('Clearing', () => {
