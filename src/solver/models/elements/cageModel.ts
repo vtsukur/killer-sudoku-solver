@@ -462,7 +462,7 @@ export class CageModel {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
                 for (const combo of this._combosMap.values()) {
-                    if (new Set(combo.nums).has(num)) {
+                    if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
                 }
@@ -470,7 +470,7 @@ export class CageModel {
             }
             if (positioningFlags.isWithinHouse || cells.length === 1) {
                 clue.presentInAllCombos = Array.from(this._combosMap.values()).every(combo => {
-                    return new Set(combo.nums).has(num);
+                    return combo.has(num);
                 });
                 clues.push(clue);
             }
@@ -489,7 +489,7 @@ export class CageModel {
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = new NumSet(...value.nums);
+            const numSet = NumSet.from(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
                 newNumOptions.mergeWith(numSet);

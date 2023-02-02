@@ -34,4 +34,8 @@ export class NumSet implements Iterable<number> {
     get nums(): ReadonlySet<number> {
         return this._set;
     }
+
+    static from(val: Iterable<number>) {
+        return new NumSet(...val);
+    }
 }
