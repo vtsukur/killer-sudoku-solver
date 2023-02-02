@@ -16,7 +16,11 @@ export class MutableSet<T> extends Set<T> {
     }
 
     get first(): T {
-        return this.values().next().value;
+        if (this.size === 0) {
+            throw new Error('Can\'t get first element: MutableSet has no values');
+        } else {
+            return this.values().next().value;
+        }
     }
 
     static of<T>(...val: ReadonlyArray<T>) {
