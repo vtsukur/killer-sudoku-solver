@@ -1,7 +1,7 @@
 import { MutableSet } from '../../../src/util/mutableSet';
 
 describe('MutableSet tests', () => {
-    test('Adding/removing individual elements and collections to/from the set', () => {
+    test('Addition/removal of individual elements and collections', () => {
         const set = new MutableSet<number>();
 
         expectSetWithValues(set, []);
@@ -22,21 +22,21 @@ describe('MutableSet tests', () => {
         expect(set.first).toBe(3);
     });
 
-    test('Constructing set from Iterable', () => {
+    test('Construction from elements specified as `rest` parameters', () => {
         const set = MutableSet.of(3, 2, 1);
 
         expectSetWithValues(set, [ 3, 2, 1 ]);
         expect(set.first).toBe(3);
     });
 
-    test('Constructing set from `rest` elements', () => {
+    test('Construction from `Iterable`', () => {
         const set = new MutableSet([ 3, 2, 1 ]);
 
         expectSetWithValues(set, [ 3, 2, 1 ]);
         expect(set.first).toBe(3);
     });
 
-    test('Clearing set', () => {
+    test('Clearing', () => {
         const set = MutableSet.of(3, 2, 1);
 
         set.clear();
