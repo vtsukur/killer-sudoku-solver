@@ -200,16 +200,15 @@ function reduceByFormula(formula: Formula): Set<CellModel> {
             const combos = combosForSum(targetSum, 2);
             let hasAtLeastOneCombo = false;
             for (const combo of combos) {
-                const comboArr = combo.nums;
-                const hasDirect = otherCellM1.hasNumOpt(comboArr[0]) && otherCellM2.hasNumOpt(comboArr[1]);
-                const hasInverse = otherCellM1.hasNumOpt(comboArr[1]) && otherCellM2.hasNumOpt(comboArr[0]);
+                const hasDirect = otherCellM1.hasNumOpt(combo.first) && otherCellM2.hasNumOpt(combo.second);
+                const hasInverse = otherCellM1.hasNumOpt(combo.second) && otherCellM2.hasNumOpt(combo.first);
                 if (hasDirect) {
-                    checkingNumOpts.get(otherCellM1).add(comboArr[0]);
-                    checkingNumOpts.get(otherCellM2).add(comboArr[1]);
+                    checkingNumOpts.get(otherCellM1).add(combo.first);
+                    checkingNumOpts.get(otherCellM2).add(combo.second);
                 }
                 if (hasInverse) {
-                    checkingNumOpts.get(otherCellM1).add(comboArr[1]);
-                    checkingNumOpts.get(otherCellM2).add(comboArr[0]);
+                    checkingNumOpts.get(otherCellM1).add(combo.second);
+                    checkingNumOpts.get(otherCellM2).add(combo.first);
                 }
                 hasAtLeastOneCombo ||= hasDirect || hasInverse;
             }

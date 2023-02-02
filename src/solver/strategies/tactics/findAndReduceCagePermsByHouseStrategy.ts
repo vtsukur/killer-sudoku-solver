@@ -177,7 +177,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
 
         const cellM = model.cellModelAt(row, col);
         let shouldReduce = false;
-        for (const num of combo.nums) {
+        for (const num of combo) {
             if (cellM.hasNumOpt(num)) {
                 cellM.deleteNumOpt(num);
                 shouldReduce = true;
@@ -194,9 +194,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
     if (positioningFlags.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Array<number>>();
         for (const combo of combos) {
-            const comboSet = new Set<number>(combo.nums);
-            comboSet.delete(num);
-            reducedSingleCellForNumCombos.push(Array.from(comboSet));
+            reducedSingleCellForNumCombos.push(Array.from(combo.reduce(num)));
         }
         let reduce = false;
         if (positioningFlags.isWithinRow) {
@@ -247,11 +245,9 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
 
             let noConflictWithAllCombos = false;
             for (const cageCombo of cageM.combos) { // [1,5], [2,4]
-                const cageComboSet = new Set(cageCombo.nums);
-
                 let conflictWithCombo = false;
                 for (const num of leftOverCageCombo) {
-                    if (cageComboSet.has(num)) {
+                    if (cageCombo.has(num)) {
                         conflictWithCombo = true;
                         break;
                     }
