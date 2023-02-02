@@ -278,6 +278,25 @@
             }
         },
         {
+            "name": "npm run test [solver/math/combo]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/math/combo.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/math/combosForSum]",
             "request": "launch",
             "runtimeArgs": [

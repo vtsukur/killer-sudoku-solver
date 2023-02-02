@@ -9,8 +9,30 @@ export class Combo implements Iterable<number> {
     private readonly _nums: ReadonlyArray<number>;
     private readonly _numSet: ReadonlySet<number>;
 
+    constructor(nums: ReadonlyArray<number>) {
+        this._nums = [...nums];
+        this._numSet = new MutableSet(nums);
+        this.key = joinArray(nums);
+    }
+
     static of(...nums: ReadonlyArray<number>) {
         return new Combo(nums);
+    }
+
+    get number0() {
+        return this.nthNumber(0);
+    }
+
+    get number1() {
+        return this.nthNumber(1);
+    }
+
+    nthNumber(index: number) {
+        if (index < 0 || index > this._nums.length - 1) {
+            throw new RangeError(`Number with index ${index} cannot be accessed. Combo has ${this._nums.length} elements`);
+        } else {
+            return this._nums[index];
+        }
     }
 
     [Symbol.iterator](): Iterator<number> {
@@ -37,26 +59,8 @@ export class Combo implements Iterable<number> {
             cpy.splice(numIndex, 1);
             return new Combo(cpy);
         } else {
-            return new Combo(this._nums);
+            return this;
         }
-    }
-
-    get number0() {
-        return this.nthNumber(0);
-    }
-
-    get number1() {
-        return this.nthNumber(1);
-    }
-
-    nthNumber(index: number) {
-        return this._nums[index];
-    }
-
-    constructor(nums: ReadonlyArray<number>) {
-        this._nums = [...nums];
-        this._numSet = new MutableSet(nums);
-        this.key = joinArray(nums);
     }
 }
 
