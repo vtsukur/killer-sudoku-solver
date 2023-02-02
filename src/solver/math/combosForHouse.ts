@@ -145,7 +145,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
 
                     checkingSet.add(comboForSum);
                     combosRecursive(step + 1);
-                    checkingSet.delete(...comboForSum);
+                    checkingSet.delete(comboForSum);
                 }
             }
         }

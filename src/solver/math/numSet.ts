@@ -21,18 +21,30 @@ export class NumSet implements Iterable<number> {
 
     add(val: number | Iterable<number>) {
         if (typeof val === 'number') {
-            this._set.add(val);
+            this.doAdd(val);
         } else {
             for (const num of val) {
-                this._set.add(num);
+                this.doAdd(num);
             }
         }
     }
 
-    delete(...val: ReadonlyArray<number>) {
-        for (const num of val) {
-            this._set.delete(num);
+    private doAdd(val: number) {
+        this._set.add(val);
+    }
+
+    delete(val: number | Iterable<number>) {
+        if (typeof val === 'number') {
+            this.doDelete(val);
+        } else {
+            for (const num of val) {
+                this.doDelete(num);
+            }
         }
+    }
+
+    private doDelete(val: number) {
+        this._set.delete(val);
     }
 
     get nums(): ReadonlySet<number> {
