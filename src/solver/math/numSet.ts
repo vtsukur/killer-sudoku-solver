@@ -4,11 +4,7 @@ export class NumSet implements Iterable<number> {
     private readonly _set: Set<number>;
 
     constructor(val?: OneOrManyNumbers) {
-        if (typeof val === 'undefined') {
-            this._set = new Set();
-        } else {
-            this._set = new Set(typeof val === 'number' ? [ val ] : val);
-        }
+        this._set = new Set(typeof val === 'number' ? [ val ] : val);
     }
 
     [Symbol.iterator](): Iterator<number> {
