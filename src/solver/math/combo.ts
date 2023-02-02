@@ -29,6 +29,17 @@ export class Combo implements Iterable<number> {
         return false;
     }
 
+    reduce(num: number): Combo {
+        const numIndex = this.nums.indexOf(num);
+        if (numIndex !== -1) {
+            const cpy = [...this.nums];
+            cpy.splice(numIndex, 1);
+            return Combo.of(...cpy);
+        } else {
+            return Combo.of(...this.nums);
+        }
+    }
+
     private constructor(nums: ReadonlyArray<number>) {
         this.nums = nums;
         this._numSet = new Set(nums);

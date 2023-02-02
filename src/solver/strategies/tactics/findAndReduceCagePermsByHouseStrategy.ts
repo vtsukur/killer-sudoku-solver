@@ -126,15 +126,15 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
             const firstSingleCell = firstSingleCellSlice[0];
             const firstSingleCellM = this._model.cellModelOf(firstSingleCell);
-            const firstSingleCellMCombo = new Set<number>(cageM.combos[0].nums);
+            const firstSingleCellMCombo = cageM.combos[0];
 
             for (const num of firstSingleCellM.numOpts()) {
                 const shortComboSet = new Set<number>(firstSingleCellMCombo);
                 shortComboSet.delete(num);
-                const shortCombo = Array.from(shortComboSet);
+                const shortCombo = firstSingleCellMCombo.reduce(num);
 
                 const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).withCell(firstSingleCell).new());
-                checkAssumptionCage(cageLeft, [ Combo.of(...shortCombo) ], firstSingleCell, num, this._model, reducedCellMs);
+                checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this._model, reducedCellMs);
             }
         }
 
