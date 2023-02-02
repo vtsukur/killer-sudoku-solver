@@ -221,11 +221,9 @@ export class CageModel {
             for (const num0 of cellM0.numOpts()) {
                 let numStands = false;
                 for (const combo of this.combosForNumArr(num0)) {
-                    const num0Index = combo.nums.findIndex((n: number) => n === num0);
-                    const remainingNums = [...combo.nums];
-                    remainingNums.splice(num0Index, 1);
-                    const num1 = remainingNums[0];
-                    const num2 = remainingNums[1];
+                    const reducedCombo = combo.reduce(num0);
+                    const num1 = reducedCombo.nums[0];
+                    const num2 = reducedCombo.nums[1];
 
                     const hasFirstPerm = cellM1.hasNumOpt(num1) && cellM2.hasNumOpt(num2);
                     const hasSecondPerm = cellM1.hasNumOpt(num2) && cellM2.hasNumOpt(num1);
