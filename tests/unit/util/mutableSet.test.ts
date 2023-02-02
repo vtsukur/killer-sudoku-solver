@@ -5,7 +5,7 @@ describe('MutableSet tests', () => {
         const set = new MutableSet<number>();
 
         expectSetWithValues(set, []);
-        expect(() => set.first).toThrow(new Error('Can\'t get first element: MutableSet has no values'));
+        expect(() => set.first).toThrow(new RangeError('Can\'t get first element. MutableSet has no values'));
 
         set.add(1);
         set.add(2);
@@ -41,7 +41,7 @@ describe('MutableSet tests', () => {
 
         set.clear();
         expectSetWithValues(set, []);
-        expect(() => set.first).toThrow(new Error('Can\'t get first element: MutableSet has no values'));
+        expect(() => set.first).toThrow(new RangeError('Can\'t get first element. MutableSet has no values'));
     });
 
     const expectSetWithValues = <T>(set: MutableSet<T>, values: ReadonlyArray<T>) => {

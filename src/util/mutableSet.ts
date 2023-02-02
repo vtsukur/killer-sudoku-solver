@@ -66,11 +66,11 @@ export class MutableSet<T> extends Set<T> {
      *
      * @returns first element in the set according to insertion order.
      *
-     * @throws {Error} if set has no values.
+     * @throws {RangeError} if set has no values.
      */
     get first(): T {
         if (this.size === 0) {
-            throw new Error('Can\'t get first element: MutableSet has no values');
+            throw new RangeError('Can\'t get first element. MutableSet has no values');
         } else {
             return this.values().next().value;
         }
