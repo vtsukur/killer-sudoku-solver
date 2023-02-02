@@ -35,6 +35,14 @@ export class NumSet implements Iterable<number> {
         return this._set;
     }
 
+    get firstNum(): number {
+        return this._set.values().next().value;
+    }
+
+    get size(): number {
+        return this._set.size;
+    }
+
     static from(val: Iterable<number>) {
         return new NumSet(...val);
     }

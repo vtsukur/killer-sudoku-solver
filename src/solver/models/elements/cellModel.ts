@@ -16,7 +16,7 @@ export class CellModel {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new Set(_.range(House.CELL_COUNT).map(i => i + 1));
+        this._numOpts = new NumSet(..._.range(House.CELL_COUNT).map(i => i + 1));
         this._withinCageMs = new Set();
     }
 
@@ -24,7 +24,7 @@ export class CellModel {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new Set(this._numOpts);
+        copy._numOpts = new NumSet(...this._numOpts);
         return copy;
     }
 
@@ -40,7 +40,7 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): ReadonlySet<number> {
+    numOpts(): NumSet {
         return this._numOpts;
     }
 
@@ -74,7 +74,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOpts = new Set([val]);
+        this._numOpts = new NumSet(val);
         this._solved = true;
     }
 }

@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cage, Cages } from '../../../../src/puzzle/cage';
 import { Cell, Cells } from '../../../../src/puzzle/cell';
 import { House } from '../../../../src/puzzle/house';
+import { NumSet } from '../../../../src/solver/math';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { Context } from '../../../../src/solver/strategies/context';
@@ -22,7 +23,7 @@ describe('Tests for master model', () => {
         const aCellModel = model.cellModelAt(2, 3);
         expect(aCellModel.cell).toEqual(Cell.at(2, 3));
         expect(aCellModel.placedNum).toBe(undefined);
-        expect(aCellModel.numOpts()).toEqual(new Set([ 2, 3, 4, 5, 6, 7, 8, 9 ]));
+        expect(aCellModel.numOpts()).toEqual(new NumSet(2, 3, 4, 5, 6, 7, 8, 9));
     });
 
     test('Initialization of RowModels', () => {

@@ -20,7 +20,7 @@ type Context = {
     canHaveDuplicateNums: boolean;
     processedCellMs: Set<CellModel>;
     remainingCellMs: Set<CellModel>,
-    processedNums: Set<number>,
+    processedNums: NumSet,
     numbersStack: Array<number>,
     cellMsStack: Array<CellModel>,
     processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
@@ -269,7 +269,7 @@ export class CageModel {
             canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
-            processedNums: new Set(),
+            processedNums: new NumSet(),
             numbersStack: new Array(this._cellCount),
             cellMsStack: new Array(this._cellCount),
             processCell: function(cellM: CellModel, step: number, fn: () => boolean | void) {
@@ -350,12 +350,12 @@ export class CageModel {
     }
 
     private reduceLargeCage() {
-        let presentNums = new Set();
+        const presentNums = new NumSet();
         this.cellMs.forEach(cellM => {
-            presentNums = new Set([...presentNums, ...cellM.numOpts()]);
+            presentNums.mergeWith(cellM.numOpts());
         });
 
-        const commonComboNums = new Set();
+        const commonComboNums = new NumSet();
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
             for (const combo of this._combosMap.values()) {

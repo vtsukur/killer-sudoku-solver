@@ -11,7 +11,7 @@ export class PlaceNumsForSingleOptionCellsStrategy extends Strategy {
             _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
                 const cellM = this._model.cellModelAt(row, col);
                 if (cellM.numOpts().size === 1 && !cellM.solved) {
-                    this._model.placeNum(cellM.cell, cellM.numOpts().values().next().value);
+                    this._model.placeNum(cellM.cell, cellM.numOpts().firstNum);
                     solved.push(cellM);
                 }
             });
