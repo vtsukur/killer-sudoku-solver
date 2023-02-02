@@ -378,7 +378,7 @@ export class CageModel {
         let noLongerValidComboNums = new Set<number>();
         for (const combo of this._combosMap.values()) {
             let validCombo = true;
-            for (const num of combo.nums) {
+            for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
 
                 if (!presentNums.has(num)) {
@@ -389,7 +389,7 @@ export class CageModel {
 
             if (validCombo) {
                 validCombos.push(combo);
-                validComboNums.add(...combo.nums);
+                validComboNums.mergeWith(combo);
             } else {
                 noLongerValidCombos.push(combo);
                 noLongerValidComboNums = new Set([...noLongerValidComboNums, ...combo.nums]);

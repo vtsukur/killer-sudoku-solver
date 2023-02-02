@@ -13,8 +13,8 @@ export class NumSet implements Iterable<number> {
         return this._set.has(val);
     }
 
-    mergeWith(val: NumSet) {
-        for (const num of val.nums) {
+    mergeWith(val: Iterable<number>) {
+        for (const num of val) {
             this._set.add(num);
         }
     }
