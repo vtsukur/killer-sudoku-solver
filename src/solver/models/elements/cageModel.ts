@@ -136,7 +136,7 @@ export class CageModel {
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
         const numOpts = new MutableSet<number>();
-        [...combos].forEach(combo => {
+        combos.forEach(combo => {
             numOpts.addCollection(combo);
         });
 

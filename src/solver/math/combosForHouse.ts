@@ -26,7 +26,7 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
         return { nonOverlappingCages: [], overlappingCages: [] };
     }
 
-    let nonOverlappingCages = new Array<Cage>();
+    const nonOverlappingCages = new Array<Cage>();
     const overlappingCages = new Array<Cage>();
 
     const cellsToCagesMap = new Map<CellKey, MutableSet<Cage>>();
@@ -41,7 +41,7 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
 
     const allCagesAreNonOverlapping = Array.from(cellsToCagesMap.values()).every(cageSet => cageSet.size === 1);
     if (allCagesAreNonOverlapping) {
-        nonOverlappingCages = [...cages];
+        nonOverlappingCages.push(...cages);
     } else {
         const maxNonOverlappingCagesAreaModelSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
         cages.forEach(cage => {
