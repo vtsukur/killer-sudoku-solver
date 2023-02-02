@@ -56,7 +56,7 @@ export class CellModel {
     }
 
     reduceNumOptions(val: RichSet<number>) {
-        const removedNumOptions = new Set<number>();
+        const removedNumOptions = new RichSet<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {
                 removedNumOptions.add(existingNumOption);
