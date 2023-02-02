@@ -40,6 +40,14 @@ export class Combo implements Iterable<number> {
         }
     }
 
+    get first() {
+        return this.nums[0];
+    }
+
+    get second() {
+        return this.nums[1];
+    }
+
     private constructor(nums: ReadonlyArray<number>) {
         this.nums = nums;
         this._numSet = new Set(nums);
