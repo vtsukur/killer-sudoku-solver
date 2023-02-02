@@ -34,9 +34,9 @@ export class Combo implements Iterable<number> {
         if (numIndex !== -1) {
             const cpy = [...this._nums];
             cpy.splice(numIndex, 1);
-            return Combo.of(...cpy);
+            return new Combo(cpy);
         } else {
-            return Combo.of(...this._nums);
+            return new Combo(this._nums);
         }
     }
 
@@ -52,8 +52,8 @@ export class Combo implements Iterable<number> {
         return this._nums[index];
     }
 
-    private constructor(nums: ReadonlyArray<number>) {
-        this._nums = nums;
+    constructor(nums: ReadonlyArray<number>) {
+        this._nums = [...nums];
         this._numSet = new Set(nums);
         this.key = joinArray(nums);
     }

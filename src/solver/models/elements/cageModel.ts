@@ -331,7 +331,7 @@ export class CageModel {
                 const sortedNums = [...context.numbersStack];
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
-                const combo = Combo.of(...sortedNums);
+                const combo = new Combo(sortedNums);
                 this._combosMap.set(combo.key, combo);
             }
         } else {

@@ -49,7 +49,7 @@ const storePrecomputed = (source: string, numCount: number) => {
             for (const char of combosStr.trim()) {
                 comboNumbers.push(parseInt(char));
             }
-            combos.push(Combo.of(...comboNumbers));
+            combos.push(new Combo(comboNumbers));
         }
         PRECOMPUTED.set(precomputeKey(sum, numCount), combos);
     }
@@ -245,7 +245,7 @@ export function computeComboForSum(sum: number, numCount: number): ReadonlyCombo
     function combosRecursive(level: number, startWith: number) {
         if (level > numCount) {
             if (currentSum === sum) {
-                combos.push(Combo.of(...numbers));
+                combos.push(new Combo(numbers));
             }
         } else {
             for (let i = startWith; i <= House.CELL_COUNT; ++i) {
