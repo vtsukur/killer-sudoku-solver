@@ -174,7 +174,7 @@ export class CageModel {
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
             for (const oneNum of oneCellM.numOpts()) {
-                for (const combo of this.combosForNumArr(oneNum)) {
+                for (const combo of this.combosWithNum(oneNum)) {
                     const anotherNum = combo.first === oneNum ? combo.second : combo.first;
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
@@ -190,7 +190,7 @@ export class CageModel {
                     !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.second) &&
                     !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.first) &&
                     !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.second)) {
-                this.deleteComboArr(comboToPotentiallyRemove);
+                this.deleteCombo(comboToPotentiallyRemove);
             }
         }
 
@@ -220,7 +220,7 @@ export class CageModel {
 
             for (const num0 of cellM0.numOpts()) {
                 let numStands = false;
-                for (const combo of this.combosForNumArr(num0)) {
+                for (const combo of this.combosWithNum(num0)) {
                     const reducedCombo = combo.reduce(num0);
                     const num1 = reducedCombo.first;
                     const num2 = reducedCombo.second;
@@ -249,24 +249,18 @@ export class CageModel {
                 comboStands = comboStands || someCellHasIt;
             }
             if (!comboStands) {
-                this.deleteComboArr(combo);
+                this.deleteCombo(combo);
             }
         }
 
         return modifiedCellMs;
     }
 
-    private combosForNumArr(num: number) {
-        const combosArr = [];
-        for (const combo of this._combosMap.values()) {
-            if (combo.has(num)) {
-                combosArr.push(combo);
-            }
-        }
-        return combosArr;
+    private combosWithNum(num: number) {
+        return Array.from(this._combosMap.values()).filter(combo => combo.has(num));
     }
 
-    private deleteComboArr(combo: Combo) {
+    private deleteCombo(combo: Combo) {
         this._combosMap.delete(combo.key);
     }
 
@@ -365,8 +359,7 @@ export class CageModel {
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
             for (const combo of this._combosMap.values()) {
-                const comboSet = new Set(combo.nums); // avoid creating set and use cache instead
-                hasNumInAllCombos = hasNumInAllCombos && comboSet.has(num);
+                hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
             }
             if (hasNumInAllCombos) {
                 commonComboNums.add(num);
@@ -380,7 +373,7 @@ export class CageModel {
         }
 
         const validCombos = [];
-        let validComboNums = new Set();
+        const validComboNums = new NumSet();
         const noLongerValidCombos = [];
         let noLongerValidComboNums = new Set<number>();
         for (const combo of this._combosMap.values()) {
@@ -396,7 +389,7 @@ export class CageModel {
 
             if (validCombo) {
                 validCombos.push(combo);
-                validComboNums = new Set([...validComboNums, ...combo.nums]);
+                validComboNums.add(...combo.nums);
             } else {
                 noLongerValidCombos.push(combo);
                 noLongerValidComboNums = new Set([...noLongerValidComboNums, ...combo.nums]);
@@ -405,7 +398,7 @@ export class CageModel {
 
         const modifiedCellMs = new Set<CellModel>();
         if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new Set<number>();
+            const numOptsToDelete = new NumSet();
             for (const num of noLongerValidComboNums) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
