@@ -143,7 +143,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
                 if (!comboForSum.hasAnyFrom(checkingSet)) {
                     stack[step] = comboForSum;
 
-                    checkingSet.add(...comboForSum);
+                    checkingSet.add(comboForSum);
                     combosRecursive(step + 1);
                     checkingSet.delete(...comboForSum);
                 }

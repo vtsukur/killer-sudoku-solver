@@ -19,9 +19,13 @@ export class NumSet implements Iterable<number> {
         }
     }
 
-    add(...val: ReadonlyArray<number>) {
-        for (const num of val) {
-            this._set.add(num);
+    add(val: number | Iterable<number>) {
+        if (typeof val === 'number') {
+            this._set.add(val);
+        } else {
+            for (const num of val) {
+                this._set.add(num);
+            }
         }
     }
 
