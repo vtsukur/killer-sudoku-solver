@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Grid } from '../../../puzzle/grid';
 import { HouseIndex } from '../../../puzzle/house';
+import { RichSet } from '../../../util/richSet';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -57,7 +58,7 @@ function addCellsFromHouse(cellMs: Set<CellModel>, houseM: HouseModel, model: Ma
 }
 
 function collectCageMsToCheck(cellMs: Set<CellModel>) {
-    const cageMs = new Set<CageModel>();
+    const cageMs = new RichSet<CageModel>();
     for (const cellM of cellMs) {
         if (cellM.solved) continue;
 

@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { RichSet } from '../../util/richSet';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
@@ -9,7 +10,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    private _cageModelsToReduce: ReadonlySet<CageModel> = new Set<CageModel>();
+    private _cageModelsToReduce = new RichSet<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -38,15 +39,15 @@ export class Context {
     }
 
     setCageModelsToReduceToAll() {
-        this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
+        this._cageModelsToReduce = new RichSet(this.model.cageModelsMap.values());
     }
 
     setCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToReduce = reducedCellMs.impactedCageModels;
+        this._cageModelsToReduce = new RichSet(reducedCellMs.impactedCageModels);
     }
 
     addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToReduce = new Set([...this._cageModelsToReduce, ...reducedCellMs.impactedCageModels]);
+        this._cageModelsToReduce.addCollection(reducedCellMs.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {

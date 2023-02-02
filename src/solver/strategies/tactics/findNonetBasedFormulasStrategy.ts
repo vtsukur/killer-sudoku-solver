@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Cell, CellKeysSet } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
+import { RichSet } from '../../../util/richSet';
 import { combosForSum } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
@@ -19,7 +20,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             const nonetM = this._model.nonetModels[index];
             const area = findAreaWithSingleInnieOrOutieCell(nonetM, this._model);
             if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
-                const outerCageMs = new Set<CageModel>(area.outerCageMs);
+                const outerCageMs = new RichSet<CageModel>(area.outerCageMs);
                 for (const outerCageM of outerCageMs) {
                     area.removeCageM(outerCageM);
                     const unfilledInnerCellMs = area.unfilledInnerCellMs(this._model);
@@ -60,7 +61,7 @@ class ExpandableNonOverlappingNonetAreaModel {
         this._cellKeys = new Set();
         this._innerCellMs = new Set<CellModel>();
         this._outerCellMs = new Set<CellModel>();
-        this._outerCageMs = new Set<CageModel>();
+        this._outerCageMs = new RichSet<CageModel>();
     }
 
     addCageM(cageM: CageModel) {

@@ -1,9 +1,10 @@
+import { RichSet } from '../../util/richSet';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
     private _cellMs: Set<CellModel> = new Set();
-    private _impactedCageMs: Set<CageModel> = new Set();
+    private _impactedCageMs = new RichSet<CageModel>();
 
     add(val: Set<CellModel>) {
         for (const cellM of val) {
@@ -14,12 +15,8 @@ export class ReducedCellModels {
 
     addOne(val: CellModel) {
         this._cellMs.add(val);
-        this._impactedCageMs = ReducedCellModels.combine(this._impactedCageMs, val.withinCageModels);
+        this._impactedCageMs.addCollection(val.withinCageModels);
         return this;
-    }
-
-    private static combine<T>(set: ReadonlySet<T>, andSet: ReadonlySet<T>) {
-        return new Set([...set, ...andSet]);
     }
 
     get isNotEmpty(): boolean {

@@ -8,7 +8,7 @@ import { CageModel } from './cageModel';
 export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
-    private readonly _withinCageMs: Set<CageModel>;
+    private readonly _withinCageMs: RichSet<CageModel>;
     private _numOpts: RichSet<number>;
     private _solved: boolean;
 
@@ -17,7 +17,7 @@ export class CellModel {
         this._solved = false;
 
         this._numOpts = new RichSet(_.range(House.CELL_COUNT).map(i => i + 1));
-        this._withinCageMs = new Set();
+        this._withinCageMs = new RichSet();
     }
 
     deepCopyWithoutCageModels() {
