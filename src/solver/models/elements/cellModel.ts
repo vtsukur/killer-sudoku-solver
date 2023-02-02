@@ -16,7 +16,7 @@ export class CellModel {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new NumSet(..._.range(House.CELL_COUNT).map(i => i + 1));
+        this._numOpts = new NumSet(_.range(House.CELL_COUNT).map(i => i + 1));
         this._withinCageMs = new Set();
     }
 
@@ -24,7 +24,7 @@ export class CellModel {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new NumSet(...this._numOpts);
+        copy._numOpts = new NumSet(this._numOpts);
         return copy;
     }
 

@@ -489,7 +489,7 @@ export class CageModel {
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const value = comboEntry[1];
-            const numSet = NumSet.from(value);
+            const numSet = new NumSet(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
                 newNumOptions.add(numSet);

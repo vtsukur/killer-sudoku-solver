@@ -1,8 +1,12 @@
 export class NumSet implements Iterable<number> {
     private readonly _set: Set<number>;
 
-    constructor(...val: ReadonlyArray<number>) {
-        this._set = new Set(val);
+    constructor(val?: number | Iterable<number>) {
+        if (typeof val === 'undefined') {
+            this._set = new Set();
+        } else {
+            this._set = new Set(typeof val === 'number' ? [ val ] : val);
+        }
     }
 
     [Symbol.iterator](): Iterator<number> {
@@ -53,7 +57,7 @@ export class NumSet implements Iterable<number> {
         return this._set.size;
     }
 
-    static from(val: Iterable<number>) {
-        return new NumSet(...val);
+    static of(...val: ReadonlyArray<number>) {
+        return new NumSet(val);
     }
 }
