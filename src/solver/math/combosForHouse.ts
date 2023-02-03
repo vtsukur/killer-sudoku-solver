@@ -143,9 +143,9 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
                 if (!comboForSum.hasSome(checkingSet)) {
                     stack[step] = comboForSum;
 
-                    Sets.unite(checkingSet, comboForSum);
+                    Sets.U(checkingSet, comboForSum);
                     combosRecursive(step + 1);
-                    Sets.differentiate(checkingSet, comboForSum);
+                    Sets._(checkingSet, comboForSum);
                 }
             }
         }

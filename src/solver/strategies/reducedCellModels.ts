@@ -15,7 +15,7 @@ export class ReducedCellModels {
 
     addOne(val: CellModel) {
         this._cellMs.add(val);
-        Sets.unite(this._impactedCageMs, val.withinCageModels);
+        Sets.U(this._impactedCageMs, val.withinCageModels);
         return this;
     }
 

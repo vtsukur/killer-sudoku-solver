@@ -47,7 +47,7 @@ export class Context {
     }
 
     addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        Sets.unite(this._cageModelsToReduce, reducedCellMs.impactedCageModels);
+        Sets.U(this._cageModelsToReduce, reducedCellMs.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {

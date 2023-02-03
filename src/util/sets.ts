@@ -2,7 +2,7 @@
  * Utility methods that aid {@link Set} manipulation with the following useful capabilities:
  *
  * - constructing new `Set`s out of rest parameters using {@link new} static factory method;
- * - adding and removing {@link Iterable} of values using {@link unite} and {@link differentiate} respectively;
+ * - adding and removing {@link Iterable} of values using {@link U} and {@link _} respectively;
  * - getting first value in the `Set` using {@link firstValue}.
  *
  * @see {@link Set}
@@ -41,12 +41,14 @@ export class Sets {
      * Adds all values from the given `uniteWith` {@link Iterable} to the `target` {@link Set}
      * if they are not yet present in the `Set`.
      *
+     * Essentially, this operation implements 'union' `∪` operation for two `Set`s.
+     *
      * This method modifies `target` `Set`.
      *
      * @param target - `Set` to which values are to be added.
      * @param uniteWith - `Iterable` of values to be added to the `target` Set.
      */
-    static unite<T>(target: Set<T>, uniteWith: Iterable<T>) {
+    static U<T>(target: Set<T>, uniteWith: Iterable<T>) {
         for (const oneOf of uniteWith) {
             target.add(oneOf);
         }
@@ -56,12 +58,14 @@ export class Sets {
      * Deletes all values from the given `differentiateWith` {@link Iterable} from the `target` {@link Set}
      * if they are present in the `Set`.
      *
+     * Essentially, this operation implements 'union' `∪` operation for two `Set`s.
+     *
      * This method modifies `target` `Set`.
      *
      * @param target - `Set` from which values are to deleted.
      * @param uniteWith - `Iterable` of values to be deleted from the `target` Set.
      */
-    static differentiate<T>(target: Set<T>, differentiateWith: Iterable<T>) {
+    static _<T>(target: Set<T>, differentiateWith: Iterable<T>) {
         for (const oneOf of differentiateWith) {
             target.delete(oneOf);
         }

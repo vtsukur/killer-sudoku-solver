@@ -49,7 +49,7 @@ export class CageSlicer {
     private getCageMsFullyContainingResidualCage(residualCage: Cage) {
         const allAssociatedCageMsSet = new Set<CageModel>();
         residualCage.cells.forEach(cell => {
-            Sets.unite(allAssociatedCageMsSet, this.model.cellModelOf(cell).withinCageModels);
+            Sets.U(allAssociatedCageMsSet, this.model.cellModelOf(cell).withinCageModels);
         });
         allAssociatedCageMsSet.delete(this.model.cageModelsMap.get(residualCage.key) as CageModel);
 

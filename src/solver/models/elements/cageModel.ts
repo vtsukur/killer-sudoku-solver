@@ -112,7 +112,7 @@ export class CageModel {
         const combos = combosForSum(this.cage.sum, this.cage.cellCount);
         const nums = new Set<number>();
         combos.forEach(combo => {
-            Sets.unite(nums, combo);
+            Sets.U(nums, combo);
             this._combosMap.set(combo.key, combo);
         });
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
@@ -137,7 +137,7 @@ export class CageModel {
     updateCombinations(combos: ReadonlyArray<Combo>) {
         const numOpts = new Set<number>();
         combos.forEach(combo => {
-            Sets.unite(numOpts, combo);
+            Sets.U(numOpts, combo);
         });
 
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
@@ -353,7 +353,7 @@ export class CageModel {
     private reduceLargeCage() {
         const presentNums = new Set<number>();
         this.cellMs.forEach(cellM => {
-            Sets.unite(presentNums, cellM.numOpts());
+            Sets.U(presentNums, cellM.numOpts());
         });
 
         const commonComboNums = new Set<number>();
@@ -390,10 +390,10 @@ export class CageModel {
 
             if (validCombo) {
                 validCombos.push(combo);
-                Sets.unite(validComboNums, combo);
+                Sets.U(validComboNums, combo);
             } else {
                 noLongerValidCombos.push(combo);
-                Sets.unite(noLongerValidComboNums, combo);
+                Sets.U(noLongerValidComboNums, combo);
             }
         }
 
@@ -493,7 +493,7 @@ export class CageModel {
             const numSet = new Set(value);
             if (numSet.has(withNum)) {
                 newCombosMap.set(key, value);
-                Sets.unite(newNumOptions, numSet);
+                Sets.U(newNumOptions, numSet);
             } else {
                 removedCombos.push(value);
             }
