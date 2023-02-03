@@ -1,30 +1,30 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { MutableSet } from '../../../util/mutableSet';
+import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from './cageModel';
 
 export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
-    private readonly _withinCageMs: MutableSet<CageModel>;
-    private _numOpts: MutableSet<number>;
+    private readonly _withinCageMs: Set<CageModel>;
+    private _numOpts: Set<number>;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new MutableSet(_.range(House.CELL_COUNT).map(i => i + 1));
-        this._withinCageMs = new MutableSet();
+        this._numOpts = new Set(_.range(House.CELL_COUNT).map(i => i + 1));
+        this._withinCageMs = new Set();
     }
 
     deepCopyWithoutCageModels() {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new MutableSet(this._numOpts);
+        copy._numOpts = new Set(this._numOpts);
         return copy;
     }
 
@@ -40,7 +40,7 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): MutableSet<number> {
+    numOpts(): Set<number> {
         return this._numOpts;
     }
 
@@ -55,8 +55,8 @@ export class CellModel {
         return this._numOpts.delete(val);
     }
 
-    reduceNumOptions(val: MutableSet<number>) {
-        const removedNumOptions = new MutableSet<number>();
+    reduceNumOptions(val: Set<number>) {
+        const removedNumOptions = new Set<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {
                 removedNumOptions.add(existingNumOption);
@@ -74,7 +74,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOpts = MutableSet.of(val);
+        this._numOpts = Sets.new(val);
         this._solved = true;
     }
 }

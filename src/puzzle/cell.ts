@@ -1,4 +1,3 @@
-import { MutableSet } from '../util/mutableSet';
 import { Column } from './column';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
@@ -18,7 +17,7 @@ export type CellKey = string;
 /**
  * Mutable `Set` of human-readable `Cell` keys: {@link Cell#key}.
  */
-export type CellKeysSet = MutableSet<CellKey>;
+export type CellKeysSet = Set<CellKey>;
 
 /**
  * Readonly `Set` of human-readable `Cell` keys: {@link Cell#key}.

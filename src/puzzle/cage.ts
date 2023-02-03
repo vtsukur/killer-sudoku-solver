@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { MutableSet } from '../util/mutableSet';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
@@ -88,7 +87,7 @@ export class Cage {
     static Builder = class {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
-        private readonly _cellKeys: CellKeysSet = new MutableSet();
+        private readonly _cellKeys: CellKeysSet = new Set();
 
         /**
          * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s.

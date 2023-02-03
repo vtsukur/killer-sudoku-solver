@@ -1,8 +1,8 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
-import { MutableSet } from '../../util/mutableSet';
 import { joinArray } from '../../util/readableMessages';
+import { Sets } from '../../util/sets';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
@@ -29,13 +29,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
     const nonOverlappingCages = new Array<Cage>();
     const overlappingCages = new Array<Cage>();
 
-    const cellsToCagesMap = new Map<CellKey, MutableSet<Cage>>();
+    const cellsToCagesMap = new Map<CellKey, Set<Cage>>();
     cells.forEach(cell => {
-        cellsToCagesMap.set(cell.key, new MutableSet());
+        cellsToCagesMap.set(cell.key, new Set());
     });
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
-            (cellsToCagesMap.get(cell.key) as MutableSet<Cage>).add(cage);
+            (cellsToCagesMap.get(cell.key) as Set<Cage>).add(cage);
         });
     });
 
@@ -60,13 +60,13 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
 }
 
 type Context = {
-    allCagesSet: MutableSet<Cage>;
-    maxAreaSet: MutableSet<Cage>;
+    allCagesSet: Set<Cage>;
+    maxAreaSet: Set<Cage>;
     maxAreaCellCount: number;
     cellCount: number;
-    cagesStack: MutableSet<Cage>;
-    remainingCagesStack: MutableSet<Cage>;
-    overlappingCagesStack: MutableSet<Cage>;
+    cagesStack: Set<Cage>;
+    remainingCagesStack: Set<Cage>;
+    overlappingCagesStack: Set<Cage>;
     areaCellKeysStack: CellKeysSet;
     absMaxAreaCellCount: number;
 }
@@ -74,14 +74,14 @@ type Context = {
 // there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
 function findMaxNonOverlappingCagesArea(cages: ReadonlyCages, absMaxAreaCellCount: number) {
     const context: Context = {
-        allCagesSet: new MutableSet(cages),
-        maxAreaSet: new MutableSet(),
+        allCagesSet: new Set(cages),
+        maxAreaSet: new Set(),
         maxAreaCellCount: 0,
         cellCount: 0,
-        cagesStack: new MutableSet(),
-        remainingCagesStack: new MutableSet(cages),
-        overlappingCagesStack: new MutableSet(),
-        areaCellKeysStack: new MutableSet(),
+        cagesStack: new Set(),
+        remainingCagesStack: new Set(cages),
+        overlappingCagesStack: new Set(),
+        areaCellKeysStack: new Set(),
         absMaxAreaCellCount: absMaxAreaCellCount
     };
 
@@ -107,7 +107,7 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
 
     if (context.cellCount >= context.absMaxAreaCellCount ||
         (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
-        context.maxAreaSet = new MutableSet<Cage>(context.cagesStack);
+        context.maxAreaSet = new Set<Cage>(context.cagesStack);
         context.maxAreaCellCount = context.cellCount;
     }
 
@@ -132,7 +132,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
     const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     const stack = new Array(cages.length);
-    const checkingSet = new MutableSet<number>();
+    const checkingSet = new Set<number>();
 
     function combosRecursive(step: number) {
         if (step === cages.length) {
@@ -143,9 +143,9 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
                 if (!comboForSum.hasSome(checkingSet)) {
                     stack[step] = comboForSum;
 
-                    checkingSet.addCollection(comboForSum);
+                    Sets.unite(checkingSet, comboForSum);
                     combosRecursive(step + 1);
-                    checkingSet.deleteCollection(comboForSum);
+                    Sets.differentiate(checkingSet, comboForSum);
                 }
             }
         }

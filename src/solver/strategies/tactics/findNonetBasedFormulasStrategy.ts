@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { Cell, CellKeysSet } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { MutableSet } from '../../../util/mutableSet';
 import { combosForSum } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
@@ -20,13 +19,13 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             const nonetM = this._model.nonetModels[index];
             const area = findAreaWithSingleInnieOrOutieCell(nonetM, this._model);
             if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
-                const outerCageMs = new MutableSet<CageModel>(area.outerCageMs);
+                const outerCageMs = new Set<CageModel>(area.outerCageMs);
                 for (const outerCageM of outerCageMs) {
                     area.removeCageM(outerCageM);
                     const unfilledInnerCellMs = area.unfilledInnerCellMs(this._model);
                     const outerCellMs = area.outerCellMs;
                     if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
-                        formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new MutableSet<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
+                        formulas.add(new Formula(unfilledInnerCellMs.values().next().value, new Set<CellModel>(outerCellMs), area.deltaBetweenOuterAndInner));
                     }
                     area.addCageM(outerCageM);
                 }
@@ -56,12 +55,12 @@ class ExpandableNonOverlappingNonetAreaModel {
     constructor(nonetM: NonetModel) {
         this._nonetM = nonetM;
         this._sum = 0;
-        this._cageMs = new MutableSet<CageModel>();
-        this._cellMs = new MutableSet<CellModel>();
-        this._cellKeys = new MutableSet();
-        this._innerCellMs = new MutableSet<CellModel>();
-        this._outerCellMs = new MutableSet<CellModel>();
-        this._outerCageMs = new MutableSet<CageModel>();
+        this._cageMs = new Set<CageModel>();
+        this._cellMs = new Set<CellModel>();
+        this._cellKeys = new Set();
+        this._innerCellMs = new Set<CellModel>();
+        this._outerCellMs = new Set<CellModel>();
+        this._outerCageMs = new Set<CageModel>();
     }
 
     addCageM(cageM: CageModel) {
@@ -100,7 +99,7 @@ class ExpandableNonOverlappingNonetAreaModel {
     }
 
     unfilledInnerCellMs(model: MasterModel) {
-        const result = new MutableSet();
+        const result = new Set();
         for (const { row, col } of this._nonetM.cellsIterator()) {
             if (!this._cellKeys.has(Cell.at(row, col).key)) {
                 result.add(model.cellModelAt(row, col));
@@ -173,13 +172,13 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
 }
 
 function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
-    if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new MutableSet();
+    if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
 
-    const reduced = new MutableSet<CellModel>();
+    const reduced = new Set<CellModel>();
 
     const checkingNumOpts = new Map();
     formula.equalToCellMs.forEach(cellM => {
-        checkingNumOpts.set(cellM, new MutableSet());
+        checkingNumOpts.set(cellM, new Set());
     });
 
     // also check for duplicate nums possibility?

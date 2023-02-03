@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { MutableSet } from '../../util/mutableSet';
+import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
@@ -10,7 +10,7 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
-    private _cageModelsToReduce = new MutableSet<CageModel>();
+    private _cageModelsToReduce = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -39,15 +39,15 @@ export class Context {
     }
 
     setCageModelsToReduceToAll() {
-        this._cageModelsToReduce = new MutableSet(this.model.cageModelsMap.values());
+        this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
     }
 
     setCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToReduce = new MutableSet(reducedCellMs.impactedCageModels);
+        this._cageModelsToReduce = new Set(reducedCellMs.impactedCageModels);
     }
 
     addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
-        this._cageModelsToReduce.addCollection(reducedCellMs.impactedCageModels);
+        Sets.unite(this._cageModelsToReduce, reducedCellMs.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {

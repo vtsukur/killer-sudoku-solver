@@ -1,4 +1,3 @@
-import { MutableSet } from '../../../util/mutableSet';
 import { Combo, combosForHouse } from '../../math';
 import { Strategy } from '../strategy';
 
@@ -7,7 +6,7 @@ export class InitPermsForCagesStrategy extends Strategy {
         this._model.houseModels.forEach(houseM => {
             const houseCombos = combosForHouse(houseM);
             houseM.cageModels.forEach((cageModel, index) => {
-                const combosKeySet = new MutableSet();
+                const combosKeySet = new Set();
                 const combos = new Array<Combo>();
                 houseCombos.forEach(comboRow => {
                     const combo = comboRow[index];

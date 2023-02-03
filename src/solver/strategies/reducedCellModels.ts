@@ -1,10 +1,10 @@
-import { MutableSet } from '../../util/mutableSet';
+import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
-    private _cellMs = new MutableSet<CellModel>();
-    private _impactedCageMs = new MutableSet<CageModel>();
+    private _cellMs = new Set<CellModel>();
+    private _impactedCageMs = new Set<CageModel>();
 
     add(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {
@@ -15,7 +15,7 @@ export class ReducedCellModels {
 
     addOne(val: CellModel) {
         this._cellMs.add(val);
-        this._impactedCageMs.addCollection(val.withinCageModels);
+        Sets.unite(this._impactedCageMs, val.withinCageModels);
         return this;
     }
 

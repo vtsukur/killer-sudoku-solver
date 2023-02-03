@@ -1,7 +1,7 @@
 import { Cage } from '../../puzzle/cage';
 import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
-import { MutableSet } from '../../util/mutableSet';
+import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { MasterModel } from '../models/masterModel';
 
@@ -47,9 +47,9 @@ export class CageSlicer {
     }
 
     private getCageMsFullyContainingResidualCage(residualCage: Cage) {
-        const allAssociatedCageMsSet = new MutableSet<CageModel>();
+        const allAssociatedCageMsSet = new Set<CageModel>();
         residualCage.cells.forEach(cell => {
-            allAssociatedCageMsSet.addCollection(this.model.cellModelOf(cell).withinCageModels);
+            Sets.unite(allAssociatedCageMsSet, this.model.cellModelOf(cell).withinCageModels);
         });
         allAssociatedCageMsSet.delete(this.model.cageModelsMap.get(residualCage.key) as CageModel);
 

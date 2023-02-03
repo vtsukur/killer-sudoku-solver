@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { Cell, CellKey } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
-import { MutableSet } from '../../../util/mutableSet';
 import { CellModel } from '../../models/elements/cellModel';
 import { ColumnModel } from '../../models/elements/columnModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -51,7 +50,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                 if (!cellKeysByNumMap.has(keysKey)) {
                     const entry = {
                         keys: keys,
-                        nums: new MutableSet<number>()
+                        nums: new Set<number>()
                     };
                     cellKeysByNumMap.set(keysKey, entry);
                 }
@@ -105,7 +104,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
             if (!numOccurencesKeyToHouseMap.has(key)) {
                 const entry = {
                     perpendicularHouseIndices: houseIndicesArr,
-                    houses: new MutableSet()
+                    houses: new Set()
                 };
                 numOccurencesKeyToHouseMap.set(key, entry);
             }
@@ -114,7 +113,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
 
         for (const entry of numOccurencesKeyToHouseMap.values()) {
             if (entry.perpendicularHouseIndices.length === 2 && entry.perpendicularHouseIndices.length === entry.houses.size) {
-                const directHouseIndicesSet = new MutableSet<number>(Array.from<HouseModel>(entry.houses).map(houseM => houseM.index));
+                const directHouseIndicesSet = new Set<number>(Array.from<HouseModel>(entry.houses).map(houseM => houseM.index));
                 _.range(0, House.CELL_COUNT).forEach(directHouseIndex => {
                     if (directHouseIndicesSet.has(directHouseIndex)) return;
 
