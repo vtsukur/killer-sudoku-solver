@@ -1,6 +1,9 @@
 import { MutableSet } from '../../util/mutableSet';
 import { joinArray } from '../../util/readableMessages';
 
+/**
+ * Human-readable key describing combination of numbers.
+ */
 export type ComboKey = string;
 
 /**
@@ -136,4 +139,7 @@ export class Combo implements Iterable<number> {
     }
 }
 
+/**
+ * Readonly array of `Combo`s.
+ */
 export type ReadonlyCombos = ReadonlyArray<Combo>;
