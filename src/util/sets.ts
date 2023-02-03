@@ -1,9 +1,9 @@
 /**
- * Utility methods to extend built-in {@link Set} with the following capabilities:
+ * Utility methods that aid {@link Set} manipulation with the following useful capabilities:
  *
- * - to construct new `Set` instances out of `rest` parameters using {@link new};
- * - to add and remove {@link Iterable} of values using {@link unite} and {@link differentiate};
- * - to get first value in the `Set` using {@link firstValue}.
+ * - constructing new `Set`s out of rest parameters using {@link new} static factory method;
+ * - adding and removing {@link Iterable} of values using {@link unite} and {@link differentiate} respectively;
+ * - getting first value in the `Set` using {@link firstValue}.
  *
  * @see {@link Set}
  *
@@ -19,6 +19,16 @@ export class Sets {
     /**
      * Constructs new {@link Set} with the given values specified via rest parameters.
      *
+     * Simplifies creation of `Set`s out of values known beforehand
+     * without the need of intermediate creation of `Iterable` on the calling side.
+     *
+     * Examples:
+     *
+     * ```ts
+     * const oneNumberSet = Set.of(1);
+     * const fewNumbersSet = Set.of(14, 15, 16);
+     * ```
+     *
      * @param val - values to be added to the `Set`.
      *
      * @returns new `Set` with the given values.
@@ -30,6 +40,8 @@ export class Sets {
     /**
      * Adds all values from the given `uniteWith` {@link Iterable} to the `target` {@link Set}
      * if they are not yet present in the `Set`.
+     *
+     * This method modifies `target` `Set`.
      *
      * @param target - `Set` to which values are to be added.
      * @param uniteWith - `Iterable` of values to be added to the `target` Set.
@@ -44,7 +56,9 @@ export class Sets {
      * Deletes all values from the given `differentiateWith` {@link Iterable} from the `target` {@link Set}
      * if they are present in the `Set`.
      *
-     * @param target - `Set` to which values are to deleted.
+     * This method modifies `target` `Set`.
+     *
+     * @param target - `Set` from which values are to deleted.
      * @param uniteWith - `Iterable` of values to be deleted from the `target` Set.
      */
     static differentiate<T>(target: Set<T>, differentiateWith: Iterable<T>) {
@@ -54,11 +68,11 @@ export class Sets {
     }
 
     /**
-     * Returns first value in the {@link Set} according to insertion order.
+     * Returns the first value in the {@link Set} according to insertion order.
      *
-     * @param val - `Set` for which to return first value.
+     * @param val - `Set` for which to return the first value.
      *
-     * @returns first value in the `Set` according to insertion order.
+     * @returns the first value in the `Set` according to insertion order.
      *
      * @throws {RangeError} if the `Set` has no values.
      */
