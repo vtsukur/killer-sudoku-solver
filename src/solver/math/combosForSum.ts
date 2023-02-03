@@ -20,7 +20,7 @@ import { Combo, ComboKey, ReadonlyCombos } from './combo';
  * @returns Readonly array of distinct combinations of unique numbers to form a sum.
  * If there are no combinations found, empty array is returned.
  *
- * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
+ * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
 export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
     validate(sum, numCount);
@@ -228,7 +228,7 @@ storePrecomputed(`
  * @returns Readonly array of distinct combinations of unique numbers to form a sum.
  * If there are no combinations found, empty array is returned.
  *
- * @throws {CombinatorialError} if the sum or the amount of unique numbers to form a sum is out of range.
+ * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
 export function computeComboForSum(sum: number, numCount: number): ReadonlyCombos {
     validate(sum, numCount);
