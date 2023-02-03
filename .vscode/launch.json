@@ -297,6 +297,24 @@
             }
         },
         {
+            "name": "npm run test [solver/math/combosForHouse]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "combosForHouse"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/math/combosForSum]",
             "request": "launch",
             "runtimeArgs": [
