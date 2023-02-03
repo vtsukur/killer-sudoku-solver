@@ -461,12 +461,12 @@
             }
         },
         {
-            "name": "npm run test [util/mutableSet]",
+            "name": "npm run test [util/readableMessages]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "mutableSet"
+                "readableMessages"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -479,12 +479,12 @@
             }
         },
         {
-            "name": "npm run test [util/readableMessages]",
+            "name": "npm run test [util/sets]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "readableMessages"
+                "sets"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
