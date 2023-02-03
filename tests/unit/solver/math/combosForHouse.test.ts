@@ -21,7 +21,7 @@ const houseMOf = (cages: ReadonlyCages) => {
 };
 
 describe('Tests for the finder of number combinations to form a house model out of cages', () => {
-    test('Multiple combinations of numbers to form a complete house model with non-overlapping cages', () => {
+    test('Several combinations of numbers to form a complete HouseModel with non-overlapping cages', () => {
         expect(combosForHouse(houseMOf([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
             Cage.ofSum(10).at(1, 3).at(2, 3).new(),
@@ -36,7 +36,7 @@ describe('Tests for the finder of number combinations to form a house model out 
         ]);
     });
 
-    test('Multiple combinations of numbers to form a complete house model with non-overlapping cages: test 2', () => {
+    test('Many combinations of numbers to form a complete HouseModel with non-overlapping cages', () => {
         expect(combosForHouse(houseMOf([
             Cage.ofSum(10).at(0, 0).at(0, 1).new(),
             Cage.ofSum(10).at(0, 2).at(1, 2).new(),
