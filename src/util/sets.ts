@@ -58,7 +58,7 @@ export class Sets {
      * Deletes all values from the given `differentiateWith` {@link Iterable} from the `target` {@link Set}
      * if they are present in the `Set`.
      *
-     * Essentially, this operation implements 'union' `∪` operation for two `Set`s.
+     * Essentially, this operation implements 'difference' `–` operation for two `Set`s.
      *
      * This method modifies `target` `Set`.
      *
