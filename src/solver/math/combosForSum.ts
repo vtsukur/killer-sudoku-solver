@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
-import { CombinatorialError } from './combinatorialError';
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
 
 /**
@@ -268,10 +267,10 @@ export function computeComboForSum(sum: number, numCount: number): ReadonlyCombo
 
 const validate = (sum: number, numCount: number) => {
     if (sum < Numbers.MIN || sum > House.SUM) {
-        throw new CombinatorialError(`Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`);
+        throw new RangeError(`Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`);
     }
     if (numCount < 1 || numCount > House.CELL_COUNT) {
-        throw new CombinatorialError(`Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`);
+        throw new RangeError(`Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`);
     }
 };
 
