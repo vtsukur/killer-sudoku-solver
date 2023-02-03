@@ -1,4 +1,3 @@
-import { MutableSet } from '../../util/mutableSet';
 import { joinArray } from '../../util/readableMessages';
 
 /**
@@ -30,7 +29,7 @@ export class Combo implements Iterable<number> {
      */
     constructor(val: ReadonlyArray<number>) {
         this._nums = [...val];
-        this._numSet = new MutableSet(val);
+        this._numSet = new Set(val);
         this.key = joinArray(val);
     }
 
@@ -137,6 +136,7 @@ export class Combo implements Iterable<number> {
             return this;
         }
     }
+
 }
 
 /**
