@@ -103,19 +103,24 @@ export class Combo implements Iterable<number> {
     }
 
     /**
-     * Checks if at least one number in the given `Iterable` is a part of this combination.
+     * Checks if at least one number in the given `Set` is a part of this combination.
      *
-     * @param val - `Iterable` of numbers to check against this combination.
+     * @param val - `Set` of numbers to check against this combination.
      *
-     * @returns `true` if at least one number in the given `Iterable` is a part of this combination, otherwise `false`.
+     * @returns `true` if at least one number in the given `Set` is a part of this combination, otherwise `false`.
      */
-    hasSome(val: Iterable<number>) {
-        for (const num of val) {
-            if (this._numSet.has(num)) {
-                return true;
-            }
+    hasSome(val: Set<number>) {
+        // [performance] choosing smaller collection for faster iteration
+        let smallerCollection: ReadonlyArray<number>, notSmallerCollection: ReadonlySet<number>;
+        if (val.size < this._numSet.size) {
+            smallerCollection = Array.from(val);
+            notSmallerCollection = this._numSet;
+        } else {
+            smallerCollection = this._nums;
+            notSmallerCollection = val;
         }
-        return false;
+
+        return smallerCollection.some(num => notSmallerCollection.has(num));
     }
 
     /**

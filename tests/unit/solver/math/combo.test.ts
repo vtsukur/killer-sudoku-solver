@@ -33,10 +33,10 @@ describe('Combo tests', () => {
 
     test('Checking presence of at least one number in the Combo', () => {
         const combo = Combo.of(1, 6, 9);
-        expect(combo.hasSome([ 1 ])).toBeTruthy();
-        expect(combo.hasSome([ 6, 8 ])).toBeTruthy();
-        expect(combo.hasSome([ 8 ])).toBeFalsy();
-        expect(combo.hasSome([ 2, 8 ])).toBeFalsy();
+        expect(combo.hasSome(new Set([ 1 ]))).toBeTruthy();
+        expect(combo.hasSome(new Set([ 6, 8 ]))).toBeTruthy();
+        expect(combo.hasSome(new Set([ 8 ]))).toBeFalsy();
+        expect(combo.hasSome(new Set([ 2, 8 ]))).toBeFalsy();
     });
 
     test('Reduction of Combo with removal of the number', () => {
