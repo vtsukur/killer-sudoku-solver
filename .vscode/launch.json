@@ -302,7 +302,8 @@
             "runtimeArgs": [
                 "run",
                 "test",
-                "combosForHouse"
+                "--findRelatedTests",
+                "tests/unit/solver/math/combosForHouse.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
