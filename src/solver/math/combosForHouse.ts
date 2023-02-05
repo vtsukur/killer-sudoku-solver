@@ -143,18 +143,23 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
     const numFlags = new FastNumSet();
 
     function combosRecursive(step: number) {
-        if (step === cages.length) {
+        const combosForSum = combosForCages[step];
+        if (step === cages.length - 1 && nonOverlappingCagesCells === 9) {
+            const lastCombo = combosForSum.get(numFlags.remaining());
+            if (lastCombo !== undefined) {
+                stack[step] = lastCombo;
+                combos.push([...stack]);
+            }
+        } else if (step === cages.length) {
             combos.push([...stack]);
         } else {
-            const combosForSum = combosForCages[step];
             for (const comboForSum of combosForSum.val) {
-                const fastNumSet = comboForSum.fastNumSet;
-                if (numFlags.doesNotHaveAny(fastNumSet)) {
+                if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
                     stack[step] = comboForSum;
 
-                    numFlags.add(fastNumSet);
+                    numFlags.add(comboForSum.fastNumSet);
                     combosRecursive(step + 1);
-                    numFlags.remove(fastNumSet);
+                    numFlags.remove(comboForSum.fastNumSet);
                 }
             }
         }
