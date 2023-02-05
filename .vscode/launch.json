@@ -334,6 +334,25 @@
             }
         },
         {
+            "name": "npm run test [solver/math/fastNumSet]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/math/fastNumSet.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/invalidSolverStepError]",
             "request": "launch",
             "runtimeArgs": [
