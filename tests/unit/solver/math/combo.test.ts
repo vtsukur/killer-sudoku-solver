@@ -1,4 +1,5 @@
 import { Combo } from '../../../../src/solver/math';
+import { FastNumSet } from '../../../../src/solver/math/fastNumSet';
 
 describe('Combo tests', () => {
     test('Construction of Combo from array of numbers', () => {
@@ -7,6 +8,9 @@ describe('Combo tests', () => {
         expect(combo.number0).toBe(1);
         expect(combo.number1).toBe(6);
         expect(combo.nthNumber(2)).toBe(9);
+        expect(combo.fastNumSet.hasAll(FastNumSet.of(1, 6, 9))).toBeTruthy();
+        expect(combo.fastNumSet.doesNotHaveAny(FastNumSet.of(2, 5))).toBeTruthy();
+        expect(combo.fastNumSet.doesNotHaveAny(FastNumSet.of(1, 5, 6))).toBeFalsy();
         expectComboWithValues(combo, [ 1, 6, 9 ]);
     });
 
