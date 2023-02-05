@@ -1,10 +1,11 @@
+import * as _ from 'lodash';
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
-import { combosForSum } from './combosForSum';
+import { combosForSum, SumCombos } from './combosForSum';
 import { FastNumSet } from './fastNumSet';
 
 export function combosForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
@@ -142,27 +143,56 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
     const stack = new Array(cages.length);
     const numFlags = new FastNumSet();
 
-    function combosRecursive(step: number) {
-        const combosForSum = combosForCages[step];
-        if (step === cages.length - 1 && nonOverlappingCagesCells === 9) {
-            const lastCombo = combosForSum.get(numFlags.remaining());
-            if (lastCombo !== undefined) {
-                stack[step] = lastCombo;
-                combos.push([...stack]);
-            }
-        } else if (step === cages.length) {
-            combos.push([...stack]);
-        } else {
-            for (const comboForSum of combosForSum.val) {
-                if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
-                    stack[step] = comboForSum;
+    function combosRecursive_0(sumCombos: SumCombos, step: number) {
+        for (const comboForSum of sumCombos.val) {
+            stack[step] = comboForSum;
 
-                    numFlags.add(comboForSum.fastNumSet);
-                    combosRecursive(step + 1);
-                    numFlags.remove(comboForSum.fastNumSet);
-                }
+            numFlags.add(comboForSum.fastNumSet);
+            combosRecursive(step + 1);
+            numFlags.remove(comboForSum.fastNumSet);
+        }
+    }
+
+    function combosRecursive_i(sumCombos: SumCombos, step: number) {
+        for (const comboForSum of sumCombos.val) {
+            if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
+                stack[step] = comboForSum;
+
+                numFlags.add(comboForSum.fastNumSet);
+                combosRecursive(step + 1);
+                numFlags.remove(comboForSum.fastNumSet);
             }
         }
+    }
+
+    function combosRecursive_last() {
+        combos.push([...stack]);
+    }
+
+    function combosRecursive_preLast_shortCircuit(sumCombos: SumCombos, step: number) {
+        const lastCombo = sumCombos.get(numFlags.remaining());
+        if (lastCombo !== undefined) {
+            stack[step] = lastCombo;
+            combosRecursive_last();
+        }
+    }
+
+    const executionPipeline = new Array<(sumCombos: SumCombos, step: number) => void>(cages.length + 1);
+    executionPipeline[0] = combosRecursive_0;
+    if (nonOverlappingCagesCells === House.CELL_COUNT) {
+        _.range(1, cages.length - 1).forEach(step => {
+            executionPipeline[step] = combosRecursive_i;
+        });
+        executionPipeline[cages.length - 1] = combosRecursive_preLast_shortCircuit;
+    } else {
+        _.range(1, cages.length).forEach(step => {
+            executionPipeline[step] = combosRecursive_i;
+        });
+        executionPipeline[cages.length] = combosRecursive_last;
+    }
+
+    function combosRecursive(step: number) {
+        executionPipeline[step](combosForCages[step], step);
     }
 
     combosRecursive(0);
