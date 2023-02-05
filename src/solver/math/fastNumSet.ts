@@ -1,18 +1,24 @@
+import * as _ from 'lodash';
+import { Numbers } from '../../puzzle/numbers';
+
 interface BaseFastNumSet {
     get binaryStorage(): number;
 }
 
+type BinaryStorage = number;
+
 /**
- * Set of numbers with extremely fast and efficient lookup operations
+ * Set of Sudoku numbers between 1 and 9 with extremely fast and efficient lookup operations
  * which leverage bitwise operators on a number.
  *
- * For performance reasons, this class allows working with the numbers in a very small range
- * (>=0 and <=30 without range checks). Otherwise logic is not guaranteed to work properly.
- * While it is enough to handle unique numbers in Sudoku, it is NOT applicable for a wide range of use cases.
+ * For performance reasons, this class does NOT do range checks
+ * and does NOT guarantee correct work for the numbers outside of Sudoku range (>9).
+ * It is NOT applicable for a wide range of use cases.
  *
  * @public
  */
 export interface ReadonlyFastNumSet extends BaseFastNumSet {
+
     /**
      * Checks if this set has ALL numbers from another set.
      *
@@ -30,6 +36,13 @@ export interface ReadonlyFastNumSet extends BaseFastNumSet {
      * @returns `true` if this set does NOT have any numbers from another set; otherwise `false`.
      */
     doesNotHaveAny(val: ReadonlyFastNumSet): boolean;
+
+    /**
+     * Returns new set with Sudoku numbers which are NOT present in the current set.
+     *
+     * @returns new set with Sudoku numbers which are NOT present in the current set.
+     */
+    remaining(): ReadonlyFastNumSet;
 }
 
 /**
@@ -42,17 +55,27 @@ export interface ReadonlyFastNumSet extends BaseFastNumSet {
 export class FastNumSet implements ReadonlyFastNumSet {
     private _binaryStorage = 0;
 
+    private static readonly ALL_NUMBERS_BINARY_STORAGE = (function() {
+        let val = 0;
+        _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
+            val |= 1 << num;
+        });
+        return val;
+    })();
+
     /**
-     * Constructs new set from the unique numbers in the given array.
+     * Constructs new set from the unique numbers in the given array or from raw binary storage value.
      *
-     * Only unique numbers are added to the set. Number duplicates are silently ignored.
+     * In case array is specified, only unique numbers are added to the set. Number duplicates are silently ignored.
      *
      * Set is constructed as empty if no numbers are given.
      *
-     * @param val - Array of numbers to construct this set from.
+     * @param val - Array of numbers to construct this set from or raw binary storage value.
      */
-    constructor(val?: ReadonlyArray<number>) {
-        if (val) {
+    constructor(val?: ReadonlyArray<number> | BinaryStorage) {
+        if (typeof(val) === 'number') {
+            this._binaryStorage = val;
+        } else if (val instanceof Array) {
             for (const num of val) {
                 this._binaryStorage |= 1 << num;
             }
@@ -93,6 +116,13 @@ export class FastNumSet implements ReadonlyFastNumSet {
      */
     doesNotHaveAny(val: ReadonlyFastNumSet) {
         return (this._binaryStorage & val.binaryStorage) === 0;
+    }
+
+    /**
+     * @see {ReadonlyFastNumSet.remaining}
+     */
+    remaining(): ReadonlyFastNumSet {
+        return new FastNumSet(FastNumSet.ALL_NUMBERS_BINARY_STORAGE ^ this._binaryStorage);
     }
 
     /**

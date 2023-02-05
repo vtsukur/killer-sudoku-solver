@@ -46,6 +46,18 @@ describe('FastNumSet tests', () => {
         expect(numSet.doesNotHaveAny(FastNumSet.of(8, 9))).toBeFalsy();
     });
 
+    test('Remaining FastNumSet', () => {
+        expect(FastNumSet.of().remaining().binaryStorage).toBe(
+            FastNumSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).binaryStorage
+        );
+        expect(FastNumSet.of(1, 2, 3).remaining().binaryStorage).toBe(
+            FastNumSet.of(4, 5, 6, 7, 8, 9).binaryStorage
+        );
+        expect(FastNumSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining().binaryStorage).toBe(
+            FastNumSet.of().binaryStorage
+        );
+    });
+
     const expectFastNumSetWithValues = (numSet: FastNumSet, values: ReadonlyArray<number>) => {
         const set = new Set(values);
         _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
