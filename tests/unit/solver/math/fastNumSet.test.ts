@@ -19,13 +19,13 @@ describe('FastNumSet tests', () => {
         expectFastNumSetWithValues(FastNumSet.of(), []);
     });
 
-    test('Marking and unmarking numbers with `has` and `doesNotHaveAny` checks', () => {
+    test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numSet = FastNumSet.of(1, 6, 9);
         expect(numSet.hasAll(FastNumSet.of(1, 6))).toBeTruthy();
         expect(numSet.doesNotHaveAny(FastNumSet.of(2, 3))).toBeTruthy();
         expect(numSet.doesNotHaveAny(FastNumSet.of(8, 9))).toBeFalsy();
 
-        numSet.mark(FastNumSet.of(1, 7, 8));
+        numSet.add(FastNumSet.of(1, 7, 8));
         expectFastNumSetWithValues(numSet, [ 1, 6, 7, 8, 9 ]);
         expect(numSet.hasAll(FastNumSet.of(1, 6))).toBeTruthy();
         expect(numSet.hasAll(FastNumSet.of(7, 8, 9))).toBeTruthy();
@@ -35,7 +35,7 @@ describe('FastNumSet tests', () => {
         expect(numSet.doesNotHaveAny(FastNumSet.of(2, 3))).toBeTruthy();
         expect(numSet.doesNotHaveAny(FastNumSet.of(5, 9))).toBeFalsy();
 
-        numSet.unmark(FastNumSet.of(2, 6, 9));
+        numSet.remove(FastNumSet.of(2, 6, 9));
         expectFastNumSetWithValues(numSet, [ 1, 7, 8 ]);
         expect(numSet.hasAll(FastNumSet.of(7, 8))).toBeTruthy();
         expect(numSet.hasAll(FastNumSet.of(1, 7, 8))).toBeTruthy();
