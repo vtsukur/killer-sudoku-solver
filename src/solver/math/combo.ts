@@ -1,5 +1,5 @@
 import { joinArray } from '../../util/readableMessages';
-import { FastNumSet } from './fastNumSet';
+import { FastNumSet, ReadonlyFastNumSet } from './fastNumSet';
 
 /**
  * Human-readable key describing combination of numbers.
@@ -21,9 +21,9 @@ export class Combo implements Iterable<number> {
     readonly key: ComboKey;
 
     /**
-     * Set of numbers present in the combination with efficient lookup operations.
+     * Set of numbers present in the combination with extremely fast and efficient manipulation and lookup operations.
      */
-    readonly fastNumSet: FastNumSet;
+    readonly fastNumSet: ReadonlyFastNumSet;
 
     private readonly _nums: ReadonlyArray<number>;
     private readonly _numSet: ReadonlySet<number>;
