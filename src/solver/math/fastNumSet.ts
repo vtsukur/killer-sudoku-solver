@@ -86,8 +86,8 @@ export class FastNumSet implements ReadonlyFastNumSet {
      *
      * @param val - Another set containing numbers to add to this set.
      */
-    add(val: FastNumSet) {
-        this._binaryStorage |= val._binaryStorage;
+    add(val: ReadonlyFastNumSet) {
+        this._binaryStorage |= val.binaryStorage;
     }
 
     /**
@@ -100,7 +100,7 @@ export class FastNumSet implements ReadonlyFastNumSet {
      *
      * @param val - Another set containing numbers to remove from this set.
      */
-    remove(val: FastNumSet) {
-        this._binaryStorage &= ~val._binaryStorage;
+    remove(val: ReadonlyFastNumSet) {
+        this._binaryStorage &= ~val.binaryStorage;
     }
 }
