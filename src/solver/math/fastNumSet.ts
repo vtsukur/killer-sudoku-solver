@@ -3,6 +3,7 @@
  *
  * For performance reasons, this class allows working with the numbers in a very small range
  * (>=0 and <=30 without range checks). Otherwise logic is not guaranteed to work properly.
+ * While it is enough to handle unique numbers in Sudoku, it is NOT applicable for a wide range of use cases.
  */
 export class FastNumSet {
     private _bin = 0;
