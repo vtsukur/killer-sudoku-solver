@@ -259,7 +259,7 @@
             }
         },
         {
-            "name": "npm run test [solver/math]",
+            "name": "npm run test [solver/math/*]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
