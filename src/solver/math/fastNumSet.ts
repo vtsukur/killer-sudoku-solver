@@ -1,5 +1,8 @@
 /**
- * Set of numbers present with efficient manipulation and lookup operations.
+ * Set of numbers present with extremely fast and efficient manipulation and lookup operations.
+ *
+ * For performance reasons, this class allows working with the numbers in a very small range
+ * (>=0 and <=30 without range checks). Otherwise logic is not guaranteed to work properly.
  */
 export class FastNumSet {
     private _bin = 0;
