@@ -3,6 +3,47 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
+import { BinaryStorage, ReadonlyFastNumSet } from './fastNumSet';
+
+/**
+ * Combinations of unique numbers to form a sum with efficient lookup of combination by {@link ReadonlyFastNumSet}.
+ *
+ * @public
+ */
+export class SumCombos {
+
+    /**
+     * Array of combinations of unique numbers to form a sum.
+     */
+    readonly val: ReadonlyCombos;
+
+    private readonly set: Map<BinaryStorage, Combo> = new Map();
+
+    /**
+     * Constucts new combinations of unique numbers to form a sum.
+     *
+     * @param val - Array of combinations of unique numbers to form a sum.
+     */
+    constructor(val: ReadonlyCombos) {
+        this.val = val;
+        for (const combo of val) {
+            this.set.set(combo.fastNumSet.binaryStorage, combo);
+        }
+    }
+
+    /**
+     * Returns specific combination of unique numbers to form a sum by {@link ReadonlyFastNumSet}
+     * if it is present amongst registered combinations.
+     *
+     * @param fastNumSet - Set of Sudoku numbers representing combination of unique numbers.
+     *
+     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlyFastNumSet}
+     * if it is present amongst registered combinations; otherwise returns `undefined`.
+     */
+    get(fastNumSet: ReadonlyFastNumSet) {
+        return this.set.get(fastNumSet.binaryStorage);
+    }
+}
 
 /**
  * Determines combinations of unique numbers to form a sum using precomputed values.
@@ -21,15 +62,17 @@ import { Combo, ComboKey, ReadonlyCombos } from './combo';
  * If there are no combinations found, empty array is returned.
  *
  * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
+ *
+ * @public
  */
-export function combosForSum(sum: number, numCount: number): ReadonlyCombos {
+export function combosForSum(sum: number, numCount: number): SumCombos {
     validate(sum, numCount);
 
     const key = precomputeKey(sum, numCount);
     if (PRECOMPUTED.has(key)) {
-        return PRECOMPUTED.get(key) as ReadonlyCombos;
+        return PRECOMPUTED.get(key) as SumCombos;
     } else {
-        return [];
+        return EMPTY_SUM_COMBO;
     }
 }
 
@@ -50,11 +93,13 @@ const storePrecomputed = (source: string, numCount: number) => {
             }
             combos.push(new Combo(comboNumbers));
         }
-        PRECOMPUTED.set(precomputeKey(sum, numCount), combos);
+        PRECOMPUTED.set(precomputeKey(sum, numCount), new SumCombos(combos));
     }
 };
 
-const PRECOMPUTED = new Map<ComboKey, ReadonlyCombos>();
+const PRECOMPUTED = new Map<ComboKey, SumCombos>();
+
+const EMPTY_SUM_COMBO = new SumCombos([]);
 
 storePrecomputed(`
     1: 1
@@ -230,11 +275,11 @@ storePrecomputed(`
  *
  * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
-export function computeComboForSum(sum: number, numCount: number): ReadonlyCombos {
+export function computeComboForSum(sum: number, numCount: number): SumCombos {
     validate(sum, numCount);
 
     if (sum < MIN_SUMS_PER_COUNT[numCount - 1] || sum > MAX_SUMS_PER_COUNT[numCount - 1]) {
-        return [];
+        return EMPTY_SUM_COMBO;
     }
 
     const combos = new Array<Combo>();
@@ -262,7 +307,7 @@ export function computeComboForSum(sum: number, numCount: number): ReadonlyCombo
 
     combosRecursive(1, 1);
 
-    return combos;
+    return new SumCombos(combos);
 }
 
 const validate = (sum: number, numCount: number) => {

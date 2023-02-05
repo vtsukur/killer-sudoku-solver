@@ -197,7 +197,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
             const cellMArr = Array.from(formula.equalToCellMs);
             const otherCellM1 = cellMArr[0];
             const otherCellM2 = cellMArr[1];
-            const combos = combosForSum(targetSum, 2);
+            const combos = combosForSum(targetSum, 2).val;
             let hasAtLeastOneCombo = false;
             for (const combo of combos) {
                 const hasDirect = otherCellM1.hasNumOpt(combo.number0) && otherCellM2.hasNumOpt(combo.number1);

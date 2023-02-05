@@ -109,7 +109,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        const combos = combosForSum(this.cage.sum, this.cage.cellCount);
+        const combos = combosForSum(this.cage.sum, this.cage.cellCount).val;
         const nums = new Set<number>();
         combos.forEach(combo => {
             Sets.U(nums, combo);

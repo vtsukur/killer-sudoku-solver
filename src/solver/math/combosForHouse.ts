@@ -139,7 +139,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
             combos.push([...stack]);
         } else {
             const combosForSum = combosForCages[step];
-            for (const comboForSum of combosForSum) {
+            for (const comboForSum of combosForSum.val) {
                 if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
                     stack[step] = comboForSum;
 
@@ -168,7 +168,7 @@ function doFindForOverlappingCages(cages: ReadonlyCages) {
             combos.push([...stack]);
         } else {
             const combosForSum = combosForCages[step];
-            for (const comboForSum of combosForSum) {
+            for (const comboForSum of combosForSum.val) {
                 stack[step] = comboForSum;
                 combosRecursive(step + 1);
             }

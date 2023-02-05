@@ -5,7 +5,10 @@ interface BaseFastNumSet {
     get binaryStorage(): number;
 }
 
-type BinaryStorage = number;
+/**
+ * Binary storage used for efficient manipulation of the {@link FastNumSet}.
+ */
+export type BinaryStorage = number;
 
 /**
  * Set of Sudoku numbers between 1 and 9 with extremely fast and efficient lookup operations
