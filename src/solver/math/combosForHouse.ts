@@ -2,7 +2,6 @@ import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { joinArray } from '../../util/readableMessages';
-import { Sets } from '../../util/sets';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum } from './combosForSum';
