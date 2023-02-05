@@ -129,8 +129,12 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages) {
         return [];
     }
 
-    const combos = new Array<ReadonlyCombos>();
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
+    if (combosForCages.length === 1) {
+        return combosForCages[0].val.map(combo => [ combo ]);
+    }
+
+    const combos = new Array<ReadonlyCombos>();
     const stack = new Array(cages.length);
     const numFlags = new FastNumSet();
 
