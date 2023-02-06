@@ -71,11 +71,7 @@ export function combosForSum(sum: number, numCount: number): SumCombos {
     validate(sum, numCount);
 
     const key = precomputeKey(sum, numCount);
-    if (PRECOMPUTED.has(key)) {
-        return PRECOMPUTED.get(key) as SumCombos;
-    } else {
-        return EMPTY_SUM_COMBO;
-    }
+    return PRECOMPUTED.get(key) as SumCombos;
 }
 
 const precomputeKey = (sum: number, numCount: number) => {
@@ -97,6 +93,13 @@ const storePrecomputed = (source: string, numCount: number) => {
         }
         PRECOMPUTED.set(precomputeKey(sum, numCount), new SumCombos(combos));
     }
+
+    _.range(Numbers.MIN, House.SUM + 1).forEach(sum => {
+        const key = precomputeKey(sum, numCount);
+        if (!PRECOMPUTED.has(key)) {
+            PRECOMPUTED.set(key, EMPTY_SUM_COMBO);
+        }
+    });
 };
 
 const PRECOMPUTED = new Map<PrecomputeComboKey, SumCombos>();
