@@ -43,6 +43,9 @@ export interface ReadonlyFastNumSet extends BaseFastNumSet {
     /**
      * Returns new set with Sudoku numbers which are NOT present in the current set.
      *
+     * For example, if a set has numbers [1, 2, 5, 9] then
+     * the remaining set of numbers will be [3, 4, 6, 7, 8].
+     *
      * @returns new set with Sudoku numbers which are NOT present in the current set.
      */
     remaining(): ReadonlyFastNumSet;
