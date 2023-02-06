@@ -1,7 +1,17 @@
 import * as _ from 'lodash';
 import { Numbers } from '../../puzzle/numbers';
 
-interface BaseFastNumSet {
+/**
+ * Base interface for set of Sudoku numbers between 1 and 9 with extremely fast and efficient manipulation operations
+ * which leverage bitwise operators on a number.
+ *
+ * @public
+ */
+export interface BaseFastNumSet {
+
+    /**
+     * Returns copy of binary storage used for manipulation operations on this set.
+     */
     get binaryStorage(): number;
 }
 
@@ -104,7 +114,7 @@ export class FastNumSet implements ReadonlyFastNumSet {
     }
 
     /**
-     * Returns copy of binary storage used for lookup and mutable operations on this set.
+     * @see {BaseFastNumSet.binaryStorage}
      */
     get binaryStorage() {
         return this._binaryStorage;
