@@ -278,7 +278,7 @@ storePrecomputed(`
 export function computeComboForSum(sum: number, numCount: number): SumCombos {
     validate(sum, numCount);
 
-    if (sum < MIN_SUMS_PER_COUNT[numCount - 1] || sum > MAX_SUMS_PER_COUNT[numCount - 1]) {
+    if (sum < MIN_SUMS_PER_NUM_COUNT[numCount - 1] || sum > MAX_SUMS_PER_NUM_COUNT[numCount - 1]) {
         return EMPTY_SUM_COMBO;
     }
 
@@ -319,14 +319,14 @@ const validate = (sum: number, numCount: number) => {
     }
 };
 
-const MIN_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
-const MAX_SUMS_PER_COUNT = new Array(House.CELL_COUNT);
+const MIN_SUMS_PER_NUM_COUNT = new Array(House.CELL_COUNT);
+const MAX_SUMS_PER_NUM_COUNT = new Array(House.CELL_COUNT);
 _.range(House.CELL_COUNT).forEach((count: number) => {
     if (count == 0) {
-        MIN_SUMS_PER_COUNT[count] = 1;
-        MAX_SUMS_PER_COUNT[count] = House.CELL_COUNT;
+        MIN_SUMS_PER_NUM_COUNT[count] = 1;
+        MAX_SUMS_PER_NUM_COUNT[count] = House.CELL_COUNT;
     } else {
-        MIN_SUMS_PER_COUNT[count] = MIN_SUMS_PER_COUNT[count - 1] + (count + 1);
-        MAX_SUMS_PER_COUNT[count] = MAX_SUMS_PER_COUNT[count - 1] + (House.CELL_COUNT - count);
+        MIN_SUMS_PER_NUM_COUNT[count] = MIN_SUMS_PER_NUM_COUNT[count - 1] + (count + 1);
+        MAX_SUMS_PER_NUM_COUNT[count] = MAX_SUMS_PER_NUM_COUNT[count - 1] + (House.CELL_COUNT - count);
     }
 });
