@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
 import { Combo, combosForHouse } from '../../../../src/solver/math';
-import { houseMOf } from './houseModelBuilder';
+import { newHouseModel } from './houseModelBuilder';
 
 describe('Performance tests for the finder of number combinations to form a house model out of cages', () => {
     test('Many combinations of numbers to form a complete HouseModel with non-overlapping cages', () => {
-        const houseM = houseMOf([
+        const houseM = newHouseModel([
             Cage.ofSum(10).at(0, 0).at(0, 1).new(),
             Cage.ofSum(10).at(0, 2).at(1, 2).new(),
             Cage.ofSum(11).at(1, 0).at(1, 1).new(),

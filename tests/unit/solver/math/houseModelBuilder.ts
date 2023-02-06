@@ -4,7 +4,7 @@ import { Row } from '../../../../src/puzzle/row';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 
-export const houseMOf = (cages: ReadonlyCages) => {
+export const newHouseModel = (cages: ReadonlyCages) => {
     const cellsMap: Map<CellKey, Cell> = new Map();
     cages.forEach(cage => {
         cage.cells.forEach(cell => {
