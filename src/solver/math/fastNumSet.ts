@@ -5,6 +5,8 @@ import { Numbers } from '../../puzzle/numbers';
  * Base interface for set of Sudoku numbers between 1 and 9 with extremely fast and efficient manipulation operations
  * which leverage bitwise operators on a number.
  *
+ * Defines common API for both readonly and mutable versions of the set.
+ *
  * @public
  */
 export interface BaseFastNumSet {
@@ -17,6 +19,8 @@ export interface BaseFastNumSet {
 
 /**
  * Binary storage used for efficient manipulation of the {@link FastNumSet}.
+ *
+ * @public
  */
 export type BinaryStorage = number;
 
