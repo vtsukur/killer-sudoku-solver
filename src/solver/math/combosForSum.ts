@@ -17,7 +17,7 @@ export class SumCombos {
      */
     readonly val: ReadonlyCombos;
 
-    private readonly set: Map<BinaryStorage, Combo> = new Map();
+    private readonly _fastNumSetToComboMap: Map<BinaryStorage, Combo> = new Map();
 
     /**
      * Constucts new combinations of unique numbers to form a sum.
@@ -27,7 +27,7 @@ export class SumCombos {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         for (const combo of val) {
-            this.set.set(combo.fastNumSet.binaryStorage, combo);
+            this._fastNumSetToComboMap.set(combo.fastNumSet.binaryStorage, combo);
         }
     }
 
@@ -41,7 +41,7 @@ export class SumCombos {
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
     get(fastNumSet: ReadonlyFastNumSet) {
-        return this.set.get(fastNumSet.binaryStorage);
+        return this._fastNumSetToComboMap.get(fastNumSet.binaryStorage);
     }
 }
 
