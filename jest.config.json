@@ -7,5 +7,9 @@
         "#ansi-styles": "ansi-styles/index.js",
         "#supports-color": "supports-color/index.js",
         "^(\\.{1,2}/.*)\\.js$": "$1"
-    }
+    },
+    "testPathIgnorePatterns": [
+        "./node_modules/",
+        "./tests/unit/solver/math/combosForHouse.perf.test.ts"
+    ]
 }
