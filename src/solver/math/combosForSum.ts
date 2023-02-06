@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
-import { Combo, ComboKey, ReadonlyCombos } from './combo';
+import { Combo, ReadonlyCombos } from './combo';
 import { BinaryStorage, ReadonlyFastNumSet } from './fastNumSet';
 
 /**
@@ -45,6 +45,8 @@ export class SumCombos {
     }
 }
 
+type PrecomputeComboKey = number;
+
 /**
  * Determines combinations of unique numbers to form a sum using precomputed values.
  *
@@ -77,7 +79,7 @@ export function combosForSum(sum: number, numCount: number): SumCombos {
 }
 
 const precomputeKey = (sum: number, numCount: number) => {
-    return `${sum}_${numCount}`;
+    return numCount * 100 + sum;
 };
 
 const storePrecomputed = (source: string, numCount: number) => {
@@ -97,7 +99,7 @@ const storePrecomputed = (source: string, numCount: number) => {
     }
 };
 
-const PRECOMPUTED = new Map<ComboKey, SumCombos>();
+const PRECOMPUTED = new Map<PrecomputeComboKey, SumCombos>();
 
 const EMPTY_SUM_COMBO = new SumCombos([]);
 
