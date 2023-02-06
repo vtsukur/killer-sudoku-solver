@@ -143,7 +143,7 @@ export class FastNumSet implements ReadonlyFastNumSet {
     }
 
     /**
-     * Removes all numbers from another set in this set.
+     * Removes all numbers present in another set from this set.
      *
      * This method changes this set and does NOT modify `val` set.
      *
