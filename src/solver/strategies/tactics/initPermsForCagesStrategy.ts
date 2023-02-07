@@ -4,7 +4,7 @@ import { Strategy } from '../strategy';
 export class InitPermsForCagesStrategy extends Strategy {
     execute() {
         this._model.houseModels.forEach(houseM => {
-            const houseCombos = combosAndPermsForHouse(houseM).sumPerms;
+            const houseCombos = combosAndPermsForHouse(houseM).sumPermsForNonOverlappingCages;
             houseM.cageModels.forEach((cageModel, index) => {
                 const combosKeySet = new Set();
                 const combos = new Array<Combo>();
