@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
-import { Combo, combosForHouse } from '../../../../src/solver/math';
+import { Combo, combosAndPermsForHouse } from '../../../../src/solver/math';
 import { newHouseModel } from './houseModelBuilder';
 
 describe('Performance tests for the finder of number combinations to form a house model out of cages', () => {
@@ -14,7 +14,7 @@ describe('Performance tests for the finder of number combinations to form a hous
             Cage.ofSum(11).at(1, 0).at(1, 1).new()
         ]);
 
-        expect(combosForHouse(houseM)).toEqual([
+        expect(combosAndPermsForHouse(houseM)).toEqual([
             [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
             [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
             [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -30,7 +30,7 @@ describe('Performance tests for the finder of number combinations to form a hous
         ]);
 
         _.range(ITERATION_COUNT).forEach(() => {
-            combosForHouse(houseM);
+            combosAndPermsForHouse(houseM);
         });
     });
 
@@ -42,7 +42,7 @@ describe('Performance tests for the finder of number combinations to form a hous
             Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new()
         ]);
 
-        expect(combosForHouse(houseM)).toEqual([
+        expect(combosAndPermsForHouse(houseM)).toEqual([
             [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(4, 7), Combo.of(3, 5, 6) ],
             [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(5, 6), Combo.of(3, 4, 7) ],
             [ Combo.of(1, 9), Combo.of(3, 7), Combo.of(5, 6), Combo.of(2, 4, 8) ],
@@ -58,7 +58,7 @@ describe('Performance tests for the finder of number combinations to form a hous
         ]);
 
         _.range(ITERATION_COUNT).forEach(() => {
-            combosForHouse(houseM);
+            combosAndPermsForHouse(houseM);
         });
     });
 });

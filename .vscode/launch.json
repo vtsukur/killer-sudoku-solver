@@ -297,13 +297,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosForHouse]",
+            "name": "npm run test [solver/math/combosAndPermsForHouse]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/combosForHouse.test.ts"
+                "tests/unit/solver/math/combosAndPermsForHouse.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -316,13 +316,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosForHouse.perf]",
+            "name": "npm run test [solver/math/combosAndPermsForHouse.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/combosForHouse.perf.test.ts"
+                "tests/unit/solver/math/combosAndPermsForHouse.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

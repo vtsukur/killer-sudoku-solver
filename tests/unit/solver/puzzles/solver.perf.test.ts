@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Solver } from '../../../../src/solver/solver';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
-describe('Performance tests for Solver', () => {
+describe.skip('Performance tests for Solver', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();

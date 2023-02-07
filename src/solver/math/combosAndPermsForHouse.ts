@@ -8,7 +8,7 @@ import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { FastNumSet } from './fastNumSet';
 
-export function combosForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
+export function combosAndPermsForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 
