@@ -335,25 +335,6 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosAndPermsForNonOverlappingHouseCages]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/combosAndPermsForNonOverlappingHouseCages.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
             "name": "npm run test [solver/math/combosForSum]",
             "request": "launch",
             "runtimeArgs": [
@@ -379,6 +360,25 @@
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/math/fastNumSet.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/math/nonOverlappingHouseCagesCombinatorics]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/math/nonOverlappingHouseCagesCombinatorics.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

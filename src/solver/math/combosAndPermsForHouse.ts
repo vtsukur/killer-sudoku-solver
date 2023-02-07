@@ -4,7 +4,7 @@ import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
-import { CombosAndPermsForNonOverlappingHouseCages } from './combosAndPermsForNonOverlappingHouseCages';
+import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { combosForSum } from './combosForSum';
 
 export class HouseSumCombosAndPerms {
@@ -27,7 +27,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
-    const { perms, actualSumCombos: combosForNonOverlappingCages } = CombosAndPermsForNonOverlappingHouseCages.compute(nonOverlappingCages);
+    const { perms, actualSumCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.computeCombosAndComboPerms(nonOverlappingCages);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 

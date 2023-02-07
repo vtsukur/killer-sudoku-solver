@@ -6,18 +6,25 @@ import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 
-export class CombosAndPermsForNonOverlappingHouseCages {
-    readonly perms: ReadonlyArray<ReadonlyCombos>;
+type ReadonlyComboPermutations = ReadonlyArray<ReadonlyCombos>;
+
+/**
+ * Computes actual combinations of numbers to form a sum
+ *
+ * @public
+ */
+export class NonOverlappingHouseCagesCombinatorics {
+    readonly perms: ReadonlyComboPermutations;
     readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
 
-    private static readonly EMPTY_INSTANCE = new CombosAndPermsForNonOverlappingHouseCages([], []);
+    private static readonly EMPTY_INSTANCE = new NonOverlappingHouseCagesCombinatorics([], []);
 
     private constructor(perms: ReadonlyArray<ReadonlyCombos>, actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
         this.perms = perms;
         this.actualSumCombos = actualSumCombos;
     }
 
-    static compute(cages: ReadonlyCages): CombosAndPermsForNonOverlappingHouseCages {
+    static computeCombosAndComboPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
