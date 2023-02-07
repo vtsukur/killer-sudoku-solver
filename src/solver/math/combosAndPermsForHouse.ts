@@ -8,7 +8,15 @@ import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { FastNumSet } from './fastNumSet';
 
-export function combosAndPermsForHouse(houseM: HouseModel): ReadonlyArray<ReadonlyCombos> {
+export class HouseSumCombosAndPerms {
+    readonly sumCombos: ReadonlyArray<ReadonlyCombos>;
+
+    constructor(sumCombos: ReadonlyArray<ReadonlyCombos>) {
+        this.sumCombos = sumCombos;
+    }
+}
+
+export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPerms {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 
@@ -19,7 +27,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): ReadonlyArray<Readon
     const combinedCombos = merge(combosForNonOverlappingCages, combosForOverlappingCages);
     const preservedCageOrderCombos = preserveOrder(combinedCombos, cages, nonOverlappingCages, overlappingCages);
 
-    return preservedCageOrderCombos;
+    return new HouseSumCombosAndPerms(preservedCageOrderCombos);
 }
 
 export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
