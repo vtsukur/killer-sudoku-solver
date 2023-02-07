@@ -7,7 +7,7 @@ import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 
 type NonOverlappingCageSumCombos = {
-    permsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+    perms: ReadonlyArray<ReadonlyCombos>,
     actualSumCombos: ReadonlyArray<ReadonlyCombos>
 };
 
@@ -19,13 +19,13 @@ export function combosAndPermsForNonOverlappingHouseCages(cages: ReadonlyCages):
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
     }
     if (cages.length == 0) {
-        return { permsForNonOverlappingCages: [], actualSumCombos: [] };
+        return { perms: [], actualSumCombos: [] };
     }
 
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     if (combosForCages.length === 1) {
         return {
-            permsForNonOverlappingCages: combosForCages[0].val.map(combo => [ combo ]),
+            perms: combosForCages[0].val.map(combo => [ combo ]),
             actualSumCombos: [ combosForCages[0].val ]
         };
     }
@@ -109,5 +109,5 @@ export function combosAndPermsForNonOverlappingHouseCages(cages: ReadonlyCages):
         }
     });
 
-    return { permsForNonOverlappingCages: perms, actualSumCombos };
+    return { perms, actualSumCombos };
 }

@@ -27,11 +27,11 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
-    const { permsForNonOverlappingCages, actualSumCombos: combosForNonOverlappingCages } = combosAndPermsForNonOverlappingHouseCages(nonOverlappingCages);
+    const { perms, actualSumCombos: combosForNonOverlappingCages } = combosAndPermsForNonOverlappingHouseCages(nonOverlappingCages);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 
-    return new HouseSumCombosAndPerms(nonOverlappingCages, permsForNonOverlappingCages, actualSumCombos);
+    return new HouseSumCombosAndPerms(nonOverlappingCages, perms, actualSumCombos);
 }
 
 export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
