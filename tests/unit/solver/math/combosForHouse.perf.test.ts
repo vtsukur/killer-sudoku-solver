@@ -4,6 +4,8 @@ import { Combo, combosForHouse } from '../../../../src/solver/math';
 import { newHouseModel } from './houseModelBuilder';
 
 describe('Performance tests for the finder of number combinations to form a house model out of cages', () => {
+    const ITERATION_COUNT = 50000;
+
     test('Cages in descending order of combination count', () => {
         const houseM = newHouseModel([
             Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
@@ -27,7 +29,7 @@ describe('Performance tests for the finder of number combinations to form a hous
             [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
         ]);
 
-        _.range(50000).forEach(() => {
+        _.range(ITERATION_COUNT).forEach(() => {
             combosForHouse(houseM);
         });
     });
@@ -55,7 +57,7 @@ describe('Performance tests for the finder of number combinations to form a hous
             [ Combo.of(4, 6), Combo.of(3, 7), Combo.of(2, 9), Combo.of(1, 5, 8) ]
         ]);
 
-        _.range(50000).forEach(() => {
+        _.range(ITERATION_COUNT).forEach(() => {
             combosForHouse(houseM);
         });
     });
