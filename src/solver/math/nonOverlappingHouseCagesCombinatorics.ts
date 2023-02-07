@@ -13,7 +13,8 @@ type ReadonlyComboPermutations = ReadonlyArray<ReadonlyCombos>;
  *
  * This type uses Killer Sudoku constraints
  * (_which state that `House` and its `Cage`s must have numbers from 1 to 9 without duplicates_)
- * to produce `Cage` number combinations to form a sum and permutations of these combinations to form a `House`.
+ * to produce possible `Cage` unique number combinations to form `Cage` sum and
+ * possible permutations of these combinations to form a `House`.
  *
  * @public
  */
