@@ -9,10 +9,10 @@ import { combosForSum, SumCombos } from './combosForSum';
 import { FastNumSet } from './fastNumSet';
 
 export class HouseSumCombosAndPerms {
-    readonly sumCombos: ReadonlyArray<ReadonlyCombos>;
+    readonly sumPerms: ReadonlyArray<ReadonlyCombos>;
 
-    constructor(sumCombos: ReadonlyArray<ReadonlyCombos>) {
-        this.sumCombos = sumCombos;
+    constructor(sumPerms: ReadonlyArray<ReadonlyCombos>) {
+        this.sumPerms = sumPerms;
     }
 }
 
