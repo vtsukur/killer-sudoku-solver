@@ -23,12 +23,12 @@ describe('Tests for the finder of sum number combinations and sum permutations f
             [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(3, 4), Combo.of(2, 5, 6) ],
             [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
         ]);
-        // expect(combosAndPerms.sumCombos).toEqual([
-        //     [ Combo.of(6, 9), Combo.of(7, 8) ],
-        //     [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-        //     [ Combo.of(2, 5), Combo.of(3, 4) ],
-        //     [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
-        // ]);
+        expect(combosAndPerms.actualSumCombos).toEqual([
+            [ Combo.of(6, 9), Combo.of(7, 8) ],
+            [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
+            [ Combo.of(2, 5), Combo.of(3, 4) ],
+            [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
+        ]);
     });
 
     test('Many combinations and permutations forming a complete HouseModel with non-overlapping cages', () => {

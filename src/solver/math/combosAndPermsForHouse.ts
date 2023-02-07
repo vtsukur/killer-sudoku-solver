@@ -6,7 +6,7 @@ import { joinArray } from '../../util/readableMessages';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
-import { FastNumSet } from './fastNumSet';
+import { BinaryStorage, FastNumSet } from './fastNumSet';
 
 export class HouseSumCombosAndPerms {
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
@@ -162,7 +162,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
     }
 
     const combos = new Array<ReadonlyCombos>();
-    const stack = new Array(cages.length);
+    const stack = new Array<Combo>(cages.length);
     const numFlags = new FastNumSet();
 
     function combosRecursive_0(sumCombos: SumCombos, step: number) {
@@ -187,9 +187,18 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
         }
     }
 
-    const actualSumCombos = new Array<ReadonlyCombos>();
+    const actualSumCombos = new Array<Array<Combo>>(cages.length);
+    const actualSumCombosHash = new Array<Set<BinaryStorage>>();
+    _.range(cages.length).forEach(i => {
+        actualSumCombos[i] = [];
+        actualSumCombosHash[i] = new Set<BinaryStorage>();
+    });
+
     function combosRecursive_last() {
         combos.push([...stack]);
+        _.range(cages.length).forEach(i => {
+            actualSumCombosHash[i].add(stack[i].fastNumSet.binaryStorage);
+        });
     }
 
     function combosRecursive_preLast_shortCircuit(sumCombos: SumCombos, step: number) {
@@ -219,6 +228,17 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
     }
 
     combosRecursive(0);
+
+    _.range(cages.length).forEach(i => {
+        const sumCombos = combosForCages[i];
+        const actualSumCombosSet = actualSumCombosHash[i];
+
+        for (const combo of sumCombos.val) {
+            if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
+                actualSumCombos[i].push(combo);
+            }
+        }
+    });
 
     return { combosForNonOverlappingCages: combos, actualSumCombos };
 }
