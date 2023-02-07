@@ -8,7 +8,7 @@ describe('Performance tests for Solver', () => {
     const solver = new Solver();
     const ITERATION_COUNT = 10;
 
-    test.skip('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
+    test('Find solution Sudoku.com puzzles', () => {
         _.range(ITERATION_COUNT).forEach(() => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
@@ -20,6 +20,11 @@ describe('Performance tests for Solver', () => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
             solver.solve(sudokuDotCom.randomExpertLevelChallenge);
+        });
+    });
+
+    test('Find solution DailyKillerSudoku.com puzzles', () => {
+        _.range(ITERATION_COUNT).forEach(() => {
             solver.solve(dailyKillerSudokuDotCom.puzzle24789_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24889_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24914_difficulty10);
