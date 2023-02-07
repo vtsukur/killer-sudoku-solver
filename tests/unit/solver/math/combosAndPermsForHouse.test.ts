@@ -10,6 +10,12 @@ describe('Tests for the finder of sum number combinations and sum permutations f
             Cage.ofSum(7).at(2, 1).at(2, 2).new(),
             Cage.ofSum(13).at(3, 1).at(3, 2).at(3, 3).new()
         ]));
+        expect(combosAndPerms.nonOverlappingCages).toEqual([
+            Cage.ofSum(15).at(1, 1).at(1, 2).new(),
+            Cage.ofSum(10).at(1, 3).at(2, 3).new(),
+            Cage.ofSum(7).at(2, 1).at(2, 2).new(),
+            Cage.ofSum(13).at(3, 1).at(3, 2).at(3, 3).new()
+        ]);
         expect(combosAndPerms.sumPermsForNonOverlappingCages).toEqual([
             [ Combo.of(6, 9), Combo.of(2, 8), Combo.of(3, 4), Combo.of(1, 5, 7) ],
             [ Combo.of(6, 9), Combo.of(3, 7), Combo.of(2, 5), Combo.of(1, 4, 8) ],

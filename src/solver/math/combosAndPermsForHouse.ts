@@ -9,10 +9,12 @@ import { combosForSum, SumCombos } from './combosForSum';
 import { FastNumSet } from './fastNumSet';
 
 export class HouseSumCombosAndPerms {
+    readonly nonOverlappingCages: ReadonlyArray<Cage>;
     readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
-    // readonly sumCombos: ReadonlyArray<ReadonlyCombos>;
+    // readonly relevantSumCombos: ReadonlyArray<ReadonlyCombos>;
 
-    constructor(sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>) {
+    constructor(nonOverlappingCages: ReadonlyArray<Cage>, sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>) {
+        this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
     }
 }
@@ -28,7 +30,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
     const combinedCombos = merge(combosForNonOverlappingCages, combosForOverlappingCages);
     const preservedCageOrderCombos = preserveOrder(combinedCombos, cages, nonOverlappingCages, overlappingCages);
 
-    return new HouseSumCombosAndPerms(preservedCageOrderCombos);
+    return new HouseSumCombosAndPerms(nonOverlappingCages, preservedCageOrderCombos);
 }
 
 export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
