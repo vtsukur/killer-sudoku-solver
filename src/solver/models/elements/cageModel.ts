@@ -52,7 +52,7 @@ export class CageModel {
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this._firstCell = cage.cells[0];
         this.cellMs = cellMs;
-        this._canHaveDuplicateNums = _.isUndefined(canHaveDuplicateNums) ? !this.positioningFlags.isWithinHouse : canHaveDuplicateNums;
+        this._canHaveDuplicateNums = canHaveDuplicateNums === true && !this.positioningFlags.isWithinHouse;
         this.minRow = House.CELL_COUNT + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
