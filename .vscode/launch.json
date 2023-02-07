@@ -480,6 +480,25 @@
                 "group": "solver"
             }
         },
+        {
+            "name": "npm run test [solver/puzzles/perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/puzzles/solver.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
 
         {
             "name": "npm run test [recognizer]",
