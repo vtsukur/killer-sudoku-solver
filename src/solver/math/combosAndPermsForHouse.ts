@@ -11,11 +11,14 @@ import { FastNumSet } from './fastNumSet';
 export class HouseSumCombosAndPerms {
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
     readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
-    // readonly relevantSumCombos: ReadonlyArray<ReadonlyCombos>;
+    readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
 
-    constructor(nonOverlappingCages: ReadonlyArray<Cage>, sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>) {
+    constructor(nonOverlappingCages: ReadonlyArray<Cage>,
+            sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
+        this.actualSumCombos = actualSumCombos;
     }
 }
 
@@ -25,12 +28,12 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 
     const { nonOverlappingCages, nonOverlappingCagesCellCount, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
-    const combosForNonOverlappingCages = doFindForNonOverlappingCages(nonOverlappingCages, nonOverlappingCagesCellCount);
+    const { combosForNonOverlappingCages, actualSumCombos } = doFindForNonOverlappingCages(nonOverlappingCages, nonOverlappingCagesCellCount);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const combinedCombos = merge(combosForNonOverlappingCages, combosForOverlappingCages);
     const preservedCageOrderCombos = preserveOrder(combinedCombos, cages, nonOverlappingCages, overlappingCages);
 
-    return new HouseSumCombosAndPerms(nonOverlappingCages, preservedCageOrderCombos);
+    return new HouseSumCombosAndPerms(nonOverlappingCages, preservedCageOrderCombos, actualSumCombos);
 }
 
 export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
@@ -136,18 +139,26 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
     context.cagesStack.delete(cage);
 }
 
-function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesCells: number) {
+type NonOverlappingCageSumCombos = {
+    combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+    actualSumCombos: ReadonlyArray<ReadonlyCombos>
+};
+
+function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesCells: number): NonOverlappingCageSumCombos {
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
     if (totalSum > House.SUM) {
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
     }
     if (cages.length == 0) {
-        return [];
+        return { combosForNonOverlappingCages: [], actualSumCombos: [] };
     }
 
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
     if (combosForCages.length === 1) {
-        return combosForCages[0].val.map(combo => [ combo ]);
+        return {
+            combosForNonOverlappingCages: combosForCages[0].val.map(combo => [ combo ]),
+            actualSumCombos: [ combosForCages[0].val ]
+        };
     }
 
     const combos = new Array<ReadonlyCombos>();
@@ -176,6 +187,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
         }
     }
 
+    const actualSumCombos = new Array<ReadonlyCombos>();
     function combosRecursive_last() {
         combos.push([...stack]);
     }
@@ -208,7 +220,7 @@ function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesC
 
     combosRecursive(0);
 
-    return combos;
+    return { combosForNonOverlappingCages: combos, actualSumCombos };
 }
 
 function doFindForOverlappingCages(cages: ReadonlyCages) {
