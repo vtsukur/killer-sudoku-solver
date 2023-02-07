@@ -9,7 +9,11 @@ import { BinaryStorage, FastNumSet } from './fastNumSet';
 type ReadonlyComboPermutations = ReadonlyArray<ReadonlyCombos>;
 
 /**
- * Computes actual combinations of numbers to form a sum
+ * Computational and data model for combinatorics of non-overlapping {@link Cage}s in the {@link House}.
+ *
+ * This type uses Killer Sudoku constraints
+ * (_which state that `House` and its `Cage`s must have numbers from 1 to 9 without duplicates_)
+ * to produce `Cage` number combinations to form a sum and permutations of these combinations to form a `House`.
  *
  * @public
  */
