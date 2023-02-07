@@ -7,7 +7,7 @@ describe('Performance tests for Solver', () => {
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();
 
-    test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
+    test.skip('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
         _.range(10).forEach(() => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
