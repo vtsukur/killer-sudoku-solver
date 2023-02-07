@@ -3,7 +3,7 @@ import { Cage } from '../../../../src/puzzle/cage';
 import { Combo, combosAndPermsForHouse } from '../../../../src/solver/math';
 import { newHouseModel } from './houseModelBuilder';
 
-describe('Performance tests for the finder of number combinations to form a house model out of cages', () => {
+describe('Performance tests for the finder of sum number combinations and sum permutations to form a HouseModel out of Cages', () => {
     const ITERATION_COUNT = 50000;
 
     test('Cages in descending order of combination count', () => {
