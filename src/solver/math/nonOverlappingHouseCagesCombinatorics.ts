@@ -6,7 +6,7 @@ import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 
-type ReadonlyComboPermutations = ReadonlyArray<ReadonlyCombos>;
+type ReadonlyComboPerms = ReadonlyArray<ReadonlyCombos>;
 
 /**
  * Computational and data model for combinatorics of non-overlapping {@link Cage}s in the {@link House}.
@@ -19,14 +19,14 @@ type ReadonlyComboPermutations = ReadonlyArray<ReadonlyCombos>;
  * @public
  */
 export class NonOverlappingHouseCagesCombinatorics {
-    readonly perms: ReadonlyComboPermutations;
-    readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
+    readonly comboPerms: ReadonlyComboPerms;
+    readonly combos: ReadonlyArray<ReadonlyCombos>;
 
     private static readonly EMPTY_INSTANCE = new NonOverlappingHouseCagesCombinatorics([], []);
 
-    private constructor(perms: ReadonlyArray<ReadonlyCombos>, actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
-        this.perms = perms;
-        this.actualSumCombos = actualSumCombos;
+    private constructor(comboPerms: ReadonlyArray<ReadonlyCombos>, combos: ReadonlyArray<ReadonlyCombos>) {
+        this.comboPerms = comboPerms;
+        this.combos = combos;
     }
 
     static computeCombosAndComboPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
@@ -43,8 +43,8 @@ export class NonOverlappingHouseCagesCombinatorics {
         const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         if (combosForCages.length === 1) {
             return {
-                perms: combosForCages[0].val.map(combo => [ combo ]),
-                actualSumCombos: [ combosForCages[0].val ]
+                comboPerms: combosForCages[0].val.map(combo => [ combo ]),
+                combos: [ combosForCages[0].val ]
             };
         }
 
@@ -127,7 +127,7 @@ export class NonOverlappingHouseCagesCombinatorics {
             }
         });
 
-        return { perms, actualSumCombos };
+        return { comboPerms: perms, combos: actualSumCombos };
     }
 
 };
