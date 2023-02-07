@@ -11,8 +11,10 @@ type NonOverlappingCageSumCombos = {
     actualSumCombos: ReadonlyArray<ReadonlyCombos>
 };
 
-export function doFindForNonOverlappingCages(cages: ReadonlyCages, nonOverlappingCagesCells: number): NonOverlappingCageSumCombos {
+export function combosAndPermsForNonOverlappingHouseCages(cages: ReadonlyCages): NonOverlappingCageSumCombos {
     const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
+    const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
+
     if (totalSum > House.SUM) {
         throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
     }

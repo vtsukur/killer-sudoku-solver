@@ -4,7 +4,7 @@ import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
-import { doFindForNonOverlappingCages } from './combosAndPermsForNonOverlappingHouseCages';
+import { combosAndPermsForNonOverlappingHouseCages } from './combosAndPermsForNonOverlappingHouseCages';
 import { combosForSum } from './combosForSum';
 
 export class HouseSumCombosAndPerms {
@@ -25,9 +25,9 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 
-    const { nonOverlappingCages, nonOverlappingCagesCellCount, overlappingCages } = clusterCagesByOverlap(cages, cells);
+    const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
-    const { permsForNonOverlappingCages, actualSumCombos: combosForNonOverlappingCages } = doFindForNonOverlappingCages(nonOverlappingCages, nonOverlappingCagesCellCount);
+    const { permsForNonOverlappingCages, actualSumCombos: combosForNonOverlappingCages } = combosAndPermsForNonOverlappingHouseCages(nonOverlappingCages);
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 
@@ -36,11 +36,10 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 
 export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
     if (!cages.length) {
-        return { nonOverlappingCages: [], nonOverlappingCagesCellCount: 0, overlappingCages: [] };
+        return { nonOverlappingCages: [], overlappingCages: [] };
     }
 
     const nonOverlappingCages = new Array<Cage>();
-    let nonOverlappingCagesCellCount = 0;
     const overlappingCages = new Array<Cage>();
 
     const cellsToCagesMap = new Map<CellKey, Set<Cage>>();
@@ -56,13 +55,11 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
     const allCagesAreNonOverlapping = Array.from(cellsToCagesMap.values()).every(cageSet => cageSet.size === 1);
     if (allCagesAreNonOverlapping) {
         nonOverlappingCages.push(...cages);
-        nonOverlappingCagesCellCount = nonOverlappingCages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
     } else {
         const maxNonOverlappingCagesAreaModelSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
         cages.forEach(cage => {
             if (maxNonOverlappingCagesAreaModelSet.has(cage)) {
                 nonOverlappingCages.push(cage);
-                nonOverlappingCagesCellCount = nonOverlappingCages.reduce((partialSum, a) => partialSum + a.cellCount, 0);
             } else {
                 overlappingCages.push(cage);
             }
@@ -71,7 +68,6 @@ export function clusterCagesByOverlap(cages: ReadonlyCages, cells: ReadonlyCells
 
     return {
         nonOverlappingCages,
-        nonOverlappingCagesCellCount,
         overlappingCages
     };
 }

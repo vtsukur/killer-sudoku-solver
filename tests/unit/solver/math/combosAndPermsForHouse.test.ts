@@ -121,7 +121,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
         });
     });
 
-    test('Combinations and permutations forming a HouseModel with overlapping cage', () => {
+    test('Combinations and permutations forming a HouseModel with overlapping Cages', () => {
         const combosAndPerms = combosAndPermsForHouse(newHouseModel([
             Cage.ofSum(8).at(2, 5).at(3, 5).new(),
             Cage.ofSum(8).at(7, 5).new(),
@@ -160,7 +160,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
         });
     });
 
-    test('Combinations and permutations forming a HouseModel out of Cages with non-overlapping cells whose total sum is greater than house max', () => {
+    test('Combinations and permutations forming a HouseModel out of Cages with non-overlapping Cells whose total sum is greater than House sum', () => {
         expect(() => combosAndPermsForHouse(newHouseModel([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
