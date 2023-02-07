@@ -6,9 +6,10 @@ describe('Performance tests for Solver', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();
+    const ITERATION_COUNT = 10;
 
     test.skip('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
-        _.range(10).forEach(() => {
+        _.range(ITERATION_COUNT).forEach(() => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
