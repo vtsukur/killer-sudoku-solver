@@ -214,7 +214,7 @@ const computeForSeveralCages: ComputeFn = (cages) => {
 
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeFn> = [
     shortCircuitForNoCages, // for 0 Cages
-    shortCircuitFor1Cage, // for 1 Cage
+    shortCircuitFor1Cage,   // for 1 Cage
     computeForSeveralCages, // for 2 Cages
     computeForSeveralCages, // for 3 Cages
     computeForSeveralCages, // for 4 Cages
