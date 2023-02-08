@@ -100,9 +100,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Combinations and permutations forming a HouseModel out of no Cages', () => {
-        const combosAndPerms = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms([]);
-
-        expect(combosAndPerms).toEqual({
+        expect(NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms([])).toEqual({
             perms: [],
             combos: []
         });
