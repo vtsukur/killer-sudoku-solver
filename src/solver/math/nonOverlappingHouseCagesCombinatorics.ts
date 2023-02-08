@@ -187,10 +187,7 @@ class Context {
         this.combos = new Array<Array<Combo>>(cageCount);
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
-        this.executionPipeline = new Array(cageCount + 1);
-        this.executionPipeline[0] = combosRecursive_0;
         const isCompleteHouse = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
-
         if (isCompleteHouse) {
             this.executionPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
