@@ -92,8 +92,8 @@ export class NonOverlappingHouseCagesCombinatorics {
             const singleCage = cages[0];
             const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
             return {
-                perms: singleCageCombos.val.map(combo => [ combo ]),
-                combos: [ singleCageCombos.val ],
+                perms: singleCageCombos.perms,
+                combos: singleCageCombos.arrayedVal,
             };
         }
 

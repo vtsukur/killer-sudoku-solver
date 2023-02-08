@@ -17,6 +17,25 @@ export class SumCombos {
      */
     readonly val: ReadonlyCombos;
 
+    /**
+     * Permutations of combinations of nonrepeating numbers to form a sum.
+     *
+     * Each permutation as represented as a readonly array with single element of a {@link Combo}.
+     *
+     * Used mainly for performance reasons as a cache to avoid construction overhead
+     * within {@link NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms}.
+     */
+    readonly perms: ReadonlyArray<ReadonlyCombos>;
+
+    /**
+     * {@link val} wrapped in a single-element array
+     * so that it is easy to consume it when it needs to be a part of multiple combinations logic.
+     *
+     * Used mainly for performance reasons as a cache to avoid construction overhead
+     * within {@link NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms}.
+     */
+    readonly arrayedVal: ReadonlyArray<ReadonlyCombos>;
+
     private readonly _fastNumSetToComboMap: Map<BinaryStorage, Combo> = new Map();
 
     /**
@@ -29,6 +48,8 @@ export class SumCombos {
         for (const combo of val) {
             this._fastNumSetToComboMap.set(combo.fastNumSet.binaryStorage, combo);
         }
+        this.perms = val.map(combo => [ combo ]);
+        this.arrayedVal = [ val ];
     }
 
     /**
