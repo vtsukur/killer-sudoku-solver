@@ -87,8 +87,6 @@ export class NonOverlappingHouseCagesCombinatorics {
             return this.EMPTY_INSTANCE;
         }
 
-        const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
-
         const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         if (combosForCages.length === 1) {
             return {
@@ -147,7 +145,9 @@ export class NonOverlappingHouseCagesCombinatorics {
 
         const executionPipeline = new Array<(sumCombos: SumCombos, step: number) => void>(cages.length + 1);
         executionPipeline[0] = combosRecursive_0;
-        if (nonOverlappingCagesCells === House.CELL_COUNT) {
+        const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
+
+        if (cellCount === House.CELL_COUNT) {
             _.range(1, cages.length - 1).forEach(step => {
                 executionPipeline[step] = combosRecursive_i;
             });
