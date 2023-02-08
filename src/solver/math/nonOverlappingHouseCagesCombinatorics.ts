@@ -6,27 +6,44 @@ import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 
-type ReadonlyComboPerms = ReadonlyArray<ReadonlyCombos>;
-
 /**
  * Computational and data model for combinatorics of non-overlapping {@link Cage}s in the {@link House}.
  *
- * This type uses Killer Sudoku constraints
- * (_which state that `House` and its `Cage`s must have numbers from 1 to 9 without duplicates_)
- * to produce possible `Cage` unique number combinations to form `Cage` sum and
- * possible permutations of these combinations to form a `House`.
+ * This type uses Killer Sudoku constraint
+ * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
+ * to produce possible permutations of nonrepeating numbers for each `Cage` within the same `House`
+ * and nonrepeating combinations for each `Cage` derived from these permutations.
  *
  * @public
  */
 export class NonOverlappingHouseCagesCombinatorics {
-    readonly comboPerms: ReadonlyComboPerms;
+
+    /**
+     * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
+     *
+     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndComboPerms} method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     *
+     * Numbers in each `Cage` combination and each permutation are guaranteed to be nonrepeating
+     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     */
+    readonly perms: ReadonlyArray<ReadonlyCombos>;
+
+    /**
+     * Computed combinations of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
+     *
+     * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
+     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndComboPerms} method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
+     */
     readonly combos: ReadonlyArray<ReadonlyCombos>;
 
     private static readonly EMPTY_INSTANCE = new NonOverlappingHouseCagesCombinatorics([], []);
 
-    private constructor(comboPerms: ReadonlyArray<ReadonlyCombos>, combos: ReadonlyArray<ReadonlyCombos>) {
-        this.comboPerms = comboPerms;
+    private constructor(perms: ReadonlyArray<ReadonlyCombos>, combos: ReadonlyArray<ReadonlyCombos>) {
         this.combos = combos;
+        this.perms = perms;
     }
 
     static computeCombosAndComboPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
@@ -43,7 +60,7 @@ export class NonOverlappingHouseCagesCombinatorics {
         const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         if (combosForCages.length === 1) {
             return {
-                comboPerms: combosForCages[0].val.map(combo => [ combo ]),
+                perms: combosForCages[0].val.map(combo => [ combo ]),
                 combos: [ combosForCages[0].val ]
             };
         }
@@ -127,7 +144,7 @@ export class NonOverlappingHouseCagesCombinatorics {
             }
         });
 
-        return { comboPerms: perms, combos: actualSumCombos };
+        return { perms: perms, combos: actualSumCombos };
     }
 
 };
