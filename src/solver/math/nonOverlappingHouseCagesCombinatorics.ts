@@ -22,7 +22,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
      *
      * Each permutation as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndComboPerms} method,
+     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
      *
      * Numbers in each `Cage` combination and each permutation are guaranteed to be nonrepeating
@@ -34,8 +34,11 @@ export class NonOverlappingHouseCagesCombinatorics {
      * Computed combinations of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
      *
      * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndComboPerms} method,
+     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
+     *
+     * Possible `Combo`s are derived from {@link perms},
+     * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
      */
     readonly combos: ReadonlyArray<ReadonlyCombos>;
 
@@ -46,7 +49,7 @@ export class NonOverlappingHouseCagesCombinatorics {
         this.perms = perms;
     }
 
-    static computeCombosAndComboPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
+    static computePermsAndCombos(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
