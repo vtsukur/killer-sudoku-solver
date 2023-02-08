@@ -85,15 +85,15 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 };
 
-class RecursiveEnumerator {
-    private readonly cageIndicesRange: ReadonlyArray<number>;
-    private readonly perms = new Array<ReadonlyCombos>();
-    private readonly numFlags = new FastNumSet();
-    private readonly stack: Array<Combo>;
-    private readonly combos: Array<Array<Combo>>;
-    private readonly combosHash = new Array<Set<BinaryStorage>>();
-    private readonly allCageCombos: Array<SumCombos>;
-    private readonly executionPipeline: Array<(sumCombos: SumCombos, step: number) => void>;
+class Context {
+    readonly cageIndicesRange: ReadonlyArray<number>;
+    readonly perms = new Array<ReadonlyCombos>();
+    readonly numFlags = new FastNumSet();
+    readonly stack: Array<Combo>;
+    readonly combos: Array<Array<Combo>>;
+    readonly combosHash = new Array<Set<BinaryStorage>>();
+    readonly allCageCombos: Array<SumCombos>;
+    readonly executionPipeline: Array<(ctx: Context, sumCombos: SumCombos, step: number) => void>;
 
     constructor(cages: ReadonlyCages) {
         const cageCount = cages.length;
@@ -104,20 +104,20 @@ class RecursiveEnumerator {
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
         this.executionPipeline = new Array(cageCount + 1);
-        this.executionPipeline[0] = this.bindToThis(this.combosRecursive_0);
+        this.executionPipeline[0] = combosRecursive_0;
         const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
         if (cellCount === House.CELL_COUNT) {
             const lastStepIndex = cageCount - 1;
             CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
-                this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
+                this.executionPipeline[step] = combosRecursive_i;
             });
-            this.executionPipeline[lastStepIndex] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
+            this.executionPipeline[lastStepIndex] = combosRecursive_preLast_shortCircuit;
         } else {
             CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
-                this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
+                this.executionPipeline[step] = combosRecursive_i;
             });
-            this.executionPipeline[cageCount] = this.bindToThis(this.combosRecursive_last);
+            this.executionPipeline[cageCount] = combosRecursive_last;
         }
 
         this.cageIndicesRange.forEach(i => {
@@ -125,68 +125,71 @@ class RecursiveEnumerator {
             this.combosHash[i] = new Set<BinaryStorage>();
         });
     }
+}
+
+const combosRecursive = (ctx: Context, step: number) => {
+    ctx.executionPipeline[step](ctx, ctx.allCageCombos[step], step);
+};
+
+const combosRecursive_0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
+    for (const comboForSum of sumCombos.val) {
+        ctx.stack[step] = comboForSum;
+
+        ctx.numFlags.add(comboForSum.fastNumSet);
+        combosRecursive(ctx, step + 1);
+        ctx.numFlags.remove(comboForSum.fastNumSet);
+    }
+};
+
+const combosRecursive_i = (ctx: Context, sumCombos: SumCombos, step: number) => {
+    for (const comboForSum of sumCombos.val) {
+        if (ctx.numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
+            ctx.stack[step] = comboForSum;
+
+            ctx.numFlags.add(comboForSum.fastNumSet);
+            combosRecursive(ctx, step + 1);
+            ctx.numFlags.remove(comboForSum.fastNumSet);
+        }
+    }
+};
+
+const combosRecursive_last = (ctx: Context) => {
+    ctx.perms.push([...ctx.stack]);
+    ctx.cageIndicesRange.forEach(i => {
+        ctx.combosHash[i].add(ctx.stack[i].fastNumSet.binaryStorage);
+    });
+};
+
+const combosRecursive_preLast_shortCircuit = (ctx: Context, sumCombos: SumCombos, step: number) => {
+    const lastCombo = sumCombos.get(ctx.numFlags.remaining());
+    if (lastCombo !== undefined) {
+        ctx.stack[step] = lastCombo;
+        combosRecursive_last(ctx);
+    }
+};
+
+class RecursiveEnumerator {
+    private readonly ctx: Context;
+
+    constructor(ctx: Context) {
+        this.ctx = ctx;
+    }
 
     execute() {
-        this.combosRecursive(0);
+        combosRecursive(this.ctx, 0);
 
-        this.cageIndicesRange.forEach(i => {
-            const sumCombos = this.allCageCombos[i];
-            const actualSumCombosSet = this.combosHash[i];
+        this.ctx.cageIndicesRange.forEach(i => {
+            const sumCombos = this.ctx.allCageCombos[i];
+            const actualSumCombosSet = this.ctx.combosHash[i];
 
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                    this.combos[i].push(combo);
+                    this.ctx.combos[i].push(combo);
                 }
             }
         });
 
-        return { combos: this.combos, perms: this.perms };
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private bindToThis(fn: (...args: any[]) => void) {
-        return fn.bind(this);
-    }
-
-    private combosRecursive(step: number) {
-        this.executionPipeline[step](this.allCageCombos[step], step);
-    }
-
-    private combosRecursive_0(sumCombos: SumCombos, step: number) {
-        for (const comboForSum of sumCombos.val) {
-            this.stack[step] = comboForSum;
-
-            this.numFlags.add(comboForSum.fastNumSet);
-            this.combosRecursive(step + 1);
-            this.numFlags.remove(comboForSum.fastNumSet);
-        }
-    }
-
-    private combosRecursive_i(sumCombos: SumCombos, step: number) {
-        for (const comboForSum of sumCombos.val) {
-            if (this.numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
-                this.stack[step] = comboForSum;
-
-                this.numFlags.add(comboForSum.fastNumSet);
-                this.combosRecursive(step + 1);
-                this.numFlags.remove(comboForSum.fastNumSet);
-            }
-        }
-    }
-
-    private combosRecursive_last() {
-        this.perms.push([...this.stack]);
-        this.cageIndicesRange.forEach(i => {
-            this.combosHash[i].add(this.stack[i].fastNumSet.binaryStorage);
-        });
-    }
-
-    private combosRecursive_preLast_shortCircuit(sumCombos: SumCombos, step: number) {
-        const lastCombo = sumCombos.get(this.numFlags.remaining());
-        if (lastCombo !== undefined) {
-            this.stack[step] = lastCombo;
-            this.combosRecursive_last();
-        }
+        return { combos: this.ctx.combos, perms: this.ctx.perms };
     }
 }
 
@@ -211,7 +214,7 @@ const shortCircuitFor1Cage: ComputeFn = (cages) => {
 };
 
 const computeForSeveralCages: ComputeFn = (cages) => {
-    return new RecursiveEnumerator(cages).execute();
+    return new RecursiveEnumerator(new Context(cages)).execute();
 };
 
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeFn> = [
