@@ -75,15 +75,17 @@ export class NonOverlappingHouseCagesCombinatorics {
      * See {@link combos}.
      */
     static computePermsAndCombos(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
-        const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
+        // short circuit return to avoid initializatio overhead in case there is nothing to compute
+        if (cages.length === 0) {
+            return this.EMPTY_INSTANCE;
+        }
 
+        const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
         if (totalSum > House.SUM) {
             throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
         }
-        if (cages.length == 0) {
-            return this.EMPTY_INSTANCE;
-        }
+
+        const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
         const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         if (combosForCages.length === 1) {
