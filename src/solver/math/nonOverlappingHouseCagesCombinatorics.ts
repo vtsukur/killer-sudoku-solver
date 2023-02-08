@@ -44,8 +44,6 @@ export class NonOverlappingHouseCagesCombinatorics {
      */
     readonly perms: ReadonlyArray<ReadonlyCombos>;
 
-    private static readonly EMPTY_INSTANCE = new NonOverlappingHouseCagesCombinatorics([], []);
-
     private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyArray<ReadonlyCombos>, ) {
         this.combos = combos;
         this.perms = perms;
@@ -82,24 +80,31 @@ export class NonOverlappingHouseCagesCombinatorics {
      * See {@link perms}.
      */
     static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        if (cages.length === 0) {
-            // short circuit return for a case when there is nothing to compute to avoid initialization overhead
-            return this.EMPTY_INSTANCE;
-        } else if (cages.length === 1) {
-            // short circuit return for a case when there is only one Cage to avoid initialization overhead
-            const singleCage = cages[0];
-            const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
-            return {
-                perms: singleCageCombos.perms,
-                combos: singleCageCombos.arrayedVal,
-            };
-        } else {
-            return doCompute(cages);
-        }
+        return CAGE_COUNT_BASED_STRATEGIES[cages.length](cages);
     }
 };
 
-const doCompute = (cages: ReadonlyCages) => {
+type ComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
+
+const EMPTY_INSTANCE = {
+    combos: [],
+    perms: []
+};
+
+const shortCircuitForNoCagesCase: ComputeFn = () => {
+    return EMPTY_INSTANCE;
+};
+
+const shortCircuitFor1CageCase: ComputeFn = (cages) => {
+    const singleCage = cages[0];
+    const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
+    return {
+        perms: singleCageCombos.perms,
+        combos: singleCageCombos.arrayedVal,
+    };
+};
+
+const computeForSeveralCages: ComputeFn = (cages) => {
     const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
     const perms = new Array<ReadonlyCombos>();
@@ -185,3 +190,16 @@ const doCompute = (cages: ReadonlyCages) => {
 
     return { combos: actualSumCombos, perms: perms };
 };
+
+const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeFn> = [
+    shortCircuitForNoCagesCase, // for 0 Cages
+    shortCircuitFor1CageCase, // for 1 Cage
+    computeForSeveralCages, // for 2 Cages
+    computeForSeveralCages, // for 3 Cages
+    computeForSeveralCages, // for 4 Cages
+    computeForSeveralCages, // for 5 Cages
+    computeForSeveralCages, // for 6 Cages
+    computeForSeveralCages, // for 7 Cages
+    computeForSeveralCages, // for 8 Cages
+    computeForSeveralCages, // for 9 Cages
+];
