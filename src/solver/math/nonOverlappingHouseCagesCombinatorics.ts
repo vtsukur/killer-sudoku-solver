@@ -86,8 +86,7 @@ export class NonOverlappingHouseCagesCombinatorics {
 };
 
 class RecursiveEnumerator {
-
-    private readonly cages: ReadonlyCages;
+    private readonly cageIndicesRange: ReadonlyArray<number>;
     private readonly perms = new Array<ReadonlyCombos>();
     private readonly numFlags = new FastNumSet();
     private readonly stack: Array<Combo>;
@@ -97,28 +96,30 @@ class RecursiveEnumerator {
     private readonly executionPipeline: Array<(sumCombos: SumCombos, step: number) => void>;
 
     constructor(cages: ReadonlyCages) {
-        this.cages = cages;
-        this.stack = new Array<Combo>(cages.length);
-        this.combos = new Array<Array<Combo>>(cages.length);
+        const cageCount = cages.length;
+        this.cageIndicesRange = _.range(cageCount);
+
+        this.stack = new Array<Combo>(cageCount);
+        this.combos = new Array<Array<Combo>>(cageCount);
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
-        this.executionPipeline = new Array(cages.length + 1);
+        this.executionPipeline = new Array(cageCount + 1);
         this.executionPipeline[0] = this.bindToThis(this.combosRecursive_0);
         const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
         if (cellCount === House.CELL_COUNT) {
-            _.range(1, cages.length - 1).forEach(step => {
+            _.range(1, cageCount - 1).forEach(step => {
                 this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
-            this.executionPipeline[cages.length - 1] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
+            this.executionPipeline[cageCount - 1] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
         } else {
-            _.range(1, cages.length).forEach(step => {
+            _.range(1, cageCount).forEach(step => {
                 this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
-            this.executionPipeline[cages.length] = this.bindToThis(this.combosRecursive_last);
+            this.executionPipeline[cageCount] = this.bindToThis(this.combosRecursive_last);
         }
 
-        _.range(cages.length).forEach(i => {
+        this.cageIndicesRange.forEach(i => {
             this.combos[i] = [];
             this.combosHash[i] = new Set<BinaryStorage>();
         });
@@ -127,7 +128,7 @@ class RecursiveEnumerator {
     execute() {
         this.combosRecursive(0);
 
-        _.range(this.cages.length).forEach(i => {
+        this.cageIndicesRange.forEach(i => {
             const sumCombos = this.allCageCombos[i];
             const actualSumCombosSet = this.combosHash[i];
 
@@ -174,7 +175,7 @@ class RecursiveEnumerator {
 
     private combosRecursive_last() {
         this.perms.push([...this.stack]);
-        _.range(this.cages.length).forEach(i => {
+        this.cageIndicesRange.forEach(i => {
             this.combosHash[i].add(this.stack[i].fastNumSet.binaryStorage);
         });
     }
