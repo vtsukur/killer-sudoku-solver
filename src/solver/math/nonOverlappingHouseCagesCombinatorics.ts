@@ -77,7 +77,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * @throws {RangeError} if total sum of all Cages with non-overlapping `Cell`s is above House sum of 45.
      */
     static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        // short circuit return to avoid initializatio overhead in case there is nothing to compute
+        // short circuit return to avoid initialization overhead in case there is nothing to compute
         if (cages.length === 0) {
             return this.EMPTY_INSTANCE;
         }
