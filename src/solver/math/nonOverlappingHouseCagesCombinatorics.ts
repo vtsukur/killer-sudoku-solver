@@ -12,7 +12,7 @@ import { BinaryStorage, FastNumSet } from './fastNumSet';
  * This type uses Killer Sudoku constraint
  * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
  * to produce possible permutations of nonrepeating numbers for each `Cage` within the same `House`
- * and nonrepeating combinations for each `Cage` derived from these permutations.
+ * and nonrepeating `Combo`s for each `Cage` derived from these permutations.
  *
  * @public
  */
@@ -25,20 +25,23 @@ export class NonOverlappingHouseCagesCombinatorics {
      * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
      *
-     * Numbers in each `Cage` combination and each permutation are guaranteed to be nonrepeating
+     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly perms: ReadonlyArray<ReadonlyCombos>;
 
     /**
-     * Computed combinations of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
+     * Computed `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
+     *
+     * Possible `Combo`s are derived from {@link perms},
+     * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
      *
      * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
      *
-     * Possible `Combo`s are derived from {@link perms},
-     * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
+     * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
+     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly combos: ReadonlyArray<ReadonlyCombos>;
 
@@ -49,6 +52,28 @@ export class NonOverlappingHouseCagesCombinatorics {
         this.perms = perms;
     }
 
+    /**
+     * Computes permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
+     *
+     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
+     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     *
+     * @param cages - Array of `Cage`s with non-overlapping `Cell`s that reside within the same `House`.
+     *
+     * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
+     *
+     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of this method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     * See {@link perms}.
+     *
+     * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
+     * These arrays appear in the same order as respective `Cage`s in `cages` input of this method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
+     * See {@link combos}.
+     */
     static computePermsAndCombos(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
