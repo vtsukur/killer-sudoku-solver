@@ -99,6 +99,22 @@ describe('Tests for the finder of sum number combinations and sum permutations f
         });
     });
 
+    test('Several combinations and permutations forming an incomplete HouseModel with a single Cage', () => {
+        const combosAndPerms = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms([
+            Cage.ofSum(5).at(1, 1).at(1, 2).new()
+        ]);
+
+        expect(combosAndPerms).toEqual({
+            perms: [
+                [ Combo.of(1, 4) ],
+                [ Combo.of(2, 3) ]
+            ],
+            combos: [
+                [ Combo.of(1, 4), Combo.of(2, 3) ]
+            ]
+        });
+    });
+
     test('Combinations and permutations forming a HouseModel out of no Cages', () => {
         expect(NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms([])).toEqual({
             perms: [],
