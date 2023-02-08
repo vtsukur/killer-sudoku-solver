@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
-import { joinArray } from '../../util/readableMessages';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
@@ -61,6 +60,14 @@ export class NonOverlappingHouseCagesCombinatorics {
      *
      * @param cages - Array of `Cage`s with non-overlapping `Cell`s that reside within the same `House`.
      *
+     * `Cage`s may cover either complete set of House `Cell`s or a subset. Empty array `Cage` is also acceptable.
+     *
+     * For performance reasons, this method does NOT check:
+     *  - if all given `Cage`s belong to the same `House`;
+     *  - if `Cell`s in the given `Cage`s are non-overlapping;
+     *  - if total sum of all `Cage`s is no greater than `House` sum.
+     * Its up to the caller to provide valid input.
+     *
      * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
      * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
      *
@@ -73,16 +80,12 @@ export class NonOverlappingHouseCagesCombinatorics {
      * `Combo`s appear in the same order as respective `Cage`s in `cages` input of this method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
      * See {@link perms}.
-     *
-     * @throws {RangeError} if total sum of all Cages with non-overlapping `Cell`s is above House sum of 45.
      */
     static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         // short circuit return to avoid initialization overhead in case there is nothing to compute
         if (cages.length === 0) {
             return this.EMPTY_INSTANCE;
         }
-
-        this.validateTotalCageSum(cages);
 
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
@@ -174,12 +177,5 @@ export class NonOverlappingHouseCagesCombinatorics {
         });
 
         return { combos: actualSumCombos, perms: perms };
-    }
-
-    private static validateTotalCageSum(cages: ReadonlyCages) {
-        const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
-        if (totalSum > House.SUM) {
-            throw new RangeError(`Total sum of all Cages with non-overlapping Cells should be <= House sum of ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`);
-        }
     }
 };
