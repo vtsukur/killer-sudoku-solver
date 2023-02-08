@@ -73,6 +73,8 @@ export class NonOverlappingHouseCagesCombinatorics {
      * These arrays appear in the same order as respective `Cage`s in `cages` input of this method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
      * See {@link combos}.
+     *
+     * @throws {RangeError} if total sum of all Cages with non-overlapping `Cell`s is above House sum of 45.
      */
     static computePermsAndCombos(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         // short circuit return to avoid initializatio overhead in case there is nothing to compute
@@ -82,7 +84,7 @@ export class NonOverlappingHouseCagesCombinatorics {
 
         const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
         if (totalSum > House.SUM) {
-            throw `Total cage with non-overlapping cells should be <= ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`;
+            throw new RangeError(`Total sum of all Cages with non-overlapping Cells should be <= House sum of ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`);
         }
 
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);

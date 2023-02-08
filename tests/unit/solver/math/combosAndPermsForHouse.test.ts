@@ -166,7 +166,8 @@ describe('Tests for the finder of sum number combinations and sum permutations f
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(12).at(1, 6).at(1, 7).new(),
             Cage.ofSum(6).at(1, 8).new()
-        ]))).toThrow(
-            'Total cage with non-overlapping cells should be <= 45. Actual: 46. Cages: ');
+        ]))).toThrow(new RangeError(
+            'Total sum of all Cages with non-overlapping Cells should be <= House sum of 45. Actual: 46. Cages: {4 [(1, 1), (1, 2)], 24 [(1, 3), (1, 4), (1, 5)], 12 [(1, 6), (1, 7)], 6 [(1, 8)]}'
+        ));
     });
 });

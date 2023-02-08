@@ -19,7 +19,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(3, 4), Combo.of(2, 5, 6) ],
                 [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
             ],
-            actualSumCombos: [
+            combos: [
                 [ Combo.of(6, 9), Combo.of(7, 8) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
                 [ Combo.of(2, 5), Combo.of(3, 4) ],
@@ -51,7 +51,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(3, 5, 6), Combo.of(1, 9), Combo.of(2, 8), Combo.of(4, 7) ],
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ],
-            actualSumCombos: [
+            combos: [
                 [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
@@ -71,7 +71,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(1, 4), Combo.of(2, 5) ],
                 [ Combo.of(2, 3), Combo.of(1, 6) ]
             ],
-            actualSumCombos: [
+            combos: [
                 [ Combo.of(1, 4), Combo.of(2, 3) ],
                 [ Combo.of(1, 6), Combo.of(2, 5) ]
             ]
@@ -90,7 +90,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
             perms: [
                 [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
             ],
-            actualSumCombos: [
+            combos: [
                 [ Combo.of(1, 3) ],
                 [ Combo.of(7, 8, 9) ],
                 [ Combo.of(2, 5) ],
@@ -104,7 +104,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
 
         expect(combosAndPerms).toEqual({
             perms: [],
-            actualSumCombos: []
+            combos: []
         });
     });
 
@@ -114,7 +114,8 @@ describe('Tests for the finder of sum number combinations and sum permutations f
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(12).at(1, 6).at(1, 7).new(),
             Cage.ofSum(6).at(1, 8).new()
-        ])).toThrow(
-            'Total cage with non-overlapping cells should be <= 45. Actual: 46. Cages: ');
+        ])).toThrow(new RangeError(
+            'Total sum of all Cages with non-overlapping Cells should be <= House sum of 45. Actual: 46. Cages: {4 [(1, 1), (1, 2)], 24 [(1, 3), (1, 4), (1, 5)], 12 [(1, 6), (1, 7)], 6 [(1, 8)]}'
+        ));
     });
 });
