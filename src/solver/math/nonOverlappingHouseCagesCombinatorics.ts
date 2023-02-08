@@ -106,7 +106,7 @@ const shortCircuitFor1CageCase: ComputeFn = (cages) => {
 };
 
 const computeForSeveralCages: ComputeFn = (cages) => {
-    const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
+    const allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
     const perms = new Array<ReadonlyCombos>();
     const stack = new Array<Combo>(cages.length);
@@ -173,13 +173,13 @@ const computeForSeveralCages: ComputeFn = (cages) => {
     }
 
     function combosRecursive(step: number) {
-        executionPipeline[step](combosForCages[step], step);
+        executionPipeline[step](allCageCombos[step], step);
     }
 
     combosRecursive(0);
 
     _.range(cages.length).forEach(i => {
-        const sumCombos = combosForCages[i];
+        const sumCombos = allCageCombos[i];
         const actualSumCombosSet = actualSumCombosHash[i];
 
         for (const combo of sumCombos.val) {
