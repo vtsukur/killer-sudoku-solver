@@ -82,29 +82,43 @@ export class NonOverlappingHouseCagesCombinatorics {
      * See {@link perms}.
      */
     static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        // short circuit return for a case when there is nothing to compute to avoid initialization overhead
         if (cages.length === 0) {
+            // short circuit return for a case when there is nothing to compute to avoid initialization overhead
             return this.EMPTY_INSTANCE;
-        }
-
-        // short circuit return for a case when there is only one Cage to avoid initialization overhead
-        if (cages.length === 1) {
+        } else if (cages.length === 1) {
+            // short circuit return for a case when there is only one Cage to avoid initialization overhead
             const singleCage = cages[0];
             const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
             return {
                 perms: singleCageCombos.perms,
                 combos: singleCageCombos.arrayedVal,
             };
+        } else {
+            return doCompute(cages);
         }
+    }
+};
 
-        const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
+const doCompute = (cages: ReadonlyCages) => {
+    const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
-        const perms = new Array<ReadonlyCombos>();
-        const stack = new Array<Combo>(cages.length);
-        const numFlags = new FastNumSet();
+    const perms = new Array<ReadonlyCombos>();
+    const stack = new Array<Combo>(cages.length);
+    const numFlags = new FastNumSet();
 
-        function combosRecursive_0(sumCombos: SumCombos, step: number) {
-            for (const comboForSum of sumCombos.val) {
+    function combosRecursive_0(sumCombos: SumCombos, step: number) {
+        for (const comboForSum of sumCombos.val) {
+            stack[step] = comboForSum;
+
+            numFlags.add(comboForSum.fastNumSet);
+            combosRecursive(step + 1);
+            numFlags.remove(comboForSum.fastNumSet);
+        }
+    }
+
+    function combosRecursive_i(sumCombos: SumCombos, step: number) {
+        for (const comboForSum of sumCombos.val) {
+            if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
                 stack[step] = comboForSum;
 
                 numFlags.add(comboForSum.fastNumSet);
@@ -112,74 +126,62 @@ export class NonOverlappingHouseCagesCombinatorics {
                 numFlags.remove(comboForSum.fastNumSet);
             }
         }
-
-        function combosRecursive_i(sumCombos: SumCombos, step: number) {
-            for (const comboForSum of sumCombos.val) {
-                if (numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
-                    stack[step] = comboForSum;
-
-                    numFlags.add(comboForSum.fastNumSet);
-                    combosRecursive(step + 1);
-                    numFlags.remove(comboForSum.fastNumSet);
-                }
-            }
-        }
-
-        const actualSumCombos = new Array<Array<Combo>>(cages.length);
-        const actualSumCombosHash = new Array<Set<BinaryStorage>>();
-        _.range(cages.length).forEach(i => {
-            actualSumCombos[i] = [];
-            actualSumCombosHash[i] = new Set<BinaryStorage>();
-        });
-
-        function combosRecursive_last() {
-            perms.push([...stack]);
-            _.range(cages.length).forEach(i => {
-                actualSumCombosHash[i].add(stack[i].fastNumSet.binaryStorage);
-            });
-        }
-
-        function combosRecursive_preLast_shortCircuit(sumCombos: SumCombos, step: number) {
-            const lastCombo = sumCombos.get(numFlags.remaining());
-            if (lastCombo !== undefined) {
-                stack[step] = lastCombo;
-                combosRecursive_last();
-            }
-        }
-
-        const executionPipeline = new Array<(sumCombos: SumCombos, step: number) => void>(cages.length + 1);
-        executionPipeline[0] = combosRecursive_0;
-        const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
-
-        if (cellCount === House.CELL_COUNT) {
-            _.range(1, cages.length - 1).forEach(step => {
-                executionPipeline[step] = combosRecursive_i;
-            });
-            executionPipeline[cages.length - 1] = combosRecursive_preLast_shortCircuit;
-        } else {
-            _.range(1, cages.length).forEach(step => {
-                executionPipeline[step] = combosRecursive_i;
-            });
-            executionPipeline[cages.length] = combosRecursive_last;
-        }
-
-        function combosRecursive(step: number) {
-            executionPipeline[step](combosForCages[step], step);
-        }
-
-        combosRecursive(0);
-
-        _.range(cages.length).forEach(i => {
-            const sumCombos = combosForCages[i];
-            const actualSumCombosSet = actualSumCombosHash[i];
-
-            for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                    actualSumCombos[i].push(combo);
-                }
-            }
-        });
-
-        return { combos: actualSumCombos, perms: perms };
     }
+
+    const actualSumCombos = new Array<Array<Combo>>(cages.length);
+    const actualSumCombosHash = new Array<Set<BinaryStorage>>();
+    _.range(cages.length).forEach(i => {
+        actualSumCombos[i] = [];
+        actualSumCombosHash[i] = new Set<BinaryStorage>();
+    });
+
+    function combosRecursive_last() {
+        perms.push([...stack]);
+        _.range(cages.length).forEach(i => {
+            actualSumCombosHash[i].add(stack[i].fastNumSet.binaryStorage);
+        });
+    }
+
+    function combosRecursive_preLast_shortCircuit(sumCombos: SumCombos, step: number) {
+        const lastCombo = sumCombos.get(numFlags.remaining());
+        if (lastCombo !== undefined) {
+            stack[step] = lastCombo;
+            combosRecursive_last();
+        }
+    }
+
+    const executionPipeline = new Array<(sumCombos: SumCombos, step: number) => void>(cages.length + 1);
+    executionPipeline[0] = combosRecursive_0;
+    const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
+
+    if (cellCount === House.CELL_COUNT) {
+        _.range(1, cages.length - 1).forEach(step => {
+            executionPipeline[step] = combosRecursive_i;
+        });
+        executionPipeline[cages.length - 1] = combosRecursive_preLast_shortCircuit;
+    } else {
+        _.range(1, cages.length).forEach(step => {
+            executionPipeline[step] = combosRecursive_i;
+        });
+        executionPipeline[cages.length] = combosRecursive_last;
+    }
+
+    function combosRecursive(step: number) {
+        executionPipeline[step](combosForCages[step], step);
+    }
+
+    combosRecursive(0);
+
+    _.range(cages.length).forEach(i => {
+        const sumCombos = combosForCages[i];
+        const actualSumCombosSet = actualSumCombosHash[i];
+
+        for (const combo of sumCombos.val) {
+            if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
+                actualSumCombos[i].push(combo);
+            }
+        }
+    });
+
+    return { combos: actualSumCombos, perms: perms };
 };
