@@ -85,13 +85,6 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 };
 
-type ComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
-
-const EMPTY_INSTANCE = {
-    combos: [],
-    perms: []
-};
-
 class RecursiveEnumerator {
 
     private readonly cages: ReadonlyCages;
@@ -194,6 +187,13 @@ class RecursiveEnumerator {
         }
     }
 }
+
+type ComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
+
+const EMPTY_INSTANCE = {
+    combos: [],
+    perms: []
+};
 
 const shortCircuitForNoCages: ComputeFn = () => {
     return EMPTY_INSTANCE;
