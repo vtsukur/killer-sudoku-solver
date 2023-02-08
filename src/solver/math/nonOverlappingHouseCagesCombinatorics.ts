@@ -82,7 +82,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * See {@link perms}.
      */
     static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        // short circuit return to avoid initialization overhead in case there is nothing to compute
+        // short circuit return for a case when there is nothing to compute to avoid initialization overhead
         if (cages.length === 0) {
             return this.EMPTY_INSTANCE;
         }
