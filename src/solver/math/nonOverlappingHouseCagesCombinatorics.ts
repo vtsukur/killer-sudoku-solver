@@ -82,10 +82,7 @@ export class NonOverlappingHouseCagesCombinatorics {
             return this.EMPTY_INSTANCE;
         }
 
-        const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
-        if (totalSum > House.SUM) {
-            throw new RangeError(`Total sum of all Cages with non-overlapping Cells should be <= House sum of ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`);
-        }
+        this.validateTotalCageSum(cages);
 
         const nonOverlappingCagesCells = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
@@ -179,4 +176,10 @@ export class NonOverlappingHouseCagesCombinatorics {
         return { combos: actualSumCombos, perms: perms };
     }
 
+    private static validateTotalCageSum(cages: ReadonlyCages) {
+        const totalSum = cages.reduce((partialSum, a) => partialSum + a.sum, 0);
+        if (totalSum > House.SUM) {
+            throw new RangeError(`Total sum of all Cages with non-overlapping Cells should be <= House sum of ${House.SUM}. Actual: ${totalSum}. Cages: {${joinArray(cages)}}`);
+        }
+    }
 };
