@@ -110,19 +110,19 @@ class RecursiveEnumerator {
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
         this.executionPipeline = new Array(cages.length + 1);
-        this.executionPipeline[0] = this.combosRecursive_0.bind(this);
+        this.executionPipeline[0] = this.bindToThis(this.combosRecursive_0);
         const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
         if (cellCount === House.CELL_COUNT) {
             _.range(1, cages.length - 1).forEach(step => {
-                this.executionPipeline[step] = this.combosRecursive_i.bind(this);
+                this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
-            this.executionPipeline[cages.length - 1] = this.combosRecursive_preLast_shortCircuit.bind(this);
+            this.executionPipeline[cages.length - 1] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
         } else {
             _.range(1, cages.length).forEach(step => {
-                this.executionPipeline[step] = this.combosRecursive_i.bind(this);
+                this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
-            this.executionPipeline[cages.length] = this.combosRecursive_last.bind(this);
+            this.executionPipeline[cages.length] = this.bindToThis(this.combosRecursive_last);
         }
 
         _.range(cages.length).forEach(i => {
@@ -146,6 +146,11 @@ class RecursiveEnumerator {
         });
 
         return { combos: this.combos, perms: this.perms };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private bindToThis(fn: (...args: any[]) => void) {
+        return fn.bind(this);
     }
 
     private combosRecursive(step: number) {
