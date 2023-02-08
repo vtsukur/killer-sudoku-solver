@@ -44,6 +44,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      */
     readonly perms: ReadonlyArray<ReadonlyCombos>;
 
+    // istanbul ignore next
     private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyArray<ReadonlyCombos>, ) {
         this.combos = combos;
         this.perms = perms;
@@ -133,10 +134,10 @@ const computeForSeveralCages: ComputeFn = (cages) => {
         }
     }
 
-    const actualSumCombos = new Array<Array<Combo>>(cages.length);
+    const combos = new Array<Array<Combo>>(cages.length);
     const actualSumCombosHash = new Array<Set<BinaryStorage>>();
     _.range(cages.length).forEach(i => {
-        actualSumCombos[i] = [];
+        combos[i] = [];
         actualSumCombosHash[i] = new Set<BinaryStorage>();
     });
 
@@ -183,12 +184,12 @@ const computeForSeveralCages: ComputeFn = (cages) => {
 
         for (const combo of sumCombos.val) {
             if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                actualSumCombos[i].push(combo);
+                combos[i].push(combo);
             }
         }
     });
 
-    return { combos: actualSumCombos, perms: perms };
+    return { combos, perms };
 };
 
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeFn> = [
