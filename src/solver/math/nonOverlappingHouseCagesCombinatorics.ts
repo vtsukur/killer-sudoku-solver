@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
 import { ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
+import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
@@ -97,7 +97,7 @@ class RecursiveEnumerator {
 
     constructor(cages: ReadonlyCages) {
         const cageCount = cages.length;
-        this.cageIndicesRange = _.range(cageCount);
+        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_UP_TO_81[cageCount];
 
         this.stack = new Array<Combo>(cageCount);
         this.combos = new Array<Array<Combo>>(cageCount);
@@ -108,12 +108,13 @@ class RecursiveEnumerator {
         const cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
 
         if (cellCount === House.CELL_COUNT) {
-            _.range(1, cageCount - 1).forEach(step => {
+            const lastStepIndex = cageCount - 1;
+            CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
                 this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
-            this.executionPipeline[cageCount - 1] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
+            this.executionPipeline[lastStepIndex] = this.bindToThis(this.combosRecursive_preLast_shortCircuit);
         } else {
-            _.range(1, cageCount).forEach(step => {
+            CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
                 this.executionPipeline[step] = this.bindToThis(this.combosRecursive_i);
             });
             this.executionPipeline[cageCount] = this.bindToThis(this.combosRecursive_last);

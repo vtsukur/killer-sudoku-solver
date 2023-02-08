@@ -6,6 +6,7 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
     const ITERATION_COUNT = 50000;
 
+    _.range(10).forEach(() => {
     test('Cages in descending order of combination count', () => {
         const cages = [
             Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
@@ -32,5 +33,6 @@ describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
         _.range(ITERATION_COUNT).forEach(() => {
             NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(cages);
         });
+    });
     });
 });
