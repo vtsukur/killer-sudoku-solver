@@ -19,25 +19,13 @@ import { BinaryStorage, FastNumSet } from './fastNumSet';
 export class NonOverlappingHouseCagesCombinatorics {
 
     /**
-     * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
-     *
-     * Each permutation as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
-     *
-     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
-     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
-     */
-    readonly perms: ReadonlyArray<ReadonlyCombos>;
-
-    /**
      * Computed `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
      *
      * Possible `Combo`s are derived from {@link perms},
      * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
      *
      * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computePermsAndCombos} method,
+     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndPerms} method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
      *
      * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
@@ -45,9 +33,21 @@ export class NonOverlappingHouseCagesCombinatorics {
      */
     readonly combos: ReadonlyArray<ReadonlyCombos>;
 
+    /**
+     * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
+     *
+     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndPerms} method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     *
+     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
+     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     */
+    readonly perms: ReadonlyArray<ReadonlyCombos>;
+
     private static readonly EMPTY_INSTANCE = new NonOverlappingHouseCagesCombinatorics([], []);
 
-    private constructor(perms: ReadonlyArray<ReadonlyCombos>, combos: ReadonlyArray<ReadonlyCombos>) {
+    private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyArray<ReadonlyCombos>, ) {
         this.combos = combos;
         this.perms = perms;
     }
@@ -64,19 +64,19 @@ export class NonOverlappingHouseCagesCombinatorics {
      * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
      * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
      *
-     * Each permutation as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of this method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
-     * See {@link perms}.
-     *
      * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s in `cages` input of this method,
      * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
      * See {@link combos}.
      *
+     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of this method,
+     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     * See {@link perms}.
+     *
      * @throws {RangeError} if total sum of all Cages with non-overlapping `Cell`s is above House sum of 45.
      */
-    static computePermsAndCombos(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
+    static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
         // short circuit return to avoid initializatio overhead in case there is nothing to compute
         if (cages.length === 0) {
             return this.EMPTY_INSTANCE;
@@ -92,8 +92,8 @@ export class NonOverlappingHouseCagesCombinatorics {
         const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         if (combosForCages.length === 1) {
             return {
-                perms: combosForCages[0].val.map(combo => [ combo ]),
-                combos: [ combosForCages[0].val ]
+                combos: [ combosForCages[0].val ],
+                perms: combosForCages[0].val.map(combo => [ combo ])
             };
         }
 
@@ -176,7 +176,7 @@ export class NonOverlappingHouseCagesCombinatorics {
             }
         });
 
-        return { perms: perms, combos: actualSumCombos };
+        return { combos: actualSumCombos, perms: perms };
     }
 
 };
