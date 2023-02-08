@@ -87,16 +87,17 @@ export class NonOverlappingHouseCagesCombinatorics {
             return this.EMPTY_INSTANCE;
         }
 
-        const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
-
         // short circuit return for a case when there is only one Cage to avoid initialization overhead
-        if (combosForCages.length === 1) {
-            const singleCageCombos = combosForCages[0];
+        if (cages.length === 1) {
+            const singleCage = cages[0];
+            const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
             return {
                 perms: singleCageCombos.val.map(combo => [ combo ]),
                 combos: [ singleCageCombos.val ],
             };
         }
+
+        const combosForCages = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
         const perms = new Array<ReadonlyCombos>();
         const stack = new Array<Combo>(cages.length);
