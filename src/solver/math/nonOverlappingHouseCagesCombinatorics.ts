@@ -91,7 +91,7 @@ const iterateRecursively_main = (ctx: Context, step: number) => {
     ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
 
-const advanceIteration = (ctx: Context, combo: Combo, step: number) => {
+const _advanceIteration = (ctx: Context, combo: Combo, step: number) => {
     ctx.stack[step] = combo;
 
     ctx.numFlags.add(combo.fastNumSet);
@@ -101,14 +101,14 @@ const advanceIteration = (ctx: Context, combo: Combo, step: number) => {
 
 const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
-        advanceIteration(ctx, combo, step);
+        _advanceIteration(ctx, combo, step);
     }
 };
 
 const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
         if (ctx.numFlags.doesNotHaveAny(combo.fastNumSet)) {
-            advanceIteration(ctx, combo, step);
+            _advanceIteration(ctx, combo, step);
         }
     }
 };
