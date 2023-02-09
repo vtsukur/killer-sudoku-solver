@@ -133,8 +133,8 @@ class Context {
     readonly combos: Array<Array<Combo>>;
     readonly perms = new Array<ReadonlyCombos>();
 
-    readonly allCageCombos: Array<SumCombos>;
     readonly iterationPipeline: IterationPipeline;
+    readonly allCageCombos: Array<SumCombos>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes = new Array<Set<BinaryStorage>>();
     readonly stack: Array<Combo>;
@@ -182,13 +182,14 @@ class Context {
 
         this.combos = new Array<Array<Combo>>(cageCount);
 
-        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
-        const isCompleteHouse = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
-        if (isCompleteHouse) {
+        const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
+        if (isFullHouseCoverage) {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
+
+        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
         this.cageIndicesRange.forEach(i => {
