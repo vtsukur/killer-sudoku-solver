@@ -211,7 +211,7 @@ class Context {
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
         this.cageIndicesRange.forEach(i => {
             this.combos[i] = [];
-            this.usedCombosHashes[i] = new Set<BinaryStorage>();
+            this.usedCombosHashes[i] = new Set();
         });
 
         const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;
