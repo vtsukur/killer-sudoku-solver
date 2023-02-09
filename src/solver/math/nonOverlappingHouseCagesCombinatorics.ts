@@ -152,28 +152,28 @@ class Context {
     }
 
     private static newIterationPipelineForCompleteHouse(cageCount: number) {
-        const iterationPipeline = new Array<IterationFunction>(cageCount);
+        const pipeline = new Array<IterationFunction>(cageCount);
 
-        iterationPipeline[0] = iterateRecursively_index0;
+        pipeline[0] = iterateRecursively_index0;
         const lastStepIndex = cageCount - 1;
         CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex].forEach(step => {
-            iterationPipeline[step] = iterateRecursively_index1Plus;
+            pipeline[step] = iterateRecursively_index1Plus;
         });
-        iterationPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
+        pipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
 
-        return iterationPipeline;
+        return pipeline;
     }
 
     private static newIterationPipelineForIncompleteHouse(cageCount: number) {
-        const iterationPipeline = new Array<IterationFunction>(cageCount + 1);
+        const pipeline = new Array<IterationFunction>(cageCount + 1);
 
-        iterationPipeline[0] = iterateRecursively_index0;
+        pipeline[0] = iterateRecursively_index0;
         CachedNumRanges.ONE_TO_N_LT_10[cageCount].forEach(step => {
-            iterationPipeline[step] = iterateRecursively_index1Plus;
+            pipeline[step] = iterateRecursively_index1Plus;
         });
-        iterationPipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
+        pipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
 
-        return iterationPipeline;
+        return pipeline;
     }
 
     constructor(cages: ReadonlyCages) {
