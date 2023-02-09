@@ -133,7 +133,7 @@ const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
 const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
     iterateRecursively_next(ctx, 0);
 
-    ctx.cageIndicesRange.forEach(i => {
+    for (const i of ctx.cageIndicesRange) {
         const sumCombos = ctx.allCageCombos[i];
         const actualSumCombosSet = ctx.usedCombosHashes[i];
 
@@ -143,7 +143,7 @@ const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinat
                 ctx.combos[i].push(combo);
             }
         }
-    });
+    };
 
     return { combos: ctx.combos, perms: ctx.perms };
 };
@@ -176,9 +176,9 @@ const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step:
 
 const iterateRecursively_indexLastWithPermCapture = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
-    ctx.cageIndicesRange.forEach(i => {
+    for (const i of ctx.cageIndicesRange) {
         ctx.usedCombosHashes[i].add(ctx.stack[i].fastNumSet.binaryStorage);
-    });
+    };
 };
 
 const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
@@ -220,9 +220,9 @@ class Context {
         const lastStepIndex = cageCount - 1;
 
         pipeline[0] = iterateRecursively_index0;
-        CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex].forEach(step => {
+        for (const step of CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex]) {
             pipeline[step] = iterateRecursively_index1Plus;
-        });
+        };
         pipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
 
         return pipeline;
@@ -232,9 +232,9 @@ class Context {
         const pipeline = new Array<IterationFunction>(cageCount + 1);
 
         pipeline[0] = iterateRecursively_index0;
-        CachedNumRanges.ONE_TO_N_LT_10[cageCount].forEach(step => {
+        for (const step of CachedNumRanges.ONE_TO_N_LT_10[cageCount]) {
             pipeline[step] = iterateRecursively_index1Plus;
-        });
+        };
         pipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
 
         return pipeline;
