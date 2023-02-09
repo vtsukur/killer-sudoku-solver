@@ -138,6 +138,7 @@ class Context {
     readonly allCageCombos: Array<SumCombos>;
     readonly executionPipeline: Array<ExecutionPipelineFn>;
 
+    // caching execution pipelines improves performance by around 5-10%
     private static _CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE = (function() {
         const val = new Array<Array<ExecutionPipelineFn>>(House.CELL_COUNT);
         CachedNumRanges.ONE_TO_N_UP_TO_10[val.length + 1].forEach(cageCount => {
