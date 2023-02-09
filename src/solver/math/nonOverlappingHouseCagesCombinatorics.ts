@@ -88,6 +88,23 @@ export class NonOverlappingHouseCagesCombinatorics {
 type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
 type IterationPipeline = ReadonlyArray<IterationFunction>;
 
+const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
+    iterateRecursively_next(ctx, 0);
+
+    ctx.cageIndicesRange.forEach(i => {
+        const sumCombos = ctx.allCageCombos[i];
+        const actualSumCombosSet = ctx.usedCombosHashes[i];
+
+        for (const combo of sumCombos.val) {
+            if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
+                ctx.combos[i].push(combo);
+            }
+        }
+    });
+
+    return { combos: ctx.combos, perms: ctx.perms };
+};
+
 const iterateRecursively_next = (ctx: Context, step: number) => {
     ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
@@ -199,43 +216,18 @@ class Context {
     }
 }
 
-class RecursiveEnumerator {
-    private readonly ctx: Context;
-
-    constructor(ctx: Context) {
-        this.ctx = ctx;
-    }
-
-    execute() {
-        iterateRecursively_next(this.ctx, 0);
-
-        this.ctx.cageIndicesRange.forEach(i => {
-            const sumCombos = this.ctx.allCageCombos[i];
-            const actualSumCombosSet = this.ctx.usedCombosHashes[i];
-
-            for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                    this.ctx.combos[i].push(combo);
-                }
-            }
-        });
-
-        return { combos: this.ctx.combos, perms: this.ctx.perms };
-    }
-}
-
-type ComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
+type MainComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE = {
     combos: [],
     perms: []
 };
 
-const shortCircuitForNoCages: ComputeFn = () => {
+const shortCircuitForNoCages: MainComputeFn = () => {
     return EMPTY_INSTANCE;
 };
 
-const shortCircuitFor1Cage: ComputeFn = (cages) => {
+const shortCircuitFor1Cage: MainComputeFn = (cages) => {
     const singleCage = cages[0];
     const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
     return {
@@ -244,11 +236,11 @@ const shortCircuitFor1Cage: ComputeFn = (cages) => {
     };
 };
 
-const computeForSeveralCages: ComputeFn = (cages) => {
-    return new RecursiveEnumerator(new Context(cages)).execute();
+const computeForSeveralCages: MainComputeFn = (cages) => {
+    return iterateRecursively_main(new Context(cages));
 };
 
-const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeFn> = [
+const CAGE_COUNT_BASED_STRATEGIES: Array<MainComputeFn> = [
     shortCircuitForNoCages, // for 0 Cages
     shortCircuitFor1Cage,   // for 1 Cage
     computeForSeveralCages, // for 2 Cages
