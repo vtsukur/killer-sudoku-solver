@@ -205,29 +205,29 @@ class Context {
             this.usedCombosHashes[i] = new Set<BinaryStorage>();
         });
 
-        const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
-        if (isFullHouseCoverage) {
+        // const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
+        // if (isFullHouseCoverage) {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
-        } else {
-            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
-        }
+        // } else {
+        //     this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
+        // }
 
         this.stack = new Array<Combo>(cageCount);
     }
 }
 
-type MainComputeFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
+type ComputeStrategyFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE = {
     combos: [],
     perms: []
 };
 
-const shortCircuitForNoCages: MainComputeFn = () => {
+const shortCircuitForNoCages: ComputeStrategyFn = () => {
     return EMPTY_INSTANCE;
 };
 
-const shortCircuitFor1Cage: MainComputeFn = (cages) => {
+const shortCircuitFor1Cage: ComputeStrategyFn = (cages) => {
     const singleCage = cages[0];
     const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
     return {
@@ -236,19 +236,19 @@ const shortCircuitFor1Cage: MainComputeFn = (cages) => {
     };
 };
 
-const computeForSeveralCages: MainComputeFn = (cages) => {
+const computeStrategyForSeveralCages: ComputeStrategyFn = (cages) => {
     return iterateRecursively_main(new Context(cages));
 };
 
-const CAGE_COUNT_BASED_STRATEGIES: Array<MainComputeFn> = [
-    shortCircuitForNoCages, // for 0 Cages
-    shortCircuitFor1Cage,   // for 1 Cage
-    computeForSeveralCages, // for 2 Cages
-    computeForSeveralCages, // for 3 Cages
-    computeForSeveralCages, // for 4 Cages
-    computeForSeveralCages, // for 5 Cages
-    computeForSeveralCages, // for 6 Cages
-    computeForSeveralCages, // for 7 Cages
-    computeForSeveralCages, // for 8 Cages
-    computeForSeveralCages, // for 9 Cages
+const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
+    shortCircuitForNoCages,         // for 0 Cages
+    shortCircuitFor1Cage,           // for 1 Cage
+    computeStrategyForSeveralCages, // for 2 Cages
+    computeStrategyForSeveralCages, // for 3 Cages
+    computeStrategyForSeveralCages, // for 4 Cages
+    computeStrategyForSeveralCages, // for 5 Cages
+    computeStrategyForSeveralCages, // for 6 Cages
+    computeStrategyForSeveralCages, // for 7 Cages
+    computeStrategyForSeveralCages, // for 8 Cages
+    computeStrategyForSeveralCages, // for 9 Cages
 ];
