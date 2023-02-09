@@ -85,30 +85,30 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 };
 
-type ExecutionPipelineFn = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
 
 const iterateRecursively_main = (ctx: Context, step: number) => {
-    ctx.executionPipeline[step](ctx, ctx.allCageCombos[step], step);
+    ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
+};
+
+const advanceIteration = (ctx: Context, combo: Combo, step: number) => {
+    ctx.stack[step] = combo;
+
+    ctx.numFlags.add(combo.fastNumSet);
+    iterateRecursively_main(ctx, step + 1);
+    ctx.numFlags.remove(combo.fastNumSet);
 };
 
 const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    for (const comboForSum of sumCombos.val) {
-        ctx.stack[step] = comboForSum;
-
-        ctx.numFlags.add(comboForSum.fastNumSet);
-        iterateRecursively_main(ctx, step + 1);
-        ctx.numFlags.remove(comboForSum.fastNumSet);
+    for (const combo of sumCombos.val) {
+        advanceIteration(ctx, combo, step);
     }
 };
 
 const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    for (const comboForSum of sumCombos.val) {
-        if (ctx.numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
-            ctx.stack[step] = comboForSum;
-
-            ctx.numFlags.add(comboForSum.fastNumSet);
-            iterateRecursively_main(ctx, step + 1);
-            ctx.numFlags.remove(comboForSum.fastNumSet);
+    for (const combo of sumCombos.val) {
+        if (ctx.numFlags.doesNotHaveAny(combo.fastNumSet)) {
+            advanceIteration(ctx, combo, step);
         }
     }
 };
@@ -136,11 +136,11 @@ class Context {
     readonly combos: Array<Array<Combo>>;
     readonly combosHash = new Array<Set<BinaryStorage>>();
     readonly allCageCombos: Array<SumCombos>;
-    readonly executionPipeline: Array<ExecutionPipelineFn>;
+    readonly iterationPipeline: Array<IterationFunction>;
 
     // caching execution pipelines improves performance by around 5-10%
     private static _CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE = (function() {
-        const val = new Array<Array<ExecutionPipelineFn>>(House.CELL_COUNT);
+        const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
         CachedNumRanges.ONE_TO_N_UP_TO_10[val.length + 1].forEach(cageCount => {
             val[cageCount] = Context.newExecutionPipelineForCompleteHouse(cageCount);
         });
@@ -161,7 +161,7 @@ class Context {
     }
 
     private static _CACHED_EXECUTION_PIPELINES_FOR_INCOMPLETE_HOUSE = (function() {
-        const val = new Array<Array<ExecutionPipelineFn>>(House.CELL_COUNT);
+        const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
         CachedNumRanges.ONE_TO_N_UP_TO_10[val.length].forEach(cageCount => {
             val[cageCount] = Context.newExecutionPipelineForIncompleteHouse(cageCount);
         });
@@ -190,9 +190,9 @@ class Context {
 
         const isCompleteHouse = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
         if (isCompleteHouse) {
-            this.executionPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
+            this.iterationPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
-            this.executionPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
+            this.iterationPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
         this.cageIndicesRange.forEach(i => {
