@@ -93,8 +93,42 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 };
 
-type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
-type IterationPipeline = ReadonlyArray<IterationFunction>;
+type ComputeStrategyFn = (houseCagesAreaModel: HouseCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
+
+const EMPTY_INSTANCE = {
+    combos: [],
+    perms: []
+};
+
+const shortCircuitForNoCages: ComputeStrategyFn = () => {
+    return EMPTY_INSTANCE;
+};
+
+const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
+    const singleCage = houseCagesAreaModel.cages[0];
+    const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
+    return {
+        combos: singleCageCombos.arrayedVal,
+        perms: singleCageCombos.perms
+    };
+};
+
+const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
+    return iterateRecursively_main(new Context(houseCagesAreaModel));
+};
+
+const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
+    shortCircuitForNoCages,         // for 0 Cages
+    shortCircuitFor1Cage,           // for 1 Cage
+    computeStrategyForSeveralCages, // for 2 Cages
+    computeStrategyForSeveralCages, // for 3 Cages
+    computeStrategyForSeveralCages, // for 4 Cages
+    computeStrategyForSeveralCages, // for 5 Cages
+    computeStrategyForSeveralCages, // for 6 Cages
+    computeStrategyForSeveralCages, // for 7 Cages
+    computeStrategyForSeveralCages, // for 8 Cages
+    computeStrategyForSeveralCages, // for 9 Cages
+];
 
 const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
     iterateRecursively_next(ctx, 0);
@@ -103,6 +137,7 @@ const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinat
         const sumCombos = ctx.allCageCombos[i];
         const actualSumCombosSet = ctx.usedCombosHashes[i];
 
+        ctx.combos[i] = [];
         for (const combo of sumCombos.val) {
             if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
                 ctx.combos[i].push(combo);
@@ -154,13 +189,16 @@ const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context,
     }
 };
 
+type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type IterationPipeline = ReadonlyArray<IterationFunction>;
+
 class Context {
     readonly combos: Array<Array<Combo>>;
     readonly perms = new Array<ReadonlyCombos>();
 
     readonly allCageCombos: Array<SumCombos>;
     readonly cageIndicesRange: ReadonlyArray<number>;
-    readonly usedCombosHashes = new Array<Set<BinaryStorage>>();
+    readonly usedCombosHashes: Array<Set<BinaryStorage>>;
     readonly iterationPipeline: IterationPipeline;
     readonly stack: Array<Combo>;
     readonly usedNums = new FastNumSet();
@@ -209,10 +247,7 @@ class Context {
         this.combos = new Array<Array<Combo>>(cageCount);
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
-        this.cageIndicesRange.forEach(i => {
-            this.combos[i] = [];
-            this.usedCombosHashes[i] = new Set();
-        });
+        this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
         const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;
         if (isFullHouseCoverage) {
@@ -224,40 +259,3 @@ class Context {
         this.stack = new Array<Combo>(cageCount);
     }
 }
-
-type ComputeStrategyFn = (houseCagesAreaModel: HouseCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
-
-const EMPTY_INSTANCE = {
-    combos: [],
-    perms: []
-};
-
-const shortCircuitForNoCages: ComputeStrategyFn = () => {
-    return EMPTY_INSTANCE;
-};
-
-const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
-    const singleCage = houseCagesAreaModel.cages[0];
-    const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
-    return {
-        perms: singleCageCombos.perms,
-        combos: singleCageCombos.arrayedVal,
-    };
-};
-
-const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
-    return iterateRecursively_main(new Context(houseCagesAreaModel));
-};
-
-const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
-    shortCircuitForNoCages,         // for 0 Cages
-    shortCircuitFor1Cage,           // for 1 Cage
-    computeStrategyForSeveralCages, // for 2 Cages
-    computeStrategyForSeveralCages, // for 3 Cages
-    computeStrategyForSeveralCages, // for 4 Cages
-    computeStrategyForSeveralCages, // for 5 Cages
-    computeStrategyForSeveralCages, // for 6 Cages
-    computeStrategyForSeveralCages, // for 7 Cages
-    computeStrategyForSeveralCages, // for 8 Cages
-    computeStrategyForSeveralCages, // for 9 Cages
-];
