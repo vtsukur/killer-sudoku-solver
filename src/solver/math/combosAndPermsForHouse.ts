@@ -6,6 +6,7 @@ import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { combosForSum } from './combosForSum';
+import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 
 export class HouseSumCombosAndPerms {
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
@@ -27,7 +28,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
-    const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(nonOverlappingCages);
+    const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
     const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 

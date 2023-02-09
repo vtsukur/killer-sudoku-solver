@@ -1,5 +1,5 @@
-import { ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
+import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
@@ -24,8 +24,10 @@ export class NonOverlappingHouseCagesCombinatorics {
      * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
      *
      * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndPerms} method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
+     * These arrays appear in the same order as respective `Cage`s
+     * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
+     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the array of `Combo`s with index `i`.
      *
      * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
@@ -36,8 +38,10 @@ export class NonOverlappingHouseCagesCombinatorics {
      * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
      *
      * Each permutation as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of {@link computeCombosAndPerms} method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     * `Combo`s appear in the same order as respective `Cage`s
+     * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
+     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the `Combo` with index `i` in each permutation.
      *
      * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
@@ -57,7 +61,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      *
-     * @param cages - Array of `Cage`s with non-overlapping `Cell`s that reside within the same `House`.
+     * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with `Cage`s having non-overlapping `Cell`s.
      *
      * `Cage`s may cover either complete set of House `Cell`s or a subset. Empty array `Cage` is also acceptable.
      *
@@ -71,17 +75,21 @@ export class NonOverlappingHouseCagesCombinatorics {
      * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
      *
      * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s in `cages` input of this method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the array of `Combo`s with index `i`.
+     * These arrays appear in the same order as respective `Cage`s
+     * in `houseCagesAreaModel` input of this method,
+     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the array of `Combo`s with index `i`.
      * See {@link combos}.
      *
      * Each permutation as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s in `cages` input of this method,
-     * meaning `Cage` with index `i` in `cages` input will be mapped to the `Combo` with index `i` in each permutation.
+     * `Combo`s appear in the same order as respective `Cage`s
+     * in `houseCagesAreaModel` input of this method,
+     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the `Combo` with index `i` in each permutation.
      * See {@link perms}.
      */
-    static computeCombosAndPerms(cages: ReadonlyCages): NonOverlappingHouseCagesCombinatorics {
-        return CAGE_COUNT_BASED_STRATEGIES[cages.length](cages);
+    static computeCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
+        return CAGE_COUNT_BASED_STRATEGIES[houseCagesAreaModel.cages.length](houseCagesAreaModel);
     }
 };
 
@@ -194,7 +202,8 @@ class Context {
         return pipeline;
     }
 
-    constructor(cages: ReadonlyCages) {
+    constructor(houseCagesAreaModel: HouseCagesAreaModel) {
+        const cages = houseCagesAreaModel.cages;
         const cageCount = cages.length;
 
         this.combos = new Array<Array<Combo>>(cageCount);
@@ -205,7 +214,7 @@ class Context {
             this.usedCombosHashes[i] = new Set<BinaryStorage>();
         });
 
-        const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
+        const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;
         if (isFullHouseCoverage) {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
@@ -216,7 +225,7 @@ class Context {
     }
 }
 
-type ComputeStrategyFn = (cages: ReadonlyCages) => NonOverlappingHouseCagesCombinatorics;
+type ComputeStrategyFn = (houseCagesAreaModel: HouseCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE = {
     combos: [],
@@ -227,8 +236,8 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
     return EMPTY_INSTANCE;
 };
 
-const shortCircuitFor1Cage: ComputeStrategyFn = (cages) => {
-    const singleCage = cages[0];
+const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
+    const singleCage = houseCagesAreaModel.cages[0];
     const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
     return {
         perms: singleCageCombos.perms,
@@ -236,8 +245,8 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (cages) => {
     };
 };
 
-const computeStrategyForSeveralCages: ComputeStrategyFn = (cages) => {
-    return iterateRecursively_main(new Context(cages));
+const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
+    return iterateRecursively_main(new Context(houseCagesAreaModel));
 };
 
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [

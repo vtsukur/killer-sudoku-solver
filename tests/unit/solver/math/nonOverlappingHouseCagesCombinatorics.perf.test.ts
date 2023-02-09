@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
 import { Combo } from '../../../../src/solver/math';
 import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/nonOverlappingHouseCagesCombinatorics';
+import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
     const TESTS_COUNT = 10;
@@ -9,14 +10,14 @@ describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
 
     _.range(TESTS_COUNT).forEach(i => {
         test(`Compute combinations and permutations [${i}]`, () => {
-            const cages = [
+            const houseCageAreasModel = new HouseCagesAreaModel([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
                 Cage.ofSum(10).at(0, 0).at(0, 1).new(),
                 Cage.ofSum(10).at(0, 2).at(1, 2).new(),
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
-            ];
+            ]);
 
-            expect(NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(cages).perms).toEqual([
+            expect(NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(houseCageAreasModel).perms).toEqual([
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -32,7 +33,7 @@ describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
             ]);
 
             _.range(ITERATION_COUNT).forEach(() => {
-                NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(cages);
+                NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(houseCageAreasModel);
             });
         });
     });
