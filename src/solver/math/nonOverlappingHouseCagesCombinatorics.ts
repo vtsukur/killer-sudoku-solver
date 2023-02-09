@@ -138,46 +138,47 @@ class Context {
     readonly allCageCombos: Array<SumCombos>;
     readonly iterationPipeline: Array<IterationFunction>;
 
-    // caching execution pipelines improves performance by around 5-10%
-    private static _CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE = (function() {
+    // caching iteration pipelines improves performance by around 5-10%
+    private static _CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE = (function() {
         const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
         CachedNumRanges.ONE_TO_N_UP_TO_10[val.length + 1].forEach(cageCount => {
-            val[cageCount] = Context.newExecutionPipelineForCompleteHouse(cageCount);
+            val[cageCount] = Context.newIterationPipelineForCompleteHouse(cageCount);
         });
         return val;
     })();
 
-    private static newExecutionPipelineForCompleteHouse(cageCount: number) {
-        const executionPipeline = new Array(cageCount);
+    private static newIterationPipelineForCompleteHouse(cageCount: number) {
+        const iterationPipeline = new Array(cageCount);
 
-        executionPipeline[0] = iterateRecursively_index0;
+        iterationPipeline[0] = iterateRecursively_index0;
         const lastStepIndex = cageCount - 1;
         CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
-            executionPipeline[step] = iterateRecursively_index1Plus;
+            iterationPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
+        iterationPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
 
-        return executionPipeline;
+        return iterationPipeline;
     }
 
-    private static _CACHED_EXECUTION_PIPELINES_FOR_INCOMPLETE_HOUSE = (function() {
+    // caching iteration pipelines improves performance by around 5-10%
+    private static _CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE = (function() {
         const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
         CachedNumRanges.ONE_TO_N_UP_TO_10[val.length].forEach(cageCount => {
-            val[cageCount] = Context.newExecutionPipelineForIncompleteHouse(cageCount);
+            val[cageCount] = Context.newIterationPipelineForIncompleteHouse(cageCount);
         });
         return val;
     })();
 
-    private static newExecutionPipelineForIncompleteHouse(cageCount: number) {
-        const executionPipeline = new Array(cageCount + 1);
+    private static newIterationPipelineForIncompleteHouse(cageCount: number) {
+        const iterationPipeline = new Array(cageCount + 1);
 
-        executionPipeline[0] = iterateRecursively_index0;
+        iterationPipeline[0] = iterateRecursively_index0;
         CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
-            executionPipeline[step] = iterateRecursively_index1Plus;
+            iterationPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
+        iterationPipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
 
-        return executionPipeline;
+        return iterationPipeline;
     }
 
     constructor(cages: ReadonlyCages) {
@@ -190,9 +191,9 @@ class Context {
 
         const isCompleteHouse = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
         if (isCompleteHouse) {
-            this.iterationPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
+            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
-            this.iterationPipeline = Context._CACHED_EXECUTION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
+            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
         this.cageIndicesRange.forEach(i => {
