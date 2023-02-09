@@ -205,12 +205,12 @@ class Context {
             this.usedCombosHashes[i] = new Set<BinaryStorage>();
         });
 
-        // const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
-        // if (isFullHouseCoverage) {
+        const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
+        if (isFullHouseCoverage) {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
-        // } else {
-        //     this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
-        // }
+        } else {
+            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
+        }
 
         this.stack = new Array<Combo>(cageCount);
     }
