@@ -86,6 +86,7 @@ export class NonOverlappingHouseCagesCombinatorics {
 };
 
 type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type IterationPipeline = ReadonlyArray<IterationFunction>;
 
 const iterateRecursively_main = (ctx: Context, step: number) => {
     ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
@@ -136,16 +137,19 @@ class Context {
     readonly combos: Array<Array<Combo>>;
     readonly combosHash = new Array<Set<BinaryStorage>>();
     readonly allCageCombos: Array<SumCombos>;
-    readonly iterationPipeline: Array<IterationFunction>;
+    readonly iterationPipeline: IterationPipeline;
 
     // caching iteration pipelines improves performance by around 5-10%
-    private static _CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE = (function() {
-        const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
-        CachedNumRanges.ONE_TO_N_UP_TO_10[val.length + 1].forEach(cageCount => {
-            val[cageCount] = Context.newIterationPipelineForCompleteHouse(cageCount);
+    private static _CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
+        Context.newIterationPipelines(House.CELL_COUNT + 1, Context.newIterationPipelineForCompleteHouse);
+    private static _CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
+        Context.newIterationPipelines(House.CELL_COUNT, Context.newIterationPipelineForIncompleteHouse);
+
+    private static newIterationPipelines(cellCount: number, fn: (cageCount: number) => IterationPipeline) {
+        return CachedNumRanges.ZERO_TO_N_UP_TO_81[cellCount].map(cageCount => {
+            return cageCount < 2 ? [] : fn(cageCount);
         });
-        return val;
-    })();
+    }
 
     private static newIterationPipelineForCompleteHouse(cageCount: number) {
         const iterationPipeline = new Array(cageCount);
@@ -159,15 +163,6 @@ class Context {
 
         return iterationPipeline;
     }
-
-    // caching iteration pipelines improves performance by around 5-10%
-    private static _CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE = (function() {
-        const val = new Array<Array<IterationFunction>>(House.CELL_COUNT);
-        CachedNumRanges.ONE_TO_N_UP_TO_10[val.length].forEach(cageCount => {
-            val[cageCount] = Context.newIterationPipelineForIncompleteHouse(cageCount);
-        });
-        return val;
-    })();
 
     private static newIterationPipelineForIncompleteHouse(cageCount: number) {
         const iterationPipeline = new Array(cageCount + 1);
