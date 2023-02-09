@@ -146,7 +146,7 @@ class Context {
         Context.newIterationPipelines(House.CELL_COUNT, Context.newIterationPipelineForIncompleteHouse);
 
     private static newIterationPipelines(cellCount: number, newIterationPipelineFn: (cageCount: number) => IterationPipeline) {
-        return CachedNumRanges.ZERO_TO_N_UP_TO_81[cellCount].map(cageCount => {
+        return CachedNumRanges.ZERO_TO_N_LT_81[cellCount].map(cageCount => {
             return cageCount < 2 ? [] : newIterationPipelineFn(cageCount);
         });
     }
@@ -156,7 +156,7 @@ class Context {
 
         iterationPipeline[0] = iterateRecursively_index0;
         const lastStepIndex = cageCount - 1;
-        CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
+        CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex].forEach(step => {
             iterationPipeline[step] = iterateRecursively_index1Plus;
         });
         iterationPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
@@ -168,7 +168,7 @@ class Context {
         const iterationPipeline = new Array<IterationFunction>(cageCount + 1);
 
         iterationPipeline[0] = iterateRecursively_index0;
-        CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
+        CachedNumRanges.ONE_TO_N_LT_10[cageCount].forEach(step => {
             iterationPipeline[step] = iterateRecursively_index1Plus;
         });
         iterationPipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
@@ -178,7 +178,7 @@ class Context {
 
     constructor(cages: ReadonlyCages) {
         const cageCount = cages.length;
-        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_UP_TO_81[cageCount];
+        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
 
         this.stack = new Array<Combo>(cageCount);
         this.combos = new Array<Array<Combo>>(cageCount);
