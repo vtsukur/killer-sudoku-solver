@@ -88,28 +88,28 @@ export class NonOverlappingHouseCagesCombinatorics {
 type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
 type IterationPipeline = ReadonlyArray<IterationFunction>;
 
-const iterateRecursively_main = (ctx: Context, step: number) => {
+const iterateRecursively_next = (ctx: Context, step: number) => {
     ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
 
-const _advanceIteration = (ctx: Context, combo: Combo, step: number) => {
+const _pushAndAdvanceIterationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.stack[step] = combo;
 
     ctx.usedNums.add(combo.fastNumSet);
-    iterateRecursively_main(ctx, step + 1);
+    iterateRecursively_next(ctx, step + 1);
     ctx.usedNums.remove(combo.fastNumSet);
 };
 
 const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
-        _advanceIteration(ctx, combo, step);
+        _pushAndAdvanceIterationAndPop(ctx, combo, step);
     }
 };
 
 const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
-            _advanceIteration(ctx, combo, step);
+            _pushAndAdvanceIterationAndPop(ctx, combo, step);
         }
     }
 };
@@ -133,10 +133,10 @@ class Context {
     readonly combos: Array<Array<Combo>>;
     readonly perms = new Array<ReadonlyCombos>();
 
-    readonly iterationPipeline: IterationPipeline;
     readonly allCageCombos: Array<SumCombos>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes = new Array<Set<BinaryStorage>>();
+    readonly iterationPipeline: IterationPipeline;
     readonly stack: Array<Combo>;
     readonly usedNums = new FastNumSet();
 
@@ -181,6 +181,12 @@ class Context {
         const cageCount = cages.length;
 
         this.combos = new Array<Array<Combo>>(cageCount);
+        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
+        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
+        this.cageIndicesRange.forEach(i => {
+            this.combos[i] = [];
+            this.usedCombosHashes[i] = new Set<BinaryStorage>();
+        });
 
         const isFullHouseCoverage = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
         if (isFullHouseCoverage) {
@@ -188,14 +194,6 @@ class Context {
         } else {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
-
-        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
-
-        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
-        this.cageIndicesRange.forEach(i => {
-            this.combos[i] = [];
-            this.usedCombosHashes[i] = new Set<BinaryStorage>();
-        });
 
         this.stack = new Array<Combo>(cageCount);
     }
@@ -209,7 +207,7 @@ class RecursiveEnumerator {
     }
 
     execute() {
-        iterateRecursively_main(this.ctx, 0);
+        iterateRecursively_next(this.ctx, 0);
 
         this.ctx.cageIndicesRange.forEach(i => {
             const sumCombos = this.ctx.allCageCombos[i];
