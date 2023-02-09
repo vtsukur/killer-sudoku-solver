@@ -113,18 +113,18 @@ const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step:
     }
 };
 
-const iterateRecursively_indexLast = (ctx: Context) => {
+const iterateRecursively_indexLastWithPermCapture = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
     ctx.cageIndicesRange.forEach(i => {
         ctx.combosHash[i].add(ctx.stack[i].fastNumSet.binaryStorage);
     });
 };
 
-const iterateRecursively_indexLastWithShortCircuit = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
     const lastCombo = sumCombos.get(ctx.numFlags.remaining());
     if (lastCombo !== undefined) {
         ctx.stack[step] = lastCombo;
-        iterateRecursively_indexLast(ctx);
+        iterateRecursively_indexLastWithPermCapture(ctx);
     }
 };
 
@@ -155,7 +155,7 @@ class Context {
         CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
             executionPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuit;
+        executionPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
 
         return executionPipeline;
     }
@@ -175,7 +175,7 @@ class Context {
         CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
             executionPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[cageCount] = iterateRecursively_indexLast;
+        executionPipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
 
         return executionPipeline;
     }
