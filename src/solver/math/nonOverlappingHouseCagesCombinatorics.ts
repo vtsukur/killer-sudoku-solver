@@ -145,14 +145,14 @@ class Context {
     private static _CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
         Context.newIterationPipelines(House.CELL_COUNT, Context.newIterationPipelineForIncompleteHouse);
 
-    private static newIterationPipelines(cellCount: number, fn: (cageCount: number) => IterationPipeline) {
+    private static newIterationPipelines(cellCount: number, newIterationPipelineFn: (cageCount: number) => IterationPipeline) {
         return CachedNumRanges.ZERO_TO_N_UP_TO_81[cellCount].map(cageCount => {
-            return cageCount < 2 ? [] : fn(cageCount);
+            return cageCount < 2 ? [] : newIterationPipelineFn(cageCount);
         });
     }
 
     private static newIterationPipelineForCompleteHouse(cageCount: number) {
-        const iterationPipeline = new Array(cageCount);
+        const iterationPipeline = new Array<IterationFunction>(cageCount);
 
         iterationPipeline[0] = iterateRecursively_index0;
         const lastStepIndex = cageCount - 1;
@@ -165,7 +165,7 @@ class Context {
     }
 
     private static newIterationPipelineForIncompleteHouse(cageCount: number) {
-        const iterationPipeline = new Array(cageCount + 1);
+        const iterationPipeline = new Array<IterationFunction>(cageCount + 1);
 
         iterationPipeline[0] = iterateRecursively_index0;
         CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
