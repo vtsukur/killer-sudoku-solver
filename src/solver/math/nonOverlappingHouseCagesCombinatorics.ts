@@ -95,9 +95,9 @@ const iterateRecursively_main = (ctx: Context, step: number) => {
 const _advanceIteration = (ctx: Context, combo: Combo, step: number) => {
     ctx.stack[step] = combo;
 
-    ctx.numFlags.add(combo.fastNumSet);
+    ctx.usedNums.add(combo.fastNumSet);
     iterateRecursively_main(ctx, step + 1);
-    ctx.numFlags.remove(combo.fastNumSet);
+    ctx.usedNums.remove(combo.fastNumSet);
 };
 
 const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
@@ -108,7 +108,7 @@ const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: num
 
 const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
-        if (ctx.numFlags.doesNotHaveAny(combo.fastNumSet)) {
+        if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
             _advanceIteration(ctx, combo, step);
         }
     }
@@ -117,12 +117,12 @@ const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step:
 const iterateRecursively_indexLastWithPermCapture = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
     ctx.cageIndicesRange.forEach(i => {
-        ctx.combosHash[i].add(ctx.stack[i].fastNumSet.binaryStorage);
+        ctx.usedCombosHashes[i].add(ctx.stack[i].fastNumSet.binaryStorage);
     });
 };
 
 const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    const lastCombo = sumCombos.get(ctx.numFlags.remaining());
+    const lastCombo = sumCombos.get(ctx.usedNums.remaining());
     if (lastCombo !== undefined) {
         ctx.stack[step] = lastCombo;
         iterateRecursively_indexLastWithPermCapture(ctx);
@@ -130,14 +130,15 @@ const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context,
 };
 
 class Context {
-    readonly cageIndicesRange: ReadonlyArray<number>;
-    readonly perms = new Array<ReadonlyCombos>();
-    readonly numFlags = new FastNumSet();
-    readonly stack: Array<Combo>;
     readonly combos: Array<Array<Combo>>;
-    readonly combosHash = new Array<Set<BinaryStorage>>();
+    readonly perms = new Array<ReadonlyCombos>();
+
     readonly allCageCombos: Array<SumCombos>;
     readonly iterationPipeline: IterationPipeline;
+    readonly cageIndicesRange: ReadonlyArray<number>;
+    readonly usedCombosHashes = new Array<Set<BinaryStorage>>();
+    readonly stack: Array<Combo>;
+    readonly usedNums = new FastNumSet();
 
     // caching iteration pipelines improves performance by around 5-10%
     private static _CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
@@ -178,12 +179,10 @@ class Context {
 
     constructor(cages: ReadonlyCages) {
         const cageCount = cages.length;
-        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
 
-        this.stack = new Array<Combo>(cageCount);
         this.combos = new Array<Array<Combo>>(cageCount);
-        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
 
+        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         const isCompleteHouse = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0) === House.CELL_COUNT;
         if (isCompleteHouse) {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
@@ -191,10 +190,13 @@ class Context {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
+        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
         this.cageIndicesRange.forEach(i => {
             this.combos[i] = [];
-            this.combosHash[i] = new Set<BinaryStorage>();
+            this.usedCombosHashes[i] = new Set<BinaryStorage>();
         });
+
+        this.stack = new Array<Combo>(cageCount);
     }
 }
 
@@ -210,7 +212,7 @@ class RecursiveEnumerator {
 
         this.ctx.cageIndicesRange.forEach(i => {
             const sumCombos = this.ctx.allCageCombos[i];
-            const actualSumCombosSet = this.ctx.combosHash[i];
+            const actualSumCombosSet = this.ctx.usedCombosHashes[i];
 
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
