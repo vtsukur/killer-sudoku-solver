@@ -153,9 +153,9 @@ class Context {
 
     private static newIterationPipelineForCompleteHouse(cageCount: number) {
         const pipeline = new Array<IterationFunction>(cageCount);
+        const lastStepIndex = cageCount - 1;
 
         pipeline[0] = iterateRecursively_index0;
-        const lastStepIndex = cageCount - 1;
         CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex].forEach(step => {
             pipeline[step] = iterateRecursively_index1Plus;
         });
