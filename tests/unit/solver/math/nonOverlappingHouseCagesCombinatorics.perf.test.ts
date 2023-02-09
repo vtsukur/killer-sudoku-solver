@@ -5,6 +5,8 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
+    const compute = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms;
+
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;
 
@@ -17,7 +19,7 @@ describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
             ]);
 
-            expect(NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(houseCageAreasModel).perms).toEqual([
+            expect(compute(houseCageAreasModel).perms).toEqual([
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -33,7 +35,7 @@ describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
             ]);
 
             _.range(ITERATION_COUNT).forEach(() => {
-                NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(houseCageAreasModel);
+                compute(houseCageAreasModel);
             });
         });
     });
