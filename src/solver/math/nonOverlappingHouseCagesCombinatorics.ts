@@ -65,7 +65,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      *  - if all given `Cage`s belong to the same `House`;
      *  - if `Cell`s in the given `Cage`s are non-overlapping;
      *  - if total sum of all `Cage`s is no greater than `House` sum.
-     * Its up to the caller to provide valid input.
+     * It's up to the caller to provide valid input.
      *
      * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
      * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
@@ -87,44 +87,44 @@ export class NonOverlappingHouseCagesCombinatorics {
 
 type ExecutionPipelineFn = (ctx: Context, sumCombos: SumCombos, step: number) => void;
 
-const combosRecursive = (ctx: Context, step: number) => {
+const iterateRecursively_main = (ctx: Context, step: number) => {
     ctx.executionPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
 
-const combosRecursive_0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const comboForSum of sumCombos.val) {
         ctx.stack[step] = comboForSum;
 
         ctx.numFlags.add(comboForSum.fastNumSet);
-        combosRecursive(ctx, step + 1);
+        iterateRecursively_main(ctx, step + 1);
         ctx.numFlags.remove(comboForSum.fastNumSet);
     }
 };
 
-const combosRecursive_i = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const comboForSum of sumCombos.val) {
         if (ctx.numFlags.doesNotHaveAny(comboForSum.fastNumSet)) {
             ctx.stack[step] = comboForSum;
 
             ctx.numFlags.add(comboForSum.fastNumSet);
-            combosRecursive(ctx, step + 1);
+            iterateRecursively_main(ctx, step + 1);
             ctx.numFlags.remove(comboForSum.fastNumSet);
         }
     }
 };
 
-const combosRecursive_last = (ctx: Context) => {
+const iterateRecursively_indexLast = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
     ctx.cageIndicesRange.forEach(i => {
         ctx.combosHash[i].add(ctx.stack[i].fastNumSet.binaryStorage);
     });
 };
 
-const combosRecursive_preLast_shortCircuit = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const iterateRecursively_indexLastWithShortCircuit = (ctx: Context, sumCombos: SumCombos, step: number) => {
     const lastCombo = sumCombos.get(ctx.numFlags.remaining());
     if (lastCombo !== undefined) {
         ctx.stack[step] = lastCombo;
-        combosRecursive_last(ctx);
+        iterateRecursively_indexLast(ctx);
     }
 };
 
@@ -150,12 +150,12 @@ class Context {
     private static newExecutionPipelineForCompleteHouse(cageCount: number) {
         const executionPipeline = new Array(cageCount);
 
-        executionPipeline[0] = combosRecursive_0;
+        executionPipeline[0] = iterateRecursively_index0;
         const lastStepIndex = cageCount - 1;
         CachedNumRanges.ONE_TO_N_UP_TO_10[lastStepIndex].forEach(step => {
-            executionPipeline[step] = combosRecursive_i;
+            executionPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[lastStepIndex] = combosRecursive_preLast_shortCircuit;
+        executionPipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuit;
 
         return executionPipeline;
     }
@@ -171,11 +171,11 @@ class Context {
     private static newExecutionPipelineForIncompleteHouse(cageCount: number) {
         const executionPipeline = new Array(cageCount + 1);
 
-        executionPipeline[0] = combosRecursive_0;
+        executionPipeline[0] = iterateRecursively_index0;
         CachedNumRanges.ONE_TO_N_UP_TO_10[cageCount].forEach(step => {
-            executionPipeline[step] = combosRecursive_i;
+            executionPipeline[step] = iterateRecursively_index1Plus;
         });
-        executionPipeline[cageCount] = combosRecursive_last;
+        executionPipeline[cageCount] = iterateRecursively_indexLast;
 
         return executionPipeline;
     }
@@ -210,7 +210,7 @@ class RecursiveEnumerator {
     }
 
     execute() {
-        combosRecursive(this.ctx, 0);
+        iterateRecursively_main(this.ctx, 0);
 
         this.ctx.cageIndicesRange.forEach(i => {
             const sumCombos = this.ctx.allCageCombos[i];
