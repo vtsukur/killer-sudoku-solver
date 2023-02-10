@@ -18,7 +18,8 @@ import { BinaryStorage, FastNumSet } from './fastNumSet';
 export class NonOverlappingHouseCagesCombinatorics {
 
     /**
-     * Computed `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums.
+     * Computed `Combo`s of nonrepeating numbers for each {@link Cage}
+     * which add up to respective `Cage`s' sums.
      *
      * Possible `Combo`s are derived from {@link perms},
      * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
@@ -27,7 +28,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * These arrays appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array of `Combo`s with index `i`.
+     * will be mapped to the array element of `Combo`s with index `i`.
      *
      * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
@@ -56,7 +57,8 @@ export class NonOverlappingHouseCagesCombinatorics {
 
     /**
      * Computes permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
-     * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
+     * and `Combo`s of nonrepeating numbers for each {@link Cage}
+     * which add up to respective `Cage`s' sums derived from permutations.
      *
      * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
@@ -72,13 +74,14 @@ export class NonOverlappingHouseCagesCombinatorics {
      * It's up to the caller to provide valid input.
      *
      * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
-     * and `Combo`s of nonrepeating numbers for each {@link Cage} which add up to `Cage`s' sums derived from permutations.
+     * and `Combo`s of nonrepeating numbers for each {@link Cage}
+     * which add up to respective `Cage`s' sums derived from permutations.
      *
      * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of this method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array of `Combo`s with index `i`.
+     * will be mapped to the array element of `Combo`s with index `i`.
      * See {@link combos}.
      *
      * Each permutation as represented as a readonly array of {@link Combo}s.
@@ -93,6 +96,10 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 };
 
+/**
+ * Computational strategy which encapsulates quickest possible way to do enumeration
+ * according to the amount of `Cage`s.
+ */
 type ComputeStrategyFn = (houseCagesAreaModel: HouseCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE = {
@@ -100,10 +107,22 @@ const EMPTY_INSTANCE = {
     perms: []
 };
 
+/**
+ * In case there are no `Cage`s, there is nothing to compute, so the same empty readonly array is returned.
+ *
+ * This technique avoids extra array object construction.
+ */
 const shortCircuitForNoCages: ComputeStrategyFn = () => {
     return EMPTY_INSTANCE;
 };
 
+/**
+ * In case there is only 1 `Cage`, the full enumeration of combinations and permutations is NOT required.
+ * It is enough to enumerate only the `Combo`s for the one & only `Cage` sum and
+ * trivially derive resulting combinations and permutations.
+ *
+ * This technique avoids heavier `Context` construction.
+ */
 const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
     const singleCage = houseCagesAreaModel.cages[0];
     const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
@@ -113,45 +132,58 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
     };
 };
 
+/**
+ * In case there are 2 or more `Cage`s, the full enumeration of combinations and permutations is executed.
+ */
 const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
     return iterateRecursively_main(new Context(houseCagesAreaModel));
 };
 
+/**
+ * All computational strategies which encapsulate quickest possible way to do enumeration
+ * according to the amount of `Cage`s.
+ */
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
-    shortCircuitForNoCages,         // for 0 Cages
-    shortCircuitFor1Cage,           // for 1 Cage
-    computeStrategyForSeveralCages, // for 2 Cages
-    computeStrategyForSeveralCages, // for 3 Cages
-    computeStrategyForSeveralCages, // for 4 Cages
-    computeStrategyForSeveralCages, // for 5 Cages
-    computeStrategyForSeveralCages, // for 6 Cages
-    computeStrategyForSeveralCages, // for 7 Cages
-    computeStrategyForSeveralCages, // for 8 Cages
-    computeStrategyForSeveralCages, // for 9 Cages
+    shortCircuitForNoCages,         // for 0 `Cage`s
+    shortCircuitFor1Cage,           // for 1 `Cage`
+    computeStrategyForSeveralCages, // for 2 `Cage`s
+    computeStrategyForSeveralCages, // for 3 `Cage`s
+    computeStrategyForSeveralCages, // for 4 `Cage`s
+    computeStrategyForSeveralCages, // for 5 `Cage`s
+    computeStrategyForSeveralCages, // for 6 `Cage`s
+    computeStrategyForSeveralCages, // for 7 `Cage`s
+    computeStrategyForSeveralCages, // for 8 `Cage`s
+    computeStrategyForSeveralCages, // for 9 `Cage`s
 ];
 
+/**
+ * Entry point to the recursive enumeration which collects permutations and computations.
+ */
 const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
+    // key work: recursive enumeration which collects permutations and efficiently marks used combinations.
     iterateRecursively_next(ctx, 0);
 
-    for (const i of ctx.cageIndicesRange) {
-        const sumCombos = ctx.allCageCombos[i];
-        const actualSumCombosSet = ctx.usedCombosHashes[i];
-
-        ctx.combos[i] = new Array(actualSumCombosSet.size);
-        for (const combo of sumCombos.val) {
-            if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                ctx.combos[i].push(combo);
-            }
-        }
-    };
+    // finalization: collecting combinations from marked combinations.
+    ctx.finalizeCombos();
 
     return { combos: ctx.combos, perms: ctx.perms };
 };
 
+/**
+ * Entry point to a particular step of recursive enumeration which leverages cached enumeration pipeline.
+ */
 const iterateRecursively_next = (ctx: Context, step: number) => {
     ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
 
+/**
+ * Supplementary function which executes next enumeration step
+ * with updating the `Context`:
+ *
+ *  - currently used combinations are updated with the current combination before next enumeration step;
+ *  - currently used numbers are updated with the current combination numbers before next enumeration step
+ *  and reverted upon the recursive completion of next enumeration step.
+ */
 const _pushAndAdvanceIterationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.stack[step] = combo;
 
@@ -160,13 +192,26 @@ const _pushAndAdvanceIterationAndPop = (ctx: Context, combo: Combo, step: number
     ctx.usedNums.remove(combo.fastNumSet);
 };
 
-const iterateRecursively_index0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
+/**
+ * In case enumeration is in the first step, the iteration is trivial:
+ *
+ *  - pick each combination in the first `Cage`;
+ *  - let enumeration proceed with each combination further;
+ */
+const iterateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
         _pushAndAdvanceIterationAndPop(ctx, combo, step);
     }
 };
 
-const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step: number) => {
+/**
+ * In case enumeration is in the second (and further) step(s), the iteration is just like for the first step
+ * with extra check that next combination does NOT overlap with currently used numbers.
+ *
+ * This logic is NOT unified with the first step on purpose for performance reasons:
+ * checking overlap with currently used numbers is NOT needed at all in the first step.
+ */
+const iterateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
             _pushAndAdvanceIterationAndPop(ctx, combo, step);
@@ -174,18 +219,31 @@ const iterateRecursively_index1Plus = (ctx: Context, sumCombos: SumCombos, step:
     }
 };
 
-const iterateRecursively_indexLastWithPermCapture = (ctx: Context) => {
+/**
+ * In case enumeration is in the last step, it means next permutation is found.
+ * (since overlapping combinations were skipped, non-overlapping combinations were found).
+ *
+ * Permutation is captured and respective combinations are marked as used.
+ */
+const iterateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
     for (const i of ctx.cageIndicesRange) {
         ctx.usedCombosHashes[i].add(ctx.stack[i].fastNumSet.binaryStorage);
     };
 };
 
-const iterateRecursively_indexLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
+/**
+ * In case enumeration is in the last step, and the computation is executed for the whole `House`,
+ * it is possible to short circuit check of the last combination according to the numbers NOT yet in use.
+ * (since `House` must contain all numbers from 1 to 9).
+ *
+ * If the check passes, {@link iterateRecursively_stepLastWithPermCaptureAndComboMark} is run.
+ */
+const iterateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
     const lastCombo = sumCombos.get(ctx.usedNums.remaining());
     if (lastCombo !== undefined) {
         ctx.stack[step] = lastCombo;
-        iterateRecursively_indexLastWithPermCapture(ctx);
+        iterateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
     }
 };
 
@@ -219,11 +277,11 @@ class Context {
         const pipeline = new Array<IterationFunction>(cageCount);
         const lastStepIndex = cageCount - 1;
 
-        pipeline[0] = iterateRecursively_index0;
+        pipeline[0] = iterateRecursively_step0;
         for (const step of CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex]) {
-            pipeline[step] = iterateRecursively_index1Plus;
+            pipeline[step] = iterateRecursively_step1PlusButNotLast;
         };
-        pipeline[lastStepIndex] = iterateRecursively_indexLastWithShortCircuitedPermCapture;
+        pipeline[lastStepIndex] = iterateRecursively_stepLastWithShortCircuitedPermCapture;
 
         return pipeline;
     }
@@ -231,11 +289,11 @@ class Context {
     private static newIterationPipelineForIncompleteHouse(cageCount: number) {
         const pipeline = new Array<IterationFunction>(cageCount + 1);
 
-        pipeline[0] = iterateRecursively_index0;
+        pipeline[0] = iterateRecursively_step0;
         for (const step of CachedNumRanges.ONE_TO_N_LT_10[cageCount]) {
-            pipeline[step] = iterateRecursively_index1Plus;
+            pipeline[step] = iterateRecursively_step1PlusButNotLast;
         };
-        pipeline[cageCount] = iterateRecursively_indexLastWithPermCapture;
+        pipeline[cageCount] = iterateRecursively_stepLastWithPermCaptureAndComboMark;
 
         return pipeline;
     }
@@ -258,4 +316,18 @@ class Context {
 
         this.stack = new Array(cageCount);
     }
+
+    finalizeCombos() {
+        for (const i of this.cageIndicesRange) {
+            const sumCombos = this.allCageCombos[i];
+            const actualSumCombosSet = this.usedCombosHashes[i];
+
+            this.combos[i] = new Array(actualSumCombosSet.size);
+            for (const combo of sumCombos.val) {
+                if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
+                    this.combos[i].push(combo);
+                }
+            }
+        };
+    };
 }
