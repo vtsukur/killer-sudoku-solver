@@ -4,6 +4,7 @@ import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
+import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
 
 /**
  * Permutation of possible numbers in a {@link House} represented as a readonly array of {@link Combo}s.
@@ -25,25 +26,7 @@ export type ReadonlyPerms = ReadonlyArray<ReadonlyPerm>;
  *
  * @public
  */
-export interface NonOverlappingHouseCagesCombinatorics {
-
-    /**
-     * Computed {@link Combo}s of nonrepeating numbers for each {@link Cage}
-     * which add up to respective `Cage`s' sums.
-     *
-     * Possible `Combo`s are derived from {@link perms},
-     * so `Combo`s which are NOT actual for a {@link House} do NOT appear in this property value.
-     *
-     * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s
-     * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
-     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array element of `Combo`s with index `i`.
-     *
-     * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
-     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
-     */
-    readonly combos: ReadonlyArray<ReadonlyCombos>;
+export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombinatorics {
 
     /**
      * Computed `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}.
@@ -355,16 +338,17 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
      * Collects `Combo`s which were marked as used during enumeration of `Perm`s into {@link combos}.
      */
     collectUsedCombos() {
-        for (const i of this.cageIndicesRange) {
-            const sumCombos = this.allCageCombos[i];
-            const actualSumCombosSet = this.usedCombosHashes[i];
+        for (const cageIndex of this.cageIndicesRange) {
+            const sumCombos = this.allCageCombos[cageIndex];
+            const actualSumCombosSet = this.usedCombosHashes[cageIndex];
 
-            this.combos[i] = new Array(actualSumCombosSet.size);
+            this.combos[cageIndex] = new Array(actualSumCombosSet.size);
+            let comboIndex = 0;
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
-                    this.combos[i].push(combo);
+                    this.combos[cageIndex][comboIndex++] = combo;
                 }
             }
-        };
+        }
     };
 }
