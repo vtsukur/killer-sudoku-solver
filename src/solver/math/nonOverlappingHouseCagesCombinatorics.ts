@@ -34,16 +34,18 @@ export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
 export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombinatorics {
 
     /**
-     * Possible {@link HouseCagesPerm}s of nonrepeating numbers for each {@link Cage} within the same {@link House}.
+     * Possible {@link House} numbers permutation in the form as {@link HouseCagesPerms}.
      *
-     * Each `CagesPerm` is represented as a readonly array of {@link Combo}s.
-     * {@link CagesCombos} appear in the same order as respective `Cage`s
+     * Each value in this array is a single permutation of possible numbers in {@link House} {@link Cage}s
+     * represented as {@link HouseCagesPerm}.
+     *
+     * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
      * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
-     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the {@link CagesCombo} with index `i` in each {@link HouseCagesPerm}.
+     * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the {@link Combo} with index `i` in each {@link HouseCagesPerm}.
      *
-     * Numbers in each {@link CagesCombo} and each {@link HouseCagesPerm} are guaranteed to be nonrepeating
-     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly perms: HouseCagesPerms;
 }

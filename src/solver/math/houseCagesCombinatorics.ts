@@ -35,11 +35,12 @@ export interface HouseCagesCombinatorics {
     /**
      * Possible {@link Cage}s' numbers within the {@link House} in the form as {@link HouseCagesCombos}.
      *
+     * Each value in this array is a readonly array of unique {@link Combo}s
+     * of nonrepeating numbers for respective `{@link Cage} represented as {@link HouseCageCombos}.
+     *
      * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
      *
-     * Each value in this array is a readonly array of unique {@link Combo}s
-     * of nonrepeating numbers for respective `{@link Cage}.
-     * These arrays appear in the same order as respective {@link Cage}s
+     * Each {@link HouseCageCombos} value in this array appears in the same order as respective {@link Cage}s
      * in `houseCagesAreaModel` input of `compute*` method of specific `Combinatorics` implementation,
      * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
      * will be mapped to the array element of {@link HouseCageCombos} with index `i`.
