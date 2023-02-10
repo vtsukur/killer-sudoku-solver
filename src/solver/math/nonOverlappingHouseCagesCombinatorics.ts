@@ -40,7 +40,7 @@ export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
 export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombinatorics {
 
     /**
-     * Possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}.
+     * Possible {@link House} numbers permutations in the form of {@link HouseCagesPerms}.
      *
      * Each value in this array is a single permutation of possible numbers in {@link House} {@link Cage}s
      * represented as {@link HouseCagesPerm}.
@@ -75,8 +75,8 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Computes possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
-     * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}
+     * Computes possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
+     * as well as possible {@link House} numbers permutations in the form of {@link HouseCagesPerms}
      * considering {@link Cage}s to be _non-overlapping_.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _non-overlapping_ {@link Cell}s.
@@ -90,8 +90,9 @@ export class NonOverlappingHouseCagesCombinatorics {
      *  - if total sum of all {@link Cage}s is no greater than {@link House} sum.
      * It's up to the caller to provide valid input.
      *
-     * @returns Possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
-     * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}.
+     * @returns Possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
+     * as well as possible {@link House} numbers permutations in the form of {@link HouseCagesPerms}
+     * considering {@link Cage}s to be _non-overlapping_.
      *
      * @see {combos}
      * @see {perms}
