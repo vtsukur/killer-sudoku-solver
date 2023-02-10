@@ -16,16 +16,16 @@ export type ReadonlyPerm = ReadonlyCombos;
 export type ReadonlyPerms = ReadonlyArray<ReadonlyPerm>;
 
 /**
- * Computational and data model for combinatorics of non-overlapping {@link Cage}s in the {@link House}.
+ * Combinatorics of non-overlapping {@link Cage}s in the {@link House}.
  *
- * This type uses Killer Sudoku constraint
+ * Implementation of this interface should use Killer Sudoku constraint
  * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
  * to produce possible `Perm`s of nonrepeating numbers for each `Cage` within the same `House`
  * and nonrepeating {@link Combo}s for each `Cage` derived from these `Perm`s.
  *
  * @public
  */
-export class NonOverlappingHouseCagesCombinatorics {
+export interface NonOverlappingHouseCagesCombinatorics {
 
     /**
      * Computed {@link Combo}s of nonrepeating numbers for each {@link Cage}
@@ -58,11 +58,23 @@ export class NonOverlappingHouseCagesCombinatorics {
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly perms: ReadonlyPerms;
+}
+
+/**
+ * Combinatorics of non-overlapping {@link Cage}s in the {@link House}.
+ *
+ * This type uses Killer Sudoku constraint
+ * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
+ * to produce possible `Perm`s of nonrepeating numbers for each `Cage` within the same `House`
+ * and nonrepeating {@link Combo}s for each `Cage` derived from these `Perm`s.
+ *
+ * @public
+ */
+export class NonOverlappingHouseCagesCombinatorics {
 
     // istanbul ignore next
-    private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyPerms) {
-        this.combos = combos;
-        this.perms = perms;
+    private constructor() {
+        throw new Error('Non-contructible');
     }
 
     /**
@@ -270,7 +282,7 @@ type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 /**
  * Data context for full enumeration of `Combo`s and `Perm`s.
  */
-class Context {
+class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly combos: Array<Array<Combo>>;
     readonly perms = new Array<ReadonlyCombos>();
 
