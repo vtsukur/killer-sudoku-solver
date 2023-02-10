@@ -1,36 +1,50 @@
-import { ReadonlyCombos } from './combo';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cage } from '../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../puzzle/cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { House } from '../../puzzle/house';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Combo, ReadonlyCombos } from './combo';
 
 /**
- * {@link Combo}s of nonrepeating numbers which add up to respective `Cage`s' sums.
- *
- * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
+ * Readonly array of unique {@link Combo}s of nonrepeating numbers which add up to respective {@link Cage}'s sum.
  *
  * @public
  */
-export type CagesCombos = ReadonlyArray<ReadonlyCombos>;
+export type CageCombos = ReadonlyCombos;
 
 /**
- * Combinatorics of {@link Cage}s in the {@link House}.
+ * Readonly array of {@link CageCombos} for multiple {@link Cage}s.
  *
- * Implementation of this interface should use Killer Sudoku constraint
- * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
- * to produce nonrepeating {@link Combo}s for each `Cage`.
+ * @public
+ */
+export type CagesCombos = ReadonlyArray<CageCombos>;
+
+/**
+ * Combinatorics of possible {@link Cage}s' numbers within the {@link House}.
+ *
+ * Implementation of this interface should follow Killer Sudoku constraint,
+ * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
  *
  * @public
  */
 export interface HouseCagesCombinatorics {
 
     /**
-     * Computed {@link Combo}s of nonrepeating numbers which add up to respective `Cage`s' sums.
+     * Possible {@link Cage}s' numbers within the {@link House} in the form as {@link CagesCombos}.
      *
-     * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
-     * These arrays appear in the same order as respective `Cage`s
+     * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
+     *
+     * Each value in this array is a readonly array of unique {@link Combo}s
+     * of nonrepeating numbers for respective `{@link Cage}.
+     * These arrays appear in the same order as respective {@link Cage}s
      * in `houseCagesAreaModel` input of `compute*` method of specific `Combinatorics` implementation,
-     * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array element of `Combo`s with index `i`.
+     * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
+     * will be mapped to the array element of {@link CageCombos} with index `i`.
      *
-     * Numbers in each `Cage` `Combo` are guaranteed to be nonrepeating
-     * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     * Numbers in each {@link CageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly combos: CagesCombos;
 }
