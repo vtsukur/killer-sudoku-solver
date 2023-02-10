@@ -27,7 +27,10 @@ export type HouseCagesPerm = ReadonlyCombos;
 export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
 
 /**
- * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the {@link House}.
+ * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
+ *
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT {@link Cell}s
+ * which are also present in other {@link Cage}s of the same {@link House}.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -54,7 +57,10 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
 }
 
 /**
- * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the {@link House}.
+ * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
+ *
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT {@link Cell}s
+ * which are also present in other {@link Cage}s of the same {@link House}.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -69,7 +75,7 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Computes possible {@link Cage}s' numbers within the {@link House} in the form as {@link HouseCagesCombos} as well as
+     * Computes possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
      * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having non-overlapping {@link Cell}s.
@@ -83,7 +89,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      *  - if total sum of all {@link Cage}s is no greater than  {@link House} sum.
      * It's up to the caller to provide valid input.
      *
-     * @returns Possible {@link Cage}s' numbers within the {@link House} in the form as {@link HouseCagesCombos} as well as
+     * @returns Possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
      * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}.
      *
      * @see {combos}
