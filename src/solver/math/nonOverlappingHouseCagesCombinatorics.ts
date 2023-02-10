@@ -76,17 +76,18 @@ export class NonOverlappingHouseCagesCombinatorics {
 
     /**
      * Computes possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
-     * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}.
+     * possible {@link House} numbers permutations in the form as {@link HouseCagesPerms}
+     * considering {@link Cage}s to be _non-overlapping_.
      *
-     * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having non-overlapping {@link Cell}s.
+     * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _non-overlapping_ {@link Cell}s.
      *
      * {@link Cage}s may cover either complete set of {@link House} {@link Cell}s or a subset.
      * Empty {@link HouseCagesAreaModel} is also acceptable.
      *
      * For performance reasons, this method does NOT check:
      *  - if all given {@link Cage}s belong to the same {@link House};
-     *  - if {@link Cell}s in the given {@link Cage}s are non-overlapping;
-     *  - if total sum of all {@link Cage}s is no greater than  {@link House} sum.
+     *  - if {@link Cell}s in the given {@link Cage}s are _non-overlapping_;
+     *  - if total sum of all {@link Cage}s is no greater than {@link House} sum.
      * It's up to the caller to provide valid input.
      *
      * @returns Possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos} as well as
