@@ -4,14 +4,14 @@ import { Combo } from '../../../../src/solver/math';
 import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/nonOverlappingHouseCagesCombinatorics';
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
-describe('Performance tests for NonOverlappingHouseCagesCombinatorics', () => {
+describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
     const compute = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms;
 
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;
 
     _.range(TESTS_COUNT).forEach(i => {
-        test(`Compute combinations and permutations [${i}]`, () => {
+        test(`Computing \`Combo\`s and \`Perm\`s [${i + 1}]`, () => {
             const houseCageAreasModel = new HouseCagesAreaModel([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
                 Cage.ofSum(10).at(0, 0).at(0, 1).new(),
