@@ -36,7 +36,7 @@ export interface HouseCagesCombinatorics {
      * Possible {@link Cage}s' numbers within the {@link House} in the form as {@link HouseCagesCombos}.
      *
      * Each value in this array is a readonly array of unique {@link Combo}s
-     * of nonrepeating numbers for respective `{@link Cage} represented as {@link HouseCageCombos}.
+     * of nonrepeating numbers for respective {@link Cage} represented as {@link HouseCageCombos}.
      *
      * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
      *
