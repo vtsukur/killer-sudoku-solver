@@ -6,23 +6,33 @@ import { combosForSum, SumCombos } from './combosForSum';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 
 /**
+ * Permutation of possible numbers in a {@link House} represented as a readonly array of {@link Combo}s.
+ */
+export type ReadonlyPerm = ReadonlyCombos;
+
+/**
+ * Readonly array of all possible number `Perm`s in a {@link House}`.
+ */
+export type ReadonlyPerms = ReadonlyArray<ReadonlyPerm>;
+
+/**
  * Computational and data model for combinatorics of non-overlapping {@link Cage}s in the {@link House}.
  *
  * This type uses Killer Sudoku constraint
  * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
- * to produce possible permutations of nonrepeating numbers for each `Cage` within the same `House`
- * and nonrepeating `Combo`s for each `Cage` derived from these permutations.
+ * to produce possible `Perm`s of nonrepeating numbers for each `Cage` within the same `House`
+ * and nonrepeating {@link Combo}s for each `Cage` derived from these `Perm`s.
  *
  * @public
  */
 export class NonOverlappingHouseCagesCombinatorics {
 
     /**
-     * Computed `Combo`s of nonrepeating numbers for each {@link Cage}
+     * Computed {@link Combo}s of nonrepeating numbers for each {@link Cage}
      * which add up to respective `Cage`s' sums.
      *
      * Possible `Combo`s are derived from {@link perms},
-     * so `Combo`s which are NOT actual for a `House` do NOT appear in this property value.
+     * so `Combo`s which are NOT actual for a {@link House} do NOT appear in this property value.
      *
      * Each value in this array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s
@@ -36,31 +46,31 @@ export class NonOverlappingHouseCagesCombinatorics {
     readonly combos: ReadonlyArray<ReadonlyCombos>;
 
     /**
-     * Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}.
+     * Computed `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}.
      *
-     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * Each `Perm` as represented as a readonly array of {@link Combo}s.
      * `Combo`s appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the `Combo` with index `i` in each permutation.
+     * will be mapped to the `Combo` with index `i` in each `Perm`.
      *
-     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
+     * Numbers in each `Cage` `Combo` and each `Perm` are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
-    readonly perms: ReadonlyArray<ReadonlyCombos>;
+    readonly perms: ReadonlyPerms;
 
     // istanbul ignore next
-    private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyArray<ReadonlyCombos>, ) {
+    private constructor(combos: ReadonlyArray<ReadonlyCombos>, perms: ReadonlyPerms) {
         this.combos = combos;
         this.perms = perms;
     }
 
     /**
-     * Computes permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
-     * and `Combo`s of nonrepeating numbers for each {@link Cage}
-     * which add up to respective `Cage`s' sums derived from permutations.
+     * Computes `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * and {@link Combo}s of nonrepeating numbers for each {@link Cage}
+     * which add up to respective `Cage`s' sums derived from `Perm`s.
      *
-     * Numbers in each `Cage` `Combo` and each permutation are guaranteed to be nonrepeating
+     * Numbers in each `Cage` `Combo` and each `Perm` are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with `Cage`s having non-overlapping `Cell`s.
@@ -73,9 +83,9 @@ export class NonOverlappingHouseCagesCombinatorics {
      *  - if total sum of all `Cage`s is no greater than `House` sum.
      * It's up to the caller to provide valid input.
      *
-     * @returns Computed permutations of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * @returns Computed `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}
      * and `Combo`s of nonrepeating numbers for each {@link Cage}
-     * which add up to respective `Cage`s' sums derived from permutations.
+     * which add up to respective `Cage`s' sums derived from `Perm`s.
      *
      * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s
@@ -84,11 +94,11 @@ export class NonOverlappingHouseCagesCombinatorics {
      * will be mapped to the array element of `Combo`s with index `i`.
      * See {@link combos}.
      *
-     * Each permutation as represented as a readonly array of {@link Combo}s.
+     * Each `Perm` as represented as a readonly array of {@link Combo}s.
      * `Combo`s appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of this method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the `Combo` with index `i` in each permutation.
+     * will be mapped to the `Combo` with index `i` in each `Perm`.
      * See {@link perms}.
      */
     static computeCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
@@ -117,9 +127,9 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
 };
 
 /**
- * In case there is only 1 `Cage`, the full enumeration of combinations and permutations is NOT required.
+ * In case there is only 1 `Cage`, the full enumeration of `Combo`s and `Perm`s is NOT required.
  * It is enough to enumerate only the `Combo`s for the one & only `Cage` sum and
- * trivially derive resulting combinations and permutations.
+ * trivially derive resulting `Combo`s and `Perm`s.
  *
  * This technique avoids heavier `Context` construction.
  */
@@ -133,7 +143,7 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
 };
 
 /**
- * In case there are 2 or more `Cage`s, the full enumeration of combinations and permutations is executed.
+ * In case there are 2 or more `Cage`s, the full enumeration of `Combo`s and `Perm`s is executed.
  */
 const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
     return enumerateRecursively_main(new Context(houseCagesAreaModel));
@@ -157,13 +167,13 @@ const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
 ];
 
 /**
- * Entry point to the recursive enumeration which collects permutations and computations.
+ * Entry point to the recursive enumeration which collects `Perm`s and computations.
  */
 const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
-    // key work: recursive enumeration which collects permutations and efficiently marks used combinations.
+    // key work: recursive enumeration which collects `Perm`s and efficiently marks used `Combo`s.
     enumerateRecursively_next(ctx, 0);
 
-    // finalization: collecting combinations from marked combinations.
+    // finalization: collecting `Combo`s from marked `Combo`s.
     ctx.collectUsedCombos();
 
     return { combos: ctx.combos, perms: ctx.perms };
@@ -180,8 +190,8 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
  * Supplementary function which executes next enumeration step
  * with updating the `Context`:
  *
- *  - currently used combinations are updated with the current combination before next enumeration step;
- *  - currently used numbers are updated with the current combination numbers before next enumeration step
+ *  - currently used `Combo`s are updated with the current `Combo` before next enumeration step;
+ *  - currently used numbers are updated with the current `Combo` numbers before next enumeration step
  *  and reverted upon the recursive completion of next enumeration step.
  */
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
@@ -195,8 +205,8 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
 /**
  * In case enumeration is in the first step, the algorithm is trivial:
  *
- *  - pick each combination in the first `Cage`;
- *  - let enumeration proceed with each combination further;
+ *  - pick each `Combo` in the first `Cage`;
+ *  - let enumeration proceed with each `Combo` further;
  */
 const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
@@ -206,7 +216,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: nu
 
 /**
  * In case enumeration is in the second (and further) step(s), the algorithm is just like for the first step
- * with extra check that next combination does NOT overlap with currently used numbers.
+ * with extra check that next `Combo` does NOT overlap with currently used numbers.
  *
  * This logic is NOT unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is NOT needed at all in the first step.
@@ -220,10 +230,10 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCo
 };
 
 /**
- * In case enumeration is in the last step, it means next permutation is found.
- * (since overlapping combinations were skipped, non-overlapping combinations were found).
+ * In case enumeration is in the last step, it means next `Perm` is found.
+ * (since overlapping `Combo`s were skipped, non-overlapping `Combo`s were found).
  *
- * Permutation is captured and respective combinations are marked as used.
+ * `Perm` is captured and respective `Combo`s are marked as used.
  */
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.usedCombos]);
@@ -234,7 +244,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
 
 /**
  * In case enumeration is in the last step, and the computation is executed for the whole `House`,
- * it is possible to short circuit check of the last combination according to the numbers NOT yet in use.
+ * it is possible to short circuit check of the last `Combo` according to the numbers NOT yet in use.
  * (since `House` must contain all numbers from 1 to 9).
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
@@ -258,7 +268,7 @@ type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number
 type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 
 /**
- * Data context for full enumeration of combinations and permutations.
+ * Data context for full enumeration of `Combo`s and `Perm`s.
  */
 class Context {
     readonly combos: Array<Array<Combo>>;
@@ -330,7 +340,7 @@ class Context {
     }
 
     /**
-     * Collects combinations to {@link combos} which were marked as used during enumeration of permutations.
+     * Collects `Combo`s which were marked as used during enumeration of `Perm`s into {@link combos}.
      */
     collectUsedCombos() {
         for (const i of this.cageIndicesRange) {
