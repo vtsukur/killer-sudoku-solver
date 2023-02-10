@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cage } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
@@ -7,49 +9,50 @@ import { BinaryStorage, FastNumSet } from './fastNumSet';
 import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
 
 /**
- * Permutation of possible numbers in a {@link House} represented as a readonly array of {@link Combo}s.
- */
-export type ReadonlyPerm = ReadonlyCombos;
-
-/**
- * Readonly array of all possible number `Perm`s in a {@link House}`.
- */
-export type ReadonlyPerms = ReadonlyArray<ReadonlyPerm>;
-
-/**
- * Combinatorics of non-overlapping {@link Cage}s in the {@link House}.
+ * Single permutation of possible numbers in {@link House} {@link Cage}s
+ * represented as a readonly array of {@link Combo}s.
  *
- * Implementation of this interface should use Killer Sudoku constraint
- * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
- * to produce possible `Perm`s of nonrepeating numbers for each `Cage` within the same `House`
- * and nonrepeating {@link Combo}s for each `Cage` derived from these `Perm`s.
+ * @public
+ */
+export type HouseCagesPerm = ReadonlyCombos;
+
+/**
+ * Readonly array of all possible {@link HouseCagesPerm}s for a {@link House}`.
+ *
+ * @public
+ */
+export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
+
+/**
+ * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the {@link House}.
+ *
+ * Implementation of this interface should follow Killer Sudoku constraint,
+ * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
  *
  * @public
  */
 export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombinatorics {
 
     /**
-     * Computed `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}.
+     * Possible {@link HouseCagesPerm}s of nonrepeating numbers for each {@link Cage} within the same {@link House}.
      *
-     * Each `Perm` as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s
+     * Each `CagesPerm` is represented as a readonly array of {@link Combo}s.
+     * {@link CagesCombos} appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the `Combo` with index `i` in each `Perm`.
+     * will be mapped to the {@link CagesCombo} with index `i` in each {@link HouseCagesPerm}.
      *
-     * Numbers in each `Cage` `Combo` and each `Perm` are guaranteed to be nonrepeating
+     * Numbers in each {@link CagesCombo} and each {@link HouseCagesPerm} are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
-    readonly perms: ReadonlyPerms;
+    readonly perms: HouseCagesPerms;
 }
 
 /**
- * Combinatorics of non-overlapping {@link Cage}s in the {@link House}.
+ * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the {@link House}.
  *
- * This type uses Killer Sudoku constraint
- * (_which state that a `House` has nonrepeating set of {@link Cell}`s with numbers from 1 to 9_)
- * to produce possible `Perm`s of nonrepeating numbers for each `Cage` within the same `House`
- * and nonrepeating {@link Combo}s for each `Cage` derived from these `Perm`s.
+ * Implementation of this interface should follow Killer Sudoku constraint,
+ * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
  *
  * @public
  */
@@ -61,11 +64,11 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Computes `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * Computes {@link HouseCagesPerms} of nonrepeating numbers for each {@link Cage} within the same {@link House}
      * and {@link Combo}s of nonrepeating numbers for each {@link Cage}
-     * which add up to respective `Cage`s' sums derived from `Perm`s.
+     * which add up to respective `Cage`s' sums derived from {@link HouseCagesPerms}.
      *
-     * Numbers in each `Cage` `Combo` and each `Perm` are guaranteed to be nonrepeating
+     * Numbers in each {@link CagesCombo} and each {@link HouseCagesPerm} are guaranteed to be nonrepeating
      * following Killer Sudoku constraint of `House` having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with `Cage`s having non-overlapping `Cell`s.
@@ -78,22 +81,22 @@ export class NonOverlappingHouseCagesCombinatorics {
      *  - if total sum of all `Cage`s is no greater than `House` sum.
      * It's up to the caller to provide valid input.
      *
-     * @returns Computed `Perm`s of nonrepeating numbers for each {@link Cage} within the same {@link House}
-     * and `Combo`s of nonrepeating numbers for each {@link Cage}
-     * which add up to respective `Cage`s' sums derived from `Perm`s.
+     * @returns Computed {@link HouseCagesPerms} of nonrepeating numbers for each {@link Cage} within the same {@link House}
+     * and {@link CagesCombos} of nonrepeating numbers for each {@link Cage}
+     * which add up to respective `Cage`s' sums derived from {@link HouseCagesPerms}.
      *
      * Each value in the {@link combos} array is a readonly array of {@link Combo}s for respective `Cage`.
      * These arrays appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of this method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array element of `Combo`s with index `i`.
+     * will be mapped to the array element of {@link CagesCombos} with index `i`.
      * See {@link combos}.
      *
-     * Each `Perm` as represented as a readonly array of {@link Combo}s.
-     * `Combo`s appear in the same order as respective `Cage`s
+     * Each {@link HouseCagesPerm} as represented as a readonly array of {@link Combo}s.
+     * {@link CagesCombos} appear in the same order as respective `Cage`s
      * in `houseCagesAreaModel` input of this method,
      * meaning `Cage` with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the `Combo` with index `i` in each `Perm`.
+     * will be mapped to the {@link CagesCombos} with index `i` in each {@link HouseCagesPerm}.
      * See {@link perms}.
      */
     static computeCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
@@ -122,9 +125,9 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
 };
 
 /**
- * In case there is only 1 `Cage`, the full enumeration of `Combo`s and `Perm`s is NOT required.
+ * In case there is only 1 `Cage`, the full enumeration of `Combo`s and {@link HouseCagesPerm} is NOT required.
  * It is enough to enumerate only the `Combo`s for the one & only `Cage` sum and
- * trivially derive resulting `Combo`s and `Perm`s.
+ * trivially derive resulting `Combo`s and {@link HouseCagesPerm}.
  *
  * This technique avoids heavier `Context` construction.
  */
@@ -138,7 +141,7 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
 };
 
 /**
- * In case there are 2 or more `Cage`s, the full enumeration of `Combo`s and `Perm`s is executed.
+ * In case there are 2 or more `Cage`s, the full enumeration of `Combo`s and {@link HouseCagesPerms} is executed.
  */
 const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
     return enumerateRecursively_main(new Context(houseCagesAreaModel));
@@ -162,10 +165,10 @@ const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
 ];
 
 /**
- * Entry point to the recursive enumeration which collects `Perm`s and computations.
+ * Entry point to the recursive enumeration which collects {@link HouseCagesPerms} and computations.
  */
 const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
-    // key work: recursive enumeration which collects `Perm`s and efficiently marks used `Combo`s.
+    // key work: recursive enumeration which collects `CagesPerms` and efficiently marks used `Combo`s.
     enumerateRecursively_next(ctx, 0);
 
     // finalization: collecting `Combo`s from marked `Combo`s.
@@ -225,10 +228,10 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCo
 };
 
 /**
- * In case enumeration is in the last step, it means next `Perm` is found.
+ * In case enumeration is in the last step, it means next {@link HouseCagesPerm} is found.
  * (since overlapping `Combo`s were skipped, non-overlapping `Combo`s were found).
  *
- * `Perm` is captured and respective `Combo`s are marked as used.
+ * {@link HouseCagesPerm} is captured and respective `Combo`s are marked as used.
  */
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.usedCombos]);
@@ -263,7 +266,7 @@ type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number
 type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 
 /**
- * Data context for full enumeration of `Combo`s and `Perm`s.
+ * Data context for full enumeration of `Combo`s and {@link HouseCagesPerms}.
  */
 class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly combos: Array<Array<Combo>>;
@@ -335,7 +338,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Collects `Combo`s which were marked as used during enumeration of `Perm`s into {@link combos}.
+     * Collects {@link CagesCombos} which were marked as used during enumeration of {@link HouseCagesPerms} into {@link combos}.
      */
     collectUsedCombos() {
         for (const cageIndex of this.cageIndicesRange) {
