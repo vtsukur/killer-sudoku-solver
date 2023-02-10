@@ -244,7 +244,7 @@ class Context {
         const cages = houseCagesAreaModel.cages;
         const cageCount = cages.length;
 
-        this.combos = new Array<Array<Combo>>(cageCount);
+        this.combos = new Array(cageCount);
         this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
@@ -256,6 +256,6 @@ class Context {
             this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
-        this.stack = new Array<Combo>(cageCount);
+        this.stack = new Array(cageCount);
     }
 }
