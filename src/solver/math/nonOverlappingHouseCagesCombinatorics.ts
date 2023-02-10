@@ -323,7 +323,7 @@ class Context {
     }
 
     /**
-     * Collects combinations in {@link combos} which were marked as used during enumeration of permutations.
+     * Collects combinations to {@link combos} which were marked as used during enumeration of permutations.
      */
     finalizeCombos() {
         for (const i of this.cageIndicesRange) {
