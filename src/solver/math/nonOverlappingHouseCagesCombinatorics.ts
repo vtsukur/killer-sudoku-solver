@@ -250,6 +250,9 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
 type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
 type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 
+/**
+ * Data context for full enumeration of combinations and permutations.
+ */
 class Context {
     readonly combos: Array<Array<Combo>>;
     readonly perms = new Array<ReadonlyCombos>();
@@ -273,6 +276,7 @@ class Context {
         });
     }
 
+    // enumeration for complete `House` is short circuited in the last step.
     private static newEnumerationPipelineForCompleteHouse(cageCount: number) {
         const pipeline = new Array<EnumerationStepFunction>(cageCount);
         const lastStepIndex = cageCount - 1;
@@ -286,6 +290,7 @@ class Context {
         return pipeline;
     }
 
+    // enumeration for incomplete `House` is NOT short circuited in the last step.
     private static newEnumerationPipelineForIncompleteHouse(cageCount: number) {
         const pipeline = new Array<EnumerationStepFunction>(cageCount + 1);
 
@@ -317,6 +322,9 @@ class Context {
         this.stack = new Array(cageCount);
     }
 
+    /**
+     * Collects combinations in {@link combos} which were marked as used during enumeration of permutations.
+     */
     finalizeCombos() {
         for (const i of this.cageIndicesRange) {
             const sumCombos = this.allCageCombos[i];
