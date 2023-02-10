@@ -247,7 +247,14 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
     }
 };
 
+/**
+ * Generic enumeration step function.
+ */
 type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+
+/**
+ * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.
+ */
 type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 
 /**
