@@ -185,7 +185,7 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
  *  and reverted upon the recursive completion of next enumeration step.
  */
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
-    ctx.stack[step] = combo;
+    ctx.usedCombos[step] = combo;
 
     ctx.usedNums.add(combo.fastNumSet);
     enumerateRecursively_next(ctx, step + 1);
@@ -226,9 +226,9 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCo
  * Permutation is captured and respective combinations are marked as used.
  */
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
-    ctx.perms.push([...ctx.stack]);
+    ctx.perms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.stack[i].fastNumSet.binaryStorage);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].fastNumSet.binaryStorage);
     };
 };
 
@@ -242,7 +242,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
 const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
     const lastCombo = sumCombos.get(ctx.usedNums.remaining());
     if (lastCombo !== undefined) {
-        ctx.stack[step] = lastCombo;
+        ctx.usedCombos[step] = lastCombo;
         enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
     }
 };
@@ -261,7 +261,7 @@ class Context {
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BinaryStorage>>;
     readonly enumerationPipeline: EnumerationPipeline;
-    readonly stack: Array<Combo>;
+    readonly usedCombos: Array<Combo>;
     readonly usedNums = new FastNumSet();
 
     // caching enumeration pipelines improves performance by around 5-10%
@@ -319,7 +319,7 @@ class Context {
             this.enumerationPipeline = Context._CACHED_ENUMERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
-        this.stack = new Array(cageCount);
+        this.usedCombos = new Array(cageCount);
     }
 
     /**
