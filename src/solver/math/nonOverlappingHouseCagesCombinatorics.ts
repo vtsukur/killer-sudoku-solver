@@ -164,7 +164,7 @@ const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombin
     enumerateRecursively_next(ctx, 0);
 
     // finalization: collecting combinations from marked combinations.
-    ctx.finalizeCombos();
+    ctx.collectUsedCombos();
 
     return { combos: ctx.combos, perms: ctx.perms };
 };
@@ -325,7 +325,7 @@ class Context {
     /**
      * Collects combinations to {@link combos} which were marked as used during enumeration of permutations.
      */
-    finalizeCombos() {
+    collectUsedCombos() {
         for (const i of this.cageIndicesRange) {
             const sumCombos = this.allCageCombos[i];
             const actualSumCombosSet = this.usedCombosHashes[i];
