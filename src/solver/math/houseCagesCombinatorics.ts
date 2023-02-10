@@ -8,18 +8,19 @@ import { House } from '../../puzzle/house';
 import { Combo, ReadonlyCombos } from './combo';
 
 /**
- * Readonly array of unique {@link Combo}s of nonrepeating numbers which add up to respective {@link Cage}'s sum.
+ * Readonly array of unique {@link Combo}s of nonrepeating numbers
+ * which add up to respective {@link Cage}'s sum within the {@link House}.
  *
  * @public
  */
-export type CageCombos = ReadonlyCombos;
+export type HouseCageCombos = ReadonlyCombos;
 
 /**
- * Readonly array of {@link CageCombos} for multiple {@link Cage}s.
+ * Readonly array of {@link HouseCageCombos} for multiple {@link Cage}s in the {@link House}.
  *
  * @public
  */
-export type CagesCombos = ReadonlyArray<CageCombos>;
+export type HouseCagesCombos = ReadonlyArray<HouseCageCombos>;
 
 /**
  * Combinatorics of possible {@link Cage}s' numbers within the {@link House}.
@@ -32,7 +33,7 @@ export type CagesCombos = ReadonlyArray<CageCombos>;
 export interface HouseCagesCombinatorics {
 
     /**
-     * Possible {@link Cage}s' numbers within the {@link House} in the form as {@link CagesCombos}.
+     * Possible {@link Cage}s' numbers within the {@link House} in the form as {@link HouseCagesCombos}.
      *
      * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
      *
@@ -41,10 +42,10 @@ export interface HouseCagesCombinatorics {
      * These arrays appear in the same order as respective {@link Cage}s
      * in `houseCagesAreaModel` input of `compute*` method of specific `Combinatorics` implementation,
      * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array element of {@link CageCombos} with index `i`.
+     * will be mapped to the array element of {@link HouseCageCombos} with index `i`.
      *
-     * Numbers in each {@link CageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
-    readonly combos: CagesCombos;
+    readonly combos: HouseCagesCombos;
 }
