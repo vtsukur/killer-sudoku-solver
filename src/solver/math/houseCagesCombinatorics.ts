@@ -33,7 +33,7 @@ export type HouseCagesCombos = ReadonlyArray<HouseCageCombos>;
 export interface HouseCagesCombinatorics {
 
     /**
-     * Possible {@link Cage}s' numbers within the same {@link House} in the form as {@link HouseCagesCombos}.
+     * Possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}.
      *
      * Each value in this array is a readonly array of unique {@link Combo}s
      * of nonrepeating numbers for respective {@link Cage} represented as {@link HouseCageCombos}.
