@@ -137,7 +137,7 @@ const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinat
         const sumCombos = ctx.allCageCombos[i];
         const actualSumCombosSet = ctx.usedCombosHashes[i];
 
-        ctx.combos[i] = [];
+        ctx.combos[i] = new Array(actualSumCombosSet.size);
         for (const combo of sumCombos.val) {
             if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
                 ctx.combos[i].push(combo);
