@@ -136,7 +136,7 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
  * In case there are 2 or more `Cage`s, the full enumeration of combinations and permutations is executed.
  */
 const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
-    return iterateRecursively_main(new Context(houseCagesAreaModel));
+    return enumerateRecursively_main(new Context(houseCagesAreaModel));
 };
 
 /**
@@ -159,9 +159,9 @@ const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
 /**
  * Entry point to the recursive enumeration which collects permutations and computations.
  */
-const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
+const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinatorics => {
     // key work: recursive enumeration which collects permutations and efficiently marks used combinations.
-    iterateRecursively_next(ctx, 0);
+    enumerateRecursively_next(ctx, 0);
 
     // finalization: collecting combinations from marked combinations.
     ctx.finalizeCombos();
@@ -172,8 +172,8 @@ const iterateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombinat
 /**
  * Entry point to a particular step of recursive enumeration which leverages cached enumeration pipeline.
  */
-const iterateRecursively_next = (ctx: Context, step: number) => {
-    ctx.iterationPipeline[step](ctx, ctx.allCageCombos[step], step);
+const enumerateRecursively_next = (ctx: Context, step: number) => {
+    ctx.enumerationPipeline[step](ctx, ctx.allCageCombos[step], step);
 };
 
 /**
@@ -184,37 +184,37 @@ const iterateRecursively_next = (ctx: Context, step: number) => {
  *  - currently used numbers are updated with the current combination numbers before next enumeration step
  *  and reverted upon the recursive completion of next enumeration step.
  */
-const _pushAndAdvanceIterationAndPop = (ctx: Context, combo: Combo, step: number) => {
+const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.stack[step] = combo;
 
     ctx.usedNums.add(combo.fastNumSet);
-    iterateRecursively_next(ctx, step + 1);
+    enumerateRecursively_next(ctx, step + 1);
     ctx.usedNums.remove(combo.fastNumSet);
 };
 
 /**
- * In case enumeration is in the first step, the iteration is trivial:
+ * In case enumeration is in the first step, the algorithm is trivial:
  *
  *  - pick each combination in the first `Cage`;
  *  - let enumeration proceed with each combination further;
  */
-const iterateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
-        _pushAndAdvanceIterationAndPop(ctx, combo, step);
+        _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
 };
 
 /**
- * In case enumeration is in the second (and further) step(s), the iteration is just like for the first step
+ * In case enumeration is in the second (and further) step(s), the algorithm is just like for the first step
  * with extra check that next combination does NOT overlap with currently used numbers.
  *
  * This logic is NOT unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is NOT needed at all in the first step.
  */
-const iterateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombos, step: number) => {
     for (const combo of sumCombos.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
-            _pushAndAdvanceIterationAndPop(ctx, combo, step);
+            _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
     }
 };
@@ -225,7 +225,7 @@ const iterateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumComb
  *
  * Permutation is captured and respective combinations are marked as used.
  */
-const iterateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
+const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.stack]);
     for (const i of ctx.cageIndicesRange) {
         ctx.usedCombosHashes[i].add(ctx.stack[i].fastNumSet.binaryStorage);
@@ -237,18 +237,18 @@ const iterateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) =>
  * it is possible to short circuit check of the last combination according to the numbers NOT yet in use.
  * (since `House` must contain all numbers from 1 to 9).
  *
- * If the check passes, {@link iterateRecursively_stepLastWithPermCaptureAndComboMark} is run.
+ * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const iterateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
     const lastCombo = sumCombos.get(ctx.usedNums.remaining());
     if (lastCombo !== undefined) {
         ctx.stack[step] = lastCombo;
-        iterateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
+        enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
     }
 };
 
-type IterationFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
-type IterationPipeline = ReadonlyArray<IterationFunction>;
+type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
 
 class Context {
     readonly combos: Array<Array<Combo>>;
@@ -257,43 +257,43 @@ class Context {
     readonly allCageCombos: Array<SumCombos>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BinaryStorage>>;
-    readonly iterationPipeline: IterationPipeline;
+    readonly enumerationPipeline: EnumerationPipeline;
     readonly stack: Array<Combo>;
     readonly usedNums = new FastNumSet();
 
-    // caching iteration pipelines improves performance by around 5-10%
-    private static _CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
-        Context.newIterationPipelines(House.CELL_COUNT + 1, Context.newIterationPipelineForCompleteHouse);
-    private static _CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE: ReadonlyArray<IterationPipeline> =
-        Context.newIterationPipelines(House.CELL_COUNT, Context.newIterationPipelineForIncompleteHouse);
+    // caching enumeration pipelines improves performance by around 5-10%
+    private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
+        Context.newEnumerationPipelines(House.CELL_COUNT + 1, Context.newEnumerationPipelineForCompleteHouse);
+    private static _CACHED_ENUMERATION_PIPELINES_FOR_INCOMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
+        Context.newEnumerationPipelines(House.CELL_COUNT, Context.newEnumerationPipelineForIncompleteHouse);
 
-    private static newIterationPipelines(cellCount: number, newIterationPipelineFn: (cageCount: number) => IterationPipeline) {
+    private static newEnumerationPipelines(cellCount: number, newEnumerationPipelineFn: (cageCount: number) => EnumerationPipeline) {
         return CachedNumRanges.ZERO_TO_N_LT_81[cellCount].map(cageCount => {
-            return cageCount < 2 ? [] : newIterationPipelineFn(cageCount);
+            return cageCount < 2 ? [] : newEnumerationPipelineFn(cageCount);
         });
     }
 
-    private static newIterationPipelineForCompleteHouse(cageCount: number) {
-        const pipeline = new Array<IterationFunction>(cageCount);
+    private static newEnumerationPipelineForCompleteHouse(cageCount: number) {
+        const pipeline = new Array<EnumerationStepFunction>(cageCount);
         const lastStepIndex = cageCount - 1;
 
-        pipeline[0] = iterateRecursively_step0;
+        pipeline[0] = enumerateRecursively_step0;
         for (const step of CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex]) {
-            pipeline[step] = iterateRecursively_step1PlusButNotLast;
+            pipeline[step] = enumerateRecursively_step1PlusButNotLast;
         };
-        pipeline[lastStepIndex] = iterateRecursively_stepLastWithShortCircuitedPermCapture;
+        pipeline[lastStepIndex] = enumerateRecursively_stepLastWithShortCircuitedPermCapture;
 
         return pipeline;
     }
 
-    private static newIterationPipelineForIncompleteHouse(cageCount: number) {
-        const pipeline = new Array<IterationFunction>(cageCount + 1);
+    private static newEnumerationPipelineForIncompleteHouse(cageCount: number) {
+        const pipeline = new Array<EnumerationStepFunction>(cageCount + 1);
 
-        pipeline[0] = iterateRecursively_step0;
+        pipeline[0] = enumerateRecursively_step0;
         for (const step of CachedNumRanges.ONE_TO_N_LT_10[cageCount]) {
-            pipeline[step] = iterateRecursively_step1PlusButNotLast;
+            pipeline[step] = enumerateRecursively_step1PlusButNotLast;
         };
-        pipeline[cageCount] = iterateRecursively_stepLastWithPermCaptureAndComboMark;
+        pipeline[cageCount] = enumerateRecursively_stepLastWithPermCaptureAndComboMark;
 
         return pipeline;
     }
@@ -309,9 +309,9 @@ class Context {
 
         const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;
         if (isFullHouseCoverage) {
-            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
+            this.enumerationPipeline = Context._CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {
-            this.iterationPipeline = Context._CACHED_ITERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
+            this.enumerationPipeline = Context._CACHED_ENUMERATION_PIPELINES_FOR_INCOMPLETE_HOUSE[cageCount];
         }
 
         this.stack = new Array(cageCount);
