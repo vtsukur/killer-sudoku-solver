@@ -1,3 +1,4 @@
+import { Cage } from '../../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { CageModel } from './cageModel';
 
@@ -8,6 +9,7 @@ export class HouseModel {
     readonly cells: ReadonlyCells;
 
     private readonly _cageMs: Array<CageModel> = [];
+    private readonly _cages: Array<Cage> = [];
     private readonly _cellsIteratorProducer: HouseCellsIteratorProducer;
 
     constructor(index: number, cells: ReadonlyCells, cellsIteratorProducer: HouseCellsIteratorProducer) {
@@ -20,18 +22,25 @@ export class HouseModel {
         return this._cageMs;
     }
 
+    get cages() {
+        return this._cages;
+    }
+
     addCageModel(val: CageModel) {
         this._cageMs.push(val);
+        this._cages.push(val.cage);
     }
 
     removeCageModel(val: CageModel) {
         const indexToRemove = this._cageMs.indexOf(val);
         if (indexToRemove !== -1) {
             this._cageMs.splice(indexToRemove, 1);
+            this._cages.splice(indexToRemove, 1);
         }
     }
 
     cellsIterator(): Iterable<Cell> {
-        return this._cellsIteratorProducer(this.index);
+        return this.
+        _cellsIteratorProducer(this.index);
     }
 }

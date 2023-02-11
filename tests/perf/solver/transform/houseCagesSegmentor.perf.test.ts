@@ -4,6 +4,8 @@ import { HouseCagesSegmentor } from '../../../../src/solver/transform/houseCages
 import { newHouseModel } from '../../../unit/solver/math/houseModelBuilder';
 
 describe('Performance tests for `HouseCagesSegmentor`', () => {
+    const segment = HouseCagesSegmentor.segmentByCellsOverlap;
+
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;
 
@@ -17,10 +19,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
                 Cage.ofSum(17).at(2, 0).at(2, 1).at(2, 2).new()
             ]);
 
-            const cages = houseModel.cageModels.map(cageM => cageM.cage);
-
-            const segments = HouseCagesSegmentor.segmentByCellsOverlap(cages, houseModel.cells);
-            expect(segments).toEqual({
+            expect(segment(houseModel.cages, houseModel.cells)).toEqual({
                 nonOverlappingCages: [
                     Cage.ofSum(7).at(0, 0).at(0, 1).new(),
                     Cage.ofSum(18).at(1, 0).at(1, 1).at(2, 0).new(),
@@ -33,7 +32,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
             });
 
             _.range(ITERATION_COUNT).forEach(() => {
-                HouseCagesSegmentor.segmentByCellsOverlap(cages, houseModel.cells);
+                segment(houseModel.cages, houseModel.cells);
             });
         });
     });
