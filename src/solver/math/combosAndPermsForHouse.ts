@@ -5,8 +5,8 @@ import { House } from '../../puzzle/house';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
 import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
-import { combosForSum } from './combosForSum';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
+import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 
 export class HouseSumCombosAndPerms {
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
@@ -29,7 +29,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
     const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
-    const combosForOverlappingCages = doFindForOverlappingCages(overlappingCages);
+    const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.computeCombos(new HouseCagesAreaModel(overlappingCages)).combos;
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 
     return new HouseSumCombosAndPerms(nonOverlappingCages, perms, actualSumCombos);
@@ -132,10 +132,6 @@ function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Contex
     cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key));
     context.remainingCagesStack.add(cage);
     context.cagesStack.delete(cage);
-}
-
-function doFindForOverlappingCages(cages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-    return cages.map(cage => combosForSum(cage.sum, cage.cellCount).val);
 }
 
 function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cages: ReadonlyCages, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
