@@ -102,7 +102,7 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing several `Combo`s and `Perm`s forming an incomplete `HouseModel` forming an incomplete HouseModel with a single Cage', () => {
+    test('Computing several `Combo`s and `Perm`s forming an incomplete `HouseModel` forming an incomplete HouseModel with a single `Cage`', () => {
         const combosAndPerms = compute(new HouseCagesAreaModel([
             Cage.ofSum(5).at(1, 1).at(1, 2).new()
         ]));
