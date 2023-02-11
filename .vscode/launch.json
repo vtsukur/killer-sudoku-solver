@@ -316,25 +316,6 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosAndPermsForHouse.perf]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/combosAndPermsForHouse.perf.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
             "name": "npm run test [solver/math/fastNumSet]",
             "request": "launch",
             "runtimeArgs": [
@@ -361,25 +342,6 @@
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/math/nonOverlappingHouseCagesCombinatorics.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
-            "name": "npm run test [solver/math/nonOverlappingHouseCagesCombinatorics.perf]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/nonOverlappingHouseCagesCombinatorics.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -537,25 +499,6 @@
                 "group": "solver"
             }
         },
-        {
-            "name": "npm run test [solver/puzzles/perf]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/puzzles/solver.perf.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
 
         {
             "name": "npm run test [recognizer]",
@@ -665,6 +608,64 @@
             "type": "node",
             "presentation": {
                 "group": "util"
+            }
+        },
+
+        {
+            "name": "npm run test [solver/math/combosAndPermsForHouse.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/math/combosAndPermsForHouse.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
+            "name": "npm run test [solver/math/nonOverlappingHouseCagesCombinatorics.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/math/nonOverlappingHouseCagesCombinatorics.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
+            "name": "npm run test [solver/solver.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/solver.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
             }
         }
     ]

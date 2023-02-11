@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import { Solver } from '../../../../src/solver/solver';
-import { puzzleSamples } from '../../puzzle/puzzleSamples';
+import { Solver } from '../../../src/solver/solver';
+import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
 
-describe.skip('Performance tests for Solver', () => {
+describe('Performance tests for Solver', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();

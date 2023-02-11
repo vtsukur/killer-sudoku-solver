@@ -4,7 +4,7 @@ import { Combo } from '../../../../src/solver/math';
 import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/nonOverlappingHouseCagesCombinatorics';
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
-describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
+describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
     const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
 
     const TESTS_COUNT = 10;
