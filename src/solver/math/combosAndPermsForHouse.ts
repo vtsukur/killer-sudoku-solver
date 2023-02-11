@@ -29,7 +29,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
     const { nonOverlappingCages, overlappingCages } = clusterCagesByOverlap(cages, cells);
 
     const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
-    const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.computeCombos(new HouseCagesAreaModel(overlappingCages)).combos;
+    const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).combos;
     const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
 
     return new HouseSumCombosAndPerms(nonOverlappingCages, perms, actualSumCombos);

@@ -4,9 +4,9 @@ import { OverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
-    const compute = OverlappingHouseCagesCombinatorics.computeCombos;
+    const compute = OverlappingHouseCagesCombinatorics.enumerateCombos;
 
-    test('Computing single `Combo` for a single overlapping `Cage`', () => {
+    test('Enumerating single `Combo` for a single overlapping `Cage`', () => {
         const combos = compute(new HouseCagesAreaModel([
             Cage.ofSum(4).at(1, 5).at(2, 5).new()
         ]));
@@ -18,7 +18,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing several `Combo`s for several overlapping `Cage`s', () => {
+    test('Enumerating several `Combo`s for several overlapping `Cage`s', () => {
         const combos = compute(new HouseCagesAreaModel([
             Cage.ofSum(5).at(1, 5).at(2, 5).new(),
             Cage.ofSum(14).at(0, 3).at(0, 4).new(),
@@ -34,7 +34,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing no `Combo`s out of no `Cage`s', () => {
+    test('Enumerating no `Combo`s out of no `Cage`s', () => {
         expect(compute(new HouseCagesAreaModel([]))).toEqual({
             combos: []
         });

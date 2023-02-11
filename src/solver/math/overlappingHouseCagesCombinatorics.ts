@@ -41,7 +41,7 @@ export class OverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Computes possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
+     * Enumerates possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
      * considering {@link Cage}s to be _overlapping_.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _overlapping_ {@link Cell}s.
@@ -60,7 +60,7 @@ export class OverlappingHouseCagesCombinatorics {
      *
      * @see {combos}
      */
-    static computeCombos(houseCagesAreaModel: HouseCagesAreaModel): OverlappingHouseCagesCombinatorics {
+    static enumerateCombos(houseCagesAreaModel: HouseCagesAreaModel): OverlappingHouseCagesCombinatorics {
         return {
             combos: houseCagesAreaModel.cages.map(cage => combosForSum(cage.sum, cage.cellCount).val)
         };
