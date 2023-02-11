@@ -12,7 +12,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combos).toEqual({
-            combos: [
+            houseCagesCombos: [
                 [ Combo.of(1, 3) ]
             ]
         });
@@ -26,7 +26,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combos).toEqual({
-            combos: [
+            houseCagesCombos: [
                 [ Combo.of(1, 4), Combo.of(2, 3) ],
                 [ Combo.of(5, 9), Combo.of(6, 8) ],
                 [ Combo.of(1, 8), Combo.of(2, 7), Combo.of(3, 6), Combo.of(4, 5) ]
@@ -36,7 +36,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
 
     test('Enumerating no `Combo`s out of no `Cage`s', () => {
         expect(enumerate(new HouseCagesAreaModel([]))).toEqual({
-            combos: []
+            houseCagesCombos: []
         });
     });
 });

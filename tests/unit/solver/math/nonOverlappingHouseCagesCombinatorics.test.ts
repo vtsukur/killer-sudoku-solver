@@ -15,18 +15,18 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combosAndPerms).toEqual({
-            perms: [
+            houseCagesCombos: [
+                [ Combo.of(6, 9), Combo.of(7, 8) ],
+                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
+                [ Combo.of(2, 5), Combo.of(3, 4) ],
+                [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
+            ],
+            houseCagesPerms: [
                 [ Combo.of(6, 9), Combo.of(2, 8), Combo.of(3, 4), Combo.of(1, 5, 7) ],
                 [ Combo.of(6, 9), Combo.of(3, 7), Combo.of(2, 5), Combo.of(1, 4, 8) ],
                 [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(2, 5), Combo.of(3, 4, 6) ],
                 [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(3, 4), Combo.of(2, 5, 6) ],
                 [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
-            ],
-            combos: [
-                [ Combo.of(6, 9), Combo.of(7, 8) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(2, 5), Combo.of(3, 4) ],
-                [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
             ]
         });
     });
@@ -40,7 +40,13 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combosAndPerms).toEqual({
-            perms: [
+            houseCagesCombos: [
+                [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ],
+                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
+                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
+                [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ]
+            ],
+            houseCagesPerms: [
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -53,12 +59,6 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
                 [ Combo.of(3, 4, 7), Combo.of(2, 8), Combo.of(1, 9), Combo.of(5, 6) ],
                 [ Combo.of(3, 5, 6), Combo.of(1, 9), Combo.of(2, 8), Combo.of(4, 7) ],
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
-            ],
-            combos: [
-                [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ]
             ]
         });
     });
@@ -72,14 +72,14 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combosAndPerms).toEqual({
-            perms: [
-                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
-            ],
-            combos: [
+            houseCagesCombos: [
                 [ Combo.of(1, 3) ],
                 [ Combo.of(7, 8, 9) ],
                 [ Combo.of(2, 5) ],
                 [ Combo.of(4) ]
+            ],
+            houseCagesPerms: [
+                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
             ]
         });
     });
@@ -91,13 +91,13 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combosAndPerms).toEqual({
-            perms: [
-                [ Combo.of(1, 4), Combo.of(2, 5) ],
-                [ Combo.of(2, 3), Combo.of(1, 6) ]
-            ],
-            combos: [
+            houseCagesCombos: [
                 [ Combo.of(1, 4), Combo.of(2, 3) ],
                 [ Combo.of(1, 6), Combo.of(2, 5) ]
+            ],
+            houseCagesPerms: [
+                [ Combo.of(1, 4), Combo.of(2, 5) ],
+                [ Combo.of(2, 3), Combo.of(1, 6) ]
             ]
         });
     });
@@ -108,20 +108,20 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         ]));
 
         expect(combosAndPerms).toEqual({
-            perms: [
+            houseCagesCombos: [
+                [ Combo.of(1, 4), Combo.of(2, 3) ]
+            ],
+            houseCagesPerms: [
                 [ Combo.of(1, 4) ],
                 [ Combo.of(2, 3) ]
-            ],
-            combos: [
-                [ Combo.of(1, 4), Combo.of(2, 3) ]
             ]
         });
     });
 
     test('Enumerating no `Combo`s and `Perm`s forming a `HouseModel` out of no `Cage`s', () => {
         expect(enumerate(new HouseCagesAreaModel([]))).toEqual({
-            perms: [],
-            combos: []
+            houseCagesCombos: [],
+            houseCagesPerms: []
         });
     });
 });

@@ -19,7 +19,7 @@ describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', (
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
             ]);
 
-            expect(enumerate(houseCageAreasModel).perms).toEqual([
+            expect(enumerate(houseCageAreasModel).houseCagesPerms).toEqual([
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
