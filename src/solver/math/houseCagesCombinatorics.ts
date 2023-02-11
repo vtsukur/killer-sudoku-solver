@@ -23,7 +23,7 @@ export type HouseCageCombos = ReadonlyCombos;
 export type HouseCagesCombos = ReadonlyArray<HouseCageCombos>;
 
 /**
- * Combinatorics of possible {@link Cage}s' numbers within the same {@link House}.
+ * Combinatorics of possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -33,7 +33,8 @@ export type HouseCagesCombos = ReadonlyArray<HouseCageCombos>;
 export interface HouseCagesCombinatorics {
 
     /**
-     * Possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}.
+     * Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
+     * in the form of {@link HouseCagesCombos}.
      *
      * Each value in this array is a readonly array of unique {@link Combo}s
      * of nonrepeating numbers for respective {@link Cage} represented as {@link HouseCageCombos}.

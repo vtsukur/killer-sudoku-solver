@@ -41,8 +41,8 @@ export class OverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Enumerates possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
-     * considering {@link Cage}s to be _overlapping_.
+     * Enumerates possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
+     * in the form of {@link HouseCagesCombos} considering {@link Cage}s to be _overlapping_.
      *
      * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _overlapping_ {@link Cell}s.
      *
@@ -55,8 +55,8 @@ export class OverlappingHouseCagesCombinatorics {
      *  - if total sum of all {@link Cage}s is no greater than {@link House} sum.
      * It's up to the caller to provide valid input.
      *
-     * @returns Possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
-     * considering {@link Cage}s to be _overlapping_.
+     * @returns Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
+     * in the form of {@link HouseCagesCombos} considering {@link Cage}s to be _overlapping_.
      *
      * @see {houseCagesCombos}
      */
