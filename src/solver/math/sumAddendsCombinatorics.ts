@@ -5,12 +5,14 @@ import { Numbers } from '../../puzzle/numbers';
 import { Combo, ReadonlyCombos } from './combo';
 import { BinaryStorage, ReadonlyFastNumSet } from './fastNumSet';
 
+type PrecomputeComboKey = number;
+
 /**
- * Combinations of unique numbers (addends) to form a sum with efficient lookup of combination by {@link ReadonlyFastNumSet}.
+ * Combinatorics of unique numbers (addends) to form a sum using precomputed values.
  *
  * @public
  */
-export class SumCombos {
+export class SumAddendsCombinatorics {
 
     /**
      * Array of combinations of unique numbers to form a sum.
@@ -64,21 +66,6 @@ export class SumCombos {
     get(fastNumSet: ReadonlyFastNumSet) {
         return this._fastNumSetToComboMap.get(fastNumSet.binaryStorage);
     }
-}
-
-type PrecomputeComboKey = number;
-
-/**
- * Determines combinations of unique numbers (addends) to form a sum using precomputed values.
- *
- * @public
- */
-export class SumAddendsCombinatorics {
-
-    // istanbul ignore next
-    private constructor() {
-        throw new Error('Non-contructible');
-    }
 
     /**
      * Determines combinations of unique numbers (addends) to form a sum using precomputed values.
@@ -100,11 +87,11 @@ export class SumAddendsCombinatorics {
      *
      * @public
      */
-    static enumerate(sum: number, addendCount: number): SumCombos {
+    static enumerate(sum: number, addendCount: number): SumAddendsCombinatorics {
         validate(sum, addendCount);
 
         const key = precomputeKey(sum, addendCount);
-        return PRECOMPUTED.get(key) as SumCombos;
+        return PRECOMPUTED.get(key) as SumAddendsCombinatorics;
     }
 }
 
@@ -125,7 +112,7 @@ const storePrecomputed = (source: string, numCount: number) => {
             }
             combos.push(new Combo(comboNumbers));
         }
-        PRECOMPUTED.set(precomputeKey(sum, numCount), new SumCombos(combos));
+        PRECOMPUTED.set(precomputeKey(sum, numCount), new SumAddendsCombinatorics(combos));
     }
 
     _.range(Numbers.MIN, House.SUM + 1).forEach(sum => {
@@ -136,9 +123,9 @@ const storePrecomputed = (source: string, numCount: number) => {
     });
 };
 
-const PRECOMPUTED = new Map<PrecomputeComboKey, SumCombos>();
+const PRECOMPUTED = new Map<PrecomputeComboKey, SumAddendsCombinatorics>();
 
-const EMPTY_SUM_COMBO = new SumCombos([]);
+const EMPTY_SUM_COMBO = new SumAddendsCombinatorics([]);
 
 storePrecomputed(`
     1: 1
@@ -314,7 +301,7 @@ storePrecomputed(`
  *
  * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
-export function computeSumAddendsCombos(sum: number, addendCount: number): SumCombos {
+export function computeSumAddendsCombos(sum: number, addendCount: number): SumAddendsCombinatorics {
     validate(sum, addendCount);
 
     if (sum < MIN_SUMS_PER_NUM_COUNT[addendCount - 1] || sum > MAX_SUMS_PER_NUM_COUNT[addendCount - 1]) {
@@ -346,7 +333,7 @@ export function computeSumAddendsCombos(sum: number, addendCount: number): SumCo
 
     combosRecursive(1, 1);
 
-    return new SumCombos(combos);
+    return new SumAddendsCombinatorics(combos);
 }
 
 const validate = (sum: number, numCount: number) => {

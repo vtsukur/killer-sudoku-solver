@@ -6,7 +6,7 @@ import { House } from '../../puzzle/house';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
-import { SumAddendsCombinatorics, SumCombos } from './sumAddendsCombinatorics';
+import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
@@ -210,8 +210,8 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
  *  - pick each {@link Combo} in the first {@link Cage};
  *  - let enumeration proceed with each {@link Combo} further;
  */
-const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    for (const combo of sumCombos.val) {
+const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+    for (const combo of sumAddendsCombinatorics.val) {
         _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
 };
@@ -223,8 +223,8 @@ const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: nu
  * This logic is NOT unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is NOT needed at all in the first step.
  */
-const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    for (const combo of sumCombos.val) {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+    for (const combo of sumAddendsCombinatorics.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
@@ -251,8 +251,8 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
-    const lastCombo = sumCombos.get(ctx.usedNums.remaining());
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+    const lastCombo = sumAddendsCombinatorics.get(ctx.usedNums.remaining());
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
         enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
@@ -262,7 +262,7 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
 /**
  * Generic enumeration step function.
  */
-type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type EnumerationStepFunction = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => void;
 
 /**
  * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.
@@ -276,7 +276,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly houseCagesCombos: Array<Array<Combo>>;
     readonly houseCagesPerms = new Array<ReadonlyCombos>();
 
-    readonly allCageCombos: Array<SumCombos>;
+    readonly allCageCombos: Array<SumAddendsCombinatorics>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BinaryStorage>>;
     readonly enumerationPipeline: EnumerationPipeline;
