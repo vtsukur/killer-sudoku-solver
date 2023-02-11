@@ -44,9 +44,8 @@ export class CageModel {
     private _cellCount;
     private _combosMap;
     private _canHaveDuplicateNums: boolean;
-    private _derivedFromInputCage: boolean;
 
-    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, derivedFromInputCage?: boolean) {
+    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean) {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -65,11 +64,10 @@ export class CageModel {
         });
         this._cellCount = cage.cellCount;
         this._combosMap = new Map<ComboKey, Combo>();
-        this._derivedFromInputCage = derivedFromInputCage ? derivedFromInputCage : false;
     }
 
     deepCopyWithSameCellModels() {
-        const copy = new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums, this._derivedFromInputCage);
+        const copy = new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums);
         for (const entry of this._combosMap.entries()) {
             copy._combosMap.set(entry[0], entry[1]);
         }
@@ -528,9 +526,5 @@ export class CageModel {
 
     get comboCount() {
         return this._combosMap.size;
-    }
-
-    get derivedFromInputCage() {
-        return this._derivedFromInputCage;
     }
 }

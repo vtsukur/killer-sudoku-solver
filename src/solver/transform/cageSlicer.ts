@@ -31,7 +31,7 @@ export class CageSlicer {
                 const cagesToUnregister = new Array<Cage>();
                 let canHaveDuplicateNums = entry.canHaveDuplicateNums;
                 cageMsForResidualCage.forEach((cageM: CageModel) => {
-                    const secondChunkCage = CageSlicer.slice(cageM.cage, residualCage);
+                    const secondChunkCage = CageSlicer.slice(cageM.cage, residualCage, this.model);
                     cagesToUnregister.push(cageM.cage);
                     nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageM.canHaveDuplicateNums });
                     canHaveDuplicateNums = canHaveDuplicateNums && cageM.canHaveDuplicateNums;
@@ -66,9 +66,12 @@ export class CageSlicer {
         return result;
     }
 
-    static slice(cageToSlice: Cage, firstChunkCage: Cage) {
+    static slice(cageToSlice: Cage, firstChunkCage: Cage, model: MasterModel) {
         const cells = cageToSlice.cells.filter(cell => firstChunkCage.cells.findIndex(aCell => aCell.key === cell.key) === -1);
-        return Cage.ofSum(cageToSlice.sum - firstChunkCage.sum).withCells(cells).new();
+        return Cage.ofSum(cageToSlice.sum - firstChunkCage.sum)
+            .withCells(cells)
+            .setIsInput(model.isDerivedFromInputCage(cells))
+            .new();
     }
 
     static sliceBy(cageToSlice: Cage, sliceIndexFn: (cell: Cell) => number) {

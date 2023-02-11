@@ -136,7 +136,7 @@ export class MasterModel {
     }
 
     registerCage(cage: Cage, canHaveDuplicateNums: boolean) {
-        const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums, this.isDerivedFromInputCage(cage));
+        const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
         cageM.initialReduce();
         if (cageM.positioningFlags.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);
@@ -154,9 +154,9 @@ export class MasterModel {
         return cageM;
     }
 
-    private isDerivedFromInputCage(cage: Cage) {
-        const inputCage = this.inputCageOf(cage.cells[0]);
-        return cage.cells.every(cell => this.inputCageOf(cell) === inputCage);
+    isDerivedFromInputCage(cells: ReadonlyCells) {
+        const inputCage = this.inputCageOf(cells[0]);
+        return cells.every(cell => this.inputCageOf(cell) === inputCage);
     }
 
     unregisterCage(cage: Cage) {

@@ -23,6 +23,7 @@ import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Cage {
+
     /**
      * Sum of `Cage` `Cell`s.
      */
@@ -37,6 +38,16 @@ export class Cage {
      * Human-readable key describing the `Cage`.
      */
     readonly key: string;
+
+    /**
+     * `true` if this `Cage` is defined by the input `Puzzle` problem definition
+     * or represents a sub-`Cage` of one of `Cage`s defined by the input `Puzzle` problem definition.
+     *
+     * Otherwise `false`, which usually means the `Cage` has been derived
+     * from computational analysis of the `Puzzle` and will overlap by `Cell`s
+     * with at least one of the `Cage`s in the input `Puzzle` problem definition.
+     */
+    readonly isInput: boolean;
 
     /**
      * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s
@@ -71,10 +82,11 @@ export class Cage {
         }
     }
 
-    private constructor(sum: number, cells: ReadonlyCells) {
+    private constructor(sum: number, cells: ReadonlyCells, isFromInput: boolean) {
         this.sum = sum;
         this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
+        this.isInput = isFromInput;
     }
 
     private static keyOf(sum: number, cells: ReadonlyCells) {
@@ -88,6 +100,7 @@ export class Cage {
         private readonly _sum: number;
         private readonly _cells: Cells = [];
         private readonly _cellKeys: CellKeysSet = new Set();
+        private _isInput = true;
 
         /**
          * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s.
@@ -162,6 +175,24 @@ export class Cage {
         }
 
         /**
+         * Sets whether the `Cage` being built is defined by the input `Puzzle` problem definition
+         * or represents a sub-`Cage` of one of `Cage`s defined by the input `Puzzle` problem definition.
+         *
+         * @param val `true` if the `Cage` being built is defined by the input `Puzzle` problem definition
+         * or represents a sub-`Cage` of one of `Cage`s defined by the input `Puzzle` problem definition.
+         *
+         * Otherwise `false`, which usually means the `Cage` has been derived
+         * from computational analysis of the `Puzzle` and will overlap by `Cell`s
+         * with at least one of the `Cage`s in the input `Puzzle` problem definition.
+         *
+         * @returns this Builder.
+         */
+        setIsInput(val: boolean) {
+            this._isInput = val;
+            return this;
+        }
+
+        /**
          * `Cell`s which denote the group that are currently accumulated by the Builder.
          */
         get cells(): ReadonlyCells {
@@ -184,7 +215,7 @@ export class Cage {
          */
         new() {
             Cage.validateCells(this._cells);
-            return new Cage(this._sum, this._cells);
+            return new Cage(this._sum, this._cells, this._isInput);
         }
     };
 

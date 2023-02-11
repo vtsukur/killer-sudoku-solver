@@ -155,7 +155,7 @@ class Formula {
 
 function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterModel) {
     const areaModel = new ExpandableNonOverlappingNonetAreaModel(nonetM);
-    nonetM.cageModels.filter(cageM => cageM.derivedFromInputCage).
+    nonetM.cageModels.filter(cageM => cageM.cage.isInput).
         forEach(cageM => areaModel.addCageM(cageM));
 
     if (areaModel.innerCellMs.size === House.CELL_COUNT && areaModel.outerCellMs.size === 0) return areaModel;
@@ -164,7 +164,7 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
         if (areaModel.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);
-        const cageMDerivedFromInputCage = Array.from(cellM.withinCageModels).find(cageM => cageM.derivedFromInputCage);
+        const cageMDerivedFromInputCage = Array.from(cellM.withinCageModels).find(cageM => cageM.cage.isInput);
         if (!_.isUndefined(cageMDerivedFromInputCage)) areaModel.addCageM(cageMDerivedFromInputCage);
     }
 

@@ -4,6 +4,7 @@ import { Cell } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
+import { MasterModel } from '../../models/masterModel';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
@@ -16,7 +17,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                 }, (row: HouseIndex) => {
                     return this._model.rowModels[row].cellsIterator();
-                }, this);
+                }, this, this._model);
             });
         });
         _.range(1, 5).reverse().forEach(n => {
@@ -25,7 +26,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                 }, (col: HouseIndex) => {
                     return this._model.columnModels[col].cellsIterator();
-                }, this);
+                }, this, this._model);
             });
         });
         _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
@@ -33,12 +34,13 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
             }, (nonet: HouseIndex) => {
                 return this._model.nonetModels[nonet].cellsIterator();
-            }, this);
+            }, this, this._model);
         });
     }
 }
 
-function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy) {
+// make part of the strategy class to avoid extra param passing
+function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy, model: MasterModel) {
     const nHouseCellCount = n * House.CELL_COUNT;
     const nHouseSum = n * House.SUM;
 
@@ -66,6 +68,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             ctx.recentlySolvedCellModels = [ cellM ];
             strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
         }
+        residualCageBuilder.setIsInput(model.isDerivedFromInputCage(residualCageBuilder.cells));
 
         ctx.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
     }
