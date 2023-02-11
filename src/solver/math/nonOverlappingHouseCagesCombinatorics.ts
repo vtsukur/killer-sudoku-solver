@@ -6,7 +6,7 @@ import { House } from '../../puzzle/house';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
-import { combosForSum, SumCombos } from './combosForSum';
+import { SumAddendsCombinatorics, SumCombos } from './sumAddendsCombinatorics';
 import { BinaryStorage, FastNumSet } from './fastNumSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
@@ -136,7 +136,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
  */
 const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
     const singleCage = houseCagesAreaModel.cages[0];
-    const singleCageCombos = combosForSum(singleCage.sum, singleCage.cellCount);
+    const singleCageCombos = SumAddendsCombinatorics.enumerate(singleCage.sum, singleCage.cellCount);
     return {
         houseCagesCombos: singleCageCombos.arrayedVal,
         houseCagesPerms: singleCageCombos.perms
@@ -327,7 +327,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cageCount = cages.length;
 
         this.houseCagesCombos = new Array(cageCount);
-        this.allCageCombos = cages.map(cage => combosForSum(cage.sum, cage.cellCount));
+        this.allCageCombos = cages.map(cage => SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount));
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 

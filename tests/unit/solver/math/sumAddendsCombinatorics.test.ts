@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Numbers } from '../../../../src/puzzle/numbers';
-import { Combo, ReadonlyCombos, combosForSum } from '../../../../src/solver/math';
-import { computeComboForSum } from '../../../../src/solver/math/combosForSum';
+import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { computeSumAddendsCombos } from '../../../../src/solver/math/sumAddendsCombinatorics';
 
-describe('Tests for the unique number combinations to form a sum', () => {
+describe('Tests for `SumAddendsCombinatorics`', () => {
     [
-        combosForSum,
-        computeComboForSum
+        SumAddendsCombinatorics.enumerate,
+        computeSumAddendsCombos
     ].forEach(combosFn => {
         const combosFnVal = (sum: number, numCount: number) => {
             return combosFn(sum, numCount).val;

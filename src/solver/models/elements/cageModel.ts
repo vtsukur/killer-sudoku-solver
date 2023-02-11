@@ -4,7 +4,7 @@ import { Cell, CellKey, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo, ComboKey, combosForSum, ReadonlyCombos } from '../../math';
+import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -109,7 +109,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        const combos = combosForSum(this.cage.sum, this.cage.cellCount).val;
+        const combos = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount).val;
         const nums = new Set<number>();
         combos.forEach(combo => {
             Sets.U(nums, combo);

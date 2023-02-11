@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cell, CellKeysSet } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
-import { combosForSum } from '../../math';
+import { SumAddendsCombinatorics } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { NonetModel } from '../../models/elements/nonetModel';
@@ -197,7 +197,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
             const cellMArr = Array.from(formula.equalToCellMs);
             const otherCellM1 = cellMArr[0];
             const otherCellM2 = cellMArr[1];
-            const combos = combosForSum(targetSum, 2).val;
+            const combos = SumAddendsCombinatorics.enumerate(targetSum, 2).val;
             let hasAtLeastOneCombo = false;
             for (const combo of combos) {
                 const hasDirect = otherCellM1.hasNumOpt(combo.number0) && otherCellM2.hasNumOpt(combo.number1);

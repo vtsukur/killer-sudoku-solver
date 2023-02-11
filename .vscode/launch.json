@@ -335,24 +335,6 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosForSum]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "combosForSum"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
             "name": "npm run test [solver/math/fastNumSet]",
             "request": "launch",
             "runtimeArgs": [
@@ -417,6 +399,24 @@
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/math/overlappingHouseCagesCombinatorics.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
+            "name": "npm run test [solver/math/sumAddendsCombinatorics]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "sumAddendsCombinatorics"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -6,7 +6,7 @@ import { Combo, ReadonlyCombos } from './combo';
 import { BinaryStorage, ReadonlyFastNumSet } from './fastNumSet';
 
 /**
- * Combinations of unique numbers to form a sum with efficient lookup of combination by {@link ReadonlyFastNumSet}.
+ * Combinations of unique numbers (addends) to form a sum with efficient lookup of combination by {@link ReadonlyFastNumSet}.
  *
  * @public
  */
@@ -69,30 +69,43 @@ export class SumCombos {
 type PrecomputeComboKey = number;
 
 /**
- * Determines combinations of unique numbers to form a sum using precomputed values.
- *
- * Sample usage:
- * ```ts
- * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
- * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
- * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
- * ```
- *
- * @param sum - The sum to find combinations for. Should be within [1, 45] range.
- * @param numCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
- *
- * @returns Readonly array of distinct combinations of unique numbers to form a sum.
- * If there are no combinations found, empty array is returned.
- *
- * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
+ * Determines combinations of unique numbers (addends) to form a sum using precomputed values.
  *
  * @public
  */
-export function combosForSum(sum: number, numCount: number): SumCombos {
-    validate(sum, numCount);
+export class SumAddendsCombinatorics {
 
-    const key = precomputeKey(sum, numCount);
-    return PRECOMPUTED.get(key) as SumCombos;
+    // istanbul ignore next
+    private constructor() {
+        throw new Error('Non-contructible');
+    }
+
+    /**
+     * Determines combinations of unique numbers (addends) to form a sum using precomputed values.
+     *
+     * Sample usage:
+     * ```ts
+     * const combosOf2NumbersToAddUpTo7 = SumAddendsCombinatorics.combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
+     * const combosOf7NumbersToAddUpTo30 = SumAddendsCombinatorics.combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+     * const combosOf2NumbersToAddUpTo19 = SumAddendsCombinatorics.combosForSum(19, 2); // []
+     * ```
+     *
+     * @param sum - The sum to find addend combinations for. Should be within [1, 45] range.
+     * @param addendCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+     *
+     * @returns Readonly array of distinct combinations of unique numbers (addends) to form a sum.
+     * If there are no combinations found, empty array is returned.
+     *
+     * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
+     *
+     * @public
+     */
+    static enumerate(sum: number, addendCount: number): SumCombos {
+        validate(sum, addendCount);
+
+        const key = precomputeKey(sum, addendCount);
+        return PRECOMPUTED.get(key) as SumCombos;
+    }
 }
 
 const precomputeKey = (sum: number, numCount: number) => {
@@ -284,36 +297,36 @@ storePrecomputed(`
 `, 9);
 
 /**
- * Computes combinations of unique numbers to form a sum by avoiding precomputed values.
+ * Computes combinations of unique numbers (addends) to form a sum without the use of precomputed values.
  *
  * Sample usage:
  * ```ts
- * const combosOf2NumbersToAddUpTo7 = combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
- * const combosOf7NumbersToAddUpTo30 = combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
- * const combosOf2NumbersToAddUpTo19 = combosForSum(19, 2); // []
+ * const combosOf2NumbersToAddUpTo7 = computeSumAddendsCombos(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
+ * const combosOf7NumbersToAddUpTo30 = computeSumAddendsCombos(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+ * const combosOf2NumbersToAddUpTo19 = computeSumAddendsCombos(19, 2); // []
  * ```
  *
- * @param sum - The sum to find combinations for. Should be within [1, 45] range.
- * @param numCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+ * @param sum - The sum to find addend combinations for. Should be within [1, 45] range.
+ * @param addendCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
  *
- * @returns Readonly array of distinct combinations of unique numbers to form a sum.
+ * @returns Readonly array of distinct combinations of unique numbers (addends) to form a sum.
  * If there are no combinations found, empty array is returned.
  *
  * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
  */
-export function computeComboForSum(sum: number, numCount: number): SumCombos {
-    validate(sum, numCount);
+export function computeSumAddendsCombos(sum: number, addendCount: number): SumCombos {
+    validate(sum, addendCount);
 
-    if (sum < MIN_SUMS_PER_NUM_COUNT[numCount - 1] || sum > MAX_SUMS_PER_NUM_COUNT[numCount - 1]) {
+    if (sum < MIN_SUMS_PER_NUM_COUNT[addendCount - 1] || sum > MAX_SUMS_PER_NUM_COUNT[addendCount - 1]) {
         return EMPTY_SUM_COMBO;
     }
 
     const combos = new Array<Combo>();
-    const numbers = new Array<number>(numCount);
+    const numbers = new Array<number>(addendCount);
     let currentSum = 0;
 
     function combosRecursive(level: number, startWith: number) {
-        if (level > numCount) {
+        if (level > addendCount) {
             if (currentSum === sum) {
                 combos.push(new Combo(numbers));
             }
