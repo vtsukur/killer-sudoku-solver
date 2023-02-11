@@ -41,7 +41,7 @@ export interface HouseCagesCombinatorics {
      * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
      *
      * Each {@link HouseCageCombos} value in this array appears in the same order as respective {@link Cage}s
-     * in `houseCagesAreaModel` input of `compute*` method of specific `Combinatorics` implementation,
+     * in `houseCagesAreaModel` input of `enumerate*` method of specific `Combinatorics` implementation,
      * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
      * will be mapped to the array element of {@link HouseCageCombos} with index `i`.
      *
