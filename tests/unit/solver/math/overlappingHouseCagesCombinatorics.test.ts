@@ -7,11 +7,9 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
     const enumerate = OverlappingHouseCagesCombinatorics.enumerateCombos;
 
     test('Enumerating single `Combo` for a single overlapping `Cage`', () => {
-        const combos = enumerate(new HouseCagesAreaModel([
+        expectOverlappingHouseCagesCombinatorics(enumerate(new HouseCagesAreaModel([
             Cage.ofSum(4).at(1, 5).at(2, 5).new()
-        ]));
-
-        expect(combos).toEqual({
+        ])), {
             houseCagesCombos: [
                 [ Combo.of(1, 3) ]
             ]
@@ -19,13 +17,11 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
     });
 
     test('Enumerating several `Combo`s for several overlapping `Cage`s', () => {
-        const combos = enumerate(new HouseCagesAreaModel([
+        expectOverlappingHouseCagesCombinatorics(enumerate(new HouseCagesAreaModel([
             Cage.ofSum(5).at(1, 5).at(2, 5).new(),
             Cage.ofSum(14).at(0, 3).at(0, 4).new(),
             Cage.ofSum(9).at(1, 3).at(1, 4).new()
-        ]));
-
-        expect(combos).toEqual({
+        ])), {
             houseCagesCombos: [
                 [ Combo.of(1, 4), Combo.of(2, 3) ],
                 [ Combo.of(5, 9), Combo.of(6, 8) ],
@@ -35,8 +31,15 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
     });
 
     test('Enumerating no `Combo`s out of no `Cage`s', () => {
-        expect(enumerate(new HouseCagesAreaModel([]))).toEqual({
+        expectOverlappingHouseCagesCombinatorics(enumerate(new HouseCagesAreaModel([])), {
             houseCagesCombos: []
         });
     });
+
+    const expectOverlappingHouseCagesCombinatorics = (
+        actual: OverlappingHouseCagesCombinatorics,
+        expected: OverlappingHouseCagesCombinatorics
+    ) => {
+        expect(actual).toEqual(expected);
+    };
 });
