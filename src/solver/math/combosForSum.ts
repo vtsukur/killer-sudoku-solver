@@ -23,7 +23,7 @@ export class SumCombos {
      * Each permutation as represented as a readonly array with single element of a {@link Combo}.
      *
      * Used mainly for performance reasons as a cache to avoid construction overhead
-     * within {@link NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms}.
+     * in implementation of `Combinatorics` types.
      */
     readonly perms: ReadonlyArray<ReadonlyCombos>;
 
@@ -32,7 +32,7 @@ export class SumCombos {
      * so that it is easy to consume it when it needs to be a part of multiple combinations logic.
      *
      * Used mainly for performance reasons as a cache to avoid construction overhead
-     * within {@link NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms}.
+     * in implementation of `Combinatorics` types.
      */
     readonly arrayedVal: ReadonlyArray<ReadonlyCombos>;
 
