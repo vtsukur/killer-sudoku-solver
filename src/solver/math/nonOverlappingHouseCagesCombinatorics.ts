@@ -46,7 +46,7 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
      * represented as {@link HouseCagesPerm}.
      *
      * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
-     * in `houseCagesAreaModel` input of {@link computeCombosAndPerms} method,
+     * in `houseCagesAreaModel` input of {@link enumerateCombosAndPerms} method,
      * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
      * will be mapped to the {@link Combo} with index `i` in each {@link HouseCagesPerm}.
      *
@@ -75,7 +75,7 @@ export class NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Computes possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
+     * Enumerates possible {@link Cage}s' numbers within the same {@link House} in the form of {@link HouseCagesCombos}
      * as well as possible {@link House} numbers permutations in the form of {@link HouseCagesPerms}
      * considering {@link Cage}s to be _non-overlapping_.
      *
@@ -97,7 +97,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * @see {combos}
      * @see {perms}
      */
-    static computeCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
+    static enumerateCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
         return CAGE_COUNT_BASED_STRATEGIES[houseCagesAreaModel.cages.length](houseCagesAreaModel);
     }
 };
@@ -115,7 +115,7 @@ const EMPTY_INSTANCE = {
 
 /**
  * In case there are NO {@link Cage}s in {@link HouseCagesAreaModel},
- * there is nothing to compute, so the same empty readonly array is returned.
+ * there is nothing to enumerate, so the same empty readonly array is returned.
  *
  * This technique avoids extra array object construction.
  */
@@ -145,25 +145,25 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
  * In case there are 2 or more {@link Cage}s in {@link HouseCagesAreaModel},
  * the full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms} is executed.
  */
-const computeStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
+const enumerateStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
     return enumerateRecursively_main(new Context(houseCagesAreaModel));
 };
 
 /**
- * All computational strategies which encapsulate quickest possible way to do enumeration
+ * All enumeration strategies which encapsulate quickest possible way to do enumeration
  * according to the amount of {@link Cage}s in {@link HouseCagesAreaModel}.
  */
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
     shortCircuitForNoCages,         // for 0 `Cage`s
     shortCircuitFor1Cage,           // for 1 `Cage`
-    computeStrategyForSeveralCages, // for 2 `Cage`s
-    computeStrategyForSeveralCages, // for 3 `Cage`s
-    computeStrategyForSeveralCages, // for 4 `Cage`s
-    computeStrategyForSeveralCages, // for 5 `Cage`s
-    computeStrategyForSeveralCages, // for 6 `Cage`s
-    computeStrategyForSeveralCages, // for 7 `Cage`s
-    computeStrategyForSeveralCages, // for 8 `Cage`s
-    computeStrategyForSeveralCages, // for 9 `Cage`s
+    enumerateStrategyForSeveralCages, // for 2 `Cage`s
+    enumerateStrategyForSeveralCages, // for 3 `Cage`s
+    enumerateStrategyForSeveralCages, // for 4 `Cage`s
+    enumerateStrategyForSeveralCages, // for 5 `Cage`s
+    enumerateStrategyForSeveralCages, // for 6 `Cage`s
+    enumerateStrategyForSeveralCages, // for 7 `Cage`s
+    enumerateStrategyForSeveralCages, // for 8 `Cage`s
+    enumerateStrategyForSeveralCages, // for 9 `Cage`s
 ];
 
 /**
@@ -243,7 +243,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
 };
 
 /**
- * In case enumeration is in the last step, and the computation is executed for the whole {@link House},
+ * In case enumeration is in the last step, and the enumeration is executed for the whole {@link House},
  * it is possible to short circuit check of the last {@link Combo} according to the numbers NOT yet in use.
  * (since {@link House} must contain all numbers from 1 to 9).
  *

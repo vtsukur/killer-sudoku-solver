@@ -4,7 +4,7 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
-    const compute = NonOverlappingHouseCagesCombinatorics.computeCombosAndPerms;
+    const compute = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
 
     test('Computing several `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
         const combosAndPerms = compute(new HouseCagesAreaModel([
