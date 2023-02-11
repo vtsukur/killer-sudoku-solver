@@ -516,6 +516,24 @@
                 "group": "solver"
             }
         },
+        {
+            "name": "npm run test [solver/transform/houseCagesSegmentor]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "tests/unit/solver/transform/houseCagesSegmentor"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
 
         {
             "name": "npm run test [recognizer]",
