@@ -22,6 +22,23 @@
             }
         },
         {
+            "name": "npm run test-unit",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test-unit"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "_"
+            }
+        },
+        {
             "name": "npm run profile",
             "request": "launch",
             "runtimeArgs": [
