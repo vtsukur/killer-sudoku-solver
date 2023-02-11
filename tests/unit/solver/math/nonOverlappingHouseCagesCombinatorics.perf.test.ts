@@ -5,13 +5,13 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
-    const compute = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
+    const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
 
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;
 
     _.range(TESTS_COUNT).forEach(i => {
-        test(`Computing \`Combo\`s and \`Perm\`s [${i + 1}]`, () => {
+        test(`Enumerating \`Combo\`s and \`Perm\`s [${i + 1}]`, () => {
             const houseCageAreasModel = new HouseCagesAreaModel([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
                 Cage.ofSum(10).at(0, 0).at(0, 1).new(),
@@ -19,7 +19,7 @@ describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', (
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
             ]);
 
-            expect(compute(houseCageAreasModel).perms).toEqual([
+            expect(enumerate(houseCageAreasModel).perms).toEqual([
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -35,7 +35,7 @@ describe.skip('Performance tests for `NonOverlappingHouseCagesCombinatorics`', (
             ]);
 
             _.range(ITERATION_COUNT).forEach(() => {
-                compute(houseCageAreasModel);
+                enumerate(houseCageAreasModel);
             });
         });
     });

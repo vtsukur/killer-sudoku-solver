@@ -4,10 +4,10 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
 
 describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
-    const compute = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
+    const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
 
-    test('Computing several `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
-        const combosAndPerms = compute(new HouseCagesAreaModel([
+    test('Enumerating several `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
+        const combosAndPerms = enumerate(new HouseCagesAreaModel([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
             Cage.ofSum(10).at(1, 3).at(2, 3).new(),
             Cage.ofSum(7).at(2, 1).at(2, 2).new(),
@@ -31,8 +31,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing many `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
-        const combosAndPerms = compute(new HouseCagesAreaModel([
+    test('Enumerating many `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
+        const combosAndPerms = enumerate(new HouseCagesAreaModel([
             Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
             Cage.ofSum(10).at(0, 0).at(0, 1).new(),
             Cage.ofSum(10).at(0, 2).at(1, 2).new(),
@@ -63,8 +63,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing several `Combo`s and single `Perm` forming a complete `HouseModel`', () => {
-        const combosAndPerms = compute(new HouseCagesAreaModel([
+    test('Enumerating several `Combo`s and single `Perm` forming a complete `HouseModel`', () => {
+        const combosAndPerms = enumerate(new HouseCagesAreaModel([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(7).at(1, 6).at(1, 7).new(),
@@ -84,8 +84,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing few `Combo`s and `Perm`s forming an incomplete `HouseModel`', () => {
-        const combosAndPerms = compute(new HouseCagesAreaModel([
+    test('Enumerating few `Combo`s and `Perm`s forming an incomplete `HouseModel`', () => {
+        const combosAndPerms = enumerate(new HouseCagesAreaModel([
             Cage.ofSum(5).at(0, 0).at(0, 1).new(),
             Cage.ofSum(7).at(0, 2).at(1, 2).new()
         ]));
@@ -102,8 +102,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing several `Combo`s and `Perm`s forming an incomplete `HouseModel` forming an incomplete HouseModel with a single `Cage`', () => {
-        const combosAndPerms = compute(new HouseCagesAreaModel([
+    test('Enumerating several `Combo`s and `Perm`s forming an incomplete `HouseModel` forming an incomplete HouseModel with a single `Cage`', () => {
+        const combosAndPerms = enumerate(new HouseCagesAreaModel([
             Cage.ofSum(5).at(1, 1).at(1, 2).new()
         ]));
 
@@ -118,8 +118,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
         });
     });
 
-    test('Computing several `Combo`s and `Perm`s forming a `HouseModel` out of no `Cage`s', () => {
-        expect(compute(new HouseCagesAreaModel([]))).toEqual({
+    test('Enumerating no `Combo`s and `Perm`s forming a `HouseModel` out of no `Cage`s', () => {
+        expect(enumerate(new HouseCagesAreaModel([]))).toEqual({
             perms: [],
             combos: []
         });
