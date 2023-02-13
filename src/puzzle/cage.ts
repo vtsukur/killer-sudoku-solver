@@ -238,6 +238,14 @@ export class Cage {
     toString() {
         return this.key;
     }
+
+    toBuilderCodeString() {
+        const setSumCode = `.ofSum(${this.sum})`;
+        const setCellsCode = this.cells.map(cell => `.at(${cell.row}, ${cell.col})`).join('');
+        const conditionallySetIsInputCode = this.isInput ? '' : '.setIsInput(false)';
+        const newCode = '.new()';
+        return `Cage${setSumCode}${setCellsCode}${conditionallySetIsInputCode}${newCode}`;
+    }
 }
 
 /**
