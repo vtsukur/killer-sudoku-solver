@@ -38,7 +38,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
             });
         });
 
-        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 2 derived \`Cage\`s [${i + 1}]`, () => {
+        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 2 derived \`Cage\`s and 15 unfilled \`Cell\`s remaining [${i + 1}]`, () => {
             const houseModel = newHouseModel([
                 Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
                 Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
@@ -74,7 +74,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
             });
         });
 
-        test(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 8 derived \`Cage\`s (Sudoku.com random challenge) [${i + 1}]`, () => {
+        test(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 8 derived \`Cage\`s and 1 unfilled \`Cell\` remaining (Sudoku.com random challenge) [${i + 1}]`, () => {
             const houseModel = newHouseModel([
                 Cage.ofSum(6).at(0, 5).at(0, 6).new(),
                 Cage.ofSum(18).at(1, 5).at(1, 6).at(2, 5).at(2, 6).new(),
