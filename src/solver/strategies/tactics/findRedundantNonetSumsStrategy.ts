@@ -1,6 +1,5 @@
 import { Cage } from '../../../puzzle/cage';
 import { House } from '../../../puzzle/house';
-import { CageModel } from '../../models/elements/cageModel';
 import { Strategy } from '../strategy';
 
 export class FindRedundantNonetSumsStrategy extends Strategy {
@@ -34,7 +33,7 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
 
             if (redundantCells.length > 0 && redundantCells.length <= 5) {
                 const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).setIsInput(this._model.isDerivedFromInputCage(redundantCells)).new();
-                this._model.registerCage(cage, !CageModel.positioningFlagsFor(cage.cells).isWithinHouse);
+                this._context.cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
         }
     }
