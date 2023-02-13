@@ -125,8 +125,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
         const combosAndPerms = combosAndPermsForHouse(newHouseModel([
             Cage.ofSum(8).at(2, 5).at(3, 5).new(),
             Cage.ofSum(8).at(7, 5).new(),
-            // overlapping cage
-            Cage.ofSum(4).at(1, 5).at(2, 5).new(),
+            Cage.ofSum(4).at(1, 5).at(2, 5).setIsInput(false).new(),
             Cage.ofSum(29).at(0, 5).at(1, 5).at(4, 5).at(5, 5).at(6, 5).at(8, 5).new()
         ]));
 

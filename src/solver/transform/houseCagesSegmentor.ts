@@ -25,23 +25,46 @@ type Context = {
 };
 
 const work = (cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) => {
-    const ctx: Context = {
-        allCages: cages,
-        absMaxAreaCellCount: absMaxAreaCellCount,
-        cageCount: cages.length,
-        usedCages: new Set(),
-        usedCellsKeys: new Set(),
-        usedCellCount: 0,
-        maxAreaCages: new Set(),
-        maxAreaCellCount: 0,
-        found: false
-    };
-    recursiveWork(0, ctx);
+    const inputCages = new Array<Cage>(cages.length);
+    const derivedCages = new Array<Cage>(cages.length);
+    const usedCellsKeys = new Set<string>();
+    let usedCellCount = 0;
+    let i = 0, j = 0;
+    for (const cage of cages) {
+        if (cage.isInput) {
+            inputCages[i++] = cage;
+            for (const cell of cage.cells) {
+                usedCellsKeys.add(cell.key);
+            }
+            usedCellCount += cage.cells.length;
+        } else {
+            derivedCages[j++] = cage;
+        }
+    }
+    inputCages.length = i;
+    derivedCages.length = j;
 
-    const nonOverlappingCages = Array.from(ctx.maxAreaCages);
-    const overlappingCages = cages.filter(cage => !ctx.maxAreaCages.has(cage));
+    if (usedCellCount === absMaxAreaCellCount) {
+        return { nonOverlappingCages: inputCages, overlappingCages: derivedCages };
+    } else {
+        const ctx: Context = {
+            allCages: derivedCages,
+            absMaxAreaCellCount: absMaxAreaCellCount,
+            cageCount: derivedCages.length,
+            usedCages: new Set(inputCages),
+            usedCellsKeys: usedCellsKeys,
+            usedCellCount: usedCellCount,
+            maxAreaCages: new Set(inputCages),
+            maxAreaCellCount: usedCellCount,
+            found: false
+        };
+        recursiveWork(0, ctx);
 
-    return { nonOverlappingCages, overlappingCages };
+        const nonOverlappingCages = Array.from(ctx.maxAreaCages);
+        const overlappingCages = cages.filter(cage => !ctx.maxAreaCages.has(cage));
+
+        return { nonOverlappingCages, overlappingCages };
+    }
 };
 
 const recursiveWork = (step: number, ctx: Context) => {
