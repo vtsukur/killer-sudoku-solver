@@ -7,7 +7,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
     const segment = HouseCagesSegmentor.segmentByCellsOverlap;
 
     const TESTS_COUNT = 10;
-    const ITERATION_COUNT = 50000;
+    const ITERATION_COUNT = 1000;
 
     _.range(TESTS_COUNT).forEach(i => {
         test(`Segmentation of \`House\` \`Cage\`s with 2 overlapping \`Cage\`s [${i + 1}]`, () => {

@@ -1,5 +1,5 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
-import { CellKey, CellKeysSet, ReadonlyCells } from '../../puzzle/cell';
+import { ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 
 export class HouseCagesSegmentor {
@@ -8,97 +8,81 @@ export class HouseCagesSegmentor {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
 
-        const nonOverlappingCages = new Array<Cage>();
-        const overlappingCages = new Array<Cage>();
-
-        const cellsToCagesMap = new Map<CellKey, Set<Cage>>();
-        cells.forEach(cell => {
-            cellsToCagesMap.set(cell.key, new Set());
-        });
-        cages.forEach(cage => {
-            cage.cells.forEach(cell => {
-                (cellsToCagesMap.get(cell.key) as Set<Cage>).add(cage);
-            });
-        });
-
-        const allCagesAreNonOverlapping = Array.from(cellsToCagesMap.values()).every(cageSet => cageSet.size === 1);
-        if (allCagesAreNonOverlapping) {
-            nonOverlappingCages.push(...cages);
-        } else {
-            const maxNonOverlappingCagesAreaModelSet = findMaxNonOverlappingCagesArea(cages, absMaxAreaCellCount);
-            cages.forEach(cage => {
-                if (maxNonOverlappingCagesAreaModelSet.has(cage)) {
-                    nonOverlappingCages.push(cage);
-                } else {
-                    overlappingCages.push(cage);
-                }
-            });
-        }
-
-        return {
-            nonOverlappingCages,
-            overlappingCages
-        };
+        return work(cages, cells, absMaxAreaCellCount);
     }
 }
 
 type Context = {
-    allCagesSet: Set<Cage>;
-    maxAreaSet: Set<Cage>;
-    maxAreaCellCount: number;
-    cellCount: number;
-    cagesStack: Set<Cage>;
-    remainingCagesStack: Set<Cage>;
-    overlappingCagesStack: Set<Cage>;
-    areaCellKeysStack: CellKeysSet;
-    absMaxAreaCellCount: number;
-}
+    allCages: ReadonlyCages,
+    absMaxAreaCellCount: number,
+    cageCount: number,
+    usedCages: Set<Cage>,
+    usedCellsKeys: Set<string>,
+    usedCellCount: number,
+    maxAreaCages: Set<Cage>,
+    maxAreaCellCount: number,
+    found: boolean
+};
 
-// there is an issue with it having single cells ommitted sometimes + we can add cages with non-overlapping cells ahead of time to reduce computational overhead
-function findMaxNonOverlappingCagesArea(cages: ReadonlyCages, absMaxAreaCellCount: number) {
-    const context: Context = {
-        allCagesSet: new Set(cages),
-        maxAreaSet: new Set(),
+const work = (cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) => {
+    const ctx: Context = {
+        allCages: cages,
+        absMaxAreaCellCount: absMaxAreaCellCount,
+        cageCount: cages.length,
+        usedCages: new Set(),
+        usedCellsKeys: new Set(),
+        usedCellCount: 0,
+        maxAreaCages: new Set(),
         maxAreaCellCount: 0,
-        cellCount: 0,
-        cagesStack: new Set(),
-        remainingCagesStack: new Set(cages),
-        overlappingCagesStack: new Set(),
-        areaCellKeysStack: new Set(),
-        absMaxAreaCellCount: absMaxAreaCellCount
+        found: false
     };
+    recursiveWork(0, ctx);
 
-    cages.forEach(cage => {
-        findBiggestNonOverlappingCagesAreaRecursive(cage, context);
-    });
+    const nonOverlappingCages = Array.from(ctx.maxAreaCages);
+    const overlappingCages = cages.filter(cage => !ctx.maxAreaCages.has(cage));
 
-    return context.maxAreaSet;
-}
+    return { nonOverlappingCages, overlappingCages };
+};
 
-function findBiggestNonOverlappingCagesAreaRecursive(cage: Cage, context: Context) {
-    if (context.maxAreaCellCount >= context.absMaxAreaCellCount || !cage) {
+const recursiveWork = (step: number, ctx: Context) => {
+    if (ctx.usedCellCount > ctx.absMaxAreaCellCount) {
+        return;
+    } else if (ctx.usedCellCount > ctx.maxAreaCellCount) {
+        // check overlaps
+        const usedCellsKeys = new Set<string>();
+        for (const usedCage of ctx.usedCages) {
+            for (const usedCell of usedCage.cells) {
+                if (usedCellsKeys.has(usedCell.key)) {
+                    return;
+                } else {
+                    usedCellsKeys.add(usedCell.key);
+                }
+            }
+        }
+        ctx.maxAreaCellCount = ctx.usedCellCount;
+        ctx.maxAreaCages = new Set(Array.from(ctx.usedCages));
+
+        if (ctx.usedCellCount === ctx.absMaxAreaCellCount) {
+            ctx.found = true;
+            return;
+        }
+    }
+
+    if (step === ctx.cageCount) {
         return;
     }
 
-    const noOverlap = cage.cells.every(cell => !context.areaCellKeysStack.has(cell.key));
-    if (!noOverlap) return;
+    const cage = ctx.allCages[step];
 
-    context.cagesStack.add(cage);
-    context.remainingCagesStack.delete(cage);
-    cage.cells.forEach(cell => context.areaCellKeysStack.add(cell.key));
-    context.cellCount += cage.cellCount;
+    // with cage / recursively
+    ctx.usedCages.add(cage);
+    ctx.usedCellCount += cage.cellCount;
+    recursiveWork(step + 1, ctx);
+    if (ctx.found) return;
 
-    if (context.cellCount >= context.absMaxAreaCellCount ||
-        (context.cellCount <= context.absMaxAreaCellCount && context.cellCount > context.maxAreaCellCount)) {
-        context.maxAreaSet = new Set<Cage>(context.cagesStack);
-        context.maxAreaCellCount = context.cellCount;
-    }
-
-    const nextCage = context.remainingCagesStack.values().next().value;
-    findBiggestNonOverlappingCagesAreaRecursive(nextCage, context);
-
-    context.cellCount -= cage.cellCount;
-    cage.cells.forEach(cell => context.areaCellKeysStack.delete(cell.key));
-    context.remainingCagesStack.add(cage);
-    context.cagesStack.delete(cage);
-}
+    // without cage / recursively
+    ctx.usedCages.delete(cage);
+    ctx.usedCellCount -= cage.cellCount;
+    recursiveWork(step + 1, ctx);
+    if (ctx.found) return;
+};

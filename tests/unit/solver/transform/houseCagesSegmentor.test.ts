@@ -29,24 +29,24 @@ describe('Unit tests for `HouseCagesSegmentor`', () => {
 
     test('Segmentation of `House` `Cage`s with 2 overlapping `Cage`s (case 2)', () => {
         const houseModel = newHouseModel([
-            Cage.ofSum(9).at(7, 8).at(8, 8).new(),
+            Cage.ofSum(9).at(7, 8).at(8, 8).new(), // non-overlapping
             Cage.ofSum(11).at(8, 7).at(8, 8).new(),
-            Cage.ofSum(15).at(7, 7).at(8, 7).new(),
-            Cage.ofSum(13).at(6, 6).at(7, 6).at(8, 6).new(),
+            Cage.ofSum(15).at(7, 7).at(8, 7).new(), // non-overlapping
+            Cage.ofSum(13).at(6, 6).at(7, 6).at(8, 6).new(), // non-overlapping
             Cage.ofSum(13).at(7, 7).at(7, 8).new(),
-            Cage.ofSum(8).at(6, 7).at(6, 8).new()
+            Cage.ofSum(8).at(6, 7).at(6, 8).new() // non-overlapping
         ]);
 
         expect(segment(houseModel.cages, houseModel.cells)).toEqual({
             nonOverlappingCages: [
+                Cage.ofSum(9).at(7, 8).at(8, 8).new(),
+                Cage.ofSum(15).at(7, 7).at(8, 7).new(),
                 Cage.ofSum(13).at(6, 6).at(7, 6).at(8, 6).new(),
-                Cage.ofSum(13).at(7, 7).at(7, 8).new(),
                 Cage.ofSum(8).at(6, 7).at(6, 8).new()
             ],
             overlappingCages: [
-                Cage.ofSum(9).at(7, 8).at(8, 8).new(),
                 Cage.ofSum(11).at(8, 7).at(8, 8).new(),
-                Cage.ofSum(15).at(7, 7).at(8, 7).new()
+                Cage.ofSum(13).at(7, 7).at(7, 8).new()
             ]
         });
     });
