@@ -140,4 +140,46 @@ describe('Unit tests for `HouseCagesSegmentor`', () => {
             ]
         });
     });
+
+    test('Segmentation of `Cage`s in a big 4-`House` area with 5 derived `Cage`s and 13 unfilled `Cell` remaining (Sudoku.com 2022-10-22)', () => {
+        const houseModel = newHouseModel([
+            Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
+            Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
+            Cage.ofSum(10).at(1, 3).at(2, 3).new(),
+            Cage.ofSum(14).at(1, 4).at(2, 4).new(),
+            Cage.ofSum(6).at(4, 3).at(5, 3).new(),
+            Cage.ofSum(8).at(3, 4).at(3, 5).new(),
+            Cage.ofSum(9).at(4, 4).at(4, 5).new(),
+            Cage.ofSum(17).at(5, 4).at(6, 3).at(6, 4).new(),
+            Cage.ofSum(6).at(5, 5).new(),
+            Cage.ofSum(10).at(8, 3).at(8, 4).new(),
+            Cage.ofSum(23).at(0, 3).at(0, 4).at(3, 2).at(3, 3).setIsInput(false).new(),
+            Cage.ofSum(23).at(2, 2).at(3, 2).at(6, 3).at(6, 4).setIsInput(false).new(),
+            Cage.ofSum(15).at(1, 3).at(1, 4).setIsInput(false).new(),
+            Cage.ofSum(9).at(2, 3).at(2, 4).setIsInput(false).new(),
+            Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
+        ]);
+
+        expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+            nonOverlappingCages: [
+                Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
+                Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
+                Cage.ofSum(10).at(1, 3).at(2, 3).new(),
+                Cage.ofSum(14).at(1, 4).at(2, 4).new(),
+                Cage.ofSum(6).at(4, 3).at(5, 3).new(),
+                Cage.ofSum(8).at(3, 4).at(3, 5).new(),
+                Cage.ofSum(9).at(4, 4).at(4, 5).new(),
+                Cage.ofSum(17).at(5, 4).at(6, 3).at(6, 4).new(),
+                Cage.ofSum(6).at(5, 5).new(),
+                Cage.ofSum(10).at(8, 3).at(8, 4).new()
+            ],
+            overlappingCages: [
+                Cage.ofSum(23).at(0, 3).at(0, 4).at(3, 2).at(3, 3).setIsInput(false).new(),
+                Cage.ofSum(23).at(2, 2).at(3, 2).at(6, 3).at(6, 4).setIsInput(false).new(),
+                Cage.ofSum(15).at(1, 3).at(1, 4).setIsInput(false).new(),
+                Cage.ofSum(9).at(2, 3).at(2, 4).setIsInput(false).new(),
+                Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
+            ]
+        });
+    });
 });
