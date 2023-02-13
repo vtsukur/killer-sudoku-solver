@@ -38,7 +38,7 @@ describe('Performance tests for `HouseCagesSegmentor`', () => {
             });
         });
 
-        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area [${i + 1}]`, () => {
+        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area  with 2 derived \`Cage\`s [${i + 1}]`, () => {
             const houseModel = newHouseModel([
                 Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
                 Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),

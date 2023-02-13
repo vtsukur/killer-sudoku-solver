@@ -51,7 +51,7 @@ describe('Unit tests for `HouseCagesSegmentor`', () => {
         });
     });
 
-    test('Segmentation of `Cage`s in a big 4-`House` area', () => {
+    test('Segmentation of `Cage`s in a big 4-`House` area with 2 derived `Cage`s', () => {
         const houseModel = newHouseModel([
             Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
             Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
@@ -79,6 +79,64 @@ describe('Unit tests for `HouseCagesSegmentor`', () => {
             overlappingCages: [
                 Cage.ofSum(20).at(2, 6).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
                 Cage.ofSum(20).at(2, 4).at(2, 5).at(3, 4).at(3, 7).at(3, 8).setIsInput(false).new()
+            ]
+        });
+    });
+
+    test('Segmentation of `Cage`s in a big 4-`House` area with 8 derived `Cage`s (Sudoku.com random challenge)', () => {
+        const houseModel = newHouseModel([
+            Cage.ofSum(6).at(0, 5).at(0, 6).new(),
+            Cage.ofSum(18).at(1, 5).at(1, 6).at(2, 5).at(2, 6).new(),
+            Cage.ofSum(16).at(0, 7).at(0, 8).new(),
+            Cage.ofSum(9).at(1, 7).at(2, 7).new(),
+            Cage.ofSum(10).at(1, 8).at(2, 8).new(),
+            Cage.ofSum(4).at(3, 5).at(3, 6).new(),
+            Cage.ofSum(21).at(5, 5).at(5, 6).at(6, 5).new(),
+            Cage.ofSum(9).at(3, 7).at(3, 8).new(),
+            Cage.ofSum(15).at(4, 6).at(4, 7).at(4, 8).new(),
+            Cage.ofSum(13).at(5, 7).at(5, 8).at(6, 8).new(),
+            Cage.ofSum(11).at(7, 5).at(7, 6).new(),
+            Cage.ofSum(5).at(8, 5).at(8, 6).new(),
+            Cage.ofSum(10).at(6, 6).at(6, 7).new(),
+            Cage.ofSum(13).at(7, 7).at(8, 7).new(),
+            Cage.ofSum(11).at(7, 8).at(8, 8).new(),
+            Cage.ofSum(14).at(0, 5).at(1, 5).at(2, 5).setIsInput(false).new(),
+            Cage.ofSum(18).at(5, 7).at(5, 8).at(7, 5).at(8, 5).setIsInput(false).new(),
+            Cage.ofSum(18).at(3, 6).at(5, 6).at(6, 5).setIsInput(false).new(),
+            Cage.ofSum(24).at(5, 5).at(5, 6).at(5, 7).at(5, 8).setIsInput(false).new(),
+            Cage.ofSum(15).at(7, 7).at(7, 8).setIsInput(false).new(),
+            Cage.ofSum(10).at(6, 5).at(6, 8).setIsInput(false).new(),
+            Cage.ofSum(7).at(3, 5).at(5, 5).setIsInput(false).new(),
+            Cage.ofSum(9).at(8, 7).at(8, 8).setIsInput(false).new()
+        ]);
+
+        expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+            nonOverlappingCages: [
+                Cage.ofSum(6).at(0, 5).at(0, 6).new(),
+                Cage.ofSum(18).at(1, 5).at(1, 6).at(2, 5).at(2, 6).new(),
+                Cage.ofSum(16).at(0, 7).at(0, 8).new(),
+                Cage.ofSum(9).at(1, 7).at(2, 7).new(),
+                Cage.ofSum(10).at(1, 8).at(2, 8).new(),
+                Cage.ofSum(4).at(3, 5).at(3, 6).new(),
+                Cage.ofSum(21).at(5, 5).at(5, 6).at(6, 5).new(),
+                Cage.ofSum(9).at(3, 7).at(3, 8).new(),
+                Cage.ofSum(15).at(4, 6).at(4, 7).at(4, 8).new(),
+                Cage.ofSum(13).at(5, 7).at(5, 8).at(6, 8).new(),
+                Cage.ofSum(11).at(7, 5).at(7, 6).new(),
+                Cage.ofSum(5).at(8, 5).at(8, 6).new(),
+                Cage.ofSum(10).at(6, 6).at(6, 7).new(),
+                Cage.ofSum(13).at(7, 7).at(8, 7).new(),
+                Cage.ofSum(11).at(7, 8).at(8, 8).new()
+            ],
+            overlappingCages: [
+                Cage.ofSum(14).at(0, 5).at(1, 5).at(2, 5).setIsInput(false).new(),
+                Cage.ofSum(18).at(5, 7).at(5, 8).at(7, 5).at(8, 5).setIsInput(false).new(),
+                Cage.ofSum(18).at(3, 6).at(5, 6).at(6, 5).setIsInput(false).new(),
+                Cage.ofSum(24).at(5, 5).at(5, 6).at(5, 7).at(5, 8).setIsInput(false).new(),
+                Cage.ofSum(15).at(7, 7).at(7, 8).setIsInput(false).new(),
+                Cage.ofSum(10).at(6, 5).at(6, 8).setIsInput(false).new(),
+                Cage.ofSum(7).at(3, 5).at(5, 5).setIsInput(false).new(),
+                Cage.ofSum(9).at(8, 7).at(8, 8).setIsInput(false).new()
             ]
         });
     });
