@@ -517,12 +517,12 @@
             }
         },
         {
-            "name": "npm run test [solver/transform/houseCagesSegmentor]",
+            "name": "npm run test [solver/transform/nHouseCagesSegmentor]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "tests/unit/solver/transform/houseCagesSegmentor"
+                "tests/unit/solver/transform/nHouseCagesSegmentor"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -704,13 +704,13 @@
             }
         },
         {
-            "name": "npm run test [solver/transform/houseCagesSegmentor.perf]",
+            "name": "npm run test [solver/transform/nHouseCagesSegmentor.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/transform/houseCagesSegmentor.perf.test.ts"
+                "tests/perf/solver/transform/nHouseCagesSegmentor.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -1,9 +1,9 @@
 import { Cage } from '../../../../src/puzzle/cage';
-import { HouseCagesSegmentor } from '../../../../src/solver/transform/houseCagesSegmentor';
+import { NHouseCagesSegmentor } from '../../../../src/solver/transform/nHouseCagesSegmentor';
 import { newHouseModel } from '../math/houseModelBuilder';
 
-describe('Unit tests for `HouseCagesSegmentor`', () => {
-    const segment = HouseCagesSegmentor.segmentByCellsOverlap;
+describe('Unit tests for `NHouseCagesSegmentor`', () => {
+    const segment = NHouseCagesSegmentor.segmentByCellsOverlap;
 
     test('Segmentation of `House` `Cage`s with 2 derived `Cage`s', () => {
         const houseModel = newHouseModel([

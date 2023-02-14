@@ -5,7 +5,7 @@ import { Combo, ReadonlyCombos } from './combo';
 import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
-import { HouseCagesSegmentor } from '../transform/houseCagesSegmentor';
+import { NHouseCagesSegmentor } from '../transform/nHouseCagesSegmentor';
 
 export class HouseSumCombosAndPerms {
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
@@ -25,7 +25,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
     const cages = houseM.cageModels.map(cageM => cageM.cage);
     const cells = houseM.cells;
 
-    const { nonOverlappingCages, overlappingCages } = HouseCagesSegmentor.segmentByCellsOverlap(cages, cells);
+    const { nonOverlappingCages, overlappingCages } = NHouseCagesSegmentor.segmentByCellsOverlap(cages, cells);
 
     const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
     const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;

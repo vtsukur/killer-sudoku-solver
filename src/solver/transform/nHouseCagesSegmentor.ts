@@ -2,7 +2,7 @@ import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 
-export class HouseCagesSegmentor {
+export class NHouseCagesSegmentor {
     static segmentByCellsOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
