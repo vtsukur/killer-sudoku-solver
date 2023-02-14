@@ -20,30 +20,30 @@ describe('Unit tests for `NumCheckingSet`', () => {
     });
 
     test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
-        const numSet = NumCheckingSet.of(1, 6, 9);
-        expect(numSet.hasAll(NumCheckingSet.of(1, 6))).toBeTruthy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(8, 9))).toBeFalsy();
+        const set = NumCheckingSet.of(1, 6, 9);
+        expect(set.hasAll(NumCheckingSet.of(1, 6))).toBeTruthy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(8, 9))).toBeFalsy();
 
-        numSet.add(NumCheckingSet.of(1, 7, 8));
-        expectSetWithValues(numSet, [ 1, 6, 7, 8, 9 ]);
-        expect(numSet.hasAll(NumCheckingSet.of(1, 6))).toBeTruthy();
-        expect(numSet.hasAll(NumCheckingSet.of(7, 8, 9))).toBeTruthy();
-        expect(numSet.hasAll(NumCheckingSet.of(1, 6, 7, 8, 9))).toBeTruthy();
-        expect(numSet.hasAll(NumCheckingSet.of(1, 5))).toBeFalsy();
-        expect(numSet.hasAll(NumCheckingSet.of(2, 6, 9))).toBeFalsy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(5, 9))).toBeFalsy();
+        set.add(NumCheckingSet.of(1, 7, 8));
+        expectSetWithValues(set, [ 1, 6, 7, 8, 9 ]);
+        expect(set.hasAll(NumCheckingSet.of(1, 6))).toBeTruthy();
+        expect(set.hasAll(NumCheckingSet.of(7, 8, 9))).toBeTruthy();
+        expect(set.hasAll(NumCheckingSet.of(1, 6, 7, 8, 9))).toBeTruthy();
+        expect(set.hasAll(NumCheckingSet.of(1, 5))).toBeFalsy();
+        expect(set.hasAll(NumCheckingSet.of(2, 6, 9))).toBeFalsy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(5, 9))).toBeFalsy();
 
-        numSet.remove(NumCheckingSet.of(2, 6, 9));
-        expectSetWithValues(numSet, [ 1, 7, 8 ]);
-        expect(numSet.hasAll(NumCheckingSet.of(7, 8))).toBeTruthy();
-        expect(numSet.hasAll(NumCheckingSet.of(1, 7, 8))).toBeTruthy();
-        expect(numSet.hasAll(NumCheckingSet.of(1, 9))).toBeFalsy();
-        expect(numSet.hasAll(NumCheckingSet.of(2, 6, 9))).toBeFalsy();
-        expect(numSet.hasAll(NumCheckingSet.of(1, 6, 7, 8, 9))).toBeFalsy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numSet.doesNotHaveAny(NumCheckingSet.of(8, 9))).toBeFalsy();
+        set.remove(NumCheckingSet.of(2, 6, 9));
+        expectSetWithValues(set, [ 1, 7, 8 ]);
+        expect(set.hasAll(NumCheckingSet.of(7, 8))).toBeTruthy();
+        expect(set.hasAll(NumCheckingSet.of(1, 7, 8))).toBeTruthy();
+        expect(set.hasAll(NumCheckingSet.of(1, 9))).toBeFalsy();
+        expect(set.hasAll(NumCheckingSet.of(2, 6, 9))).toBeFalsy();
+        expect(set.hasAll(NumCheckingSet.of(1, 6, 7, 8, 9))).toBeFalsy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(NumCheckingSet.of(8, 9))).toBeFalsy();
     });
 
     test('Remaining `NumCheckingSet`', () => {
@@ -58,10 +58,10 @@ describe('Unit tests for `NumCheckingSet`', () => {
         );
     });
 
-    const expectSetWithValues = (numSet: ReadonlyNumCheckingSet, values: ReadonlyArray<number>) => {
+    const expectSetWithValues = (numCheckingSet: ReadonlyNumCheckingSet, values: ReadonlyArray<number>) => {
         const set = new Set(values);
         _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
-            expect(numSet.hasAll(NumCheckingSet.of(num))).toBe(set.has(num));
+            expect(numCheckingSet.hasAll(NumCheckingSet.of(num))).toBe(set.has(num));
         });
     };
 });
