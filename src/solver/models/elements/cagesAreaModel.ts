@@ -17,7 +17,7 @@ export class CagesAreaModel {
             });
         });
 
-        const { nonOverlappingCages } = NHouseCagesSegmentor.segmentByCellsOverlap(cages, Array.from(this.cellsSet), n);
+        const { nonOverlappingCages } = NHouseCagesSegmentor.segmentByCellsOverlap(cages, n);
         nonOverlappingCages.forEach(cage => {
             this.sum += cage.sum;
             cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
