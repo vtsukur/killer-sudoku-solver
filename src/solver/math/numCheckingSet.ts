@@ -64,7 +64,7 @@ export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumC
 export class NumCheckingSet implements ReadonlyNumCheckingSet {
     private _bitStore = 0;
 
-    private static readonly ALL_NUMBERS_BINARY_STORAGE = (function() {
+    private static readonly ALL_NUMBERS_BINARY_STORAGE = (() => {
         let val = 0;
         _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
             val |= 1 << num;
