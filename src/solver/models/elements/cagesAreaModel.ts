@@ -1,6 +1,5 @@
 import { ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
 import { NHouseCagesSegmentor } from '../../transform/nHouseCagesSegmentor';
 
 export class CagesAreaModel {
@@ -9,7 +8,7 @@ export class CagesAreaModel {
     readonly nonOverlappingCellsSet = new Set<Cell>();
     sum = 0;
 
-    constructor(cages: ReadonlyCages, absMaxAreaCellCount = House.CELL_COUNT) {
+    constructor(cages: ReadonlyCages, n = 1) {
         this.cages = cages;
 
         cages.forEach(cage => {
@@ -18,7 +17,7 @@ export class CagesAreaModel {
             });
         });
 
-        const { nonOverlappingCages } = NHouseCagesSegmentor.segmentByCellsOverlap(cages, Array.from(this.cellsSet), absMaxAreaCellCount);
+        const { nonOverlappingCages } = NHouseCagesSegmentor.segmentByCellsOverlap(cages, Array.from(this.cellsSet), n);
         nonOverlappingCages.forEach(cage => {
             this.sum += cage.sum;
             cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));

@@ -3,12 +3,12 @@ import { ReadonlyCells } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 
 export class NHouseCagesSegmentor {
-    static segmentByCellsOverlap(cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) {
+    static segmentByCellsOverlap(cages: ReadonlyCages, cells: ReadonlyCells, n = 1) {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
 
-        return work(cages, cells, absMaxAreaCellCount);
+        return work(cages, cells, n);
     }
 }
 
@@ -24,7 +24,8 @@ type Context = {
     found: boolean
 };
 
-const work = (cages: ReadonlyCages, cells: ReadonlyCells, absMaxAreaCellCount = House.CELL_COUNT) => {
+const work = (cages: ReadonlyCages, cells: ReadonlyCells, n: number) => {
+    const absMaxAreaCellCount = n * House.CELL_COUNT;
     const inputCages = new Array<Cage>(cages.length);
     const derivedCages = new Array<Cage>(cages.length);
     const usedCellsKeys = new Set<string>();

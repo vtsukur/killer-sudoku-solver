@@ -51,7 +51,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             cages = cages.concat(cageM.cage);
         }
     }
-    const cagesAreaModel = new CagesAreaModel(cages, nHouseCellCount);
+    const cagesAreaModel = new CagesAreaModel(cages, n);
     const sum = nHouseSum - cagesAreaModel.sum;
     if ((n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
