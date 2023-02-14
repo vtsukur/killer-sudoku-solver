@@ -239,7 +239,13 @@ export class Cage {
         return this.key;
     }
 
-    toBuilderCodeString() {
+    /**
+     * Produces TypeScript code which describes construction of this {@link Cage} using {@link Cage.Builder},
+     * which can be used for partial generation of test code.
+     *
+     * @returns TypeScript code which describes construction of this {@link Cage} using {@link Cage.Builder}.
+     */
+    get constructionTsCodeString() {
         const setSumCode = `.ofSum(${this.sum})`;
         const setCellsCode = this.cells.map(cell => `.at(${cell.row}, ${cell.col})`).join('');
         const conditionallySetIsInputCode = this.isInput ? '' : '.setIsInput(false)';
