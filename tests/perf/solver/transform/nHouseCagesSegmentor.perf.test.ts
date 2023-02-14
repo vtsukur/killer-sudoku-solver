@@ -70,7 +70,7 @@ describe('Performance tests for `NHouseCagesSegmentor`', () => {
             });
 
             _.range(ITERATION_COUNT).forEach(() => {
-                segment(houseModel.cages, houseModel.cells, 36);
+                segment(houseModel.cages, houseModel.cells, 4);
             });
         });
 
@@ -93,7 +93,7 @@ describe('Performance tests for `NHouseCagesSegmentor`', () => {
                 Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
             ]);
 
-            expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+            expect(segment(houseModel.cages, houseModel.cells, 4)).toEqual({
                 nonOverlappingCages: [
                     Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
                     Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
@@ -116,7 +116,7 @@ describe('Performance tests for `NHouseCagesSegmentor`', () => {
             });
 
             _.range(ITERATION_COUNT).forEach(() => {
-                segment(houseModel.cages, houseModel.cells, 36);
+                segment(houseModel.cages, houseModel.cells, 4);
             });
         });
     });

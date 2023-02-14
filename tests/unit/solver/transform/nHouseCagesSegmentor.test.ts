@@ -65,7 +65,7 @@ describe('Unit tests for `NHouseCagesSegmentor`', () => {
             Cage.ofSum(10).at(4, 0).at(4, 1).new()
         ]);
 
-        expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+        expect(segment(houseModel.cages, houseModel.cells, 4)).toEqual({
             nonOverlappingCages: [
                 Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
                 Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
@@ -110,7 +110,7 @@ describe('Unit tests for `NHouseCagesSegmentor`', () => {
             Cage.ofSum(9).at(8, 7).at(8, 8).setIsInput(false).new()
         ]);
 
-        expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+        expect(segment(houseModel.cages, houseModel.cells, 4)).toEqual({
             nonOverlappingCages: [
                 Cage.ofSum(6).at(0, 5).at(0, 6).new(),
                 Cage.ofSum(18).at(1, 5).at(1, 6).at(2, 5).at(2, 6).new(),
@@ -160,7 +160,7 @@ describe('Unit tests for `NHouseCagesSegmentor`', () => {
             Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
         ]);
 
-        expect(segment(houseModel.cages, houseModel.cells, 36)).toEqual({
+        expect(segment(houseModel.cages, houseModel.cells, 4)).toEqual({
             nonOverlappingCages: [
                 Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
                 Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
