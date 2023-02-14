@@ -1,14 +1,6 @@
 import * as _ from 'lodash';
 import { Numbers } from '../../puzzle/numbers';
-
-/**
- * Binary storage used for efficient manipulation of the {@link NumCheckingSet}.
- *
- * Represented as built-in `number`.
- *
- * @public
- */
-export type BinaryStorage = number;
+import { BitStore32 } from './readonlyCheckingSet';
 
 /**
  * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking/manipulation operations.
@@ -24,9 +16,9 @@ export type BinaryStorage = number;
 export interface ReadonlyNumCheckingSet {
 
     /**
-     * Returns copy of binary storage used for manipulation operations on this checking set.
+     * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.
      */
-    get binaryStorage(): BinaryStorage;
+    get bitStore32(): BitStore32;
 
     /**
      * Checks if this set has ALL numbers from another checking set.
@@ -67,7 +59,7 @@ export interface ReadonlyNumCheckingSet {
  * @public
  */
 export class NumCheckingSet implements ReadonlyNumCheckingSet {
-    private _binaryStorage = 0;
+    private _bitStore = 0;
 
     private static readonly ALL_NUMBERS_BINARY_STORAGE = (function() {
         let val = 0;
@@ -78,7 +70,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
     })();
 
     /**
-     * Constructs new checking set from the unique numbers in the given array or from raw binary storage value.
+     * Constructs new checking set from the unique numbers in the given array or from the raw {@link BitStore32}.
      *
      * In case array is specified, only unique numbers are added to the checking set.
      * Number duplicates are silently ignored.
@@ -87,12 +79,12 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      *
      * @param val - Array of numbers to construct this checking set from or raw binary storage value.
      */
-    constructor(val?: ReadonlyArray<number> | BinaryStorage) {
+    constructor(val?: ReadonlyArray<number> | BitStore32) {
         if (typeof(val) === 'number') {
-            this._binaryStorage = val;
+            this._bitStore = val;
         } else if (val instanceof Array) {
             for (const num of val) {
-                this._binaryStorage |= 1 << num;
+                this._bitStore |= 1 << num;
             }
         }
     }
@@ -113,31 +105,31 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
     }
 
     /**
-     * @see {BaseFastNumSet.binaryStorage}
+     * @see {ReadonlyNumCheckingSet.bitStore32}
      */
-    get binaryStorage() {
-        return this._binaryStorage;
+    get bitStore32() {
+        return this._bitStore;
     }
 
     /**
      * @see {ReadonlyNumCheckingSet.hasAll}
      */
     hasAll(val: ReadonlyNumCheckingSet) {
-        return (this._binaryStorage & val.binaryStorage) === val.binaryStorage;
+        return (this._bitStore & val.bitStore32) === val.bitStore32;
     }
 
     /**
      * @see {ReadonlyNumCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlyNumCheckingSet) {
-        return (this._binaryStorage & val.binaryStorage) === 0;
+        return (this._bitStore & val.bitStore32) === 0;
     }
 
     /**
      * @see {ReadonlyNumCheckingSet.remaining}
      */
     remaining(): ReadonlyNumCheckingSet {
-        return new NumCheckingSet(NumCheckingSet.ALL_NUMBERS_BINARY_STORAGE ^ this._binaryStorage);
+        return new NumCheckingSet(NumCheckingSet.ALL_NUMBERS_BINARY_STORAGE ^ this._bitStore);
     }
 
     /**
@@ -151,7 +143,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @param val - Another checking set containing numbers to add to this set.
      */
     add(val: ReadonlyNumCheckingSet) {
-        this._binaryStorage |= val.binaryStorage;
+        this._bitStore |= val.bitStore32;
     }
 
     /**
@@ -165,6 +157,6 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @param val - Another checking set containing numbers to remove from this checking set.
      */
     remove(val: ReadonlyNumCheckingSet) {
-        this._binaryStorage &= ~val.binaryStorage;
+        this._bitStore &= ~val.bitStore32;
     }
 }

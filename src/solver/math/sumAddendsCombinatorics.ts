@@ -3,7 +3,8 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { Combo, ReadonlyCombos } from './combo';
-import { BinaryStorage, ReadonlyNumCheckingSet } from './numCheckingSet';
+import { ReadonlyNumCheckingSet } from './numCheckingSet';
+import { BitStore32 } from './readonlyCheckingSet';
 
 type PrecomputeComboKey = number;
 
@@ -38,7 +39,7 @@ export class SumAddendsCombinatorics {
      */
     readonly arrayedVal: ReadonlyArray<ReadonlyCombos>;
 
-    private readonly _fastNumSetToComboMap: Map<BinaryStorage, Combo> = new Map();
+    private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
 
     /**
      * Constucts new combinations of unique numbers to form a sum.
@@ -48,7 +49,7 @@ export class SumAddendsCombinatorics {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         for (const combo of val) {
-            this._fastNumSetToComboMap.set(combo.numCheckingSet.binaryStorage, combo);
+            this._bitStore32ToComboMap.set(combo.numCheckingSet.bitStore32, combo);
         }
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
@@ -64,7 +65,7 @@ export class SumAddendsCombinatorics {
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
     get(numCheckingSet: ReadonlyNumCheckingSet) {
-        return this._fastNumSetToComboMap.get(numCheckingSet.binaryStorage);
+        return this._bitStore32ToComboMap.get(numCheckingSet.bitStore32);
     }
 
     /**

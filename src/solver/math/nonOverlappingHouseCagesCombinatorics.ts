@@ -7,9 +7,10 @@ import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
-import { BinaryStorage, NumCheckingSet } from './numCheckingSet';
+import { NumCheckingSet } from './numCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
+import { BitStore32 } from './readonlyCheckingSet';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s
@@ -240,7 +241,7 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombin
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.houseCagesPerms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numCheckingSet.binaryStorage);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numCheckingSet.bitStore32);
     };
 };
 
@@ -278,7 +279,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
 
     readonly allCageCombos: Array<SumAddendsCombinatorics>;
     readonly cageIndicesRange: ReadonlyArray<number>;
-    readonly usedCombosHashes: Array<Set<BinaryStorage>>;
+    readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
     readonly usedNums = new NumCheckingSet();
@@ -355,7 +356,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             this.houseCagesCombos[cageIndex] = new Array(actualSumCombosSet.size);
             let comboIndex = 0;
             for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.numCheckingSet.binaryStorage)) {
+                if (actualSumCombosSet.has(combo.numCheckingSet.bitStore32)) {
                     this.houseCagesCombos[cageIndex][comboIndex++] = combo;
                 }
             }
