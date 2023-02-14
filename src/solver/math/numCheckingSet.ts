@@ -1,19 +1,18 @@
 import * as _ from 'lodash';
 import { Numbers } from '../../puzzle/numbers';
-import { BitStore32 } from './readonlyCheckingSet';
+import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
 
 /**
  * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking/manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * For performance reasons, this class does NOT do range checks
- * and does NOT guarantee correct work for the numbers outside of Sudoku range (>9).
- * It is NOT applicable for a wide range of use cases.
+ * For performance reasons, implementations of this interface are NEITHER required to do range checks,
+ * NOR to guarantee correct work for the numbers outside of the Sudoku range (>9).
  *
  * @public
  */
-export interface ReadonlyNumCheckingSet {
+export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumCheckingSet> {
 
     /**
      * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.
@@ -26,6 +25,8 @@ export interface ReadonlyNumCheckingSet {
      * @param val - Another set to check against.
      *
      * @returns `true` if this checking set has ALL numbers from another checking set; otherwise `false`.
+     *
+     * @see {ReadonlyCheckingSet.hasAll}
      */
     hasAll(val: ReadonlyNumCheckingSet): boolean;
 
@@ -35,6 +36,8 @@ export interface ReadonlyNumCheckingSet {
      * @param val - Another set to check against.
      *
      * @returns `true` if this checking set does NOT have any numbers from another checking set; otherwise `false`.
+     *
+     * @see {ReadonlyCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlyNumCheckingSet): boolean;
 
