@@ -333,13 +333,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/fastNumSet]",
+            "name": "npm run test [solver/math/nonOverlappingHouseCagesCombinatorics]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/fastNumSet.test.ts"
+                "tests/unit/solver/math/nonOverlappingHouseCagesCombinatorics.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -352,13 +352,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/nonOverlappingHouseCagesCombinatorics]",
+            "name": "npm run test [solver/math/numCheckingSet]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/nonOverlappingHouseCagesCombinatorics.test.ts"
+                "tests/unit/solver/math/numCheckingSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

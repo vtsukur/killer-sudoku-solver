@@ -7,7 +7,7 @@ import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
-import { BinaryStorage, FastNumSet } from './fastNumSet';
+import { BinaryStorage, NumCheckingSet } from './numCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 
@@ -199,9 +199,9 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.usedCombos[step] = combo;
 
-    ctx.usedNums.add(combo.fastNumSet);
+    ctx.usedNums.add(combo.numCheckingSet);
     enumerateRecursively_next(ctx, step + 1);
-    ctx.usedNums.remove(combo.fastNumSet);
+    ctx.usedNums.remove(combo.numCheckingSet);
 };
 
 /**
@@ -225,7 +225,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAd
  */
 const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
-        if (ctx.usedNums.doesNotHaveAny(combo.fastNumSet)) {
+        if (ctx.usedNums.doesNotHaveAny(combo.numCheckingSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
     }
@@ -240,7 +240,7 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombin
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.houseCagesPerms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].fastNumSet.binaryStorage);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numCheckingSet.binaryStorage);
     };
 };
 
@@ -281,7 +281,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly usedCombosHashes: Array<Set<BinaryStorage>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
-    readonly usedNums = new FastNumSet();
+    readonly usedNums = new NumCheckingSet();
 
     // caching enumeration pipelines improves performance by around 5-10%
     private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
@@ -355,7 +355,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             this.houseCagesCombos[cageIndex] = new Array(actualSumCombosSet.size);
             let comboIndex = 0;
             for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.fastNumSet.binaryStorage)) {
+                if (actualSumCombosSet.has(combo.numCheckingSet.binaryStorage)) {
                     this.houseCagesCombos[cageIndex][comboIndex++] = combo;
                 }
             }

@@ -3,7 +3,7 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { Combo, ReadonlyCombos } from './combo';
-import { BinaryStorage, ReadonlyFastNumSet } from './fastNumSet';
+import { BinaryStorage, ReadonlyNumCheckingSet } from './numCheckingSet';
 
 type PrecomputeComboKey = number;
 
@@ -48,23 +48,23 @@ export class SumAddendsCombinatorics {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         for (const combo of val) {
-            this._fastNumSetToComboMap.set(combo.fastNumSet.binaryStorage, combo);
+            this._fastNumSetToComboMap.set(combo.numCheckingSet.binaryStorage, combo);
         }
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
     }
 
     /**
-     * Returns specific combination of unique numbers to form a sum by {@link ReadonlyFastNumSet}
+     * Returns specific combination of unique numbers to form a sum by {@link ReadonlyNumCheckingSet}
      * if it is present amongst registered combinations.
      *
-     * @param fastNumSet - Set of Sudoku numbers representing combination of unique numbers.
+     * @param numCheckingSet - Checking set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
      *
-     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlyFastNumSet}
+     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlyNumCheckingSet}
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
-    get(fastNumSet: ReadonlyFastNumSet) {
-        return this._fastNumSetToComboMap.get(fastNumSet.binaryStorage);
+    get(numCheckingSet: ReadonlyNumCheckingSet) {
+        return this._fastNumSetToComboMap.get(numCheckingSet.binaryStorage);
     }
 
     /**
