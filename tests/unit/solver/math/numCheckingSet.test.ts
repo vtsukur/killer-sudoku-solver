@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Numbers } from '../../../../src/puzzle/numbers';
-import { NumCheckingSet } from '../../../../src/solver/math/numCheckingSet';
+import { NumCheckingSet, ReadonlyNumCheckingSet } from '../../../../src/solver/math/numCheckingSet';
 
 describe('Unit tests for `NumCheckingSet`', () => {
     test('Construction of `NumCheckingSet` from array of numbers', () => {
@@ -58,7 +58,7 @@ describe('Unit tests for `NumCheckingSet`', () => {
         );
     });
 
-    const expectSetWithValues = (numSet: NumCheckingSet, values: ReadonlyArray<number>) => {
+    const expectSetWithValues = (numSet: ReadonlyNumCheckingSet, values: ReadonlyArray<number>) => {
         const set = new Set(values);
         _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
             expect(numSet.hasAll(NumCheckingSet.of(num))).toBe(set.has(num));
