@@ -47,14 +47,14 @@ describe('Unit tests for `NumCheckingSet`', () => {
     });
 
     test('Remaining `NumCheckingSet`', () => {
-        expect(NumCheckingSet.of().remaining().bitStore32).toBe(
-            NumCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore32
+        expect(NumCheckingSet.of().remaining().bitStore).toBe(
+            NumCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore
         );
-        expect(NumCheckingSet.of(1, 2, 3).remaining().bitStore32).toBe(
-            NumCheckingSet.of(4, 5, 6, 7, 8, 9).bitStore32
+        expect(NumCheckingSet.of(1, 2, 3).remaining().bitStore).toBe(
+            NumCheckingSet.of(4, 5, 6, 7, 8, 9).bitStore
         );
-        expect(NumCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining().bitStore32).toBe(
-            NumCheckingSet.of().bitStore32
+        expect(NumCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining().bitStore).toBe(
+            NumCheckingSet.of().bitStore
         );
     });
 

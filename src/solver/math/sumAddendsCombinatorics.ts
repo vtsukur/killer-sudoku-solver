@@ -49,7 +49,7 @@ export class SumAddendsCombinatorics {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         for (const combo of val) {
-            this._bitStore32ToComboMap.set(combo.numCheckingSet.bitStore32, combo);
+            this._bitStore32ToComboMap.set(combo.numCheckingSet.bitStore, combo);
         }
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
@@ -65,7 +65,7 @@ export class SumAddendsCombinatorics {
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
     get(numCheckingSet: ReadonlyNumCheckingSet) {
-        return this._bitStore32ToComboMap.get(numCheckingSet.bitStore32);
+        return this._bitStore32ToComboMap.get(numCheckingSet.bitStore);
     }
 
     /**

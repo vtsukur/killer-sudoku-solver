@@ -17,7 +17,7 @@ export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumC
     /**
      * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.
      */
-    get bitStore32(): BitStore32;
+    get bitStore(): BitStore32;
 
     /**
      * Checks if this set has ALL numbers from another checking set.
@@ -80,7 +80,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      *
      * Checking set is constructed as empty if no numbers are given.
      *
-     * @param val - Array of numbers to construct this checking set from or raw binary storage value.
+     * @param val - Array of numbers or raw {@link BitStore32} to construct this checking set from.
      */
     constructor(val?: ReadonlyArray<number> | BitStore32) {
         if (typeof(val) === 'number') {
@@ -108,9 +108,9 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
     }
 
     /**
-     * @see {ReadonlyNumCheckingSet.bitStore32}
+     * @see {ReadonlyNumCheckingSet.bitStore}
      */
-    get bitStore32() {
+    get bitStore() {
         return this._bitStore;
     }
 
@@ -118,14 +118,14 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @see {ReadonlyNumCheckingSet.hasAll}
      */
     hasAll(val: ReadonlyNumCheckingSet) {
-        return (this._bitStore & val.bitStore32) === val.bitStore32;
+        return (this._bitStore & val.bitStore) === val.bitStore;
     }
 
     /**
      * @see {ReadonlyNumCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlyNumCheckingSet) {
-        return (this._bitStore & val.bitStore32) === 0;
+        return (this._bitStore & val.bitStore) === 0;
     }
 
     /**
@@ -146,7 +146,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @param val - Another checking set containing numbers to add to this set.
      */
     add(val: ReadonlyNumCheckingSet) {
-        this._bitStore |= val.bitStore32;
+        this._bitStore |= val.bitStore;
     }
 
     /**
@@ -160,6 +160,6 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @param val - Another checking set containing numbers to remove from this checking set.
      */
     remove(val: ReadonlyNumCheckingSet) {
-        this._bitStore &= ~val.bitStore32;
+        this._bitStore &= ~val.bitStore;
     }
 }
