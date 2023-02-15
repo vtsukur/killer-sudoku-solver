@@ -51,7 +51,7 @@ export class Cell {
      */
     readonly key: CellKey;
 
-    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridCellPositions.newGridMatrix();
+    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridCellPositions.newGridSizedMatrix();
 
     static {
         GridCellPositions.forEachCellPositionOnTheGrid(([ row, col ]) => {

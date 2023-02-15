@@ -82,6 +82,6 @@ export class Grid {
      * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      */
     static newMatrix() {
-        return GridCellPositions.newGridMatrix();
+        return GridCellPositions.newGridSizedMatrix();
     }
 }

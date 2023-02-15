@@ -51,7 +51,7 @@ describe('Grid tests', () => {
     });
 
     test('Creation of Grid matrix', () => {
-        const matrix = GridCellPositions.newGridMatrix();
+        const matrix = GridCellPositions.newGridSizedMatrix();
 
         expect(matrix.length).toBe(Grid.SIDE_CELL_COUNT);
         for (const row of matrix) {
