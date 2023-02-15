@@ -17,6 +17,11 @@ export type CellRowAndColumnCallback = (cellPosition: CellRowAndColumn) => void;
  */
 export class GridCellPositions {
 
+    /* istanbul ignore next */
+    private constructor() {
+        throw new Error('Non-contructible');
+    }
+
     /**
      * Amount of `Cell`s on `Grid`'s side.
      */
@@ -50,16 +55,5 @@ export class GridCellPositions {
                 callback([ row, col ]);
             }
         }
-    };
-
-    /**
-     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
-     *
-     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
-     */
-    static newGridMatrix = () => {
-        return new Array(this.GRID_SIDE_CELL_COUNT).fill(undefined).map(() => {
-            return new Array(this.GRID_SIDE_CELL_COUNT);
-        });
     };
 }

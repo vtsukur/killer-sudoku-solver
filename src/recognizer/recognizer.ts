@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { createWorker, PSM, Worker } from 'tesseract.js';
 import { Cage } from '../puzzle/cage';
 import { Cell } from '../puzzle/cell';
-import { Grid } from '../puzzle/grid';
+import { GridSizedMatrix } from '../puzzle/gridSizedMatrix';
 import { House, HouseIndex } from '../puzzle/house';
 import { Puzzle } from '../puzzle/puzzle';
 import { logFactory } from '../util/logFactory';
@@ -156,7 +156,7 @@ function findFirstSignificantCoord(map: Map<number, number>, isReverse = false) 
 }
 
 function createCellContours(gridContour: GridContour) {
-    const cellContoursMatrix = Grid.newMatrix();
+    const cellContoursMatrix = GridSizedMatrix.new();
 
     _.range(House.CELL_COUNT).forEach(row => {
         _.range(House.CELL_COUNT).forEach(col => {

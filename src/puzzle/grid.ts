@@ -75,13 +75,4 @@ export class Grid {
     static forEachCellPosition(callback: CellRowAndColumnCallback) {
         GridCellPositions.forEachCellPositionOnTheGrid(callback);
     }
-
-    /**
-     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
-     *
-     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
-     */
-    static newMatrix() {
-        return GridCellPositions.newGridSizedMatrix();
-    }
 }

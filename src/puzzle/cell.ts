@@ -1,5 +1,6 @@
 import { Column } from './column';
 import { CellRowAndColumn, GridCellPositions } from './gridCellPositions';
+import { GridSizedMatrix } from './gridSizedMatrix';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 import { Row } from './row';
@@ -51,7 +52,7 @@ export class Cell {
      */
     readonly key: CellKey;
 
-    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridCellPositions.newGridSizedMatrix();
+    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridSizedMatrix.new();
 
     static {
         GridCellPositions.forEachCellPositionOnTheGrid(([ row, col ]) => {
