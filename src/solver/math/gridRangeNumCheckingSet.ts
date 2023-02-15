@@ -7,23 +7,23 @@ export interface ReadonlyGridRangeNumCheckingSet extends ReadonlyCheckingSet<Rea
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
-type NumToBitStoreBucketMapEntry = {
-    bucketIndex: number;
-    shiftWithinBucket: number;
+type NumToBitStoreMapEntry = {
+    index: number;
+    shift: number;
 }
 
 export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet {
     private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
-    private static _BIT_STORE_BUCKET_SIZE = Grid.CELL_COUNT / 3;
+    private static _BIT_STORE_SIZE = Grid.CELL_COUNT / 3;
 
-    private static _NUM_TO_BIT_STORE_BUCKET_MAPPING: ReadonlyArray<NumToBitStoreBucketMapEntry> = (() => {
-        const val = new Array<NumToBitStoreBucketMapEntry>(Grid.CELL_COUNT);
+    private static _NUM_TO_BIT_STORE_MAPPING: ReadonlyArray<NumToBitStoreMapEntry> = (() => {
+        const val = new Array<NumToBitStoreMapEntry>(Grid.CELL_COUNT);
         for (const num of CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT]) {
-            const bucketIndex = Math.floor(num / GridRangeNumCheckingSet._BIT_STORE_BUCKET_SIZE);
+            const bucketIndex = Math.floor(num / GridRangeNumCheckingSet._BIT_STORE_SIZE);
             val[num] = {
-                bucketIndex,
-                shiftWithinBucket: num - bucketIndex * GridRangeNumCheckingSet._BIT_STORE_BUCKET_SIZE
+                index: bucketIndex,
+                shift: num - bucketIndex * GridRangeNumCheckingSet._BIT_STORE_SIZE
             };
         }
         return val;
@@ -41,7 +41,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
      */
     private constructor(val: ReadonlyArray<number>) {
         for (const num of val) {
-            const entry = GridRangeNumCheckingSet._NUM_TO_BIT_STORE_BUCKET_MAPPING[num];
+            const entry = GridRangeNumCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
 
             //
             // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
@@ -56,7 +56,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
             //
             // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
             //
-            this._bitStores[entry.bucketIndex] |= 1 << entry.shiftWithinBucket;
+            this._bitStores[entry.index] |= 1 << entry.shift;
         }
     }
 
