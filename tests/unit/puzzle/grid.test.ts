@@ -31,7 +31,7 @@ describe('Grid tests', () => {
         ]);
     });
 
-    test('Iteration over CellPositions', () => {
+    test('Iteration over `CellRowAndColumn`s', () => {
         const cells = new Array<Cell>();
         Grid.forEachCellPosition(([ row, col ]) => {
             cells.push(Cell.at(row, col));
