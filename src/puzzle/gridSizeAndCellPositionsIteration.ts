@@ -12,10 +12,10 @@ export type CellRowAndColumn = [ HouseIndex, HouseIndex ];
 export type CellRowAndColumnCallback = (cellPosition: CellRowAndColumn) => void;
 
 /**
- * Supportive class to define reusable logic for positioning of `Cell` on the `Grid`
- * to be reused by core Sudoku Puzzle types.
+ * Supportive class to define `Grid` size and reusable logic for
+ * iterating over positions of `Cell`s on the `Grid`.
  */
-export class GridCellPositions {
+export class GridSizeAndCellPositionsIteration {
 
     /* istanbul ignore next */
     private constructor() {

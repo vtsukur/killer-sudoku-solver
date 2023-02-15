@@ -1,6 +1,6 @@
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
-import { CellRowAndColumn, CellRowAndColumnCallback, GridCellPositions } from './gridCellPositions';
+import { CellRowAndColumn, CellRowAndColumnCallback, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
 import { House } from './house';
 
 /**
@@ -16,7 +16,7 @@ export class Grid {
     /**
      * Amount of {@link Cell}s on `Grid`'s side.
      */
-    static readonly SIDE_CELL_COUNT = GridCellPositions.GRID_SIDE_CELL_COUNT;
+    static readonly SIDE_CELL_COUNT = GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT;
 
     /**
      * Total amount of {@link Cell}s in a `Grid`.
@@ -73,6 +73,6 @@ export class Grid {
      * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
      */
     static forEachCellPosition(callback: CellRowAndColumnCallback) {
-        GridCellPositions.forEachCellPositionOnTheGrid(callback);
+        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(callback);
     }
 }
