@@ -10,6 +10,7 @@ import { House, HouseIndex } from './house';
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Column {
+
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
