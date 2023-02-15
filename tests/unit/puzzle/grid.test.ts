@@ -1,6 +1,5 @@
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
-import { GridSizedMatrix } from '../../../src/puzzle/gridSizedMatrix';
 
 describe('Grid tests', () => {
     test('Amount of Cells on Grid\'s side is 9', () => {
@@ -48,17 +47,5 @@ describe('Grid tests', () => {
             Cell.at(7, 0), Cell.at(7, 1), Cell.at(7, 2), Cell.at(7, 3), Cell.at(7, 4), Cell.at(7, 5), Cell.at(7, 6), Cell.at(7, 7), Cell.at(7, 8),
             Cell.at(8, 0), Cell.at(8, 1), Cell.at(8, 2), Cell.at(8, 3), Cell.at(8, 4), Cell.at(8, 5), Cell.at(8, 6), Cell.at(8, 7), Cell.at(8, 8)
         ]);
-    });
-
-    test('Creation of Grid matrix', () => {
-        const matrix = GridSizedMatrix.new();
-
-        expect(matrix.length).toBe(Grid.SIDE_CELL_COUNT);
-        for (const row of matrix) {
-            expect(row.length).toBe(Grid.SIDE_CELL_COUNT);
-            for (const el of row) {
-                expect(el).toBeUndefined();
-            }
-        }
     });
 });
