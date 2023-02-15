@@ -4,7 +4,7 @@ import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ReadonlyGridRangeNumCheckingSet extends ReadonlyCheckingSet<ReadonlyGridRangeNumCheckingSet> {
-    get bitStore(): ReadonlyArray<BitStore32>;
+    get bitStores(): ReadonlyArray<BitStore32>;
 }
 
 type NumToBitStoreBucketMapEntry = {
@@ -13,7 +13,7 @@ type NumToBitStoreBucketMapEntry = {
 }
 
 export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet {
-    private _bitStore: Array<BitStore32> = [ 0, 0, 0 ];
+    private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
     private static _BIT_STORE_BUCKET_SIZE = Grid.CELL_COUNT / 3;
 
@@ -56,7 +56,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
             //
             // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
             //
-            this._bitStore[entry.bucketIndex] |= 1 << entry.shiftWithinBucket;
+            this._bitStores[entry.bucketIndex] |= 1 << entry.shiftWithinBucket;
         }
     }
 
@@ -76,10 +76,10 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
     }
 
     /**
-     * @see {ReadonlyGridRangeNumCheckingSet.bitStore}
+     * @see {ReadonlyGridRangeNumCheckingSet.bitStores}
      */
-    get bitStore() {
-        return this._bitStore;
+    get bitStores() {
+        return this._bitStores;
     }
 
     /**
@@ -93,32 +93,32 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         // Example for `hasAll` returning `true`
         // (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                   = 0b10010101
-        //      val.bitStore[x]                     = 0b10000100
-        //      this._bitStore[x] & val.bitStore[x] = 0b10000100
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b10000100
+        //      this._bitStores[x] & val.bitStores[x] = 0b10000100
         //
         //      0b10000100 === 0b10000100
-        //      (this._bitStore[x] & val.bitStore[x]) === val.bitStore[x]
+        //      (this._bitStores[x] & val.bitStores[x]) === val.bitStores[x]
         //
         // ```
         //
         // Example for `hasAll` returning `false`
         // (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                   = 0b10010101
-        //      val.bitStore[x]                     = 0b00001100
-        //      this._bitStore[x] & val.bitStore[x] = 0b00000100
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b00001100
+        //      this._bitStores[x] & val.bitStores[x] = 0b00000100
         //
         //      0b00001100 !== 0b00000100
-        //      (this._bitStore[x] & val.bitStore[x]) !== val.bitStore[x]
+        //      (this._bitStores[x] & val.bitStores[x]) !== val.bitStores[x]
         // ```
         //
         return (
-            (this._bitStore[0] & val.bitStore[0]) === val.bitStore[0] // numbers in range [0, 26]
+            (this._bitStores[0] & val.bitStores[0]) === val.bitStores[0] // numbers in range [0, 26]
             &&
-            (this._bitStore[1] & val.bitStore[1]) === val.bitStore[1] // numbers in range [27, 53]
+            (this._bitStores[1] & val.bitStores[1]) === val.bitStores[1] // numbers in range [27, 53]
             &&
-            (this._bitStore[2] & val.bitStore[2]) === val.bitStore[2] // numbers in range [54, 80]
+            (this._bitStores[2] & val.bitStores[2]) === val.bitStores[2] // numbers in range [54, 80]
         );
     }
 
@@ -133,30 +133,30 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         // Example for `doesNotHaveAny` returning `true`
         // (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                   = 0b10010101
-        //      val.bitStore[x]                     = 0b01101000
-        //      this._bitStore[x] & val.bitStore[x] = 0b00000100
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b01101000
+        //      this._bitStores[x] & val.bitStores[x] = 0b00000000 (no overlaps on the same bit positions)
         //
-        //      (this._bitStore[x] & val.bitStore[x]) === 0
+        //      (this._bitStores[x] & val.bitStores[x]) === 0
         //
         // ```
         //
         // Example for `doesNotHaveAny` returning `false`
         // (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                   = 0b10010101
-        //      val.bitStore[x]                     = 0b00001100
-        //      this._bitStore[x] & val.bitStore[x] = 0b00000100
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b00001100
+        //      this._bitStores[x] & val.bitStores[x] = 0b00000100 (one overlap on the bit position 3)
         //
-        //      (this._bitStore[x] & val.bitStore[x]) !== 0
+        //      (this._bitStores[x] & val.bitStores[x]) !== 0
         // ```
         //
         return (
-            (this._bitStore[0] & val.bitStore[0]) === 0 // numbers in range [0, 26]
+            (this._bitStores[0] & val.bitStores[0]) === 0 // numbers in range [0, 26]
             &&
-            (this._bitStore[1] & val.bitStore[1]) === 0 // numbers in range [27, 53]
+            (this._bitStores[1] & val.bitStores[1]) === 0 // numbers in range [27, 53]
             &&
-            (this._bitStore[2] & val.bitStore[2]) === 0 // numbers in range [54, 80]
+            (this._bitStores[2] & val.bitStores[2]) === 0 // numbers in range [54, 80]
         );
     }
 
@@ -177,14 +177,14 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         //
         // Example (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                    = 0b10010001
-        //      val.bitStore[x]                      = 0b01001000
-        //      this._bitStore[x] |= val.bitStore[x] = 0b11011001
+        //      this._bitStores[x]                     = 0b10010001
+        //      val.bitStores[x]                       = 0b01001000
+        //      this._bitStorse[x] |= val.bitStores[x] = 0b11011001
         // ```
         //
-        this._bitStore[0] |= val.bitStore[0]; // for numbers in range [0, 26]
-        this._bitStore[1] |= val.bitStore[1]; // for numbers in range [27, 53]
-        this._bitStore[2] |= val.bitStore[2]; // for numbers in range [54, 80]
+        this._bitStores[0] |= val.bitStores[0]; // for numbers in range [0, 26]
+        this._bitStores[1] |= val.bitStores[1]; // for numbers in range [27, 53]
+        this._bitStores[2] |= val.bitStores[2]; // for numbers in range [54, 80]
     }
 
     /**
@@ -204,14 +204,14 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         //
         // Example (applied to a single bit store with index `x` for simplicity):
         // ```
-        //      this._bitStore[x]                     = 0b10011001
-        //      val.bitStore[x]                       = 0b01001001
-        //      ~val.bitStore[x]                      = 0b10110110
-        //      this._bitStore[x] &= ~val.bitStore[x] = 0b10010000
+        //      this._bitStores[x]                      = 0b10011001
+        //      val.bitStores[x]                        = 0b01001001
+        //      ~val.bitStores[x]                       = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
+        //      this._bitStores[x] &= ~val.bitStores[x] = 0b10010000
         // ```
         //
-        this._bitStore[0] &= ~val.bitStore[0]; // for numbers in range [0, 26]
-        this._bitStore[1] &= ~val.bitStore[1]; // for numbers in range [27, 53]
-        this._bitStore[2] &= ~val.bitStore[2]; // for numbers in range [54, 80]
+        this._bitStores[0] &= ~val.bitStores[0]; // for numbers in range [0, 26]
+        this._bitStores[1] &= ~val.bitStores[1]; // for numbers in range [27, 53]
+        this._bitStores[2] &= ~val.bitStores[2]; // for numbers in range [54, 80]
     }
 }
