@@ -14,10 +14,14 @@ export class GridSizedMatrix {
      * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      *
      * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
+     *
+     * @typeParam T - Type of values in the matrix.
      */
-    static new = () => {
-        return new Array(GridCellPositions.GRID_SIDE_CELL_COUNT).fill(undefined).map(() => {
-            return new Array(GridCellPositions.GRID_SIDE_CELL_COUNT);
+    static new<T>(): Array<Array<T>> {
+        const val = new Array<Array<T>>(GridCellPositions.GRID_SIDE_CELL_COUNT);
+        GridCellPositions.GRID_SIDE_INDICES_RANGE.forEach((_empty, index) => {
+            val[index] = new Array<T>(GridCellPositions.GRID_SIDE_CELL_COUNT);
         });
+        return val;
     };
 }
