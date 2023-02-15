@@ -1,18 +1,13 @@
-import * as _ from 'lodash';
-import { Cell, CellPosition } from './cell';
+import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
+import { CellRowAndColumn, CellRowAndColumnCallback, GridCellPositions } from './gridCellPositions';
 import { House } from './house';
-
-/**
- * Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
- */
-export type CellPositionCallback = (cellPosition: CellPosition) => void;
 
 /**
  * Supportive class for Killer Sudoku `Grid`
  * which holds useful constants that describe mathematical properties of any `Grid`
  * as well as utility methods that simplify iteration over `Grid` {@link Cell}s,
- * {@link CellPosition}s and creation of supplementary ranges and matrices with `Grid`'s size.
+ * {@link CellRowAndColumn}s and creation of supplementary ranges and matrices with `Grid`'s size.
  *
  * @public
  */
@@ -21,7 +16,7 @@ export class Grid {
     /**
      * Amount of {@link Cell}s on `Grid`'s side.
      */
-    static readonly SIDE_CELL_COUNT = 9;
+    static readonly SIDE_CELL_COUNT = GridCellPositions.GRID_SIDE_CELL_COUNT;
 
     /**
      * Total amount of {@link Cell}s in a `Grid`.
@@ -38,10 +33,10 @@ export class Grid {
         throw new Error('Non-contructible');
     }
 
-    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<CellPosition> = this.buildIterationCache();
+    private static readonly _CELLS_ITERATOR_CACHE: ReadonlyArray<CellRowAndColumn> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<CellPosition> = [];
+        const val: Array<CellRowAndColumn> = [];
         Grid.forEachCellPosition(cellPosition => {
             val.push(cellPosition);
         });
@@ -71,28 +66,14 @@ export class Grid {
     }
 
     /**
-     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellPosition}.
+     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
      *
      * Iteration sequence is the same way as in `newCellsIterator` method.
      *
-     * @param callback - Function to be called with {@link CellPosition} for `Cell`s in the `Grid`.
+     * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
      */
-    static forEachCellPosition(callback: CellPositionCallback) {
-        for (const row of Grid.new0To8Range()) {
-            for (const col of Grid.new0To8Range()) {
-                callback([ row, col ]);
-            }
-        }
-    }
-
-    /**
-     * Constructs new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
-     *
-     * @returns new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
-     *
-     */
-    static new0To8Range(): ReadonlyArray<number> {
-        return _.range(Grid.SIDE_CELL_COUNT);
+    static forEachCellPosition(callback: CellRowAndColumnCallback) {
+        GridCellPositions.forEachCellPositionOnTheGrid(callback);
     }
 
     /**
@@ -101,8 +82,6 @@ export class Grid {
      * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
      */
     static newMatrix() {
-        return new Array(this.SIDE_CELL_COUNT).fill(undefined).map(() => {
-            return new Array(this.SIDE_CELL_COUNT);
-        });
+        return GridCellPositions.newGridMatrix();
     }
 }

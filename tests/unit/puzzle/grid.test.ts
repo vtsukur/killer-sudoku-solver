@@ -1,5 +1,6 @@
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
+import { GridCellPositions } from '../../../src/puzzle/gridCellPositions';
 
 describe('Grid tests', () => {
     test('Amount of Cells on Grid\'s side is 9', () => {
@@ -49,12 +50,8 @@ describe('Grid tests', () => {
         ]);
     });
 
-    test('Creation of 0-to-8 range', () => {
-        expect(Grid.new0To8Range()).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
-    });
-
     test('Creation of Grid matrix', () => {
-        const matrix = Grid.newMatrix();
+        const matrix = GridCellPositions.newGridMatrix();
 
         expect(matrix.length).toBe(Grid.SIDE_CELL_COUNT);
         for (const row of matrix) {

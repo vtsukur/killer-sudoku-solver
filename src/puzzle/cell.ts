@@ -1,13 +1,8 @@
 import { Column } from './column';
-import { Grid } from './grid';
+import { CellRowAndColumn, GridCellPositions } from './gridCellPositions';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 import { Row } from './row';
-
-/**
- * Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
- */
-export type CellPosition = [ HouseIndex, HouseIndex ];
 
 /**
  * Human-readable key describing square's unique position on the `Grid`.
@@ -56,10 +51,10 @@ export class Cell {
      */
     readonly key: CellKey;
 
-    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = Grid.newMatrix();
+    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridCellPositions.newGridMatrix();
 
     static {
-        Grid.forEachCellPosition(([ row, col ]) => {
+        GridCellPositions.forEachCellPositionOnTheGrid(([ row, col ]) => {
             this._CACHED_INSTANCES[row][col] = new Cell(row, col);
         });
     }
@@ -89,7 +84,7 @@ export class Cell {
      *
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
-    static atPosition(val: CellPosition) {
+    static atPosition(val: CellRowAndColumn) {
         return Cell.at(val[0], val[1]);
     }
 
