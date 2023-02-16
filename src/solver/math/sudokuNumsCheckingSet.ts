@@ -4,6 +4,11 @@ import { NumCheckingSet, ReadonlyNumCheckingSet } from './numCheckingSet';
 
 export class SudokuNumsCheckingSet {
 
+    /* istanbul ignore next */
+    private constructor() {
+        throw new Error('Non-contructible');
+    }
+
     private static readonly ALL_SUDOKU_NUMS_BINARY_STORAGE = (() => {
         let val = 0;
         CachedNumRanges.ONE_TO_N_LT_10[Numbers.MAX + 1].forEach(num => {
