@@ -2,6 +2,9 @@ import { Numbers } from '../../puzzle/numbers';
 import { CachedNumRanges } from './cachedNumRanges';
 import { NumCheckingSet, ReadonlyNumCheckingSet } from './numCheckingSet';
 
+/**
+ * Supplementary class to manipulate {@link NumCheckingSet} with Sudoku numbers between 1 and 9.
+ */
 export class SudokuNumsCheckingSet {
 
     /* istanbul ignore next */
