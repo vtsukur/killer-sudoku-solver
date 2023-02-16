@@ -1,6 +1,6 @@
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
 import { combosAndPermsForHouse } from './combosAndPermsForHouse';
-import { CellIndexNumsCheckingSet } from './cellIndexNumsCheckingSet';
+import { CellIndicesCheckingSet } from './cellIndicesCheckingSet';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 
-export { Combo, ComboKey, ReadonlyCombos, combosAndPermsForHouse, CellIndexNumsCheckingSet, SumAddendsCombinatorics };
+export { Combo, ComboKey, ReadonlyCombos, combosAndPermsForHouse, CellIndicesCheckingSet, SumAddendsCombinatorics };

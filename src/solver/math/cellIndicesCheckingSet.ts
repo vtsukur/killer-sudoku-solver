@@ -1,8 +1,8 @@
 import { Grid } from '../../puzzle/grid';
 import { CachedNumRanges } from './cachedNumRanges';
-import { BitStore32, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
-export interface ReadonlyCellIndexNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndexNumsCheckingSet> {
+export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
@@ -11,7 +11,7 @@ type NumToBitStoreMapEntry = {
     shift: number;
 }
 
-export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSet {
+export class CellIndicesCheckingSet implements ReadonlyCellIndicesCheckingSet, NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
     private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
     private static _BIT_STORE_SIZE = 32;
@@ -19,10 +19,10 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     private static _NUM_TO_BIT_STORE_MAPPING: ReadonlyArray<NumToBitStoreMapEntry> = (() => {
         const val = new Array<NumToBitStoreMapEntry>(Grid.CELL_COUNT);
         for (const num of CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT]) {
-            const bucketIndex = Math.floor(num / CellIndexNumsCheckingSet._BIT_STORE_SIZE);
+            const bucketIndex = Math.floor(num / CellIndicesCheckingSet._BIT_STORE_SIZE);
             val[num] = {
                 index: bucketIndex,
-                shift: num - bucketIndex * CellIndexNumsCheckingSet._BIT_STORE_SIZE
+                shift: num - bucketIndex * CellIndicesCheckingSet._BIT_STORE_SIZE
             };
         }
         return val;
@@ -40,7 +40,7 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
      */
     private constructor(val: ReadonlyArray<number>) {
         for (const num of val) {
-            const entry = CellIndexNumsCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
+            const entry = CellIndicesCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
 
             //
             // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
@@ -71,11 +71,11 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
      * @returns new checking set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
-        return new CellIndexNumsCheckingSet(val);
+        return new CellIndicesCheckingSet(val);
     }
 
     /**
-     * @see {ReadonlyCellIndexNumsCheckingSet.bitStores}
+     * @see {ReadonlyCellIndicesCheckingSet.bitStores}
      */
     get bitStores() {
         return this._bitStores;
@@ -84,7 +84,7 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     /**
      * @see {ReadonlyNumsCheckingSet.hasAll}
      */
-    hasAll(val: ReadonlyCellIndexNumsCheckingSet) {
+    hasAll(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // has `1`s at the same positions as each bit store of the `val` checking set.
@@ -122,9 +122,9 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     }
 
     /**
-     * @see {ReadonlyheckingSet.doesNotHaveAny}
+     * @see {ReadonlyNumsCheckingSet.doesNotHaveAny}
      */
-    doesNotHaveAny(val: ReadonlyCellIndexNumsCheckingSet) {
+    doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
@@ -159,16 +159,9 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     }
 
     /**
-     * Adds all numbers from another checking set to this checking set.
-     *
-     * This method changes this checking set and does NOT modify `val` checking set.
-     *
-     * Only the numbers which are NOT yet present in this checking set are added.
-     * Duplicate numbers are ignored.
-     *
-     * @param val - Another checking set containing numbers to add to this set.
+     * @see {NumsCheckingSet.add}
      */
-    add(val: ReadonlyCellIndexNumsCheckingSet) {
+    add(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise OR assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of `val` checking set.
@@ -186,16 +179,9 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     }
 
     /**
-     * Removes all numbers present in another checking set from this checking set.
-     *
-     * This method changes this checking set and does NOT modify `val` checking set.
-     *
-     * Only the numbers which are present in this checking set are removed.
-     * Missing numbers are ignored.
-     *
-     * @param val - Another checking set containing numbers to remove from this checking set.
+     * @see {NumsCheckingSet.remove}
      */
-    remove(val: ReadonlyCellIndexNumsCheckingSet) {
+    remove(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of `val` checking set.
