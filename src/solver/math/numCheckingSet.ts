@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-import { Numbers } from '../../puzzle/numbers';
 import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
 
 /**
@@ -40,16 +38,6 @@ export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumC
      * @see {ReadonlyCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlyNumCheckingSet): boolean;
-
-    /**
-     * Returns new checking set with Sudoku numbers which are NOT present in the current checking set.
-     *
-     * For example, if a checking set has numbers [1, 2, 5, 9] then
-     * the remaining checking set of numbers will be [3, 4, 6, 7, 8].
-     *
-     * @returns new checking set with Sudoku numbers which are NOT present in the current checking set.
-     */
-    remaining(): ReadonlyNumCheckingSet;
 }
 
 /**
@@ -63,14 +51,6 @@ export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumC
  */
 export class NumCheckingSet implements ReadonlyNumCheckingSet {
     private _bitStore = 0;
-
-    private static readonly ALL_NUMBERS_BINARY_STORAGE = (() => {
-        let val = 0;
-        _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
-            val |= 1 << num;
-        });
-        return val;
-    })();
 
     /**
      * Constructs new checking set from the unique numbers in the given array or from the raw {@link BitStore32}.
@@ -126,13 +106,6 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      */
     doesNotHaveAny(val: ReadonlyNumCheckingSet) {
         return (this._bitStore & val.bitStore) === 0;
-    }
-
-    /**
-     * @see {ReadonlyNumCheckingSet.remaining}
-     */
-    remaining(): ReadonlyNumCheckingSet {
-        return new NumCheckingSet(NumCheckingSet.ALL_NUMBERS_BINARY_STORAGE ^ this._bitStore);
     }
 
     /**
