@@ -1,6 +1,6 @@
 import { Numbers } from '../../puzzle/numbers';
 import { CachedNumRanges } from './cachedNumRanges';
-import { BitStore32, ReadonlyNumsCheckingSet } from './readonlyCheckingSet';
+import { BitStore32, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
  * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking/manipulation operations.

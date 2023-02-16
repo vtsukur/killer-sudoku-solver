@@ -10,7 +10,7 @@ import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 import { SudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
-import { BitStore32 } from './readonlyCheckingSet';
+import { BitStore32 } from './numsCheckingSet';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s

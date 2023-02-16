@@ -4,7 +4,7 @@ import { House } from '../../puzzle/house';
 import { Numbers } from '../../puzzle/numbers';
 import { Combo, ReadonlyCombos } from './combo';
 import { ReadonlySudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
-import { BitStore32 } from './readonlyCheckingSet';
+import { BitStore32 } from './numsCheckingSet';
 
 type PrecomputeComboKey = number;
 
