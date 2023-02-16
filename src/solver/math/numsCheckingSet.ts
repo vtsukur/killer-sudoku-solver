@@ -42,7 +42,7 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
 }
 
 /**
- * Checking numbers set with efficient storage & fast checking and manipulation operations.
+ * Extends {@link ReadonlyNumsCheckingSet} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
