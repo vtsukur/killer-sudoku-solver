@@ -54,9 +54,11 @@ export class CellIndicesCheckingSet implements
     //
     private readonly _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
+    // As the built-in `number` is used as a bit storage, it can hold up to 32 bits.
     private static readonly _BITS_PER_BIT_STORE = 32;
 
-    private static _CELL_INDEX_TO_BIT_STORE: ReadonlyArray<CellIndexToBitStoreLocator> = CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT].map(cellIndex => {
+    // Caching data about bit store index and bit position within the bit store to enable fast access.
+    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT].map(cellIndex => {
         const bitStoreIndex = Math.floor(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         const bitPosition = cellIndex - bitStoreIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE;
         return { bitStoreIndex, bitPosition };
@@ -74,7 +76,7 @@ export class CellIndicesCheckingSet implements
      */
     private constructor(val: ReadonlyArray<number>) {
         for (const num of val) {
-            const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE[num];
+            const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[num];
 
             //
             // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
