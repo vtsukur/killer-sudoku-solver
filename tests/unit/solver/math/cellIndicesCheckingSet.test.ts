@@ -37,10 +37,10 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
     });
 
-    const expectNumsCheckingSetWithValues = (numSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
+    const expectNumsCheckingSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
         const set = new Set(values);
         _.range(0, Grid.CELL_COUNT).forEach(num => {
-            expect(numSet.hasAll(CellIndicesCheckingSet.of(num))).toBe(set.has(num));
+            expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(num))).toBe(set.has(num));
         });
     };
 });
