@@ -200,7 +200,7 @@ export class CellIndicesCheckingSet implements
     add(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise OR assignment on the bit stores of this checking set
-        // to merge `1`s from the bit stores of `val` checking set.
+        // to merge `1`s from the bit stores of the `val` checking set.
         //
         // Example (applied to a single bit store with index `x` for simplicity):
         // ```
@@ -220,7 +220,7 @@ export class CellIndicesCheckingSet implements
     remove(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
-        // to merge `1`s from the bit stores of `val` checking set.
+        // to merge `1`s from the bit stores of the `val` checking set.
         //
         // Example (applied to a single bit store with index `x` for simplicity):
         // ```

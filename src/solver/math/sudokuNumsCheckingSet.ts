@@ -43,6 +43,11 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
 export class SudokuNumsCheckingSet implements
         ReadonlySudokuNumsCheckingSet,
         NumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
+
+    //
+    // One bit store in the form of a built-in `number` can store up to 32 bits,
+    // which is more than enough to represents numbers in the range of [1, 9].
+    //
     private _bitStore = 0;
 
     /**
@@ -60,6 +65,17 @@ export class SudokuNumsCheckingSet implements
             this._bitStore = val;
         } else if (val instanceof Array) {
             for (const num of val) {
+                //
+                // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
+                //
+                // Examples:
+                //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b000000010`;
+                //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b000000100`;
+                //  - ...
+                //  - for `num = 9`, `bitStore` will be bitwise OR-ed with `0b100000000`;
+                //
+                // For `num = 1` and `num = 4` `bitStore` will be `0b000010010`.
+                //
                 this._bitStore |= 1 << num;
             }
         }
@@ -91,6 +107,31 @@ export class SudokuNumsCheckingSet implements
      * @see {ReadonlySudokuNumsCheckingSet.hasAll}
      */
     hasAll(val: ReadonlySudokuNumsCheckingSet) {
+        //
+        // Applying bitwise AND to check that each bit store of this checking set
+        // has `1`s at the same positions as each bit store of the `val` checking set.
+        //
+        // Example for `hasAll` returning `true`:
+        // ```
+        //      this._bitStore                = 0b010010101
+        //      val.bitStore                  = 0b010000100
+        //      this._bitStore & val.bitStore = 0b010000100
+        //
+        //      0b010000100 === 0b010000100
+        //      (this._bitStore & val.bitStore) === val.bitStore
+        //
+        // ```
+        //
+        // Example for `hasAll` returning `false`:
+        // ```
+        //      this._bitStore                = 0b010010101
+        //      val.bitStore                  = 0b000001100
+        //      this._bitStore & val.bitStore = 0b000000100
+        //
+        //      0b000001100 !== 0b000000100
+        //      (this._bitStore & val.bitStore) !== val.bitStore
+        // ```
+        //
         return (this._bitStore & val.bitStore) === val.bitStore;
     }
 
@@ -98,6 +139,28 @@ export class SudokuNumsCheckingSet implements
      * @see {ReadonlySudokuNumsCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
+        //
+        // Applying bitwise AND to check that each bit store of this checking set
+        // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
+        //
+        // Example for `doesNotHaveAny` returning `true`:
+        // ```
+        //      this._bitStore                = 0b010010101
+        //      val.bitStore                  = 0b001101000
+        //      this._bitStore & val.bitStore = 0b000000000 (no overlaps on the same bit positions)
+        //
+        //      (this._bitStore & val.bitStore) === 0
+        // ```
+        //
+        // Example for `doesNotHaveAny` returning `false`:
+        // ```
+        //      this._bitStore                = 0b10010101
+        //      val.bitStore                  = 0b00001100
+        //      this._bitStore & val.bitStore = 0b00000100 (one overlap on the bit position 3)
+        //
+        //      (this._bitStore & val.bitStore) !== 0
+        // ```
+        //
         return (this._bitStore & val.bitStore) === 0;
     }
 
@@ -112,15 +175,15 @@ export class SudokuNumsCheckingSet implements
     get remaining(): SudokuNumsCheckingSet {
         //
         // Applying bitwise XOR on the bit store of this checking set
-        // and the constant bit store with all Sudoku numbers to convert:
-        //  - `1`+`0` bits into `1`s (to include number);
-        //  - `1`+`1` bits into `0`s (to exclude number).
+        // and the constant bit store with all Sudoku numbers so that:
+        //  - `1`+`0` bits are turned into `1`s (to include number);
+        //  - `1`+`1` bits are turned into `0`s (to exclude number).
         //
         // Example:
         // ```
-        //      ALL_SUDOKU_NUMS_BIT_STORE                 = 0b111111111
-        //      this.bitStore                             = 0b011010001
-        //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b100101110 (inversed `this.bitStore`)
+        //      ALL_SUDOKU_NUMS_BIT_STORE                 = 0b0111111111
+        //      this.bitStore                             = 0b0011010001
+        //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
         // ```
         //
         return new SudokuNumsCheckingSet(SudokuNumsCheckingSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
@@ -130,6 +193,17 @@ export class SudokuNumsCheckingSet implements
      * @see {NumsCheckingSet.add}
      */
     add(val: ReadonlySudokuNumsCheckingSet) {
+        //
+        // Applying bitwise OR assignment on the bit store of this checking set
+        // to merge `1`s from the bit store of the `val` checking set.
+        //
+        // Example:
+        // ```
+        //      this._bitStore                 = 0b010010001
+        //      val.bitStore                   = 0b001001000
+        //      this._bitStors |= val.bitStore = 0b011011001
+        // ```
+        //
         this._bitStore |= val.bitStore;
     }
 
@@ -137,6 +211,18 @@ export class SudokuNumsCheckingSet implements
      * @see {NumsCheckingSet.remove}
      */
     remove(val: ReadonlySudokuNumsCheckingSet) {
+        //
+        // Applying bitwise AND assignment on the bit store of this checking set
+        // to merge `1`s from the bit store of the `val` checking set.
+        //
+        // Example:
+        // ```
+        //      this._bitStore                  = 0b10011001
+        //      val.bitStore                    = 0b01001001
+        //      ~val.bitStore                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
+        //      this._bitStore &= ~val.bitStore = 0b10010000
+        // ```
+        //
         this._bitStore &= ~val.bitStore;
     }
 }
