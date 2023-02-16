@@ -21,7 +21,7 @@ export type BitStore32 = number;
  *
  * @public
  */
-export interface ReadonlyCheckingSet<T> {
+export interface ReadonlyCheckingSet<T extends ReadonlyCheckingSet<T>> {
 
     /**
      * Checks if this set has ALL values from another checking set.
