@@ -36,6 +36,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
  * @see {ReadonlySudokuNumsCheckingSet}
+ * @see {NumsCheckingSet}
  *
  * @public
  */
