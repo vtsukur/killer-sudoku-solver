@@ -39,7 +39,9 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
  *
  * @public
  */
-export class SudokuNumsCheckingSet implements ReadonlySudokuNumsCheckingSet, NumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
+export class SudokuNumsCheckingSet implements
+        ReadonlySudokuNumsCheckingSet,
+        NumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
     private _bitStore = 0;
 
     /**

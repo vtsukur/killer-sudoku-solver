@@ -11,7 +11,9 @@ type NumToBitStoreMapEntry = {
     shift: number;
 }
 
-export class CellIndicesCheckingSet implements ReadonlyCellIndicesCheckingSet, NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
+export class CellIndicesCheckingSet implements
+        ReadonlyCellIndicesCheckingSet,
+        NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
     private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
     private static _BIT_STORE_SIZE = 32;
