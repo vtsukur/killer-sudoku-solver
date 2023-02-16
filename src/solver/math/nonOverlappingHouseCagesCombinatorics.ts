@@ -11,7 +11,6 @@ import { NumCheckingSet } from './numCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { BitStore32 } from './readonlyCheckingSet';
-import { SudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s
@@ -254,7 +253,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
 const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
-    const lastCombo = sumAddendsCombinatorics.get(SudokuNumsCheckingSet.remainingOf(ctx.usedNums));
+    const lastCombo = sumAddendsCombinatorics.get(ctx.usedNums.remaining);
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
         enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
