@@ -4,7 +4,7 @@ import { CellIndicesCheckingSet } from '../../../../src/solver/math';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
     test('Construction of `CellIndicesCheckingSet` using `of` static factory method', () => {
-        expectNumsCheckingSetWithValues(CellIndicesCheckingSet.of(1, 30, 75), [ 1, 30, 75 ]);
+        expectSetWithValues(CellIndicesCheckingSet.of(1, 30, 75), [ 1, 30, 75 ]);
     });
 
     test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
@@ -18,7 +18,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(30, 40))).toBeFalsy();
 
         numsCheckingSet.add(CellIndicesCheckingSet.of(0, 1, 7, 28, 80));
-        expectNumsCheckingSetWithValues(numsCheckingSet, [ 0, 1, 7, 28, 30, 75, 80 ]);
+        expectSetWithValues(numsCheckingSet, [ 0, 1, 7, 28, 30, 75, 80 ]);
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 5))).toBeFalsy();
@@ -27,7 +27,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(1, 9))).toBeFalsy();
 
         numsCheckingSet.remove(CellIndicesCheckingSet.of(1, 7, 30, 75));
-        expectNumsCheckingSetWithValues(numsCheckingSet, [ 0, 28, 80 ]);
+        expectSetWithValues(numsCheckingSet, [ 0, 28, 80 ]);
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 28))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 80))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(28, 80))).toBeTruthy();
@@ -37,7 +37,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
     });
 
-    const expectNumsCheckingSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
+    const expectSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
         const set = new Set(values);
         _.range(0, Grid.CELL_COUNT).forEach(num => {
             expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(num))).toBe(set.has(num));
