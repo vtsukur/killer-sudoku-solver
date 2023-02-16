@@ -56,17 +56,11 @@ export class CellIndicesCheckingSet implements
 
     private static readonly _BITS_PER_BIT_STORE = 32;
 
-    private static _CELL_INDEX_TO_BIT_STORE: ReadonlyArray<CellIndexToBitStoreLocator> = (() => {
-        const val = new Array<CellIndexToBitStoreLocator>(Grid.CELL_COUNT);
-        for (const num of CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT]) {
-            const bucketIndex = Math.floor(num / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
-            val[num] = {
-                bitStoreIndex: bucketIndex,
-                bitPosition: num - bucketIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE
-            };
-        }
-        return val;
-    })();
+    private static _CELL_INDEX_TO_BIT_STORE: ReadonlyArray<CellIndexToBitStoreLocator> = CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT].map(cellIndex => {
+        const bitStoreIndex = Math.floor(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
+        const bitPosition = cellIndex - bitStoreIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE;
+        return { bitStoreIndex, bitPosition };
+    });
 
     /**
      * Constructs new checking set from the unique numbers in the given array.
