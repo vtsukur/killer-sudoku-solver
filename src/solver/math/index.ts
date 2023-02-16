@@ -1,6 +1,6 @@
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
 import { combosAndPermsForHouse } from './combosAndPermsForHouse';
-import { GridRangeNumCheckingSet } from './gridRangeNumCheckingSet';
+import { CellIndexNumsCheckingSet } from './cellIndexNumsCheckingSet';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 
-export { Combo, ComboKey, ReadonlyCombos, combosAndPermsForHouse, GridRangeNumCheckingSet, SumAddendsCombinatorics };
+export { Combo, ComboKey, ReadonlyCombos, combosAndPermsForHouse, CellIndexNumsCheckingSet, SumAddendsCombinatorics };

@@ -295,6 +295,25 @@
             }
         },
         {
+            "name": "npm run test [solver/math/cellIndexNumsCheckingSet]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/math/cellIndexNumsCheckingSet.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/math/combo]",
             "request": "launch",
             "runtimeArgs": [
@@ -321,25 +340,6 @@
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/math/combosAndPermsForHouse.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
-            "name": "npm run test [solver/math/gridRangeNumCheckingSet]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/gridRangeNumCheckingSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

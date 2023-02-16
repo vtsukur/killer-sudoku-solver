@@ -3,7 +3,7 @@ import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ReadonlyGridRangeNumCheckingSet extends ReadonlyCheckingSet<ReadonlyGridRangeNumCheckingSet> {
+export interface ReadonlyCellIndexNumsCheckingSet extends ReadonlyCheckingSet<ReadonlyCellIndexNumsCheckingSet> {
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
@@ -12,7 +12,7 @@ type NumToBitStoreMapEntry = {
     shift: number;
 }
 
-export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet {
+export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSet {
     private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
     private static _BIT_STORE_SIZE = 32;
@@ -20,10 +20,10 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
     private static _NUM_TO_BIT_STORE_MAPPING: ReadonlyArray<NumToBitStoreMapEntry> = (() => {
         const val = new Array<NumToBitStoreMapEntry>(Grid.CELL_COUNT);
         for (const num of CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT]) {
-            const bucketIndex = Math.floor(num / GridRangeNumCheckingSet._BIT_STORE_SIZE);
+            const bucketIndex = Math.floor(num / CellIndexNumsCheckingSet._BIT_STORE_SIZE);
             val[num] = {
                 index: bucketIndex,
-                shift: num - bucketIndex * GridRangeNumCheckingSet._BIT_STORE_SIZE
+                shift: num - bucketIndex * CellIndexNumsCheckingSet._BIT_STORE_SIZE
             };
         }
         return val;
@@ -41,7 +41,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
      */
     private constructor(val: ReadonlyArray<number>) {
         for (const num of val) {
-            const entry = GridRangeNumCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
+            const entry = CellIndexNumsCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
 
             //
             // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
@@ -72,11 +72,11 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
      * @returns new checking set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
-        return new GridRangeNumCheckingSet(val);
+        return new CellIndexNumsCheckingSet(val);
     }
 
     /**
-     * @see {ReadonlyGridRangeNumCheckingSet.bitStores}
+     * @see {ReadonlyCellIndexNumsCheckingSet.bitStores}
      */
     get bitStores() {
         return this._bitStores;
@@ -85,7 +85,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
     /**
      * @see {ReadonlyCheckingSet.hasAll}
      */
-    hasAll(val: ReadonlyGridRangeNumCheckingSet) {
+    hasAll(val: ReadonlyCellIndexNumsCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // has `1`s at the same positions as each bit store of the `val` checking set.
@@ -125,7 +125,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
     /**
      * @see {ReadonlyheckingSet.doesNotHaveAny}
      */
-    doesNotHaveAny(val: ReadonlyGridRangeNumCheckingSet) {
+    doesNotHaveAny(val: ReadonlyCellIndexNumsCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
@@ -169,7 +169,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
      *
      * @param val - Another checking set containing numbers to add to this set.
      */
-    add(val: ReadonlyGridRangeNumCheckingSet) {
+    add(val: ReadonlyCellIndexNumsCheckingSet) {
         //
         // Applying bitwise OR assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of `val` checking set.
@@ -196,7 +196,7 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
      *
      * @param val - Another checking set containing numbers to remove from this checking set.
      */
-    remove(val: ReadonlyGridRangeNumCheckingSet) {
+    remove(val: ReadonlyCellIndexNumsCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of `val` checking set.
