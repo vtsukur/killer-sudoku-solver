@@ -1,9 +1,9 @@
 import { Numbers } from '../../puzzle/numbers';
 import { CachedNumRanges } from './cachedNumRanges';
-import { BitStore32, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
- * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking/manipulation operations.
+ * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
@@ -15,7 +15,7 @@ import { BitStore32, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
 
     /**
-     * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.
+     * Returns copy of the bit storage used for efficient checking of the checking numbers set.
      */
     get bitStore(): BitStore32;
 
@@ -31,7 +31,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
 }
 
 /**
- * Extends {@link ReadonlySudokuNumsCheckingSet} with efficient storage & fast checking/manipulation operations.
+ * Extends {@link ReadonlySudokuNumsCheckingSet} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
@@ -39,7 +39,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
  *
  * @public
  */
-export class SudokuNumsCheckingSet implements ReadonlySudokuNumsCheckingSet {
+export class SudokuNumsCheckingSet implements ReadonlySudokuNumsCheckingSet, NumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
     private _bitStore = 0;
 
     /**
@@ -124,28 +124,14 @@ export class SudokuNumsCheckingSet implements ReadonlySudokuNumsCheckingSet {
     }
 
     /**
-     * Adds all numbers from another checking set to this checking set.
-     *
-     * This method changes this checking set and does NOT modify `val` checking set.
-     *
-     * Only the numbers which are NOT yet present in this checking set are added.
-     * Duplicate numbers are ignored.
-     *
-     * @param val - Another checking set containing numbers to add to this set.
+     * @see {NumsCheckingSet.add}
      */
     add(val: ReadonlySudokuNumsCheckingSet) {
         this._bitStore |= val.bitStore;
     }
 
     /**
-     * Removes all numbers present in another checking set from this checking set.
-     *
-     * This method changes this checking set and does NOT modify `val` checking set.
-     *
-     * Only the numbers which are present in this checking set are removed.
-     * Missing numbers are ignored.
-     *
-     * @param val - Another checking set containing numbers to remove from this checking set.
+     * @see {NumsCheckingSet.remove}
      */
     remove(val: ReadonlySudokuNumsCheckingSet) {
         this._bitStore &= ~val.bitStore;
