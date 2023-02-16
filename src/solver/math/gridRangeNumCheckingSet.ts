@@ -138,7 +138,6 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         //      this._bitStores[x] & val.bitStores[x] = 0b00000000 (no overlaps on the same bit positions)
         //
         //      (this._bitStores[x] & val.bitStores[x]) === 0
-        //
         // ```
         //
         // Example for `doesNotHaveAny` returning `false`
