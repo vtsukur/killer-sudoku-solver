@@ -12,7 +12,7 @@ import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
  *
  * @public
  */
-export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumCheckingSet> {
+export interface ReadonlySudokuNumsCheckingSet extends ReadonlyCheckingSet<ReadonlySudokuNumsCheckingSet> {
 
     /**
      * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.
@@ -27,19 +27,19 @@ export interface ReadonlyNumCheckingSet extends ReadonlyCheckingSet<ReadonlyNumC
      *
      * @returns new checking set with Sudoku numbers which are NOT present in the current checking set.
      */
-    get remaining(): NumCheckingSet;
+    get remaining(): SudokuNumsCheckingSet;
 }
 
 /**
- * Extends {@link ReadonlyNumCheckingSet} with efficient storage & fast checking/manipulation operations.
+ * Extends {@link ReadonlySudokuNumsCheckingSet} with efficient storage & fast checking/manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see {ReadonlyNumCheckingSet}
+ * @see {ReadonlySudokuNumsCheckingSet}
  *
  * @public
  */
-export class NumCheckingSet implements ReadonlyNumCheckingSet {
+export class SudokuNumsCheckingSet implements ReadonlySudokuNumsCheckingSet {
     private _bitStore = 0;
 
     /**
@@ -74,27 +74,27 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      * @returns new checking set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
-        return new NumCheckingSet(val);
+        return new SudokuNumsCheckingSet(val);
     }
 
     /**
-     * @see {ReadonlyNumCheckingSet.bitStore}
+     * @see {ReadonlySudokuNumsCheckingSet.bitStore}
      */
     get bitStore() {
         return this._bitStore;
     }
 
     /**
-     * @see {ReadonlyNumCheckingSet.hasAll}
+     * @see {ReadonlySudokuNumsCheckingSet.hasAll}
      */
-    hasAll(val: ReadonlyNumCheckingSet) {
+    hasAll(val: ReadonlySudokuNumsCheckingSet) {
         return (this._bitStore & val.bitStore) === val.bitStore;
     }
 
     /**
-     * @see {ReadonlyNumCheckingSet.doesNotHaveAny}
+     * @see {ReadonlySudokuNumsCheckingSet.doesNotHaveAny}
      */
-    doesNotHaveAny(val: ReadonlyNumCheckingSet) {
+    doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
         return (this._bitStore & val.bitStore) === 0;
     }
 
@@ -104,12 +104,14 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
     );
 
     /**
-     * @see {ReadonlyNumCheckingSet.remaining}
+     * @see {ReadonlySudokuNumsCheckingSet.remaining}
      */
-    get remaining(): NumCheckingSet {
+    get remaining(): SudokuNumsCheckingSet {
         //
-        // Applying bitwise XOR on the bit store of `checkingSet` and the constant bit store with all Sudoku numbers
-        // to convert `1`+`0` bits into `1`s (to include number) and `1`+`1` bits into `0`s (to exclude number).
+        // Applying bitwise XOR on the bit store of this checking set
+        // and the constant bit store with all Sudoku numbers to convert:
+        //  - `1`+`0` bits into `1`s (to include number);
+        //  - `1`+`1` bits into `0`s (to exclude number).
         //
         // Example:
         // ```
@@ -118,7 +120,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
         //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b100101110 (inversed `this.bitStore`)
         // ```
         //
-        return new NumCheckingSet(NumCheckingSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+        return new SudokuNumsCheckingSet(SudokuNumsCheckingSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
     /**
@@ -131,7 +133,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      *
      * @param val - Another checking set containing numbers to add to this set.
      */
-    add(val: ReadonlyNumCheckingSet) {
+    add(val: ReadonlySudokuNumsCheckingSet) {
         this._bitStore |= val.bitStore;
     }
 
@@ -145,7 +147,7 @@ export class NumCheckingSet implements ReadonlyNumCheckingSet {
      *
      * @param val - Another checking set containing numbers to remove from this checking set.
      */
-    remove(val: ReadonlyNumCheckingSet) {
+    remove(val: ReadonlySudokuNumsCheckingSet) {
         this._bitStore &= ~val.bitStore;
     }
 }

@@ -371,13 +371,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/numCheckingSet]",
+            "name": "npm run test [solver/math/overlappingHouseCagesCombinatorics]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/numCheckingSet.test.ts"
+                "tests/unit/solver/math/overlappingHouseCagesCombinatorics.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -390,13 +390,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/overlappingHouseCagesCombinatorics]",
+            "name": "npm run test [solver/math/sudokuNumsCheckingSet]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/overlappingHouseCagesCombinatorics.test.ts"
+                "tests/unit/solver/math/sudokuNumsCheckingSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

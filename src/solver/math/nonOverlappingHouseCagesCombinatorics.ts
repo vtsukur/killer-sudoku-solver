@@ -7,7 +7,7 @@ import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
-import { NumCheckingSet } from './numCheckingSet';
+import { SudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { BitStore32 } from './readonlyCheckingSet';
@@ -200,9 +200,9 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.usedCombos[step] = combo;
 
-    ctx.usedNums.add(combo.numCheckingSet);
+    ctx.usedNums.add(combo.numsCheckingSet);
     enumerateRecursively_next(ctx, step + 1);
-    ctx.usedNums.remove(combo.numCheckingSet);
+    ctx.usedNums.remove(combo.numsCheckingSet);
 };
 
 /**
@@ -226,7 +226,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAd
  */
 const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
-        if (ctx.usedNums.doesNotHaveAny(combo.numCheckingSet)) {
+        if (ctx.usedNums.doesNotHaveAny(combo.numsCheckingSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
     }
@@ -241,7 +241,7 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombin
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.houseCagesPerms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numCheckingSet.bitStore);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numsCheckingSet.bitStore);
     };
 };
 
@@ -282,7 +282,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
-    readonly usedNums = new NumCheckingSet();
+    readonly usedNums = new SudokuNumsCheckingSet();
 
     // caching enumeration pipelines improves performance by around 5-10%
     private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
@@ -356,7 +356,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             this.houseCagesCombos[cageIndex] = new Array(actualSumCombosSet.size);
             let comboIndex = 0;
             for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.numCheckingSet.bitStore)) {
+                if (actualSumCombosSet.has(combo.numsCheckingSet.bitStore)) {
                     this.houseCagesCombos[cageIndex][comboIndex++] = combo;
                 }
             }
