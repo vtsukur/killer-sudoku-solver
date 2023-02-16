@@ -1,6 +1,6 @@
 import { Numbers } from '../../puzzle/numbers';
 import { CachedNumRanges } from './cachedNumRanges';
-import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
+import { BitStore32, ReadonlyNumsCheckingSet } from './readonlyCheckingSet';
 
 /**
  * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking/manipulation operations.
@@ -12,7 +12,7 @@ import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
  *
  * @public
  */
-export interface ReadonlySudokuNumsCheckingSet extends ReadonlyCheckingSet<ReadonlySudokuNumsCheckingSet> {
+export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
 
     /**
      * Returns copy of the bit storage used for efficient checking/manipulation of the checking numbers set.

@@ -17,11 +17,12 @@ export type BitStore32 = number;
  * For performance reasons, implementations of this interface are NEITHER required to do range checks,
  * NOR to guarantee correct work for the values outside of the range.
  *
- * @typeParam T - Specific subtype of {@link ReadonlyCheckingSet} to be used as an argument for checking operations.
+ * @typeParam T - Specific subtype of {@link ReadonlyNumsCheckingSet}
+ * to be used as an argument for checking operations.
  *
  * @public
  */
-export interface ReadonlyCheckingSet<T extends ReadonlyCheckingSet<T>> {
+export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
 
     /**
      * Checks if this set has ALL values from another checking set.

@@ -1,9 +1,9 @@
 import { Grid } from '../../puzzle/grid';
 import { CachedNumRanges } from './cachedNumRanges';
-import { BitStore32, ReadonlyCheckingSet } from './readonlyCheckingSet';
+import { BitStore32, ReadonlyNumsCheckingSet } from './readonlyCheckingSet';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ReadonlyCellIndexNumsCheckingSet extends ReadonlyCheckingSet<ReadonlyCellIndexNumsCheckingSet> {
+export interface ReadonlyCellIndexNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndexNumsCheckingSet> {
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
@@ -83,7 +83,7 @@ export class CellIndexNumsCheckingSet implements ReadonlyCellIndexNumsCheckingSe
     }
 
     /**
-     * @see {ReadonlyCheckingSet.hasAll}
+     * @see {ReadonlyNumsCheckingSet.hasAll}
      */
     hasAll(val: ReadonlyCellIndexNumsCheckingSet) {
         //
