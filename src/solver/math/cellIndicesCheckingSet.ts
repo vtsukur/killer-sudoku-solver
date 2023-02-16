@@ -30,6 +30,16 @@ type NumToBitStoreMapEntry = {
     shift: number;
 }
 
+/**
+ * Extends {@link ReadonlyCellIndicesCheckingSet} with fast manipulation operations.
+ *
+ * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
+ *
+ * @see {ReadonlyCellIndicesCheckingSet}
+ * @see {NumsCheckingSet}
+ *
+ * @public
+ */
 export class CellIndicesCheckingSet implements
         ReadonlyCellIndicesCheckingSet,
         NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
