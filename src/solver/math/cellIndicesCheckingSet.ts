@@ -25,9 +25,9 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
-type NumToBitStoreMapEntry = {
-    index: number;
-    shift: number;
+type CellIndexToBitStore = {
+    bitStoreIndex: number;
+    bitPosition: number;
 }
 
 /**
@@ -47,13 +47,13 @@ export class CellIndicesCheckingSet implements
 
     private static _BIT_STORE_SIZE = 32;
 
-    private static _NUM_TO_BIT_STORE_MAPPING: ReadonlyArray<NumToBitStoreMapEntry> = (() => {
-        const val = new Array<NumToBitStoreMapEntry>(Grid.CELL_COUNT);
+    private static _CELL_INDEX_TO_BIT_STORE: ReadonlyArray<CellIndexToBitStore> = (() => {
+        const val = new Array<CellIndexToBitStore>(Grid.CELL_COUNT);
         for (const num of CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT]) {
             const bucketIndex = Math.floor(num / CellIndicesCheckingSet._BIT_STORE_SIZE);
             val[num] = {
-                index: bucketIndex,
-                shift: num - bucketIndex * CellIndicesCheckingSet._BIT_STORE_SIZE
+                bitStoreIndex: bucketIndex,
+                bitPosition: num - bucketIndex * CellIndicesCheckingSet._BIT_STORE_SIZE
             };
         }
         return val;
@@ -71,7 +71,7 @@ export class CellIndicesCheckingSet implements
      */
     private constructor(val: ReadonlyArray<number>) {
         for (const num of val) {
-            const entry = CellIndicesCheckingSet._NUM_TO_BIT_STORE_MAPPING[num];
+            const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE[num];
 
             //
             // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
@@ -86,7 +86,7 @@ export class CellIndicesCheckingSet implements
             //
             // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
             //
-            this._bitStores[entry.index] |= 1 << entry.shift;
+            this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
         }
     }
 
