@@ -15,7 +15,7 @@ import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsChec
 export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
 
     /**
-     * Returns copy of the bit storage used for efficient checking of the checking numbers set.
+     * Returns copy of the bit storage used for efficient checking for this numbers set.
      */
     get bitStore(): BitStore32;
 

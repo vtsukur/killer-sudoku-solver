@@ -18,6 +18,10 @@ import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsChec
  * @public
  */
 export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
+
+    /**
+     * Returns readonly array of the bit storages used for efficient checking for this numbers set.
+     */
     get bitStores(): ReadonlyArray<BitStore32>;
 }
 
