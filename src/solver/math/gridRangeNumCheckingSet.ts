@@ -15,7 +15,7 @@ type NumToBitStoreMapEntry = {
 export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet {
     private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
-    private static _BIT_STORE_SIZE = Grid.CELL_COUNT / 3;
+    private static _BIT_STORE_SIZE = 32;
 
     private static _NUM_TO_BIT_STORE_MAPPING: ReadonlyArray<NumToBitStoreMapEntry> = (() => {
         const val = new Array<NumToBitStoreMapEntry>(Grid.CELL_COUNT);
@@ -114,11 +114,11 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         // ```
         //
         return (
-            (this._bitStores[0] & val.bitStores[0]) === val.bitStores[0] // numbers in range [0, 26]
+            (this._bitStores[0] & val.bitStores[0]) === val.bitStores[0] // numbers in range [0, 31]
             &&
-            (this._bitStores[1] & val.bitStores[1]) === val.bitStores[1] // numbers in range [27, 53]
+            (this._bitStores[1] & val.bitStores[1]) === val.bitStores[1] // numbers in range [32, 63]
             &&
-            (this._bitStores[2] & val.bitStores[2]) === val.bitStores[2] // numbers in range [54, 80]
+            (this._bitStores[2] & val.bitStores[2]) === val.bitStores[2] // numbers in range [64, 80]
         );
     }
 
@@ -152,11 +152,11 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         // ```
         //
         return (
-            (this._bitStores[0] & val.bitStores[0]) === 0 // numbers in range [0, 26]
+            (this._bitStores[0] & val.bitStores[0]) === 0 // numbers in range [0, 31]
             &&
-            (this._bitStores[1] & val.bitStores[1]) === 0 // numbers in range [27, 53]
+            (this._bitStores[1] & val.bitStores[1]) === 0 // numbers in range [32, 63]
             &&
-            (this._bitStores[2] & val.bitStores[2]) === 0 // numbers in range [54, 80]
+            (this._bitStores[2] & val.bitStores[2]) === 0 // numbers in range [64, 80]
         );
     }
 
@@ -182,9 +182,9 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         //      this._bitStorse[x] |= val.bitStores[x] = 0b11011001
         // ```
         //
-        this._bitStores[0] |= val.bitStores[0]; // for numbers in range [0, 26]
-        this._bitStores[1] |= val.bitStores[1]; // for numbers in range [27, 53]
-        this._bitStores[2] |= val.bitStores[2]; // for numbers in range [54, 80]
+        this._bitStores[0] |= val.bitStores[0]; // for numbers in range [0, 31]
+        this._bitStores[1] |= val.bitStores[1]; // for numbers in range [32, 63]
+        this._bitStores[2] |= val.bitStores[2]; // for numbers in range [64, 80]
     }
 
     /**
@@ -210,8 +210,8 @@ export class GridRangeNumCheckingSet implements ReadonlyGridRangeNumCheckingSet 
         //      this._bitStores[x] &= ~val.bitStores[x] = 0b10010000
         // ```
         //
-        this._bitStores[0] &= ~val.bitStores[0]; // for numbers in range [0, 26]
-        this._bitStores[1] &= ~val.bitStores[1]; // for numbers in range [27, 53]
-        this._bitStores[2] &= ~val.bitStores[2]; // for numbers in range [54, 80]
+        this._bitStores[0] &= ~val.bitStores[0]; // for numbers in range [0, 31]
+        this._bitStores[1] &= ~val.bitStores[1]; // for numbers in range [32, 63]
+        this._bitStores[2] &= ~val.bitStores[2]; // for numbers in range [64, 80]
     }
 }
