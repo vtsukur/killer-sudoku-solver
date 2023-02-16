@@ -295,13 +295,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/cellIndexNumsCheckingSet]",
+            "name": "npm run test [solver/math/cellIndicesCheckingSet]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/cellIndexNumsCheckingSet.test.ts"
+                "tests/unit/solver/math/cellIndicesCheckingSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
