@@ -1,10 +1,14 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
 import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
- * Checking set of {@link Cell} indices between 0 and 80 (see {@link Grid.CELL_COUNT})
- * with efficient storage & fast checking operations.
+ * Checking set of {@link Cell} indices in the range of [0, 80] with efficient storage & fast checking operations.
+ *
+ * Range of [0, 80] is directly derived from the amount of {@link Cell}s on the {@link Grid},
+ * which is equal to 81 (see {@link Grid.CELL_COUNT}).
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
