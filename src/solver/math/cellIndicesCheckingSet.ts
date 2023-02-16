@@ -43,7 +43,16 @@ type CellIndexToBitStore = {
 export class CellIndicesCheckingSet implements
         ReadonlyCellIndicesCheckingSet,
         NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
-    private _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
+
+    //
+    // It is enough to have 3 bit stores of size 32 bits each
+    // as the amount of required values is 81:
+    //
+    //  - `this._bitStores[0]` represents numbers in the range of [0, 31]
+    //  - `this._bitStores[1]` represents numbers in the range of [32, 63]
+    //  - `this._bitStores[2]` represents numbers in the range of [64, 80] (not all bits are utilized in the last bit store)
+    //
+    private readonly _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
 
     private static _BIT_STORE_SIZE = 32;
 
