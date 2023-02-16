@@ -8,7 +8,7 @@ import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsChec
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
  * For performance reasons, implementations of this interface are NEITHER required to do range checks,
- * NOR to guarantee correct work for the numbers outside of the Sudoku range (>9).
+ * NOR to guarantee correct work for the numbers outside of the Sudoku range (<1, >9).
  *
  * @public
  */

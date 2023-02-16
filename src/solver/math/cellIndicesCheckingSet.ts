@@ -2,6 +2,17 @@ import { Grid } from '../../puzzle/grid';
 import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
+/**
+ * Checking set of {@link Cell} indices between 0 and 80 (see {@link Grid.CELL_COUNT})
+ * with efficient storage & fast checking operations.
+ *
+ * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
+ *
+ * For performance reasons, implementations of this interface are NEITHER required to do range checks,
+ * NOR to guarantee correct work for the numbers outside of the range (<0, >80).
+ *
+ * @public
+ */
 export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
     get bitStores(): ReadonlyArray<BitStore32>;
 }
