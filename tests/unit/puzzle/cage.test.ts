@@ -1,6 +1,7 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
 import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
+import { CellIndicesCheckingSet } from '../../../src/solver/math';
 
 describe('Cage tests', () => {
     test('Construction of Cage using `Cage.Builder.at` method', () => {
@@ -9,6 +10,7 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.cellCount).toBe(2);
         expect(cage.isInput).toBeTruthy();
+        expect(cage.cellIndicesCheckingSet.equals(CellIndicesCheckingSet.of(40, 41))).toBeTruthy();
         expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.tsConstructionCodeString).toBe('Cage.ofSum(10).at(4, 4).at(4, 5).new()');
