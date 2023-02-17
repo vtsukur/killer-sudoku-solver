@@ -23,7 +23,7 @@ export class Column {
      * Sample iteration for `Column` with index 3 looks as follows:
      * ```
      * // (row, column)
-     * (0, 3) -> (1, 3) -> (2, 3) -> ...  -> (7, 3) -> (8, 3) -> done
+     * (0, 3) -> (1, 3) -> (2, 3) -> ... -> (7, 3) -> (8, 3) -> done
      * ```
      *
      * @param col - Index of the `Column` to iterate `Cell`s for.

@@ -44,7 +44,7 @@ export class GridSizeAndCellPositionsIteration {
      * Iteration looks as follows:
      * ```
      * // (row, column)
-     * (0, 0) -> (0, 1) -> (0, 2) -> ...  -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
+     * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
      * ```
      *
      * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.

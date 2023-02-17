@@ -54,7 +54,7 @@ export class Grid {
      * Iteration looks as follows:
      * ```
      * // (row, column)
-     * (0, 0) -> (0, 1) -> (0, 2) -> ...  -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
+     * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
      * ```
      *
      * @returns new iterator over `Grid`'s {@link Cell}s.
