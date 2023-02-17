@@ -1,5 +1,6 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
+import { CellIndicesCheckingSet } from '../math';
 
 export class NHouseCagesSegmentor {
     static segmentByCellsOverlap(cages: ReadonlyCages, n = 1) {
@@ -16,7 +17,7 @@ type Context = {
     absMaxAreaCellCount: number,
     cageCount: number,
     usedCages: Set<Cage>,
-    usedCellsKeys: Set<string>,
+    usedCellIndices: CellIndicesCheckingSet,
     usedCellCount: number,
     maxAreaCages: Set<Cage>,
     maxAreaCellCount: number,
@@ -27,15 +28,11 @@ const work = (cages: ReadonlyCages, n: number) => {
     const absMaxAreaCellCount = n * House.CELL_COUNT;
     const inputCages = new Array<Cage>(cages.length);
     const derivedCages = new Array<Cage>(cages.length);
-    const usedCellsKeys = new Set<string>();
     let usedCellCount = 0;
     let i = 0, j = 0;
     for (const cage of cages) {
         if (cage.isInput) {
             inputCages[i++] = cage;
-            for (const cell of cage.cells) {
-                usedCellsKeys.add(cell.key);
-            }
             usedCellCount += cage.cells.length;
         } else {
             derivedCages[j++] = cage;
@@ -47,12 +44,16 @@ const work = (cages: ReadonlyCages, n: number) => {
     if (usedCellCount === absMaxAreaCellCount) {
         return { nonOverlappingCages: inputCages, overlappingCages: derivedCages };
     } else {
+        const usedCellIndices = new CellIndicesCheckingSet();
+        for (const inputCage of inputCages) {
+            usedCellIndices.add(inputCage.cellIndicesCheckingSet);
+        }
         const ctx: Context = {
             allCages: derivedCages,
             absMaxAreaCellCount: absMaxAreaCellCount,
             cageCount: derivedCages.length,
             usedCages: new Set(inputCages),
-            usedCellsKeys: usedCellsKeys,
+            usedCellIndices,
             usedCellCount: usedCellCount,
             maxAreaCages: new Set(inputCages),
             maxAreaCellCount: usedCellCount,
@@ -71,17 +72,6 @@ const recursiveWork = (step: number, ctx: Context) => {
     if (ctx.usedCellCount > ctx.absMaxAreaCellCount) {
         return;
     } else if (ctx.usedCellCount > ctx.maxAreaCellCount) {
-        // check overlaps
-        const usedCellsKeys = new Set<string>();
-        for (const usedCage of ctx.usedCages) {
-            for (const usedCell of usedCage.cells) {
-                if (usedCellsKeys.has(usedCell.key)) {
-                    return;
-                } else {
-                    usedCellsKeys.add(usedCell.key);
-                }
-            }
-        }
         ctx.maxAreaCellCount = ctx.usedCellCount;
         ctx.maxAreaCages = new Set(Array.from(ctx.usedCages));
 
@@ -96,6 +86,8 @@ const recursiveWork = (step: number, ctx: Context) => {
     }
 
     const cage = ctx.allCages[step];
+
+    if (!ctx.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet)) return;
 
     // with cage / recursively
     ctx.usedCages.add(cage);
