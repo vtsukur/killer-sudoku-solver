@@ -16,7 +16,6 @@ type GridAreaCagesRegions = {
 
 export class GridAreaModel {
     readonly cages;
-    readonly cellsSet = new Set<Cell>();
     readonly nonOverlappingCellsSet = new Set<Cell>();
     readonly nonOverlappingCages: Cages;
     readonly overlappingCages: Cages;
@@ -24,12 +23,6 @@ export class GridAreaModel {
 
     constructor(cages: ReadonlyCages, n = 1) {
         this.cages = cages;
-
-        cages.forEach(cage => {
-            cage.cells.forEach(cell => {
-                this.cellsSet.add(cell);
-            });
-        });
 
         const gridAreaCagesSegmentation = GridAreaModel.findMaxNonOverlappingCagesArea(cages, n);
         this.nonOverlappingCages = gridAreaCagesSegmentation.cagesOfMaxNonOverlappingRegion;
