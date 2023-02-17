@@ -122,17 +122,20 @@ const recursiveWork = (step: number, ctx: Context) => {
 
     const cage = ctx.allCages[step];
 
-    if (!ctx.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet)) return;
+    if (ctx.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet)) {
+        // with cage / recursively
+        ctx.usedCellIndices.add(cage.cellIndicesCheckingSet);
+        ctx.usedCages.add(cage);
+        ctx.usedCellCount += cage.cellCount;
+        recursiveWork(step + 1, ctx);
+        if (ctx.found) return;
 
-    // with cage / recursively
-    ctx.usedCages.add(cage);
-    ctx.usedCellCount += cage.cellCount;
-    recursiveWork(step + 1, ctx);
-    if (ctx.found) return;
+        // without cage / recursively
+        ctx.usedCellIndices.remove(cage.cellIndicesCheckingSet);
+        ctx.usedCages.delete(cage);
+        ctx.usedCellCount -= cage.cellCount;
+    }
 
-    // without cage / recursively
-    ctx.usedCages.delete(cage);
-    ctx.usedCellCount -= cage.cellCount;
     recursiveWork(step + 1, ctx);
     if (ctx.found) return;
 };
