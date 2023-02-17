@@ -24,7 +24,7 @@ export class HouseSumCombosAndPerms {
 export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPerms {
     const cages = houseM.cageModels.map(cageM => cageM.cage);
 
-    const { nonOverlappingCages, overlappingCages } = GridAreaModel.segmentByCellsOverlap(cages);
+    const { nonOverlappingCages, overlappingCages } = new GridAreaModel(cages);
 
     const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
     const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;

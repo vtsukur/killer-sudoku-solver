@@ -8,10 +8,8 @@ import { CellIndicesCheckingSet } from '../../math';
  *
  *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
  *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
- *
- * @public
  */
-export type GridAreaCagesSegmentation = {
+type GridAreaCagesSegmentation = {
     nonOverlappingCages: Cages;
     overlappingCages: Cages;
 }
@@ -20,6 +18,8 @@ export class GridAreaModel {
     readonly cages;
     readonly cellsSet = new Set<Cell>();
     readonly nonOverlappingCellsSet = new Set<Cell>();
+    readonly nonOverlappingCages: Cages;
+    readonly overlappingCages: Cages;
     sum = 0;
 
     constructor(cages: ReadonlyCages, n = 1) {
@@ -31,8 +31,11 @@ export class GridAreaModel {
             });
         });
 
-        const { nonOverlappingCages } = GridAreaModel.segmentByCellsOverlap(cages, n);
-        nonOverlappingCages.forEach(cage => {
+        const gridAreaCagesSegmentation = GridAreaModel.segmentByCellsOverlap(cages, n);
+        this.nonOverlappingCages = gridAreaCagesSegmentation.nonOverlappingCages;
+        this.overlappingCages = gridAreaCagesSegmentation.overlappingCages;
+
+        this.nonOverlappingCages.forEach(cage => {
             this.sum += cage.sum;
             cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
         });
@@ -63,7 +66,7 @@ export class GridAreaModel {
      *
      * @returns Segmentation of {@link Cage}s within the {@link Grid} area.
      */
-    static segmentByCellsOverlap(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
+    private static segmentByCellsOverlap(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
