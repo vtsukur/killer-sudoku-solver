@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
-import { NHouseCagesSegmentor } from '../../../../src/solver/transform/nHouseCagesSegmentor';
+import { GridAreaCagesSegmentor } from '../../../../src/solver/transform/gridAreaCagesSegmentor';
 import { newHouseModel } from '../../../unit/solver/math/houseModelBuilder';
 
-describe('Performance tests for `NHouseCagesSegmentor`', () => {
-    const segment = NHouseCagesSegmentor.segmentByCellsOverlap;
+describe('Performance tests for `GridAreaCagesSegmentor`', () => {
+    const segment = GridAreaCagesSegmentor.segmentByCellsOverlap;
 
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;

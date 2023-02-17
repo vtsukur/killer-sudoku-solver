@@ -5,20 +5,20 @@ import { Puzzle } from '../../puzzle/puzzle';
 import { CellIndicesCheckingSet } from '../math';
 
 /**
- * Container for the segmentation of {@link Cage}s holding two collections:
+ * Container for the segmentation of {@link Cage}s within the {@link Grid} area holding two collections:
  *
  *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
  *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
  *
  * @public
  */
-export type CagesSegmentation = {
+export type GridAreaCagesSegmentation = {
     nonOverlappingCages: Cages;
     overlappingCages: Cages;
 }
 
 /**
- * Segments given {@link Cage}s into two collections:
+ * Segments given {@link Cage}s within the {@link Grid} area into two collections:
  *
  *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
  *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
@@ -26,19 +26,19 @@ export type CagesSegmentation = {
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
  * which are also present in other {@link Cage}s of the same N-{@link House} area.
  *
- * This is used to determine complementary {@link Cage}s within the N-{@link House} area
- * as one of the strategies to solve Killer Sudoku {@link Puzzle}s.
+ * This is used to determine complementary {@link Cage}s within the {@link Grid} area
+ * as one of the strategies to advance in solving Killer Sudoku {@link Puzzle}s.
  *
  * @public
  */
-export class NHouseCagesSegmentor {
+export class GridAreaCagesSegmentor {
 
     // istanbul ignore next
     private constructor() {
         throw new Error('Non-contructible');
     }
 
-    static segmentByCellsOverlap(cages: ReadonlyCages, n = 1): CagesSegmentation {
+    static segmentByCellsOverlap(cages: ReadonlyCages, n = 1): GridAreaCagesSegmentation {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
