@@ -1,8 +1,21 @@
-import { Cage, ReadonlyCages } from '../../puzzle/cage';
+import { Cage, Cages, ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Puzzle } from '../../puzzle/puzzle';
 import { CellIndicesCheckingSet } from '../math';
+
+/**
+ * Container for the segmentation of {@link Cage}s holding two collections:
+ *
+ *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
+ *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+ *
+ * @public
+ */
+export type CagesSegmentation = {
+    nonOverlappingCages: Cages;
+    overlappingCages: Cages;
+}
 
 /**
  * Segments given {@link Cage}s into two collections:
@@ -25,7 +38,7 @@ export class NHouseCagesSegmentor {
         throw new Error('Non-contructible');
     }
 
-    static segmentByCellsOverlap(cages: ReadonlyCages, n = 1) {
+    static segmentByCellsOverlap(cages: ReadonlyCages, n = 1): CagesSegmentation {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
