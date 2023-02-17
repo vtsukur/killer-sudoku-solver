@@ -38,12 +38,12 @@ export class GridAreaCagesSegmentor {
         throw new Error('Non-contructible');
     }
 
-    static segmentByCellsOverlap(cages: ReadonlyCages, n = 1): GridAreaCagesSegmentation {
+    static segmentByCellsOverlap(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
 
-        return work(cages, n);
+        return work(cages, houseCount);
     }
 }
 
