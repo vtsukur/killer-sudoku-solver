@@ -68,7 +68,7 @@ export class Cage {
         return new this.Builder(sum);
     }
 
-    private static _MAX_SUM_RANGE_EXCLUSIVE = Grid.SUM + 1;
+    private static readonly _MAX_SUM_RANGE_EXCLUSIVE = Grid.SUM + 1;
 
     private static validateSum(val: number) {
         if (!_.inRange(val, 1, Cage._MAX_SUM_RANGE_EXCLUSIVE)) {
