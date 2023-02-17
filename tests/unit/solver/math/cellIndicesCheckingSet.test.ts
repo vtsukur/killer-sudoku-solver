@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-import { Grid } from '../../../../src/puzzle/grid';
 import { CellIndicesCheckingSet } from '../../../../src/solver/math';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
@@ -50,9 +48,6 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
     });
 
     const expectSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
-        const set = new Set(values);
-        _.range(0, Grid.CELL_COUNT).forEach(num => {
-            expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(num))).toBe(set.has(num));
-        });
+        expect(numsCheckingSet.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
     };
 });

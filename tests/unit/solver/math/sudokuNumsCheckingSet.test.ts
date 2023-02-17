@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-import { Numbers } from '../../../../src/puzzle/numbers';
 import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../../../../src/solver/math/sudokuNumsCheckingSet';
 
 describe('Unit tests for `SudokuNumsCheckingSet`', () => {
@@ -59,9 +57,6 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     });
 
     const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
-        const set = new Set(values);
-        _.range(Numbers.MIN, Numbers.MAX + 1).forEach(num => {
-            expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(num))).toBe(set.has(num));
-        });
+        expect(numsCheckingSet.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
     };
 });
