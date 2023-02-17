@@ -44,12 +44,13 @@ export class GridAreaCagesSegmentor {
      * Segments given {@link Cage}s within the {@link Grid} area into two collections:
      *
      *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
-     *  ({@link Cage}s which have `{@link Cage.input} === true` are always added to this collection
-     * even it will result in finding smaller area)
      *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
      * which are also present in other {@link Cage}s of the same {@link Grid} area.
+     *
+     * For performance reasons {@link Cage}s which have `{@link Cage.input} === true`
+     * are always added to non-overlapping collection even it will result in finding smaller area)
      *
      * This is used to determine complementary {@link Cage}s within the {@link Grid} area
      * as one of the strategies to advance in solving Killer Sudoku {@link Puzzle}s.
