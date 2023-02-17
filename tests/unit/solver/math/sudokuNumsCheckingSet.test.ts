@@ -56,6 +56,11 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         );
     });
 
+    test('Checking equality', () => {
+        expect(SudokuNumsCheckingSet.of(1, 9).equals(SudokuNumsCheckingSet.of(1, 9))).toBeTruthy();
+        expect(SudokuNumsCheckingSet.of(1, 9).equals(SudokuNumsCheckingSet.of(1, 4))).toBeFalsy();
+    });
+
     const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
     };
