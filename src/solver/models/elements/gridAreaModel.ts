@@ -31,7 +31,7 @@ export class GridAreaModel {
             });
         });
 
-        const gridAreaCagesSegmentation = GridAreaModel.segmentByCellsOverlap(cages, n);
+        const gridAreaCagesSegmentation = GridAreaModel.findMaxNonOverlappingCagesArea(cages, n);
         this.nonOverlappingCages = gridAreaCagesSegmentation.nonOverlappingCages;
         this.overlappingCages = gridAreaCagesSegmentation.overlappingCages;
 
@@ -46,27 +46,23 @@ export class GridAreaModel {
     }
 
     /**
-     * Segments given {@link Cage}s within the {@link Grid} area into two collections:
-     *
-     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
-     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+     * Finds maximum area of _non-overlapping_ {@link Cage}s for the given {@link Cage}s.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s of the same {@link Grid} area.
+     * which are also present in other {@link Cage}s of the same {@link GridAreaModel}.
      *
      * For performance reasons {@link Cage}s which have `{@link Cage.input} === true`
-     * are always added to non-overlapping collection even it will result in finding smaller area)
+     * are always marked as non-overlapping collection even it will result in finding smaller area.
      *
-     * This is used to determine complementary {@link Cage}s within the {@link Grid} area
-     * as one of the strategies to advance in solving Killer Sudoku {@link Puzzle}s.
+     * @param cages - {@link Cage}s within the {@link GridAreaModel} to find maximum area for.
+     * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
+     * Used to calculate possible upper bound of maximum area which is `{@link House.CELL_COUNT} * houseCount`.
      *
-     * @param cages - {@link Cage}s within the {@link Grid} area to apply segmentation for.
-     * @param houseCount - number of {@link House}s that the {@link Grid} area covers.
-     * Used to calculate potential maximum area which is `{@link House.CELL_COUNT} * houseCount`.
-     *
-     * @returns Segmentation of {@link Cage}s within the {@link Grid} area.
+     * @returns Container holding two collections:
+     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
+     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
      */
-    private static segmentByCellsOverlap(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
+    private static findMaxNonOverlappingCagesArea(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
         }
