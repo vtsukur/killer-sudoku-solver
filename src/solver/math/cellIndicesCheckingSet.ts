@@ -5,10 +5,11 @@ import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
- * Checking set of {@link Cell} indices in the range of [0, 80] with efficient storage & fast checking operations.
+ * Checking set of {@link Cell} indices with efficient storage & fast checking operations
+ * which can be used to mark {@link Cell}s as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
- * Range of [0, 80] is directly derived from the amount of {@link Cell}s on the {@link Grid},
- * which is equal to 81 (see {@link Grid.CELL_COUNT}).
+ * The range of this checking set is [0, 80] to be able to fit
+ * all possible 81 {@link Cell} indices on the {@link Grid} (see {@link Grid.CELL_COUNT}).
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
