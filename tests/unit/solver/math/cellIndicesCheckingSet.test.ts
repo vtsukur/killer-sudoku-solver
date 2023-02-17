@@ -3,8 +3,20 @@ import { Grid } from '../../../../src/puzzle/grid';
 import { CellIndicesCheckingSet } from '../../../../src/solver/math';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
+    test('Construction of `SudokuNumsCheckingSet` from array of numbers', () => {
+        expectSetWithValues(new CellIndicesCheckingSet([ 1, 30, 75 ]), [ 1, 30, 75 ]);
+    });
+
     test('Construction of `CellIndicesCheckingSet` using `of` static factory method', () => {
         expectSetWithValues(CellIndicesCheckingSet.of(1, 30, 75), [ 1, 30, 75 ]);
+    });
+
+    test('Construction of empty `CellIndicesCheckingSet` using constructor', () => {
+        expectSetWithValues(new CellIndicesCheckingSet(), []);
+    });
+
+    test('Construction of empty `CellIndicesCheckingSet` using `of` static factory method', () => {
+        expectSetWithValues(CellIndicesCheckingSet.of(), []);
     });
 
     test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {

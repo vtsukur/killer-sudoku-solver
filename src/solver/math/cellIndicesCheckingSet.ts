@@ -75,24 +75,26 @@ export class CellIndicesCheckingSet implements
      *
      * @param val - Array of numbers to construct this checking set from.
      */
-    private constructor(val: ReadonlyArray<number>) {
-        for (const num of val) {
-            const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[num];
+    constructor(val?: ReadonlyArray<number>) {
+        if (val) {
+            for (const num of val) {
+                const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[num];
 
-            //
-            // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
-            //
-            // Examples:
-            //  - for `num = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-            //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-            //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
-            //  - ...
-            //  - for `num = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
-            //  - and so on, up to `num` value of 27 per one bit store.
-            //
-            // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
-            //
-            this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+                //
+                // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
+                //
+                // Examples:
+                //  - for `num = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
+                //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
+                //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+                //  - ...
+                //  - for `num = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+                //  - and so on, up to `num` value of 27 per one bit store.
+                //
+                // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
+                //
+                this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+            }
         }
     }
 
