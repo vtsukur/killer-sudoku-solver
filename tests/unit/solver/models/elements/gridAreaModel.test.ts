@@ -1,9 +1,9 @@
-import { Cage } from '../../../../src/puzzle/cage';
-import { GridAreaCagesSegmentor } from '../../../../src/solver/transform/gridAreaCagesSegmentor';
-import { newHouseModel } from '../math/houseModelBuilder';
+import { Cage } from '../../../../../src/puzzle/cage';
+import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAreaModel';
+import { newHouseModel } from '../../math/houseModelBuilder';
 
-describe('Unit tests for `GridAreaCagesSegmentor`', () => {
-    const segment = GridAreaCagesSegmentor.segmentByCellsOverlap;
+describe('Unit tests for `GridAreaModel`', () => {
+    const segment = GridAreaModel.segmentByCellsOverlap;
 
     test('Segmentation of `House` `Cage`s with 2 derived `Cage`s', () => {
         const houseModel = newHouseModel([

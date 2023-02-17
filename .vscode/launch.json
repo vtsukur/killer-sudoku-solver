@@ -463,6 +463,24 @@
             }
         },
         {
+            "name": "npm run test [solver/models/elements/gridAreaModel]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "tests/unit/solver/models/elements/gridAreaModel"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/models/masterModel]",
             "request": "launch",
             "runtimeArgs": [
@@ -524,24 +542,6 @@
             "runtimeArgs": [
                 "run",
                 "test-single-puzzle"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
-            "name": "npm run test [solver/transform/gridAreaCagesSegmentor]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "tests/unit/solver/transform/gridAreaCagesSegmentor"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -704,13 +704,13 @@
             }
         },
         {
-            "name": "npm run test [solver/solver.perf]",
+            "name": "npm run test [solver/models/elements/gridAreaModel.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/solver.perf.test.ts"
+                "tests/perf/solver/models/elements/gridAreaModel.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -723,13 +723,13 @@
             }
         },
         {
-            "name": "npm run test [solver/transform/gridAreaCagesSegmentor.perf]",
+            "name": "npm run test [solver/solver.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/transform/gridAreaCagesSegmentor.perf.test.ts"
+                "tests/perf/solver/solver.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
