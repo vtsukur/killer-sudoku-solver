@@ -1,7 +1,23 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { House } from '../../puzzle/house';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Puzzle } from '../../puzzle/puzzle';
 import { CellIndicesCheckingSet } from '../math';
 
+/**
+ * Segments given {@link Cage}s into two collections:
+ *
+ *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
+ *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+ *
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
+ * which are also present in other {@link Cage}s of the same N-{@link House} area.
+ *
+ * This is used to determine complementary {@link Cage}s within the N-{@link House} area
+ * as one of the strategies to solve Killer Sudoku {@link Puzzle}s.
+ *
+ * @public
+ */
 export class NHouseCagesSegmentor {
     static segmentByCellsOverlap(cages: ReadonlyCages, n = 1) {
         if (!cages.length) {
