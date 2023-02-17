@@ -19,6 +19,12 @@ import { CellIndicesCheckingSet } from '../math';
  * @public
  */
 export class NHouseCagesSegmentor {
+
+    // istanbul ignore next
+    private constructor() {
+        throw new Error('Non-contructible');
+    }
+
     static segmentByCellsOverlap(cages: ReadonlyCages, n = 1) {
         if (!cages.length) {
             return { nonOverlappingCages: [], overlappingCages: [] };
