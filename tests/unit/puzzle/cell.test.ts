@@ -1,5 +1,7 @@
 import { Cell } from '../../../src/puzzle/cell';
+import { Grid } from '../../../src/puzzle/grid';
 import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
+import { CachedNumRanges } from '../../../src/solver/math/cachedNumRanges';
 
 describe('Cell tests', () => {
     test('Construction of Cell using `at` method storing Row, Column and computing Nonet, key and `toString` representation', () => {
@@ -7,6 +9,7 @@ describe('Cell tests', () => {
         expect(cell.row).toBe(4);
         expect(cell.col).toBe(5);
         expect(cell.nonet).toBe(4);
+        expect(cell.index).toBe(41);
         expect(cell.key).toBe('(4, 5)');
         expect(cell.toString()).toBe('(4, 5)');
     });
@@ -21,6 +24,15 @@ describe('Cell tests', () => {
         expect(Cell.at(4, 5)).toBe(Cell.at(4, 5));
         expect(Cell.atPosition([ 4, 5 ])).toBe(Cell.atPosition([ 4, 5 ]));
         expect(Cell.at(4, 5)).toBe(Cell.atPosition([ 4, 5 ]));
+    });
+
+    test('Cells are indexed consequently from top left position of the `Grid` to the right bottom one', () => {
+        let index = 0;
+        for (const row of CachedNumRanges.ZERO_TO_N_LT_81[Grid.SIDE_CELL_COUNT]) {
+            for (const col of CachedNumRanges.ZERO_TO_N_LT_81[Grid.SIDE_CELL_COUNT]) {
+                expect(Cell.at(row, col).index).toBe(index++);
+            }
+        }
     });
 
     test('Construction of invalid Cell with Row outside of the range: <0', () => {

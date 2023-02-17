@@ -48,6 +48,28 @@ export class Cell {
     readonly col: HouseIndex;
 
     /**
+     * Index of a `Cell` within the `Grid` in the range of [0, 81).
+     *
+     * `Cell`s are indexed consequently from _top left_ position of the `Grid` to the _right bottom_ one.
+     *
+     * `Cell`s in the rows are indexed consequently from first to last (a.k.a. _top_ to _bottom_).
+     * `Cell`s in each row are indexed starting with its first column consequently to the last one (a.k.a. _left_ to _right_).
+     * `Cell`s in the row are indexed fully before proceeding to the next one.
+     *
+     * For the `Cells` at positions:
+     * ```
+     * // (row, column)
+     * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... (4, 5) -> ... -> (8, 8)
+     * ```
+     *
+     * respective indices are:
+     * ```
+     *      0 ->      1 ->      2 -> ... ->      7 ->      8 ->      9 ->     10 -> ...     41 -> ... ->     80
+     * ```
+     */
+    readonly index: number;
+
+    /**
      * Human-readable key describing square's unique position on the `Grid`.
      */
     readonly key: CellKey;
@@ -92,6 +114,7 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
+        this.index = row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col;
         this.key = Cell.keyOf(row, col);
     }
 
