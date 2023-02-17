@@ -2,7 +2,7 @@ import { ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { GridAreaCagesSegmentor } from '../../transform/gridAreaCagesSegmentor';
 
-export class CagesAreaModel {
+export class GridAreaModel {
     readonly cages;
     readonly cellsSet = new Set<Cell>();
     readonly nonOverlappingCellsSet = new Set<Cell>();

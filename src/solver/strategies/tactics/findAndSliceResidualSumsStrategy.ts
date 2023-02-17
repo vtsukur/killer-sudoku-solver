@@ -3,7 +3,7 @@ import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
-import { CagesAreaModel } from '../../models/elements/cagesAreaModel';
+import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { MasterModel } from '../../models/masterModel';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
@@ -51,7 +51,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             cages = cages.concat(cageM.cage);
         }
     }
-    const cagesAreaModel = new CagesAreaModel(cages, n);
+    const cagesAreaModel = new GridAreaModel(cages, n);
     const sum = nHouseSum - cagesAreaModel.sum;
     if ((n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
