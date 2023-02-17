@@ -39,6 +39,15 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
      * @returns `true` if this checking set does NOT have any numbers from another checking set; otherwise `false`.
      */
     doesNotHaveAny(val: T): boolean;
+
+    /**
+     * Checks whether numbers in this checking set are exactly the same as in another checking set.
+     *
+     * @param val - Another set to check equality with this set.
+     *
+     * @returns `true` if this checking set has the same numbers as the `val` checking set; otherwise `false`.
+     */
+    equals(val: T): boolean;
 }
 
 /**

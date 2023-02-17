@@ -226,4 +226,11 @@ export class SudokuNumsCheckingSet implements
         //
         this._bitStore &= ~val.bitStore;
     }
+
+    /**
+     * @see {ReadonlyNumsCheckingSet.equals}
+     */
+    equals(val: ReadonlySudokuNumsCheckingSet) {
+        return this._bitStore === val.bitStore;
+    }
 }
