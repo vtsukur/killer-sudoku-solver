@@ -3,7 +3,8 @@ import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
- * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations.
+ * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations
+ * which can be used to mark numbers as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
