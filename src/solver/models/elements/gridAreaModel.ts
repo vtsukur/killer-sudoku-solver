@@ -4,14 +4,14 @@ import { House } from '../../../puzzle/house';
 import { CellIndicesCheckingSet } from '../../math';
 
 /**
- * Container for the segmentation of {@link Cage}s within the {@link Grid} area holding two collections:
+ * Container for the grouping of {@link Cage}s within the {@link Grid} area holding two collections:
  *
- *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
+ *  - {@link Cage}s which do NOT _overlap_ with each other forming region of maximum possible area;
  *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
  */
-type GridAreaCagesSegmentation = {
-    nonOverlappingCages: Cages;
-    overlappingCages: Cages;
+type GridAreaCagesRegions = {
+    cagesOfMaxNonOverlappingRegion: Cages;
+    cagesOfOverlappingRegion: Cages;
 }
 
 export class GridAreaModel {
@@ -32,8 +32,8 @@ export class GridAreaModel {
         });
 
         const gridAreaCagesSegmentation = GridAreaModel.findMaxNonOverlappingCagesArea(cages, n);
-        this.nonOverlappingCages = gridAreaCagesSegmentation.nonOverlappingCages;
-        this.overlappingCages = gridAreaCagesSegmentation.overlappingCages;
+        this.nonOverlappingCages = gridAreaCagesSegmentation.cagesOfMaxNonOverlappingRegion;
+        this.overlappingCages = gridAreaCagesSegmentation.cagesOfOverlappingRegion;
 
         this.nonOverlappingCages.forEach(cage => {
             this.sum += cage.sum;
@@ -62,9 +62,9 @@ export class GridAreaModel {
      *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
      *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
      */
-    private static findMaxNonOverlappingCagesArea(cages: ReadonlyCages, houseCount = 1): GridAreaCagesSegmentation {
+    private static findMaxNonOverlappingCagesArea(cages: ReadonlyCages, houseCount = 1): GridAreaCagesRegions {
         if (!cages.length) {
-            return { nonOverlappingCages: [], overlappingCages: [] };
+            return { cagesOfMaxNonOverlappingRegion: [], cagesOfOverlappingRegion: [] };
         }
 
         return work(cages, houseCount);
@@ -101,7 +101,7 @@ const work = (cages: ReadonlyCages, n: number) => {
     derivedCages.length = j;
 
     if (usedCellCount === absMaxAreaCellCount) {
-        return { nonOverlappingCages: inputCages, overlappingCages: derivedCages };
+        return { cagesOfMaxNonOverlappingRegion: inputCages, cagesOfOverlappingRegion: derivedCages };
     } else {
         const usedCellIndices = new CellIndicesCheckingSet();
         for (const inputCage of inputCages) {
@@ -120,10 +120,10 @@ const work = (cages: ReadonlyCages, n: number) => {
         };
         recursiveWork(0, ctx);
 
-        const nonOverlappingCages = Array.from(ctx.maxAreaCages);
-        const overlappingCages = cages.filter(cage => !ctx.maxAreaCages.has(cage));
+        const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
+        const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
 
-        return { nonOverlappingCages, overlappingCages };
+        return { cagesOfMaxNonOverlappingRegion, cagesOfOverlappingRegion };
     }
 };
 
