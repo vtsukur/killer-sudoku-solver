@@ -61,6 +61,21 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(SudokuNumsCheckingSet.of(1, 9).equals(SudokuNumsCheckingSet.of(1, 4))).toBeFalsy();
     });
 
+    test('Cloning', () => {
+        const original = SudokuNumsCheckingSet.of(1, 9);
+        const cloned = original.clone();
+
+        expect(cloned).not.toBe(original);
+
+        original.add(SudokuNumsCheckingSet.of(8));
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+
+        cloned.remove(SudokuNumsCheckingSet.of(1));
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+    });
+
     const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
     };
