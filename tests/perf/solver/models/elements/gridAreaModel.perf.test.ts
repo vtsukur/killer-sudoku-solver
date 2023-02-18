@@ -72,7 +72,7 @@ describe('Performance tests for `GridAreaModel`', () => {
             });
         });
 
-        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 5 derived \`Cage\`s and 13 unfilled \`Cell\` remaining (Sudoku.com 2022-10-22) [${i + 1}]`, () => {
+        test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 5 derived \`Cage\`s and 13 unfilled \`Cell\`s remaining (Sudoku.com 2022-10-22) [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
                 Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
