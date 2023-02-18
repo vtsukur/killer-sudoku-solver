@@ -13,4 +13,5 @@ export class InvalidSolverStateError extends Error {
     constructor(message: string) {
         super(message);
     }
+
 }

@@ -7,6 +7,7 @@ import { CageSlicer } from '../transform/cageSlicer';
 import { ReducedCellModels } from './reducedCellModels';
 
 export class Context {
+
     readonly model;
     readonly cageSlicer;
     reducedModels = new ReducedCellModels();
@@ -69,4 +70,5 @@ export class Context {
         copy.depth = this.depth + 1;
         return copy;
     }
+
 }

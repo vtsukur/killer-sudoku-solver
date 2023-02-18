@@ -10,6 +10,7 @@ import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
+
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
@@ -40,9 +41,11 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
 
         return formulas;
     }
+
 }
 
 class ExpandableNonOverlappingNonetAreaModel {
+
     private _nonetM;
     private _sum;
     private _cageMs;
@@ -119,9 +122,11 @@ class ExpandableNonOverlappingNonetAreaModel {
     get outerCageMs() {
         return this._outerCageMs;
     }
+
 }
 
 class Formulas {
+
     private readonly _map;
 
     constructor() {
@@ -135,9 +140,11 @@ class Formulas {
     toArray() {
         return Array.from(this._map.values());
     }
+
 }
 
 class Formula {
+
     readonly cellM;
     readonly equalToCellMs;
     readonly withDelta;
@@ -151,6 +158,7 @@ class Formula {
         this.withDelta = withDelta;
         this.key = `${keysArr.join(', ')}: ${withDelta}`;
     }
+
 }
 
 function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterModel) {

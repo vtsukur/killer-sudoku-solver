@@ -3,6 +3,7 @@ import { House } from '../../../puzzle/house';
 import { Strategy } from '../strategy';
 
 export class FindRedundantNonetSumsStrategy extends Strategy {
+
     execute() {
         const nonetCageMsMap = new Map();
         this._model.nonetModels.forEach(nonetM => {
@@ -37,4 +38,5 @@ export class FindRedundantNonetSumsStrategy extends Strategy {
             }
         }
     }
+
 }

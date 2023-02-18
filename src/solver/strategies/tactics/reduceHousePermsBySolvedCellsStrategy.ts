@@ -2,6 +2,7 @@ import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
+
     execute() {
         const reducedCellMs = new ReducedCellModels();
 
@@ -26,4 +27,5 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
         this._context.addCageModelsToReduceFrom(reducedCellMs);
     }
+
 }

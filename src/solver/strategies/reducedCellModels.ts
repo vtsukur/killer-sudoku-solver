@@ -3,6 +3,7 @@ import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
 export class ReducedCellModels {
+
     private _cellMs = new Set<CellModel>();
     private _impactedCageMs = new Set<CageModel>();
 
@@ -30,4 +31,5 @@ export class ReducedCellModels {
     static forOne(cellM: CellModel) {
         return new ReducedCellModels().addOne(cellM);
     }
+
 }

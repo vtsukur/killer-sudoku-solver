@@ -27,4 +27,5 @@ export class Solver {
         new MasterStrategy(ctx).execute();
         return new Solution(model.solution);
     }
+
 }

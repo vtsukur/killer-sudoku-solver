@@ -13,6 +13,7 @@ import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
+
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
@@ -170,6 +171,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
         this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
+
 }
 
 const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reducedCellMs: ReducedCellModels) => {

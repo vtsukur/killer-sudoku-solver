@@ -3,6 +3,7 @@ import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
+
     execute() {
         const reducedCellMs = new ReducedCellModels();
         this._context.recentlySolvedCellModels.forEach(solvedCellM => {
@@ -22,4 +23,5 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
         });
         this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
+
 }

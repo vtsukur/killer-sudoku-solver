@@ -5,6 +5,7 @@ import { CellModel } from '../../models/elements/cellModel';
 import { Strategy } from '../strategy';
 
 export class PlaceNumsForSingleOptionCellsStrategy extends Strategy {
+
     execute() {
         const solved = new Array<CellModel>();
 
@@ -20,4 +21,5 @@ export class PlaceNumsForSingleOptionCellsStrategy extends Strategy {
 
         this._context.recentlySolvedCellModels = solved;
     }
+
 }

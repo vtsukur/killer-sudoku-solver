@@ -11,6 +11,7 @@ import { Strategy } from '../strategy';
 const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
 
 export class DeepTryOptionsStrategy extends Strategy {
+
     execute() {
         if (this._context.hasCageModelsToReduce || this._model.isSolved) return;
 
@@ -66,6 +67,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             this._context.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTarget));
         }
     }
+
 }
 
 function findCellMTarget(model: MasterModel) {

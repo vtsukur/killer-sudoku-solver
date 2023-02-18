@@ -11,6 +11,7 @@ import { Strategy } from '../strategy';
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
 
 export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strategy {
+
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
@@ -39,6 +40,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
 
         this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
+
 }
 
 function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {

@@ -9,6 +9,7 @@ import { ReducedCellModels } from '../reducedCellModels';
 import { Strategy } from '../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
+
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
@@ -90,6 +91,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
 
         this._context.setCageModelsToReduceFrom(reducedCellMs);
     }
+
 }
 
 function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reducedCellMs: ReducedCellModels) {

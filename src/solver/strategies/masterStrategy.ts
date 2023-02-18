@@ -12,6 +12,7 @@ import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy
 import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends Strategy {
+
     execute() {
         if (!this._context.skipInit) {
             this.executeAnother(FindRedundantNonetSumsStrategy);
@@ -31,4 +32,5 @@ export class MasterStrategy extends Strategy {
         }
         while (!this._model.isSolved && this._context.hasCageModelsToReduce);
     }
+
 }

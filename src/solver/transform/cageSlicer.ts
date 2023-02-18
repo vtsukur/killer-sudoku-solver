@@ -11,6 +11,7 @@ type CageInSlicing = {
 };
 
 export class CageSlicer {
+
     readonly model;
 
     constructor(model: MasterModel) {
@@ -83,4 +84,5 @@ export class CageSlicer {
         });
         return slices.filter(cells => cells.length > 0);
     }
+
 }

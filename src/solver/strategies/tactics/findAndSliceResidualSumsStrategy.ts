@@ -10,6 +10,7 @@ import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
 export class FindAndSliceResidualSumsStrategy extends Strategy {
+
     execute() {
         _.range(1, 5).reverse().forEach((n: number) => {
             _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
@@ -37,6 +38,7 @@ export class FindAndSliceResidualSumsStrategy extends Strategy {
             }, this, this._model);
         });
     }
+
 }
 
 // make part of the strategy class to avoid extra param passing

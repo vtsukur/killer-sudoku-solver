@@ -4,6 +4,7 @@ import { ReduceHousePermsBySolvedCellsStrategy } from './reduceHousePermsBySolve
 import { SliceCagesForSolvedCellsStrategy } from './sliceCagesForSolvedCellsStrategy';
 
 export class ReflectSolvedCellsStrategy extends Strategy {
+
     execute() {
         if (this._context.hasRecentlySolvedCellModels) {
             this.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
@@ -13,4 +14,5 @@ export class ReflectSolvedCellsStrategy extends Strategy {
             this._context.setCageModelsToReduceToAll();
         }
     }
+
 }

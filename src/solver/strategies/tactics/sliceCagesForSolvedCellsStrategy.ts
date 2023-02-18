@@ -2,6 +2,7 @@ import { Cage } from '../../../puzzle/cage';
 import { Strategy } from '../strategy';
 
 export class SliceCagesForSolvedCellsStrategy extends Strategy {
+
     execute() {
         this._context.recentlySolvedCellModels.forEach(cellM => {
             const withinCageMsSet = cellM.withinCageModels;
@@ -11,4 +12,5 @@ export class SliceCagesForSolvedCellsStrategy extends Strategy {
             }
         });
     }
+
 }
