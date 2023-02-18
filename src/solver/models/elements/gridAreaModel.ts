@@ -49,14 +49,14 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
 
     readonly cages: ReadonlyCages;
     readonly cellCount: number;
-    readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 
+    private readonly _cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
     private _sum = 0;
 
     constructor(cages: ReadonlyCages, cellCount: number, cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
         this.cages = cages;
         this.cellCount = cellCount;
-        this.cellIndicesCheckingSet = cellIndicesCheckingSet;
+        this._cellIndicesCheckingSet = cellIndicesCheckingSet;
     }
 
     get sum() {
@@ -64,7 +64,7 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
     }
 
     has(cell: Cell) {
-        return this.cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
+        return this._cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
 
 }

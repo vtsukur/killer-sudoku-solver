@@ -52,6 +52,7 @@ export class Sets {
         for (const oneOf of uniteWith) {
             target.add(oneOf);
         }
+        return target;
     }
 
     /**

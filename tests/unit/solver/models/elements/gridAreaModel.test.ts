@@ -1,6 +1,8 @@
 import { Cage, ReadonlyCages } from '../../../../../src/puzzle/cage';
-import { CellIndicesCheckingSet } from '../../../../../src/solver/math';
+import { Cell } from '../../../../../src/puzzle/cell';
+import { Grid } from '../../../../../src/puzzle/grid';
 import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAreaModel';
+import { Sets } from '../../../../../src/util/sets';
 
 describe('Unit tests for `GridAreaModel`', () => {
     test('Segmentation of `House` `Cage`s with 2 derived `Cage`s', () => {
@@ -185,13 +187,16 @@ describe('Unit tests for `GridAreaModel`', () => {
 export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages) => {
     const nonOverlappingCagesAreaModelCellCount = nonOverlappingCages.reduce(
         (prev, current) => prev + current.cellCount, 0);
-    const nonOverlappingCagesAreaModelCellIndicesCheckingSet = nonOverlappingCages.reduce(
-        (prev, current) => prev.add(current.cellIndicesCheckingSet), new CellIndicesCheckingSet());
-
     expect(gridAreaModel.nonOverlappingCagesAreaModel).toEqual(expect.objectContaining({
         cages: nonOverlappingCages,
-        cellCount: nonOverlappingCagesAreaModelCellCount,
-        cellIndicesCheckingSet: nonOverlappingCagesAreaModelCellIndicesCheckingSet
+        cellCount: nonOverlappingCagesAreaModelCellCount
     }));
+
+    const nonOverlappingCagesCellsSet = nonOverlappingCages.reduce(
+        (prev, current) => Sets.U(prev, current.cells), new Set<Cell>());
+    for (const cell of Grid.newCellsIterator()) {
+        expect(gridAreaModel.nonOverlappingCagesAreaModel.has(cell)).toBe(nonOverlappingCagesCellsSet.has(cell));
+    }
+
     expect(gridAreaModel.overlappingCages).toEqual(overlappingCages);
 };
