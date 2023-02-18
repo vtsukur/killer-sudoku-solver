@@ -38,21 +38,27 @@ export class GridAreaModel {
     }
 
     /**
-     * Finds maximum area of _non-overlapping_ {@link Cage}s for the given {@link Cage}s.
+     * Constructs new area on the {@link Grid} defined by a group of the given {@link Cage}s.
+     *
+     * {@link Cage}s are divided into two collections:
+     *
+     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
+     * Defined by {@link nonOverlappingCagesAreaModel}.
+     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+     * Defined by {@link overlappingCages}.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s of the same {@link GridAreaModel}.
+     * which are also present in other {@link Cage}s of the same {@link Grid}.
      *
-     * For performance reasons {@link Cage}s which have `{@link Cage.input} === true`
-     * are always marked as non-overlapping collection even it will result in finding smaller area.
+     * For performance reasons {@link Cage}s which have `Cage.input === true`
+     * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
+     * an area of a smaller size.
      *
-     * @param cages - {@link Cage}s within the {@link GridAreaModel} to find maximum area for.
+     * @param cages - {@link Cage}s to construct this {@link GridAreaModel} from.
      * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
      * Used to calculate possible upper bound of maximum area which is `{@link House.CELL_COUNT} * houseCount`.
      *
-     * @returns Container holding two collections:
-     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
-     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+     * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
         if (!cages.length) {
