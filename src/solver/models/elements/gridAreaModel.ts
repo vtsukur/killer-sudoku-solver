@@ -25,6 +25,10 @@ export class NonOverlappingCagesAreaModel {
     get sum() {
         return this._sum === 0 ? this._sum = this.cages.reduce((prev, current) => prev + current.sum, 0) : this._sum;
     }
+
+    has(cell: Cell) {
+        return this.cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
+    }
 }
 
 export class GridAreaModel {
@@ -34,14 +38,6 @@ export class GridAreaModel {
     constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
         this.nonOverlappingCagesAreaModel = nonOverlappingCagesAreaModel;
         this.overlappingCages = overlappingCages;
-    }
-
-    computeSum() {
-        return this.nonOverlappingCagesAreaModel.cages.reduce((prev, current) => prev + current.sum, 0);
-    }
-
-    hasNonOverlapping(cell: Cell) {
-        return this.nonOverlappingCagesAreaModel.cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
 
     /**

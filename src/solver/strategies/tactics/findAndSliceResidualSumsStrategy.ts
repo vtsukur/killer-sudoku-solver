@@ -57,7 +57,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
         const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIndex, rightIndexExclusive).forEach(index => {
             for (const { row, col } of cellIteratorFn(index)) {
-                if (!cagesAreaModel.hasNonOverlapping(Cell.at(row, col))) {
+                if (!cagesAreaModel.nonOverlappingCagesAreaModel.has(Cell.at(row, col))) {
                     residualCageBuilder.withCell(Cell.at(row, col));
                 }
             }
