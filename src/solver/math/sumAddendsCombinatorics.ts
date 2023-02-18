@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
-import { Numbers } from '../../puzzle/numbers';
+import { SudokuNumbers } from '../../puzzle/sudokuNumbers';
 import { Combo, ReadonlyCombos } from './combo';
 import { ReadonlySudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
 import { BitStore32 } from './numsCheckingSet';
@@ -117,7 +117,7 @@ const storePrecomputed = (source: string, numCount: number) => {
         PRECOMPUTED.set(precomputeKey(sum, numCount), new SumAddendsCombinatorics(combos));
     }
 
-    _.range(Numbers.MIN, House.SUM + 1).forEach(sum => {
+    _.range(SudokuNumbers.MIN, House.SUM + 1).forEach(sum => {
         const key = precomputeKey(sum, numCount);
         if (!PRECOMPUTED.has(key)) {
             PRECOMPUTED.set(key, EMPTY_SUM_COMBO);
@@ -339,7 +339,7 @@ export function computeSumAddendsCombos(sum: number, addendCount: number): SumAd
 }
 
 const validate = (sum: number, numCount: number) => {
-    if (sum < Numbers.MIN || sum > House.SUM) {
+    if (sum < SudokuNumbers.MIN || sum > House.SUM) {
         throw new RangeError(`Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`);
     }
     if (numCount < 1 || numCount > House.CELL_COUNT) {

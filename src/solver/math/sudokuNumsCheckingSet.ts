@@ -1,4 +1,4 @@
-import { Numbers } from '../../puzzle/numbers';
+import { SudokuNumbers } from '../../puzzle/sudokuNumbers';
 import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
@@ -167,7 +167,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
-    private static readonly ALL_SUDOKU_NUMS_BIT_STORE = CachedNumRanges.ONE_TO_N_LT_10[Numbers.MAX + 1].reduce(
+    private static readonly ALL_SUDOKU_NUMS_BIT_STORE = CachedNumRanges.ONE_TO_N_LT_10[SudokuNumbers.MAX + 1].reduce(
         (prev, current) => prev | 1 << current, 0
     );
 
