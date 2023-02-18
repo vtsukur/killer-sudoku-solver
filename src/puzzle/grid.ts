@@ -1,3 +1,4 @@
+import { CachedNumRanges } from '../solver/math/cachedNumRanges';
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
 import { CellRowAndColumn, CellRowAndColumnCallback, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
@@ -19,9 +20,19 @@ export class Grid {
     static readonly SIDE_CELL_COUNT = GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT;
 
     /**
+     * Range as a readonly array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
+     */
+    static readonly SIDE_INDICES_RANGE = GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE;
+
+    /**
      * Total amount of {@link Cell}s in a `Grid`.
      */
     static readonly CELL_COUNT = this.SIDE_CELL_COUNT * this.SIDE_CELL_COUNT;
+
+    /**
+     * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
+     */
+    static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LT_81[this.CELL_COUNT];
 
     /**
      * Total sum of all numbers in a `Grid`.

@@ -28,9 +28,7 @@ export class GridSizeAndCellPositionsIteration {
     static readonly GRID_SIDE_CELL_COUNT = 9;
 
     /**
-     * Constructs new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
-     *
-     * @returns new range as an array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
+     * Range as a readonly array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
      */
     static readonly GRID_SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LT_81[this.GRID_SIDE_CELL_COUNT];
 

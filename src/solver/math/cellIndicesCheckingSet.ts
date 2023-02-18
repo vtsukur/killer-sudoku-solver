@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
-import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
@@ -60,7 +59,7 @@ export class CellIndicesCheckingSet implements
     private static readonly _BITS_PER_BIT_STORE = 32;
 
     // Caching data about bit store index and bit position within the bit store to enable fast access.
-    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = CachedNumRanges.ZERO_TO_N_LT_81[Grid.CELL_COUNT].map(cellIndex => {
+    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = Grid.CELL_INDICES_RANGE.map(cellIndex => {
         const bitStoreIndex = Math.floor(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         const bitPosition = cellIndex - bitStoreIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE;
         return { bitStoreIndex, bitPosition };
