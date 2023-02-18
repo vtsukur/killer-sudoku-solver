@@ -16,6 +16,7 @@ import { NonetModel } from './elements/nonetModel';
 import { RowModel } from './elements/rowModel';
 
 export class MasterModel {
+
     readonly puzzle: Puzzle;
     readonly rowModels: Array<RowModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
     readonly columnModels: Array<ColumnModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
@@ -228,4 +229,5 @@ export class MasterModel {
     deepCopy() {
         return new MasterModel(this);
     }
+
 }

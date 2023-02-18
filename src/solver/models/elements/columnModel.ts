@@ -3,6 +3,7 @@ import { Column } from '../../../puzzle/column';
 import { HouseModel } from './houseModel';
 
 export class ColumnModel extends HouseModel {
+
     constructor(index: number, cells: ReadonlyCells) {
         super(index, cells, Column.newCellsIterator);
     }
@@ -10,4 +11,5 @@ export class ColumnModel extends HouseModel {
     deepCopyWithoutCageModels() {
         return new ColumnModel(this.index, this.cells);
     }
+
 }

@@ -31,6 +31,7 @@ type Context = {
 };
 
 export class CageModel {
+
     readonly cage;
     readonly positioningFlags;
     readonly cellMs;
@@ -79,6 +80,7 @@ export class CageModel {
     }
 
     private static PositioningFlags = class {
+
         readonly cells;
         readonly isSingleCellCage;
         readonly isWithinRow;
@@ -98,6 +100,7 @@ export class CageModel {
         private isSameForAll(whatFn: (cell: Cell) => number) {
             return new Set(this.cells.map(whatFn)).size === 1;
         }
+
     };
 
     get canHaveDuplicateNums() {
@@ -527,4 +530,5 @@ export class CageModel {
     get comboCount() {
         return this._combosMap.size;
     }
+
 }

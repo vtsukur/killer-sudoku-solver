@@ -6,6 +6,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from './cageModel';
 
 export class CellModel {
+
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
@@ -77,4 +78,5 @@ export class CellModel {
         this._numOpts = Sets.new(val);
         this._solved = true;
     }
+
 }

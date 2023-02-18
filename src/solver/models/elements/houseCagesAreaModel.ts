@@ -9,4 +9,5 @@ export class HouseCagesAreaModel {
         this.cages = cages;
         this.cellCount = cages.reduce((partialCellCount, a) => partialCellCount + a.cellCount, 0);
     }
+
 }

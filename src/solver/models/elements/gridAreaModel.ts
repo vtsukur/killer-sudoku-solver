@@ -29,9 +29,11 @@ export class NonOverlappingCagesAreaModel {
     has(cell: Cell) {
         return this.cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
+
 }
 
 export class GridAreaModel {
+
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
     readonly overlappingCages: ReadonlyCages;
 
@@ -66,6 +68,7 @@ export class GridAreaModel {
 
         return work(cages, houseCount);
     }
+
 }
 
 type Context = {

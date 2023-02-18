@@ -5,6 +5,7 @@ import { CageModel } from './cageModel';
 type HouseCellsIteratorProducer = (index: number) => Iterable<Cell>;
 
 export class HouseModel {
+
     readonly index: number;
     readonly cells: ReadonlyCells;
 
@@ -43,4 +44,5 @@ export class HouseModel {
         return this.
         _cellsIteratorProducer(this.index);
     }
+
 }
