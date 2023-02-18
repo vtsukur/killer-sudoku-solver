@@ -43,7 +43,7 @@ type CellIndexToBitStoreLocator = {
  */
 export class CellIndicesCheckingSet implements
         ReadonlyCellIndicesCheckingSet,
-        NumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
+        NumsCheckingSet<ReadonlyCellIndicesCheckingSet, CellIndicesCheckingSet> {
 
     //
     // It is enough to have 3 bit stores of size 32 bits each
@@ -215,6 +215,8 @@ export class CellIndicesCheckingSet implements
         this._bitStores[0] |= val.bitStores[0]; // for numbers in range [0, 31]
         this._bitStores[1] |= val.bitStores[1]; // for numbers in range [32, 63]
         this._bitStores[2] |= val.bitStores[2]; // for numbers in range [64, 80]
+
+        return this;
     }
 
     /**
@@ -236,6 +238,8 @@ export class CellIndicesCheckingSet implements
         this._bitStores[0] &= ~val.bitStores[0]; // for numbers in range [0, 31]
         this._bitStores[1] &= ~val.bitStores[1]; // for numbers in range [32, 63]
         this._bitStores[2] &= ~val.bitStores[2]; // for numbers in range [64, 80]
+
+        return this;
     }
 
     /**

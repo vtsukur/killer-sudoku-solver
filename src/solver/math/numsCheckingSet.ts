@@ -58,10 +58,15 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
  * For performance reasons, implementations of this interface are NEITHER required to do range checks,
  * NOR to guarantee correct work for the values outside of the range.
  *
- * @typeParam T - Specific subtype of {@link ReadonlyNumsCheckingSet}
+ * @typeParam ROSET - Specific subtype of {@link ReadonlyNumsCheckingSet}
  * to be used as an argument for checking and manipulation operations.
+ * @typeParam MUSET - Specific subtype of {@link NumsCheckingSet}
+ * to be used as a return type for manipulation operations.
  */
-export interface NumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> extends ReadonlyNumsCheckingSet<T> {
+export interface NumsCheckingSet<
+            ROSET extends ReadonlyNumsCheckingSet<ROSET>,
+            MUSET extends NumsCheckingSet<ROSET, MUSET>
+        > extends ReadonlyNumsCheckingSet<ROSET> {
 
     /**
      * Adds all numbers from another checking set to this checking numbers set.
@@ -72,8 +77,10 @@ export interface NumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> extends R
      * Duplicate numbers are ignored.
      *
      * @param val - Another checking set containing numbers to add to this set.
+     *
+     * @returns This checking numbers set.
      */
-    add(val: T): void;
+    add(val: ROSET): MUSET;
 
     /**
      * Removes all numbers present in another checking set from this checking numbers set.
@@ -84,6 +91,8 @@ export interface NumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> extends R
      * Missing numbers are ignored.
      *
      * @param val - Another checking set containing numbers to remove from this checking set.
+     *
+     * @returns This checking numbers set.
      */
-    remove(val: T): void;
+    remove(val: ROSET): MUSET;
 }

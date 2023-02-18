@@ -43,7 +43,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
  */
 export class SudokuNumsCheckingSet implements
         ReadonlySudokuNumsCheckingSet,
-        NumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
+        NumsCheckingSet<ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet> {
 
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,
@@ -206,6 +206,8 @@ export class SudokuNumsCheckingSet implements
         // ```
         //
         this._bitStore |= val.bitStore;
+
+        return this;
     }
 
     /**
@@ -225,6 +227,8 @@ export class SudokuNumsCheckingSet implements
         // ```
         //
         this._bitStore &= ~val.bitStore;
+
+        return this;
     }
 
     /**
