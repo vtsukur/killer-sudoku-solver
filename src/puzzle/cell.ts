@@ -139,6 +139,7 @@ export class Cell {
     toString() {
         return this.key;
     }
+
 }
 
 /**

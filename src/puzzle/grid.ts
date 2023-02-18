@@ -75,4 +75,5 @@ export class Grid {
     static forEachCellPosition(callback: CellRowAndColumnCallback) {
         GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(callback);
     }
+
 }

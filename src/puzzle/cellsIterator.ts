@@ -13,6 +13,7 @@ export type CellProvider = (index: number) => Cell;
  * @public
  */
 export class CellsIterator implements Iterator<Cell> {
+
     private _index = 0;
     private readonly _cellProvider: CellProvider;
     private readonly _count: number;
@@ -68,4 +69,5 @@ export class CellsIterator implements Iterator<Cell> {
             done: true
         };
     }
+
 }

@@ -19,4 +19,5 @@ export class Numbers {
     private constructor() {
         throw new Error('Non-contructible');
     }
+
 }

@@ -45,4 +45,5 @@ export class Column {
     static validateIndex(val: HouseIndex) {
         House.validateIndex(val, 'Column');
     }
+
 }

@@ -58,4 +58,5 @@ export class House {
             throw new InvalidPuzzleDefError(`Invalid House index. ${type} outside of range. Expected to be within [0, ${this.CELL_COUNT}). Actual: ${val}`);
         }
     }
+
 }

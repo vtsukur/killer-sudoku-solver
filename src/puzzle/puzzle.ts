@@ -82,4 +82,5 @@ export class Puzzle {
     private static throwValidationError(detailedMessage: string) {
         throw new InvalidPuzzleDefError(`Invalid Puzzle. ${detailedMessage}`);
     }
+
 }

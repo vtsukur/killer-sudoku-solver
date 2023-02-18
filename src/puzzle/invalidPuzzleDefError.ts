@@ -13,4 +13,5 @@ export class InvalidPuzzleDefError extends Error {
     constructor(message: string) {
         super(message);
     }
+
 }

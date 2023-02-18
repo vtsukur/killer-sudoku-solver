@@ -96,4 +96,5 @@ export class Nonet {
     static validateIndex(val: HouseIndex) {
         House.validateIndex(val, 'Nonet');
     }
+
 }

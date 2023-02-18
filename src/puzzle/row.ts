@@ -10,6 +10,7 @@ import { House, HouseIndex } from './house';
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  */
 export class Row {
+
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
@@ -44,4 +45,5 @@ export class Row {
     static validateIndex(val: HouseIndex) {
         House.validateIndex(val, 'Row');
     }
+
 }

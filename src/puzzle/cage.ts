@@ -225,6 +225,7 @@ export class Cage {
             Cage.validateCells(this._cells);
             return new Cage(this._sum, this._cells, this._isInput);
         }
+
     };
 
     private static throwValidationError(detailedMessage: string) {
@@ -260,6 +261,7 @@ export class Cage {
         const newCode = '.new()';
         return `Cage${setSumCode}${setCellsCode}${conditionallySetIsInputCode}${newCode}`;
     }
+
 }
 
 /**
