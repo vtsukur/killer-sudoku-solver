@@ -6,6 +6,7 @@ const logLevel: string = config.get('logLevel');
 const isDebugGlobal: boolean = logLevel === 'debug';
 
 class Log {
+
     private label: string;
     private logger: Logger;
 
@@ -41,12 +42,15 @@ class Log {
     get isDebug() {
         return isDebugGlobal;
     }
+
 }
 
 class LogFactory {
+
     withLabel(label: string) {
         return new Log(label);
     }
+
 }
 
 export const logFactory = new LogFactory();

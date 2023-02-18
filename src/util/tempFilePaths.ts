@@ -1,6 +1,7 @@
 import * as fs from 'node:fs';
 
 export class TempFilePaths {
+
     private baseDir: string;
 
     constructor(baseDir: string) {
@@ -21,4 +22,5 @@ export class TempFilePaths {
     filePath(shortFileName: string) {
         return `${this.baseDir}/${shortFileName}`;
     }
+
 }

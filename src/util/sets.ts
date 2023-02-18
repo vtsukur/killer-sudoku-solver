@@ -87,4 +87,5 @@ export class Sets {
             return val.values().next().value;
         }
     }
+
 }
