@@ -24,6 +24,7 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
      * Returns readonly array of the bit storages used for efficient checking for this numbers set.
      */
     get bitStores(): ReadonlyArray<BitStore32>;
+
 }
 
 type CellIndexToBitStoreLocator = {

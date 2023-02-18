@@ -55,6 +55,7 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
      * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
      */
     readonly houseCagesPerms: HouseCagesPerms;
+
 }
 
 /**

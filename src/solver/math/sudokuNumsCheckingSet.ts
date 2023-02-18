@@ -29,6 +29,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
      * @returns new checking set with Sudoku numbers which are NOT present in the current checking set.
      */
     get remaining(): SudokuNumsCheckingSet;
+
 }
 
 /**

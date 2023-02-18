@@ -48,6 +48,7 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
      * @returns `true` if this checking set has the same numbers as the `val` checking set; otherwise `false`.
      */
     equals(val: T): boolean;
+
 }
 
 /**
@@ -102,4 +103,5 @@ export interface NumsCheckingSet<
      * @returns new checking numbers set based on the copy of the state of this set.
      */
     clone(): MUSET;
+
 }
