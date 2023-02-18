@@ -3,6 +3,7 @@ import { House, HouseIndex } from '../puzzle/house';
 import { Rect } from './rect';
 
 export class GridContour {
+
     readonly rect;
     readonly cellWidth;
     readonly cellHeight;
@@ -39,4 +40,5 @@ export class GridContour {
     toString() {
         return `(${this.rect.x}, ${this.rect.y}) - (${this.rect.x + this.rect.width}, ${this.rect.y + this.rect.height})`;
     }
+
 }

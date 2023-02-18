@@ -4,6 +4,7 @@ import { Grid } from '../puzzle/grid';
 import { CellContour } from './cellContour';
 
 export class CageContour {
+
     private _cellContours: Array<CellContour>;
     topLeftCellContour?: CellContour;
     sumImagePath?: string;
@@ -33,4 +34,5 @@ export class CageContour {
     get cells() {
         return this._cellContours.map(c => c.cell);
     }
+
 }

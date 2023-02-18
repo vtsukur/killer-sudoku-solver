@@ -411,6 +411,7 @@ async function dumpTmpContoursOutput(src: Mat, dottedCageContours: Array<Mat>, c
 }
 
 class Paths extends TempFilePaths {
+
     constructor(taskId: number) {
         super(`./tmp/puzzle-recognizer/${taskId}`);
     }
@@ -422,4 +423,5 @@ class Paths extends TempFilePaths {
     cageSumTextFilePath(id: number, classifier: string) {
         return this.filePath(`${id}/cage-sum_${classifier}.png`);
     }
+
 }

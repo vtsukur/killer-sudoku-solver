@@ -1,4 +1,5 @@
 export class Rect {
+
     readonly x;
     readonly y;
     readonly width;
@@ -18,4 +19,5 @@ export class Rect {
     toString() {
         return `{ x: ${this.x}, y: ${this.y}, width: ${this.width}, height: ${this.height} }`;
     }
+
 }

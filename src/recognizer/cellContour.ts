@@ -3,6 +3,7 @@ import { Cell } from '../puzzle/cell';
 import { Rect } from './rect';
 
 export class CellContour {
+
     readonly cell;
     readonly rect;
     readonly cageBorders;
@@ -61,9 +62,11 @@ export class CellContour {
 
         this.cageBorders.setHasAt(Math.floor(relativeY / cageBorderYSize), Math.floor(relativeX / cageBorderXSize));
     }
+
 }
 
 class CageBorders {
+
     private readonly _matrix;
 
     constructor() {
@@ -95,4 +98,5 @@ class CageBorders {
     }
 
     static readonly SIDES = 3;
+
 }
