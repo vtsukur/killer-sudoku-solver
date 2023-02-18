@@ -189,12 +189,10 @@ export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlapping
     const nonOverlappingCagesAreaModelCellIndicesCheckingSet = nonOverlappingCages.reduce(
         (prev, current) => prev.add(current.cellIndicesCheckingSet), new CellIndicesCheckingSet());
 
-    expect(gridAreaModel).toEqual(expect.objectContaining({
-        nonOverlappingCagesAreaModel: {
-            cages: nonOverlappingCages,
-            cellCount: nonOverlappingCagesAreaModelCellCount,
-            cellIndicesCheckingSet: nonOverlappingCagesAreaModelCellIndicesCheckingSet
-        },
-        overlappingCages: overlappingCages
+    expect(gridAreaModel.nonOverlappingCagesAreaModel).toEqual(expect.objectContaining({
+        cages: nonOverlappingCages,
+        cellCount: nonOverlappingCagesAreaModelCellCount,
+        cellIndicesCheckingSet: nonOverlappingCagesAreaModelCellIndicesCheckingSet
     }));
+    expect(gridAreaModel.overlappingCages).toEqual(overlappingCages);
 };
