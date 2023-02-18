@@ -3,13 +3,17 @@ import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 
-/**
- * Container for the grouping of {@link Cage}s within the {@link Grid} area holding two collections:
- *
- *  - {@link Cage}s which do NOT _overlap_ with each other forming region of maximum possible area;
- *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
- */
-export class NonOverlappingCagesAreaModel {
+export interface NonOverlappingCagesAreaModel {
+
+    readonly cages: ReadonlyCages;
+    readonly cellCount: number;
+    readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
+    readonly sum: number;
+    has(cell: Cell): boolean;
+
+}
+
+class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappingCagesAreaModel {
 
     readonly cages: ReadonlyCages;
     readonly cellCount: number;
@@ -62,7 +66,7 @@ export class GridAreaModel {
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
         if (!cages.length) {
-            return new GridAreaModel(new NonOverlappingCagesAreaModel(
+            return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
                 [], 0, CellIndicesCheckingSet.of()
             ), []);
         }
@@ -108,7 +112,7 @@ const work = (cages: ReadonlyCages, n: number) => {
     }
 
     if (usedCellCount === absMaxAreaCellCount) {
-        return new GridAreaModel(new NonOverlappingCagesAreaModel(
+        return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
             inputCages, usedCellCount, usedCellIndices
         ), derivedCages);
     } else {
@@ -130,7 +134,7 @@ const work = (cages: ReadonlyCages, n: number) => {
         const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
         const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
 
-        return new GridAreaModel(new NonOverlappingCagesAreaModel(
+        return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
             cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
         ), cagesOfOverlappingRegion);
     }
