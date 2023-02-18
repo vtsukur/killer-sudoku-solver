@@ -10,6 +10,7 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../ma
  *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
  */
 export class NonOverlappingCagesAreaModel {
+
     readonly cages: ReadonlyCages;
     readonly cellCount: number;
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
