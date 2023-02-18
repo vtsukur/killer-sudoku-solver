@@ -108,13 +108,11 @@ const work = (cages: ReadonlyCages, n: number) => {
             inputCages, usedCellCount, usedCellIndices
         ), derivedCages);
     } else {
-
-        // additionally pre-filter cages which overlap
-
+        const nonOverlappingDerivedCages = derivedCages.filter(cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
         const ctx: Context = {
-            allCages: derivedCages,
+            allCages: nonOverlappingDerivedCages,
             absMaxAreaCellCount: absMaxAreaCellCount,
-            cageCount: derivedCages.length,
+            cageCount: nonOverlappingDerivedCages.length,
             usedCages: new Set(inputCages),
             usedCellIndices,
             usedCellCount: usedCellCount,
