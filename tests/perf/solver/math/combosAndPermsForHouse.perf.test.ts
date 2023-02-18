@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
 import { Combo, combosAndPermsForHouse } from '../../../../src/solver/math';
-import { newHouseModel } from '../../../unit/solver/math/houseModelBuilder';
+import { newHouseModel } from '../../../unit/solver/math/combosAndPermsForHouse.test';
 
 describe('Performance tests for the finder of sum number combinations and sum permutations to form a HouseModel out of Cages', () => {
     const ITERATION_COUNT = 50000;
