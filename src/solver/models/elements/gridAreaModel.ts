@@ -18,15 +18,10 @@ type NonOverlappingCagesAreaModel = {
 export class GridAreaModel {
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
     readonly overlappingCages: ReadonlyCages;
-    // sum = 0;
 
     constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
         this.nonOverlappingCagesAreaModel = nonOverlappingCagesAreaModel;
         this.overlappingCages = overlappingCages;
-        // this.nonOverlappingCages.forEach(cage => {
-        //     this.sum += cage.sum;
-        //     cage.cells.forEach(cell => this.nonOverlappingCellsSet.add(cell));
-        // });
     }
 
     computeSum() {
