@@ -60,10 +60,13 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
     }
 
     get sum() {
+        // Lazy initialization is used instead of precomputation
+        // since many usages of the area model does NOT need sum at all.
         return this._sum === 0 ? this._sum = this.cages.reduce((prev, current) => prev + current.sum, 0) : this._sum;
     }
 
     has(cell: Cell) {
+        // Use of `ReadonlyCellIndicesCheckingSet` enables extremely fast performance of the check.
         return this._cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
 
