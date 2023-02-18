@@ -42,6 +42,7 @@ const samplePuzzle = new Puzzle([
 ]);
 
 class SudokuDotComPuzzleSamples {
+
     readonly dailyChallengeOf_2022_04_06 = new Puzzle([
         // upper nonets
         Cage.ofSum(7).at(0, 0).at(0, 1).new(),
@@ -450,9 +451,11 @@ class SudokuDotComPuzzleSamples {
         Cage.ofSum(13).at(7, 7).at(8, 7).new(),
         Cage.ofSum(11).at(7, 8).at(8, 8).new()
     ]);
+
 }
 
 class DailyKillerSudokuDotComSamples {
+
     // https://www.dailykillersudoku.com/puzzle/24789
     readonly puzzle24789_difficulty10 = new Puzzle([
         // upper nonets
@@ -581,12 +584,15 @@ class DailyKillerSudokuDotComSamples {
         Cage.ofSum(13).at(7, 5).at(7, 6).at(8, 5).new(),
         Cage.ofSum(27).at(6, 8).at(7, 7).at(7, 8).at(8, 6).at(8, 7).at(8, 8).new()
     ]);
+
 }
 
 class PuzzleSamplesAPI {
+
     readonly reference = samplePuzzle;
     readonly sudokuDotCom = Object.freeze(new SudokuDotComPuzzleSamples());
     readonly dailyKillerSudokuDotCom = Object.freeze(new DailyKillerSudokuDotComSamples());
+
 }
 
 export const puzzleSamples = Object.freeze(new PuzzleSamplesAPI());

@@ -72,6 +72,7 @@ const openImageIfNecessary = (path: string) => {
 };
 
 class Paths extends TempFilePaths {
+
     constructor(taskId: number) {
         super(`./tmp/e2e-tests/${taskId}`);
     }
@@ -87,4 +88,5 @@ class Paths extends TempFilePaths {
     private screenshotFilePath(classifier: string) {
         return this.filePath(`screeshot-of-${classifier}.png`);
     }
+
 }

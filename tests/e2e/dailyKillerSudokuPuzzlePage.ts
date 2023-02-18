@@ -34,6 +34,7 @@ type KeyboardCommand = {
 }
 
 export class DailyKillerSudokuPuzzlePage {
+
     readonly _browser: Browser;
     private _browserPage?: Page;
 
@@ -154,4 +155,5 @@ export class DailyKillerSudokuPuzzlePage {
     private browserPage() {
         return this._browserPage as Page;
     }
+
 }
