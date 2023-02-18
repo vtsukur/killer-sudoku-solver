@@ -51,9 +51,9 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
             cages = cages.concat(cageM.cage);
         }
     }
-    const cagesAreaModel = new GridAreaModel(cages, n);
-    const sum = nHouseSum - cagesAreaModel.sum;
-    if ((n === 1 || cagesAreaModel.nonOverlappingCellsSet.size > nHouseCellCount - 6) && sum) {
+    const cagesAreaModel = GridAreaModel.from(cages, n);
+    const sum = nHouseSum - cagesAreaModel.computeSum();
+    if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount > nHouseCellCount - 6) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIndex, rightIndexExclusive).forEach(index => {
             for (const { row, col } of cellIteratorFn(index)) {

@@ -246,4 +246,12 @@ export class CellIndicesCheckingSet implements
             this._bitStores[1] === val.bitStores[1] &&
             this._bitStores[2] === val.bitStores[2];
     }
+
+    clone() {
+        const val = new CellIndicesCheckingSet();
+        val._bitStores[0] = this._bitStores[0];
+        val._bitStores[1] = this._bitStores[1];
+        val._bitStores[2] = this._bitStores[2];
+        return val;
+    }
 }

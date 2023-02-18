@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAreaModel';
 import { newHouseModel } from '../../../../unit/solver/math/houseModelBuilder';
+import { expectGridAreaModel } from '../../../../unit/solver/models/elements/gridAreaModel.test';
 
 describe('Performance tests for `GridAreaModel`', () => {
     const TESTS_COUNT = 10;
@@ -18,21 +19,21 @@ describe('Performance tests for `GridAreaModel`', () => {
                 Cage.ofSum(8).at(6, 7).at(6, 8).setIsInput(false).new()
             ]);
 
-            expect(new GridAreaModel(houseModel.cages)).toEqual(expect.objectContaining({
-                nonOverlappingCages: [
+            expectGridAreaModel(GridAreaModel.from(houseModel.cages),
+                [
                     Cage.ofSum(9).at(7, 8).at(8, 8).new(),
                     Cage.ofSum(15).at(7, 7).at(8, 7).new(),
                     Cage.ofSum(13).at(6, 6).at(7, 6).at(8, 6).setIsInput(false).new(),
                     Cage.ofSum(8).at(6, 7).at(6, 8).setIsInput(false).new()
                 ],
-                overlappingCages: [
+                [
                     Cage.ofSum(11).at(8, 7).at(8, 8).setIsInput(false).new(),
                     Cage.ofSum(13).at(7, 7).at(7, 8).setIsInput(false).new()
                 ]
-            }));
+            );
 
             _.range(ITERATION_COUNT).forEach(() => {
-                new GridAreaModel(houseModel.cages);
+                GridAreaModel.from(houseModel.cages);
             });
         });
 
@@ -50,8 +51,8 @@ describe('Performance tests for `GridAreaModel`', () => {
                 Cage.ofSum(10).at(4, 0).at(4, 1).new()
             ]);
 
-            expect(new GridAreaModel(houseModel.cages, 4)).toEqual(expect.objectContaining({
-                nonOverlappingCages: [
+            expectGridAreaModel(GridAreaModel.from(houseModel.cages, 4),
+                [
                     Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
                     Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
                     Cage.ofSum(5).at(5, 0).at(5, 1).new(),
@@ -61,14 +62,14 @@ describe('Performance tests for `GridAreaModel`', () => {
                     Cage.ofSum(12).at(3, 0).at(3, 1).new(),
                     Cage.ofSum(10).at(4, 0).at(4, 1).new()
                 ],
-                overlappingCages: [
+                [
                     Cage.ofSum(20).at(2, 6).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
                     Cage.ofSum(20).at(2, 4).at(2, 5).at(3, 4).at(3, 7).at(3, 8).setIsInput(false).new()
                 ]
-            }));
+            );
 
             _.range(ITERATION_COUNT).forEach(() => {
-                new GridAreaModel(houseModel.cages, 4);
+                GridAreaModel.from(houseModel.cages, 4);
             });
         });
 
@@ -91,8 +92,8 @@ describe('Performance tests for `GridAreaModel`', () => {
                 Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
             ]);
 
-            expect(new GridAreaModel(houseModel.cages, 4)).toEqual(expect.objectContaining({
-                nonOverlappingCages: [
+            expectGridAreaModel(GridAreaModel.from(houseModel.cages, 4),
+                [
                     Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
                     Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
                     Cage.ofSum(10).at(1, 3).at(2, 3).new(),
@@ -104,17 +105,17 @@ describe('Performance tests for `GridAreaModel`', () => {
                     Cage.ofSum(6).at(5, 5).new(),
                     Cage.ofSum(10).at(8, 3).at(8, 4).new()
                 ],
-                overlappingCages: [
+                [
                     Cage.ofSum(23).at(0, 3).at(0, 4).at(3, 2).at(3, 3).setIsInput(false).new(),
                     Cage.ofSum(23).at(2, 2).at(3, 2).at(6, 3).at(6, 4).setIsInput(false).new(),
                     Cage.ofSum(15).at(1, 3).at(1, 4).setIsInput(false).new(),
                     Cage.ofSum(9).at(2, 3).at(2, 4).setIsInput(false).new(),
                     Cage.ofSum(25).at(0, 2).at(0, 3).at(1, 2).at(6, 3).at(8, 3).setIsInput(false).new()
                 ]
-            }));
+            );
 
             _.range(ITERATION_COUNT).forEach(() => {
-                new GridAreaModel(houseModel.cages, 4);
+                GridAreaModel.from(houseModel.cages, 4);
             });
         });
     });
