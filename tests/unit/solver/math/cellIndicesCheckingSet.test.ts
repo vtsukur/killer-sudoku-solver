@@ -52,6 +52,21 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 30))).toBeFalsy();
     });
 
+    test('Cloning', () => {
+        const original = CellIndicesCheckingSet.of(1, 30, 75);
+        const cloned = original.clone();
+
+        expect(cloned).not.toBe(original);
+
+        original.add(CellIndicesCheckingSet.of(8));
+        expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
+        expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does NOT change the clone
+
+        cloned.remove(CellIndicesCheckingSet.of(1));
+        expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
+        expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does NOT change the clone
+    });
+
     const expectSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
     };
