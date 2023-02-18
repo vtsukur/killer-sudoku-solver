@@ -262,4 +262,5 @@ export class CellIndicesCheckingSet implements
         val._bitStores[2] = this._bitStores[2];
         return val;
     }
+
 }

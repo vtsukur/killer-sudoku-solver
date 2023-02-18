@@ -94,6 +94,7 @@ export class SumAddendsCombinatorics {
         const key = precomputeKey(sum, addendCount);
         return PRECOMPUTED.get(key) as SumAddendsCombinatorics;
     }
+
 }
 
 const precomputeKey = (sum: number, numCount: number) => {

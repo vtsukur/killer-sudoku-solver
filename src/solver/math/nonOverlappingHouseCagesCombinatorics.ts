@@ -104,6 +104,7 @@ export class NonOverlappingHouseCagesCombinatorics {
     static enumerateCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
         return CAGE_COUNT_BASED_STRATEGIES[houseCagesAreaModel.cages.length](houseCagesAreaModel);
     }
+
 };
 
 /**
@@ -275,6 +276,7 @@ type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
  * Data context for full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms}.
  */
 class Context implements NonOverlappingHouseCagesCombinatorics {
+
     readonly houseCagesCombos: Array<Array<Combo>>;
     readonly houseCagesPerms = new Array<ReadonlyCombos>();
 
@@ -363,4 +365,5 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             }
         }
     };
+
 }

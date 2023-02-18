@@ -8,6 +8,7 @@ import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombi
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 
 export class HouseSumCombosAndPerms {
+
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
     readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
     readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
@@ -19,6 +20,7 @@ export class HouseSumCombosAndPerms {
         this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
         this.actualSumCombos = actualSumCombos;
     }
+
 }
 
 export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPerms {

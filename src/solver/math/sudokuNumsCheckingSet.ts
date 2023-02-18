@@ -245,4 +245,5 @@ export class SudokuNumsCheckingSet implements
     clone() {
         return new SudokuNumsCheckingSet(this._bitStore);
     }
+
 }
