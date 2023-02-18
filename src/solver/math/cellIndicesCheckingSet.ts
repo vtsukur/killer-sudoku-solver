@@ -251,6 +251,9 @@ export class CellIndicesCheckingSet implements
             this._bitStores[2] === val.bitStores[2];
     }
 
+    /**
+     * @see {NumsCheckingSet.clone}
+     */
     clone() {
         const val = new CellIndicesCheckingSet();
         val._bitStores[0] = this._bitStores[0];

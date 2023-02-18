@@ -95,4 +95,11 @@ export interface NumsCheckingSet<
      * @returns This checking numbers set.
      */
     remove(val: ROSET): MUSET;
+
+    /**
+     * Clones this checking numbers set by creating new instance based on the copy of the state of this set.
+     *
+     * @returns new checking numbers set based on the copy of the state of this set.
+     */
+    clone(): MUSET;
 }
