@@ -5,6 +5,45 @@ import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 
+export class GridAreaModel {
+
+    readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
+    readonly overlappingCages: ReadonlyCages;
+
+    constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
+        this.nonOverlappingCagesAreaModel = nonOverlappingCagesAreaModel;
+        this.overlappingCages = overlappingCages;
+    }
+
+    /**
+     * Finds maximum area of _non-overlapping_ {@link Cage}s for the given {@link Cage}s.
+     *
+     * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
+     * which are also present in other {@link Cage}s of the same {@link GridAreaModel}.
+     *
+     * For performance reasons {@link Cage}s which have `{@link Cage.input} === true`
+     * are always marked as non-overlapping collection even it will result in finding smaller area.
+     *
+     * @param cages - {@link Cage}s within the {@link GridAreaModel} to find maximum area for.
+     * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
+     * Used to calculate possible upper bound of maximum area which is `{@link House.CELL_COUNT} * houseCount`.
+     *
+     * @returns Container holding two collections:
+     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
+     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+     */
+    static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
+        if (!cages.length) {
+            return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+                [], 0, CellIndicesCheckingSet.of()
+            ), []);
+        }
+
+        return work(cages, houseCount);
+    }
+
+}
+
 /**
  * Group of _non-overlapping_ {@link Cage}s on the {@link Grid}.
  *
@@ -68,45 +107,6 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
     has(cell: Cell) {
         // Use of `ReadonlyCellIndicesCheckingSet` enables extremely fast performance of the check.
         return this._cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
-    }
-
-}
-
-export class GridAreaModel {
-
-    readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
-    readonly overlappingCages: ReadonlyCages;
-
-    constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
-        this.nonOverlappingCagesAreaModel = nonOverlappingCagesAreaModel;
-        this.overlappingCages = overlappingCages;
-    }
-
-    /**
-     * Finds maximum area of _non-overlapping_ {@link Cage}s for the given {@link Cage}s.
-     *
-     * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s of the same {@link GridAreaModel}.
-     *
-     * For performance reasons {@link Cage}s which have `{@link Cage.input} === true`
-     * are always marked as non-overlapping collection even it will result in finding smaller area.
-     *
-     * @param cages - {@link Cage}s within the {@link GridAreaModel} to find maximum area for.
-     * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
-     * Used to calculate possible upper bound of maximum area which is `{@link House.CELL_COUNT} * houseCount`.
-     *
-     * @returns Container holding two collections:
-     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area;
-     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
-     */
-    static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
-        if (!cages.length) {
-            return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-                [], 0, CellIndicesCheckingSet.of()
-            ), []);
-        }
-
-        return work(cages, houseCount);
     }
 
 }
