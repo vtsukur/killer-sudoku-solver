@@ -294,7 +294,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         Context.newEnumerationPipelines(House.CELL_COUNT, Context.newEnumerationPipelineForIncompleteHouse);
 
     private static newEnumerationPipelines(cellCount: number, newEnumerationPipelineFn: (cageCount: number) => EnumerationPipeline) {
-        return CachedNumRanges.ZERO_TO_N_LT_81[cellCount].map(cageCount => {
+        return CachedNumRanges.ZERO_TO_N_LTE_81[cellCount].map(cageCount => {
             return cageCount < 2 ? [] : newEnumerationPipelineFn(cageCount);
         });
     }
@@ -305,7 +305,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const lastStepIndex = cageCount - 1;
 
         pipeline[0] = enumerateRecursively_step0;
-        for (const step of CachedNumRanges.ONE_TO_N_LT_10[lastStepIndex]) {
+        for (const step of CachedNumRanges.ONE_TO_N_LTE_10[lastStepIndex]) {
             pipeline[step] = enumerateRecursively_step1PlusButNotLast;
         };
         pipeline[lastStepIndex] = enumerateRecursively_stepLastWithShortCircuitedPermCapture;
@@ -318,7 +318,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const pipeline = new Array<EnumerationStepFunction>(cageCount + 1);
 
         pipeline[0] = enumerateRecursively_step0;
-        for (const step of CachedNumRanges.ONE_TO_N_LT_10[cageCount]) {
+        for (const step of CachedNumRanges.ONE_TO_N_LTE_10[cageCount]) {
             pipeline[step] = enumerateRecursively_step1PlusButNotLast;
         };
         pipeline[cageCount] = enumerateRecursively_stepLastWithPermCaptureAndComboMark;
@@ -332,7 +332,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
 
         this.houseCagesCombos = new Array(cageCount);
         this.allCageCombos = cages.map(cage => SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount));
-        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LT_81[cageCount];
+        this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
         const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;

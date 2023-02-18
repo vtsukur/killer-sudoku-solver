@@ -32,7 +32,7 @@ export class Grid {
     /**
      * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
      */
-    static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LT_81[this.CELL_COUNT];
+    static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
     /**
      * Total sum of all numbers in a `Grid`.

@@ -21,7 +21,7 @@ export class SudokuNums {
      * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
      * in the form of readonly array.
      */
-    static readonly RANGE = CachedNumRanges.ONE_TO_N_LT_10[this.MAX + 1];
+    static readonly RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX + 1];
 
     /* istanbul ignore next */
     private constructor() {
