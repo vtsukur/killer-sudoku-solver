@@ -5,9 +5,31 @@ import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 
+/**
+ * Area on the {@link Grid} defined by a group of {@link Cage}s.
+ *
+ * Upon construction of the area instance, {@link Cage}s are divided into two collections:
+ *
+ *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
+ * Defined by {@link nonOverlappingCagesAreaModel}.
+ *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+ * Defined by {@link overlappingCages}.
+ *
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
+ * which are also present in other {@link Cage}s of the same {@link Grid}.
+ *
+ * @public
+ */
 export class GridAreaModel {
 
+    /**
+     * Area of _non-overlapping_ {@link Cage}s on the {@link Grid}.
+     */
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
+
+    /**
+     * {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
+     */
     readonly overlappingCages: ReadonlyCages;
 
     constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
@@ -45,7 +67,7 @@ export class GridAreaModel {
 }
 
 /**
- * Group of _non-overlapping_ {@link Cage}s on the {@link Grid}.
+ * Area of _non-overlapping_ {@link Cage}s on the {@link Grid}.
  *
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
  * which are also present in other {@link Cage}s of the same {@link Grid}.
