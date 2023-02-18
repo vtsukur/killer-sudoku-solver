@@ -9,7 +9,7 @@ describe('Sets tests', () => {
         const set = new Set<number>();
 
         set.add(1);
-        Sets.U(set, [ 2, 3 ]);
+        expect(Sets.U(set, [ 2, 3 ])).toBe(set);
         Sets.U(set, [ 4, 5 ]);
 
         expect(set).toEqual(new Set([ 1, 2, 3, 4, 5 ]));
@@ -18,7 +18,7 @@ describe('Sets tests', () => {
     test('Removing `Iterable` values from the Set', () => {
         const set = new Set<number>([ 1, 2, 3, 4, 5 ]);
 
-        Sets._(set, [ 2, 3 ]);
+        expect(Sets._(set, [ 2, 3 ])).toBe(set);
 
         expect(set).toEqual(new Set([ 1, 4, 5 ]));
     });

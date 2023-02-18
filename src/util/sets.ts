@@ -47,6 +47,8 @@ export class Sets {
      *
      * @param target - `Set` to which values are to be added.
      * @param uniteWith - `Iterable` of values to be added to the `target` Set.
+     *
+     * @returns `target` `Set` to which values have been supposedly added.
      */
     static U<T>(target: Set<T>, uniteWith: Iterable<T>) {
         for (const oneOf of uniteWith) {
@@ -65,11 +67,14 @@ export class Sets {
      *
      * @param target - `Set` from which values are to deleted.
      * @param uniteWith - `Iterable` of values to be deleted from the `target` Set.
+     *
+     * @returns `target` `Set` to which values have been supposedly added.
      */
     static _<T>(target: Set<T>, differentiateWith: Iterable<T>) {
         for (const oneOf of differentiateWith) {
             target.delete(oneOf);
         }
+        return target;
     }
 
     /**
