@@ -15,10 +15,38 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../ma
  */
 export interface NonOverlappingCagesAreaModel {
 
+    /**
+     * _Non-overlapping_ {@link Cage}s on the {@link Grid} which are a part of this area.
+     *
+     * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
+     * which are also present in other {@link Cage}s of the same {@link Grid}.
+     */
     readonly cages: ReadonlyCages;
+
+    /**
+     * Amount of {@link Cell}s in all _non-overlapping_ {@link cages} of this area.
+     */
     readonly cellCount: number;
+
+    /**
+     * Checking set of {@link Cell} indices which has
+     * {@link Cell}s of all _non-overlapping_ {@link cages} of this area marked as included.
+     */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
+
+    /**
+     * Sum of all _non-overlapping_ {@link cages} in this area.
+     */
     readonly sum: number;
+
+    /**
+     * Checks whether the given {@link Cell} is a part of _non-overlapping_ {@link cages} of this area.
+     *
+     * @param cell - {@link Cell} to check for being a part of _non-overlapping_ {@link cages} of this area.
+     *
+     * @returns `true` if the given {@link Cell} is a part of _non-overlapping_ {@link cages} of this area;
+     * otherwise `false`.
+     */
     has(cell: Cell): boolean;
 
 }
