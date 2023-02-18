@@ -1,8 +1,18 @@
 import { Cage, ReadonlyCages } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 
+/**
+ * Group of _non-overlapping_ {@link Cage}s on the {@link Grid}.
+ *
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
+ * which are also present in other {@link Cage}s of the same {@link Grid}.
+ *
+ * @public
+ */
 export interface NonOverlappingCagesAreaModel {
 
     readonly cages: ReadonlyCages;
