@@ -5,7 +5,7 @@ import { CachedNumRanges } from '../solver/math/cachedNumRanges';
  *
  * @public
  */
-export class SudokuNumbers {
+export class SudokuNums {
 
     /**
      * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
