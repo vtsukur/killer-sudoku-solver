@@ -184,11 +184,10 @@ describe('Unit tests for `GridAreaModel`', () => {
 });
 
 export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages) => {
-    const nonOverlappingCagesAreaModelCellCount = nonOverlappingCages.reduce((prev, current) => prev + current.cellCount, 0);
-    const nonOverlappingCagesAreaModelCellIndicesCheckingSet = nonOverlappingCages.reduce((prev, current) => {
-        prev.add(current.cellIndicesCheckingSet);
-        return prev;
-    }, new CellIndicesCheckingSet());
+    const nonOverlappingCagesAreaModelCellCount = nonOverlappingCages.reduce(
+        (prev, current) => prev + current.cellCount, 0);
+    const nonOverlappingCagesAreaModelCellIndicesCheckingSet = nonOverlappingCages.reduce(
+        (prev, current) => prev.add(current.cellIndicesCheckingSet), new CellIndicesCheckingSet());
 
     expect(gridAreaModel).toEqual(expect.objectContaining({
         nonOverlappingCagesAreaModel: {
