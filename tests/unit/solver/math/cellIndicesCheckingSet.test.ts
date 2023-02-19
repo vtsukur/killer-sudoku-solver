@@ -47,6 +47,17 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
     });
 
+    test('Checking with `doesNotHave`', () => {
+        const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
+        expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
+        expect(numsCheckingSet.doesNotHave(2)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(29)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(30)).toBeFalsy();
+        expect(numsCheckingSet.doesNotHave(45)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(75)).toBeFalsy();
+        expect(numsCheckingSet.doesNotHave(80)).toBeTruthy();
+    });
+
     test('Checking equality', () => {
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 75))).toBeTruthy();
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 30))).toBeFalsy();
