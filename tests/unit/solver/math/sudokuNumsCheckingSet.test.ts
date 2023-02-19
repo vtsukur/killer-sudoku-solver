@@ -48,6 +48,19 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
     });
 
+    test('Checking with `doesNotHave`', () => {
+        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
+        expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
+        expect(numsCheckingSet.doesNotHave(2)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(3)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(4)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(5)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(6)).toBeFalsy();
+        expect(numsCheckingSet.doesNotHave(7)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(8)).toBeTruthy();
+        expect(numsCheckingSet.doesNotHave(9)).toBeFalsy();
+    });
+
     test('Instance of `SudokuNumsCheckingSet` with remaining numbers', () => {
         expect(SudokuNumsCheckingSet.newEmpty().remaining.bitStore).toBe(
             SudokuNumsCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore
