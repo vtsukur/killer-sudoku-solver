@@ -20,7 +20,7 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../ma
  *
  * @public
  */
-export class GridAreaModel {
+export interface GridAreaModel {
 
     /**
      * Area of _non-overlapping_ {@link Cage}s on the {@link Grid}.
@@ -32,10 +32,19 @@ export class GridAreaModel {
      */
     readonly overlappingCages: ReadonlyCages;
 
-    constructor(nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel, overlappingCages: ReadonlyCages) {
-        this.nonOverlappingCagesAreaModel = nonOverlappingCagesAreaModel;
-        this.overlappingCages = overlappingCages;
-    }
+}
+
+/**
+ * Area on the {@link Grid} defined by a group of {@link Cage}s
+ * with static factory method {@link from}.
+ *
+ * @public
+ */
+export class GridAreaModel implements GridAreaModel {
+
+    private constructor(
+        readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel,
+        readonly overlappingCages: ReadonlyCages) {}
 
     /**
      * Constructs new area on the {@link Grid} defined by a group of the given {@link Cage}s.
@@ -175,9 +184,12 @@ const work = (cages: ReadonlyCages, n: number) => {
     }
 
     if (usedCellCount === absMaxAreaCellCount) {
-        return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            inputCages, usedCellCount, usedCellIndices
-        ), derivedCages);
+        return {
+            nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+                inputCages, usedCellCount, usedCellIndices
+            ),
+            overlappingCages: derivedCages
+        };
     } else {
         const nonOverlappingDerivedCages = derivedCages.filter(cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
         const ctx: Context = {
@@ -197,9 +209,12 @@ const work = (cages: ReadonlyCages, n: number) => {
         const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
         const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
 
-        return new GridAreaModel(new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
-        ), cagesOfOverlappingRegion);
+        return {
+            nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+                cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
+            ),
+            overlappingCages: cagesOfOverlappingRegion
+        };
     }
 };
 
