@@ -182,6 +182,10 @@ describe('Unit tests for `GridAreaModel`', () => {
             ]
         );
     });
+
+    test('Segmentation of no `Cage`s', () => {
+        expectGridAreaModel(GridAreaModel.from([]), [], []);
+    });
 });
 
 export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages) => {
