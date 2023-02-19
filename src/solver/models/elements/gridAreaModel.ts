@@ -188,14 +188,14 @@ const splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): GridAreaM
         }
     }
 
-    const inputCagesCellsIndices = CellIndicesCheckingSet.of();
+    const inputCagesCellIndices = CellIndicesCheckingSet.of();
     for (const inputCage of inputCages) {
-        inputCagesCellsIndices.add(inputCage.cellIndicesCheckingSet);
+        inputCagesCellIndices.add(inputCage.cellIndicesCheckingSet);
     }
 
     return {
         nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            inputCages, inputCagesCellCount, inputCagesCellsIndices
+            inputCages, inputCagesCellCount, inputCagesCellIndices
         ),
         overlappingCages: derivedCages
     };
