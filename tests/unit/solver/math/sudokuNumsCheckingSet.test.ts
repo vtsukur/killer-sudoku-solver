@@ -9,10 +9,6 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.of(2, 4, 5), [ 2, 4, 5 ]);
     });
 
-    test('Construction of empty `SudokuNumsCheckingSet` using constructor', () => {
-        expectSetWithValues(new SudokuNumsCheckingSet(), []);
-    });
-
     test('Construction of empty `SudokuNumsCheckingSet` using `of` static factory method', () => {
         expectSetWithValues(SudokuNumsCheckingSet.of(), []);
     });
@@ -64,6 +60,36 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     test('Cloning', () => {
         const original = SudokuNumsCheckingSet.of(1, 9);
         const cloned = original.clone();
+
+        expect(cloned).not.toBe(original);
+
+        original.add(SudokuNumsCheckingSet.of(8));
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+
+        cloned.remove(SudokuNumsCheckingSet.of(1));
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+    });
+
+    test('Cloning using `clone`', () => {
+        const original = SudokuNumsCheckingSet.of(1, 9);
+        const cloned = original.clone();
+
+        expect(cloned).not.toBe(original);
+
+        original.add(SudokuNumsCheckingSet.of(8));
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+
+        cloned.remove(SudokuNumsCheckingSet.of(1));
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+    });
+
+    test('Cloning using constructor', () => {
+        const original = SudokuNumsCheckingSet.of(1, 9);
+        const cloned = new SudokuNumsCheckingSet(original.bitStore);
 
         expect(cloned).not.toBe(original);
 

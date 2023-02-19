@@ -285,7 +285,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
-    readonly usedNums = new SudokuNumsCheckingSet();
+    readonly usedNums = SudokuNumsCheckingSet.of();
 
     // caching enumeration pipelines improves performance by around 5-10%
     private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
