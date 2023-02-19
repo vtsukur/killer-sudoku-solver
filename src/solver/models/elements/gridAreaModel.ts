@@ -213,7 +213,7 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, abs
 };
 
 const stage3_maximizeNonOverlappingArea = (cages: ReadonlyCages, ctx: Context): GridAreaModel => {
-    recursiveWork(0, ctx);
+    stage4_recursiveInclusionExclusion(0, ctx);
 
     const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
     const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
@@ -226,7 +226,7 @@ const stage3_maximizeNonOverlappingArea = (cages: ReadonlyCages, ctx: Context): 
     };
 };
 
-const recursiveWork = (step: number, ctx: Context) => {
+const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
     if (ctx.usedCellCount > ctx.absMaxAreaCellCount) {
         return;
     } else if (ctx.usedCellCount > ctx.maxAreaCellCount) {
@@ -251,7 +251,7 @@ const recursiveWork = (step: number, ctx: Context) => {
         ctx.usedCellIndices.add(cage.cellIndicesCheckingSet);
         ctx.usedCages.add(cage);
         ctx.usedCellCount += cage.cellCount;
-        recursiveWork(step + 1, ctx);
+        stage4_recursiveInclusionExclusion(step + 1, ctx);
         if (ctx.found) return;
 
         // without cage / recursively
@@ -260,6 +260,6 @@ const recursiveWork = (step: number, ctx: Context) => {
         ctx.usedCellCount -= cage.cellCount;
     }
 
-    recursiveWork(step + 1, ctx);
+    stage4_recursiveInclusionExclusion(step + 1, ctx);
     if (ctx.found) return;
 };
