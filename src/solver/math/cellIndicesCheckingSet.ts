@@ -181,6 +181,14 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
+     * @see {ReadonlyNumsCheckingSet.doesNotHave}
+     */
+    doesNotHave(val: number) {
+        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+        return (this._bitStores[entry.bitStoreIndex] & (1 << entry.bitPosition)) === 0;
+    }
+
+    /**
      * @see {ReadonlyNumsCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {

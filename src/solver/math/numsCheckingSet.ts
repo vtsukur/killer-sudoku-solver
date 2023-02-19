@@ -32,6 +32,15 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
     hasAll(val: T): boolean;
 
     /**
+     * Checks if this set does NOT have the given number.
+     *
+     * @param val - The number to check.
+     *
+     * @returns `true` if this checking set does NOT have the given number; otherwise `false`.
+     */
+    doesNotHave(val: number): boolean;
+
+    /**
      * Checks if this set does NOT have any numbers from another checking set.
      *
      * @param val - Another set to check against.

@@ -154,6 +154,13 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
+     * @see {ReadonlyNumsCheckingSet.doesNotHave}
+     */
+    doesNotHave(val: number) {
+        return (this._bitStore & (1 << val)) === 0;
+    }
+
+    /**
      * @see {ReadonlySudokuNumsCheckingSet.doesNotHaveAny}
      */
     doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
