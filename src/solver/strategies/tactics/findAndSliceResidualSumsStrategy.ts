@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
+import { CellIndicesCheckingSet } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { MasterModel } from '../../models/masterModel';
@@ -59,7 +60,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
         const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIndex, rightIndexExclusive).forEach(index => {
             for (const { row, col } of cellIteratorFn(index)) {
-                if (!cagesAreaModel.nonOverlappingCagesAreaModel.has(Cell.at(row, col))) {
+                if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndicesCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(Cell.at(row, col).index))) {
                     residualCageBuilder.withCell(Cell.at(row, col));
                 }
             }

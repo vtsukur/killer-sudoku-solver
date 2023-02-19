@@ -1,4 +1,5 @@
 import { Cage, ReadonlyCages } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
@@ -36,16 +37,6 @@ export interface NonOverlappingCagesAreaModel {
      */
     readonly sum: number;
 
-    /**
-     * Checks whether the given {@link Cell} is a part of _non-overlapping_ {@link cages} of this area.
-     *
-     * @param cell - {@link Cell} to check for being a part of _non-overlapping_ {@link cages} of this area.
-     *
-     * @returns `true` if the given {@link Cell} is a part of _non-overlapping_ {@link cages} of this area;
-     * otherwise `false`.
-     */
-    has(cell: Cell): boolean;
-
 }
 
 class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappingCagesAreaModel {
@@ -62,11 +53,6 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
         // Lazy initialization is used instead of precomputation
         // since many usages of the area model does NOT need sum at all.
         return this._sum === 0 ? this._sum = this.cages.reduce((prev, current) => prev + current.sum, 0) : this._sum;
-    }
-
-    has(cell: Cell) {
-        // Use of `ReadonlyCellIndicesCheckingSet` enables extremely fast check.
-        return this.cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
 
 }
