@@ -195,15 +195,17 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, abs
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
+        const inputCages = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages;
+        const inputCagesCellCount = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount;
         return stage3_maximizeNonOverlappingArea(cages, {
             allCages: derivedCagesWithNoObviousOverlap,
-            absMaxAreaCellCount: absMaxAreaCellCount,
+            absMaxAreaCellCount,
             cageCount: derivedCagesWithNoObviousOverlap.length,
-            usedCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
+            usedCages: new Set(inputCages),
             usedCellIndices: new CellIndicesCheckingSet(usedCellIndices),
-            usedCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
-            maxAreaCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
-            maxAreaCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
+            usedCellCount: inputCagesCellCount,
+            maxAreaCages: new Set(inputCages),
+            maxAreaCellCount: inputCagesCellCount,
             maxAreaCellIndices: usedCellIndices,
             found: false
         });
