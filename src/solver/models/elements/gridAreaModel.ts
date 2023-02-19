@@ -160,8 +160,8 @@ type Context = {
     found: boolean
 };
 
-const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, n: number): GridAreaModel => {
-    const absMaxAreaCellCount = n * House.CELL_COUNT;
+const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
+    const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
     const inputCages = new Array<Cage>(cages.length);
     const derivedCages = new Array<Cage>(cages.length);
     let usedCellCount = 0;
