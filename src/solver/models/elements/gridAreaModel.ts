@@ -133,7 +133,7 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
     }
 
     has(cell: Cell) {
-        // Use of `ReadonlyCellIndicesCheckingSet` enables extremely fast performance of the check.
+        // Use of `ReadonlyCellIndicesCheckingSet` enables extremely fast check.
         return this._cellIndicesCheckingSet.hasAll(CellIndicesCheckingSet.of(cell.index));
     }
 
