@@ -142,7 +142,7 @@ export class GridAreaModel implements GridAreaModel {
      * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
-        return cages.length !== 0 ? work(cages, houseCount) : this._EMPTY;
+        return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY;
     }
 
 }
@@ -160,7 +160,7 @@ type Context = {
     found: boolean
 };
 
-const work = (cages: ReadonlyCages, n: number) => {
+const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, n: number): GridAreaModel => {
     const absMaxAreaCellCount = n * House.CELL_COUNT;
     const inputCages = new Array<Cage>(cages.length);
     const derivedCages = new Array<Cage>(cages.length);
