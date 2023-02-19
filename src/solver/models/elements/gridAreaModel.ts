@@ -160,8 +160,7 @@ type Context = {
     found: boolean
 };
 
-const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
-    const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
+const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
     const inputCages = new Array<Cage>(cages.length);
     const derivedCages = new Array<Cage>(cages.length);
     let usedCellCount = 0;
@@ -176,11 +175,21 @@ const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCo
     }
     inputCages.length = i;
     derivedCages.length = j;
-
     const usedCellIndices = new CellIndicesCheckingSet();
     for (const inputCage of inputCages) {
         usedCellIndices.add(inputCage.cellIndicesCheckingSet);
     }
+    return {
+        inputCages,
+        derivedCages,
+        usedCellCount,
+        usedCellIndices
+    };
+};
+
+const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
+    const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
+    const { inputCages, derivedCages, usedCellCount, usedCellIndices } = splitCagesIntoInputAndDerived(cages);
 
     if (usedCellCount === absMaxAreaCellCount) {
         return {
