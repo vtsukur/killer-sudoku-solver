@@ -12,7 +12,7 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../ma
  *
  *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
  * Defined by {@link nonOverlappingCagesAreaModel}.
- *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+ *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
  * Defined by {@link overlappingCages}.
  *
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
@@ -44,7 +44,7 @@ export class GridAreaModel {
      *
      *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
      * Defined by {@link nonOverlappingCagesAreaModel}.
-     *  - {@link Cage}s which overlap with the area formed by _non-overlapping_ {@link Cage}s.
+     *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
      * Defined by {@link overlappingCages}.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
@@ -56,7 +56,7 @@ export class GridAreaModel {
      *
      * @param cages - {@link Cage}s to construct this {@link GridAreaModel} from.
      * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
-     * Used to calculate possible upper bound of maximum area which is `{@link House.CELL_COUNT} * houseCount`.
+     * Used to calculate possible upper bound of maximum area which is `House.CELL_COUNT * houseCount`.
      *
      * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
