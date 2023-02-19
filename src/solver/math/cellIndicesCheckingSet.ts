@@ -66,17 +66,18 @@ export class CellIndicesCheckingSet implements
     });
 
     /**
-     * Constructs new checking set from the unique numbers in the given array.
+     * Constructs new checking set from the unique numbers in the given array
+     * or from another {@link ReadonlyCellIndicesCheckingSet}.
      *
      * In case array is specified, only unique numbers are added to the checking set.
      * Number duplicates are silently ignored.
      *
      * Checking set is constructed as empty if no numbers are given.
      *
-     * @param val - Array of numbers to construct this checking set from.
+     * @param val - Readonly array of numbers or {@link ReadonlyCellIndicesCheckingSet} to construct this checking set from.
      */
-    constructor(val?: ReadonlyArray<number>) {
-        if (val) {
+    constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesCheckingSet) {
+        if (Array.isArray(val)) {
             for (const num of val) {
                 const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[num];
 
@@ -95,6 +96,11 @@ export class CellIndicesCheckingSet implements
                 //
                 this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
             }
+        } else {
+            const anotherSet = val as ReadonlyCellIndicesCheckingSet;
+            this._bitStores[0] = anotherSet.bitStores[0];
+            this._bitStores[1] = anotherSet.bitStores[1];
+            this._bitStores[2] = anotherSet.bitStores[2];
         }
     }
 
@@ -255,11 +261,7 @@ export class CellIndicesCheckingSet implements
      * @see {NumsCheckingSet.clone}
      */
     clone() {
-        const val = new CellIndicesCheckingSet();
-        val._bitStores[0] = this._bitStores[0];
-        val._bitStores[1] = this._bitStores[1];
-        val._bitStores[2] = this._bitStores[2];
-        return val;
+        return new CellIndicesCheckingSet(this);
     }
 
 }

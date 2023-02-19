@@ -188,7 +188,7 @@ const splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): GridAreaM
         }
     }
 
-    const inputCagesCellsIndices = new CellIndicesCheckingSet();
+    const inputCagesCellsIndices = CellIndicesCheckingSet.of();
     for (const inputCage of inputCages) {
         inputCagesCellsIndices.add(inputCage.cellIndicesCheckingSet);
     }
@@ -208,7 +208,7 @@ const computeGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, abs
         absMaxAreaCellCount: absMaxAreaCellCount,
         cageCount: nonOverlappingDerivedCages.length,
         usedCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
-        usedCellIndices: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet as CellIndicesCheckingSet,
+        usedCellIndices: new CellIndicesCheckingSet(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet),
         usedCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
         maxAreaCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
         maxAreaCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,

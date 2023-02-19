@@ -9,10 +9,6 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(CellIndicesCheckingSet.of(1, 30, 75), [ 1, 30, 75 ]);
     });
 
-    test('Construction of empty `CellIndicesCheckingSet` using constructor', () => {
-        expectSetWithValues(new CellIndicesCheckingSet(), []);
-    });
-
     test('Construction of empty `CellIndicesCheckingSet` using `of` static factory method', () => {
         expectSetWithValues(CellIndicesCheckingSet.of(), []);
     });
@@ -52,9 +48,24 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 30))).toBeFalsy();
     });
 
-    test('Cloning', () => {
+    test('Cloning using `clone`', () => {
         const original = CellIndicesCheckingSet.of(1, 30, 75);
         const cloned = original.clone();
+
+        expect(cloned).not.toBe(original);
+
+        original.add(CellIndicesCheckingSet.of(8));
+        expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
+        expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does NOT change the clone
+
+        cloned.remove(CellIndicesCheckingSet.of(1));
+        expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
+        expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does NOT change the clone
+    });
+
+    test('Cloning using constructor', () => {
+        const original = CellIndicesCheckingSet.of(1, 30, 75);
+        const cloned = new CellIndicesCheckingSet(original);
 
         expect(cloned).not.toBe(original);
 
