@@ -52,16 +52,18 @@ export class SudokuNumsCheckingSet implements
     private _bitStore = 0;
 
     /**
-     * Constructs new checking set from the unique numbers in the given array or from the {@link BitStore32}.
+     * Constructs new checking set from the unique numbers in the given array
+     * or from another {@link ReadonlySudokuNumsCheckingSet} or from the {@link BitStore32}.
      *
      * In case array is specified, only unique numbers are added to the checking set.
      * Number duplicates are silently ignored.
      *
      * Checking set is constructed as empty if no numbers are given.
      *
-     * @param val - Readonly array of numbers or {@link BitStore32} to construct this checking set from.
+     * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsCheckingSet}
+     * or {@link BitStore32} to construct this checking set from.
      */
-    constructor(val: ReadonlyArray<number> | BitStore32) {
+    constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsCheckingSet | BitStore32) {
         if (Array.isArray(val)) {
             for (const num of val) {
                 //
@@ -77,8 +79,10 @@ export class SudokuNumsCheckingSet implements
                 //
                 this._bitStore |= 1 << num;
             }
+        } else if (typeof val === 'number') {
+            this._bitStore = val;
         } else {
-            this._bitStore = val as BitStore32;
+            this._bitStore = (val as ReadonlySudokuNumsCheckingSet).bitStore;
         }
     }
 
