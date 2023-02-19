@@ -160,34 +160,6 @@ type Context = {
     found: boolean
 };
 
-const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
-    const inputCages = new Array<Cage>();
-    let inputCagesCellCount = 0;
-
-    const derivedCages = new Array<Cage>();
-
-    for (const cage of cages) {
-        if (cage.isInput) {
-            inputCages.push(cage);
-            inputCagesCellCount += cage.cells.length;
-        } else {
-            derivedCages.push(cage);
-        }
-    }
-
-    const inputCagesCellsIndices = new CellIndicesCheckingSet();
-    for (const inputCage of inputCages) {
-        inputCagesCellsIndices.add(inputCage.cellIndicesCheckingSet);
-    }
-
-    return {
-        inputCages,
-        inputCagesCellCount,
-        inputCagesCellsIndices,
-        derivedCages,
-    };
-};
-
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
     const { inputCages, inputCagesCellCount, inputCagesCellsIndices, derivedCages } = splitCagesIntoInputAndDerived(cages);
@@ -225,6 +197,34 @@ const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCo
             overlappingCages: cagesOfOverlappingRegion
         };
     }
+};
+
+const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
+    const inputCages = new Array<Cage>();
+    let inputCagesCellCount = 0;
+
+    const derivedCages = new Array<Cage>();
+
+    for (const cage of cages) {
+        if (cage.isInput) {
+            inputCages.push(cage);
+            inputCagesCellCount += cage.cells.length;
+        } else {
+            derivedCages.push(cage);
+        }
+    }
+
+    const inputCagesCellsIndices = new CellIndicesCheckingSet();
+    for (const inputCage of inputCages) {
+        inputCagesCellsIndices.add(inputCage.cellIndicesCheckingSet);
+    }
+
+    return {
+        inputCages,
+        inputCagesCellCount,
+        inputCagesCellsIndices,
+        derivedCages,
+    };
 };
 
 const recursiveWork = (step: number, ctx: Context) => {
