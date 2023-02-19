@@ -169,17 +169,17 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): Gr
 
     const derivedCages = new Array<Cage>();
 
+    const inputCagesCellIndices = CellIndicesCheckingSet.newEmpty();
     for (const cage of cages) {
         if (cage.isInput) {
             inputCages.push(cage);
+            inputCagesCellIndices.add(cage.cellIndicesCheckingSet);
             inputCagesCellCount += cage.cells.length;
         } else {
             derivedCages.push(cage);
         }
     }
 
-    const inputCagesCellIndices = inputCages.reduce(
-        (prev, current) => prev.add(current.cellIndicesCheckingSet), CellIndicesCheckingSet.newEmpty());
     return {
         nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
             inputCages, inputCagesCellCount, inputCagesCellIndices
