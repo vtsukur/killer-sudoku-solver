@@ -190,15 +190,15 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): Gr
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
-    const nonOverlappingDerivedCages = inputAndDerivedCagesArea.overlappingCages.filter(
+    const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
-    if (nonOverlappingDerivedCages.length === 0) {
+    if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
         return stage3_maximizeNonOverlappingArea(cages, {
-            allCages: nonOverlappingDerivedCages,
+            allCages: derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount: absMaxAreaCellCount,
-            cageCount: nonOverlappingDerivedCages.length,
+            cageCount: derivedCagesWithNoObviousOverlap.length,
             usedCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
             usedCellIndices: new CellIndicesCheckingSet(usedCellIndices),
             usedCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
