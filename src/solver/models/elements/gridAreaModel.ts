@@ -123,15 +123,13 @@ export interface NonOverlappingCagesAreaModel {
 
 class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappingCagesAreaModel {
 
-    readonly cages: ReadonlyCages;
-    readonly cellCount: number;
-
     private readonly _cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
     private _sum = 0;
 
-    constructor(cages: ReadonlyCages, cellCount: number, cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
-        this.cages = cages;
-        this.cellCount = cellCount;
+    constructor(
+            readonly cages: ReadonlyCages,
+            readonly cellCount: number,
+            cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
         this._cellIndicesCheckingSet = cellIndicesCheckingSet;
     }
 
