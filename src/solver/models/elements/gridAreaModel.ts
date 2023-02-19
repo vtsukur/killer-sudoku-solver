@@ -162,51 +162,55 @@ type Context = {
 
 const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
     const inputCages = new Array<Cage>();
+    let inputCagesCellCount = 0;
+
     const derivedCages = new Array<Cage>();
-    let usedCellCount = 0;
+
     for (const cage of cages) {
         if (cage.isInput) {
             inputCages.push(cage);
-            usedCellCount += cage.cells.length;
+            inputCagesCellCount += cage.cells.length;
         } else {
             derivedCages.push(cage);
         }
     }
-    const usedCellIndices = new CellIndicesCheckingSet();
+
+    const inputCagesCellsIndices = new CellIndicesCheckingSet();
     for (const inputCage of inputCages) {
-        usedCellIndices.add(inputCage.cellIndicesCheckingSet);
+        inputCagesCellsIndices.add(inputCage.cellIndicesCheckingSet);
     }
+
     return {
         inputCages,
+        inputCagesCellCount,
+        inputCagesCellsIndices,
         derivedCages,
-        usedCellCount,
-        usedCellIndices
     };
 };
 
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
-    const { inputCages, derivedCages, usedCellCount, usedCellIndices } = splitCagesIntoInputAndDerived(cages);
+    const { inputCages, inputCagesCellCount, inputCagesCellsIndices, derivedCages } = splitCagesIntoInputAndDerived(cages);
 
-    if (usedCellCount === absMaxAreaCellCount) {
+    if (inputCagesCellCount === absMaxAreaCellCount) {
         return {
             nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-                inputCages, usedCellCount, usedCellIndices
+                inputCages, inputCagesCellCount, inputCagesCellsIndices
             ),
             overlappingCages: derivedCages
         };
     } else {
-        const nonOverlappingDerivedCages = derivedCages.filter(cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
+        const nonOverlappingDerivedCages = derivedCages.filter(cage => inputCagesCellsIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
         const ctx: Context = {
             allCages: nonOverlappingDerivedCages,
             absMaxAreaCellCount: absMaxAreaCellCount,
             cageCount: nonOverlappingDerivedCages.length,
             usedCages: new Set(inputCages),
-            usedCellIndices,
-            usedCellCount: usedCellCount,
+            usedCellIndices: inputCagesCellsIndices,
+            usedCellCount: inputCagesCellCount,
             maxAreaCages: new Set(inputCages),
-            maxAreaCellCount: usedCellCount,
-            maxAreaCellIndices: usedCellIndices,
+            maxAreaCellCount: inputCagesCellCount,
+            maxAreaCellIndices: inputCagesCellsIndices,
             found: false
         };
         recursiveWork(0, ctx);
