@@ -13,6 +13,10 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(CellIndicesCheckingSet.of(), []);
     });
 
+    test('Construction of empty `CellIndicesCheckingSet` using `newEmpty` static factory method', () => {
+        expectSetWithValues(CellIndicesCheckingSet.newEmpty(), []);
+    });
+
     test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
 

@@ -100,7 +100,7 @@ export class GridAreaModel implements GridAreaModel {
 
     private static readonly _EMPTY = new GridAreaModel(
         new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            [], 0, CellIndicesCheckingSet.of()
+            [], 0, CellIndicesCheckingSet.newEmpty()
         ), []
     );
 

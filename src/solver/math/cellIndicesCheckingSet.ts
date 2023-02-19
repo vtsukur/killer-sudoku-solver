@@ -119,6 +119,20 @@ export class CellIndicesCheckingSet implements
         return new CellIndicesCheckingSet(val);
     }
 
+    private static readonly _EMPTY_ARRAY = [];
+
+    /**
+     * Constructs new empty checking set.
+     *
+     * This method of construction for an empty set is preferable in terms of readability, memory and performance
+     * over `CellIndicesCheckingSet.of()` as it avoids construction of an empty array argument.
+     *
+     * @returns new checking set.
+     */
+    static newEmpty() {
+        return new CellIndicesCheckingSet(this._EMPTY_ARRAY);
+    }
+
     /**
      * @see {ReadonlyCellIndicesCheckingSet.bitStores}
      */
