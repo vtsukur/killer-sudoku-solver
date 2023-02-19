@@ -189,17 +189,23 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): Gr
 };
 
 const stage2_maximizeNonOverlappingArea = (cages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
-    const nonOverlappingDerivedCages = inputAndDerivedCagesArea.overlappingCages.filter(cage => inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet.doesNotHaveAny(cage.cellIndicesCheckingSet));
+    const nonOverlappingCellIndicesCheckingSet = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
+    const nonOverlappingDerivedCages = inputAndDerivedCagesArea.overlappingCages.filter(
+        cage => nonOverlappingCellIndicesCheckingSet.doesNotHaveAny(cage.cellIndicesCheckingSet));
+    if (nonOverlappingDerivedCages.length === 0) {
+        return inputAndDerivedCagesArea;
+    }
+
     const ctx: Context = {
         allCages: nonOverlappingDerivedCages,
         absMaxAreaCellCount: absMaxAreaCellCount,
         cageCount: nonOverlappingDerivedCages.length,
         usedCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
-        usedCellIndices: new CellIndicesCheckingSet(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet),
+        usedCellIndices: new CellIndicesCheckingSet(nonOverlappingCellIndicesCheckingSet),
         usedCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
         maxAreaCages: new Set(inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages),
         maxAreaCellCount: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount,
-        maxAreaCellIndices: inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet,
+        maxAreaCellIndices: nonOverlappingCellIndicesCheckingSet,
         found: false
     };
     recursiveWork(0, ctx);
