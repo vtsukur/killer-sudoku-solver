@@ -102,6 +102,19 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
+     * Constructs new empty checking set.
+     *
+     * This method of construction for an empty set is preferable in terms of memory and performance
+     * over `SudokuNumsCheckingSet.of()` as it avoids construction of an empty array argument
+     * and array iterator in constructor.
+     *
+     * @returns new checking set from the given numbers.
+     */
+    static newEmpty() {
+        return new SudokuNumsCheckingSet(0);
+    }
+
+    /**
      * @see {ReadonlySudokuNumsCheckingSet.bitStore}
      */
     get bitStore() {

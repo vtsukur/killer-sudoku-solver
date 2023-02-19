@@ -17,6 +17,10 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.of(), []);
     });
 
+    test('Construction of empty `SudokuNumsCheckingSet` using `newEmpty` static factory method', () => {
+        expectSetWithValues(SudokuNumsCheckingSet.newEmpty(), []);
+    });
+
     test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
@@ -45,14 +49,14 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     });
 
     test('Instance of `SudokuNumsCheckingSet` with remaining numbers', () => {
-        expect(SudokuNumsCheckingSet.of().remaining.bitStore).toBe(
+        expect(SudokuNumsCheckingSet.newEmpty().remaining.bitStore).toBe(
             SudokuNumsCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore
         );
         expect(SudokuNumsCheckingSet.of(1, 2, 3).remaining.bitStore).toBe(
             SudokuNumsCheckingSet.of(4, 5, 6, 7, 8, 9).bitStore
         );
         expect(SudokuNumsCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining.bitStore).toBe(
-            SudokuNumsCheckingSet.of().bitStore
+            SudokuNumsCheckingSet.newEmpty().bitStore
         );
     });
 
