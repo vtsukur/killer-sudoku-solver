@@ -30,6 +30,10 @@ export interface NonOverlappingCagesAreaModel {
      */
     readonly cellCount: number;
 
+    /**
+     * Checking set of {@link Cell} indices which has
+     * {@link Cell}s of all _non-overlapping_ {@link cages} of this area marked as included.
+     */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 
     /**
