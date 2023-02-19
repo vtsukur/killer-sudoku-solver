@@ -160,11 +160,21 @@ type Context = {
     found: boolean
 };
 
+type InputAndDerivedCagesArea = {
+    inputCages: ReadonlyCages,
+    inputCagesCellCount: number,
+    inputCagesCellsIndices: CellIndicesCheckingSet,
+    derivedCages: ReadonlyCages
+}
+
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
-    const { inputCages, inputCagesCellCount, inputCagesCellsIndices, derivedCages } = splitCagesIntoInputAndDerived(cages);
+    const inputAndDerivedCagesArea = splitCagesIntoInputAndDerived(cages);
+    const { inputCages, inputCagesCellCount, inputCagesCellsIndices, derivedCages } = inputAndDerivedCagesArea;
 
     if (inputCagesCellCount === absMaxAreaCellCount) {
+        // If input `Cage`s cover the whole area then the maximum non-overlapping area has been already found
+        // and it consists of these input `Cage`s.
         return {
             nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
                 inputCages, inputCagesCellCount, inputCagesCellsIndices
@@ -199,7 +209,7 @@ const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCo
     }
 };
 
-const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
+const splitCagesIntoInputAndDerived = (cages: ReadonlyCages): InputAndDerivedCagesArea => {
     const inputCages = new Array<Cage>();
     let inputCagesCellCount = 0;
 
