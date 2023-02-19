@@ -162,6 +162,7 @@ type Context = {
 
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
+
     const inputAndDerivedCagesArea = splitCagesIntoInputAndDerivedCagesArea(cages);
     const { inputCages, inputCagesCellCount, inputCagesCellsIndices, derivedCages } = inputAndDerivedCagesArea;
 
@@ -175,30 +176,7 @@ const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCo
             overlappingCages: derivedCages
         };
     } else {
-        const nonOverlappingDerivedCages = derivedCages.filter(cage => inputCagesCellsIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
-        const ctx: Context = {
-            allCages: nonOverlappingDerivedCages,
-            absMaxAreaCellCount: absMaxAreaCellCount,
-            cageCount: nonOverlappingDerivedCages.length,
-            usedCages: new Set(inputCages),
-            usedCellIndices: inputCagesCellsIndices,
-            usedCellCount: inputCagesCellCount,
-            maxAreaCages: new Set(inputCages),
-            maxAreaCellCount: inputCagesCellCount,
-            maxAreaCellIndices: inputCagesCellsIndices,
-            found: false
-        };
-        recursiveWork(0, ctx);
-
-        const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
-        const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
-
-        return {
-            nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-                cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
-            ),
-            overlappingCages: cagesOfOverlappingRegion
-        };
+        return computeGridAreaModelWithMaxNonOverlappingArea(cages, absMaxAreaCellCount, inputAndDerivedCagesArea);
     }
 };
 
@@ -234,6 +212,33 @@ const splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): InputAndD
         inputCagesCellCount,
         inputCagesCellsIndices,
         derivedCages,
+    };
+};
+
+const computeGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: InputAndDerivedCagesArea): GridAreaModel => {
+    const nonOverlappingDerivedCages = inputAndDerivedCagesArea.derivedCages.filter(cage => inputAndDerivedCagesArea.inputCagesCellsIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
+    const ctx: Context = {
+        allCages: nonOverlappingDerivedCages,
+        absMaxAreaCellCount: absMaxAreaCellCount,
+        cageCount: nonOverlappingDerivedCages.length,
+        usedCages: new Set(inputAndDerivedCagesArea.inputCages),
+        usedCellIndices: inputAndDerivedCagesArea.inputCagesCellsIndices,
+        usedCellCount: inputAndDerivedCagesArea.inputCagesCellCount,
+        maxAreaCages: new Set(inputAndDerivedCagesArea.inputCages),
+        maxAreaCellCount: inputAndDerivedCagesArea.inputCagesCellCount,
+        maxAreaCellIndices: inputAndDerivedCagesArea.inputCagesCellsIndices,
+        found: false
+    };
+    recursiveWork(0, ctx);
+
+    const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
+    const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
+
+    return {
+        nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+            cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
+        ),
+        overlappingCages: cagesOfOverlappingRegion
     };
 };
 
