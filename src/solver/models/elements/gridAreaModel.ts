@@ -161,20 +161,17 @@ type Context = {
 };
 
 const splitCagesIntoInputAndDerived = (cages: ReadonlyCages) => {
-    const inputCages = new Array<Cage>(cages.length);
-    const derivedCages = new Array<Cage>(cages.length);
+    const inputCages = new Array<Cage>();
+    const derivedCages = new Array<Cage>();
     let usedCellCount = 0;
-    let i = 0, j = 0;
     for (const cage of cages) {
         if (cage.isInput) {
-            inputCages[i++] = cage;
+            inputCages.push(cage);
             usedCellCount += cage.cells.length;
         } else {
-            derivedCages[j++] = cage;
+            derivedCages.push(cage);
         }
     }
-    inputCages.length = i;
-    derivedCages.length = j;
     const usedCellIndices = new CellIndicesCheckingSet();
     for (const inputCage of inputCages) {
         usedCellIndices.add(inputCage.cellIndicesCheckingSet);
