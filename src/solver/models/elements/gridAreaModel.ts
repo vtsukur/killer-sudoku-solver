@@ -137,27 +137,27 @@ export class GridAreaModel implements GridAreaModel {
 
 }
 
-const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
+const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
 
-    const inputAndDerivedCagesArea = stage1_splitCagesIntoInputAndDerivedCagesArea(cages);
+    const inputAndDerivedCagesArea = stage1_splitCagesIntoInputAndDerivedCagesArea(allCages);
     if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === absMaxAreaCellCount) {
         // If input `Cage`s cover the whole area then the maximum non-overlapping area has been already found
         // and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
-        return stage2_preFilterAndMaximizeNonOverlappingArea(cages, absMaxAreaCellCount, inputAndDerivedCagesArea);
+        return stage2_preFilterAndMaximizeNonOverlappingArea(allCages, absMaxAreaCellCount, inputAndDerivedCagesArea);
     }
 };
 
-const stage1_splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): GridAreaModel => {
+const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages): GridAreaModel => {
     const inputCages = new Array<Cage>();
     let inputCagesCellCount = 0;
 
     const derivedCages = new Array<Cage>();
 
     const inputCagesCellIndices = CellIndicesCheckingSet.newEmpty();
-    for (const cage of cages) {
+    for (const cage of allCages) {
         if (cage.isInput) {
             inputCages.push(cage);
             inputCagesCellIndices.add(cage.cellIndicesCheckingSet);
@@ -201,14 +201,14 @@ class Context {
 
 };
 
-const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
+const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
-        return stage3_maximizeNonOverlappingArea(cages, new Context(
+        return stage3_maximizeNonOverlappingArea(allCages, new Context(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
             inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
@@ -216,11 +216,11 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, abs
     }
 };
 
-const stage3_maximizeNonOverlappingArea = (cages: ReadonlyCages, ctx: Context): GridAreaModel => {
+const stage3_maximizeNonOverlappingArea = (allCages: ReadonlyCages, ctx: Context): GridAreaModel => {
     stage4_recursiveInclusionExclusion(0, ctx);
 
     const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
-    const cagesOfOverlappingRegion = cages.filter(cage => !ctx.maxAreaCages.has(cage));
+    const cagesOfOverlappingRegion = allCages.filter(cage => !ctx.maxAreaCages.has(cage));
 
     return {
         nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
