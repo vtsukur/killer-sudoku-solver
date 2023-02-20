@@ -177,14 +177,14 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
 
 class Context {
 
-    readonly cageCount: number;
-    readonly usedCages: Set<Cage>;
-    usedCellCount: number;
-    readonly usedCellIndices: CellIndicesCheckingSet;
-    maxAreaCages: Set<Cage>;
-    maxAreaCellCount: number;
-    maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
-    found: boolean;
+    private readonly cageCount: number;
+    private readonly usedCages: Set<Cage>;
+    private usedCellCount: number;
+    private readonly usedCellIndices: CellIndicesCheckingSet;
+    private maxAreaCages: Set<Cage>;
+    private maxAreaCellCount: number;
+    private maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
+    private found: boolean;
 
     constructor(readonly cages: ReadonlyCages,
             readonly absMaxAreaCellCount: number,
