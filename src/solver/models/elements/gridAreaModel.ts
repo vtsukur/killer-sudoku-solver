@@ -256,12 +256,12 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         const cage = this.cages[step];
 
         if (this.canTakeCage(cage)) {
-            // recursively try to find new maximum WITH the current `Cage`
+            // Recursively try to find new maximum WITH the current `Cage`.
             this.takeNonOverlappingCage(cage);
             this.doFind(step + 1);
             if (this.found) return;
 
-            // recursively try to find new maximum WITHOUT the current `Cage`
+            // Recursively try to find new maximum WITHOUT the current `Cage`.
             this.removeNonOverlappingCage(cage);
         }
 
