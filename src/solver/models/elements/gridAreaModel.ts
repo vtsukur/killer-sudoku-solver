@@ -137,17 +137,30 @@ export class GridAreaModel implements GridAreaModel {
 
 }
 
-type Context = {
-    allCages: ReadonlyCages,
-    absMaxAreaCellCount: number,
-    cageCount: number,
-    usedCages: Set<Cage>,
-    usedCellIndices: CellIndicesCheckingSet,
-    usedCellCount: number,
-    maxAreaCages: Set<Cage>,
-    maxAreaCellCount: number,
-    maxAreaCellIndices: ReadonlyCellIndicesCheckingSet,
-    found: boolean
+class Context {
+
+    readonly cageCount: number;
+    readonly usedCages: Set<Cage>;
+    usedCellCount: number;
+    readonly usedCellIndices: CellIndicesCheckingSet;
+    maxAreaCages: Set<Cage>;
+    maxAreaCellCount: number;
+    maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
+    found: boolean;
+
+    constructor(readonly cages: ReadonlyCages,
+            readonly absMaxAreaCellCount: number,
+            nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel) {
+        this.cageCount = cages.length;
+        this.usedCages = new Set(nonOverlappingCagesAreaModel.cages);
+        this.usedCellCount = nonOverlappingCagesAreaModel.cellCount;
+        this.usedCellIndices = new CellIndicesCheckingSet(nonOverlappingCagesAreaModel.cellIndicesCheckingSet);
+        this.maxAreaCages = new Set(nonOverlappingCagesAreaModel.cages);
+        this.maxAreaCellCount = nonOverlappingCagesAreaModel.cellCount;
+        this.maxAreaCellIndices = nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
+        this.found = false;
+    }
+
 };
 
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
@@ -195,20 +208,11 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, abs
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
-        const inputCages = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cages;
-        const inputCagesCellCount = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount;
-        return stage3_maximizeNonOverlappingArea(cages, {
-            allCages: derivedCagesWithNoObviousOverlap,
+        return stage3_maximizeNonOverlappingArea(cages, new Context(
+            derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
-            cageCount: derivedCagesWithNoObviousOverlap.length,
-            usedCages: new Set(inputCages),
-            usedCellIndices: new CellIndicesCheckingSet(usedCellIndices),
-            usedCellCount: inputCagesCellCount,
-            maxAreaCages: new Set(inputCages),
-            maxAreaCellCount: inputCagesCellCount,
-            maxAreaCellIndices: usedCellIndices,
-            found: false
-        });
+            inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
+        ));
     }
 };
 
@@ -244,7 +248,7 @@ const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
         return;
     }
 
-    const cage = ctx.allCages[step];
+    const cage = ctx.cages[step];
 
     if (ctx.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet)) {
         // with cage / recursively
