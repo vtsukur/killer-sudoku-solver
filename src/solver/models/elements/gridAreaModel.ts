@@ -248,6 +248,10 @@ class Context {
         this.usedCellCount -= cage.cellCount;
     }
 
+    get isFound() {
+        return this.found;
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -293,12 +297,12 @@ const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
         // with cage / recursively
         ctx.takeCageToNonOverlappingArea(cage);
         stage4_recursiveInclusionExclusion(step + 1, ctx);
-        if (ctx.found) return;
+        if (ctx.isFound) return;
 
         // without cage / recursively
         ctx.removeCageFromNonOverlappingArea(cage);
     }
 
     stage4_recursiveInclusionExclusion(step + 1, ctx);
-    if (ctx.found) return;
+    if (ctx.isFound) return;
 };
