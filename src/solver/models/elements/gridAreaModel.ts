@@ -209,6 +209,17 @@ class Context {
         return allCages.filter(cage => !this.maxAreaCages.has(cage));
     }
 
+    saveNewMaxNonOverlappingArea() {
+        this.maxAreaCellCount = this.usedCellCount;
+        this.maxAreaCages = new Set(Array.from(this.usedCages));
+        this.maxAreaCellIndices = this.usedCellIndices.clone();
+        if (this.usedCellCount === this.absMaxAreaCellCount) {
+            this.found = true;
+        }
+
+        return this.found;
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -239,12 +250,7 @@ const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
     if (ctx.usedCellCount > ctx.absMaxAreaCellCount) {
         return;
     } else if (ctx.usedCellCount > ctx.maxAreaCellCount) {
-        ctx.maxAreaCellCount = ctx.usedCellCount;
-        ctx.maxAreaCages = new Set(Array.from(ctx.usedCages));
-        ctx.maxAreaCellIndices = ctx.usedCellIndices.clone();
-
-        if (ctx.usedCellCount === ctx.absMaxAreaCellCount) {
-            ctx.found = true;
+        if (ctx.saveNewMaxNonOverlappingArea()) {
             return;
         }
     }
