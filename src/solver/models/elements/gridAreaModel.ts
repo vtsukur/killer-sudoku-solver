@@ -175,7 +175,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     };
 };
 
-class Context {
+class Stage3_InclusionExclusionBasedMaxNonOverlappingAreaFinder {
 
     private readonly cageCount: number;
     private readonly usedCages: Set<Cage>;
@@ -199,17 +199,53 @@ class Context {
         this.found = false;
     }
 
-    buildMaxNonOverlappingCagesAreaModel() {
-        return new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            Array.from(this.maxAreaCages), this.maxAreaCellCount, this.maxAreaCellIndices
-        );
+    find(allCages: ReadonlyCages) {
+        this.doFind(0);
+
+        return {
+            nonOverlappingCagesAreaModel: this.buildMaxNonOverlappingCagesAreaModel(),
+            overlappingCages: this.buildOverlappingCages(allCages)
+        };
     }
 
-    buildOverlappingCages(allCages: ReadonlyCages) {
-        return allCages.filter(cage => !this.maxAreaCages.has(cage));
+    private doFind(step: number) {
+        if (this.isOverfill) {
+            return;
+        } else if (this.hasNewMaxNonOverlappingArea) {
+            if (this.saveNewMaxNonOverlappingArea()) {
+                return;
+            }
+        }
+
+        if (this.isLastStep(step)) {
+            return;
+        }
+
+        const cage = this.cages[step];
+
+        if (this.canTakeCageToNonOverlappingArea(cage)) {
+            // with cage / recursively
+            this.takeCageToNonOverlappingArea(cage);
+            this.doFind(step + 1);
+            if (this.found) return;
+
+            // without cage / recursively
+            this.removeCageFromNonOverlappingArea(cage);
+        }
+
+        this.doFind(step + 1);
+        if (this.found) return;
+    };
+
+    private get isOverfill() {
+        return this.usedCellCount > this.absMaxAreaCellCount;
     }
 
-    saveNewMaxNonOverlappingArea() {
+    private get hasNewMaxNonOverlappingArea() {
+        return this.usedCellCount > this.maxAreaCellCount;
+    }
+
+    private saveNewMaxNonOverlappingArea() {
         this.maxAreaCellCount = this.usedCellCount;
         this.maxAreaCages = new Set(Array.from(this.usedCages));
         this.maxAreaCellIndices = this.usedCellIndices.clone();
@@ -220,36 +256,34 @@ class Context {
         return this.found;
     }
 
-    get isOverfill() {
-        return this.usedCellCount > this.absMaxAreaCellCount;
-    }
-
-    get hasNewMaxNonOverlappingArea() {
-        return this.usedCellCount > this.maxAreaCellCount;
-    }
-
-    isLastStep(step: number) {
+    private isLastStep(step: number) {
         return this.cageCount === step;
     }
 
-    canTakeCageToNonOverlappingArea(cage: Cage) {
+    private canTakeCageToNonOverlappingArea(cage: Cage) {
         return this.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet);
     }
 
-    takeCageToNonOverlappingArea(cage: Cage) {
+    private takeCageToNonOverlappingArea(cage: Cage) {
         this.usedCellIndices.add(cage.cellIndicesCheckingSet);
         this.usedCages.add(cage);
         this.usedCellCount += cage.cellCount;
     }
 
-    removeCageFromNonOverlappingArea(cage: Cage) {
+    private removeCageFromNonOverlappingArea(cage: Cage) {
         this.usedCellIndices.remove(cage.cellIndicesCheckingSet);
         this.usedCages.delete(cage);
         this.usedCellCount -= cage.cellCount;
     }
 
-    get isFound() {
-        return this.found;
+    private buildMaxNonOverlappingCagesAreaModel() {
+        return new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+            Array.from(this.maxAreaCages), this.maxAreaCellCount, this.maxAreaCellIndices
+        );
+    }
+
+    private buildOverlappingCages(allCages: ReadonlyCages) {
+        return allCages.filter(cage => !this.maxAreaCages.has(cage));
     }
 
 };
@@ -261,48 +295,10 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
-        return stage3_maximizeNonOverlappingArea(allCages, new Context(
+        return new Stage3_InclusionExclusionBasedMaxNonOverlappingAreaFinder(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
             inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
-        ));
+        ).find(allCages);
     }
-};
-
-const stage3_maximizeNonOverlappingArea = (allCages: ReadonlyCages, ctx: Context): GridAreaModel => {
-    stage4_recursiveInclusionExclusion(0, ctx);
-
-    return {
-        nonOverlappingCagesAreaModel: ctx.buildMaxNonOverlappingCagesAreaModel(),
-        overlappingCages: ctx.buildOverlappingCages(allCages)
-    };
-};
-
-const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
-    if (ctx.isOverfill) {
-        return;
-    } else if (ctx.hasNewMaxNonOverlappingArea) {
-        if (ctx.saveNewMaxNonOverlappingArea()) {
-            return;
-        }
-    }
-
-    if (ctx.isLastStep(step)) {
-        return;
-    }
-
-    const cage = ctx.cages[step];
-
-    if (ctx.canTakeCageToNonOverlappingArea(cage)) {
-        // with cage / recursively
-        ctx.takeCageToNonOverlappingArea(cage);
-        stage4_recursiveInclusionExclusion(step + 1, ctx);
-        if (ctx.isFound) return;
-
-        // without cage / recursively
-        ctx.removeCageFromNonOverlappingArea(cage);
-    }
-
-    stage4_recursiveInclusionExclusion(step + 1, ctx);
-    if (ctx.isFound) return;
 };
