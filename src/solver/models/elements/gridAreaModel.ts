@@ -106,7 +106,7 @@ export class GridAreaModel implements GridAreaModel {
         readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel,
         readonly overlappingCages: ReadonlyCages) {}
 
-    private static readonly _EMPTY = new GridAreaModel(
+    private static readonly _EMPTY_INSTANCE = new GridAreaModel(
         new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
             [], 0, CellIndicesCheckingSet.newEmpty()
         ), []
@@ -136,7 +136,7 @@ export class GridAreaModel implements GridAreaModel {
      * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
-        return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY;
+        return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY_INSTANCE;
     }
 
 }
