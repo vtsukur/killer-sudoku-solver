@@ -137,32 +137,6 @@ export class GridAreaModel implements GridAreaModel {
 
 }
 
-class Context {
-
-    readonly cageCount: number;
-    readonly usedCages: Set<Cage>;
-    usedCellCount: number;
-    readonly usedCellIndices: CellIndicesCheckingSet;
-    maxAreaCages: Set<Cage>;
-    maxAreaCellCount: number;
-    maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
-    found: boolean;
-
-    constructor(readonly cages: ReadonlyCages,
-            readonly absMaxAreaCellCount: number,
-            nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel) {
-        this.cageCount = cages.length;
-        this.usedCages = new Set(nonOverlappingCagesAreaModel.cages);
-        this.usedCellCount = nonOverlappingCagesAreaModel.cellCount;
-        this.usedCellIndices = new CellIndicesCheckingSet(nonOverlappingCagesAreaModel.cellIndicesCheckingSet);
-        this.maxAreaCages = new Set(nonOverlappingCagesAreaModel.cages);
-        this.maxAreaCellCount = nonOverlappingCagesAreaModel.cellCount;
-        this.maxAreaCellIndices = nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
-        this.found = false;
-    }
-
-};
-
 const newGridAreaModelWithMaxNonOverlappingArea = (cages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
 
@@ -199,6 +173,32 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (cages: ReadonlyCages): Gr
         ),
         overlappingCages: derivedCages
     };
+};
+
+class Context {
+
+    readonly cageCount: number;
+    readonly usedCages: Set<Cage>;
+    usedCellCount: number;
+    readonly usedCellIndices: CellIndicesCheckingSet;
+    maxAreaCages: Set<Cage>;
+    maxAreaCellCount: number;
+    maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
+    found: boolean;
+
+    constructor(readonly cages: ReadonlyCages,
+            readonly absMaxAreaCellCount: number,
+            nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel) {
+        this.cageCount = cages.length;
+        this.usedCages = new Set(nonOverlappingCagesAreaModel.cages);
+        this.usedCellCount = nonOverlappingCagesAreaModel.cellCount;
+        this.usedCellIndices = new CellIndicesCheckingSet(nonOverlappingCagesAreaModel.cellIndicesCheckingSet);
+        this.maxAreaCages = new Set(nonOverlappingCagesAreaModel.cages);
+        this.maxAreaCellCount = nonOverlappingCagesAreaModel.cellCount;
+        this.maxAreaCellIndices = nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
+        this.found = false;
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (cages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
