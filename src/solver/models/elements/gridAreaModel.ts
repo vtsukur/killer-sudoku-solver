@@ -242,6 +242,12 @@ class Context {
         this.usedCellCount += cage.cellCount;
     }
 
+    removeCageFromNonOverlappingArea(cage: Cage) {
+        this.usedCellIndices.remove(cage.cellIndicesCheckingSet);
+        this.usedCages.delete(cage);
+        this.usedCellCount -= cage.cellCount;
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -290,9 +296,7 @@ const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
         if (ctx.found) return;
 
         // without cage / recursively
-        ctx.usedCellIndices.remove(cage.cellIndicesCheckingSet);
-        ctx.usedCages.delete(cage);
-        ctx.usedCellCount -= cage.cellCount;
+        ctx.removeCageFromNonOverlappingArea(cage);
     }
 
     stage4_recursiveInclusionExclusion(step + 1, ctx);
