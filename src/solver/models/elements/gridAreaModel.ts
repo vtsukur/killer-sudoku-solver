@@ -29,8 +29,8 @@ export interface NonOverlappingCagesAreaModel {
     readonly cellCount: number;
 
     /**
-     * Checking set of {@link Cell} indices which has
-     * {@link Cell}s of all _non-overlapping_ {@link cages} of this area marked as _included_.
+     * Checking set of {@link Cell} indices which has all
+     * {@link Cell}s of _non-overlapping_ {@link cages} within {@link GridAreaModel} marked as _included_.
      */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 
@@ -41,6 +41,14 @@ export interface NonOverlappingCagesAreaModel {
 
 }
 
+/**
+ * {@link NonOverlappingCagesAreaModel} with all properties but {@link sum}
+ * being precomputed externally and passed to constructor.
+ *
+ * {@link sum} is lazy initialized on first access.
+ * Lazy initialization is used instead of precomputation
+ * since many usages of {@link NonOverlappingCagesAreaModel} does NOT need sum at all.
+ */
 class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappingCagesAreaModel {
 
     private _sum = 0;
@@ -52,8 +60,6 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
     }
 
     get sum() {
-        // Lazy initialization is used instead of precomputation
-        // since many usages of the area model does NOT need sum at all.
         return this._sum === 0 ? this._sum = this.cages.reduce((prev, current) => prev + current.sum, 0) : this._sum;
     }
 
@@ -70,14 +76,14 @@ class PrecomputedNonOverlappingCagesAreaModelWithLazySum implements NonOverlappi
  * Defined by {@link overlappingCages}.
  *
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s of the same {@link Grid}.
+ * which are also present in other {@link Cage}s within {@link GridAreaModel}.
  *
  * @public
  */
 export interface GridAreaModel {
 
     /**
-     * Area of _non-overlapping_ {@link Cage}s on the {@link Grid}.
+     * Area of _non-overlapping_ {@link Cage}s within this {@link GridAreaModel}.
      */
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
 
