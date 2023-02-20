@@ -199,6 +199,16 @@ class Context {
         this.found = false;
     }
 
+    buildMaxNonOverlappingCagesAreaModel() {
+        return new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
+            Array.from(this.maxAreaCages), this.maxAreaCellCount, this.maxAreaCellIndices
+        );
+    }
+
+    buildOverlappingCages(allCages: ReadonlyCages) {
+        return allCages.filter(cage => !this.maxAreaCages.has(cage));
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -219,14 +229,9 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, 
 const stage3_maximizeNonOverlappingArea = (allCages: ReadonlyCages, ctx: Context): GridAreaModel => {
     stage4_recursiveInclusionExclusion(0, ctx);
 
-    const cagesOfMaxNonOverlappingRegion = Array.from(ctx.maxAreaCages);
-    const cagesOfOverlappingRegion = allCages.filter(cage => !ctx.maxAreaCages.has(cage));
-
     return {
-        nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithLazySum(
-            cagesOfMaxNonOverlappingRegion, ctx.maxAreaCellCount, ctx.maxAreaCellIndices
-        ),
-        overlappingCages: cagesOfOverlappingRegion
+        nonOverlappingCagesAreaModel: ctx.buildMaxNonOverlappingCagesAreaModel(),
+        overlappingCages: ctx.buildOverlappingCages(allCages)
     };
 };
 
