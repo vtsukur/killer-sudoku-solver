@@ -254,7 +254,7 @@ export class Cage {
      *
      * @returns TypeScript code which describes construction of this {@link Cage} using {@link Cage.Builder}.
      */
-    get tsConstructionCodeString() {
+    get tsConstructionCode() {
         const setSumCode = `.ofSum(${this.sum})`;
         const setCellsCode = this.cells.map(cell => `.at(${cell.row}, ${cell.col})`).join('');
         const conditionallySetIsInputCode = this.isInput ? '' : '.setIsInput(false)';

@@ -13,7 +13,7 @@ describe('Cage tests', () => {
         expect(cage.cellIndicesCheckingSet.equals(CellIndicesCheckingSet.of(40, 41))).toBeTruthy();
         expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
-        expect(cage.tsConstructionCodeString).toBe('Cage.ofSum(10).at(4, 4).at(4, 5).new()');
+        expect(cage.tsConstructionCode).toBe('Cage.ofSum(10).at(4, 4).at(4, 5).new()');
     });
 
     test('Construction of Cage using `Cage.Builder.withCell` method', () => {
