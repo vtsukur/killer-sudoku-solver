@@ -175,7 +175,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     };
 };
 
-class Stage3_InclusionExclusionBasedMaxNonOverlappingAreaFinder {
+class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private readonly cageCount: number;
     private readonly usedCages: Set<Cage>;
@@ -295,7 +295,7 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         return inputAndDerivedCagesArea;
     } else {
-        return new Stage3_InclusionExclusionBasedMaxNonOverlappingAreaFinder(
+        return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
             inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
