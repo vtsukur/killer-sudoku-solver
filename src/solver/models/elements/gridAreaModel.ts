@@ -125,9 +125,12 @@ export class GridAreaModel implements GridAreaModel {
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
      * which are also present in other {@link Cage}s within the same {@link GridAreaModel}.
      *
-     * For performance reasons {@link Cage}s which have `Cage.input === true`
+     * For performance reasons the following rules apply:
+     *  - {@link Cage}s which have `Cage.input === true`
      * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
      * an area of a smaller size.
+     *  - {@link Cage}s are NOT validated to be within the supposed area boundaries.
+     * It is up to the caller to collect {@link Cage}s correctly with respect to the area boundaries.
      *
      * @param cages - {@link Cage}s to construct this {@link GridAreaModel} from.
      * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
@@ -240,9 +243,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private doFind(step: number) {
-        if (this.isOverfill) {
-            return;
-        } else if (this.hasNewMax) {
+        if (this.hasNewMax) {
             if (this.saveNewMax()) {
                 return;
             }
@@ -267,10 +268,6 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         this.doFind(step + 1);
         if (this.found) return;
     };
-
-    private get isOverfill() {
-        return this.usedCellCount > this.absMaxAreaCellCount;
-    }
 
     private get hasNewMax() {
         return this.usedCellCount > this.maxAreaCellCount;
