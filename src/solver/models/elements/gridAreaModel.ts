@@ -1,4 +1,4 @@
-import { Cage, ReadonlyCages } from '../../../puzzle/cage';
+import { Cage, Cages, ReadonlyCages } from '../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../../puzzle/cell';
 import { House } from '../../../puzzle/house';
@@ -198,17 +198,17 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, 
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
             inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
-        ).find(allCages);
+        ).find(inputAndDerivedCagesArea.overlappingCages);
     }
 };
 
 class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private readonly cageCount: number;
-    private readonly usedCages: Set<Cage>;
+    private readonly usedCages: Cages;
     private usedCellCount: number;
     private readonly usedCellIndices: CellIndicesCheckingSet;
-    private maxAreaCages: Set<Cage>;
+    private maxAreaCages: Cages;
     private maxAreaCellCount: number;
     private maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
     private found: boolean;
@@ -223,21 +223,21 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
             cellCount: inputCagesCellCount,
             cellIndicesCheckingSet: inputCagesCellIndicesCheckingSet
         } = nonOverlappingCagesAreaModel;
-        this.usedCages = new Set(inputCages);
+        this.usedCages = [...inputCages];
         this.usedCellCount = inputCagesCellCount;
         this.usedCellIndices = new CellIndicesCheckingSet(inputCagesCellIndicesCheckingSet);
-        this.maxAreaCages = new Set(inputCages);
+        this.maxAreaCages = [...inputCages];
         this.maxAreaCellCount = inputCagesCellCount;
         this.maxAreaCellIndices = inputCagesCellIndicesCheckingSet;
         this.found = false;
     }
 
-    find(allCages: ReadonlyCages) {
+    find(derivedCages: ReadonlyCages) {
         this.doFind(0);
 
         return {
             nonOverlappingCagesAreaModel: this.buildMaxNonOverlappingCagesAreaModel(),
-            overlappingCages: this.buildOverlappingCages(allCages)
+            overlappingCages: this.buildOverlappingCages(derivedCages)
         };
     }
 
@@ -274,7 +274,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private saveNewMax() {
         this.maxAreaCellCount = this.usedCellCount;
-        this.maxAreaCages = new Set(Array.from(this.usedCages));
+        this.maxAreaCages = [...this.usedCages];
         this.maxAreaCellIndices = this.usedCellIndices.clone();
         if (this.usedCellCount === this.absMaxAreaCellCount) {
             this.found = true;
@@ -293,24 +293,24 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private takeNonOverlappingCage(cage: Cage) {
         this.usedCellIndices.add(cage.cellIndicesCheckingSet);
-        this.usedCages.add(cage);
+        this.usedCages.push(cage);
         this.usedCellCount += cage.cellCount;
     }
 
     private removeNonOverlappingCage(cage: Cage) {
         this.usedCellIndices.remove(cage.cellIndicesCheckingSet);
-        this.usedCages.delete(cage);
+        this.usedCages.pop();
         this.usedCellCount -= cage.cellCount;
     }
 
     private buildMaxNonOverlappingCagesAreaModel() {
         return new PrecomputedNonOverlappingCagesAreaModelWithComputableSum(
-            Array.from(this.maxAreaCages), this.maxAreaCellCount, this.maxAreaCellIndices
+            this.maxAreaCages, this.maxAreaCellCount, this.maxAreaCellIndices
         );
     }
 
-    private buildOverlappingCages(allCages: ReadonlyCages) {
-        return allCages.filter(cage => !this.maxAreaCages.has(cage));
+    private buildOverlappingCages(derivedCages: ReadonlyCages) {
+        return derivedCages.filter(cage => this.maxAreaCages.indexOf(cage) === -1);
     }
 
 };
