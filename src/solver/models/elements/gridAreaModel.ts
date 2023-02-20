@@ -242,8 +242,8 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     private doFind(step: number) {
         if (this.isOverfill) {
             return;
-        } else if (this.hasNewMaxNonOverlappingArea) {
-            if (this.saveNewMaxNonOverlappingArea()) {
+        } else if (this.hasNewMax) {
+            if (this.saveNewMax()) {
                 return;
             }
         }
@@ -254,14 +254,14 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
         const cage = this.cages[step];
 
-        if (this.canTakeCageToNonOverlappingArea(cage)) {
-            // with cage / recursively
-            this.takeCageToNonOverlappingArea(cage);
+        if (this.canTakeCage(cage)) {
+            // recursively try to find new maximum WITH the current `Cage`
+            this.takeNonOverlappingCage(cage);
             this.doFind(step + 1);
             if (this.found) return;
 
-            // without cage / recursively
-            this.removeCageFromNonOverlappingArea(cage);
+            // recursively try to find new maximum WITHOUT the current `Cage`
+            this.removeNonOverlappingCage(cage);
         }
 
         this.doFind(step + 1);
@@ -272,11 +272,11 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         return this.usedCellCount > this.absMaxAreaCellCount;
     }
 
-    private get hasNewMaxNonOverlappingArea() {
+    private get hasNewMax() {
         return this.usedCellCount > this.maxAreaCellCount;
     }
 
-    private saveNewMaxNonOverlappingArea() {
+    private saveNewMax() {
         this.maxAreaCellCount = this.usedCellCount;
         this.maxAreaCages = new Set(Array.from(this.usedCages));
         this.maxAreaCellIndices = this.usedCellIndices.clone();
@@ -291,17 +291,17 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         return this.cageCount === step;
     }
 
-    private canTakeCageToNonOverlappingArea(cage: Cage) {
+    private canTakeCage(cage: Cage) {
         return this.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet);
     }
 
-    private takeCageToNonOverlappingArea(cage: Cage) {
+    private takeNonOverlappingCage(cage: Cage) {
         this.usedCellIndices.add(cage.cellIndicesCheckingSet);
         this.usedCages.add(cage);
         this.usedCellCount += cage.cellCount;
     }
 
-    private removeCageFromNonOverlappingArea(cage: Cage) {
+    private removeNonOverlappingCage(cage: Cage) {
         this.usedCellIndices.remove(cage.cellIndicesCheckingSet);
         this.usedCages.delete(cage);
         this.usedCellCount -= cage.cellCount;
