@@ -175,6 +175,21 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     };
 };
 
+const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
+    const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
+    const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
+        cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
+    if (derivedCagesWithNoObviousOverlap.length === 0) {
+        return inputAndDerivedCagesArea;
+    } else {
+        return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
+            derivedCagesWithNoObviousOverlap,
+            absMaxAreaCellCount,
+            inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
+        ).find(allCages);
+    }
+};
+
 class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private readonly cageCount: number;
@@ -286,19 +301,4 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         return allCages.filter(cage => !this.maxAreaCages.has(cage));
     }
 
-};
-
-const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
-    const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
-    const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
-        cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
-    if (derivedCagesWithNoObviousOverlap.length === 0) {
-        return inputAndDerivedCagesArea;
-    } else {
-        return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
-            derivedCagesWithNoObviousOverlap,
-            absMaxAreaCellCount,
-            inputAndDerivedCagesArea.nonOverlappingCagesAreaModel
-        ).find(allCages);
-    }
 };
