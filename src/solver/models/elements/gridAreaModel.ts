@@ -96,7 +96,7 @@ export interface GridAreaModel {
 
 /**
  * Area on the {@link Grid} defined by a group of {@link Cage}s
- * with static factory method {@link from}.
+ * which can be built by static factory method {@link from}.
  *
  * @public
  */
@@ -123,7 +123,7 @@ export class GridAreaModel implements GridAreaModel {
      * Defined by {@link overlappingCages}.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s of the same {@link Grid}.
+     * which are also present in other {@link Cage}s within the same {@link GridAreaModel}.
      *
      * For performance reasons {@link Cage}s which have `Cage.input === true`
      * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
