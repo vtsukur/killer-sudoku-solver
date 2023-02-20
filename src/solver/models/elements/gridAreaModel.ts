@@ -145,9 +145,10 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
 
     const inputAndDerivedCagesArea = stage1_splitCagesIntoInputAndDerivedCagesArea(allCages);
-    if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === absMaxAreaCellCount) {
-        // If input `Cage`s cover the whole area then the maximum non-overlapping area has been already found
-        // and it consists of these input `Cage`s.
+    if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === absMaxAreaCellCount ||
+            inputAndDerivedCagesArea.overlappingCages.length === 0) {
+        // If input `Cage`s cover the whole area OR there are no derived `Cage`s
+        // then the maximum non-overlapping area has been already found and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
         return stage2_preFilterAndMaximizeNonOverlappingArea(allCages, absMaxAreaCellCount, inputAndDerivedCagesArea);
@@ -184,8 +185,13 @@ const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, 
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
     if (derivedCagesWithNoObviousOverlap.length === 0) {
+        // Absence of derived `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
+        // there is NO need to execute expensive inclusion/exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
+        // Executing inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
+        // Complexity: `O(2^n)` where `n` is the number of derived `Cage`s without obvious overlap.
+        // In real-world scenarios `n` will be under `5`.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
