@@ -232,6 +232,10 @@ class Context {
         return this.cageCount === step;
     }
 
+    canTakeCageToNonOverlappingArea(cage: Cage) {
+        return this.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet);
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -273,7 +277,7 @@ const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
 
     const cage = ctx.cages[step];
 
-    if (ctx.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet)) {
+    if (ctx.canTakeCageToNonOverlappingArea(cage)) {
         // with cage / recursively
         ctx.usedCellIndices.add(cage.cellIndicesCheckingSet);
         ctx.usedCages.add(cage);
