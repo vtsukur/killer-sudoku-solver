@@ -1,38 +1,36 @@
 import { Cage, ReadonlyCages } from '../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../../puzzle/cell';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
 
 /**
- * Area of _non-overlapping_ {@link Cage}s on the {@link Grid}.
+ * Area of _non-overlapping_ {@link Cage}s within {@link GridAreaModel}.
  *
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s of the same {@link Grid}.
+ * which are also present in other {@link Cage}s within {@link GridAreaModel}.
  *
  * @public
  */
 export interface NonOverlappingCagesAreaModel {
 
     /**
-     * _Non-overlapping_ {@link Cage}s on the {@link Grid} which are a part of this area.
+     * _Non-overlapping_ {@link Cage}s within {@link GridAreaModel} which are a part of this area.
      *
      * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s of the same {@link Grid}.
+     * which are also present in other {@link Cage}s within {@link GridAreaModel}.
      */
     readonly cages: ReadonlyCages;
 
     /**
-     * Amount of {@link Cell}s in all _non-overlapping_ {@link cages} of this area.
+     * Amount of {@link Cell}s in all _non-overlapping_ {@link cages} within this area.
      */
     readonly cellCount: number;
 
     /**
      * Checking set of {@link Cell} indices which has
-     * {@link Cell}s of all _non-overlapping_ {@link cages} of this area marked as included.
+     * {@link Cell}s of all _non-overlapping_ {@link cages} of this area marked as _included_.
      */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 
