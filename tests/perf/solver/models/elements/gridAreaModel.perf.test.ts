@@ -36,42 +36,6 @@ describe('Performance tests for `GridAreaModel`', () => {
             });
         });
 
-        test(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 2 derived \`Cage\`s and 15 unfilled \`Cell\`s remaining [${i + 1}]`, () => {
-            const cages = [
-                Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
-                Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
-                Cage.ofSum(5).at(5, 0).at(5, 1).new(),
-                Cage.ofSum(24).at(4, 4).at(4, 5).at(5, 4).new(),
-                Cage.ofSum(7).at(3, 5).at(3, 6).new(),
-                Cage.ofSum(12).at(4, 6).at(4, 7).at(4, 8).new(),
-                Cage.ofSum(20).at(2, 6).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
-                Cage.ofSum(20).at(2, 4).at(2, 5).at(3, 4).at(3, 7).at(3, 8).setIsInput(false).new(),
-                Cage.ofSum(12).at(3, 0).at(3, 1).new(),
-                Cage.ofSum(10).at(4, 0).at(4, 1).new()
-            ];
-
-            expectGridAreaModel(GridAreaModel.from(cages, 4),
-                [
-                    Cage.ofSum(12).at(2, 3).at(3, 2).at(3, 3).new(),
-                    Cage.ofSum(14).at(2, 4).at(2, 5).at(2, 6).at(3, 4).new(),
-                    Cage.ofSum(5).at(5, 0).at(5, 1).new(),
-                    Cage.ofSum(24).at(4, 4).at(4, 5).at(5, 4).new(),
-                    Cage.ofSum(7).at(3, 5).at(3, 6).new(),
-                    Cage.ofSum(12).at(4, 6).at(4, 7).at(4, 8).new(),
-                    Cage.ofSum(12).at(3, 0).at(3, 1).new(),
-                    Cage.ofSum(10).at(4, 0).at(4, 1).new()
-                ],
-                [
-                    Cage.ofSum(20).at(2, 6).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
-                    Cage.ofSum(20).at(2, 4).at(2, 5).at(3, 4).at(3, 7).at(3, 8).setIsInput(false).new()
-                ]
-            );
-
-            _.range(ITERATION_COUNT).forEach(() => {
-                GridAreaModel.from(cages, 4);
-            });
-        });
-
         test.only(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 5 derived \`Cage\`s and 13 unfilled \`Cell\`s remaining (Sudoku.com 2022-10-22) [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
