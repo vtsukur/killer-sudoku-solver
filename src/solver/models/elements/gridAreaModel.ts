@@ -220,6 +220,18 @@ class Context {
         return this.found;
     }
 
+    get isOverfill() {
+        return this.usedCellCount > this.absMaxAreaCellCount;
+    }
+
+    get hasNewMaxNonOverlappingArea() {
+        return this.usedCellCount > this.maxAreaCellCount;
+    }
+
+    isLastStep(step: number) {
+        return this.cageCount === step;
+    }
+
 };
 
 const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -247,15 +259,15 @@ const stage3_maximizeNonOverlappingArea = (allCages: ReadonlyCages, ctx: Context
 };
 
 const stage4_recursiveInclusionExclusion = (step: number, ctx: Context) => {
-    if (ctx.usedCellCount > ctx.absMaxAreaCellCount) {
+    if (ctx.isOverfill) {
         return;
-    } else if (ctx.usedCellCount > ctx.maxAreaCellCount) {
+    } else if (ctx.hasNewMaxNonOverlappingArea) {
         if (ctx.saveNewMaxNonOverlappingArea()) {
             return;
         }
     }
 
-    if (step === ctx.cageCount) {
+    if (ctx.isLastStep(step)) {
         return;
     }
 
