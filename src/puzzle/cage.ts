@@ -44,7 +44,7 @@ export class Cage {
      * `true` if this `Cage` is defined by the input `Puzzle` problem definition
      * or represents a sub-`Cage` of one of `Cage`s defined by the input `Puzzle` problem definition.
      *
-     * Otherwise `false`, which usually means the `Cage` has been derived
+     * Otherwise `false`, which usually means the `Cage` has been _derived_
      * from computational analysis of the `Puzzle` and will overlap by `Cell`s
      * with at least one of the `Cage`s in the input `Puzzle` problem definition.
      */
@@ -189,7 +189,7 @@ export class Cage {
          * @param val `true` if the `Cage` being built is defined by the input `Puzzle` problem definition
          * or represents a sub-`Cage` of one of `Cage`s defined by the input `Puzzle` problem definition.
          *
-         * Otherwise `false`, which usually means the `Cage` has been derived
+         * Otherwise `false`, which usually means the `Cage` has been _derived_
          * from computational analysis of the `Puzzle` and will overlap by `Cell`s
          * with at least one of the `Cage`s in the input `Puzzle` problem definition.
          *

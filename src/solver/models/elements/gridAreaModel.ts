@@ -199,7 +199,7 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
     const inputAndDerivedCagesArea = stage1_splitCagesIntoInputAndDerivedCagesArea(allCages);
     if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === absMaxAreaCellCount ||
             inputAndDerivedCagesArea.overlappingCages.length === 0) {
-        // If input `Cage`s cover the whole area OR there are no derived `Cage`s
+        // If input `Cage`s cover the whole area OR there are no _derived_ `Cage`s
         // then the maximum non-overlapping area has been already found and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
@@ -261,19 +261,19 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
 const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndices;
 
-    // Checking derived `Cage`s for obvious overlap with _non-overlapping_ area.
-    // Obvious overlap is an overlap which can be determined with simple check of each individual derived `Cage`
+    // Checking _derived_ `Cage`s for obvious overlap with _non-overlapping_ area.
+    // Obvious overlap is an overlap which can be determined with simple check of each individual _derived_ `Cage`
     // without full combinatorics of inclusion-exclusion approach and methods alike.
     // It potentially narrows down the collection to run heavier algorithms for.
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
-        // Absence of derived `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
+        // Absence of _derived_ `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
         // there is NO need to execute heavy inclusion-exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
-        // Executing heavy inclusion-exclusion algorithm for derived `Cage`s without obvious overlap.
+        // Executing heavy inclusion-exclusion algorithm for _derived_ `Cage`s without obvious overlap.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
@@ -286,7 +286,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  * Third processing stage uses inclusion-exclusion principle
  * to find an area of maximum size with {@link Cage}s without shared {@link Cell}s.
  *
- * Complexity is `O(2^n)` where `n` is the number of derived {@link Cage}s without _obvious overlap_.
+ * Complexity is `O(2^n)` where `n` is the number of _derived_ {@link Cage}s without _obvious overlap_.
  *
  * This algorithm is applied since the problem at hand is NP-hard just like subset sum problem (SSP).
  * Minifying `n` is critical to make this stage performant,
