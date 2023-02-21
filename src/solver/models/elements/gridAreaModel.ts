@@ -294,8 +294,8 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  * Minifying `n` is critical to make this stage performant,
  * which is actually achieved by the first two stages of processing:
  * {@link stage1_splitCagesIntoInputAndDerivedCagesArea} and {@link stage2_tryToMaximizeNonOverlappingArea}.
- * For real-world scenarios presence of these stages result in `n` being under `5`,
- * and for the most cases being in between `1` and `3`.
+ * For real-world scenarios presence of these stages result in `n`
+ * being between `1` and `3` for the most cases (80%) and in extreme case being slightly above `10`.
  *
  * This algorithm can be optimized further by applying more advanced algorithms with techniques from:
  *
