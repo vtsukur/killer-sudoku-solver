@@ -146,7 +146,8 @@ export class GridAreaModel implements GridAreaModel {
     );
 
     /**
-     * Constructs new area on the {@link Grid} defined by a group of the given {@link Cage}s.
+     * Constructs new area on the {@link Grid} defined by a group of the given {@link Cage}s
+     * with {@link Cage}s without shared {@link Cell}s forming area of maximized size.
      *
      * {@link Cage}s are divided into two collections:
      *
@@ -168,7 +169,8 @@ export class GridAreaModel implements GridAreaModel {
      * @param houseCount - Number of {@link House}s that the {@link GridAreaModel} covers.
      * Used to calculate possible upper bound of maximum area size which is `House.CELL_COUNT * houseCount`.
      *
-     * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s.
+     * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s
+     * with {@link Cage}s without shared {@link Cell}s forming area of maximized size.
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
         return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY_INSTANCE;
@@ -176,6 +178,21 @@ export class GridAreaModel implements GridAreaModel {
 
 }
 
+/**
+ * Main entry point to the finder and builder of non-empty {@link GridAreaModel}.
+ *
+ * Runs 3 stages of processing:
+ *
+ * - {@link stage1_splitCagesIntoInputAndDerivedCagesArea} (fast)
+ * - {@link stage2_tryToMaximizeNonOverlappingArea} (fast, skipped if prior stage is deterministic to the end result)
+ * - {@link Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea} (slow, , skipped if prior stages are deterministic to the end result)
+ *
+ * @param allCages - All {@link Cage}s belonging to the area on the {@link Grid}.
+ * @param houseCount - Number of {@link House}s that the {@link GridAreaModel} covers.
+ * Used to calculate possible upper bound of maximum area size which is `House.CELL_COUNT * houseCount`.
+ *
+ * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s.
+ */
 const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, houseCount: number): GridAreaModel => {
     const absMaxAreaCellCount = houseCount * House.CELL_COUNT;
 
@@ -253,10 +270,10 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         // Absence of derived `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
-        // there is NO need to execute expensive inclusion-exclusion algorithm to determine the maximum area.
+        // there is NO need to execute heavy inclusion-exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
-        // Executing expensive inclusion-exclusion algorithm for derived `Cage`s without obvious overlap.
+        // Executing heavy inclusion-exclusion algorithm for derived `Cage`s without obvious overlap.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
