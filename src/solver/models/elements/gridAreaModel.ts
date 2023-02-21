@@ -245,9 +245,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
         // there is NO need to execute expensive inclusion/exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
-        // Executing inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
-        // Complexity is `O(2^n)` where `n` is the number of derived `Cage`s without obvious overlap.
-        // In real-world scenarios `n` is usually under `5` and for the most cases between `1` and `3`.
+        // Executing expensive inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
@@ -256,6 +254,32 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
     }
 };
 
+/**
+ * Third processing stage uses inclusion-exclusion principle
+ * to find an area of maximum size with _non-overlapping_ {@link Cage}s.
+ *
+ * Complexity is `O(2^n)` where `n` is the number of derived {@link Cage}s without _obvious overlap_.
+ *
+ * This algorithm is applied since the problem at hand is NP-hard,
+ * just like subset sum problem (SSP).
+ * Minifying `n` is critical to make this stage performant,
+ * which is actually achieved by the first two stages of processing:
+ * {@link stage1_splitCagesIntoInputAndDerivedCagesArea} and {@link stage2_tryToMaximizeNonOverlappingArea}.
+ * For real-world scenarios presence of these stages result in `n` being under `5`,
+ * and for the most cases being in between `1` and `3`.
+ *
+ * This algorithm can be optimized further by applying more advanced algorithms with techniques from:
+ *
+ *  - Horowitz and Sahni: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Horowitz_and_Sahni}
+ *  - Schroeppel and Shamir: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Schroeppel_and_Shamir}
+ *  - Howgrave-Graham and Joux: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Howgrave-Graham_and_Joux}
+ *
+ * However, it is NOT worth the complexity given the prior stages of processing which minimize `n`.
+ *
+ * @see https://en.wikipedia.org/wiki/Subset_sum_problem#Inclusion.E2.80.93exclusion
+ * @see https://cp-algorithms.com/combinatorics/inclusion-exclusion.html#the-formulation-in-terms-of-probability-theory
+ * @see https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle
+ */
 class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
 
     private readonly cageCount: number;
