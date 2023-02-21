@@ -30,7 +30,7 @@ export interface NonOverlappingCagesAreaModel {
 
     /**
      * Checking set of {@link Cell} indices which has all
-     * {@link Cell}s of _non-overlapping_ {@link cages} within {@link GridAreaModel} marked as _included_.
+     * {@link Cell}s of _non-overlapping_ {@link cages} within {@link GridAreaModel} included.
      */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 

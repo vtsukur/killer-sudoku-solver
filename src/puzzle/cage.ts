@@ -52,7 +52,7 @@ export class Cage {
 
     /**
      * Checking set of {@link Cell} indices with efficient storage & fast checking operations
-     * which has {@link Cage} {@link Cell}s marked as included.
+     * which has {@link Cage} {@link Cell}s included.
      */
     readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
 
