@@ -45,12 +45,15 @@ export interface NonOverlappingCagesAreaModel {
  * {@link NonOverlappingCagesAreaModel} with all properties but {@link sum}
  * being precomputed externally and passed to constructor.
  *
+ * Used internally by this module for intermediate area model construction
+ * during staged processing.
+ *
  * {@link sum} is computed on every access
  * since many usages of {@link NonOverlappingCagesAreaModel} does NOT need sum at all.
  * Lazy initialization of {@link sum} is omitted to avoid code complexity.
  * If the caller needs faster performance it is adviced to store and reuse computed value.
  */
-class PrecomputedNonOverlappingCagesAreaModelWithComputableSum implements NonOverlappingCagesAreaModel {
+class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlappingCagesAreaModel {
 
     constructor(
             readonly cages: ReadonlyCages,
@@ -60,6 +63,30 @@ class PrecomputedNonOverlappingCagesAreaModelWithComputableSum implements NonOve
 
     get sum() {
         return this.cages.reduce((prev, current) => prev + current.sum, 0);
+    }
+
+}
+
+/**
+ * {@link NonOverlappingCagesAreaModel} with all properties
+ * being precomputed externally and passed to constructor.
+ *
+ * Designed for the external use for maximum performance.
+ */
+class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOverlappingCagesAreaModel {
+
+    private readonly _sum;
+
+    constructor(
+            cages: ReadonlyCages,
+            cellCount: number,
+            cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
+        super(cages, cellCount, cellIndicesCheckingSet);
+        this._sum = super.sum;
+    }
+
+    get sum() {
+        return this._sum;
     }
 
 }
@@ -106,7 +133,7 @@ export class GridAreaModel implements GridAreaModel {
         readonly overlappingCages: ReadonlyCages) {}
 
     private static readonly _EMPTY_INSTANCE = new GridAreaModel(
-        new PrecomputedNonOverlappingCagesAreaModelWithComputableSum(
+        new PartiallyPrecomputedNonOverlappingCagesAreaModel(
             [], 0, CellIndicesCheckingSet.newEmpty()
         ), []
     );
@@ -175,7 +202,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     }
 
     return {
-        nonOverlappingCagesAreaModel: new PrecomputedNonOverlappingCagesAreaModelWithComputableSum(
+        nonOverlappingCagesAreaModel: new PartiallyPrecomputedNonOverlappingCagesAreaModel(
             inputCages, inputCagesCellCount, inputCagesCellIndices
         ),
         overlappingCages: derivedCages
@@ -304,7 +331,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private buildMaxNonOverlappingCagesAreaModel() {
-        return new PrecomputedNonOverlappingCagesAreaModelWithComputableSum(
+        return new PrecomputedNonOverlappingCagesAreaModel(
             this.maxAreaCages, this.maxAreaCellCount, this.maxAreaCellIndices
         );
     }
