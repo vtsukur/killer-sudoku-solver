@@ -243,6 +243,11 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
  */
 const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndices;
+
+    // Checking derived `Cage`s for obvious overlap with _non-overlapping_ area.
+    // Obvious overlap is an overlap which can be determined with simple check of each individual derived `Cage`
+    // without full combinatorics of inclusion-exclusion approach and methods alike.
+    // It potentially narrows down the collection to run heavier algorithms for.
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
 
@@ -327,11 +332,13 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     private doFind(step: number): boolean | undefined {
         if (this.hasNewMax) {
             if (this.saveNewMax()) {
+                // Short-circuit return when the first absolute maximum is found.
                 return true;
             }
         }
 
         if (this.isLastStep(step)) {
+            // Cannot go any deeper than the last step which does NOT have `Cage`s to advance on.
             return;
         }
 
