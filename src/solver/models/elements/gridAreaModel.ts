@@ -310,6 +310,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private buildOverlappingCages(derivedCages: ReadonlyCages) {
+        // Simple `indexOf` check for small collections is faster than using `Set`s or `Map`s.
         return derivedCages.filter(cage => this.maxAreaCages.indexOf(cage) === -1);
     }
 
