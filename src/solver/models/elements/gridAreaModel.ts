@@ -1,6 +1,8 @@
 import { Cage, Cages, ReadonlyCages } from '../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../../puzzle/cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
@@ -160,7 +162,7 @@ export class GridAreaModel implements GridAreaModel {
      *
      * @param cages - {@link Cage}s to construct this {@link GridAreaModel} from.
      * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
-     * Used to calculate possible upper bound of maximum area which is `House.CELL_COUNT * houseCount`.
+     * Used to calculate possible upper bound of maximum area size which is `House.CELL_COUNT * houseCount`.
      *
      * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
@@ -180,7 +182,7 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
         // then the maximum non-overlapping area has been already found and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
-        return stage2_preFilterAndMaximizeNonOverlappingArea(absMaxAreaCellCount, inputAndDerivedCagesArea);
+        return stage2_tryToMaximizeNonOverlappingArea(absMaxAreaCellCount, inputAndDerivedCagesArea);
     }
 };
 
@@ -222,7 +224,18 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     };
 };
 
-const stage2_preFilterAndMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
+/**
+ * Second processing stage takes intermediate {@link GridAreaModel}
+ * produced by {@link stage1_splitCagesIntoInputAndDerivedCagesArea}
+ * and tries to maximize the _non-overlapping_ area by enriching it with _derived_ {@link Cage}s.
+ *
+ * @param absMaxAreaCellCount - The upper bound of maximum area size that the {@link GridAreaModel} covers.
+ * @param inputAndDerivedCagesArea - The result of {@link stage1_splitCagesIntoInputAndDerivedCagesArea}.
+ *
+ * @returns The {@link GridAreaModel} with maximized _non-overlapping_ area
+ * with all _input_ {@link Cage}s and (optionally) _derived_ {@link Cage}s having no shared {@link Cell}s.
+ */
+const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
