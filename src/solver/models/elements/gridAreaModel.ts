@@ -242,10 +242,10 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         // Absence of derived `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
-        // there is NO need to execute expensive inclusion/exclusion algorithm to determine the maximum area.
+        // there is NO need to execute expensive inclusion-exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
-        // Executing expensive inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
+        // Executing expensive inclusion-exclusion algorithm for derived `Cage`s without obvious overlap.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
