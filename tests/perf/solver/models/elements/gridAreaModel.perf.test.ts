@@ -4,7 +4,7 @@ import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAre
 import { expectGridAreaModel } from '../../../../unit/solver/models/elements/gridAreaModel.test';
 
 describe('Performance tests for `GridAreaModel`', () => {
-    const TESTS_COUNT = 2;
+    const TESTS_COUNT = 10;
     const ITERATION_COUNT = 50000;
 
     _.range(TESTS_COUNT).forEach(i => {
