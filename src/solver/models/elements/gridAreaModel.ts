@@ -184,6 +184,19 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
     }
 };
 
+/**
+ * First processing stage splits given {@link Cage}s into _input_ {@link Cage}s and _derived_ ones,
+ * producing intermediate {@link GridAreaModel} with all _input_ {@link Cage}s being unconditionally added
+ * to the area of _non-overlapping_ {@link Cage}s and all _derived_ {@link Cage}s added to _overlapping_ collection.
+ *
+ * Produced _non-overlapping_ area is NOT guaranteed to be maximized
+ * as this stage does NOT process _derived_ {@link Cage}s which can potentially maximize _the non-overlapping_ area.
+ *
+ * @param allCages - All {@link Cage}s belonging to the area on the {@link Grid}.
+ *
+ * @returns Intermediate {@link GridAreaModel} with all _input_ {@link Cage}s being unconditionally added
+ * to the area of _non-overlapping_ {@link Cage}s and all _derived_ {@link Cage}s added to _overlapping_ collection.
+ */
 const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages): GridAreaModel => {
     const inputCages = new Array<Cage>();
     let inputCagesCellCount = 0;
