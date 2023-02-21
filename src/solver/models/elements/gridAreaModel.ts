@@ -221,6 +221,8 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
  * @returns Intermediate {@link GridAreaModel} where all _input_ {@link Cage}s being unconditionally added
  * to the area of {@link Cage}s without shared {@link Cell}s
  * and all _derived_ {@link Cage}s being added to _overlapping_ collection.
+ *
+ * @see Cage.isInput
  */
 const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages): GridAreaModel => {
     const inputCages = new Array<Cage>();
