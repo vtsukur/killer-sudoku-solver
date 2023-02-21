@@ -30,8 +30,7 @@ export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
 /**
  * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s of the same {@link House}.
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -61,8 +60,7 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
 /**
  * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s of the same {@link House}.
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.

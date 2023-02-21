@@ -10,8 +10,7 @@ import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
 /**
  * Area of _non-overlapping_ {@link Cage}s within {@link GridAreaModel}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s within {@link GridAreaModel}.
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
  *
  * @public
  */
@@ -20,8 +19,7 @@ export interface NonOverlappingCagesAreaModel {
     /**
      * _Non-overlapping_ {@link Cage}s within {@link GridAreaModel} which are a part of this area.
      *
-     * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s within {@link GridAreaModel}.
+     * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
      */
     readonly cages: ReadonlyCages;
 
@@ -103,8 +101,7 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
  *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
  * Defined by {@link overlappingCages}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
- * which are also present in other {@link Cage}s within {@link GridAreaModel}.
+ * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
  *
  * @public
  */
@@ -150,8 +147,7 @@ export class GridAreaModel implements GridAreaModel {
      *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
      * Defined by {@link overlappingCages}.
      *
-     * {@link Cage}s are considered _non-overlapping_ if they do NOT have {@link Cell}s
-     * which are also present in other {@link Cage}s within the same {@link GridAreaModel}.
+     * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
      *
      * For performance reasons the following rules apply:
      *  - {@link Cage}s which have `Cage.input === true`
