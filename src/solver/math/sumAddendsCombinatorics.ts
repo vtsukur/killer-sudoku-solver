@@ -78,8 +78,8 @@ export class SumAddendsCombinatorics {
      * const combosOf2NumbersToAddUpTo19 = SumAddendsCombinatorics.combosForSum(19, 2); // []
      * ```
      *
-     * @param sum - The sum to find addend combinations for. Should be within [1, 45] range.
-     * @param addendCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+     * @param sum - Sum to find addend combinations for. Should be within [1, 45] range.
+     * @param addendCount - Amount of unique numbers to form a sum. Should be within [1, 9] range.
      *
      * @returns Readonly array of distinct combinations of unique numbers (addends) to form a sum.
      * If there are no combinations found, empty array is returned.
@@ -295,8 +295,8 @@ storePrecomputed(`
  * const combosOf2NumbersToAddUpTo19 = computeSumAddendsCombos(19, 2); // []
  * ```
  *
- * @param sum - The sum to find addend combinations for. Should be within [1, 45] range.
- * @param addendCount - The amount of unique numbers to form a sum. Should be within [1, 9] range.
+ * @param sum - Sum to find addend combinations for. Should be within [1, 45] range.
+ * @param addendCount - Amount of unique numbers to form a sum. Should be within [1, 9] range.
  *
  * @returns Readonly array of distinct combinations of unique numbers (addends) to form a sum.
  * If there are no combinations found, empty array is returned.

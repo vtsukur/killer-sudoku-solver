@@ -34,7 +34,7 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
     /**
      * Checks if this set does NOT have the given number.
      *
-     * @param val - The number to check.
+     * @param val - Number to check.
      *
      * @returns `true` if this checking set does NOT have the given number; otherwise `false`.
      */

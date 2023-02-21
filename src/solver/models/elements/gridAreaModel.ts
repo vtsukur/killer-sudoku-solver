@@ -32,7 +32,7 @@ export interface NonOverlappingCagesAreaModel {
      * Checking set of {@link Cell} indices which has all
      * {@link Cell}s of _non-overlapping_ {@link cages} within {@link GridAreaModel} included.
      */
-    readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
+    readonly cellIndices: ReadonlyCellIndicesCheckingSet;
 
     /**
      * Sum of all _non-overlapping_ {@link cages} in this area.
@@ -43,10 +43,10 @@ export interface NonOverlappingCagesAreaModel {
 
 /**
  * {@link NonOverlappingCagesAreaModel} with all properties but {@link sum}
- * being precomputed externally and passed to constructor.
+ * being precomputed externally and passed to the constructor.
  *
  * Used internally by this module for intermediate area model construction
- * during staged processing.
+ * during staged processing while finding area of _non-overlapping_ {@link Cage}s with maximum size.
  *
  * {@link sum} is computed on every access
  * since many usages of {@link NonOverlappingCagesAreaModel} does NOT need sum at all.
@@ -58,7 +58,7 @@ class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlapping
     constructor(
             readonly cages: ReadonlyCages,
             readonly cellCount: number,
-            readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
+            readonly cellIndices: ReadonlyCellIndicesCheckingSet) {
     }
 
     get sum() {
@@ -71,7 +71,8 @@ class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlapping
  * {@link NonOverlappingCagesAreaModel} with all properties
  * being precomputed externally and passed to constructor.
  *
- * Designed for the external use for maximum performance.
+ * Designed for the external use for maximum performance
+ * as all values are referenced and not computed twice.
  */
 class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOverlappingCagesAreaModel {
 
@@ -80,8 +81,8 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
     constructor(
             cages: ReadonlyCages,
             cellCount: number,
-            cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet) {
-        super(cages, cellCount, cellIndicesCheckingSet);
+            cellIndices: ReadonlyCellIndicesCheckingSet) {
+        super(cages, cellCount, cellIndices);
         this._sum = super.sum;
     }
 
@@ -96,10 +97,16 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
  *
  * Upon construction of the area instance, {@link Cage}s are divided into two collections:
  *
- *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
+ *  - {@link Cage}s without shared {@link Cell}s forming area of maximized size.
  * Defined by {@link nonOverlappingCagesAreaModel}.
  *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
  * Defined by {@link overlappingCages}.
+ *
+ * Maximization is required to minimize the area that complements it so that
+ * it is possible to figure out hints for solving Killer Sudoku puzzle.
+ * Knowing the sum of {@link Cage}s in maximized area and the sum of full area
+ * allows to trivially determine the sum of complementing area and,
+ * in this way, potentially restrict possible number options for the {@link Cell}s in the complementing area.
  *
  * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
  *
@@ -121,7 +128,8 @@ export interface GridAreaModel {
 
 /**
  * Area on the {@link Grid} defined by a group of {@link Cage}s
- * which can be built by static factory method {@link from}.
+ * which can be built by static factory method {@link from}
+ * producing ma.
  *
  * @public
  */
@@ -142,25 +150,25 @@ export class GridAreaModel implements GridAreaModel {
      *
      * {@link Cage}s are divided into two collections:
      *
-     *  - {@link Cage}s which do NOT _overlap_ with each other forming maximum possible area.
+     *  - {@link Cage}s without shared {@link Cell}s forming area of maximized size.
      * Defined by {@link nonOverlappingCagesAreaModel}.
-     *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
+     *  - {@link Cage}s which share {@link Cell}s with the area formed by {@link nonOverlappingCagesAreaModel}.
      * Defined by {@link overlappingCages}.
      *
-     * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
-     *
      * For performance reasons the following rules apply:
+     *
      *  - {@link Cage}s which have `Cage.input === true`
      * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
-     * an area of a smaller size.
+     * an area of a size smaller than potential maximum.
      *  - {@link Cage}s are NOT validated to be within the supposed area boundaries.
+     *
      * It is up to the caller to collect {@link Cage}s correctly with respect to the area boundaries.
      *
      * @param cages - {@link Cage}s to construct this {@link GridAreaModel} from.
-     * @param houseCount - number of {@link House}s that the {@link GridAreaModel} covers.
+     * @param houseCount - Number of {@link House}s that the {@link GridAreaModel} covers.
      * Used to calculate possible upper bound of maximum area size which is `House.CELL_COUNT * houseCount`.
      *
-     * @returns new area on the {@link Grid} defined by a group of the given {@link Cage}s.
+     * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s.
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
         return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY_INSTANCE;
@@ -184,16 +192,18 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
 
 /**
  * First processing stage splits given {@link Cage}s into _input_ {@link Cage}s and _derived_ ones,
- * producing intermediate {@link GridAreaModel} with all _input_ {@link Cage}s being unconditionally added
- * to the area of _non-overlapping_ {@link Cage}s and all _derived_ {@link Cage}s added to _overlapping_ collection.
+ * producing intermediate {@link GridAreaModel} where all _input_ {@link Cage}s being unconditionally added
+ * to the area of {@link Cage}s without shared {@link Cell}s (called _non-overlapping_ area)
+ * and all _derived_ {@link Cage}s being added to _overlapping_ area.
  *
  * Produced _non-overlapping_ area is NOT guaranteed to be maximized
- * as this stage does NOT process _derived_ {@link Cage}s which can potentially maximize _the non-overlapping_ area.
+ * as this stage does NOT process _derived_ {@link Cage}s which can potentially maximize the _non-overlapping_ area.
  *
  * @param allCages - All {@link Cage}s belonging to the area on the {@link Grid}.
  *
- * @returns Intermediate {@link GridAreaModel} with all _input_ {@link Cage}s being unconditionally added
- * to the area of _non-overlapping_ {@link Cage}s and all _derived_ {@link Cage}s added to _overlapping_ collection.
+ * @returns Intermediate {@link GridAreaModel} where all _input_ {@link Cage}s being unconditionally added
+ * to the area of {@link Cage}s without shared {@link Cell}s
+ * and all _derived_ {@link Cage}s being added to _overlapping_ collection.
  */
 const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages): GridAreaModel => {
     const inputCages = new Array<Cage>();
@@ -225,14 +235,14 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
  * produced by {@link stage1_splitCagesIntoInputAndDerivedCagesArea}
  * and tries to maximize the _non-overlapping_ area by enriching it with _derived_ {@link Cage}s.
  *
- * @param absMaxAreaCellCount - The upper bound of maximum area size that the {@link GridAreaModel} covers.
- * @param inputAndDerivedCagesArea - The result of {@link stage1_splitCagesIntoInputAndDerivedCagesArea}.
+ * @param absMaxAreaCellCount - Upper bound of maximum area size that the {@link GridAreaModel} covers.
+ * @param inputAndDerivedCagesArea - Result of {@link stage1_splitCagesIntoInputAndDerivedCagesArea}.
  *
  * @returns The {@link GridAreaModel} with maximized _non-overlapping_ area
  * with all _input_ {@link Cage}s and (optionally) _derived_ {@link Cage}s having no shared {@link Cell}s.
  */
 const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
-    const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
+    const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndices;
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
 
@@ -252,12 +262,11 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
 
 /**
  * Third processing stage uses inclusion-exclusion principle
- * to find an area of maximum size with _non-overlapping_ {@link Cage}s.
+ * to find an area of maximum size with {@link Cage}s without shared {@link Cell}s.
  *
  * Complexity is `O(2^n)` where `n` is the number of derived {@link Cage}s without _obvious overlap_.
  *
- * This algorithm is applied since the problem at hand is NP-hard,
- * just like subset sum problem (SSP).
+ * This algorithm is applied since the problem at hand is NP-hard just like subset sum problem (SSP).
  * Minifying `n` is critical to make this stage performant,
  * which is actually achieved by the first two stages of processing:
  * {@link stage1_splitCagesIntoInputAndDerivedCagesArea} and {@link stage2_tryToMaximizeNonOverlappingArea}.
@@ -285,7 +294,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     private maxAreaCages: Cages;
     private maxAreaCellCount: number;
     private maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
-    private found: boolean;
+    private foundAbsMax: boolean;
 
     constructor(readonly cages: ReadonlyCages,
             readonly absMaxAreaCellCount: number,
@@ -295,7 +304,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         const {
             cages: inputCages,
             cellCount: inputCagesCellCount,
-            cellIndicesCheckingSet: inputCagesCellIndicesCheckingSet
+            cellIndices: inputCagesCellIndicesCheckingSet
         } = nonOverlappingCagesAreaModel;
         this.usedCages = [...inputCages];
         this.usedCellCount = inputCagesCellCount;
@@ -303,7 +312,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         this.maxAreaCages = [...inputCages];
         this.maxAreaCellCount = inputCagesCellCount;
         this.maxAreaCellIndices = inputCagesCellIndicesCheckingSet;
-        this.found = false;
+        this.foundAbsMax = false;
     }
 
     find(derivedCages: ReadonlyCages) {
@@ -329,16 +338,16 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         const cage = this.cages[step];
 
         if (this.canTakeCage(cage)) {
-            // Recursively try to find new maximum WITH the current `Cage`.
+            // Recursively try to find new maximized area WITH the current `Cage`.
             this.takeNonOverlappingCage(cage);
             if (this.doFind(step + 1)) {
                 return true;
             }
 
-            // Recursively try to find new maximum WITHOUT the current `Cage` ...
+            // Recursively try to find new maximized area WITHOUT the current `Cage` ...
             this.removeNonOverlappingCage(cage);
         }
-        // ... here comes the actual recursive try to find new maximum WITHOUT the current `Cage`.
+        // ... here comes the actual recursive try to find new maximum area WITHOUT the current `Cage`.
         return this.doFind(step + 1);
     };
 
@@ -351,10 +360,10 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         this.maxAreaCages = [...this.usedCages];
         this.maxAreaCellIndices = this.usedCellIndices.clone();
         if (this.usedCellCount === this.absMaxAreaCellCount) {
-            this.found = true;
+            this.foundAbsMax = true;
         }
 
-        return this.found;
+        return this.foundAbsMax;
     }
 
     private isLastStep(step: number) {
