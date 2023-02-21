@@ -423,4 +423,4 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         return derivedCages.filter(cage => this.maxAreaCages.indexOf(cage) === -1);
     }
 
-};
+}
