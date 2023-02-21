@@ -247,7 +247,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
     } else {
         // Executing inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
         // Complexity is `O(2^n)` where `n` is the number of derived `Cage`s without obvious overlap.
-        // In real-world scenarios `n` is usually be under `5` and for the most cases between `1` and `3`.
+        // In real-world scenarios `n` is usually under `5` and for the most cases between `1` and `3`.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
