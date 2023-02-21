@@ -239,14 +239,15 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
+
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         // Absence of derived `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
         // there is NO need to execute expensive inclusion/exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
         // Executing inclusion/exclusion algorithm for derived `Cage`s without obvious overlap.
-        // Complexity: `O(2^n)` where `n` is the number of derived `Cage`s without obvious overlap.
-        // In real-world scenarios `n` will be under `5`.
+        // Complexity is `O(2^n)` where `n` is the number of derived `Cage`s without obvious overlap.
+        // In real-world scenarios `n` is usually be under `5` and for the most cases between `1` and `3`.
         return new Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea(
             derivedCagesWithNoObviousOverlap,
             absMaxAreaCellCount,
