@@ -155,7 +155,7 @@ describe('Performance tests for `GridAreaModel`', () => {
                 Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
             ];
 
-            expectGridAreaModel(GridAreaModel.from(cages, 4),
+            expectGridAreaModel(GridAreaModel.from(cages, 6),
                 [
                     Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
                     Cage.ofSum(14).at(1, 0).at(1, 1).setIsInput(false).new(),
