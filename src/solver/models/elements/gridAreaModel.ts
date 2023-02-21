@@ -180,7 +180,7 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
         // then the maximum non-overlapping area has been already found and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
-        return stage2_preFilterAndMaximizeNonOverlappingArea(allCages, absMaxAreaCellCount, inputAndDerivedCagesArea);
+        return stage2_preFilterAndMaximizeNonOverlappingArea(absMaxAreaCellCount, inputAndDerivedCagesArea);
     }
 };
 
@@ -222,7 +222,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     };
 };
 
-const stage2_preFilterAndMaximizeNonOverlappingArea = (allCages: ReadonlyCages, absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
+const stage2_preFilterAndMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
     const usedCellIndices = inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellIndicesCheckingSet;
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
