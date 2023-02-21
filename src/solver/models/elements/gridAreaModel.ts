@@ -234,7 +234,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     for (const cage of allCages) {
         if (cage.isInput) {
             inputCages.push(cage);
-            inputCagesCellIndices.add(cage.cellIndicesCheckingSet);
+            inputCagesCellIndices.add(cage.cellIndices);
             inputCagesCellCount += cage.cells.length;
         } else {
             derivedCages.push(cage);
@@ -268,7 +268,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
     // without full combinatorics of inclusion-exclusion approach and methods alike.
     // It potentially narrows down the collection to run heavier algorithms for.
     const derivedCagesWithNoObviousOverlap = inputAndDerivedCagesArea.overlappingCages.filter(
-        cage => usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet));
+        cage => usedCellIndices.doesNotHaveAny(cage.cellIndices));
 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
         // Absence of _derived_ `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
@@ -397,17 +397,17 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private canTakeCage(cage: Cage) {
-        return this.usedCellIndices.doesNotHaveAny(cage.cellIndicesCheckingSet);
+        return this.usedCellIndices.doesNotHaveAny(cage.cellIndices);
     }
 
     private takeNonOverlappingCage(cage: Cage) {
-        this.usedCellIndices.add(cage.cellIndicesCheckingSet);
+        this.usedCellIndices.add(cage.cellIndices);
         this.usedCages.push(cage);
         this.usedCellCount += cage.cellCount;
     }
 
     private removeNonOverlappingCage(cage: Cage) {
-        this.usedCellIndices.remove(cage.cellIndicesCheckingSet);
+        this.usedCellIndices.remove(cage.cellIndices);
         this.usedCages.pop();
         this.usedCellCount -= cage.cellCount;
     }

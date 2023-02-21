@@ -10,7 +10,7 @@ describe('Cage tests', () => {
         expect(cage.cells).toEqual([ Cell.at(4, 4), Cell.at(4, 5) ]);
         expect(cage.cellCount).toBe(2);
         expect(cage.isInput).toBeTruthy();
-        expect(cage.cellIndicesCheckingSet.equals(CellIndicesCheckingSet.of(40, 41))).toBeTruthy();
+        expect(cage.cellIndices.equals(CellIndicesCheckingSet.of(40, 41))).toBeTruthy();
         expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.tsConstructionCode).toBe('Cage.ofSum(10).at(4, 4).at(4, 5).new()');

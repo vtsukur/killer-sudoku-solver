@@ -54,7 +54,7 @@ export class Cage {
      * Checking set of {@link Cell} indices with efficient storage & fast checking operations
      * which has {@link Cage} {@link Cell}s included.
      */
-    readonly cellIndicesCheckingSet: ReadonlyCellIndicesCheckingSet;
+    readonly cellIndices: ReadonlyCellIndicesCheckingSet;
 
     /**
      * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s
@@ -94,7 +94,7 @@ export class Cage {
         this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
         this.isInput = isFromInput;
-        this.cellIndicesCheckingSet = new CellIndicesCheckingSet(cells.map(cell => cell.index));
+        this.cellIndices = new CellIndicesCheckingSet(cells.map(cell => cell.index));
     }
 
     private static keyOf(sum: number, cells: ReadonlyCells) {

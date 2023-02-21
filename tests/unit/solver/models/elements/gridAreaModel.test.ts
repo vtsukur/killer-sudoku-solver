@@ -195,7 +195,7 @@ export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlapping
     }));
 
     const nonOverlappingCagesCellIndicesCheckingSet = nonOverlappingCages.reduce(
-        (prev, current) => prev.add(current.cellIndicesCheckingSet), CellIndicesCheckingSet.newEmpty());
+        (prev, current) => prev.add(current.cellIndices), CellIndicesCheckingSet.newEmpty());
     expect(gridAreaModel.nonOverlappingCagesAreaModel.cellIndices).toEqual(nonOverlappingCagesCellIndicesCheckingSet);
 
     expect(gridAreaModel.overlappingCages).toEqual(overlappingCages);
