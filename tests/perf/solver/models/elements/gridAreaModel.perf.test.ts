@@ -8,7 +8,7 @@ describe('Performance tests for `GridAreaModel`', () => {
     const ITERATION_COUNT = 10000;
 
     _.range(TESTS_COUNT).forEach(i => {
-        test(`Segmentation of \`House\` \`Cage\`s with 2 overlapping \`Cage\`s (\`Nonet\` 8 from Sudoku.com 2022-10-19) [${i + 1}]`, () => {
+        test(`Sudoku.com 2022-10-19: 4 derived \`Cage\`s and 2 with obvious overlap [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(9).at(7, 8).at(8, 8).new(),
                 Cage.ofSum(11).at(8, 7).at(8, 8).setIsInput(false).new(),
@@ -36,7 +36,7 @@ describe('Performance tests for `GridAreaModel`', () => {
             });
         });
 
-        test(`Segmentation of \`Cage\`s in a big 4-\`House\` area with 5 derived \`Cage\`s and 13 unfilled \`Cell\`s remaining (Sudoku.com 2022-10-22) [${i + 1}]`, () => {
+        test(`Sudoku.com 2022-10-22: 5 derived \`Cage\`s all with obvious overlap [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(19).at(0, 2).at(0, 3).at(0, 4).at(1, 2).new(),
                 Cage.ofSum(22).at(2, 2).at(3, 2).at(3, 3).new(),
@@ -82,7 +82,7 @@ describe('Performance tests for `GridAreaModel`', () => {
             });
         });
 
-        test(`Random expert level challenge: 20 \`Cage\`s, 5 are derived and 4 are executed with incl/excl algo [${i + 1}]`, () => {
+        test(`Sudoku.com random challenge: 4 derived \`Cage\`s w/o obvious overlap [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(3).at(0, 4).new(),
                 Cage.ofSum(20).at(1, 3).at(1, 4).at(2, 4).new(),
@@ -139,7 +139,7 @@ describe('Performance tests for `GridAreaModel`', () => {
             });
         });
 
-        test.only(`Sudoku.com 2022-08-12 challenge: 12 \`Cage\`s and all are derived [${i + 1}]`, () => {
+        test.only(`Sudoku.com 2022-08-12: 12 \`Cage\`s and all are derived [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(32).at(0, 3).at(1, 3).at(2, 3).at(3, 0).at(4, 0).setIsInput(false).new(),
                 Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
@@ -155,24 +155,24 @@ describe('Performance tests for `GridAreaModel`', () => {
                 Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
             ];
 
-            // expectGridAreaModel(GridAreaModel.from(cages, 4),
-            //     [
-            //         Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
-            //         Cage.ofSum(14).at(1, 0).at(1, 1).setIsInput(false).new(),
-            //         Cage.ofSum(22).at(4, 0).at(4, 1).at(4, 2).at(4, 3).setIsInput(false).new(),
-            //         Cage.ofSum(12).at(2, 0).at(2, 4).setIsInput(false).new(),
-            //         Cage.ofSum(4).at(0, 0).at(0, 1).setIsInput(false).new(),
-            //         Cage.ofSum(25).at(3, 0).at(3, 1).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
-            //         Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
-            //     ],
-            //     [
-            //         Cage.ofSum(32).at(0, 3).at(1, 3).at(2, 3).at(3, 0).at(4, 0).setIsInput(false).new(),
-            //         Cage.ofSum(24).at(2, 0).at(5, 3).at(6, 0).at(6, 1).at(6, 2).setIsInput(false).new(),
-            //         Cage.ofSum(21).at(5, 0).at(5, 1).at(5, 2).at(5, 3).setIsInput(false).new(),
-            //         Cage.ofSum(22).at(3, 0).at(3, 4).at(4, 0).setIsInput(false).new(),
-            //         Cage.ofSum(23).at(2, 0).at(3, 0).at(3, 1).at(3, 2).at(3, 3).setIsInput(false).new()
-            //     ]
-            // );
+            expectGridAreaModel(GridAreaModel.from(cages, 4),
+                [
+                    Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
+                    Cage.ofSum(14).at(1, 0).at(1, 1).setIsInput(false).new(),
+                    Cage.ofSum(22).at(4, 0).at(4, 1).at(4, 2).at(4, 3).setIsInput(false).new(),
+                    Cage.ofSum(12).at(2, 0).at(2, 4).setIsInput(false).new(),
+                    Cage.ofSum(4).at(0, 0).at(0, 1).setIsInput(false).new(),
+                    Cage.ofSum(25).at(3, 0).at(3, 1).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
+                    Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
+                ],
+                [
+                    Cage.ofSum(32).at(0, 3).at(1, 3).at(2, 3).at(3, 0).at(4, 0).setIsInput(false).new(),
+                    Cage.ofSum(24).at(2, 0).at(5, 3).at(6, 0).at(6, 1).at(6, 2).setIsInput(false).new(),
+                    Cage.ofSum(21).at(5, 0).at(5, 1).at(5, 2).at(5, 3).setIsInput(false).new(),
+                    Cage.ofSum(22).at(3, 0).at(3, 4).at(4, 0).setIsInput(false).new(),
+                    Cage.ofSum(23).at(2, 0).at(3, 0).at(3, 1).at(3, 2).at(3, 3).setIsInput(false).new()
+                ]
+            );
 
             _.range(ITERATION_COUNT).forEach(() => {
                 GridAreaModel.from(cages, 6);
