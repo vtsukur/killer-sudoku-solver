@@ -9,7 +9,7 @@ import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
-export class FindAndSliceResidualSumsStrategy extends Strategy {
+export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     execute() {
         _.range(1, 5).reverse().forEach((n: number) => {
