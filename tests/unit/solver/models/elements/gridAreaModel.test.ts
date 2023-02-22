@@ -139,6 +139,42 @@ describe('Unit tests for `GridAreaModel`', () => {
         );
     });
 
+    test('Sudoku.com 2022-08-12: creation of instance for the big area with 12 `Cage`s and all are derived', () => {
+        const cages = [
+            Cage.ofSum(32).at(0, 3).at(1, 3).at(2, 3).at(3, 0).at(4, 0).setIsInput(false).new(),
+            Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
+            Cage.ofSum(24).at(2, 0).at(5, 3).at(6, 0).at(6, 1).at(6, 2).setIsInput(false).new(),
+            Cage.ofSum(21).at(5, 0).at(5, 1).at(5, 2).at(5, 3).setIsInput(false).new(),
+            Cage.ofSum(14).at(1, 0).at(1, 1).setIsInput(false).new(),
+            Cage.ofSum(22).at(3, 0).at(3, 4).at(4, 0).setIsInput(false).new(),
+            Cage.ofSum(22).at(4, 0).at(4, 1).at(4, 2).at(4, 3).setIsInput(false).new(),
+            Cage.ofSum(23).at(2, 0).at(3, 0).at(3, 1).at(3, 2).at(3, 3).setIsInput(false).new(),
+            Cage.ofSum(12).at(2, 0).at(2, 4).setIsInput(false).new(),
+            Cage.ofSum(4).at(0, 0).at(0, 1).setIsInput(false).new(),
+            Cage.ofSum(25).at(3, 0).at(3, 1).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
+            Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
+        ];
+
+        expectGridAreaModel(GridAreaModel.from(cages, 6),
+            [
+                Cage.ofSum(14).at(0, 4).at(0, 5).at(2, 5).setIsInput(false).new(),
+                Cage.ofSum(14).at(1, 0).at(1, 1).setIsInput(false).new(),
+                Cage.ofSum(22).at(4, 0).at(4, 1).at(4, 2).at(4, 3).setIsInput(false).new(),
+                Cage.ofSum(12).at(2, 0).at(2, 4).setIsInput(false).new(),
+                Cage.ofSum(4).at(0, 0).at(0, 1).setIsInput(false).new(),
+                Cage.ofSum(25).at(3, 0).at(3, 1).at(3, 2).at(3, 3).at(3, 4).setIsInput(false).new(),
+                Cage.ofSum(25).at(2, 2).at(2, 3).at(5, 2).at(5, 3).at(6, 2).setIsInput(false).new()
+            ],
+            [
+                Cage.ofSum(32).at(0, 3).at(1, 3).at(2, 3).at(3, 0).at(4, 0).setIsInput(false).new(),
+                Cage.ofSum(24).at(2, 0).at(5, 3).at(6, 0).at(6, 1).at(6, 2).setIsInput(false).new(),
+                Cage.ofSum(21).at(5, 0).at(5, 1).at(5, 2).at(5, 3).setIsInput(false).new(),
+                Cage.ofSum(22).at(3, 0).at(3, 4).at(4, 0).setIsInput(false).new(),
+                Cage.ofSum(23).at(2, 0).at(3, 0).at(3, 1).at(3, 2).at(3, 3).setIsInput(false).new()
+            ]
+        );
+    });
+
     test('Creation of empty instance', () => {
         expectGridAreaModel(GridAreaModel.from([]), [], []);
     });
