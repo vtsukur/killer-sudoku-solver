@@ -290,14 +290,16 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  *
  * Complexity is `O(2^n)` where `n` is the number of _derived_ {@link Cage}s without _obvious overlap_.
  *
- * This algorithm is applied since the problem at hand is NP-hard just like subset sum problem (SSP).
+ * This algorithm is applied since the problem at hand appears to be NP-hard
+ * (this statement needs validation).
  * Minifying `n` is critical to make this stage performant,
  * which is actually achieved by the first two stages of processing:
  * {@link stage1_splitCagesIntoInputAndDerivedCagesArea} and {@link stage2_tryToMaximizeNonOverlappingArea}.
  * For real-world scenarios presence of these stages result in `n`
  * being between `1` and `3` for the most cases (80%) and in extreme case being slightly above `10`.
  *
- * This algorithm can be optimized further by applying more advanced algorithms with techniques from:
+ * This algorithm can be optimized further by applying more advanced algorithms
+ * with the techniques from subset sum problem (SSP):
  *
  *  - Horowitz and Sahni: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Horowitz_and_Sahni}
  *  - Schroeppel and Shamir: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Schroeppel_and_Shamir}
