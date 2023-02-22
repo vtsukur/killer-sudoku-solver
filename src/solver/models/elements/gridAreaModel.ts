@@ -8,9 +8,9 @@ import { ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
 
 /**
- * Area of _non-overlapping_ {@link Cage}s within {@link GridAreaModel}.
+ * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
+ * Such {@link Cage}s are called _non-overlapping_.
  *
  * @public
  */
@@ -18,8 +18,6 @@ export interface NonOverlappingCagesAreaModel {
 
     /**
      * _Non-overlapping_ {@link Cage}s within {@link GridAreaModel} which are a part of this area.
-     *
-     * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
      */
     readonly cages: ReadonlyCages;
 
@@ -72,7 +70,7 @@ class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlapping
  * being precomputed externally and passed to constructor.
  *
  * Designed for the external use for maximum performance
- * as all values are referenced and not computed twice.
+ * as all values are referenced and NOT computed multiple times.
  */
 class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOverlappingCagesAreaModel {
 
@@ -99,28 +97,28 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
  *
  *  - {@link Cage}s without shared {@link Cell}s forming area of maximized size.
  * Defined by {@link nonOverlappingCagesAreaModel}.
- *  - {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
+ *  - {@link Cage}s which have some {@link Cells}s shared
+ * with the area formed by {@link nonOverlappingCagesAreaModel}.
  * Defined by {@link overlappingCages}.
  *
  * Maximization is required to minimize the area that complements it so that
  * it is possible to figure out hints for solving Killer Sudoku puzzle.
- * Knowing the sum of {@link Cage}s in maximized area and the sum of full area
- * allows to trivially determine the sum of complementing area and,
- * in this way, potentially restrict possible number options for the {@link Cell}s in the complementing area.
- *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
+ * Knowing the sum of {@link Cage}s in maximized area and the sum of the full area
+ * allows to trivially determine the sum of complementing area and, in this way,
+ * potentially restrict possible number options for the {@link Cell}s in the complementing area.
  *
  * @public
  */
 export interface GridAreaModel {
 
     /**
-     * Area of _non-overlapping_ {@link Cage}s within this {@link GridAreaModel}.
+     * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
      */
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
 
     /**
-     * {@link Cage}s which overlap with the area formed by {@link nonOverlappingCagesAreaModel}.
+     * {@link Cage}s which have some {@link Cell}s shared
+     * with the area formed by {@link nonOverlappingCagesAreaModel}.
      */
     readonly overlappingCages: ReadonlyCages;
 
@@ -128,8 +126,8 @@ export interface GridAreaModel {
 
 /**
  * Area on the {@link Grid} defined by a group of {@link Cage}s
- * which can be built by static factory method {@link from}
- * producing ma.
+ * which can be built by static factory method {@link from} producing
+ * maximized area of {@link Cage}s which do NOT have shared {@link Cell}s.
  *
  * @public
  */
@@ -153,12 +151,13 @@ export class GridAreaModel implements GridAreaModel {
      *
      *  - {@link Cage}s without shared {@link Cell}s forming area of maximized size.
      * Defined by {@link nonOverlappingCagesAreaModel}.
-     *  - {@link Cage}s which share {@link Cell}s with the area formed by {@link nonOverlappingCagesAreaModel}.
+     *  - {@link Cage}s which have some {@link Cells}s shared
+     * with the area formed by {@link nonOverlappingCagesAreaModel}.
      * Defined by {@link overlappingCages}.
      *
      * For performance reasons the following rules apply:
      *
-     *  - {@link Cage}s which have `Cage.input === true`
+     *  - {@link Cage}s which have `Cage.isInput === true`
      * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
      * an area of a size smaller than potential maximum.
      *  - {@link Cage}s are NOT validated to be within the supposed area boundaries.
@@ -183,9 +182,12 @@ export class GridAreaModel implements GridAreaModel {
  *
  * Runs 3 stages of processing:
  *
- * - {@link stage1_splitCagesIntoInputAndDerivedCagesArea} (fast)
- * - {@link stage2_tryToMaximizeNonOverlappingArea} (fast, skipped if prior stage is deterministic to the end result)
- * - {@link Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea} (slow, , skipped if prior stages are deterministic to the end result)
+ * - {@link stage1_splitCagesIntoInputAndDerivedCagesArea}
+ * (fast)
+ * - {@link stage2_tryToMaximizeNonOverlappingArea}
+ * (fast, skipped if prior stage is deterministic to the end result)
+ * - {@link Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea}
+ * (slow, skipped if prior stages are deterministic to the end result)
  *
  * @param allCages - All {@link Cage}s belonging to the area on the {@link Grid}.
  * @param houseCount - Number of {@link House}s that the {@link GridAreaModel} covers.
@@ -257,7 +259,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
  * @param absMaxAreaCellCount - Upper bound of maximum area size that the {@link GridAreaModel} covers.
  * @param inputAndDerivedCagesArea - Result of {@link stage1_splitCagesIntoInputAndDerivedCagesArea}.
  *
- * @returns The {@link GridAreaModel} with maximized _non-overlapping_ area
+ * @returns {@link GridAreaModel} with maximized _non-overlapping_ area
  * with all _input_ {@link Cage}s and (optionally) _derived_ {@link Cage}s having no shared {@link Cell}s.
  */
 const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inputAndDerivedCagesArea: GridAreaModel): GridAreaModel => {
@@ -271,7 +273,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
         cage => usedCellIndices.doesNotHaveAny(cage.cellIndices));
 
     if (derivedCagesWithNoObviousOverlap.length === 0) {
-        // Absence of _derived_ `Cage`s without obvious overlaps with non-overlapping area triggers short-circuit return:
+        // Absence of _derived_ `Cage`s without obvious overlaps with _non-overlapping_ area triggers short-circuit return:
         // there is NO need to execute heavy inclusion-exclusion algorithm to determine the maximum area.
         return inputAndDerivedCagesArea;
     } else {
@@ -291,7 +293,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  * Complexity is `O(2^n)` where `n` is the number of _derived_ {@link Cage}s without _obvious overlap_.
  *
  * This algorithm is applied since the problem at hand appears to be NP-hard
- * (this statement needs validation).
+ * (this statement still needs validation in the eyes of the author).
  * Minifying `n` is critical to make this stage performant,
  * which is actually achieved by the first two stages of processing:
  * {@link stage1_splitCagesIntoInputAndDerivedCagesArea} and {@link stage2_tryToMaximizeNonOverlappingArea}.
@@ -306,6 +308,11 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  *  - Howgrave-Graham and Joux: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Howgrave-Graham_and_Joux}
  *
  * However, it is NOT worth the complexity given the prior stages of processing which minimize `n`.
+ *
+ * Still, faster alternatives can be considered if performance will prove to be slow.
+ *
+ * Currently the known most complex real-world case of `12` _derived_ `Cage`s result
+ * in sub-millisecond execution on 2,3 GHz 8-Core Intel Core i9.
  *
  * @see https://en.wikipedia.org/wiki/Subset_sum_problem#Inclusion.E2.80.93exclusion
  * @see https://cp-algorithms.com/combinatorics/inclusion-exclusion.html#the-formulation-in-terms-of-probability-theory
