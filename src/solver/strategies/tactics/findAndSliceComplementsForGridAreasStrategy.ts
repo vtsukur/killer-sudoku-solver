@@ -75,7 +75,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToNonetAreas() {
-        CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT].forEach((leftIndex: number) => {
+        CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID].forEach((leftIndex: number) => {
             this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIndex, (cageM: CageModel) => {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
             }, (nonet: HouseIndex) => {
