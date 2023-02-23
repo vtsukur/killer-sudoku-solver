@@ -122,6 +122,40 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(9).at(2, 8).at(3, 8).new())).toBeTruthy();
     });
 
+    test('Applying strategy onto adjacent `Column`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+        // given
+        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
+        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
+        const originalCageCount = context.model.cageModelsMap.size;
+
+        // when
+        // (slicing only `Row`s in adjacent groups of 3)
+        new FindAndSliceComplementsForGridAreasStrategy(context, {
+            isApplyToRowAreas: false,
+            isApplyToColumnAreas: true,
+            isApplyToNonetAreas: false,
+            minAdjacentHouses: 3,
+            maxAdjacentHouses: 3,
+            maxComplementSize: 9
+        }).execute();
+
+        // then
+        // (twos area have complements with more than 9 `Cage`s, otherwise it should have been originalCageCount + 7)
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + 5);
+        // (`Column`s 0-2)
+        expect(context.model.hasCage(Cage.ofSum(36).at(0, 2).at(1, 2).at(2, 2).at(3, 2).at(7, 1).at(7, 2).new())).toBeTruthy();
+        // (no complements of size <= 9 for `Column`s 1-3)
+        // (`Column`s 2-4)
+        expect(context.model.hasCage(Cage.ofSum(37).at(3, 4).at(4, 2).at(4, 4).at(5, 2).at(6, 2).at(7, 2).at(7, 3).at(7, 4).at(8, 2).new())).toBeTruthy();
+        // (no complements of size <= 9 for `Column`s 3-5)
+        // (`Column`s 4-6)
+        expect(context.model.hasCage(Cage.ofSum(45).at(0, 4).at(1, 6).at(3, 6).at(4, 6).at(5, 4).at(6, 4).at(8, 4).at(8, 6).new())).toBeTruthy();
+        // (`Column`s 5-7)
+        expect(context.model.hasCage(Cage.ofSum(34).at(2, 7).at(3, 5).at(4, 5).at(7, 5).at(7, 6).at(8, 5).new())).toBeTruthy();
+        // (`Column` 6-8)
+        expect(context.model.hasCage(Cage.ofSum(21).at(0, 6).at(2, 6).at(5, 6).at(6, 6).at(7, 6).new())).toBeTruthy();
+    });
+
     test('Applying strategy onto `Nonet`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
