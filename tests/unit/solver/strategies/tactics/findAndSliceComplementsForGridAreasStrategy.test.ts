@@ -1,3 +1,4 @@
+import { House } from '../../../../../src/puzzle/house';
 import { Puzzle } from '../../../../../src/puzzle/puzzle';
 import { MasterModel } from '../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../src/solver/strategies/context';
@@ -12,6 +13,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
         runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
+        const originalCageCount = context.model.cageModelsMap.size;
 
         // when
         // (slicing only `Row`s)
@@ -23,7 +25,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         }).execute();
 
         // then
-
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT_OF_ONE_TYPE_PER_GRID);
     });
 
     const newContext = (puzzle: Puzzle) => {
