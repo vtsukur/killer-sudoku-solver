@@ -49,6 +49,40 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(18).at(8, 0).at(8, 5).at(8, 8).new())).toBeTruthy();
     });
 
+    test('Applying strategy onto adjacent `Row`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+        // given
+        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
+        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
+        const originalCageCount = context.model.cageModelsMap.size;
+
+        // when
+        // (slicing only `Row`s in adjacent groups of 3)
+        new FindAndSliceComplementsForGridAreasStrategy(context, {
+            isApplyToRowAreas: true,
+            isApplyToColumnAreas: false,
+            isApplyToNonetAreas: false,
+            minAdjacentHouses: 3,
+            maxAdjacentHouses: 3,
+            maxComplementSize: 9
+        }).execute();
+
+        // then
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + 6 /* one area has a complement with more than 9 `Cage`s */);
+        // (`Row`s 0-2)
+        expect(context.model.hasCage(Cage.ofSum(22).at(2, 2).at(2, 7).at(2, 8).new())).toBeTruthy();
+        // (`Row`s 1-3)
+        expect(context.model.hasCage(Cage.ofSum(32).at(1, 2).at(1, 5).at(1, 6).at(1, 7).at(1, 8).at(3, 6).at(3, 7).new())).toBeTruthy();
+        // (`Row`s 2-4)
+        expect(context.model.hasCage(Cage.ofSum(30).at(2, 3).at(2, 4).at(4, 0).at(4, 3).at(4, 7).at(4, 8).new())).toBeTruthy();
+        // (`Row`s 3-5)
+        expect(context.model.hasCage(Cage.ofSum(51).at(3, 2).at(3, 3).at(3, 8).at(4, 0).at(5, 0).at(5, 1).at(5, 2).at(5, 4).at(5, 6).new())).toBeTruthy();
+        // (`Row`s 4-6)
+        expect(context.model.hasCage(Cage.ofSum(19).at(4, 6).at(6, 7).at(6, 8).new())).toBeTruthy();
+        // (no complements of size <= 9 for `Row`s 5-7)
+        // (`Row` 6-8)
+        expect(context.model.hasCage(Cage.ofSum(32).at(6, 0).at(6, 1).at(6, 2).at(6, 3).at(6, 4).at(6, 5).at(6, 6).new())).toBeTruthy();
+    });
+
     test('Applying strategy onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
