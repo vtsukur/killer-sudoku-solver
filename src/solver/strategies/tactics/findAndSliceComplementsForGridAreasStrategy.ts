@@ -13,6 +13,7 @@ export type Config = {
     readonly isSliceColumnJointAreas: boolean;
     readonly isSliceRowJointAreas: boolean;
     readonly isSliceNonetAreas: boolean;
+    readonly minJointHouses: number;
     readonly maxJointHouses: number;
 }
 
@@ -20,6 +21,7 @@ const DEFAULT_CONFIG: Config = {
     isSliceColumnJointAreas: true,
     isSliceRowJointAreas: true,
     isSliceNonetAreas: true,
+    minJointHouses: 1,
     maxJointHouses: 4
 };
 
@@ -34,7 +36,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     execute() {
         if (this._config.isSliceRowJointAreas) {
-            _.range(1, this._config.maxJointHouses + 1).reverse().forEach((n: number) => {
+            _.range(this._config.minJointHouses, this._config.maxJointHouses + 1).reverse().forEach((n: number) => {
                 _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                     doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                         return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
@@ -45,7 +47,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             });
         }
         if (this._config.isSliceColumnJointAreas) {
-            _.range(1, this._config.maxJointHouses + 1).reverse().forEach(n => {
+            _.range(this._config.minJointHouses, this._config.maxJointHouses + 1).reverse().forEach(n => {
                 _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                     doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                         return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
