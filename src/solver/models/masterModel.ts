@@ -210,6 +210,10 @@ export class MasterModel {
         return this.cellModelsMatrix[row][col];
     }
 
+    hasCage(cage: Cage) {
+        return this.cageModelsMap.has(cage.key);
+    }
+
     private inputCageOf(cell: Cell) {
         return this._cellsToInputCagesMatrix[cell.row][cell.col];
     }
