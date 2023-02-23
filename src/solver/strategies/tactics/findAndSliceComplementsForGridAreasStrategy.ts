@@ -84,7 +84,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
     }
     const cagesAreaModel = GridAreaModel.from(cages, n);
     const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-    if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount > nHouseCellCount - 6) && sum) {
+    if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - 9) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIndex, rightIndexExclusive).forEach(index => {
             for (const { row, col } of cellIteratorFn(index)) {
