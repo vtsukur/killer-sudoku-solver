@@ -37,36 +37,48 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     execute() {
         if (this._config.isApplyToRowAreas) {
-            _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach((n: number) => {
-                _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
-                    this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                        return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
-                    }, (row: HouseIndex) => {
-                        return this._model.rowModels[row].cellsIterator();
-                    });
-                });
-            });
+            this.applyToRowAreas();
         }
         if (this._config.isApplyToColumnAreas) {
-            _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach(n => {
-                _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
-                    this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                        return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
-                    }, (col: HouseIndex) => {
-                        return this._model.columnModels[col].cellsIterator();
-                    });
-                });
-            });
+            this.applyToColumnAreas();
         }
         if (this._config.isApplyToNonetAreas) {
-            _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
-                this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIndex, (cageM: CageModel) => {
-                    return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
-                }, (nonet: HouseIndex) => {
-                    return this._model.nonetModels[nonet].cellsIterator();
+            this.applyToNonetAreas();
+        }
+    }
+
+    private applyToRowAreas() {
+        _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach((n: number) => {
+            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+                this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                    return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
+                }, (row: HouseIndex) => {
+                    return this._model.rowModels[row].cellsIterator();
                 });
             });
-        }
+        });
+    }
+
+    private applyToColumnAreas() {
+        _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach(n => {
+            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+                this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                    return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
+                }, (col: HouseIndex) => {
+                    return this._model.columnModels[col].cellsIterator();
+                });
+            });
+        });
+    }
+
+    private applyToNonetAreas() {
+        _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
+            this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIndex, (cageM: CageModel) => {
+                return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
+            }, (nonet: HouseIndex) => {
+                return this._model.nonetModels[nonet].cellsIterator();
+            });
+        });
     }
 
     private doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
