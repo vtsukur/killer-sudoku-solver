@@ -19,11 +19,11 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         // when
         // (slicing only single `Row`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
-            isSliceRowJointAreas: true,
-            isSliceColumnJointAreas: false,
-            isSliceNonetAreas: false,
-            minJointHouses: 1,
-            maxJointHouses: 1
+            isApplyToRowAreas: true,
+            isApplyToColumnAreas: false,
+            isApplyToNonetAreas: false,
+            minAdjacentHouses: 1,
+            maxAdjacentHouses: 1
         }).execute();
 
         // then
@@ -57,11 +57,11 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         // when
         // (slicing only single `Column`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
-            isSliceRowJointAreas: false,
-            isSliceColumnJointAreas: true,
-            isSliceNonetAreas: false,
-            minJointHouses: 1,
-            maxJointHouses: 1
+            isApplyToRowAreas: false,
+            isApplyToColumnAreas: true,
+            isApplyToNonetAreas: false,
+            minAdjacentHouses: 1,
+            maxAdjacentHouses: 1
         }).execute();
 
         // then
@@ -95,11 +95,11 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         // when
         // (slicing only single `Column`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
-            isSliceRowJointAreas: false,
-            isSliceColumnJointAreas: false,
-            isSliceNonetAreas: true,
-            minJointHouses: 1,
-            maxJointHouses: 1,
+            isApplyToRowAreas: false,
+            isApplyToColumnAreas: false,
+            isApplyToNonetAreas: true,
+            minAdjacentHouses: 1,
+            maxAdjacentHouses: 1,
         }).execute();
 
         // then
