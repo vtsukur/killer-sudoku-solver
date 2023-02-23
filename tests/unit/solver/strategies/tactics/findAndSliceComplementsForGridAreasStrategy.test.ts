@@ -10,7 +10,7 @@ import { CageSlicer } from '../../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
 
 describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
-    test('Applying strategy for single `Row`s to Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying strategy for single `Row`s onto Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
         runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
@@ -47,7 +47,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(18).at(8, 0).at(8, 5).at(8, 8).new()));
     });
 
-    test('Applying strategy for single `Column`s to Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying strategy for single `Column`s onto Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
         runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
