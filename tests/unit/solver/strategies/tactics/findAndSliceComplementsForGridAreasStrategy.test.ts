@@ -10,12 +10,18 @@ import { CageSlicer } from '../../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
 
 describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
-    test('Applying strategy onto single `Row`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        // given
-        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const originalCageCount = context.model.cageModelsMap.size;
 
+    let context: Context;
+    let originalCageCount: number;
+
+    // Given:
+    beforeEach(() => {
+        context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
+        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
+        originalCageCount = context.model.cageModelsMap.size;
+    });
+
+    test('Applying strategy onto single `Row`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // when
         // (slicing only single `Row`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
@@ -50,11 +56,6 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
     });
 
     test('Applying strategy onto adjacent `Row`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        // given
-        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const originalCageCount = context.model.cageModelsMap.size;
-
         // when
         // (slicing only `Row`s in adjacent groups of 3)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
@@ -84,11 +85,6 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
     });
 
     test('Applying strategy onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        // given
-        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const originalCageCount = context.model.cageModelsMap.size;
-
         // when
         // (slicing only single `Column`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
@@ -123,11 +119,6 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
     });
 
     test('Applying strategy onto adjacent `Column`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        // given
-        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const originalCageCount = context.model.cageModelsMap.size;
-
         // when
         // (slicing only `Row`s in adjacent groups of 3)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
@@ -157,11 +148,6 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
     });
 
     test('Applying strategy onto `Nonet`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
-        // given
-        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const originalCageCount = context.model.cageModelsMap.size;
-
         // when
         // (slicing only single `Column`s)
         new FindAndSliceComplementsForGridAreasStrategy(context, {
