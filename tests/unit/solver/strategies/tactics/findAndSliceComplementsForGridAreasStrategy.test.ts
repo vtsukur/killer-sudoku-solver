@@ -8,12 +8,22 @@ import { CageSlicer } from '../../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
 
 describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
-    test('Applying strategy to Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying strategy for single `Row`s to Daily Challenge (2022-10-22) by Sudoku.com', () => {
+        // given
         const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-
         runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
-        const strategy = new FindAndSliceComplementsForGridAreasStrategy(context);
-        strategy.execute();
+
+        // when
+        // (slicing only `Row`s)
+        new FindAndSliceComplementsForGridAreasStrategy(context, {
+            isSliceRowJointAreas: true,
+            isSliceColumnJointAreas: false,
+            isSliceNonetAreas: false,
+            maxJointHouses: 1,
+        }).execute();
+
+        // then
+
     });
 
     const newContext = (puzzle: Puzzle) => {
