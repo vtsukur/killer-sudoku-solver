@@ -84,6 +84,43 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(9).at(2, 8).at(3, 8).new()));
     });
 
+    test('Applying strategy for `Nonet`s onto Daily Challenge (2022-10-22) by Sudoku.com', () => {
+        // given
+        const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
+        runSetUpStrategies(new FindRedundantNonetSumsStrategy(context));
+        const originalCageCount = context.model.cageModelsMap.size;
+
+        // when
+        // (slicing only single `Column`s)
+        new FindAndSliceComplementsForGridAreasStrategy(context, {
+            isSliceRowJointAreas: false,
+            isSliceColumnJointAreas: false,
+            isSliceNonetAreas: true,
+            maxJointHouses: 1,
+        }).execute();
+
+        // then
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT_OF_ONE_TYPE_PER_GRID);
+        // (`Nonet` 0)
+        expect(context.model.hasCage(Cage.ofSum(18).at(0, 2).at(1, 2).at(2, 2).new()));
+        // (`Nonet` 1)
+        expect(context.model.hasCage(Cage.ofSum(21).at(0, 3).at(0, 4).at(0, 5).at(1, 5).at(2, 5).new()));
+        // (`Nonet` 2)
+        expect(context.model.hasCage(Cage.ofSum(24).at(0, 6).at(2, 6).at(2, 7).at(2, 8).new()));
+        // (`Nonet` 3)
+        expect(context.model.hasCage(Cage.ofSum(26).at(3, 3).at(4, 0).at(5, 0).at(5, 1).at(5, 2).new()));
+        // (`Nonet` 4)
+        expect(context.model.hasCage(Cage.ofSum(22).at(3, 3).at(4, 3).at(5, 3).at(5, 4).new()));
+        // (`Nonet` 5)
+        expect(context.model.hasCage(Cage.ofSum(9).at(3, 8).at(5, 6).new()));
+        // (`Nonet` 6)
+        expect(context.model.hasCage(Cage.ofSum(33).at(6, 0).at(6, 1).at(6, 2).at(7, 1).at(7, 2).new()));
+        // (`Nonet` 7)
+        expect(context.model.hasCage(Cage.ofSum(35).at(6, 3).at(6, 4).at(6, 5).at(7, 3).at(7, 4).at(7, 5).at(8, 5).new()));
+        // (`Nonet` 8)
+        expect(context.model.hasCage(Cage.ofSum(3).at(6, 6).at(7, 6).new()));
+    });
+
     const newContext = (puzzle: Puzzle) => {
         const masterModel = new MasterModel(puzzle);
         const cageSlider = new CageSlicer(masterModel);
