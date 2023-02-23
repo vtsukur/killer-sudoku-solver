@@ -15,6 +15,7 @@ export type Config = {
     readonly isApplyToNonetAreas: boolean;
     readonly minAdjacentHouses: number;
     readonly maxAdjacentHouses: number;
+    readonly maxComplementSize: number;
 }
 
 const DEFAULT_CONFIG: Config = {
@@ -22,7 +23,8 @@ const DEFAULT_CONFIG: Config = {
     isApplyToColumnAreas: true,
     isApplyToNonetAreas: true,
     minAdjacentHouses: 1,
-    maxAdjacentHouses: 4
+    maxAdjacentHouses: 4,
+    maxComplementSize: 9
 };
 
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
@@ -42,7 +44,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                         return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                     }, (row: HouseIndex) => {
                         return this._model.rowModels[row].cellsIterator();
-                    }, this, this._model);
+                    }, this, this._model, this._config);
                 });
             });
         }
@@ -53,7 +55,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                         return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                     }, (col: HouseIndex) => {
                         return this._model.columnModels[col].cellsIterator();
-                    }, this, this._model);
+                    }, this, this._model, this._config);
                 });
             });
         }
@@ -63,7 +65,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
                 }, (nonet: HouseIndex) => {
                     return this._model.nonetModels[nonet].cellsIterator();
-                }, this, this._model);
+                }, this, this._model, this._config);
             });
         }
     }
@@ -71,7 +73,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 }
 
 // make part of the strategy class to avoid extra param passing
-function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy, model: MasterModel) {
+function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>, strategy: Strategy, model: MasterModel, config: Config) {
     const nHouseCellCount = n * House.CELL_COUNT;
     const nHouseSum = n * House.SUM;
 
@@ -84,7 +86,7 @@ function doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(ctx: Context, n: 
     }
     const cagesAreaModel = GridAreaModel.from(cages, n);
     const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-    if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - 9) && sum) {
+    if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - config.maxComplementSize) && sum) {
         const residualCageBuilder = Cage.ofSum(sum);
         _.range(leftIndex, rightIndexExclusive).forEach(index => {
             for (const { row, col } of cellIteratorFn(index)) {
