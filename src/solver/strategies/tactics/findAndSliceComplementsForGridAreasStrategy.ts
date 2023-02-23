@@ -52,25 +52,25 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToRowAreas() {
         for (const n of this._rowAndColumnIterationRange) {
-            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+            for (const leftIndex of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1]) {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                 }, (row: HouseIndex) => {
                     return this._model.rowModels[row].cellsIterator();
                 });
-            });
+            }
         }
     }
 
     private applyToColumnAreas() {
         for (const n of this._rowAndColumnIterationRange) {
-            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+            for (const leftIndex of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1]) {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                 }, (col: HouseIndex) => {
                     return this._model.columnModels[col].cellsIterator();
                 });
-            });
+            }
         }
     }
 
