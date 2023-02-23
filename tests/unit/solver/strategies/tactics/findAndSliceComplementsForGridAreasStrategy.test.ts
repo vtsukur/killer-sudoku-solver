@@ -22,7 +22,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isSliceRowJointAreas: true,
             isSliceColumnJointAreas: false,
             isSliceNonetAreas: false,
-            maxJointHouses: 1,
+            minJointHouses: 1,
+            maxJointHouses: 1
         }).execute();
 
         // then
@@ -59,7 +60,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isSliceRowJointAreas: false,
             isSliceColumnJointAreas: true,
             isSliceNonetAreas: false,
-            maxJointHouses: 1,
+            minJointHouses: 1,
+            maxJointHouses: 1
         }).execute();
 
         // then
@@ -96,6 +98,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isSliceRowJointAreas: false,
             isSliceColumnJointAreas: false,
             isSliceNonetAreas: true,
+            minJointHouses: 1,
             maxJointHouses: 1,
         }).execute();
 
