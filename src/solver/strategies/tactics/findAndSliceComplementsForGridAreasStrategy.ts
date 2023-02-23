@@ -52,7 +52,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToRowAreas() {
         for (const n of this._rowAndColumnIterationRange) {
-            for (const leftIndex of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1]) {
+            for (const leftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
                 }, (row: HouseIndex) => {
@@ -64,7 +64,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToColumnAreas() {
         for (const n of this._rowAndColumnIterationRange) {
-            for (const leftIndex of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1]) {
+            for (const leftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
                 }, (col: HouseIndex) => {
@@ -72,6 +72,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 });
             }
         }
+    }
+
+    private rowAndColumnLeftIndexRange(n: number) {
+        return CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1];
     }
 
     private applyToNonetAreas() {
