@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
+import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { Context } from '../context';
@@ -29,10 +30,12 @@ const DEFAULT_CONFIG: Config = {
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
+    private readonly _rowAndColumnIterationRange: ReadonlyArray<number>;
 
     constructor(context: Context, config = DEFAULT_CONFIG) {
         super(context);
         this._config = config;
+        this._rowAndColumnIterationRange = _.range(config.minAdjacentHouses, config.maxAdjacentHouses + 1).reverse();
     }
 
     execute() {
@@ -48,7 +51,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToRowAreas() {
-        _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach((n: number) => {
+        this._rowAndColumnIterationRange.forEach((n: number) => {
             _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
@@ -60,7 +63,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToColumnAreas() {
-        _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse().forEach(n => {
+        this._rowAndColumnIterationRange.forEach(n => {
             _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
                     return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
@@ -72,7 +75,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToNonetAreas() {
-        _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
+        CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT].forEach((leftIndex: number) => {
             this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIndex, (cageM: CageModel) => {
                 return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
             }, (nonet: HouseIndex) => {
