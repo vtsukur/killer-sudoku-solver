@@ -9,34 +9,61 @@ import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
+export type Config = {
+    readonly isSliceColumnJointAreas: boolean;
+    readonly isSliceRowJointAreas: boolean;
+    readonly isSliceNonetAreas: boolean;
+    readonly maxJointHouses: number;
+}
+
+const DEFAULT_CONFIG: Config = {
+    isSliceColumnJointAreas: true,
+    isSliceRowJointAreas: true,
+    isSliceNonetAreas: true,
+    maxJointHouses: 5
+};
+
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
+    private readonly _config: Config;
+
+    constructor(context: Context, config = DEFAULT_CONFIG) {
+        super(context);
+        this._config = config;
+    }
+
     execute() {
-        _.range(1, 5).reverse().forEach((n: number) => {
-            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
-                doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                    return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
-                }, (row: HouseIndex) => {
-                    return this._model.rowModels[row].cellsIterator();
+        if (this._config.isSliceRowJointAreas) {
+            _.range(1, this._config.maxJointHouses).reverse().forEach((n: number) => {
+                _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+                    doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                        return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
+                    }, (row: HouseIndex) => {
+                        return this._model.rowModels[row].cellsIterator();
+                    }, this, this._model);
+                });
+            });
+        }
+        if (this._config.isSliceColumnJointAreas) {
+            _.range(1, this._config.maxJointHouses).reverse().forEach(n => {
+                _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
+                    doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
+                        return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
+                    }, (col: HouseIndex) => {
+                        return this._model.columnModels[col].cellsIterator();
+                    }, this, this._model);
+                });
+            });
+        }
+        if (this._config.isSliceNonetAreas) {
+            _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
+                doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, 1, leftIndex, (cageM: CageModel) => {
+                    return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
+                }, (nonet: HouseIndex) => {
+                    return this._model.nonetModels[nonet].cellsIterator();
                 }, this, this._model);
             });
-        });
-        _.range(1, 5).reverse().forEach(n => {
-            _.range(House.CELL_COUNT - n + 1).forEach((leftIndex: number) => {
-                doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                    return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
-                }, (col: HouseIndex) => {
-                    return this._model.columnModels[col].cellsIterator();
-                }, this, this._model);
-            });
-        });
-        _.range(House.CELL_COUNT).forEach((leftIndex: number) => {
-            doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(this._context, 1, leftIndex, (cageM: CageModel) => {
-                return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
-            }, (nonet: HouseIndex) => {
-                return this._model.nonetModels[nonet].cellsIterator();
-            }, this, this._model);
-        });
+        }
     }
 
 }
