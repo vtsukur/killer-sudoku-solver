@@ -33,39 +33,52 @@ class AreaStats {
 
     private readonly n: number;
     private readonly foundCagesByCellCount: Array<number>;
+    private _totalCagesFound = 0;
 
     constructor(n: number) {
         this.n = n;
         this.foundCagesByCellCount = new Array(House.CELL_COUNT + 1).fill(0);
     }
 
+    get totalCagesFound() {
+        return this._totalCagesFound;
+    }
+
     addFinding(cageCellCount: number) {
         this.foundCagesByCellCount[cageCellCount]++;
+        this._totalCagesFound++;
     }
 
 }
 
 class Stats {
 
-    private readonly data: Array<AreaStats>;
+    private readonly _data: Array<AreaStats>;
+    private _totalCagesFound = 0;
 
     constructor() {
-        this.data = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        this._data = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
         this.clear();
     }
 
-    get rawData(): ReadonlyArray<AreaStats> {
-        return this.data;
+    get data(): ReadonlyArray<AreaStats> {
+        return this._data;
+    }
+
+    get totalCagesFound() {
+        return this._totalCagesFound;
     }
 
     addFinding(n: number, cageCellCount: number) {
-        this.data[n].addFinding(cageCellCount);
+        this._data[n].addFinding(cageCellCount);
+        this._totalCagesFound++;
     }
 
     clear() {
         for (const n of CachedNumRanges.ONE_TO_N_LTE_10[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-            this.data[n] = new AreaStats(n);
+            this._data[n] = new AreaStats(n);
         }
+        this._totalCagesFound = 0;
     }
 
 }
