@@ -24,9 +24,9 @@ const DEFAULT_CONFIG: Config = {
     isApplyToColumnAreas: true,
     isApplyToNonetAreas: true,
     minAdjacentHouses: 1,
-    maxAdjacentHouses: 8,
-    maxComplementSize: 9,
-    isCollectStats: true
+    maxAdjacentHouses: 4,
+    maxComplementSize: 5,
+    isCollectStats: false
 };
 
 class AreaStats {
