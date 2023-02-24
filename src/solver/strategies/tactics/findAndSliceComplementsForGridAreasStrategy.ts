@@ -151,10 +151,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         const nHouseSum = n * House.SUM;
 
         const rightIndexExclusive = leftIndex + n;
-        let cages = new Array<Cage>();
+        const cages = new Array<Cage>();
         for (const cageM of this._context.model.cageModelsMap.values()) {
             if (withinHouseFn(cageM, rightIndexExclusive)) {
-                cages = cages.concat(cageM.cage);
+                cages.push(cageM.cage);
             }
         }
         const cagesAreaModel = GridAreaModel.from(cages, n);
