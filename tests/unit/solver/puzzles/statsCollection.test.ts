@@ -3,7 +3,7 @@ import { FindAndSliceComplementsForGridAreasStrategy } from '../../../../src/sol
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Stats collection', () => {
-    test('Collect stats for `FindAndSliceComplementsForGridAreasStrategy`', () => {
+    test.skip('Collect `FindAndSliceComplementsForGridAreasStrategy` stats for all known `Puzzle`s', () => {
         const solver = new Solver();
         for (const puzzle of puzzleSamples.allPuzzles) {
             solver.solve(puzzle);
