@@ -15,6 +15,29 @@ import { HouseModel } from './elements/houseModel';
 import { NonetModel } from './elements/nonetModel';
 import { RowModel } from './elements/rowModel';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GenericEventHandler = (...args: any[]) => void;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-unused-vars
+export interface MasterModelEvent<EventHandler extends GenericEventHandler> {
+    readonly key: string;
+}
+
+export type CageRegisteredEventHandler = (cageModel: CageModel, MasterModel: MasterModel) => void;
+
+class CageRegisteredEvent implements MasterModelEvent<CageRegisteredEventHandler> {
+    readonly key = 'CAGE_REGISTERED';
+}
+
+export class MasterModelEvents {
+    static readonly CAGE_REGISTERED = new CageRegisteredEvent();
+    static newEventHandlersMap(): Map<string, Set<GenericEventHandler>> {
+        const map = new Map<string, Set<GenericEventHandler>>();
+        map.set(this.CAGE_REGISTERED.key, new Set());
+        return map;
+    }
+}
+
 export class MasterModel {
 
     readonly puzzle: Puzzle;
@@ -28,6 +51,7 @@ export class MasterModel {
     private readonly _solution: Array<Array<number>> = GridSizedMatrix.new();
     private _placedNumCount = 0;
     private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
+    private readonly _eventHandlers: Map<string, Set<GenericEventHandler>> = MasterModelEvents.newEventHandlersMap();
 
     constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
         if (puzzleOrMasterModel instanceof Puzzle) {
@@ -153,6 +177,7 @@ export class MasterModel {
             this.cellModelOf(cell).addWithinCageModel(cageM);
         });
         this.cageModelsMap.set(cage.key, cageM);
+        this.onCageRegisteredEvent(cageM);
         return cageM;
     }
 
@@ -232,6 +257,25 @@ export class MasterModel {
 
     deepCopy() {
         return new MasterModel(this);
+    }
+
+    addEventHandler<EventHandler extends GenericEventHandler>(
+            event: MasterModelEvent<EventHandler>,
+            eventHandler: EventHandler) {
+        (this._eventHandlers.get(event.key) as Set<EventHandler>).add(eventHandler);
+    }
+
+    removeEventHandler<EventHandler extends GenericEventHandler>(
+            event: MasterModelEvent<EventHandler>,
+            eventHandler: EventHandler) {
+        (this._eventHandlers.get(event.key) as Set<EventHandler>).delete(eventHandler);
+    }
+
+    private onCageRegisteredEvent(cageM: CageModel) {
+        const eventHandlers = this._eventHandlers.get(MasterModelEvents.CAGE_REGISTERED.key) as Set<CageRegisteredEventHandler>;
+        for (const eventHandler of eventHandlers) {
+            eventHandler(cageM, this);
+        }
     }
 
 }
