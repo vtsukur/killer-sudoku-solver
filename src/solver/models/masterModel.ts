@@ -24,16 +24,22 @@ export interface MasterModelEvent<EventHandler extends GenericEventHandler> {
 }
 
 export type CageRegisteredEventHandler = (cageModel: CageModel, MasterModel: MasterModel) => void;
+export type CageUnregisteredEventHandler = (cageModel: CageModel, MasterModel: MasterModel) => void;
 
 class CageRegisteredEvent implements MasterModelEvent<CageRegisteredEventHandler> {
     readonly key = 'CAGE_REGISTERED';
 }
+class CageUnregisteredEvent implements MasterModelEvent<CageRegisteredEventHandler> {
+    readonly key = 'CAGE_UNREGISTERED';
+}
 
 export class MasterModelEvents {
     static readonly CAGE_REGISTERED = new CageRegisteredEvent();
+    static readonly CAGE_UNREGISTERED = new CageUnregisteredEvent();
     static newEventHandlersMap(): Map<string, Set<GenericEventHandler>> {
         const map = new Map<string, Set<GenericEventHandler>>();
         map.set(this.CAGE_REGISTERED.key, new Set());
+        map.set(this.CAGE_UNREGISTERED.key, new Set());
         return map;
     }
 }
@@ -201,6 +207,7 @@ export class MasterModel {
             this.cellModelOf(cell).removeWithinCageModel(cageM);
         });
         this.cageModelsMap.delete(cage.key);
+        this.onCageUnregisteredEvent(cageM);
     }
 
     placeNum(cell: Cell, num: number) {
@@ -273,6 +280,13 @@ export class MasterModel {
 
     private onCageRegisteredEvent(cageM: CageModel) {
         const eventHandlers = this._eventHandlers.get(MasterModelEvents.CAGE_REGISTERED.key) as Set<CageRegisteredEventHandler>;
+        for (const eventHandler of eventHandlers) {
+            eventHandler(cageM, this);
+        }
+    }
+
+    private onCageUnregisteredEvent(cageM: CageModel) {
+        const eventHandlers = this._eventHandlers.get(MasterModelEvents.CAGE_UNREGISTERED.key) as Set<CageUnregisteredEventHandler>;
         for (const eventHandler of eventHandlers) {
             eventHandler(cageM, this);
         }
