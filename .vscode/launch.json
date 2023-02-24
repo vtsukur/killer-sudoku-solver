@@ -537,6 +537,26 @@
             }
         },
         {
+            "name": "npm run test [solver/puzzles/dailyKillerSudokuDotCom + sudokuDotCom]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/puzzles/solver.dailyKillerSudokuDotCom.test.ts",
+                "tests/unit/solver/puzzles/solver.sudokuDotCom.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/puzzles (single)]",
             "request": "launch",
             "runtimeArgs": [
