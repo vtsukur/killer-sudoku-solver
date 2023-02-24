@@ -5,6 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
+import { MasterModelEvents } from '../../models/masterModel';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
@@ -97,6 +98,27 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     execute() {
+        this.withEventHandlers();
+    }
+
+    private withEventHandlers() {
+        const cageRegisteredEventHandler = () => {
+            //
+        };
+        const cageUnregisteredEventHandler = () => {
+            //
+        };
+        try {
+            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
+            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
+            this.main();
+        } finally {
+            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
+            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
+        }
+    }
+
+    private main() {
         if (this._config.isApplyToRowAreas) {
             this.applyToRowAreas();
         }
