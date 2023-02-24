@@ -592,6 +592,22 @@ class PuzzleSamplesAPI {
     readonly reference = samplePuzzle;
     readonly sudokuDotCom = Object.freeze(new SudokuDotComPuzzleSamples());
     readonly dailyKillerSudokuDotCom = Object.freeze(new DailyKillerSudokuDotComSamples());
+    readonly allPuzzles: ReadonlyArray<Puzzle> = [
+        this.sudokuDotCom.dailyChallengeOf_2022_04_06,
+        this.sudokuDotCom.dailyChallengeOf_2022_08_12,
+        this.sudokuDotCom.dailyChallengeOf_2022_08_30,
+        this.sudokuDotCom.dailyChallengeOf_2022_10_18,
+        this.sudokuDotCom.dailyChallengeOf_2022_10_19,
+        this.sudokuDotCom.dailyChallengeOf_2022_10_22,
+        this.sudokuDotCom.dailyChallengeOf_2022_10_25,
+        this.sudokuDotCom.dailyChallengeOf_2022_11_01,
+        this.sudokuDotCom.dailyChallengeOf_2022_11_10,
+        this.sudokuDotCom.randomExpertLevelChallenge,
+        this.dailyKillerSudokuDotCom.puzzle24789_difficulty10,
+        this.dailyKillerSudokuDotCom.puzzle24889_difficulty10,
+        this.dailyKillerSudokuDotCom.puzzle24914_difficulty10,
+        this.dailyKillerSudokuDotCom.puzzle24919_difficulty10
+    ];
 
 }
 
