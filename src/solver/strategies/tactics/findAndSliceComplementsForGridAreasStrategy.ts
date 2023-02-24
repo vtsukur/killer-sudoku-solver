@@ -24,15 +24,58 @@ const DEFAULT_CONFIG: Config = {
     isApplyToColumnAreas: true,
     isApplyToNonetAreas: true,
     minAdjacentHouses: 1,
-    maxAdjacentHouses: 4,
+    maxAdjacentHouses: 8,
     maxComplementSize: 9,
-    isCollectStats: false
+    isCollectStats: true
 };
+
+class AreaStats {
+
+    private readonly n: number;
+    private readonly foundCagesByCellCount: Array<number>;
+
+    constructor(n: number) {
+        this.n = n;
+        this.foundCagesByCellCount = new Array(House.CELL_COUNT + 1).fill(0);
+    }
+
+    addFinding(cageCellCount: number) {
+        this.foundCagesByCellCount[cageCellCount]++;
+    }
+
+}
+
+class Stats {
+
+    private readonly data: Array<AreaStats>;
+
+    constructor() {
+        this.data = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        this.clear();
+    }
+
+    get rawData(): ReadonlyArray<AreaStats> {
+        return this.data;
+    }
+
+    addFinding(n: number, cageCellCount: number) {
+        this.data[n].addFinding(cageCellCount);
+    }
+
+    clear() {
+        for (const n of CachedNumRanges.ONE_TO_N_LTE_10[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            this.data[n] = new AreaStats(n);
+        }
+    }
+
+}
 
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
     private readonly _rowAndColumnIterationRange: ReadonlyArray<number>;
+
+    static readonly STATS = new Stats();
 
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
@@ -121,6 +164,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
 
             this._context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
+
+            if (this._config.isCollectStats) {
+                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+            }
         }
     }
 }
