@@ -574,6 +574,25 @@
             }
         },
         {
+            "name": "npm run test [solver/puzzles/statsCollection",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/puzzles/statsCollection.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solver"
+            }
+        },
+        {
             "name": "npm run test [solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy]",
             "request": "launch",
             "runtimeArgs": [
