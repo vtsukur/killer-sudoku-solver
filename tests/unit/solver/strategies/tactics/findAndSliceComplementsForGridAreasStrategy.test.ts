@@ -25,8 +25,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
             minAdjacentHouses: 1,
-            maxAdjacentHouses: 1,
-            maxComplementSize: 9
+            maxAdjacentHouses: 1
         }).execute();
 
         // Then:
@@ -59,8 +58,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
             minAdjacentHouses: 3,
-            maxAdjacentHouses: 3,
-            maxComplementSize: 9
+            maxAdjacentHouses: 3
         }).execute();
 
         // Then:
@@ -91,8 +89,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
             minAdjacentHouses: 1,
-            maxAdjacentHouses: 1,
-            maxComplementSize: 9
+            maxAdjacentHouses: 1
         }).execute();
 
         // Then:
@@ -125,8 +122,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
             minAdjacentHouses: 3,
-            maxAdjacentHouses: 3,
-            maxComplementSize: 9
+            maxAdjacentHouses: 3
         }).execute();
 
         // Then:
@@ -158,8 +154,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: true,
             minAdjacentHouses: 1,
-            maxAdjacentHouses: 1,
-            maxComplementSize: 9
+            maxAdjacentHouses: 1
         }).execute();
 
         // Then:

@@ -16,6 +16,7 @@ export type Config = {
     readonly minAdjacentHouses: number;
     readonly maxAdjacentHouses: number;
     readonly maxComplementSize: number;
+    readonly isCollectStats: boolean;
 }
 
 const DEFAULT_CONFIG: Config = {
@@ -24,7 +25,8 @@ const DEFAULT_CONFIG: Config = {
     isApplyToNonetAreas: true,
     minAdjacentHouses: 1,
     maxAdjacentHouses: 4,
-    maxComplementSize: 9
+    maxComplementSize: 9,
+    isCollectStats: false
 };
 
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
@@ -32,10 +34,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private readonly _config: Config;
     private readonly _rowAndColumnIterationRange: ReadonlyArray<number>;
 
-    constructor(context: Context, config = DEFAULT_CONFIG) {
+    constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
-        this._config = config;
-        this._rowAndColumnIterationRange = _.range(config.minAdjacentHouses, config.maxAdjacentHouses + 1);
+        this._config = { ...DEFAULT_CONFIG, ...config };
+        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1);
     }
 
     execute() {
