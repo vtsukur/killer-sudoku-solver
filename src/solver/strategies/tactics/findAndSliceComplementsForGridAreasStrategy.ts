@@ -3,6 +3,7 @@ import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
+import { Nonet } from '../../../puzzle/nonet';
 import { Row } from '../../../puzzle/row';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
@@ -178,6 +179,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return Column.newCellsIterator(row);
     }
 
+    private static nonetCellsIterator(row: HouseIndex) {
+        return Nonet.newCellsIterator(row);
+    }
+
     private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
         for (const n of this._rowAndColumnIterationRange) {
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
@@ -203,50 +208,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToNonetAreas() {
-        CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID].forEach((leftIndex: number) => {
-            this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(1, leftIndex, (cageM: CageModel) => {
-                return cageM.positioningFlags.isWithinNonet && cageM.cage.cells[0].nonet === leftIndex;
-            }, (nonet: HouseIndex) => {
-                return this._model.nonetModels[nonet].cellsIterator();
-            });
-        });
-    }
-
-    private doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n: number, leftIndex: number, withinHouseFn: (cageM: CageModel, rightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
-        const nHouseCellCount = n * House.CELL_COUNT;
-        const nHouseSum = n * House.SUM;
-
-        const rightIndexExclusive = leftIndex + n;
-        const cages = new Array<Cage>();
-        for (const cageM of this._context.model.cageModelsMap.values()) {
-            if (withinHouseFn(cageM, rightIndexExclusive)) {
-                cages.push(cageM.cage);
-            }
-        }
-        const cagesAreaModel = GridAreaModel.from(cages, n);
-        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
-            const residualCageBuilder = Cage.ofSum(sum);
-            _.range(leftIndex, rightIndexExclusive).forEach(index => {
-                for (const { row, col } of cellIteratorFn(index)) {
-                    if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
-                        residualCageBuilder.withCell(Cell.at(row, col));
-                    }
-                }
-            });
-            if (residualCageBuilder.cellCount == 1) {
-                const cellM = this._context.model.cellModelOf(residualCageBuilder.cells[0]);
-                cellM.placedNum = residualCageBuilder.new().sum;
-                this._context.recentlySolvedCellModels = [ cellM ];
-                this.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
-            }
-            residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
-
-            this._context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
-
-            if (this._config.isCollectStats) {
-                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
-            }
+        for (const nonet of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
+                this._model.nonetModels[nonet].cageModels.map(cageM => cageM.cage),
+                1,
+                nonet,
+                FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator
+            );
         }
     }
 
