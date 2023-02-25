@@ -94,7 +94,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
         this._config = { ...DEFAULT_CONFIG, ...config };
-        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1).reverse();
+        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1);
     }
 
     execute() {
