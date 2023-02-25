@@ -88,6 +88,8 @@ class Stats {
 class ExecContext {
     readonly rowLeftIndexCages: Array<Set<CageModel>>;
     readonly rowRightIndexCages: Array<Set<CageModel>>;
+    readonly recentlyRegisteredCageMs: Array<CageModel> = [];
+    readonly recentlyUnregisteredCageMs: Array<CageModel> = [];
 
     constructor(model: MasterModel) {
         this.rowLeftIndexCages = new Array(House.CELL_COUNT);
@@ -105,11 +107,18 @@ class ExecContext {
     readonly cageRegisteredEventHandler = (cageM: CageModel) => {
         this.rowLeftIndexCages[cageM.minRow].add(cageM);
         this.rowRightIndexCages[cageM.maxRow].add(cageM);
+        this.recentlyRegisteredCageMs.push(cageM);
     };
     readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
         this.rowLeftIndexCages[cageM.minRow].delete(cageM);
         this.rowRightIndexCages[cageM.maxRow].delete(cageM);
+        this.recentlyUnregisteredCageMs.push(cageM);
     };
+
+    clearRecentlyRegisteredAndUnregisteredCageMs() {
+        this.recentlyRegisteredCageMs.length = 0;
+        this.recentlyUnregisteredCageMs.length = 0;
+    }
 };
 
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
@@ -155,15 +164,42 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToRowAreas(ctx: ExecContext) {
         for (const n of this._rowAndColumnIterationRange) {
+            const cages = new Set<Cage>();
             for (const topRow of this.rowAndColumnLeftIndexRange(n)) {
-                const cages = new Array<Cage>();
                 const bottomRowExclusive = topRow + n;
-                for (const row of _.range(topRow, bottomRowExclusive)) {
-                    for (const cageM of ctx.rowLeftIndexCages[row]) {
-                        if (cageM.maxRow < bottomRowExclusive) {
-                            cages.push(cageM.cage);
+                if (n === 1 || topRow === 0) {
+                    cages.clear();
+                    ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
+                    for (const row of _.range(topRow, bottomRowExclusive)) {
+                        for (const cageM of ctx.rowLeftIndexCages[row]) {
+                            if (cageM.maxRow < bottomRowExclusive) {
+                                cages.add(cageM.cage);
+                            }
                         }
                     }
+                } else {
+                    // remove irrelevant Cages
+                    for (const cageM of ctx.rowLeftIndexCages[topRow - 1]) {
+                        // if (cageM.maxRow < bottomRowExclusive - 1) {
+                            cages.delete(cageM.cage);
+                        // }
+                    }
+                    for (const cageM of ctx.recentlyUnregisteredCageMs) {
+                        cages.delete(cageM.cage);
+                    }
+
+                    // add new actual Cages
+                    for (const cageM of ctx.rowRightIndexCages[bottomRowExclusive - 1]) {
+                        if (cageM.minRow >= topRow) {
+                            cages.add(cageM.cage);
+                        }
+                    }
+                    for (const cageM of ctx.recentlyRegisteredCageMs) {
+                        if (cageM.minRow >= topRow && cageM.maxRow < bottomRowExclusive) {
+                            cages.add(cageM.cage);
+                        }
+                    }
+                    ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
                 }
 
                 this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topRow, (row: HouseIndex) => {
@@ -249,12 +285,12 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: ReadonlyArray<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: Set<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
         const rightIndexExclusive = leftIndex + n;
-        const cagesAreaModel = GridAreaModel.from(cages, n);
+        const cagesAreaModel = GridAreaModel.from(Array.from(cages), n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
