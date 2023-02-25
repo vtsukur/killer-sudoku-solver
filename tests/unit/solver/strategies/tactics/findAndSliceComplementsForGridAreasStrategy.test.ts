@@ -24,8 +24,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToRowAreas: true,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
-            minAdjacentHouses: 1,
-            maxAdjacentHouses: 1
+            minAdjacentRowsAndColumnsAreas: 1,
+            maxAdjacentRowsAndColumnsAreas: 1
         }).execute();
 
         // Then:
@@ -57,8 +57,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToRowAreas: true,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
-            minAdjacentHouses: 3,
-            maxAdjacentHouses: 3
+            minAdjacentRowsAndColumnsAreas: 3,
+            maxAdjacentRowsAndColumnsAreas: 3
         }).execute();
 
         // Then:
@@ -76,8 +76,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
-            minAdjacentHouses: 1,
-            maxAdjacentHouses: 1
+            minAdjacentRowsAndColumnsAreas: 1,
+            maxAdjacentRowsAndColumnsAreas: 1
         }).execute();
 
         // Then:
@@ -109,8 +109,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
-            minAdjacentHouses: 3,
-            maxAdjacentHouses: 3
+            minAdjacentRowsAndColumnsAreas: 3,
+            maxAdjacentRowsAndColumnsAreas: 3
         }).execute();
 
         // Then:
@@ -126,8 +126,8 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: true,
-            minAdjacentHouses: 1,
-            maxAdjacentHouses: 1
+            minAdjacentRowsAndColumnsAreas: 1,
+            maxAdjacentRowsAndColumnsAreas: 1
         }).execute();
 
         // Then:

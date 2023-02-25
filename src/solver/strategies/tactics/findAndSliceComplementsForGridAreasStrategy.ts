@@ -18,8 +18,8 @@ export type Config = {
     readonly isApplyToRowAreas: boolean;
     readonly isApplyToColumnAreas: boolean;
     readonly isApplyToNonetAreas: boolean;
-    readonly minAdjacentHouses: number;
-    readonly maxAdjacentHouses: number;
+    readonly minAdjacentRowsAndColumnsAreas: number;
+    readonly maxAdjacentRowsAndColumnsAreas: number;
     readonly maxComplementSize: number;
     readonly isCollectStats: boolean;
 }
@@ -28,8 +28,8 @@ const DEFAULT_CONFIG: Config = {
     isApplyToRowAreas: true,
     isApplyToColumnAreas: true,
     isApplyToNonetAreas: true,
-    minAdjacentHouses: 1,
-    maxAdjacentHouses: 4,
+    minAdjacentRowsAndColumnsAreas: 1,
+    maxAdjacentRowsAndColumnsAreas: 4,
     maxComplementSize: 5,
     isCollectStats: false
 };
@@ -125,7 +125,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
         this._config = { ...DEFAULT_CONFIG, ...config };
-        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentHouses, this._config.maxAdjacentHouses + 1);
+        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentRowsAndColumnsAreas, this._config.maxAdjacentRowsAndColumnsAreas + 1);
     }
 
     execute() {
@@ -187,7 +187,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, singleHouseCageModelsFn: (index: number) => HouseModel, isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
-        if (this._config.minAdjacentHouses <= 1) {
+        if (this._config.minAdjacentRowsAndColumnsAreas <= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
                 this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
                     singleHouseCageModelsFn(index).cageModels,
@@ -198,8 +198,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             }
         }
 
-        let n = Math.max(this._config.minAdjacentHouses, 2);
-        while (n <= this._config.maxAdjacentHouses) {
+        let n = Math.max(this._config.minAdjacentRowsAndColumnsAreas, 2);
+        while (n <= this._config.maxAdjacentRowsAndColumnsAreas) {
             const upperBound = House.CELL_COUNT - n;
             let topOrLeftIndex = 0;
             do {
