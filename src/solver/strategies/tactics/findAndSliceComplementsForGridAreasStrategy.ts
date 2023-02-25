@@ -190,7 +190,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         if (this._config.minAdjacentHouses <= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
                 this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
-                    singleHouseCageModelsFn(index).cageModels.map(cageM => cageM.cage),
+                    singleHouseCageModelsFn(index).cageModels,
                     1,
                     index,
                     cellIteratorFn
@@ -203,21 +203,19 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             const upperBound = House.CELL_COUNT - n;
             let topOrLeftIndex = 0;
             do {
-            // for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
-                const cages = new Array<Cage>();
+                const cageMs = new Array<CageModel>();
                 let index = topOrLeftIndex;
                 do {
                     for (const cageM of indexedCages[index]) {
                         if (isWithinAreaFn(cageM, rightOrBottomExclusive)) {
-                            cages.push(cageM.cage);
+                            cageMs.push(cageM);
                         }
                     }
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topOrLeftIndex, cellIteratorFn);
-            // }
+                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cageMs, n, topOrLeftIndex, cellIteratorFn);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= upperBound);
             n++;
@@ -231,7 +229,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private applyToNonetAreas() {
         for (const nonet of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
             this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
-                this._model.nonetModels[nonet].cageModels.map(cageM => cageM.cage),
+                this._model.nonetModels[nonet].cageModels,
                 1,
                 nonet,
                 FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator
@@ -239,12 +237,12 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: ReadonlyArray<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cageMs: ReadonlyArray<CageModel>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
         const rightIndexExclusive = leftIndex + n;
-        const cagesAreaModel = GridAreaModel.from(cages, n);
+        const cagesAreaModel = GridAreaModel.from(cageMs.map(cageM => cageM.cage), n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
