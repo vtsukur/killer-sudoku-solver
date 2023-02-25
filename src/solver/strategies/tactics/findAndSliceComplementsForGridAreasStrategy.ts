@@ -146,7 +146,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private main(ctx: ExecContext) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToRowsOrColumns(
+            this.applyToAreasOfSingleType(
                 ctx.rowIndexedCages,
                 (index: HouseIndex) => this._model.rowModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
@@ -156,7 +156,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             );
         }
         if (this._config.isApplyToColumnAreas) {
-            this.applyToRowsOrColumns(
+            this.applyToAreasOfSingleType(
                 ctx.columnIndexedCages,
                 (index: HouseIndex) => this._model.columnModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
@@ -166,7 +166,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             );
         }
         if (this._config.isApplyToNonetAreas) {
-            this.applyToNonetAreas();
+            this.applyToAreasOfSingleType(
+                ctx.columnIndexedCages, // not used
+                (index: HouseIndex) => this._model.nonetModels[index],
+                FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
+                FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator,
+                1,
+                1
+            );
         }
     }
 
@@ -190,7 +197,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return Nonet.newCellsIterator(row);
     }
 
-    private applyToRowsOrColumns(
+    private applyToAreasOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
             singleHouseCageModelsFn: (index: number) => HouseModel,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
@@ -199,7 +206,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             maxAdjacentAreas: number) {
         if (minAdjacentAreas <= 1 && maxAdjacentAreas >= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
+                this.doFindAndSliceComplementsForAdjacentGridAreas(
                     singleHouseCageModelsFn(index).cageModels,
                     1,
                     index,
@@ -225,25 +232,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cageMs, n, topOrLeftIndex, cellIteratorFn);
+                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, topOrLeftIndex, cellIteratorFn);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= upperBound);
             n++;
         }
     }
 
-    private applyToNonetAreas() {
-        for (const nonet of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-            this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
-                this._model.nonetModels[nonet].cageModels,
-                1,
-                nonet,
-                FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator
-            );
-        }
-    }
-
-    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cageMs: ReadonlyArray<CageModel>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private doFindAndSliceComplementsForAdjacentGridAreas(cageMs: ReadonlyArray<CageModel>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
