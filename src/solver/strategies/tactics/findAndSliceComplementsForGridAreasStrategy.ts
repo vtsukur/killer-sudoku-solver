@@ -102,11 +102,23 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private withEventHandlers() {
-        const cageRegisteredEventHandler = () => {
-            //
+        const rowLeftIndexCages = new Array<Set<CageModel>>(House.CELL_COUNT);
+        const rowRightIndexCages = new Array<Set<CageModel>>(House.CELL_COUNT);
+        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
+            rowLeftIndexCages[i] = new Set();
+            rowRightIndexCages[i] = new Set();
+        }
+        for (const cageM of this._model.cageModelsMap.values()) {
+            rowLeftIndexCages[cageM.minRow].add(cageM);
+            rowRightIndexCages[cageM.maxRow].add(cageM);
+        }
+        const cageRegisteredEventHandler = (cageM: CageModel) => {
+            rowLeftIndexCages[cageM.minRow].add(cageM);
+            rowRightIndexCages[cageM.maxRow].add(cageM);
         };
-        const cageUnregisteredEventHandler = () => {
-            //
+        const cageUnregisteredEventHandler = (cageM: CageModel) => {
+            rowLeftIndexCages[cageM.minRow].delete(cageM);
+            rowRightIndexCages[cageM.maxRow].delete(cageM);
         };
         try {
             this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
