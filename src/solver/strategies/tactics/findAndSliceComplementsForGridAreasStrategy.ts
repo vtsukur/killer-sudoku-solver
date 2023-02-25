@@ -165,21 +165,21 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private applyToRowAreas(ctx: ExecContext) {
         for (const n of this._rowAndColumnIterationRange) {
             const cages = new Set<Cage>();
-            for (const topRow of this.rowAndColumnLeftIndexRange(n)) {
-                const bottomRowExclusive = topRow + n;
-                if (n === 1 || topRow === 0) {
+            for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
+                const rightOrBottomExclusive = topOrLeftIndex + n;
+                if (n === 1 || topOrLeftIndex === 0) {
                     cages.clear();
                     ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
-                    for (const row of _.range(topRow, bottomRowExclusive)) {
-                        for (const cageM of ctx.rowLeftIndexCages[row]) {
-                            if (cageM.maxRow < bottomRowExclusive) {
+                    for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
+                        for (const cageM of ctx.rowLeftIndexCages[index]) {
+                            if (cageM.maxRow < rightOrBottomExclusive) {
                                 cages.add(cageM.cage);
                             }
                         }
                     }
                 } else {
                     // remove irrelevant Cages
-                    for (const cageM of ctx.rowLeftIndexCages[topRow - 1]) {
+                    for (const cageM of ctx.rowLeftIndexCages[topOrLeftIndex - 1]) {
                         // if (cageM.maxRow < bottomRowExclusive - 1) {
                             cages.delete(cageM.cage);
                         // }
@@ -189,20 +189,20 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     }
 
                     // add new actual Cages
-                    for (const cageM of ctx.rowRightIndexCages[bottomRowExclusive - 1]) {
-                        if (cageM.minRow >= topRow) {
+                    for (const cageM of ctx.rowRightIndexCages[rightOrBottomExclusive - 1]) {
+                        if (cageM.minRow >= topOrLeftIndex) {
                             cages.add(cageM.cage);
                         }
                     }
                     for (const cageM of ctx.recentlyRegisteredCageMs) {
-                        if (cageM.minRow >= topRow && cageM.maxRow < bottomRowExclusive) {
+                        if (cageM.minRow >= topOrLeftIndex && cageM.maxRow < rightOrBottomExclusive) {
                             cages.add(cageM.cage);
                         }
                     }
                     ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
                 }
 
-                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topRow, (row: HouseIndex) => {
+                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topOrLeftIndex, (row: HouseIndex) => {
                     return this._model.rowModels[row].cellsIterator();
                 });
             }
