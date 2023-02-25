@@ -84,34 +84,41 @@ class Stats {
 
 }
 
+class IndexedCages {
+    readonly minIndexCages: Array<Set<CageModel>>;
+    readonly maxIndexCages: Array<Set<CageModel>>;
+
+    constructor() {
+        this.minIndexCages = new Array(House.CELL_COUNT);
+        this.maxIndexCages = new Array(House.CELL_COUNT);
+        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
+            this.minIndexCages[i] = new Set();
+            this.maxIndexCages[i] = new Set();
+        }
+    }
+}
 
 class ExecContext {
-    readonly rowLeftIndexCages: Array<Set<CageModel>>;
-    readonly rowRightIndexCages: Array<Set<CageModel>>;
+    readonly rowIndexedCages: IndexedCages;
     readonly recentlyRegisteredCageMs: Array<CageModel> = [];
     readonly recentlyUnregisteredCageMs: Array<CageModel> = [];
 
     constructor(model: MasterModel) {
-        this.rowLeftIndexCages = new Array(House.CELL_COUNT);
-        this.rowRightIndexCages = new Array(House.CELL_COUNT);
-        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
-            this.rowLeftIndexCages[i] = new Set();
-            this.rowRightIndexCages[i] = new Set();
-        }
+        this.rowIndexedCages = new IndexedCages();
         for (const cageM of model.cageModelsMap.values()) {
-            this.rowLeftIndexCages[cageM.minRow].add(cageM);
-            this.rowRightIndexCages[cageM.maxRow].add(cageM);
+            this.rowIndexedCages.minIndexCages[cageM.minRow].add(cageM);
+            this.rowIndexedCages.maxIndexCages[cageM.maxRow].add(cageM);
         }
     }
 
     readonly cageRegisteredEventHandler = (cageM: CageModel) => {
-        this.rowLeftIndexCages[cageM.minRow].add(cageM);
-        this.rowRightIndexCages[cageM.maxRow].add(cageM);
+        this.rowIndexedCages.minIndexCages[cageM.minRow].add(cageM);
+        this.rowIndexedCages.maxIndexCages[cageM.maxRow].add(cageM);
         this.recentlyRegisteredCageMs.push(cageM);
     };
     readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
-        this.rowLeftIndexCages[cageM.minRow].delete(cageM);
-        this.rowRightIndexCages[cageM.maxRow].delete(cageM);
+        this.rowIndexedCages.minIndexCages[cageM.minRow].delete(cageM);
+        this.rowIndexedCages.maxIndexCages[cageM.maxRow].delete(cageM);
         this.recentlyUnregisteredCageMs.push(cageM);
     };
 
@@ -163,6 +170,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToRowAreas(ctx: ExecContext) {
+        const minIndexedCages = ctx.rowIndexedCages.minIndexCages;
+        const maxIndexedCages = ctx.rowIndexedCages.maxIndexCages;
         for (const n of this._rowAndColumnIterationRange) {
             const cages = new Set<Cage>();
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
@@ -171,7 +180,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     cages.clear();
                     ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
                     for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
-                        for (const cageM of ctx.rowLeftIndexCages[index]) {
+                        for (const cageM of minIndexedCages[index]) {
                             if (cageM.maxRow < rightOrBottomExclusive) {
                                 cages.add(cageM.cage);
                             }
@@ -179,7 +188,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     }
                 } else {
                     // remove irrelevant Cages
-                    for (const cageM of ctx.rowLeftIndexCages[topOrLeftIndex - 1]) {
+                    for (const cageM of minIndexedCages[topOrLeftIndex - 1]) {
                         cages.delete(cageM.cage);
                     }
                     for (const cageM of ctx.recentlyUnregisteredCageMs) {
@@ -187,7 +196,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     }
 
                     // add new actual Cages
-                    for (const cageM of ctx.rowRightIndexCages[rightOrBottomExclusive - 1]) {
+                    for (const cageM of maxIndexedCages[rightOrBottomExclusive - 1]) {
                         if (cageM.minRow >= topOrLeftIndex) {
                             cages.add(cageM.cage);
                         }
