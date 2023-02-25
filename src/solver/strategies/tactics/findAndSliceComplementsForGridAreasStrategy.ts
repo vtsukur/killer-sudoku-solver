@@ -222,10 +222,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private rowAndColumnLeftIndexRange(n: number) {
-        return CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT - n + 1];
-    }
-
     private applyToNonetAreas() {
         for (const nonet of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
             this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
