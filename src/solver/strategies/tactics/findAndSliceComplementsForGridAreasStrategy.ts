@@ -5,7 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
-import { MasterModelEvents } from '../../models/masterModel';
+import { MasterModel, MasterModelEvents } from '../../models/masterModel';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
@@ -84,6 +84,34 @@ class Stats {
 
 }
 
+
+class ExecContext {
+    readonly rowLeftIndexCages: Array<Set<CageModel>>;
+    readonly rowRightIndexCages: Array<Set<CageModel>>;
+
+    constructor(model: MasterModel) {
+        this.rowLeftIndexCages = new Array(House.CELL_COUNT);
+        this.rowRightIndexCages = new Array(House.CELL_COUNT);
+        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
+            this.rowLeftIndexCages[i] = new Set();
+            this.rowRightIndexCages[i] = new Set();
+        }
+        for (const cageM of model.cageModelsMap.values()) {
+            this.rowLeftIndexCages[cageM.minRow].add(cageM);
+            this.rowRightIndexCages[cageM.maxRow].add(cageM);
+        }
+    }
+
+    readonly cageRegisteredEventHandler = (cageM: CageModel) => {
+        this.rowLeftIndexCages[cageM.minRow].add(cageM);
+        this.rowRightIndexCages[cageM.maxRow].add(cageM);
+    };
+    readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
+        this.rowLeftIndexCages[cageM.minRow].delete(cageM);
+        this.rowRightIndexCages[cageM.maxRow].delete(cageM);
+    };
+};
+
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
@@ -102,37 +130,20 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private withEventHandlers() {
-        const rowLeftIndexCages = new Array<Set<CageModel>>(House.CELL_COUNT);
-        const rowRightIndexCages = new Array<Set<CageModel>>(House.CELL_COUNT);
-        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
-            rowLeftIndexCages[i] = new Set();
-            rowRightIndexCages[i] = new Set();
-        }
-        for (const cageM of this._model.cageModelsMap.values()) {
-            rowLeftIndexCages[cageM.minRow].add(cageM);
-            rowRightIndexCages[cageM.maxRow].add(cageM);
-        }
-        const cageRegisteredEventHandler = (cageM: CageModel) => {
-            rowLeftIndexCages[cageM.minRow].add(cageM);
-            rowRightIndexCages[cageM.maxRow].add(cageM);
-        };
-        const cageUnregisteredEventHandler = (cageM: CageModel) => {
-            rowLeftIndexCages[cageM.minRow].delete(cageM);
-            rowRightIndexCages[cageM.maxRow].delete(cageM);
-        };
+        const ctx = new ExecContext(this._model);
         try {
-            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
-            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
-            this.main();
+            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, ctx.cageRegisteredEventHandler);
+            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, ctx.cageUnregisteredEventHandler);
+            this.main(ctx);
         } finally {
-            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
-            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
+            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, ctx.cageRegisteredEventHandler);
+            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, ctx.cageUnregisteredEventHandler);
         }
     }
 
-    private main() {
+    private main(ctx: ExecContext) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToRowAreas();
+            this.applyToRowAreas(ctx);
         }
         if (this._config.isApplyToColumnAreas) {
             this.applyToColumnAreas();
@@ -142,7 +153,27 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private applyToRowAreas() {
+    private applyToRowAreas(ctx: ExecContext) {
+        for (const n of this._rowAndColumnIterationRange) {
+            for (const topRow of this.rowAndColumnLeftIndexRange(n)) {
+                const cages = new Array<Cage>();
+                const bottomRowExclusive = topRow + n;
+                for (const row of _.range(topRow, bottomRowExclusive)) {
+                    for (const cageM of ctx.rowLeftIndexCages[row]) {
+                        if (cageM.maxRow < bottomRowExclusive) {
+                            cages.push(cageM.cage);
+                        }
+                    }
+                }
+
+                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topRow, (row: HouseIndex) => {
+                    return this._model.rowModels[row].cellsIterator();
+                });
+            }
+        }
+    }
+
+    private _applyToRowAreasOld() {
         for (const n of this._rowAndColumnIterationRange) {
             for (const leftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
@@ -191,6 +222,38 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 cages.push(cageM.cage);
             }
         }
+        const cagesAreaModel = GridAreaModel.from(cages, n);
+        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
+        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
+            const residualCageBuilder = Cage.ofSum(sum);
+            _.range(leftIndex, rightIndexExclusive).forEach(index => {
+                for (const { row, col } of cellIteratorFn(index)) {
+                    if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
+                        residualCageBuilder.withCell(Cell.at(row, col));
+                    }
+                }
+            });
+            if (residualCageBuilder.cellCount == 1) {
+                const cellM = this._context.model.cellModelOf(residualCageBuilder.cells[0]);
+                cellM.placedNum = residualCageBuilder.new().sum;
+                this._context.recentlySolvedCellModels = [ cellM ];
+                this.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+            }
+            residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
+
+            this._context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
+
+            if (this._config.isCollectStats) {
+                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+            }
+        }
+    }
+
+    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: ReadonlyArray<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+        const nHouseCellCount = n * House.CELL_COUNT;
+        const nHouseSum = n * House.SUM;
+
+        const rightIndexExclusive = leftIndex + n;
         const cagesAreaModel = GridAreaModel.from(cages, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
