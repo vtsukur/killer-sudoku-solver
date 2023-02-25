@@ -168,11 +168,11 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         for (const n of this._rowAndColumnIterationRange) {
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
-                const cages = new Set<Cage>();
+                const cages = new Array<Cage>();
                 for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
                     for (const cageM of indexedCages[index]) {
                         if (isWithinAreaFn(cageM, rightOrBottomExclusive)) {
-                            cages.add(cageM.cage);
+                            cages.push(cageM.cage);
                         }
                     }
                 }
@@ -234,12 +234,12 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: Set<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private _doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages: ReadonlyArray<Cage>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
         const rightIndexExclusive = leftIndex + n;
-        const cagesAreaModel = GridAreaModel.from(Array.from(cages), n);
+        const cagesAreaModel = GridAreaModel.from(cages, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
