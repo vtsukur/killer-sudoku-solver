@@ -142,12 +142,12 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private main(ctx: ExecContext) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToRowsOrColumns(ctx.rowIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea, (row: HouseIndex) => {
+            this.applyToRowsOrColumns(ctx.rowIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly, (row: HouseIndex) => {
                 return this._model.rowModels[row].cellsIterator();
             });
         }
         if (this._config.isApplyToColumnAreas) {
-            this.applyToRowsOrColumns(ctx.columnIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea, (row: HouseIndex) => {
+            this.applyToRowsOrColumns(ctx.columnIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, (row: HouseIndex) => {
                 return this._model.columnModels[row].cellsIterator();
             });
         }
@@ -156,22 +156,22 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private static isRowWithinArea(cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) {
-        return cageM.minRow >= topOrLeftIndex && cageM.maxRow < bottomOrRightIndexExclusive;
+    private static isRowWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
+        return cageM.maxRow < bottomOrRightIndexExclusive;
     }
 
-    private static isColumnWithinArea(cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) {
-        return cageM.minCol >= topOrLeftIndex && cageM.maxCol < bottomOrRightIndexExclusive;
+    private static isColumnWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
+        return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
-    private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, isWithinAreaFn: (cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
         for (const n of this._rowAndColumnIterationRange) {
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
                 const cages = new Set<Cage>();
                 for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
                     for (const cageM of indexedCages[index]) {
-                        if (isWithinAreaFn(cageM, index, rightOrBottomExclusive)) {
+                        if (isWithinAreaFn(cageM, rightOrBottomExclusive)) {
                             cages.add(cageM.cage);
                         }
                     }
