@@ -150,7 +150,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 ctx.rowIndexedCages,
                 (index: HouseIndex) => this._model.rowModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.rowCellsIterator
+                FindAndSliceComplementsForGridAreasStrategy.rowCellsIterator,
+                this._config.minAdjacentRowsAndColumnsAreas,
+                this._config.maxAdjacentRowsAndColumnsAreas
             );
         }
         if (this._config.isApplyToColumnAreas) {
@@ -158,7 +160,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 ctx.columnIndexedCages,
                 (index: HouseIndex) => this._model.columnModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.columnCellsIterator
+                FindAndSliceComplementsForGridAreasStrategy.columnCellsIterator,
+                this._config.minAdjacentRowsAndColumnsAreas,
+                this._config.maxAdjacentRowsAndColumnsAreas
             );
         }
         if (this._config.isApplyToNonetAreas) {
@@ -186,8 +190,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return Nonet.newCellsIterator(row);
     }
 
-    private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, singleHouseCageModelsFn: (index: number) => HouseModel, isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
-        if (this._config.minAdjacentRowsAndColumnsAreas <= 1) {
+    private applyToRowsOrColumns(
+            indexedCages: ReadonlyArray<Set<CageModel>>,
+            singleHouseCageModelsFn: (index: number) => HouseModel,
+            isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
+            cellIteratorFn: (index: number) => Iterable<Cell>,
+            minAdjacentAreas: number,
+            maxAdjacentAreas: number) {
+        if (minAdjacentAreas <= 1 && maxAdjacentAreas >= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
                 this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(
                     singleHouseCageModelsFn(index).cageModels,
@@ -198,8 +208,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             }
         }
 
-        let n = Math.max(this._config.minAdjacentRowsAndColumnsAreas, 2);
-        while (n <= this._config.maxAdjacentRowsAndColumnsAreas) {
+        let n = Math.max(minAdjacentAreas, 2);
+        while (n <= maxAdjacentAreas) {
             const upperBound = House.CELL_COUNT - n;
             let topOrLeftIndex = 0;
             do {
