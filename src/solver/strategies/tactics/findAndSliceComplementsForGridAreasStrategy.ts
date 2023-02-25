@@ -180,9 +180,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 } else {
                     // remove irrelevant Cages
                     for (const cageM of ctx.rowLeftIndexCages[topOrLeftIndex - 1]) {
-                        // if (cageM.maxRow < bottomRowExclusive - 1) {
-                            cages.delete(cageM.cage);
-                        // }
+                        cages.delete(cageM.cage);
                     }
                     for (const cageM of ctx.recentlyUnregisteredCageMs) {
                         cages.delete(cageM.cage);
