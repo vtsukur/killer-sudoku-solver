@@ -100,25 +100,33 @@ class IndexedCages {
 
 class ExecContext {
     readonly rowIndexedCages: IndexedCages;
+    readonly columnIndexedCages: IndexedCages;
     readonly recentlyRegisteredCageMs: Array<CageModel> = [];
     readonly recentlyUnregisteredCageMs: Array<CageModel> = [];
 
     constructor(model: MasterModel) {
         this.rowIndexedCages = new IndexedCages();
+        this.columnIndexedCages = new IndexedCages();
         for (const cageM of model.cageModelsMap.values()) {
             this.rowIndexedCages.minIndexCages[cageM.minRow].add(cageM);
             this.rowIndexedCages.maxIndexCages[cageM.maxRow].add(cageM);
+            this.columnIndexedCages.minIndexCages[cageM.minCol].add(cageM);
+            this.columnIndexedCages.maxIndexCages[cageM.maxCol].add(cageM);
         }
     }
 
     readonly cageRegisteredEventHandler = (cageM: CageModel) => {
         this.rowIndexedCages.minIndexCages[cageM.minRow].add(cageM);
         this.rowIndexedCages.maxIndexCages[cageM.maxRow].add(cageM);
+        this.columnIndexedCages.minIndexCages[cageM.minCol].add(cageM);
+        this.columnIndexedCages.maxIndexCages[cageM.maxCol].add(cageM);
         this.recentlyRegisteredCageMs.push(cageM);
     };
     readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
         this.rowIndexedCages.minIndexCages[cageM.minRow].delete(cageM);
         this.rowIndexedCages.maxIndexCages[cageM.maxRow].delete(cageM);
+        this.columnIndexedCages.minIndexCages[cageM.minCol].delete(cageM);
+        this.columnIndexedCages.maxIndexCages[cageM.maxCol].delete(cageM);
         this.recentlyUnregisteredCageMs.push(cageM);
     };
 
@@ -159,19 +167,31 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private main(ctx: ExecContext) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToRowAreas(ctx);
+            this.applyToRowsOrColumns(ctx, ctx.rowIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea, (row: HouseIndex) => {
+                return this._model.rowModels[row].cellsIterator();
+            });
         }
         if (this._config.isApplyToColumnAreas) {
-            this.applyToColumnAreas();
+            this.applyToRowsOrColumns(ctx, ctx.columnIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea, (row: HouseIndex) => {
+                return this._model.columnModels[row].cellsIterator();
+            });
         }
         if (this._config.isApplyToNonetAreas) {
             this.applyToNonetAreas();
         }
     }
 
-    private applyToRowAreas(ctx: ExecContext) {
-        const minIndexedCages = ctx.rowIndexedCages.minIndexCages;
-        const maxIndexedCages = ctx.rowIndexedCages.maxIndexCages;
+    private static isRowWithinArea(cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) {
+        return cageM.minRow >= topOrLeftIndex && cageM.maxRow < bottomOrRightIndexExclusive;
+    }
+
+    private static isColumnWithinArea(cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) {
+        return cageM.minCol >= topOrLeftIndex && cageM.maxCol < bottomOrRightIndexExclusive;
+    }
+
+    private applyToRowsOrColumns(ctx: ExecContext, indexedCages: IndexedCages, isWithinAreaFn: (cageM: CageModel, topOrLeftIndex: number, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
+        const minIndexedCages = indexedCages.minIndexCages;
+        const maxIndexedCages = indexedCages.maxIndexCages;
         for (const n of this._rowAndColumnIterationRange) {
             const cages = new Set<Cage>();
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
@@ -181,7 +201,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
                     for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
                         for (const cageM of minIndexedCages[index]) {
-                            if (cageM.maxRow < rightOrBottomExclusive) {
+                            if (isWithinAreaFn(cageM, index, rightOrBottomExclusive)) {
                                 cages.add(cageM.cage);
                             }
                         }
@@ -197,45 +217,19 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
                     // add new actual Cages
                     for (const cageM of maxIndexedCages[rightOrBottomExclusive - 1]) {
-                        if (cageM.minRow >= topOrLeftIndex) {
+                        if (isWithinAreaFn(cageM, topOrLeftIndex, rightOrBottomExclusive)) {
                             cages.add(cageM.cage);
                         }
                     }
                     for (const cageM of ctx.recentlyRegisteredCageMs) {
-                        if (cageM.minRow >= topOrLeftIndex && cageM.maxRow < rightOrBottomExclusive) {
+                        if (isWithinAreaFn(cageM, topOrLeftIndex, rightOrBottomExclusive)) {
                             cages.add(cageM.cage);
                         }
                     }
                     ctx.clearRecentlyRegisteredAndUnregisteredCageMs();
                 }
 
-                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topOrLeftIndex, (row: HouseIndex) => {
-                    return this._model.rowModels[row].cellsIterator();
-                });
-            }
-        }
-    }
-
-    private _applyToRowAreasOld() {
-        for (const n of this._rowAndColumnIterationRange) {
-            for (const leftIndex of this.rowAndColumnLeftIndexRange(n)) {
-                this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                    return cageM.minRow >= leftIndex && cageM.maxRow < rightIndexExclusive;
-                }, (row: HouseIndex) => {
-                    return this._model.rowModels[row].cellsIterator();
-                });
-            }
-        }
-    }
-
-    private applyToColumnAreas() {
-        for (const n of this._rowAndColumnIterationRange) {
-            for (const leftIndex of this.rowAndColumnLeftIndexRange(n)) {
-                this.doDetermineAndSliceResidualCagesInAdjacentNHouseAreas(n, leftIndex, (cageM: CageModel, rightIndexExclusive: number) => {
-                    return cageM.minCol >= leftIndex && cageM.maxCol < rightIndexExclusive;
-                }, (col: HouseIndex) => {
-                    return this._model.columnModels[col].cellsIterator();
-                });
+                this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topOrLeftIndex, cellIteratorFn);
             }
         }
     }
