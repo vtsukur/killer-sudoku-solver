@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
+import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
+import { Row } from '../../../puzzle/row';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
@@ -142,14 +144,18 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private main(ctx: ExecContext) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToRowsOrColumns(ctx.rowIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly, (row: HouseIndex) => {
-                return this._model.rowModels[row].cellsIterator();
-            });
+            this.applyToRowsOrColumns(
+                ctx.rowIndexedCages,
+                FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
+                FindAndSliceComplementsForGridAreasStrategy.rowCellsIterator
+            );
         }
         if (this._config.isApplyToColumnAreas) {
-            this.applyToRowsOrColumns(ctx.columnIndexedCages, FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, (row: HouseIndex) => {
-                return this._model.columnModels[row].cellsIterator();
-            });
+            this.applyToRowsOrColumns(
+                ctx.columnIndexedCages,
+                FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
+                FindAndSliceComplementsForGridAreasStrategy.columnCellsIterator
+            );
         }
         if (this._config.isApplyToNonetAreas) {
             this.applyToNonetAreas();
@@ -164,18 +170,28 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
+    private static rowCellsIterator(row: HouseIndex) {
+        return Row.newCellsIterator(row);
+    }
+
+    private static columnCellsIterator(row: HouseIndex) {
+        return Column.newCellsIterator(row);
+    }
+
     private applyToRowsOrColumns(indexedCages: ReadonlyArray<Set<CageModel>>, isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean, cellIteratorFn: (index: number) => Iterable<Cell>) {
         for (const n of this._rowAndColumnIterationRange) {
             for (const topOrLeftIndex of this.rowAndColumnLeftIndexRange(n)) {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
                 const cages = new Array<Cage>();
-                for (const index of _.range(topOrLeftIndex, rightOrBottomExclusive)) {
+                let index = topOrLeftIndex;
+                do {
                     for (const cageM of indexedCages[index]) {
                         if (isWithinAreaFn(cageM, rightOrBottomExclusive)) {
                             cages.push(cageM.cage);
                         }
                     }
-                }
+                    index++;
+                } while (index < rightOrBottomExclusive);
 
                 this._doDetermineAndSliceResidualCagesInAdjacentNHouseAreasPerf(cages, n, topOrLeftIndex, cellIteratorFn);
             }
@@ -243,13 +259,15 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
-            _.range(leftIndex, rightIndexExclusive).forEach(index => {
+            let index = leftIndex;
+            do {
                 for (const { row, col } of cellIteratorFn(index)) {
                     if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
                         residualCageBuilder.withCell(Cell.at(row, col));
                     }
                 }
-            });
+                index++;
+            } while (index < rightIndexExclusive);
             if (residualCageBuilder.cellCount == 1) {
                 const cellM = this._context.model.cellModelOf(residualCageBuilder.cells[0]);
                 cellM.placedNum = residualCageBuilder.new().sum;
