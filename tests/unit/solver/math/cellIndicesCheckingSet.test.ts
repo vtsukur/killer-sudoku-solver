@@ -1,4 +1,6 @@
-import { CellIndicesCheckingSet } from '../../../../src/solver/math';
+import { Cell } from '../../../../src/puzzle/cell';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../../src/solver/math';
+import { CachedNumRanges } from '../../../../src/solver/math/cachedNumRanges';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
     test('Construction of `SudokuNumsCheckingSet` from array of numbers', () => {
@@ -58,6 +60,24 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHave(80)).toBeTruthy();
     });
 
+    test('Producing included `Cell`s', () => {
+        expect(CellIndicesCheckingSet.of(0, 46, 80).cells()).toEqual([
+            Cell.at(0, 0), Cell.at(5, 1), Cell.at(8, 8)
+        ]);
+    });
+
+    test('Producing `AND` for two sets', () => {
+        const one = CellIndicesCheckingSet.of(0, 46, 80);
+        const second = CellIndicesCheckingSet.of(1, 46, 70, 80);
+        expectSetWithValues(one.and(second), [ 46, 80 ]);
+    });
+
+    test('Producing `NOT` set', () => {
+        expectSetWithValues(new CellIndicesCheckingSet(CachedNumRanges.ZERO_TO_N_LTE_81[75]).not(), [
+            75, 76, 77, 78, 79, 80
+        ]);
+    });
+
     test('Checking equality', () => {
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 75))).toBeTruthy();
         expect(CellIndicesCheckingSet.of(1, 75).equals(CellIndicesCheckingSet.of(1, 30))).toBeFalsy();
@@ -93,7 +113,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does NOT change the clone
     });
 
-    const expectSetWithValues = (numsCheckingSet: CellIndicesCheckingSet, values: ReadonlyArray<number>) => {
+    const expectSetWithValues = (numsCheckingSet: ReadonlyCellIndicesCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
     };
 });

@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
-import { Grid } from '../../puzzle/grid';
+import { GridSizeAndCellPositionsIteration } from '../../puzzle/gridSizeAndCellPositionsIteration';
+import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
@@ -23,6 +24,31 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
      * Returns readonly array of the bit storages used for efficient checking for this numbers set.
      */
     get bitStores(): ReadonlyArray<BitStore32>;
+
+    /**
+     * Produces {@link Cell}s which are included in this checking set.
+     *
+     * @returns {Cell}s which are included in this checking set.
+     */
+    cells(): ReadonlyArray<Cell>;
+
+    /**
+     * Creates new checking set which has only the numbers
+     * present in this set `AND` the given `val` checking set.
+     *
+     * @param val - Another checking set to `AND` with this set.
+     *
+     * @returns New checking set which has only the numbers
+     * present in this set `AND` the given `val` checking set.
+     */
+    and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
+
+    /**
+     * Creates new checking set which has the numbers NOT present in this set.
+     *
+     * @returns New checking set which has the numbers NOT present in this set.
+     */
+    not(): ReadonlyCellIndicesCheckingSet;
 
 }
 
@@ -59,11 +85,27 @@ export class CellIndicesCheckingSet implements
     private static readonly _BITS_PER_BIT_STORE = 32;
 
     // Caching data about bit store index and bit position within the bit store to enable fast access.
-    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = Grid.CELL_INDICES_RANGE.map(cellIndex => {
+    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE.map(cellIndex => {
         const bitStoreIndex = Math.floor(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         const bitPosition = cellIndex - bitStoreIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE;
         return { bitStoreIndex, bitPosition };
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private static _POWERS_OF_2_TO_BIT_INDEX: any = (() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const val: any = {};
+        CachedNumRanges.ZERO_TO_N_LTE_81[this._BITS_PER_BIT_STORE].forEach(bitIndex => {
+            val[1 << bitIndex] = bitIndex;
+        });
+        return val;
+    })();
+
+    private static _BITSTORE_INDEX_OFFSETS: ReadonlyArray<number> = [
+        0,
+        this._BITS_PER_BIT_STORE,
+        Math.imul(this._BITS_PER_BIT_STORE, 2)
+    ];
 
     /**
      * Constructs new checking set from the unique numbers in the given array
@@ -223,6 +265,51 @@ export class CellIndicesCheckingSet implements
             &&
             (this._bitStores[2] & val.bitStores[2]) === 0 // numbers in range [64, 80]
         );
+    }
+
+    /**
+     * @see {ReadonlyCellIndicesCheckingSet.cells}
+     */
+    cells() {
+        const val = new Array<Cell>();
+        let bitStoreIndex = 0;
+        while (bitStoreIndex < 3) {
+            let i = this._bitStores[bitStoreIndex];
+            const indexOffset = CellIndicesCheckingSet._BITSTORE_INDEX_OFFSETS[bitStoreIndex];
+            while (i !== 0) {
+                const rightMostBit = i & -i;
+                const indexWithinStore = CellIndicesCheckingSet._POWERS_OF_2_TO_BIT_INDEX[rightMostBit];
+                const absIndex = indexOffset + indexWithinStore;
+                const row = ~~(absIndex / 9);
+                const col = absIndex % 9;
+                val.push(Cell.at(row, col));
+                i = i ^ rightMostBit;
+            }
+            bitStoreIndex++;
+        }
+        return val;
+    }
+
+    /**
+     * @see {ReadonlyCellIndicesCheckingSet.and}
+     */
+    and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
+        const and = CellIndicesCheckingSet.newEmpty();
+        and._bitStores[0] = this._bitStores[0] & val.bitStores[0];
+        and._bitStores[1] = this._bitStores[1] & val.bitStores[1];
+        and._bitStores[2] = this._bitStores[2] & val.bitStores[2];
+        return and;
+    }
+
+    /**
+     * @see {ReadonlyCellIndicesCheckingSet.not}
+     */
+    not(): ReadonlyCellIndicesCheckingSet {
+        const not = CellIndicesCheckingSet.newEmpty();
+        not._bitStores[0] = ~this._bitStores[0];
+        not._bitStores[1] = ~this._bitStores[1];
+        not._bitStores[2] = (~this._bitStores[2] & 0b11111111111111111); // right bits after index 80 should be cleared.
+        return not;
     }
 
     /**
