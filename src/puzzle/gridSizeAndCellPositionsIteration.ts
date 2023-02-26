@@ -33,6 +33,16 @@ export class GridSizeAndCellPositionsIteration {
     static readonly GRID_SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.GRID_SIDE_CELL_COUNT];
 
     /**
+     * Total amount of {@link Cell}s in a `Grid`.
+     */
+    static readonly GRID_CELL_COUNT = this.GRID_SIDE_CELL_COUNT * this.GRID_SIDE_CELL_COUNT;
+
+    /**
+     * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
+     */
+    static readonly GRID_CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.GRID_CELL_COUNT];
+
+    /**
      * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
      *
      * Rows are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
