@@ -38,10 +38,14 @@ export class Nonet {
      * @returns index of `Nonet` to which given {@link Cell} belongs to.
      */
     static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
-        return this._GRID_CELLS_TO_NONETS[row][col];
+        return this.GRID_CELLS_TO_NONETS[row][col];
     }
 
-    private static readonly _GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
+    /**
+     * Matrix holding {@link Nonet} index for each {@link Cell} in the {@link Grid}
+     * indexed first by {@link Row} and then by {@link Column}.
+     */
+    static readonly GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
         [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
         [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
         [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
@@ -58,7 +62,7 @@ export class Nonet {
     private static buildIterationCache() {
         const val: Array<Array<CellRowAndColumn>> = GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE.map(() => []);
         GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
-            val[this._GRID_CELLS_TO_NONETS[cellRowAndColumn[0]][cellRowAndColumn[1]]].push(cellRowAndColumn);
+            val[this.GRID_CELLS_TO_NONETS[cellRowAndColumn[0]][cellRowAndColumn[1]]].push(cellRowAndColumn);
         });
         return val;
     }
