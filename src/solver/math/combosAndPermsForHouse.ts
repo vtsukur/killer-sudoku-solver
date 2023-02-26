@@ -6,6 +6,7 @@ import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCage
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
+import { CageModel } from '../models/elements/cageModel';
 
 export class HouseSumCombosAndPerms {
 
@@ -24,24 +25,22 @@ export class HouseSumCombosAndPerms {
 }
 
 export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPerms {
-    const cages = houseM.cageModels.map(cageM => cageM.cage);
-
-    const gridAreaModel = GridAreaModel.from(cages);
+    const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
     const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
     const overlappingCages = gridAreaModel.overlappingCages;
 
     const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
     const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
-    const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, cages, nonOverlappingCages, overlappingCages);
+    const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
     return new HouseSumCombosAndPerms(nonOverlappingCages, perms, actualSumCombos);
 }
 
-function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cages: ReadonlyCages, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-    const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cages.length);
+function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
+    const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
 
-    _.range(cages.length).forEach(i => {
-        const cage = cages[i];
+    _.range(cageMs.length).forEach(i => {
+        const cage = cageMs[i].cage;
         const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
         if (nonOverlappingCageIndex !== -1) {
             orderPreservedCombos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];

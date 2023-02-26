@@ -6,6 +6,7 @@ import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
+import { CageModel } from './cageModel';
 
 /**
  * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
@@ -173,6 +174,14 @@ export class GridAreaModel implements GridAreaModel {
      */
     static from(cages: ReadonlyCages, houseCount = 1): GridAreaModel {
         return cages.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(cages, houseCount) : this._EMPTY_INSTANCE;
+    }
+
+    static fromCageModels(cageMs: ReadonlyArray<CageModel>, houseCount = 1): GridAreaModel {
+        return cageMs.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(this.cageModelsToCages(cageMs), houseCount) : this._EMPTY_INSTANCE;
+    }
+
+    private static cageModelsToCages(cageMs: ReadonlyArray<CageModel>) {
+        return cageMs.map(cageM => cageM.cage);
     }
 
 }

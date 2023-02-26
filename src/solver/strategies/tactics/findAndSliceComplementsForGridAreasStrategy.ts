@@ -244,7 +244,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         const nHouseSum = n * House.SUM;
 
         const rightIndexExclusive = leftIndex + n;
-        const cagesAreaModel = GridAreaModel.from(cageMs.map(cageM => cageM.cage), n);
+        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
