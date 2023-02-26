@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { CellIndicesCheckingSet } from '../../../../../src/solver/math';
 import { FindAndSliceComplementsForGridAreasStrategy } from '../../../../../src/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy';
 import { puzzleSamples } from '../../../../unit/puzzle/puzzleSamples';
 import { newContext } from '../../../../unit/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy.test';

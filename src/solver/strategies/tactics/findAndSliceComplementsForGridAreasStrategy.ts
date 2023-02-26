@@ -2,9 +2,11 @@ import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
+import { GridSizeAndCellPositionsIteration } from '../../../puzzle/gridSizeAndCellPositionsIteration';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
 import { Row } from '../../../puzzle/row';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
@@ -151,6 +153,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 (index: HouseIndex) => this._model.rowModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
                 FindAndSliceComplementsForGridAreasStrategy.rowCellsIterator,
+                FindAndSliceComplementsForGridAreasStrategy.rowIndices,
                 this._config.minAdjacentRowsAndColumnsAreas,
                 this._config.maxAdjacentRowsAndColumnsAreas
             );
@@ -161,6 +164,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 (index: HouseIndex) => this._model.columnModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
                 FindAndSliceComplementsForGridAreasStrategy.columnCellsIterator,
+                FindAndSliceComplementsForGridAreasStrategy.columnIndices,
                 this._config.minAdjacentRowsAndColumnsAreas,
                 this._config.maxAdjacentRowsAndColumnsAreas
             );
@@ -171,6 +175,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 (index: HouseIndex) => this._model.nonetModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
                 FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator,
+                FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
                 1,
                 1
             );
@@ -197,11 +202,64 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return Nonet.newCellsIterator(row);
     }
 
+    private static rowIndices(row: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.ROW_CELL_INDICES_OF[row];
+    }
+
+    private static columnIndices(row: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.COLUMN_CELL_INDICES_OF[row];
+    }
+
+    private static nonetIndices(row: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.NONET_CELL_INDICES_OF[row];
+    }
+
+    private static ROW_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            const indices = CellIndicesCheckingSet.newEmpty();
+            for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
+                indices.add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+            }
+            val[row] = indices;
+        }
+        return val;
+    })();
+
+    private static COLUMN_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            const indices = CellIndicesCheckingSet.newEmpty();
+            for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
+                indices.add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+            }
+            val[col] = indices;
+        }
+        return val;
+    })();
+
+    private static NONET_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            val[col] = CellIndicesCheckingSet.newEmpty();
+        }
+
+        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
+            const row = cellRowAndColumn[0];
+            const col = cellRowAndColumn[1];
+            const nonet = Nonet.GRID_CELLS_TO_NONETS[row][col];
+            val[nonet].add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+        });
+
+        return val;
+    })();
+
     private applyToAreasOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
             singleHouseCageModelsFn: (index: number) => HouseModel,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
             cellIteratorFn: (index: number) => Iterable<Cell>,
+            cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
         if (minAdjacentAreas <= 1 && maxAdjacentAreas >= 1) {
@@ -210,7 +268,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     singleHouseCageModelsFn(index).cageModels,
                     1,
                     index,
-                    cellIteratorFn
+                    cellIteratorFn,
+                    cellAreaIndicesFn(index)
                 );
             }
         }
@@ -222,6 +281,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             do {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
                 const cageMs = new Array<CageModel>();
+                const indices = CellIndicesCheckingSet.newEmpty();
                 let index = topOrLeftIndex;
                 do {
                     for (const cageM of indexedCages[index]) {
@@ -229,34 +289,42 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                             cageMs.push(cageM);
                         }
                     }
+                    indices.add(cellAreaIndicesFn(index));
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, topOrLeftIndex, cellIteratorFn);
+                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, topOrLeftIndex, cellIteratorFn, indices);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= upperBound);
             n++;
         }
     }
 
-    private doFindAndSliceComplementsForAdjacentGridAreas(cageMs: ReadonlyArray<CageModel>, n: number, leftIndex: number, cellIteratorFn: (index: number) => Iterable<Cell>) {
+    private doFindAndSliceComplementsForAdjacentGridAreas(
+            cageMs: ReadonlyArray<CageModel>,
+            n: number,
+            leftIndex: number,
+            cellIteratorFn: (index: number) => Iterable<Cell>,
+            areaCellIndices: ReadonlyCellIndicesCheckingSet) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
-        const rightIndexExclusive = leftIndex + n;
+        // const rightIndexExclusive = leftIndex + n;
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
-            let index = leftIndex;
-            do {
-                for (const { row, col } of cellIteratorFn(index)) {
-                    if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
-                        residualCageBuilder.withCell(Cell.at(row, col));
-                    }
-                }
-                index++;
-            } while (index < rightIndexExclusive);
+            // let index = leftIndex;
+            // do {
+            //     for (const { row, col } of cellIteratorFn(index)) {
+            //         if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
+            //             residualCageBuilder.withCell(Cell.at(row, col));
+            //         }
+            //     }
+            //     index++;
+            // } while (index < rightIndexExclusive);
+            const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
+            residualCageBuilder.withCells(complementIndices.cells());
             if (residualCageBuilder.cellCount == 1) {
                 const cellM = this._context.model.cellModelOf(residualCageBuilder.cells[0]);
                 cellM.placedNum = residualCageBuilder.new().sum;
