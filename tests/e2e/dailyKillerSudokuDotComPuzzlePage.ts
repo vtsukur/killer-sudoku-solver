@@ -33,7 +33,7 @@ type KeyboardCommand = {
     press: KeyInput;
 }
 
-export class DailyKillerSudokuPuzzlePage {
+export class DailyKillerSudokuDotComPuzzlePage {
 
     readonly _browser: Browser;
     private _browserPage?: Page;

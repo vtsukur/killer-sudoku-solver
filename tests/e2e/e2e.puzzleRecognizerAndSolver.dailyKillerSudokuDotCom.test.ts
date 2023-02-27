@@ -6,7 +6,7 @@ import { recognize } from '../../src/recognizer/recognizer';
 import { Solver } from '../../src/solver/solver';
 import { logFactory } from '../../src/util/logFactory';
 import { TempFilePaths } from '../../src/util/tempFilePaths';
-import { DailyKillerSudokuPuzzlePage } from './dailyKillerSudokuPuzzlePage';
+import { DailyKillerSudokuDotComPuzzlePage } from './dailyKillerSudokuDotComPuzzlePage';
 
 const log = logFactory.withLabel('E2E Puzzle Reader & Solver');
 
@@ -23,7 +23,7 @@ describe('E2E puzzle reader and solver tests for DailyKillerSudoku.com', () => {
         test(`Puzzle ${puzzleId}`, async () => {
             // initiating context
             const paths = new Paths(puzzleId).recreateBaseDirSync();
-            const page = new DailyKillerSudokuPuzzlePage(browser);
+            const page = new DailyKillerSudokuDotComPuzzlePage(browser);
             await page.open(puzzleId);
 
             // detecting and recognizing puzzle
