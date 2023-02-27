@@ -29,7 +29,7 @@ export class GridContour {
         const relativeX = rect.x - this.rect.x + rect.width / 2;
         const relativeY = rect.y - this.rect.y + rect.height / 2;
 
-        return Cell.at(Math.floor(relativeY / this.cellHeight), Math.floor(relativeX / this.cellWidth));
+        return Cell.at(~~(relativeY / this.cellHeight), ~~(relativeX / this.cellWidth));
     }
 
     private hasRect(rect: Rect) {

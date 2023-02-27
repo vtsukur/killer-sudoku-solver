@@ -60,7 +60,7 @@ export class CellContour {
         const cageBorderXSize = this.rect.width / CageBorders.SIDES;
         const cageBorderYSize = this.rect.height / CageBorders.SIDES;
 
-        this.cageBorders.setHasAt(Math.floor(relativeY / cageBorderYSize), Math.floor(relativeX / cageBorderXSize));
+        this.cageBorders.setHasAt(~~(relativeY / cageBorderYSize), ~~(relativeX / cageBorderXSize));
     }
 
 }
