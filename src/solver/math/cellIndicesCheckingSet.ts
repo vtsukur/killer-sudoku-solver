@@ -364,16 +364,32 @@ export class CellIndicesCheckingSet implements
     cells() {
         const val = new Array<Cell>();
         let bitStoreIndex = 0;
+
+        // For each bit store ...
         while (bitStoreIndex < 3) {
+            // ... take the bit store
             let i = this._bitStores[bitStoreIndex];
+            // ... iterate only over `1` bits -- as this bits represent `Cell`s
             while (i !== 0) {
+                //
+                // Produces a number which has only bit set -
+                // and that bit is a `Cell`s bit at the rightmost position.
+                // This number is a _power of 2_.
+                //
                 const rightMostBit = i & -i;
-                const indexWithinStore = rightMostBit % 37;
-                val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][indexWithinStore]);
+
+                // Calculating index of the entry in the lookup table.
+                const lutIndex = rightMostBit % CellIndicesCheckingSet._POWERS_OF_TWO_LUT_K;
+
+                // Adding a `Cell` from the lookup table.
+                val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][lutIndex]);
+
+                // Erasing rightmost `1` bit to `0` to proceed to the next `1` bit (if present) in the follow-up iteration.
                 i = i ^ rightMostBit;
             }
             bitStoreIndex++;
         }
+
         return val;
     }
 
