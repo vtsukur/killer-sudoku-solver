@@ -36,7 +36,7 @@ export class Grid {
     /**
      * Total sum of all numbers in a `Grid`.
      */
-    static readonly SUM = this.SIDE_CELL_COUNT * House.SUM;
+    static readonly SUM = Math.imul(this.SIDE_CELL_COUNT, House.SUM);
 
     /* istanbul ignore next */
     private constructor() {

@@ -98,7 +98,7 @@ export class SumAddendsCombinatorics {
 }
 
 const precomputeKey = (sum: number, numCount: number) => {
-    return numCount * 100 + sum;
+    return Math.imul(numCount, 100) + sum;
 };
 
 const storePrecomputed = (source: string, numCount: number) => {

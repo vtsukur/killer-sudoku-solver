@@ -92,7 +92,7 @@ export class DailyKillerSudokuDotComPuzzlePage {
         _.range(House.CELL_COUNT).forEach((row: HouseIndex) => {
             _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
                 const num = solution.numbers[row][col];
-                const n = row * House.CELL_COUNT + col + 1;
+                const n = Math.imul(row, House.CELL_COUNT) + col + 1;
                 solutionCommands.push({
                     selector: SELECTOR_NTH_CELL(n),
                     press: `${num}` as KeyInput

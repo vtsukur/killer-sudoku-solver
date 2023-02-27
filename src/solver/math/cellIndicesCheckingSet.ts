@@ -85,7 +85,7 @@ export class CellIndicesCheckingSet implements
     // Caching data about bit store index and bit position within the bit store to enable fast access.
     private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE.map(cellIndex => {
         const bitStoreIndex = ~~(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
-        const bitPosition = cellIndex - bitStoreIndex * CellIndicesCheckingSet._BITS_PER_BIT_STORE;
+        const bitPosition = cellIndex - Math.imul(bitStoreIndex, CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         return { bitStoreIndex, bitPosition };
     });
 
