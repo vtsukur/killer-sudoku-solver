@@ -297,7 +297,7 @@ export class CellIndicesCheckingSet implements
         const and = CellIndicesCheckingSet.newEmpty();
 
         //
-        // Applying bitwise AND for each bit store of this checking set and the `val` checking set
+        // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
         // to produce `1`s on the positions where both sets have `1`s.
         //
         // Example (applied to a single bit store with index `x` for simplicity):
@@ -310,6 +310,7 @@ export class CellIndicesCheckingSet implements
         and._bitStores[0] = this._bitStores[0] & val.bitStores[0];
         and._bitStores[1] = this._bitStores[1] & val.bitStores[1];
         and._bitStores[2] = this._bitStores[2] & val.bitStores[2];
+
         return and;
     }
 
@@ -318,9 +319,27 @@ export class CellIndicesCheckingSet implements
      */
     not(): ReadonlyCellIndicesCheckingSet {
         const not = CellIndicesCheckingSet.newEmpty();
+
+        //
+        // Applying bitwise NOT onto each bit store of this checking set
+        // to turn `0`s into `1`s and `1`s into `0`s.
+        //
+        // Example (applied to a single bit store with index `x` for simplicity):
+        // ```
+        //      this._bitStores[x]   = 0b10010101
+        //       ~this._bitStores[x] = 0b01101010
+        // ```
+        //
         not._bitStores[0] = ~this._bitStores[0];
         not._bitStores[1] = ~this._bitStores[1];
-        not._bitStores[2] = (~this._bitStores[2] & 0b11111111111111111); // right bits after index 80 should be cleared.
+
+        //
+        // Additional bitwise AND is applied to the last bit store
+        // to erase `1`s for `Cell` indices which are out of range
+        // so that irrelevant `Cell`s will NOT be mapped as _included_ in the set.
+        //
+        not._bitStores[2] = (~this._bitStores[2] & 0b11111111111111111);
+
         return not;
     }
 
