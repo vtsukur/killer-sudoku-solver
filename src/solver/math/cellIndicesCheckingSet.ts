@@ -384,7 +384,10 @@ export class CellIndicesCheckingSet implements
                 // Add a `Cell` from the lookup table.
                 val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][lutIndex]);
 
-                // Erasing rightmost `1` bit to `0` to proceed to the next `1` bit (if present) in the follow-up iteration.
+                //
+                // Erase rightmost `1` bit to `0` so that the next iteration
+                // find next `1` bit (if present) in the right-to-left direction.
+                //
                 i = i ^ rightMostBit;
             }
             bitStoreIndex++;
