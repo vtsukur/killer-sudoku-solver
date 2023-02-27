@@ -177,7 +177,7 @@ export class CellIndicesCheckingSet implements
             //  - `index`                                                                 // => `35`
             //  - `index % this._BITS_PER_BIT_STORE`                                      // => `3`
             //  - `1 << (index % this._BITS_PER_BIT_STORE)`                               // => `8`
-            //  - `(1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K` // => `34`
+            //  - `(1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K` // => `34` (see {@link _POWERS_OF_TWO_LUT_K})
             //
             const lutIndex = (1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K;
 
