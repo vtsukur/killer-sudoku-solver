@@ -12,14 +12,93 @@ import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
+/**
+ * Configuration options for {@link FindAndSliceComplementsForGridAreasStrategy}.
+ *
+ * Can be used both for tuning production execution as well as tailored testing scenarios.
+ */
 export type Config = {
+
+    /**
+     * Whether to apply the strategy to {@link Row} areas,
+     * both individual {@link Row}s and adjacent {@link Row}s.
+     *
+     * Size of adjacent {@link Row} areas can be additionally configured by
+     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
+     *
+     * Default is `true`.
+     */
     readonly isApplyToRowAreas: boolean;
+
+    /**
+     * Whether to apply the strategy to {@link Column} areas,
+     * both individual {@link Column}s and adjacent {@link Column}s.
+     *
+     * Size of adjacent {@link Column} areas can be additionally configured by
+     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
+     *
+     * Default is `true`.
+     */
     readonly isApplyToColumnAreas: boolean;
+
+    /**
+     * Whether to apply the strategy to {@link Nonet}s.
+     *
+     * Only individual {@link Nonet} are analyzed, NOT adjacent {@link Nonet}s.
+     *
+     * Default is `true`.
+     */
     readonly isApplyToNonetAreas: boolean;
+
+    /**
+     * Minimum amount of adjacent {@link Row} and {@link Column} areas
+     * to apply the strategy to.
+     *
+     * Should be in the range of [1, 8].
+     * Upper bound in this range is NOT 9
+     * since applying it to the whole {@link Grid} will NOT produce any hint.
+     *
+     * Default is `1`, which means _apply to all individual {@link Row}s and {@link Column}s at least_.
+     */
     readonly minAdjacentRowsAndColumnsAreas: number;
+
+    /**
+     * Maximum amount of adjacent {@link Row} and {@link Column} areas
+     * to apply the strategy to.
+     *
+     * Should be in the range of [1, 8].
+     * Upper bound in this range is NOT 9
+     * since applying it to the whole {@link Grid} will NOT produce any hint.
+     *
+     * Default is `4`.
+     */
     readonly maxAdjacentRowsAndColumnsAreas: number;
+
+    /**
+     * Maximum amount of {@link Cell}s in a complement {@link Cage}
+     * to consider such a {@link Cage} as _meaningful_.
+     *
+     * The smaller the {@link Cage} the more hints it leads to.
+     * As a result, there is limited sense in finding bigger {@link Cage}s
+     * as it requires more execution power and memory with less produced hints
+     * UNLESS determining all possible hints is critical.
+     *
+     * Should be in the range of [1, 9].
+     *
+     * Default is `5` which covers between 80% and 90% of all complements.
+     */
     readonly maxComplementSize: number;
+
+    /**
+     * Whether to collect statistics about found complement {@link Cage}s.
+     *
+     * Useful for finding distribution of cases and understanding real-world usage
+     * so that this {@link Config} can be tweaked further.
+     *
+     * Default is `false`.
+     */
     readonly isCollectStats: boolean;
+
 }
 
 const DEFAULT_CONFIG: Config = {
