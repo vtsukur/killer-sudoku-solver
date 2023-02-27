@@ -169,7 +169,7 @@ export class CellIndicesCheckingSet implements
             // Calculating index of the entry in the lookup table.
             //
             //  - `index % this._BITS_PER_BIT_STORE` returns index of the `Cell`s bit in the bit store.
-            //  - `1 << (index % this._BITS_PER_BIT_STORE)` produces a number which has only bit set -
+            //  - `1 << (index % this._BITS_PER_BIT_STORE)` produces a number which has only 1 bit set -
             //    and that bit is a `Cell`s bit. This number is a _power of 2_.
             //  - modulo on `K` produces unique small number for 32-bit _power of 2_ integer.
             //
@@ -367,21 +367,21 @@ export class CellIndicesCheckingSet implements
 
         // For each bit store ...
         while (bitStoreIndex < 3) {
-            // ... take the bit store
+            // ... capture it
             let i = this._bitStores[bitStoreIndex];
-            // ... iterate only over `1` bits -- as this bits represent `Cell`s
+            // ... iterate only over `1` bits -- as these bits represent `Cell`s
             while (i !== 0) {
                 //
-                // Produces a number which has only bit set -
+                // Produce a number which has only 1 bit set -
                 // and that bit is a `Cell`s bit at the rightmost position.
                 // This number is a _power of 2_.
                 //
                 const rightMostBit = i & -i;
 
-                // Calculating index of the entry in the lookup table.
+                // Calculate index of the entry in the lookup table.
                 const lutIndex = rightMostBit % CellIndicesCheckingSet._POWERS_OF_TWO_LUT_K;
 
-                // Adding a `Cell` from the lookup table.
+                // Add a `Cell` from the lookup table.
                 val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][lutIndex]);
 
                 // Erasing rightmost `1` bit to `0` to proceed to the next `1` bit (if present) in the follow-up iteration.
