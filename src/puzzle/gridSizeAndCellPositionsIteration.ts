@@ -35,7 +35,7 @@ export class GridSizeAndCellPositionsIteration {
     /**
      * Total amount of {@link Cell}s in a `Grid`.
      */
-    static readonly GRID_CELL_COUNT = this.GRID_SIDE_CELL_COUNT * this.GRID_SIDE_CELL_COUNT;
+    static readonly GRID_CELL_COUNT = Math.imul(this.GRID_SIDE_CELL_COUNT, this.GRID_SIDE_CELL_COUNT);
 
     /**
      * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.

@@ -114,7 +114,7 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
-        this.index = row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col;
+        this.index = Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col;
         this.key = Cell.keyOf(row, col);
     }
 

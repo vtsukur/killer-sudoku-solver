@@ -198,7 +198,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
             const indices = CellIndicesCheckingSet.newEmpty();
             for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
-                indices.add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+                indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
             }
             val[row] = indices;
         }
@@ -210,7 +210,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
             const indices = CellIndicesCheckingSet.newEmpty();
             for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
-                indices.add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+                indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
             }
             val[col] = indices;
         }
@@ -227,7 +227,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             const row = cellRowAndColumn[0];
             const col = cellRowAndColumn[1];
             const nonet = Nonet.GRID_CELLS_TO_NONETS[row][col];
-            val[nonet].add(CellIndicesCheckingSet.of(row * GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT + col));
+            val[nonet].add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
         });
 
         return val;
@@ -280,8 +280,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             cageMs: ReadonlyArray<CageModel>,
             n: number,
             areaCellIndices: ReadonlyCellIndicesCheckingSet) {
-        const nHouseCellCount = n * House.CELL_COUNT;
-        const nHouseSum = n * House.SUM;
+        const nHouseCellCount = Math.imul(n, House.CELL_COUNT);
+        const nHouseSum = Math.imul(n, House.SUM);
 
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
