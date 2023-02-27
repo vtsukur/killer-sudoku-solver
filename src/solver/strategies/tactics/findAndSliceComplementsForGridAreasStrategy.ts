@@ -1,10 +1,7 @@
-import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Column } from '../../../puzzle/column';
 import { GridSizeAndCellPositionsIteration } from '../../../puzzle/gridSizeAndCellPositionsIteration';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
-import { Row } from '../../../puzzle/row';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
@@ -119,14 +116,12 @@ class ExecContext {
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
-    private readonly _rowAndColumnIterationRange: ReadonlyArray<number>;
 
     static readonly STATS = new Stats();
 
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
         this._config = { ...DEFAULT_CONFIG, ...config };
-        this._rowAndColumnIterationRange = _.range(this._config.minAdjacentRowsAndColumnsAreas, this._config.maxAdjacentRowsAndColumnsAreas + 1);
     }
 
     execute() {
@@ -184,18 +179,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private static isColumnWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
         return cageM.maxCol < bottomOrRightIndexExclusive;
-    }
-
-    private static rowCellsIterator(row: HouseIndex) {
-        return Row.newCellsIterator(row);
-    }
-
-    private static columnCellsIterator(row: HouseIndex) {
-        return Column.newCellsIterator(row);
-    }
-
-    private static nonetCellsIterator(row: HouseIndex) {
-        return Nonet.newCellsIterator(row);
     }
 
     private static rowIndices(row: HouseIndex) {
