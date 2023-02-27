@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 import { GridSizeAndCellPositionsIteration } from '../../../puzzle/gridSizeAndCellPositionsIteration';
 import { House, HouseIndex } from '../../../puzzle/house';
@@ -152,7 +151,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 ctx.rowIndexedCages,
                 (index: HouseIndex) => this._model.rowModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.rowCellsIterator,
                 FindAndSliceComplementsForGridAreasStrategy.rowIndices,
                 this._config.minAdjacentRowsAndColumnsAreas,
                 this._config.maxAdjacentRowsAndColumnsAreas
@@ -163,7 +161,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 ctx.columnIndexedCages,
                 (index: HouseIndex) => this._model.columnModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.columnCellsIterator,
                 FindAndSliceComplementsForGridAreasStrategy.columnIndices,
                 this._config.minAdjacentRowsAndColumnsAreas,
                 this._config.maxAdjacentRowsAndColumnsAreas
@@ -174,7 +171,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 ctx.columnIndexedCages, // not used
                 (index: HouseIndex) => this._model.nonetModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
-                FindAndSliceComplementsForGridAreasStrategy.nonetCellsIterator,
                 FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
                 1,
                 1
@@ -258,7 +254,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             indexedCages: ReadonlyArray<Set<CageModel>>,
             singleHouseCageModelsFn: (index: number) => HouseModel,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
-            cellIteratorFn: (index: number) => Iterable<Cell>,
             cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
@@ -267,8 +262,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 this.doFindAndSliceComplementsForAdjacentGridAreas(
                     singleHouseCageModelsFn(index).cageModels,
                     1,
-                    index,
-                    cellIteratorFn,
                     cellAreaIndicesFn(index)
                 );
             }
@@ -293,7 +286,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, topOrLeftIndex, cellIteratorFn, indices);
+                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= upperBound);
             n++;
@@ -303,26 +296,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private doFindAndSliceComplementsForAdjacentGridAreas(
             cageMs: ReadonlyArray<CageModel>,
             n: number,
-            leftIndex: number,
-            cellIteratorFn: (index: number) => Iterable<Cell>,
             areaCellIndices: ReadonlyCellIndicesCheckingSet) {
         const nHouseCellCount = n * House.CELL_COUNT;
         const nHouseSum = n * House.SUM;
 
-        // const rightIndexExclusive = leftIndex + n;
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
-            // let index = leftIndex;
-            // do {
-            //     for (const { row, col } of cellIteratorFn(index)) {
-            //         if (cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.doesNotHave(Cell.at(row, col).index)) {
-            //             residualCageBuilder.withCell(Cell.at(row, col));
-            //         }
-            //     }
-            //     index++;
-            // } while (index < rightIndexExclusive);
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
             if (residualCageBuilder.cellCount == 1) {
