@@ -295,6 +295,18 @@ export class CellIndicesCheckingSet implements
      */
     and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
         const and = CellIndicesCheckingSet.newEmpty();
+
+        //
+        // Applying bitwise AND for each bit store of this checking set and the `val` checking set
+        // to produce `1`s on the positions where both sets have `1`s.
+        //
+        // Example (applied to a single bit store with index `x` for simplicity):
+        // ```
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b01111100
+        //      this._bitStores[x] & val.bitStores[x] = 0b00010100 (`1` on positions 3 and 5)
+        // ```
+        //
         and._bitStores[0] = this._bitStores[0] & val.bitStores[0];
         and._bitStores[1] = this._bitStores[1] & val.bitStores[1];
         and._bitStores[2] = this._bitStores[2] & val.bitStores[2];
