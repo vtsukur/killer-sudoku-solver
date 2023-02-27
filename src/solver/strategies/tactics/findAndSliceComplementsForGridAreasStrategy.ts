@@ -87,7 +87,7 @@ export type Config = {
      *
      * Default is `5` which covers between 80% and 90% of all complements.
      */
-    readonly maxComplementSize: number;
+    readonly maxMeaningfulComplementCageSize: number;
 
     /**
      * Whether to collect statistics about found complement {@link Cage}s.
@@ -107,7 +107,7 @@ const DEFAULT_CONFIG: Config = {
     isApplyToNonetAreas: true,
     minAdjacentRowsAndColumnsAreas: 1,
     maxAdjacentRowsAndColumnsAreas: 4,
-    maxComplementSize: 5,
+    maxMeaningfulComplementCageSize: 5,
     isCollectStats: false
 };
 
@@ -364,7 +364,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxComplementSize) && sum) {
+        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementCageSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
