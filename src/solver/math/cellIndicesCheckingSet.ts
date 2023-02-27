@@ -361,9 +361,11 @@ export class CellIndicesCheckingSet implements
      * @see {ReadonlyNumsCheckingSet.equals}
      */
     equals(val: ReadonlyCellIndicesCheckingSet) {
-        return this._bitStores[0] === val.bitStores[0] &&
+        return (
+            this._bitStores[0] === val.bitStores[0] &&
             this._bitStores[1] === val.bitStores[1] &&
-            this._bitStores[2] === val.bitStores[2];
+            this._bitStores[2] === val.bitStores[2]
+        );
     }
 
     /**
