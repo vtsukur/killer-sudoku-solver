@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 import { GridSizeAndCellPositionsIteration } from '../../puzzle/gridSizeAndCellPositionsIteration';
-import { CachedNumRanges } from './cachedNumRanges';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
@@ -73,7 +71,7 @@ export class CellIndicesCheckingSet implements
 
     //
     // It is enough to have 3 bit stores of size 32 bits each
-    // as the amount of required values is 81:
+    // as the amount of required indices is up to 81:
     //
     //  - `this._bitStores[0]` represents numbers in the range of [0, 31]
     //  - `this._bitStores[1]` represents numbers in the range of [32, 63]
@@ -91,21 +89,114 @@ export class CellIndicesCheckingSet implements
         return { bitStoreIndex, bitPosition };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private static _POWERS_OF_2_TO_BIT_INDEX: any = (() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const val: any = {};
-        CachedNumRanges.ZERO_TO_N_LTE_81[this._BITS_PER_BIT_STORE].forEach(bitIndex => {
-            val[1 << bitIndex] = bitIndex;
-        });
+    /**
+     * Magic number `k` that produces unique small number for a 32-bit _power of 2_ integer `n`
+     * with `n % k` (modulp) operation.
+     *
+     * These `n % k` numbers are used to index the lookup table.
+     *
+     * Full table of association between the _power of 2_ (`n`) and this `k`:
+     *
+     * ----------
+     *  n   |   k
+     * ----------
+     *  0   |   1
+     *  1   |   2
+     *  2   |   4
+     *  3   |   8
+     *  4   |  16
+     *  5   |  32
+     *  6   |  27
+     *  7   |  17
+     *  8   |  34
+     *  9   |  31
+     * 10   |  25
+     * 11   |  13
+     * 12   |  26
+     * 13   |  15
+     * 14   |  30
+     * 15   |  23
+     * 16   |   9
+     * 17   |  18
+     * 18   |  36
+     * 19   |  35
+     * 20   |  33
+     * 21   |  29
+     * 22   |  21
+     * 23   |   5
+     * 24   |  10
+     * 25   |  20
+     * 26   |   3
+     * 27   |   6
+     * 28   |  12
+     * 29   |  24
+     * 30   |  11
+     * 31   | -22
+     * ----------
+     */
+    private static readonly _POWERS_OF_TWO_LUT_K = 37;
+
+    private static _newPowersOfTwoLookUpTable() {
+        return new Array<Cell>(this._POWERS_OF_TWO_LUT_K);
+    }
+
+    /**
+     * Lookup table for {@link Cell}s represented as the array of arrays
+     * indexed by bit store and then by unique number for the 32-bit _power of 2_ integer.
+     */
+    private static readonly _BITS_TO_CELLS_LUT: ReadonlyArray<ReadonlyArray<Cell>> = (() => {
+        // Creating empty lookup tables for each bit store.
+        const val: Array<Array<Cell>> = [
+            this._newPowersOfTwoLookUpTable(),
+            this._newPowersOfTwoLookUpTable(),
+            this._newPowersOfTwoLookUpTable()
+        ];
+
+        // Iterating over all possible `Cell` indices on the `Grid`.
+        for (const index of GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE) {
+            //
+            // Calculating index of the bit store (in the [0, 2] range):
+            //
+            //  - for the first 32 values (in the [0, 31] range) the value is `0`;
+            //  - for the next 32 values (in the [32, 63] range) the value is `1`;
+            //  - for the last 17 values (in the [64, 80] range) the value is `2`.
+            //
+            // Same as `Math.trunc(index / this._BITS_PER_BIT_STORE)` but `~~` is faster.
+            //
+            const bitStoreIndex = ~~(index / this._BITS_PER_BIT_STORE);
+
+            //
+            // Calculating index of the entry in the lookup table.
+            //
+            //  - `index % this._BITS_PER_BIT_STORE` returns index of the `Cell`s bit in the bit store.
+            //  - `1 << (index % this._BITS_PER_BIT_STORE)` produces a number which has only bit set -
+            //    and that bit is a `Cell`s bit. This number is a _power of 2_.
+            //  - modulo on `K` produces unique small number for 32-bit _power of 2_ integer.
+            //
+            // Example:
+            //  - `index`                                                                 // => `35`
+            //  - `index % this._BITS_PER_BIT_STORE`                                      // => `3`
+            //  - `1 << (index % this._BITS_PER_BIT_STORE)`                               // => `8`
+            //  - `(1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K` // => `34`
+            //
+            const lutIndex = (1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K;
+
+            //
+            // Calculating index of the `Cell` `Row` from absolute `Cell` index on the `Grid`.
+            //
+            // Same as `Math.trunc(index / GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT)` but `~~` is faster.
+            //
+            const row = ~~(index / GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT);
+
+            // Calculating index of the `Cell` `Column` from absolute `Cell` index on the `Grid`.
+            const col = index % GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT;
+
+            // Storing `Cell` value in the lookup table.
+            val[bitStoreIndex][lutIndex] = Cell.at(row, col);
+        }
+
         return val;
     })();
-
-    private static _BITSTORE_INDEX_OFFSETS: ReadonlyArray<number> = [
-        0,
-        this._BITS_PER_BIT_STORE,
-        Math.imul(this._BITS_PER_BIT_STORE, 2)
-    ];
 
     /**
      * Constructs new checking set from the unique numbers in the given array
@@ -275,14 +366,10 @@ export class CellIndicesCheckingSet implements
         let bitStoreIndex = 0;
         while (bitStoreIndex < 3) {
             let i = this._bitStores[bitStoreIndex];
-            const indexOffset = CellIndicesCheckingSet._BITSTORE_INDEX_OFFSETS[bitStoreIndex];
             while (i !== 0) {
                 const rightMostBit = i & -i;
-                const indexWithinStore = CellIndicesCheckingSet._POWERS_OF_2_TO_BIT_INDEX[rightMostBit];
-                const absIndex = indexOffset + indexWithinStore;
-                const row = ~~(absIndex / 9);
-                const col = absIndex % 9;
-                val.push(Cell.at(row, col));
+                const indexWithinStore = rightMostBit % 37;
+                val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][indexWithinStore]);
                 i = i ^ rightMostBit;
             }
             bitStoreIndex++;
