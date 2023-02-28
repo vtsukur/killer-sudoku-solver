@@ -285,6 +285,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
     private readonly _rowsAreaProcessor: RowAreasProcessor;
+    private readonly _columnAreasProcessor: ColumnAreasProcessor;
 
     static readonly STATS = new Stats();
 
@@ -307,6 +308,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             strategy: this
         };
         this._rowsAreaProcessor = new RowAreasProcessor(this._config.isApplyToRowAreas, processorCtx);
+        this._columnAreasProcessor = new ColumnAreasProcessor(processorCtx);
     }
 
     /**
@@ -338,27 +340,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
         this._rowsAreaProcessor.execute(indexedCageMsTracker);
-        if (this._config.isApplyToColumnAreas) {
-            this.applyToColumns(indexedCageMsTracker);
-        }
+        this._columnAreasProcessor.execute(indexedCageMsTracker);
+        // if (this._config.isApplyToColumnAreas) {
+        //     this.applyToColumns(indexedCageMsTracker);
+        // }
         if (this._config.isApplyToNonetAreas) {
             this.applyToNonets();
         }
-    }
-
-    private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.columnM,
-            FindAndSliceComplementsForGridAreasStrategy.columnCellsIndices,
-            this._config.minAdjacentRowsAndColumnsAreas
-        );
-        this.applyToAdjacentHousesOfSingleType(
-            indexedCageMsTracker.columnIndexedCages,
-            FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly,
-            FindAndSliceComplementsForGridAreasStrategy.columnCellsIndices,
-            this._config.minAdjacentRowsAndColumnsAreas,
-            this._config.maxAdjacentRowsAndColumnsAreas
-        );
     }
 
     private applyToNonets() {
@@ -369,29 +357,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         );
     }
 
-    private static columnM(model: MasterModel, index: HouseIndex) {
-        return model.columnModels[index];
-    }
-
     private static nonetM(model: MasterModel, index: HouseIndex) {
         return model.nonetModels[index];
     }
-
-    private static isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
-        return cageM.maxCol < bottomOrRightIndexExclusive;
-    }
-
-    private static columnCellsIndices(index: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy._COLUMN_CELLS_INDICES[index];
-    }
-
-    private static readonly _COLUMN_CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(col => {
-        const indices = CellIndicesCheckingSet.newEmpty();
-        for (const row of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
-            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        }
-        return indices;
-    });
 
     private static nonetCellsIndices(index: HouseIndex) {
         return FindAndSliceComplementsForGridAreasStrategy._NONET_CELL_INDICES_OF[index];
@@ -425,38 +393,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                     cellAreaIndicesFn(index)
                 );
             }
-        }
-    }
-
-    private applyToAdjacentHousesOfSingleType(
-            indexedCages: ReadonlyArray<Set<CageModel>>,
-            isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
-            cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
-            minAdjacentAreas: number,
-            maxAdjacentAreas: number) {
-        let n = Math.max(minAdjacentAreas, 2);
-        while (n <= maxAdjacentAreas) {
-            const upperBound = House.CELL_COUNT - n;
-            let topOrLeftIndex = 0;
-            do {
-                const rightOrBottomExclusive = topOrLeftIndex + n;
-                const cageMs = new Array<CageModel>();
-                const indices = CellIndicesCheckingSet.newEmpty();
-                let index = topOrLeftIndex;
-                do {
-                    for (const cageM of indexedCages[index]) {
-                        if (isWithinAreaFn(cageM, rightOrBottomExclusive)) {
-                            cageMs.push(cageM);
-                        }
-                    }
-                    indices.add(cellAreaIndicesFn(index));
-                    index++;
-                } while (index < rightOrBottomExclusive);
-
-                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
-                topOrLeftIndex++;
-            } while (topOrLeftIndex <= upperBound);
-            n++;
         }
     }
 
@@ -636,6 +572,43 @@ class RowAreasProcessor extends HouseAreasProcessor {
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
         return cageM.maxRow < bottomOrRightIndexExclusive;
+    }
+
+}
+
+class ColumnAreasProcessor extends HouseAreasProcessor {
+
+    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(col => {
+        const indices = CellIndicesCheckingSet.newEmpty();
+        for (const row of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
+            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
+        }
+        return indices;
+    });
+
+    constructor(processorCtx: ConstantProcessorContext) {
+        super(processorCtx.config.isApplyToColumnAreas, processorCtx);
+    }
+
+    doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
+        this.applyToIndividualHousesOfSingleType(
+            ColumnAreasProcessor._CELLS_INDICES,
+            this._config.minAdjacentRowsAndColumnsAreas
+        );
+        this.applyToAdjacentHousesOfSingleType(
+            indexedCageMsTracker.columnIndexedCages,
+            ColumnAreasProcessor._CELLS_INDICES,
+            this._config.minAdjacentRowsAndColumnsAreas,
+            this._config.maxAdjacentRowsAndColumnsAreas
+        );
+    }
+
+    protected houseModel(index: HouseIndex) {
+        return this._model.columnModels[index];
+    }
+
+    protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
+        return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
 }
