@@ -445,14 +445,11 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return val;
     })();
 
-    private applyToAreasOfSingleType(
-            indexedCages: ReadonlyArray<Set<CageModel>>,
+    private applyToIndividualHousesOfSingleType(
             singleHouseCageModelsFn: (model: MasterModel, index: number) => HouseModel,
-            isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
             cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
-            minAdjacentAreas: number,
-            maxAdjacentAreas: number) {
-        if (minAdjacentAreas <= 1 && maxAdjacentAreas >= 1) {
+            minAdjacentAreas: number) {
+        if (minAdjacentAreas <= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
                 this.doFindAndSliceComplementsForAdjacentGridAreas(
                     singleHouseCageModelsFn(this._model, index).cageModels,
@@ -461,6 +458,16 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
                 );
             }
         }
+    }
+
+    private applyToAreasOfSingleType(
+            indexedCages: ReadonlyArray<Set<CageModel>>,
+            singleHouseCageModelsFn: (model: MasterModel, index: number) => HouseModel,
+            isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
+            cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
+            minAdjacentAreas: number,
+            maxAdjacentAreas: number) {
+        this.applyToIndividualHousesOfSingleType(singleHouseCageModelsFn, cellAreaIndicesFn, minAdjacentAreas);
 
         let n = Math.max(minAdjacentAreas, 2);
         while (n <= maxAdjacentAreas) {
