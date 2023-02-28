@@ -284,7 +284,7 @@ class IndexedCageModelsTracker {
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
-    private readonly _rowsAreaProcessor: RowAreasProcessor;
+    private readonly _rowAreasProcessor: RowAreasProcessor;
     private readonly _columnAreasProcessor: ColumnAreasProcessor;
     private readonly _nonetAreasProcessor: NonetAreasProcessor;
 
@@ -301,14 +301,16 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
      */
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
+
         this._config = { ...DEFAULT_CONFIG, ...config };
+
         const processorCtx: ConstantProcessorContext = {
             context,
             model: this._model,
             config: this._config,
             strategy: this
         };
-        this._rowsAreaProcessor = new RowAreasProcessor(this._config.isApplyToRowAreas, processorCtx);
+        this._rowAreasProcessor = new RowAreasProcessor(processorCtx);
         this._columnAreasProcessor = new ColumnAreasProcessor(processorCtx);
         this._nonetAreasProcessor = new NonetAreasProcessor(processorCtx);
     }
@@ -341,7 +343,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this._rowsAreaProcessor.execute(indexedCageMsTracker);
+        this._rowAreasProcessor.execute(indexedCageMsTracker);
         this._columnAreasProcessor.execute(indexedCageMsTracker);
         this._nonetAreasProcessor.execute(indexedCageMsTracker);
     }
@@ -471,8 +473,8 @@ class RowAreasProcessor extends HouseAreasProcessor {
         return indices;
     });
 
-    constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
-        super(masterToggle, processorCtx);
+    constructor(processorCtx: ConstantProcessorContext) {
+        super(processorCtx.config.isApplyToRowAreas, processorCtx);
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
