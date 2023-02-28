@@ -107,7 +107,12 @@ export type Config = {
 
 }
 
-const DEFAULT_CONFIG: Config = {
+/**
+ * Default {@link Config} options.
+ *
+ * When changing these defaults TSDoc for {@link Config} should be updated as well.
+ */
+const DEFAULT_CONFIG: Config = Object.freeze({
     isApplyToRowAreas: true,
     isApplyToColumnAreas: true,
     isApplyToNonetAreas: true,
@@ -115,7 +120,7 @@ const DEFAULT_CONFIG: Config = {
     maxAdjacentRowsAndColumnsAreas: 4,
     maxMeaningfulComplementCageSize: 5,
     isCollectStats: false
-};
+});
 
 class AreaStats {
 
