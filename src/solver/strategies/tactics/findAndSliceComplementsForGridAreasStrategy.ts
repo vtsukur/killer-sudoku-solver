@@ -343,7 +343,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToAreasOfSingleType(
             indexedCageMsTracker.rowIndexedCages,
-            (index: HouseIndex) => this._model.rowModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.rowModelByIndex,
             FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -354,7 +354,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToAreasOfSingleType(
             indexedCageMsTracker.columnIndexedCages,
-            (index: HouseIndex) => this._model.columnModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.columnModelByIndex,
             FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -365,12 +365,24 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private applyToNonets(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToAreasOfSingleType(
             indexedCageMsTracker.columnIndexedCages, // not used
-            (index: HouseIndex) => this._model.nonetModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.nonetModelByIndex,
             FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
             FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
             1,
             1
         );
+    }
+
+    private static rowModelByIndex(model: MasterModel, index: HouseIndex) {
+        return model.rowModels[index];
+    }
+
+    private static columnModelByIndex(model: MasterModel, index: HouseIndex) {
+        return model.columnModels[index];
+    }
+
+    private static nonetModelByIndex(model: MasterModel, index: HouseIndex) {
+        return model.nonetModels[index];
     }
 
     private static isRowWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
@@ -435,7 +447,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToAreasOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
-            singleHouseCageModelsFn: (index: number) => HouseModel,
+            singleHouseCageModelsFn: (model: MasterModel, index: number) => HouseModel,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
             cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
             minAdjacentAreas: number,
@@ -443,7 +455,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         if (minAdjacentAreas <= 1 && maxAdjacentAreas >= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
                 this.doFindAndSliceComplementsForAdjacentGridAreas(
-                    singleHouseCageModelsFn(index).cageModels,
+                    singleHouseCageModelsFn(this._model, index).cageModels,
                     1,
                     cellAreaIndicesFn(index)
                 );
