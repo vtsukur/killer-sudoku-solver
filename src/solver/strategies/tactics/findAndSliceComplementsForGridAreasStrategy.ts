@@ -348,7 +348,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         );
         this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.rowIndexedCages,
-            FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
+            FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentRowArea_upperBoundaryCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
             this._config.maxAdjacentRowsAndColumnsAreas
@@ -363,7 +363,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         );
         this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.columnIndexedCages,
-            FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
+            FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
             this._config.maxAdjacentRowsAndColumnsAreas
@@ -390,11 +390,11 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return model.nonetModels[index];
     }
 
-    private static isRowWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
+    private static isCageMWithinAdjacentRowArea_upperBoundaryCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
         return cageM.maxRow < bottomOrRightIndexExclusive;
     }
 
-    private static isColumnWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
+    private static isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
         return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
