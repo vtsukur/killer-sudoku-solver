@@ -306,7 +306,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
      */
     execute() {
         this.withIndexedCageMsTracker(indexedCageMsTracker => {
-            this.main(indexedCageMsTracker);
+            this.doExecute(indexedCageMsTracker);
         });
     }
 
@@ -328,7 +328,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private main(indexedCageMsTracker: IndexedCageModelsTracker) {
+    private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
         if (this._config.isApplyToRowAreas) {
             this.applyToAreasOfSingleType(
                 indexedCageMsTracker.rowIndexedCages,
