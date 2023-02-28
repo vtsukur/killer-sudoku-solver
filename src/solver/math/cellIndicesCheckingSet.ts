@@ -367,12 +367,13 @@ export class CellIndicesCheckingSet implements
 
         // For each bit store ...
         while (bitStoreIndex < 3) {
-            // ... capture it
+            // ... capture it's value
             let i = this._bitStores[bitStoreIndex];
-            // ... for fast performance iterate over `1` bits ONLY -- as these bits represent included `Cell`s
+            // ... for fast performance iterate over `1` bits ONLY -- as these bits represent included `Cell`s.
+            // Skipping `0`s is a big performance optimization since majority of use cases involve `Cage`s with up to 9 `Cell`s.
             while (i !== 0) {
                 //
-                // Produce a number which has only 1 bit set -
+                // Produce a number which has only 1 bit set to `1` -
                 // and that bit is a `Cell`s bit at the rightmost position.
                 // This number is a _power of 2_.
                 //
