@@ -176,7 +176,7 @@ class Stats {
 
 }
 
-class ExecContext {
+class IndexedCageModelsTracker {
     readonly rowIndexedCages: Array<Set<CageModel>>;
     readonly columnIndexedCages: Array<Set<CageModel>>;
 
@@ -305,25 +305,33 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
      * @see {Strategy.execute}
      */
     execute() {
-        this.withEventHandlers();
+        this.withIndexedCageMsTracker(indexedCageMsTracker => {
+            this.main(indexedCageMsTracker);
+        });
     }
 
-    private withEventHandlers() {
-        const ctx = new ExecContext(this._model);
+    private withIndexedCageMsTracker(mainFn: (indexedCageMsTracker: IndexedCageModelsTracker) => void) {
+        const indexedCageMsTracker = new IndexedCageModelsTracker(this._model);
         try {
-            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, ctx.cageRegisteredEventHandler);
-            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, ctx.cageUnregisteredEventHandler);
-            this.main(ctx);
+            //
+            // Add event handlers to listen to `Cage` registration and unregistration
+            // when complement `Cage`s are found and `Cage` slicing occurs.
+            //
+            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
+            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
+
+            mainFn(indexedCageMsTracker);
         } finally {
-            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, ctx.cageRegisteredEventHandler);
-            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, ctx.cageUnregisteredEventHandler);
+            // Cleanup event handlers even if error is thrown to avoid broken state.
+            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
+            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
         }
     }
 
-    private main(ctx: ExecContext) {
+    private main(indexedCageMsTracker: IndexedCageModelsTracker) {
         if (this._config.isApplyToRowAreas) {
             this.applyToAreasOfSingleType(
-                ctx.rowIndexedCages,
+                indexedCageMsTracker.rowIndexedCages,
                 (index: HouseIndex) => this._model.rowModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
                 FindAndSliceComplementsForGridAreasStrategy.rowIndices,
@@ -333,7 +341,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
         if (this._config.isApplyToColumnAreas) {
             this.applyToAreasOfSingleType(
-                ctx.columnIndexedCages,
+                indexedCageMsTracker.columnIndexedCages,
                 (index: HouseIndex) => this._model.columnModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
                 FindAndSliceComplementsForGridAreasStrategy.columnIndices,
@@ -343,7 +351,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
         if (this._config.isApplyToNonetAreas) {
             this.applyToAreasOfSingleType(
-                ctx.columnIndexedCages, // not used
+                indexedCageMsTracker.columnIndexedCages, // not used
                 (index: HouseIndex) => this._model.nonetModels[index],
                 FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
                 FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
