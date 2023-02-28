@@ -341,9 +341,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this.applyToAreasOfSingleType(
-            indexedCageMsTracker.rowIndexedCages,
+        this.applyToIndividualHousesOfSingleType(
             FindAndSliceComplementsForGridAreasStrategy.rowModelByIndex,
+            FindAndSliceComplementsForGridAreasStrategy.rowIndices,
+            this._config.minAdjacentRowsAndColumnsAreas
+        );
+        this.applyToAdjacentAreasOfSingleType(
+            indexedCageMsTracker.rowIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -352,9 +356,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this.applyToAreasOfSingleType(
-            indexedCageMsTracker.columnIndexedCages,
+        this.applyToIndividualHousesOfSingleType(
             FindAndSliceComplementsForGridAreasStrategy.columnModelByIndex,
+            FindAndSliceComplementsForGridAreasStrategy.columnIndices,
+            this._config.minAdjacentRowsAndColumnsAreas
+        );
+        this.applyToAdjacentAreasOfSingleType(
+            indexedCageMsTracker.columnIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -457,15 +465,12 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private applyToAreasOfSingleType(
+    private applyToAdjacentAreasOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
-            singleHouseCageModelsFn: (model: MasterModel, index: number) => HouseModel,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
             cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
-        this.applyToIndividualHousesOfSingleType(singleHouseCageModelsFn, cellAreaIndicesFn, minAdjacentAreas);
-
         let n = Math.max(minAdjacentAreas, 2);
         while (n <= maxAdjacentAreas) {
             const upperBound = House.CELL_COUNT - n;
