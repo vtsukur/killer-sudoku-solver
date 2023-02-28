@@ -286,6 +286,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private readonly _config: Config;
     private readonly _rowsAreaProcessor: RowAreasProcessor;
     private readonly _columnAreasProcessor: ColumnAreasProcessor;
+    private readonly _nonetAreasProcessor: NonetAreasProcessor;
 
     static readonly STATS = new Stats();
 
@@ -309,6 +310,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         };
         this._rowsAreaProcessor = new RowAreasProcessor(this._config.isApplyToRowAreas, processorCtx);
         this._columnAreasProcessor = new ColumnAreasProcessor(processorCtx);
+        this._nonetAreasProcessor = new NonetAreasProcessor(processorCtx);
     }
 
     /**
@@ -341,89 +343,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
         this._rowsAreaProcessor.execute(indexedCageMsTracker);
         this._columnAreasProcessor.execute(indexedCageMsTracker);
-        // if (this._config.isApplyToColumnAreas) {
-        //     this.applyToColumns(indexedCageMsTracker);
-        // }
-        if (this._config.isApplyToNonetAreas) {
-            this.applyToNonets();
-        }
+        this._nonetAreasProcessor.execute(indexedCageMsTracker);
     }
 
-    private applyToNonets() {
-        this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.nonetM,
-            FindAndSliceComplementsForGridAreasStrategy.nonetCellsIndices,
-            1
-        );
-    }
-
-    private static nonetM(model: MasterModel, index: HouseIndex) {
-        return model.nonetModels[index];
-    }
-
-    private static nonetCellsIndices(index: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy._NONET_CELL_INDICES_OF[index];
-    }
-
-    private static readonly _NONET_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
-        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
-        for (const col of House.COUNT_RANGE) {
-            val[col] = CellIndicesCheckingSet.newEmpty();
-        }
-
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
-            const row = cellRowAndColumn[0];
-            const col = cellRowAndColumn[1];
-            const nonet = Nonet.GRID_CELLS_TO_NONETS[row][col];
-            val[nonet].add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        });
-
-        return val;
-    })();
-
-    private applyToIndividualHousesOfSingleType(
-            singleHouseCageModelsFn: (model: MasterModel, index: number) => HouseModel,
-            cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
-            minAdjacentAreas: number) {
-        if (minAdjacentAreas <= 1) {
-            for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-                this.doFindAndSliceComplementsForAdjacentGridAreas(
-                    singleHouseCageModelsFn(this._model, index).cageModels,
-                    1,
-                    cellAreaIndicesFn(index)
-                );
-            }
-        }
-    }
-
-    private doFindAndSliceComplementsForAdjacentGridAreas(
-            cageMs: ReadonlyArray<CageModel>,
-            n: number,
-            areaCellIndices: ReadonlyCellIndicesCheckingSet) {
-        const nHouseCellCount = Math.imul(n, House.CELL_COUNT);
-        const nHouseSum = Math.imul(n, House.SUM);
-
-        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
-        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementCageSize) && sum) {
-            const residualCageBuilder = Cage.ofSum(sum);
-            const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
-            residualCageBuilder.withCells(complementIndices.cells());
-            if (residualCageBuilder.cellCount == 1) {
-                const cellM = this._context.model.cellModelOf(residualCageBuilder.cells[0]);
-                cellM.placedNum = residualCageBuilder.new().sum;
-                this._context.recentlySolvedCellModels = [ cellM ];
-                this.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
-            }
-            residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
-
-            this._context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
-
-            if (this._config.isCollectStats) {
-                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
-            }
-        }
-    }
 }
 
 class ConstantProcessorContext {
@@ -605,6 +527,46 @@ class ColumnAreasProcessor extends HouseAreasProcessor {
 
     protected houseModel(index: HouseIndex) {
         return this._model.columnModels[index];
+    }
+
+    protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
+        return cageM.maxCol < bottomOrRightIndexExclusive;
+    }
+
+}
+
+class NonetAreasProcessor extends HouseAreasProcessor {
+
+    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        for (const col of House.COUNT_RANGE) {
+            val[col] = CellIndicesCheckingSet.newEmpty();
+        }
+
+        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
+            const row = cellRowAndColumn[0];
+            const col = cellRowAndColumn[1];
+            const nonet = Nonet.GRID_CELLS_TO_NONETS[row][col];
+            val[nonet].add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
+        });
+
+        return val;
+    })();
+
+    constructor(processorCtx: ConstantProcessorContext) {
+        super(processorCtx.config.isApplyToNonetAreas, processorCtx);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    doExecute(_indexedCageMsTracker: IndexedCageModelsTracker): void {
+        this.applyToIndividualHousesOfSingleType(
+            NonetAreasProcessor._CELLS_INDICES,
+            1
+        );
+    }
+
+    protected houseModel(index: HouseIndex) {
+        return this._model.nonetModels[index];
     }
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
