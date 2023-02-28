@@ -342,7 +342,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.rowModelByIndex,
+            FindAndSliceComplementsForGridAreasStrategy.rowMByIndex,
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
@@ -357,7 +357,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.columnModelByIndex,
+            FindAndSliceComplementsForGridAreasStrategy.columnMByIndex,
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
@@ -372,21 +372,21 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToNonets() {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.nonetModelByIndex,
+            FindAndSliceComplementsForGridAreasStrategy.nonetMByIndex,
             FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
             1
         );
     }
 
-    private static rowModelByIndex(model: MasterModel, index: HouseIndex) {
+    private static rowMByIndex(model: MasterModel, index: HouseIndex) {
         return model.rowModels[index];
     }
 
-    private static columnModelByIndex(model: MasterModel, index: HouseIndex) {
+    private static columnMByIndex(model: MasterModel, index: HouseIndex) {
         return model.columnModels[index];
     }
 
-    private static nonetModelByIndex(model: MasterModel, index: HouseIndex) {
+    private static nonetMByIndex(model: MasterModel, index: HouseIndex) {
         return model.nonetModels[index];
     }
 
