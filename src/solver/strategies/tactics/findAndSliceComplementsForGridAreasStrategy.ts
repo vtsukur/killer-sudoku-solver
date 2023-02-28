@@ -346,7 +346,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
-        this.applyToAdjacentAreasOfSingleType(
+        this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.rowIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.rowIndices,
@@ -361,7 +361,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
-        this.applyToAdjacentAreasOfSingleType(
+        this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.columnIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
             FindAndSliceComplementsForGridAreasStrategy.columnIndices,
@@ -465,7 +465,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         }
     }
 
-    private applyToAdjacentAreasOfSingleType(
+    private applyToAdjacentHousesOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
             isWithinAreaFn: (cageM: CageModel, bottomOrRightIndexExclusive: number) => boolean,
             cellAreaIndicesFn: (index: number) => ReadonlyCellIndicesCheckingSet,
