@@ -287,6 +287,15 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     static readonly STATS = new Stats();
 
+    /**
+     * Constructs new {@link Strategy} with the given solving {@link Context}
+     * and {@link Config} options.
+     *
+     * @param context - Solving {@link Context}.
+     * @param config - {@link Config} options to apply on top of the defaults.
+     *
+     * @see {Strategy.constructor}
+     */
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
         this._config = { ...DEFAULT_CONFIG, ...config };
