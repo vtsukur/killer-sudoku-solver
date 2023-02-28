@@ -284,6 +284,7 @@ class IndexedCageModelsTracker {
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
+    private readonly _rowsAreaProcessor: RowAreasProcessor;
 
     static readonly STATS = new Stats();
 
@@ -299,6 +300,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
         this._config = { ...DEFAULT_CONFIG, ...config };
+        const processorCtx: ConstantProcessorContext = {
+            context,
+            model: this._model,
+            config: this._config,
+            strategy: this
+        };
+        this._rowsAreaProcessor = new RowAreasProcessor(this._config.isApplyToRowAreas, processorCtx);
     }
 
     /**
@@ -329,30 +337,13 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     }
 
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        if (this._config.isApplyToRowAreas) {
-            this.applyToRows(indexedCageMsTracker);
-        }
+        this._rowsAreaProcessor.execute(indexedCageMsTracker);
         if (this._config.isApplyToColumnAreas) {
             this.applyToColumns(indexedCageMsTracker);
         }
         if (this._config.isApplyToNonetAreas) {
             this.applyToNonets();
         }
-    }
-
-    private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.rowM,
-            FindAndSliceComplementsForGridAreasStrategy.rowCellsIndices,
-            this._config.minAdjacentRowsAndColumnsAreas
-        );
-        this.applyToAdjacentHousesOfSingleType(
-            indexedCageMsTracker.rowIndexedCages,
-            FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentRowArea_upperBoundaryCheckOnly,
-            FindAndSliceComplementsForGridAreasStrategy.rowCellsIndices,
-            this._config.minAdjacentRowsAndColumnsAreas,
-            this._config.maxAdjacentRowsAndColumnsAreas
-        );
     }
 
     private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
@@ -378,10 +369,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         );
     }
 
-    private static rowM(model: MasterModel, index: HouseIndex) {
-        return model.rowModels[index];
-    }
-
     private static columnM(model: MasterModel, index: HouseIndex) {
         return model.columnModels[index];
     }
@@ -390,25 +377,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return model.nonetModels[index];
     }
 
-    private static isCageMWithinAdjacentRowArea_upperBoundaryCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
-        return cageM.maxRow < bottomOrRightIndexExclusive;
-    }
-
     private static isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
         return cageM.maxCol < bottomOrRightIndexExclusive;
     }
-
-    private static rowCellsIndices(index: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy._ROW_CELLS_INDICES[index];
-    }
-
-    private static readonly _ROW_CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(row => {
-        const indices = CellIndicesCheckingSet.newEmpty();
-        for (const col of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
-            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        }
-        return indices;
-    });
 
     private static columnCellsIndices(index: HouseIndex) {
         return FindAndSliceComplementsForGridAreasStrategy._COLUMN_CELLS_INDICES[index];
@@ -517,4 +488,154 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             }
         }
     }
+}
+
+class ConstantProcessorContext {
+
+    constructor(
+            readonly context: Context,
+            readonly model: MasterModel,
+            readonly config: Config,
+            readonly strategy: Strategy
+    ) {}
+
+}
+
+abstract class HouseAreasProcessor {
+
+    private readonly _masterToggle: boolean;
+    private readonly _processorCtx: ConstantProcessorContext;
+    protected readonly _model: MasterModel;
+    protected readonly _config: Config;
+
+    constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
+        this._masterToggle = masterToggle;
+        this._processorCtx = processorCtx;
+        this._model = processorCtx.model;
+        this._config = processorCtx.config;
+    }
+
+    execute(indexedCageMsTracker: IndexedCageModelsTracker) {
+        if (this._masterToggle) {
+            this.doExecute(indexedCageMsTracker);
+        }
+    }
+
+    abstract doExecute(indexedCageModelsTracker: IndexedCageModelsTracker): void;
+
+    protected applyToIndividualHousesOfSingleType(
+            houseCellsIndices: ReadonlyArray<ReadonlyCellIndicesCheckingSet>,
+            minAdjacentAreas: number) {
+        if (minAdjacentAreas <= 1) {
+            for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+                this.doFindAndSliceComplementsForAdjacentGridAreas(
+                    this.houseModel(index).cageModels,
+                    1,
+                    houseCellsIndices[index]
+                );
+            }
+        }
+    }
+
+    protected applyToAdjacentHousesOfSingleType(
+            indexedCages: ReadonlyArray<Set<CageModel>>,
+            houseCellsIndices: ReadonlyArray<ReadonlyCellIndicesCheckingSet>,
+            minAdjacentAreas: number,
+            maxAdjacentAreas: number) {
+        let n = Math.max(minAdjacentAreas, 2);
+        while (n <= maxAdjacentAreas) {
+            const upperBound = House.CELL_COUNT - n;
+            let topOrLeftIndex = 0;
+            do {
+                const rightOrBottomExclusive = topOrLeftIndex + n;
+                const cageMs = new Array<CageModel>();
+                const indices = CellIndicesCheckingSet.newEmpty();
+                let index = topOrLeftIndex;
+                do {
+                    for (const cageM of indexedCages[index]) {
+                        if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
+                            cageMs.push(cageM);
+                        }
+                    }
+                    indices.add(houseCellsIndices[index]);
+                    index++;
+                } while (index < rightOrBottomExclusive);
+
+                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
+                topOrLeftIndex++;
+            } while (topOrLeftIndex <= upperBound);
+            n++;
+        }
+    }
+
+    protected doFindAndSliceComplementsForAdjacentGridAreas(
+            cageMs: ReadonlyArray<CageModel>,
+            n: number,
+            areaCellIndices: ReadonlyCellIndicesCheckingSet) {
+        const nHouseCellCount = Math.imul(n, House.CELL_COUNT);
+        const nHouseSum = Math.imul(n, House.SUM);
+
+        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
+        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
+        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementCageSize) && sum) {
+            const residualCageBuilder = Cage.ofSum(sum);
+            const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
+            residualCageBuilder.withCells(complementIndices.cells());
+            if (residualCageBuilder.cellCount == 1) {
+                const cellM = this._processorCtx.model.cellModelOf(residualCageBuilder.cells[0]);
+                cellM.placedNum = residualCageBuilder.new().sum;
+                this._processorCtx.context.recentlySolvedCellModels = [ cellM ];
+                this._processorCtx.strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+            }
+            residualCageBuilder.setIsInput(this._processorCtx.model.isDerivedFromInputCage(residualCageBuilder.cells));
+
+            this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
+
+            if (this._config.isCollectStats) {
+                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+            }
+        }
+    }
+
+    protected abstract houseModel(index: HouseIndex): HouseModel;
+
+    protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
+
+}
+
+class RowAreasProcessor extends HouseAreasProcessor {
+
+    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(row => {
+        const indices = CellIndicesCheckingSet.newEmpty();
+        for (const col of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
+            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
+        }
+        return indices;
+    });
+
+    constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
+        super(masterToggle, processorCtx);
+    }
+
+    doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
+        this.applyToIndividualHousesOfSingleType(
+            RowAreasProcessor._CELLS_INDICES,
+            this._config.minAdjacentRowsAndColumnsAreas
+        );
+        this.applyToAdjacentHousesOfSingleType(
+            indexedCageMsTracker.rowIndexedCages,
+            RowAreasProcessor._CELLS_INDICES,
+            this._config.minAdjacentRowsAndColumnsAreas,
+            this._config.maxAdjacentRowsAndColumnsAreas
+        );
+    }
+
+    protected houseModel(index: HouseIndex) {
+        return this._model.rowModels[index];
+    }
+
+    protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
+        return cageM.maxRow < bottomOrRightIndexExclusive;
+    }
+
 }
