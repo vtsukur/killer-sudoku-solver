@@ -58,6 +58,9 @@ export type Config = {
      * Upper bound in this range is NOT 9
      * since applying it to the whole {@link Grid} will NOT produce any hint.
      *
+     * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
+     * is set to `true`.
+     *
      * Default is `1`, which means _apply to all individual {@link Row}s and {@link Column}s at least_.
      */
     readonly minAdjacentRowsAndColumnsAreas: number;
@@ -69,6 +72,9 @@ export type Config = {
      * Should be in the range of [1, 8].
      * Upper bound in this range is NOT 9
      * since applying it to the whole {@link Grid} will NOT produce any hint.
+     *
+     * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
+     * is set to `true`.
      *
      * Default is `4`.
      */
@@ -85,7 +91,7 @@ export type Config = {
      *
      * Should be in the range of [1, 9].
      *
-     * Default is `5` which covers between 80% and 90% of all complements.
+     * Default is `5` which covers between 80% and 90% of all {@link Cage} complement cases.
      */
     readonly maxMeaningfulComplementCageSize: number;
 
