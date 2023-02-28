@@ -272,6 +272,8 @@ class ExecContext {
  * (8, 3), (8, 4)
  * ```
  *
+ * Non-adjacent areas are NOT analyzed because such an analysis will produce no valuable hints.
+ *
  * This strategy is an _initialization_ strategy meaning it is applied just once on the particular {@link Puzzle}.
  *
  * The way this strategy works can by configured by {@link Config} options.
