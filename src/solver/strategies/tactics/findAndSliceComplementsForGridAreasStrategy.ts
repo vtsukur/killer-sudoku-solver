@@ -336,7 +336,7 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             this.applyToColumns(indexedCageMsTracker);
         }
         if (this._config.isApplyToNonetAreas) {
-            this.applyToNonets(indexedCageMsTracker);
+            this.applyToNonets();
         }
     }
 
@@ -362,13 +362,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         );
     }
 
-    private applyToNonets(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this.applyToAreasOfSingleType(
-            indexedCageMsTracker.columnIndexedCages, // not used
+    private applyToNonets() {
+        this.applyToIndividualHousesOfSingleType(
             FindAndSliceComplementsForGridAreasStrategy.nonetModelByIndex,
-            FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
             FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
-            1,
             1
         );
     }
