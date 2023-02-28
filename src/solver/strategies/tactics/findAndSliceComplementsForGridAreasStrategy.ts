@@ -330,35 +330,47 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
         if (this._config.isApplyToRowAreas) {
-            this.applyToAreasOfSingleType(
-                indexedCageMsTracker.rowIndexedCages,
-                (index: HouseIndex) => this._model.rowModels[index],
-                FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.rowIndices,
-                this._config.minAdjacentRowsAndColumnsAreas,
-                this._config.maxAdjacentRowsAndColumnsAreas
-            );
+            this.applyToRows(indexedCageMsTracker);
         }
         if (this._config.isApplyToColumnAreas) {
-            this.applyToAreasOfSingleType(
-                indexedCageMsTracker.columnIndexedCages,
-                (index: HouseIndex) => this._model.columnModels[index],
-                FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
-                FindAndSliceComplementsForGridAreasStrategy.columnIndices,
-                this._config.minAdjacentRowsAndColumnsAreas,
-                this._config.maxAdjacentRowsAndColumnsAreas
-            );
+            this.applyToColumns(indexedCageMsTracker);
         }
         if (this._config.isApplyToNonetAreas) {
-            this.applyToAreasOfSingleType(
-                indexedCageMsTracker.columnIndexedCages, // not used
-                (index: HouseIndex) => this._model.nonetModels[index],
-                FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
-                FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
-                1,
-                1
-            );
+            this.applyToNonets(indexedCageMsTracker);
         }
+    }
+
+    private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
+        this.applyToAreasOfSingleType(
+            indexedCageMsTracker.rowIndexedCages,
+            (index: HouseIndex) => this._model.rowModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.isRowWithinArea_upperBoundartCheckOnly,
+            FindAndSliceComplementsForGridAreasStrategy.rowIndices,
+            this._config.minAdjacentRowsAndColumnsAreas,
+            this._config.maxAdjacentRowsAndColumnsAreas
+        );
+    }
+
+    private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
+        this.applyToAreasOfSingleType(
+            indexedCageMsTracker.columnIndexedCages,
+            (index: HouseIndex) => this._model.columnModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly,
+            FindAndSliceComplementsForGridAreasStrategy.columnIndices,
+            this._config.minAdjacentRowsAndColumnsAreas,
+            this._config.maxAdjacentRowsAndColumnsAreas
+        );
+    }
+
+    private applyToNonets(indexedCageMsTracker: IndexedCageModelsTracker) {
+        this.applyToAreasOfSingleType(
+            indexedCageMsTracker.columnIndexedCages, // not used
+            (index: HouseIndex) => this._model.nonetModels[index],
+            FindAndSliceComplementsForGridAreasStrategy.isColumnWithinArea_upperBoundartCheckOnly, // not used
+            FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
+            1,
+            1
+        );
     }
 
     private static isRowWithinArea_upperBoundartCheckOnly(cageM: CageModel, bottomOrRightIndexExclusive: number) {
