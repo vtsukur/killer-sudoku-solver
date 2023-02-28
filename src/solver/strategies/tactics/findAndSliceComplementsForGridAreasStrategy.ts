@@ -342,14 +342,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToRows(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.rowMByIndex,
-            FindAndSliceComplementsForGridAreasStrategy.rowIndices,
+            FindAndSliceComplementsForGridAreasStrategy.rowM,
+            FindAndSliceComplementsForGridAreasStrategy.rowCellsIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
         this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.rowIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentRowArea_upperBoundaryCheckOnly,
-            FindAndSliceComplementsForGridAreasStrategy.rowIndices,
+            FindAndSliceComplementsForGridAreasStrategy.rowCellsIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
             this._config.maxAdjacentRowsAndColumnsAreas
         );
@@ -357,14 +357,14 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToColumns(indexedCageMsTracker: IndexedCageModelsTracker) {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.columnMByIndex,
-            FindAndSliceComplementsForGridAreasStrategy.columnIndices,
+            FindAndSliceComplementsForGridAreasStrategy.columnM,
+            FindAndSliceComplementsForGridAreasStrategy.columnCellsIndices,
             this._config.minAdjacentRowsAndColumnsAreas
         );
         this.applyToAdjacentHousesOfSingleType(
             indexedCageMsTracker.columnIndexedCages,
             FindAndSliceComplementsForGridAreasStrategy.isCageMWithinAdjacentColumnArea_upperBoundaryCheckOnly,
-            FindAndSliceComplementsForGridAreasStrategy.columnIndices,
+            FindAndSliceComplementsForGridAreasStrategy.columnCellsIndices,
             this._config.minAdjacentRowsAndColumnsAreas,
             this._config.maxAdjacentRowsAndColumnsAreas
         );
@@ -372,21 +372,21 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private applyToNonets() {
         this.applyToIndividualHousesOfSingleType(
-            FindAndSliceComplementsForGridAreasStrategy.nonetMByIndex,
-            FindAndSliceComplementsForGridAreasStrategy.nonetIndices,
+            FindAndSliceComplementsForGridAreasStrategy.nonetM,
+            FindAndSliceComplementsForGridAreasStrategy.nonetCellsIndices,
             1
         );
     }
 
-    private static rowMByIndex(model: MasterModel, index: HouseIndex) {
+    private static rowM(model: MasterModel, index: HouseIndex) {
         return model.rowModels[index];
     }
 
-    private static columnMByIndex(model: MasterModel, index: HouseIndex) {
+    private static columnM(model: MasterModel, index: HouseIndex) {
         return model.columnModels[index];
     }
 
-    private static nonetMByIndex(model: MasterModel, index: HouseIndex) {
+    private static nonetM(model: MasterModel, index: HouseIndex) {
         return model.nonetModels[index];
     }
 
@@ -398,16 +398,16 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
-    private static rowIndices(row: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy.ROW_CELL_INDICES_OF[row];
+    private static rowCellsIndices(index: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.ROW_CELL_INDICES_OF[index];
     }
 
-    private static columnIndices(row: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy.COLUMN_CELL_INDICES_OF[row];
+    private static columnCellsIndices(index: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.COLUMN_CELL_INDICES_OF[index];
     }
 
-    private static nonetIndices(row: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy.NONET_CELL_INDICES_OF[row];
+    private static nonetCellsIndices(index: HouseIndex) {
+        return FindAndSliceComplementsForGridAreasStrategy.NONET_CELL_INDICES_OF[index];
     }
 
     private static ROW_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
