@@ -402,35 +402,29 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         return FindAndSliceComplementsForGridAreasStrategy._ROW_CELLS_INDICES[index];
     }
 
+    private static readonly _ROW_CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID].map(row => {
+        const indices = CellIndicesCheckingSet.newEmpty();
+        for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
+            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
+        }
+        return indices;
+    });
+
     private static columnCellsIndices(index: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy.COLUMN_CELL_INDICES_OF[index];
+        return FindAndSliceComplementsForGridAreasStrategy._COLUMN_CELLS_INDICES[index];
     }
+
+    private static readonly _COLUMN_CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID].map(col => {
+        const indices = CellIndicesCheckingSet.newEmpty();
+        for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
+            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
+        }
+        return indices;
+    });
 
     private static nonetCellsIndices(index: HouseIndex) {
         return FindAndSliceComplementsForGridAreasStrategy.NONET_CELL_INDICES_OF[index];
     }
-
-    private static readonly _ROW_CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
-        return CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID].map(row => {
-            const indices = CellIndicesCheckingSet.newEmpty();
-            for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
-                indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-            }
-            return indices;
-        });
-    })();
-
-    private static COLUMN_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
-        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
-        for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-            const indices = CellIndicesCheckingSet.newEmpty();
-            for (const row of CachedNumRanges.ZERO_TO_N_LTE_81[GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT]) {
-                indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-            }
-            val[col] = indices;
-        }
-        return val;
-    })();
 
     private static NONET_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
         const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
