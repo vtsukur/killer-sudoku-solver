@@ -203,6 +203,82 @@ class ExecContext {
     };
 };
 
+/**
+ * {@link Strategy} for solving Killer Sudoku puzzle
+ * which finds _complement_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
+ * and registers them in the {@link MasterModel}.
+ *
+ * This {@link Strategy} produces hints which help to narrow down possibe number options
+ * for the {@link Cell}s on the {@link Grid}.
+ *
+ * _Complement_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
+ * along with already present {@link Cage}s so that such area is fully covered with {@link Cell}s.
+ *
+ * For example, let us consider a single {@link Row} with index `1` (second {@link Row} in the {@link Grid})
+ * with the following {@link Cell}s:
+ * ```
+ * // (row, column)
+ * (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8)
+ * ```
+ *
+ * Let us assume this {@link Row} have the following {@link Cage}s already registered:
+ * ```
+ * Cage 1. Sum: 14. Cells: (1, 0), (1, 1)
+ * Cage 2. Sum: 10. Cells: (1, 3), (1, 4), (1, 5)
+ * Cage 3. Sum: 5.  Cells: (1, 7), (1, 8)
+ * ```
+ *
+ * It can be observed, that these {@link Cage}s occupy the following {@link Cell}s in the {@link Row} area:
+ * ```
+ * (1, 0), (1, 1), (1, 3), (1, 4), (1, 5), (1, 7), (1, 8)
+ * ```
+ *
+ * The following {@link Cell}s are NOT occupied by any {@link Cage} in this area:
+ * ```
+ * (1, 2), (1, 6)
+ * ```
+ * These 2 {@link Cell}s describe a _complement_ to existing {@link Cage}s
+ * and it is trivial to derive its sum given that sum of all {@link Cell}s in a {@link House} is `45`:
+ * ```
+ * Complement Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
+ * ```
+ *
+ * Such a complement {@link Cage} reduces possible numbers for its {@link Cell}s,
+ * which, in this case, limits possible numbers to `7` and `9` for {@link Cell}s at `(1, 2)` and `(1, 6)`
+ * (the only unique Sudoku numbers that add up to `16`).
+ * And, as a by-product of this hint, possible number options for `Cage 2` with sum `10`
+ * which occupy {@link Cell}s `(1, 3)`, `(1, 4)`, `(1, 5)` are also reduced:
+ * combination of numbers `1`, `2` and `7` is NOT relevant since it overlaps with `7`
+ * residing in the complement {@link Cage} (only unique numbers are allowed in the {@link House}).
+ * This way, more and more hints can be derived recursively by applying this and other strategies.
+ *
+ * Same approach is applied NOT only to {@link Row}s, but also to {@link Column}s and {@link Nonet}s.
+ *
+ * Also, this strategy applies complement determination to the areas of
+ * adjacent {@link Row}s and {@link Column}s in addition to individual {@link Row}s and {@link Column}s.
+ *
+ * For example, adjacent area of two {@link Column}s with indices 3 and 4
+ * applies the technique to the {@link Cage}s in the following {@link Cell}s:
+ * ```
+ * // (row, column)
+ * (0, 3), (0, 4),
+ * (1, 3), (1, 4),
+ * (2, 3), (2, 4),
+ * (3, 3), (3, 4),
+ * (4, 3), (4, 4),
+ * (5, 3), (5, 4),
+ * (6, 3), (6, 4),
+ * (7, 3), (7, 4),
+ * (8, 3), (8, 4)
+ * ```
+ *
+ * This strategy is an _initialization_ strategy meaning it is applied just once on the particular {@link Puzzle}.
+ *
+ * The way this strategy works can by configured by {@link Config} options.
+ *
+ * @see {Config}
+ * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
+ */
 export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
 
     private readonly _config: Config;
@@ -214,6 +290,9 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
         this._config = { ...DEFAULT_CONFIG, ...config };
     }
 
+    /**
+     * @see {Strategy.execute}
+     */
     execute() {
         this.withEventHandlers();
     }
