@@ -319,12 +319,6 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
      * @see {Strategy.execute}
      */
     execute() {
-        this.withIndexedCageMsTracker(indexedCageMsTracker => {
-            this.doExecute(indexedCageMsTracker);
-        });
-    }
-
-    private withIndexedCageMsTracker(mainFn: (indexedCageMsTracker: IndexedCageModelsTracker) => void) {
         const indexedCageMsTracker = new IndexedCageModelsTracker(this._model);
         try {
             //
@@ -334,7 +328,8 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
             this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
             this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
 
-            mainFn(indexedCageMsTracker);
+            // Running core work.
+            this.doExecute(indexedCageMsTracker);
         } finally {
             // Cleanup event handlers even if error is thrown to avoid broken state.
             this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
