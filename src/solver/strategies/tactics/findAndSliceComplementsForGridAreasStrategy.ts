@@ -423,10 +423,10 @@ export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
     });
 
     private static nonetCellsIndices(index: HouseIndex) {
-        return FindAndSliceComplementsForGridAreasStrategy.NONET_CELL_INDICES_OF[index];
+        return FindAndSliceComplementsForGridAreasStrategy._NONET_CELL_INDICES_OF[index];
     }
 
-    private static NONET_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+    private static readonly _NONET_CELL_INDICES_OF: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
         const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
         for (const col of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
             val[col] = CellIndicesCheckingSet.newEmpty();
