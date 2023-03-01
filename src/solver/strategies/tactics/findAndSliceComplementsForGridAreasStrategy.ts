@@ -554,6 +554,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
     }
 
+    // separate into explicit type
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doExecute(_indexedCageMsTracker: IndexedCageModelsTracker): void {
         this.applyToIndividualHousesOfSingleType(
@@ -566,6 +567,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
         return this._model.nonetModels[index];
     }
 
+    // separate into explicit type
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
         return cageM.maxCol < bottomOrRightIndexExclusive;
     }
