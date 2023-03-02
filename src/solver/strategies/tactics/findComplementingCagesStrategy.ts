@@ -1,4 +1,5 @@
 import { Cage } from '../../../puzzle/cage';
+import { CellsIterator } from '../../../puzzle/cellsIterator';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
@@ -369,6 +370,7 @@ class ConstantProcessorContext {
 
 type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 type Executor = (indexedCageMsTracker: IndexedCageModelsTracker) => void;
+type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
 
@@ -440,6 +442,12 @@ abstract class HouseAreasProcessor {
 
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
+    protected static cellsIndices(newCellsIteratorFn: NewCellsIteratorFn) {
+        return House.COUNT_RANGE.map(row =>
+            new CellIndicesCheckingSet(Array.from(newCellsIteratorFn(row)).map(cell => cell.index))
+        );
+    }
+
 }
 
 abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
@@ -481,8 +489,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
 class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(row =>
-        new CellIndicesCheckingSet(Array.from(Row.newCellsIterator(row)).map(cell => cell.index)));
+    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Row.newCellsIterator);
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToRowAreas, processorCtx);
@@ -513,8 +520,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(col =>
-        new CellIndicesCheckingSet(Array.from(Column.newCellsIterator(col)).map(cell => cell.index)));
+    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Column.newCellsIterator);
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToColumnAreas, processorCtx);
@@ -545,8 +551,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class NonetAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(nonet =>
-        new CellIndicesCheckingSet(Array.from(Nonet.newCellsIterator(nonet)).map(cell => cell.index)));
+    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Nonet.newCellsIterator);
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
