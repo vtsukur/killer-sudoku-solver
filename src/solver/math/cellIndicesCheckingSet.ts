@@ -386,7 +386,7 @@ export class CellIndicesCheckingSet implements
                 val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][lutIndex]);
 
                 //
-                // Erase rightmost `1` bit to `0` so that the next iteration
+                // Reset rightmost `1` bit to `0` so that the next iteration
                 // find next `1` bit (if present) in the right-to-left direction.
                 //
                 i = i ^ rightMostBit;
