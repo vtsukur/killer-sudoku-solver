@@ -398,7 +398,7 @@ abstract class HouseAreasProcessor {
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
         if (minAdjacentAreas <= 1) {
             for (const index of House.COUNT_RANGE) {
-                this.doFindAndSliceComplementsForAdjacentGridAreas(
+                this.findAndSlice(
                     this.houseModel(index).cageModels,
                     1,
                     houseCellsIndices[index]
@@ -407,16 +407,17 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    protected doFindAndSliceComplementsForAdjacentGridAreas(
+    protected findAndSlice(
             cageMs: ReadonlyArray<CageModel>,
-            n: number,
+            houseCount: number,
             areaCellIndices: ReadonlyCellIndicesCheckingSet) {
-        const nHouseCellCount = Math.imul(n, House.CELL_COUNT);
-        const nHouseSum = Math.imul(n, House.SUM);
+        const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
+        const nHouseSum = Math.imul(houseCount, House.SUM);
 
-        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
+        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, houseCount);
+
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize) && sum) {
+        if ((houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
@@ -431,7 +432,7 @@ abstract class HouseAreasProcessor {
             this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
 
             if (this._config.isCollectStats) {
-                FindComplementingCagesStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+                FindComplementingCagesStrategy.STATS.addFinding(houseCount, residualCageBuilder.cellCount);
             }
         }
     }
@@ -466,7 +467,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
+                this.findAndSlice(cageMs, n, indices);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= upperBound);
             n++;
