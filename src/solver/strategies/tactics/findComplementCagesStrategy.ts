@@ -209,11 +209,11 @@ class IndexedCageModelsTracker {
 };
 
 /**
- * {@link Strategy} for solving Killer Sudoku puzzle
+ * {@link Strategy} for solving the Killer Sudoku puzzle
  * which finds _complement_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
- * This {@link Strategy} produces hints which help to narrow down possibe number options
+ * This {@link Strategy} produces hints which help to narrow down the possible numbers
  * for the {@link Cell}s on the {@link Grid}.
  *
  * _Complement_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
@@ -250,7 +250,7 @@ class IndexedCageModelsTracker {
  *
  * Such a complement {@link Cage} reduces possible numbers for its {@link Cell}s,
  * which, in this case, limits possible numbers to `7` and `9` for {@link Cell}s at `(1, 2)` and `(1, 6)`
- * (the only unique Sudoku numbers that add up to `16`).
+ * (unique Sudoku numbers that add up to `16`).
  * And, as a by-product of this hint, possible number options for `Cage 2` with sum `10`
  * which occupy {@link Cell}s `(1, 3)`, `(1, 4)`, `(1, 5)` are also reduced:
  * combination of numbers `1`, `2` and `7` is NOT relevant since it overlaps with `7`
@@ -279,9 +279,13 @@ class IndexedCageModelsTracker {
  *
  * Non-adjacent areas are NOT analyzed because such an analysis will produce no valuable hints.
  *
- * This strategy is an _initialization_ strategy meaning it is applied just once on the particular {@link Puzzle}.
+ * {@link Nonet}s are analyzed only individually meaning
+ * adjacent {@link Nonet} areas are NOT taken into account.
  *
- * The way this strategy works can by configured by {@link Config} options.
+ * This strategy is an _initialization_ strategy,
+ * so it is applied just once on the particular {@link Puzzle}.
+ *
+ * The way this strategy works can be configured by {@link Config} options.
  *
  * @see {Config}
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
