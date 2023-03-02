@@ -115,7 +115,7 @@ export type Config = {
 /**
  * Default {@link Config} options.
  *
- * When changing these defaults TSDoc for {@link Config} should be updated as well.
+ * When changing these defaults, TSDoc for {@link Config} should be updated as well.
  */
 const DEFAULT_CONFIG: Config = Object.freeze({
     isApplyToRowAreas: true,
