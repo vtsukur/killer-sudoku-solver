@@ -407,37 +407,6 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    protected applyToAdjacentHouses(
-            indexedCages: ReadonlyArray<Set<CageModel>>,
-            houseCellsIndices: HouseCellsIndices,
-            minAdjacentAreas: number,
-            maxAdjacentAreas: number) {
-        let n = Math.max(minAdjacentAreas, 2);
-        while (n <= maxAdjacentAreas) {
-            const upperBound = House.CELL_COUNT - n;
-            let topOrLeftIndex = 0;
-            do {
-                const rightOrBottomExclusive = topOrLeftIndex + n;
-                const cageMs = new Array<CageModel>();
-                const indices = CellIndicesCheckingSet.newEmpty();
-                let index = topOrLeftIndex;
-                do {
-                    for (const cageM of indexedCages[index]) {
-                        if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
-                            cageMs.push(cageM);
-                        }
-                    }
-                    indices.add(houseCellsIndices[index]);
-                    index++;
-                } while (index < rightOrBottomExclusive);
-
-                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
-                topOrLeftIndex++;
-            } while (topOrLeftIndex <= upperBound);
-            n++;
-        }
-    }
-
     protected doFindAndSliceComplementsForAdjacentGridAreas(
             cageMs: ReadonlyArray<CageModel>,
             n: number,
@@ -469,11 +438,46 @@ abstract class HouseAreasProcessor {
 
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
+}
+
+abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
+
+    protected applyToAdjacentHouses(
+            indexedCages: ReadonlyArray<Set<CageModel>>,
+            houseCellsIndices: HouseCellsIndices,
+            minAdjacentAreas: number,
+            maxAdjacentAreas: number) {
+        let n = Math.max(minAdjacentAreas, 2);
+        while (n <= maxAdjacentAreas) {
+            const upperBound = House.CELL_COUNT - n;
+            let topOrLeftIndex = 0;
+            do {
+                const rightOrBottomExclusive = topOrLeftIndex + n;
+                const cageMs = new Array<CageModel>();
+                const indices = CellIndicesCheckingSet.newEmpty();
+                let index = topOrLeftIndex;
+                do {
+                    for (const cageM of indexedCages[index]) {
+                        if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
+                            cageMs.push(cageM);
+                        }
+                    }
+                    indices.add(houseCellsIndices[index]);
+                    index++;
+                } while (index < rightOrBottomExclusive);
+
+                this.doFindAndSliceComplementsForAdjacentGridAreas(cageMs, n, indices);
+                topOrLeftIndex++;
+            } while (topOrLeftIndex <= upperBound);
+            n++;
+        }
+    }
+
     protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
 
 }
 
-class RowAreasProcessor extends HouseAreasProcessor {
+class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(row => {
         const indices = CellIndicesCheckingSet.newEmpty();
@@ -510,7 +514,7 @@ class RowAreasProcessor extends HouseAreasProcessor {
 
 }
 
-class ColumnAreasProcessor extends HouseAreasProcessor {
+class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(col => {
         const indices = CellIndicesCheckingSet.newEmpty();
@@ -580,11 +584,6 @@ class NonetAreasProcessor extends HouseAreasProcessor {
 
     protected houseModel(index: HouseIndex) {
         return this._model.nonetModels[index];
-    }
-
-    // separate into explicit type
-    protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
-        return cageM.maxCol < bottomOrRightIndexExclusive;
     }
 
 }
