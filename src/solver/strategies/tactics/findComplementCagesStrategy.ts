@@ -13,7 +13,7 @@ import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
 /**
- * Configuration options for {@link FindAndSliceComplementsForGridAreasStrategy}.
+ * Configuration options for {@link FindComplementCagesStrategy}.
  *
  * Can be used both for tuning production execution as well as tailored testing scenarios.
  */
@@ -281,7 +281,7 @@ class IndexedCageModelsTracker {
  * @see {Config}
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
  */
-export class FindAndSliceComplementsForGridAreasStrategy extends Strategy {
+export class FindComplementCagesStrategy extends Strategy {
 
     private readonly _config: Config;
     private readonly _rowAreasProcessor: RowAreasProcessor;
@@ -447,7 +447,7 @@ abstract class HouseAreasProcessor {
             this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
 
             if (this._config.isCollectStats) {
-                FindAndSliceComplementsForGridAreasStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+                FindComplementCagesStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
             }
         }
     }

@@ -593,13 +593,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy]",
+            "name": "npm run test [solver/strategies/tactics/findComplementCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy.test.ts"
+                "tests/unit/solver/strategies/tactics/findComplementCagesStrategy.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -800,13 +800,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy.perf]",
+            "name": "npm run test [solver/strategies/tactics/findComplementCagesStrategy.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy.perf.test.ts"
+                "tests/perf/solver/strategies/tactics/findComplementCagesStrategy.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

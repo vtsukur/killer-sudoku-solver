@@ -3,11 +3,11 @@ import { House } from '../../../../../src/puzzle/house';
 import { Puzzle } from '../../../../../src/puzzle/puzzle';
 import { MasterModel } from '../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../src/solver/strategies/context';
-import { FindAndSliceComplementsForGridAreasStrategy } from '../../../../../src/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy';
+import { FindComplementCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementCagesStrategy';
 import { CageSlicer } from '../../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
 
-describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
+describe('Unit tests for `FindComplementCagesStrategy`', () => {
 
     let context: Context;
     let originalCageCount: number;
@@ -20,7 +20,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
 
     test('Applying strategy onto single `Row`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
-        new FindAndSliceComplementsForGridAreasStrategy(context, {
+        new FindComplementCagesStrategy(context, {
             isApplyToRowAreas: true,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
@@ -53,7 +53,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
 
     test('Applying strategy onto adjacent `Row`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
-        new FindAndSliceComplementsForGridAreasStrategy(context, {
+        new FindComplementCagesStrategy(context, {
             isApplyToRowAreas: true,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: false,
@@ -72,7 +72,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
 
     test('Applying strategy onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
-        new FindAndSliceComplementsForGridAreasStrategy(context, {
+        new FindComplementCagesStrategy(context, {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
@@ -105,7 +105,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
 
     test('Applying strategy onto adjacent `Column`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
-        new FindAndSliceComplementsForGridAreasStrategy(context, {
+        new FindComplementCagesStrategy(context, {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: true,
             isApplyToNonetAreas: false,
@@ -122,7 +122,7 @@ describe('Unit tests for `FindAndSliceComplementsForGridAreasStrategy`', () => {
 
     test('Applying strategy onto `Nonet`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
-        new FindAndSliceComplementsForGridAreasStrategy(context, {
+        new FindComplementCagesStrategy(context, {
             isApplyToRowAreas: false,
             isApplyToColumnAreas: false,
             isApplyToNonetAreas: true,

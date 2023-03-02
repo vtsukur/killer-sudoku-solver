@@ -1,15 +1,15 @@
 import { Solver } from '../../../../src/solver/solver';
-import { FindAndSliceComplementsForGridAreasStrategy } from '../../../../src/solver/strategies/tactics/findAndSliceComplementsForGridAreasStrategy';
+import { FindComplementCagesStrategy } from '../../../../src/solver/strategies/tactics/findComplementCagesStrategy';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Stats collection', () => {
-    test.skip('Collect `FindAndSliceComplementsForGridAreasStrategy` stats for all known `Puzzle`s', () => {
+    test.skip('Collect `FindComplementCagesStrategy` stats for all known `Puzzle`s', () => {
         const solver = new Solver();
         for (const puzzle of puzzleSamples.allPuzzles) {
             solver.solve(puzzle);
         }
 
-        console.log(FindAndSliceComplementsForGridAreasStrategy.STATS.data);
-        console.log(FindAndSliceComplementsForGridAreasStrategy.STATS.totalCagesFound);
+        console.log(FindComplementCagesStrategy.STATS.data);
+        console.log(FindComplementCagesStrategy.STATS.totalCagesFound);
     });
 });
