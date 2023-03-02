@@ -293,6 +293,7 @@ class IndexedCageModelsTracker {
 export class FindComplementCagesStrategy extends Strategy {
 
     private readonly _config: Config;
+
     private readonly _rowAreasProcessor: RowAreasProcessor;
     private readonly _columnAreasProcessor: ColumnAreasProcessor;
     private readonly _nonetAreasProcessor: NonetAreasProcessor;
@@ -332,7 +333,7 @@ export class FindComplementCagesStrategy extends Strategy {
         try {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
-            // when complement `Cage`s are found and `Cage` slicing occurs.
+            // when _complement_ `Cage`s are found and `Cage` slicing occurs.
             //
             this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
             this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
