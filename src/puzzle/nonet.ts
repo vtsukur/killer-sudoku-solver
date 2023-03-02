@@ -75,7 +75,7 @@ export class Nonet {
      * Each row is iterated starting with its first column consequently to the last one (a.k.a. _left_ to _right_).
      * Row is iterated fully before proceeding to the next one.
      *
-     * Sample iteration for `Nonet` with index 3 looks as follows:
+     * Sample iteration for `Nonet` of index 3 looks as follows:
      * ```
      * // (row, column)
      * (3, 0) -> (3, 1) -> (3, 2) -> (4, 0) -> (4, 1) -> (4, 2) -> (5, 0) -> (5, 1) -> (5, 2) -> done

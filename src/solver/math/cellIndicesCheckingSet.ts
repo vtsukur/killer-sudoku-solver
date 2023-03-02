@@ -282,7 +282,7 @@ export class CellIndicesCheckingSet implements
         // has `1`s at the same positions as each bit store of the `val` checking set.
         //
         // Example for `hasAll` returning `true`
-        // (applied to a single bit store with index `x` for simplicity):
+        // (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                    = 0b10010101
         //      val.bitStores[x]                      = 0b10000100
@@ -294,7 +294,7 @@ export class CellIndicesCheckingSet implements
         // ```
         //
         // Example for `hasAll` returning `false`
-        // (applied to a single bit store with index `x` for simplicity):
+        // (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                    = 0b10010101
         //      val.bitStores[x]                      = 0b00001100
@@ -330,7 +330,7 @@ export class CellIndicesCheckingSet implements
         // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
         //
         // Example for `doesNotHaveAny` returning `true`
-        // (applied to a single bit store with index `x` for simplicity):
+        // (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                    = 0b10010101
         //      val.bitStores[x]                      = 0b01101000
@@ -340,7 +340,7 @@ export class CellIndicesCheckingSet implements
         // ```
         //
         // Example for `doesNotHaveAny` returning `false`
-        // (applied to a single bit store with index `x` for simplicity):
+        // (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                    = 0b10010101
         //      val.bitStores[x]                      = 0b00001100
@@ -407,7 +407,7 @@ export class CellIndicesCheckingSet implements
         // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
         // to produce `1`s on the positions where both sets have `1`s.
         //
-        // Example (applied to a single bit store with index `x` for simplicity):
+        // Example (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                    = 0b10010101
         //      val.bitStores[x]                      = 0b01111100
@@ -431,7 +431,7 @@ export class CellIndicesCheckingSet implements
         // Applying bitwise NOT onto each bit store of this checking set
         // to turn `0`s into `1`s and `1`s into `0`s.
         //
-        // Example (applied to a single bit store with index `x` for simplicity):
+        // Example (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]   = 0b10010101
         //       ~this._bitStores[x] = 0b01101010
@@ -458,7 +458,7 @@ export class CellIndicesCheckingSet implements
         // Applying bitwise OR assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.
         //
-        // Example (applied to a single bit store with index `x` for simplicity):
+        // Example (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                     = 0b10010001
         //      val.bitStores[x]                       = 0b01001000
@@ -480,7 +480,7 @@ export class CellIndicesCheckingSet implements
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.
         //
-        // Example (applied to a single bit store with index `x` for simplicity):
+        // Example (applied to a single bit store of index `x` for simplicity):
         // ```
         //      this._bitStores[x]                      = 0b10011001
         //      val.bitStores[x]                        = 0b01001001

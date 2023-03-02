@@ -81,7 +81,7 @@ export class Combo implements Iterable<number> {
      */
     nthNumber(index: number) {
         if (index < 0 || index > this._nums.length - 1) {
-            throw new RangeError(`Number with index ${index} cannot be accessed. Combo has ${this._nums.length} elements`);
+            throw new RangeError(`Number of index ${index} cannot be accessed. Combo has ${this._nums.length} elements`);
         } else {
             return this._nums[index];
         }

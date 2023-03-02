@@ -20,7 +20,7 @@ export class Column {
      * Constructs new iterator over {@link Cell}s for a `Column` with the given index
      * which iterates `Cell`s consequently from _top_ to _bottom_.
      *
-     * Sample iteration for `Column` with index 3 looks as follows:
+     * Sample iteration for `Column` of index 3 looks as follows:
      * ```
      * // (row, column)
      * (0, 3) -> (1, 3) -> (2, 3) -> ... -> (7, 3) -> (8, 3) -> done

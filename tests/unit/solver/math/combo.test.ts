@@ -26,8 +26,8 @@ describe('Combo tests', () => {
     test('Construction of empty Combo using constructor directly', () => {
         const combo = new Combo([]);
         expect(combo.key).toEqual('');
-        expect(() => combo.number0).toThrow(new RangeError('Number with index 0 cannot be accessed. Combo has 0 elements'));
-        expect(() => combo.nthNumber(1)).toThrow(new RangeError('Number with index 1 cannot be accessed. Combo has 0 elements'));
+        expect(() => combo.number0).toThrow(new RangeError('Number of index 0 cannot be accessed. Combo has 0 elements'));
+        expect(() => combo.nthNumber(1)).toThrow(new RangeError('Number of index 1 cannot be accessed. Combo has 0 elements'));
         expectComboWithValues(combo, []);
     });
 

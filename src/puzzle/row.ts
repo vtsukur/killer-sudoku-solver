@@ -20,7 +20,7 @@ export class Row {
      * Constructs new iterator over {@link Cell}s for a `Row` with the given index
      * which iterates `Cell`s consequently from _left_ to _right_.
      *
-     * Sample iteration for `Row` with index 3 looks as follows:
+     * Sample iteration for `Row` of index 3 looks as follows:
      * ```
      * // (row, column)
      * (3, 0) -> (3, 1) -> (3, 2) -> ... -> (3, 7) -> (3, 8) -> done

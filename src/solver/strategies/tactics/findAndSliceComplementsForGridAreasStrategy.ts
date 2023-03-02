@@ -214,7 +214,7 @@ class IndexedCageModelsTracker {
  * _Complement_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
  * along with already present {@link Cage}s so that such area is fully covered with {@link Cell}s.
  *
- * For example, let us consider a single {@link Row} with index `1` (second {@link Row} in the {@link Grid})
+ * For example, let us consider a single {@link Row} of index `1` (second {@link Row} in the {@link Grid})
  * with the following {@link Cell}s:
  * ```
  * // (row, column)

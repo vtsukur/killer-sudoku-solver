@@ -43,8 +43,8 @@ export interface HouseCagesCombinatorics {
      *
      * Each {@link HouseCageCombos} value in this array appears in the same order as respective {@link Cage}s
      * in `houseCagesAreaModel` input of `enumerate*` method of specific `Combinatorics` implementation,
-     * meaning {@link Cage} with index `i` in `houseCagesAreaModel` input
-     * will be mapped to the array element of {@link HouseCageCombos} with index `i`.
+     * meaning {@link Cage} with of `i` in `houseCagesAreaModel` input
+     * will be mapped to the array element of {@link HouseCageCombos} with of `i`.
      *
      * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
