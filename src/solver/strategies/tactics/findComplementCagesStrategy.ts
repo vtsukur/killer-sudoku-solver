@@ -300,7 +300,7 @@ export class FindComplementCagesStrategy extends Strategy {
     static readonly STATS = new Stats();
 
     /**
-     * Constructs new {@link Strategy} with the given solving {@link Context}
+     * Constructs new {@link Strategy} with the given solution {@link Context}
      * and {@link Config} options.
      *
      * @param context - Solving {@link Context}.
