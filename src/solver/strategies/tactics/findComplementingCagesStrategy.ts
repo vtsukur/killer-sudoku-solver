@@ -1,7 +1,8 @@
 import { Cage } from '../../../puzzle/cage';
-import { GridSizeAndCellPositionsIteration } from '../../../puzzle/gridSizeAndCellPositionsIteration';
+import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
+import { Row } from '../../../puzzle/row';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
@@ -480,13 +481,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
 class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(row => {
-        const indices = CellIndicesCheckingSet.newEmpty();
-        for (const col of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
-            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        }
-        return indices;
-    });
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(row =>
+        new CellIndicesCheckingSet(Array.from(Row.newCellsIterator(row)).map(cell => cell.index)));
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToRowAreas, processorCtx);
@@ -517,13 +513,8 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(col => {
-        const indices = CellIndicesCheckingSet.newEmpty();
-        for (const row of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
-            indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        }
-        return indices;
-    });
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(col =>
+        new CellIndicesCheckingSet(Array.from(Column.newCellsIterator(col)).map(cell => cell.index)));
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToColumnAreas, processorCtx);
@@ -554,13 +545,8 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class NonetAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(nonet => {
-        const indices = CellIndicesCheckingSet.newEmpty();
-        for (const cell of Nonet.newCellsIterator(nonet)) {
-            indices.add(CellIndicesCheckingSet.of(cell.index));
-        }
-        return indices;
-    });
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(nonet =>
+        new CellIndicesCheckingSet(Array.from(Nonet.newCellsIterator(nonet)).map(cell => cell.index)));
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
