@@ -15,29 +15,31 @@ import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySol
 /**
  * Configuration options for {@link FindComplementCagesStrategy}.
  *
- * Can be used both for tuning production execution as well as tailored testing scenarios.
+ * Can be used for both tuning production execution as well as tailoring testing scenarios.
  */
 export type Config = {
 
     /**
-     * Whether to apply the strategy to {@link Row} areas,
-     * both individual {@link Row}s and adjacent {@link Row}s.
+     * Whether to apply the strategy to individual {@link Row}s
+     * and adjacent {@link Row} areas.
      *
-     * Size of adjacent {@link Row} areas can be additionally configured by
+     * Size of adjacent {@link Row} areas can be configured by
      * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
      *
-     * Default is `true`.
+     * Default value is `true`, which means enabling the strategy
+     * to {@link Row}s and adjacent {@link Row} areas.
      */
     readonly isApplyToRowAreas: boolean;
 
     /**
-     * Whether to apply the strategy to {@link Column} areas,
-     * both individual {@link Column}s and adjacent {@link Column}s.
+     * Whether to apply the strategy to individual {@link Column}s
+     * and adjacent {@link Column} areas.
      *
-     * Size of adjacent {@link Column} areas can be additionally configured by
+     * Size of adjacent {@link Column} areas can be configured by
      * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
      *
-     * Default is `true`.
+     * Default value is `true`, which means enabling the strategy
+     * to {@link Column}s and adjacent {@link Column} areas.
      */
     readonly isApplyToColumnAreas: boolean;
 
@@ -46,7 +48,7 @@ export type Config = {
      *
      * Only individual {@link Nonet} are analyzed, NOT adjacent {@link Nonet}s.
      *
-     * Default is `true`.
+     * Default value is `true`, which means enabling the strategy to {@link Nonet}s.
      */
     readonly isApplyToNonetAreas: boolean;
 
@@ -54,14 +56,15 @@ export type Config = {
      * Minimum amount of adjacent {@link Row} and {@link Column} areas
      * to apply the strategy to.
      *
-     * Should be in the range of [1, 8].
-     * Upper bound in this range is NOT 9
+     * Should be in the range of `[1, 8]`.
+     * Upper bound in this range excludes value `9`
      * since applying it to the whole {@link Grid} will NOT produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
      * is set to `true`.
      *
-     * Default is `1`, which means _apply to all individual {@link Row}s and {@link Column}s at least_.
+     * Default value is `1`, which means enabling the strategy
+     * at least to all individual {@link Row}s and {@link Column}s.
      */
     readonly minAdjacentRowsAndColumnsAreas: number;
 
@@ -69,39 +72,41 @@ export type Config = {
      * Maximum amount of adjacent {@link Row} and {@link Column} areas
      * to apply the strategy to.
      *
-     * Should be in the range of [1, 8].
-     * Upper bound in this range is NOT 9
+     * Should be in the range of `[1, 8]`.
+     * Upper bound in this range excludes value `9`
      * since applying it to the whole {@link Grid} will NOT produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
      * is set to `true`.
      *
-     * Default is `4`.
+     * Default value is `4`, which covers more than 90% of all
+     * possible {@link Cage} complement cases.
      */
     readonly maxAdjacentRowsAndColumnsAreas: number;
 
     /**
      * Maximum amount of {@link Cell}s in a complement {@link Cage}
-     * to consider such a {@link Cage} as _meaningful_.
+     * to consider such a {@link Cage} as successful search result.
      *
      * The smaller the {@link Cage} the more hints it leads to.
-     * As a result, there is limited sense in finding bigger {@link Cage}s
-     * as it requires more execution power and memory with less produced hints
+     * As a result, there is a limited sense of finding bigger {@link Cage}s
+     * as it requires more execution power and memory with less amount produced hints
      * UNLESS determining all possible hints is critical.
      *
-     * Should be in the range of [1, 9].
+     * Should be in the range of `[1, 9]`.
      *
-     * Default is `5` which covers between 80% and 90% of all {@link Cage} complement cases.
+     * Default value is `5`, which covers between 80% and 90% of all
+     * possible {@link Cage} complement cases.
      */
     readonly maxMeaningfulComplementCageSize: number;
 
     /**
      * Whether to collect statistics about found complement {@link Cage}s.
      *
-     * Useful for finding distribution of cases and understanding real-world usage
+     * Useful for finding the distribution of cases and understanding real-world usage
      * so that this {@link Config} can be tweaked further.
      *
-     * Default is `false`.
+     * Default value is `false`, which disables the collection of statistics.
      */
     readonly isCollectStats: boolean;
 
