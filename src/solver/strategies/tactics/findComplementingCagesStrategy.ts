@@ -369,14 +369,14 @@ class ConstantProcessorContext {
 }
 
 type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
-type Executor = (indexedCageMsTracker: IndexedCageModelsTracker) => void;
+type ExecutorFn = (indexedCageMsTracker: IndexedCageModelsTracker) => void;
 type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
 
-    private readonly _executorFn: Executor;
+    private readonly _executorFn: ExecutorFn;
 
-    private static readonly _emptyExecutorFn: Executor = () => {
+    private static readonly _emptyExecutorFn: ExecutorFn = () => {
         // No-op
     };
 
