@@ -366,10 +366,13 @@ class ConstantProcessorContext {
 
 }
 
+type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
+
 abstract class HouseAreasProcessor {
 
     private readonly _masterToggle: boolean;
     private readonly _processorCtx: ConstantProcessorContext;
+
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
 
@@ -386,10 +389,10 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    abstract doExecute(indexedCageModelsTracker: IndexedCageModelsTracker): void;
+    abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
     protected applyToIndividualHousesOfSingleType(
-            houseCellsIndices: ReadonlyArray<ReadonlyCellIndicesCheckingSet>,
+            houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number) {
         if (minAdjacentAreas <= 1) {
             for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
@@ -404,7 +407,7 @@ abstract class HouseAreasProcessor {
 
     protected applyToAdjacentHousesOfSingleType(
             indexedCages: ReadonlyArray<Set<CageModel>>,
-            houseCellsIndices: ReadonlyArray<ReadonlyCellIndicesCheckingSet>,
+            houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
         let n = Math.max(minAdjacentAreas, 2);
@@ -470,7 +473,7 @@ abstract class HouseAreasProcessor {
 
 class RowAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(row => {
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(row => {
         const indices = CellIndicesCheckingSet.newEmpty();
         for (const col of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
             indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
@@ -507,7 +510,7 @@ class RowAreasProcessor extends HouseAreasProcessor {
 
 class ColumnAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = House.COUNT_RANGE.map(col => {
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(col => {
         const indices = CellIndicesCheckingSet.newEmpty();
         for (const row of GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE) {
             indices.add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
@@ -544,7 +547,7 @@ class ColumnAreasProcessor extends HouseAreasProcessor {
 
 class NonetAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: ReadonlyArray<ReadonlyCellIndicesCheckingSet> = (() => {
+    private static readonly _CELLS_INDICES: HouseCellsIndices = (() => {
         const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
         for (const col of House.COUNT_RANGE) {
             val[col] = CellIndicesCheckingSet.newEmpty();
