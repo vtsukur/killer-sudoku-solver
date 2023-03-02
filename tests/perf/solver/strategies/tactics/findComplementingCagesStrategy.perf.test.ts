@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import { FindComplementCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementCagesStrategy';
+import { FindComplementingCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementingCagesStrategy';
 import { puzzleSamples } from '../../../../unit/puzzle/puzzleSamples';
-import { newContext } from '../../../../unit/solver/strategies/tactics/findComplementCagesStrategy.test';
+import { newContext } from '../../../../unit/solver/strategies/tactics/findComplementingCagesStrategy.test';
 
-describe('Performance tests for `FindComplementCagesStrategy`', () => {
+describe('Performance tests for `FindComplementingCagesStrategy`', () => {
 
     const TESTS_COUNT = 10;
     const ITERATION_COUNT = 500;
@@ -12,7 +12,7 @@ describe('Performance tests for `FindComplementCagesStrategy`', () => {
         test(`Applying strategy within Daily Challenge (2022-10-22) by Sudoku.com [${i}]`, () => {
             _.range(ITERATION_COUNT).forEach(() => {
                 const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-                new FindComplementCagesStrategy(context).execute();
+                new FindComplementingCagesStrategy(context).execute();
             });
         });
     });

@@ -593,13 +593,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/findComplementCagesStrategy]",
+            "name": "npm run test [solver/strategies/tactics/findComplementingCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/strategies/tactics/findComplementCagesStrategy.test.ts"
+                "tests/unit/solver/strategies/tactics/findComplementingCagesStrategy.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -800,13 +800,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/findComplementCagesStrategy.perf]",
+            "name": "npm run test [solver/strategies/tactics/findComplementingCagesStrategy.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/strategies/tactics/findComplementCagesStrategy.perf.test.ts"
+                "tests/perf/solver/strategies/tactics/findComplementingCagesStrategy.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -13,7 +13,7 @@ import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
 
 /**
- * Configuration options for {@link FindComplementCagesStrategy}.
+ * Configuration options for {@link FindComplementingCagesStrategy}.
  *
  * Can be used for both tuning production execution as well as tailoring testing scenarios.
  */
@@ -80,12 +80,12 @@ export type Config = {
      * is set to `true`.
      *
      * Default value is `4`, which covers more than 90% of all
-     * possible {@link Cage} complement cases.
+     * possible {@link Cage} complements.
      */
     readonly maxAdjacentRowsAndColumnsAreas: number;
 
     /**
-     * Maximum amount of {@link Cell}s in a complement {@link Cage}
+     * Maximum amount of {@link Cell}s in a complementing {@link Cage}
      * to consider such a {@link Cage} as successful search result.
      *
      * The smaller the {@link Cage} the more hints it leads to.
@@ -96,12 +96,12 @@ export type Config = {
      * Should be in the range of `[1, 9]`.
      *
      * Default value is `5`, which covers between 80% and 90% of all
-     * possible {@link Cage} complement cases.
+     * possible {@link Cage} complements.
      */
-    readonly maxMeaningfulComplementCageSize: number;
+    readonly maxMeaningfulComplementSize: number;
 
     /**
-     * Whether to collect statistics about found complement {@link Cage}s.
+     * Whether to collect statistics about found complementing {@link Cage}s.
      *
      * Useful for finding the distribution of cases and understanding real-world usage
      * so that this {@link Config} can be tweaked further.
@@ -210,13 +210,13 @@ class IndexedCageModelsTracker {
 
 /**
  * {@link Strategy} for solving the Killer Sudoku puzzle
- * which finds _complement_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
+ * which finds _complementing_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
  * This {@link Strategy} produces hints which help to narrow down the possible numbers
  * for the {@link Cell}s on the {@link Grid}.
  *
- * _Complement_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
+ * _Complementing_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
  * along with already present {@link Cage}s so that such area is fully covered with {@link Cell}s.
  *
  * For example, let us consider a single {@link Row} of index `1` (second {@link Row} in the {@link Grid})
@@ -245,16 +245,16 @@ class IndexedCageModelsTracker {
  * These 2 {@link Cell}s describe a _complement_ to existing {@link Cage}s
  * and it is trivial to derive its sum given that sum of all {@link Cell}s in a {@link House} is `45`:
  * ```
- * Complement Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
+ * Complementing Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
  * ```
  *
- * Such a complement {@link Cage} reduces possible numbers for its {@link Cell}s,
+ * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s,
  * which, in this case, limits possible numbers to `7` and `9` for {@link Cell}s at `(1, 2)` and `(1, 6)`
  * (unique Sudoku numbers that add up to `16`).
  * And, as a by-product of this hint, possible number options for `Cage 2` with sum `10`
  * which occupy {@link Cell}s `(1, 3)`, `(1, 4)`, `(1, 5)` are also reduced:
  * combination of numbers `1`, `2` and `7` is NOT relevant since it overlaps with `7`
- * residing in the complement {@link Cage} (only unique numbers are allowed in the {@link House}).
+ * residing in the complementing {@link Cage} (only unique numbers are allowed in the {@link House}).
  * This way, more and more hints can be derived recursively by applying this and other strategies.
  *
  * Same approach is applied NOT only to {@link Row}s, but also to {@link Column}s and {@link Nonet}s.
@@ -290,7 +290,7 @@ class IndexedCageModelsTracker {
  * @see {Config}
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
  */
-export class FindComplementCagesStrategy extends Strategy {
+export class FindComplementingCagesStrategy extends Strategy {
 
     private readonly _config: Config;
 
@@ -333,7 +333,7 @@ export class FindComplementCagesStrategy extends Strategy {
         try {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
-            // when _complement_ `Cage`s are found and `Cage` slicing occurs.
+            // when _complementing_ `Cage`s are found and `Cage` slicing occurs.
             //
             this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
             this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
@@ -442,7 +442,7 @@ abstract class HouseAreasProcessor {
 
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, n);
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementCageSize) && sum) {
+        if ((n === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize) && sum) {
             const residualCageBuilder = Cage.ofSum(sum);
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
@@ -457,7 +457,7 @@ abstract class HouseAreasProcessor {
             this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
 
             if (this._config.isCollectStats) {
-                FindComplementCagesStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
+                FindComplementingCagesStrategy.STATS.addFinding(n, residualCageBuilder.cellCount);
             }
         }
     }
