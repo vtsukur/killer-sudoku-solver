@@ -395,11 +395,9 @@ abstract class HouseAreasProcessor {
 
     abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
-    protected applyToIndividualHouses(
-            houseCellsIndices: HouseCellsIndices,
-            minAdjacentAreas: number) {
+    protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
         if (minAdjacentAreas <= 1) {
-            for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
+            for (const index of House.COUNT_RANGE) {
                 this.doFindAndSliceComplementsForAdjacentGridAreas(
                     this.houseModel(index).cageModels,
                     1,
