@@ -123,7 +123,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
     isApplyToNonetAreas: true,
     minAdjacentRowsAndColumnsAreas: 1,
     maxAdjacentRowsAndColumnsAreas: 4,
-    maxMeaningfulComplementCageSize: 5,
+    maxMeaningfulComplementSize: 5,
     isCollectStats: false
 });
 
