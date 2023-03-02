@@ -369,8 +369,8 @@ export class CellIndicesCheckingSet implements
         while (bitStoreIndex < 3) {
             // ... capture it's value
             let i = this._bitStores[bitStoreIndex];
-            // ... for fast performance iterate over `1` bits ONLY -- as these bits represent included `Cell`s.
-            // Skipping `0`s is a big performance optimization since majority of use cases involve `Cage`s with up to 9 `Cell`s.
+            // ... for fast iteration consider `1` bits ONLY -- as these bits represent included `Cell`s
+            // and the vast majority of use cases involve `Cage`s with up to 9 `Cell`s.
             while (i !== 0) {
                 //
                 // Produce a number which has only 1 bit set to `1` -
