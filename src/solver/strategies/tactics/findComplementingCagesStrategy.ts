@@ -554,21 +554,13 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class NonetAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = (() => {
-        const val = new Array<CellIndicesCheckingSet>(House.COUNT_OF_ONE_TYPE_PER_GRID);
-        for (const col of House.COUNT_RANGE) {
-            val[col] = CellIndicesCheckingSet.newEmpty();
+    private static readonly _CELLS_INDICES: HouseCellsIndices = House.COUNT_RANGE.map(nonet => {
+        const indices = CellIndicesCheckingSet.newEmpty();
+        for (const cell of Nonet.newCellsIterator(nonet)) {
+            indices.add(CellIndicesCheckingSet.of(cell.index));
         }
-
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
-            const row = cellRowAndColumn[0];
-            const col = cellRowAndColumn[1];
-            const nonet = Nonet.GRID_CELLS_TO_NONETS[row][col];
-            val[nonet].add(CellIndicesCheckingSet.of(Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col));
-        });
-
-        return val;
-    })();
+        return indices;
+    });
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
