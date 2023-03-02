@@ -395,7 +395,7 @@ abstract class HouseAreasProcessor {
 
     abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
-    protected applyToIndividualHousesOfSingleType(
+    protected applyToIndividualHouses(
             houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number) {
         if (minAdjacentAreas <= 1) {
@@ -409,7 +409,7 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    protected applyToAdjacentHousesOfSingleType(
+    protected applyToAdjacentHouses(
             indexedCages: ReadonlyArray<Set<CageModel>>,
             houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number,
@@ -490,11 +490,11 @@ class RowAreasProcessor extends HouseAreasProcessor {
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHousesOfSingleType(
+        this.applyToIndividualHouses(
             RowAreasProcessor._CELLS_INDICES,
             this._config.minAdjacentRowsAndColumnsAreas
         );
-        this.applyToAdjacentHousesOfSingleType(
+        this.applyToAdjacentHouses(
             indexedCageMsTracker.rowIndexedCages,
             RowAreasProcessor._CELLS_INDICES,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -527,11 +527,11 @@ class ColumnAreasProcessor extends HouseAreasProcessor {
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHousesOfSingleType(
+        this.applyToIndividualHouses(
             ColumnAreasProcessor._CELLS_INDICES,
             this._config.minAdjacentRowsAndColumnsAreas
         );
-        this.applyToAdjacentHousesOfSingleType(
+        this.applyToAdjacentHouses(
             indexedCageMsTracker.columnIndexedCages,
             ColumnAreasProcessor._CELLS_INDICES,
             this._config.minAdjacentRowsAndColumnsAreas,
@@ -574,7 +574,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
     // separate into explicit type
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     doExecute(_indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHousesOfSingleType(
+        this.applyToIndividualHouses(
             NonetAreasProcessor._CELLS_INDICES,
             1
         );
