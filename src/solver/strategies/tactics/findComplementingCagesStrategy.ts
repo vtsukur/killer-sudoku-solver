@@ -429,14 +429,8 @@ abstract class HouseAreasProcessor {
         const complement = this.determineMeaningfulComplement(cageMs, houseCount, areaCellIndices);
         if (complement) {
             this._cageSlicer.addAndSliceResidualCageRecursively(complement);
-
-            if (complement.cellCount === 1) {
-                this.applySolvedCellsStrategy(complement);
-            }
-
-            if (this._isCollectStats) {
-                FindComplementingCagesStrategy.STATS.addFinding(houseCount, complement.cellCount);
-            }
+            this.applySolvedCellsStrategyIfNecessary(complement);
+            this.collectStatsIfNecessary(houseCount, complement);
         }
     }
 
@@ -451,7 +445,7 @@ abstract class HouseAreasProcessor {
         const nHouseSum = Math.imul(houseCount, House.SUM);
         const minNonOverlappingAreaCellCount = nHouseCellCount - this._config.maxMeaningfulComplementSize;
 
-        if (minNonOverlappingAreaCellCount !== 0 &&
+        if (nonOverlappingCagesAreaModel.cellCount !== nHouseCellCount &&
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {
             const sum = nHouseSum - nonOverlappingCagesAreaModel.sum;
             const cells = areaCellIndices.and(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
@@ -462,11 +456,19 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    private applySolvedCellsStrategy(complement: Cage) {
-        const cellM = this._model.cellModelOf(complement.cells[0]);
-        cellM.placedNum = complement.sum;
-        this._context.recentlySolvedCellModels = [ cellM ];
-        this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+    private applySolvedCellsStrategyIfNecessary(complement: Cage) {
+        if (complement.cellCount === 1) {
+            const cellM = this._model.cellModelOf(complement.cells[0]);
+            cellM.placedNum = complement.sum;
+            this._context.recentlySolvedCellModels = [ cellM ];
+            this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+        }
+    }
+
+    private collectStatsIfNecessary(houseCount: number, complement: Cage) {
+        if (this._isCollectStats) {
+            FindComplementingCagesStrategy.STATS.addFinding(houseCount, complement.cellCount);
+        }
     }
 
     protected abstract houseModel(index: HouseIndex): HouseModel;
