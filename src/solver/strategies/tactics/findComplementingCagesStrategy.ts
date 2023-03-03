@@ -563,20 +563,21 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * Searches for _complementing_ {@link Cage}s within
      * adjacent {@link Row} or {@link Column} areas.
      *
-     * This method is agnostic to a particular {@link House} type it operates with.
+     * This method is agnostic to a particular {@link House} type it operates with
+     * (but NOT applicable to {@link Nonet}s).
      *
-     * Search is executed for each adjacent group in the range of
+     * Search is executed for each adjacent group sized in the range of
      * `[{@link Config.minAdjacentRowsAndColumnsAreas}, {@link Config.maxAdjacentRowsAndColumnsAreas}]`
      * with lower bound always being above `1`.
      *
      * For example, if {@link Config.minAdjacentRowsAndColumnsAreas} is set to `1` and
      * {@link Config.maxAdjacentRowsAndColumnsAreas} is set to `4`,
-     * search will be applied for all areas of adjacent groups of `2`, `3` and `4` {@link House}s.
+     * search will be applied for all areas of adjacent groups sized `2`, `3` and `4` {@link House}s.
      *
      * Designed to be called by sub-classes.
      *
      * @param indexedCages - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
-     * left-most {@link Column}.
+     * leftmost {@link Column}.
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
      * @param minAdjacentAreas - See {@see Config.minAdjacentRowsAndColumnsAreas}.
