@@ -382,8 +382,8 @@ abstract class HouseAreasProcessor {
     protected readonly _cageSlicer: CageSlicer;
     protected readonly _isCollectStats: boolean;
 
-    constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
-        this._isEnabled = masterToggle;
+    constructor(isEnabled: boolean, processorCtx: ConstantProcessorContext) {
+        this._isEnabled = isEnabled;
         this._context = processorCtx.context;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
@@ -462,8 +462,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     protected readonly _minAdjacentCount;
     protected readonly _maxAdjacentCount;
 
-    constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
-        super(masterToggle, processorCtx);
+    constructor(isEnabled: boolean, processorCtx: ConstantProcessorContext) {
+        super(isEnabled, processorCtx);
         this._minAdjacentCount = this._config.minAdjacentRowsAndColumnsAreas;
         this._maxAdjacentCount = this._config.maxAdjacentRowsAndColumnsAreas;
     }
