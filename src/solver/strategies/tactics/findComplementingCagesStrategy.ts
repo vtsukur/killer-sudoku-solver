@@ -1,5 +1,4 @@
 import { Cage } from '../../../puzzle/cage';
-import { ReadonlyCells } from '../../../puzzle/cell';
 import { CellsIterator } from '../../../puzzle/cellsIterator';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
@@ -405,22 +404,12 @@ abstract class HouseAreasProcessor {
             cageMs: ReadonlyArray<CageModel>,
             houseCount: number,
             areaCellIndices: ReadonlyCellIndicesCheckingSet) {
-        const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
-        const nHouseSum = Math.imul(houseCount, House.SUM);
-
-        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, houseCount);
-
-        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
-            const cellIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
-            const complement = this.createComplement(sum, cellIndices.cells());
+        const complement = this.determineMeaningfulComplement(cageMs, houseCount, areaCellIndices);
+        if (complement) {
             this._cageSlicer.addAndSliceResidualCageRecursively(complement);
 
             if (complement.cellCount === 1) {
-                const cellM = this._model.cellModelOf(complement.cells[0]);
-                cellM.placedNum = complement.sum;
-                this._context.recentlySolvedCellModels = [ cellM ];
-                this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+                this.applySolvedCellsStrategy(complement);
             }
 
             if (this._isCollectStats) {
@@ -429,11 +418,32 @@ abstract class HouseAreasProcessor {
         }
     }
 
-    private createComplement(sum: number, cells: ReadonlyCells) {
-        return Cage.ofSum(sum)
+    private determineMeaningfulComplement(
+            cageMs: ReadonlyArray<CageModel>,
+            houseCount: number,
+            areaCellIndices: ReadonlyCellIndicesCheckingSet): Cage | undefined {
+        const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
+
+        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, houseCount);
+
+        const nHouseSum = Math.imul(houseCount, House.SUM);
+        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
+
+        if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
+            const cellIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
+            const cells = cellIndices.cells();
+            return Cage.ofSum(sum)
                 .withCells(cells)
                 .setIsInput(this._model.isDerivedFromInputCage(cells))
                 .new();
+        }
+    }
+
+    private applySolvedCellsStrategy(complement: Cage) {
+        const cellM = this._model.cellModelOf(complement.cells[0]);
+        cellM.placedNum = complement.sum;
+        this._context.recentlySolvedCellModels = [ cellM ];
+        this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
     }
 
     protected abstract houseModel(index: HouseIndex): HouseModel;
