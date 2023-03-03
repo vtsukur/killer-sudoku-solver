@@ -406,13 +406,14 @@ abstract class HouseAreasProcessor {
      * This method is agnostic to a particular {@link House} type it operates with.
      *
      * Designed to be called by sub-classes which need to:
+     *
      *  - pass appropriate {@link houseCellsIndices} input;
      *  - define {@link houseModel} behavior.
      *
      * Search is executed only if {@link Config.minAdjacentRowsAndColumnsAreas} is set to `1`.
      *
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
-     * Array element of index `i` is a checking set which has all {@link Cell}s of {@link House} of index `i` included.
+     * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
      */
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
@@ -422,6 +423,23 @@ abstract class HouseAreasProcessor {
         }
     }
 
+    /**
+     * Key method of the overall {@link FindComplementingCagesStrategy}
+     * which determines _complementing_ {@link Cage} for an individual {@link House} or
+     * adjacent {@link House} area and, if such a {@link Cage} is found:
+     *
+     *  - registeres it in the {@link MasterModel} with slicing;
+     *  - applies {@link ReduceCageNumOptsBySolvedCellsStrategy} for single-{@link Cell} complement (if applicable);
+     *  - and records statistics (if applicable).
+     *
+     * Designed to be called by sub-classes.
+     *
+     * @param cageMs - {@link CageModel}s within the target area.
+     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     *
+     * @see {CageSlicer}
+     */
     protected findAndSlice(
             cageMs: ReadonlyArray<CageModel>,
             houseCount: number,
