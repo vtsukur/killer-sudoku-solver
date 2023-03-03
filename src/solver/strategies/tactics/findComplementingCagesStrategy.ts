@@ -507,6 +507,14 @@ abstract class HouseAreasProcessor {
         }
     }
 
+    /**
+     * Returns {@link HouseModel} of specific type ({@link Row}, {@link Column} or {@link Nonet})
+     * by its index within the {@link Grid}.
+     *
+     * Should be implemented by sub-classes.
+     *
+     * @param index - Index of the {@link House} to return {@link HouseModel} for.
+     */
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
     protected static cellsIndices(newCellsIteratorFn: NewCellsIteratorFn) {
