@@ -374,7 +374,7 @@ type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
 
-    protected readonly _masterToggle: boolean;
+    protected readonly _isEnabled: boolean;
     protected readonly _context: Context;
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
@@ -383,7 +383,7 @@ abstract class HouseAreasProcessor {
     protected readonly _isCollectStats: boolean;
 
     constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
-        this._masterToggle = masterToggle;
+        this._isEnabled = masterToggle;
         this._context = processorCtx.context;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
@@ -469,7 +469,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     }
 
     execute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        if (this._masterToggle) {
+        if (this._isEnabled) {
             this.doExecute(indexedCageMsTracker);
         }
     }
@@ -591,7 +591,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
     }
 
     execute(): void {
-        if (this._masterToggle) {
+        if (this._isEnabled) {
             this.applyToIndividualHouses(NonetAreasProcessor._CELLS_INDICES, 1);
         }
     }
