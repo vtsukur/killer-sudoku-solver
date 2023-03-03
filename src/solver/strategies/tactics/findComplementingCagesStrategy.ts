@@ -307,7 +307,7 @@ export class FindComplementingCagesStrategy extends Strategy {
      * Constructs new {@link Strategy} with the given solution {@link Context}
      * and {@link Config} options.
      *
-     * @param context - Solving {@link Context}.
+     * @param context - Solution {@link Context}.
      * @param config - {@link Config} options to apply on top of the defaults.
      *
      * @see {Strategy.constructor}
@@ -317,7 +317,7 @@ export class FindComplementingCagesStrategy extends Strategy {
 
         this._config = { ...DEFAULT_CONFIG, ...config };
 
-        const processorCtx: ConstantProcessorContext = {
+        const processorCtx: ProcessorContext = {
             context,
             model: this._model,
             config: this._config,
@@ -358,7 +358,7 @@ export class FindComplementingCagesStrategy extends Strategy {
 
 }
 
-class ConstantProcessorContext {
+class ProcessorContext {
 
     constructor(
             readonly context: Context,
@@ -382,7 +382,7 @@ abstract class HouseAreasProcessor {
     protected readonly _cageSlicer: CageSlicer;
     protected readonly _isCollectStats: boolean;
 
-    constructor(isEnabled: boolean, processorCtx: ConstantProcessorContext) {
+    constructor(isEnabled: boolean, processorCtx: ProcessorContext) {
         this._isEnabled = isEnabled;
         this._context = processorCtx.context;
         this._model = processorCtx.model;
@@ -462,7 +462,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     protected readonly _minAdjacentCount;
     protected readonly _maxAdjacentCount;
 
-    constructor(isEnabled: boolean, processorCtx: ConstantProcessorContext) {
+    constructor(isEnabled: boolean, processorCtx: ProcessorContext) {
         super(isEnabled, processorCtx);
         this._minAdjacentCount = this._config.minAdjacentRowsAndColumnsAreas;
         this._maxAdjacentCount = this._config.maxAdjacentRowsAndColumnsAreas;
@@ -517,7 +517,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private readonly _rowModels;
 
-    constructor(processorCtx: ConstantProcessorContext) {
+    constructor(processorCtx: ProcessorContext) {
         super(processorCtx.config.isApplyToRowAreas, processorCtx);
         this._rowModels = this._model.rowModels;
     }
@@ -551,7 +551,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private readonly _columnModels;
 
-    constructor(processorCtx: ConstantProcessorContext) {
+    constructor(processorCtx: ProcessorContext) {
         super(processorCtx.config.isApplyToColumnAreas, processorCtx);
         this._columnModels = this._model.columnModels;
     }
@@ -585,7 +585,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
 
     private readonly _nonetModels;
 
-    constructor(processorCtx: ConstantProcessorContext) {
+    constructor(processorCtx: ProcessorContext) {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
         this._nonetModels = this._model.nonetModels;
     }
