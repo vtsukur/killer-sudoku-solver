@@ -219,16 +219,16 @@ export class GridAreaModel implements GridAreaModel {
  * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s.
  */
 const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, houseCount: number): GridAreaModel => {
-    const absMaxAreaCellCount = Math.imul(houseCount, House.CELL_COUNT);
+    const cellCount = Math.imul(houseCount, House.CELL_COUNT);
 
     const inputAndDerivedCagesArea = stage1_splitCagesIntoInputAndDerivedCagesArea(allCages);
-    if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === absMaxAreaCellCount ||
+    if (inputAndDerivedCagesArea.nonOverlappingCagesAreaModel.cellCount === cellCount ||
             inputAndDerivedCagesArea.overlappingCages.length === 0) {
         // If input `Cage`s cover the whole area OR there are no _derived_ `Cage`s
         // then the maximum non-overlapping area has been already found and it consists of these input `Cage`s.
         return inputAndDerivedCagesArea;
     } else {
-        return stage2_tryToMaximizeNonOverlappingArea(absMaxAreaCellCount, inputAndDerivedCagesArea);
+        return stage2_tryToMaximizeNonOverlappingArea(cellCount, inputAndDerivedCagesArea);
     }
 };
 
