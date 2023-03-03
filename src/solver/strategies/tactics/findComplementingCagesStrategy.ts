@@ -424,15 +424,16 @@ abstract class HouseAreasProcessor {
             areaCellIndices: ReadonlyCellIndicesCheckingSet): Cage | undefined {
         const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
 
-        const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, houseCount);
+        const { nonOverlappingCagesAreaModel } = GridAreaModel.fromCageModels(cageMs, houseCount);
 
         const nHouseSum = Math.imul(houseCount, House.SUM);
-        const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
+        const complementSum = nHouseSum - nonOverlappingCagesAreaModel.sum;
+        const minNonComplementCellCount = nHouseCellCount - this._config.maxMeaningfulComplementSize;
 
-        if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
-            const cellIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
+        if (complementSum !== 0 && (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonComplementCellCount)) {
+            const cellIndices = areaCellIndices.and(nonOverlappingCagesAreaModel.cellIndices.not());
             const cells = cellIndices.cells();
-            return Cage.ofSum(sum)
+            return Cage.ofSum(complementSum)
                 .withCells(cells)
                 .setIsInput(this._model.isDerivedFromInputCage(cells))
                 .new();
