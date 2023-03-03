@@ -459,13 +459,13 @@ abstract class HouseAreasProcessor {
 
 abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
-    protected readonly _minAdjacentRowsAndColumnsAreas;
-    protected readonly _maxAdjacentRowsAndColumnsAreas;
+    protected readonly _minAdjacentCount;
+    protected readonly _maxAdjacentCount;
 
     constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
         super(masterToggle, processorCtx);
-        this._minAdjacentRowsAndColumnsAreas = this._config.minAdjacentRowsAndColumnsAreas;
-        this._maxAdjacentRowsAndColumnsAreas = this._config.maxAdjacentRowsAndColumnsAreas;
+        this._minAdjacentCount = this._config.minAdjacentRowsAndColumnsAreas;
+        this._maxAdjacentCount = this._config.maxAdjacentRowsAndColumnsAreas;
     }
 
     execute(indexedCageMsTracker: IndexedCageModelsTracker) {
@@ -525,13 +525,13 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
         this.applyToIndividualHouses(
             RowAreasProcessor._CELLS_INDICES,
-            this._minAdjacentRowsAndColumnsAreas
+            this._minAdjacentCount
         );
         this.applyToAdjacentHouses(
             indexedCageMsTracker.rowIndexedCages,
             RowAreasProcessor._CELLS_INDICES,
-            this._minAdjacentRowsAndColumnsAreas,
-            this._maxAdjacentRowsAndColumnsAreas
+            this._minAdjacentCount,
+            this._maxAdjacentCount
         );
     }
 
@@ -559,13 +559,13 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
         this.applyToIndividualHouses(
             ColumnAreasProcessor._CELLS_INDICES,
-            this._minAdjacentRowsAndColumnsAreas
+            this._minAdjacentCount
         );
         this.applyToAdjacentHouses(
             indexedCageMsTracker.columnIndexedCages,
             ColumnAreasProcessor._CELLS_INDICES,
-            this._minAdjacentRowsAndColumnsAreas,
-            this._maxAdjacentRowsAndColumnsAreas
+            this._minAdjacentCount,
+            this._maxAdjacentCount
         );
     }
 
