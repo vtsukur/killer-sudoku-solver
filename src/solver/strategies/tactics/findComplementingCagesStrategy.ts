@@ -1,4 +1,5 @@
 import { Cage } from '../../../puzzle/cage';
+import { ReadonlyCells } from '../../../puzzle/cell';
 import { CellsIterator } from '../../../puzzle/cellsIterator';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
@@ -393,13 +394,9 @@ abstract class HouseAreasProcessor {
     }
 
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
-        if (minAdjacentAreas <= 1) {
+        if (minAdjacentAreas === 1) {
             for (const index of House.COUNT_RANGE) {
-                this.findAndSlice(
-                    this.houseModel(index).cageModels,
-                    1,
-                    houseCellsIndices[index]
-                );
+                this.findAndSlice(this.houseModel(index).cageModels, 1, houseCellsIndices[index]);
             }
         }
     }
@@ -415,24 +412,28 @@ abstract class HouseAreasProcessor {
 
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
         if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
-            const residualCageBuilder = Cage.ofSum(sum);
-            const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
-            residualCageBuilder.withCells(complementIndices.cells());
-            if (residualCageBuilder.cellCount == 1) {
-                const cellM = this._model.cellModelOf(residualCageBuilder.cells[0]);
-                cellM.placedNum = residualCageBuilder.new().sum;
+            const cellIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
+            const complement = this.createComplement(sum, cellIndices.cells());
+            if (complement.cellCount === 1) {
+                const cellM = this._model.cellModelOf(complement.cells[0]);
+                cellM.placedNum = complement.sum;
                 this._context.recentlySolvedCellModels = [ cellM ];
                 this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
-            } else {
-                residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
             }
 
-            this._cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
+            this._cageSlicer.addAndSliceResidualCageRecursively(complement);
 
             if (this._isCollectStats) {
-                FindComplementingCagesStrategy.STATS.addFinding(houseCount, residualCageBuilder.cellCount);
+                FindComplementingCagesStrategy.STATS.addFinding(houseCount, complement.cellCount);
             }
         }
+    }
+
+    private createComplement(sum: number, cells: ReadonlyCells) {
+        return Cage.ofSum(sum)
+                .withCells(cells)
+                .setIsInput(this._model.isDerivedFromInputCage(cells))
+                .new();
     }
 
     protected abstract houseModel(index: HouseIndex): HouseModel;
@@ -501,10 +502,13 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
 class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Row.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Row.newCellsIterator);
+
+    private readonly _rowModels;
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToRowAreas, processorCtx);
+        this._rowModels = this._model.rowModels;
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
@@ -521,7 +525,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     protected houseModel(index: HouseIndex) {
-        return this._model.rowModels[index];
+        return this._rowModels[index];
     }
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
@@ -532,10 +536,13 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Column.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Column.newCellsIterator);
+
+    private readonly _columnModels;
 
     constructor(processorCtx: ConstantProcessorContext) {
         super(processorCtx.config.isApplyToColumnAreas, processorCtx);
+        this._columnModels = this._model.columnModels;
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
@@ -552,7 +559,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     protected houseModel(index: HouseIndex) {
-        return this._model.columnModels[index];
+        return this._columnModels[index];
     }
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
@@ -563,7 +570,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
 class NonetAreasProcessor extends HouseAreasProcessor {
 
-    private static readonly _CELLS_INDICES: HouseCellsIndices = this.cellsIndices(Nonet.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.newCellsIterator);
 
     private readonly _nonetModels;
 
