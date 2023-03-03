@@ -511,6 +511,9 @@ abstract class HouseAreasProcessor {
      * Returns {@link HouseModel} of specific type ({@link Row}, {@link Column} or {@link Nonet})
      * by its index within the {@link Grid}.
      *
+     * Supposed to be used for efficient collection of {@link House} {@link Cage}s
+     * since they are already stored within the {@link HouseModel}.
+     *
      * Should be implemented by sub-classes.
      *
      * @param index - Index of the {@link House} to return {@link HouseModel} for.
