@@ -514,9 +514,21 @@ abstract class HouseAreasProcessor {
      * Should be implemented by sub-classes.
      *
      * @param index - Index of the {@link House} to return {@link HouseModel} for.
+     *
+     * @returns {@link HouseModel} of specific type ({@link Row}, {@link Column} or {@link Nonet})
+     * by its index within the {@link Grid}.
      */
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
+    /**
+     * Collects array of checking sets where element of index `i`
+     * has all {@link Cell}s of {@link House} of index `i`.
+     *
+     * @param newCellsIteratorFn - Function producing {@link CellsIterator} for a {@link House} by index.
+     *
+     * @returns Array of checking sets where element of index `i`
+     * has all {@link Cell}s of {@link House} of index `i`.
+     */
     protected static cellsIndices(newCellsIteratorFn: NewCellsIteratorFn) {
         return House.COUNT_RANGE.map(row =>
             new CellIndicesCheckingSet(Array.from(newCellsIteratorFn(row)).map(cell => cell.index))
