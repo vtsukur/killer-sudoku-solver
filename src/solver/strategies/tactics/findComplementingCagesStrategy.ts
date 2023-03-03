@@ -10,6 +10,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { HouseModel } from '../../models/elements/houseModel';
 import { MasterModel, MasterModelEvents } from '../../models/masterModel';
+import { CageSlicer } from '../../transform/cageSlicer';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
@@ -374,15 +375,21 @@ type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 abstract class HouseAreasProcessor {
 
     protected readonly _masterToggle: boolean;
-    protected readonly _processorCtx: ConstantProcessorContext;
+    protected readonly _context: Context;
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
+    protected readonly _strategy: Strategy;
+    protected readonly _cageSlicer: CageSlicer;
+    protected readonly _isCollectStats: boolean;
 
     constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
         this._masterToggle = masterToggle;
-        this._processorCtx = processorCtx;
+        this._context = processorCtx.context;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
+        this._strategy = processorCtx.strategy;
+        this._cageSlicer = this._context.cageSlicer;
+        this._isCollectStats = this._config.isCollectStats;
     }
 
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
@@ -412,17 +419,17 @@ abstract class HouseAreasProcessor {
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
             if (residualCageBuilder.cellCount == 1) {
-                const cellM = this._processorCtx.model.cellModelOf(residualCageBuilder.cells[0]);
+                const cellM = this._model.cellModelOf(residualCageBuilder.cells[0]);
                 cellM.placedNum = residualCageBuilder.new().sum;
-                this._processorCtx.context.recentlySolvedCellModels = [ cellM ];
-                this._processorCtx.strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+                this._context.recentlySolvedCellModels = [ cellM ];
+                this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
             } else {
-                residualCageBuilder.setIsInput(this._processorCtx.model.isDerivedFromInputCage(residualCageBuilder.cells));
+                residualCageBuilder.setIsInput(this._model.isDerivedFromInputCage(residualCageBuilder.cells));
             }
 
-            this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
+            this._cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
 
-            if (this._config.isCollectStats) {
+            if (this._isCollectStats) {
                 FindComplementingCagesStrategy.STATS.addFinding(houseCount, residualCageBuilder.cellCount);
             }
         }
