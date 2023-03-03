@@ -352,7 +352,7 @@ export class FindComplementingCagesStrategy extends Strategy {
     private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
         this._rowAreasProcessor.execute(indexedCageMsTracker);
         this._columnAreasProcessor.execute(indexedCageMsTracker);
-        this._nonetAreasProcessor.execute(indexedCageMsTracker);
+        this._nonetAreasProcessor.execute();
     }
 
 }
@@ -373,9 +373,8 @@ type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
 
-    private readonly _masterToggle: boolean;
-    private readonly _processorCtx: ConstantProcessorContext;
-
+    protected readonly _masterToggle: boolean;
+    protected readonly _processorCtx: ConstantProcessorContext;
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
 
@@ -385,14 +384,6 @@ abstract class HouseAreasProcessor {
         this._model = processorCtx.model;
         this._config = processorCtx.config;
     }
-
-    execute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        if (this._masterToggle) {
-            this.doExecute(indexedCageMsTracker);
-        }
-    }
-
-    abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
         if (minAdjacentAreas <= 1) {
@@ -447,6 +438,14 @@ abstract class HouseAreasProcessor {
 }
 
 abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
+
+    execute(indexedCageMsTracker: IndexedCageModelsTracker) {
+        if (this._masterToggle) {
+            this.doExecute(indexedCageMsTracker);
+        }
+    }
+
+    abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
     protected applyToAdjacentHouses(
             indexedCages: ReadonlyArray<Set<CageModel>>,
@@ -553,13 +552,10 @@ class NonetAreasProcessor extends HouseAreasProcessor {
         super(processorCtx.config.isApplyToNonetAreas, processorCtx);
     }
 
-    // separate into explicit type
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    doExecute(_indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHouses(
-            NonetAreasProcessor._CELLS_INDICES,
-            1
-        );
+    execute(): void {
+        if (this._masterToggle) {
+            this.applyToIndividualHouses(NonetAreasProcessor._CELLS_INDICES, 1);
+        }
     }
 
     protected houseModel(index: HouseIndex) {
