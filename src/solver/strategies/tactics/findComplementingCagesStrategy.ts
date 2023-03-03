@@ -407,7 +407,7 @@ abstract class HouseAreasProcessor {
         const cagesAreaModel = GridAreaModel.fromCageModels(cageMs, houseCount);
 
         const sum = nHouseSum - cagesAreaModel.nonOverlappingCagesAreaModel.sum;
-        if ((houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize) && sum) {
+        if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
             const residualCageBuilder = Cage.ofSum(sum);
             const complementIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             residualCageBuilder.withCells(complementIndices.cells());
@@ -416,8 +416,9 @@ abstract class HouseAreasProcessor {
                 cellM.placedNum = residualCageBuilder.new().sum;
                 this._processorCtx.context.recentlySolvedCellModels = [ cellM ];
                 this._processorCtx.strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
+            } else {
+                residualCageBuilder.setIsInput(this._processorCtx.model.isDerivedFromInputCage(residualCageBuilder.cells));
             }
-            residualCageBuilder.setIsInput(this._processorCtx.model.isDerivedFromInputCage(residualCageBuilder.cells));
 
             this._processorCtx.context.cageSlicer.addAndSliceResidualCageRecursively(residualCageBuilder.new());
 
