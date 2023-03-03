@@ -414,14 +414,14 @@ abstract class HouseAreasProcessor {
         if (sum !== 0 && (houseCount === 1 || cagesAreaModel.nonOverlappingCagesAreaModel.cellCount >= nHouseCellCount - this._config.maxMeaningfulComplementSize)) {
             const cellIndices = areaCellIndices.and(cagesAreaModel.nonOverlappingCagesAreaModel.cellIndices.not());
             const complement = this.createComplement(sum, cellIndices.cells());
+            this._cageSlicer.addAndSliceResidualCageRecursively(complement);
+
             if (complement.cellCount === 1) {
                 const cellM = this._model.cellModelOf(complement.cells[0]);
                 cellM.placedNum = complement.sum;
                 this._context.recentlySolvedCellModels = [ cellM ];
                 this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);
             }
-
-            this._cageSlicer.addAndSliceResidualCageRecursively(complement);
 
             if (this._isCollectStats) {
                 FindComplementingCagesStrategy.STATS.addFinding(houseCount, complement.cellCount);
