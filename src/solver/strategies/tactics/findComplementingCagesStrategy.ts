@@ -369,31 +369,27 @@ class ConstantProcessorContext {
 }
 
 type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
-type ExecutorFn = (indexedCageMsTracker: IndexedCageModelsTracker) => void;
 type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
 
-    private readonly _executorFn: ExecutorFn;
-
-    private static readonly _emptyExecutorFn: ExecutorFn = () => {
-        // No-op
-    };
-
+    private readonly _masterToggle: boolean;
     private readonly _processorCtx: ConstantProcessorContext;
 
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
 
     constructor(masterToggle: boolean, processorCtx: ConstantProcessorContext) {
-        this._executorFn = masterToggle ? this.doExecute : HouseAreasProcessor._emptyExecutorFn;
+        this._masterToggle = masterToggle;
         this._processorCtx = processorCtx;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
     }
 
     execute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this._executorFn(indexedCageMsTracker);
+        if (this._masterToggle) {
+            this.doExecute(indexedCageMsTracker);
+        }
     }
 
     abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
