@@ -337,6 +337,8 @@ export class FindComplementingCagesStrategy extends Strategy {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
             // when _complementing_ `Cage`s are found and `Cage` slicing occurs.
+            // This is necessary because slicing results in adding and removing of `Cage`s
+            // which this class needs to be aware of.
             //
             this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
             this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
@@ -358,6 +360,9 @@ export class FindComplementingCagesStrategy extends Strategy {
 
 }
 
+/**
+ * Context for {@link HouseAreasProcessor} execution.
+ */
 class ProcessorContext {
 
     constructor(
@@ -392,6 +397,15 @@ abstract class HouseAreasProcessor {
         this._isCollectStats = this._config.isCollectStats;
     }
 
+    /**
+     * Searches for _complementing_ {@link Cage}s within
+     * individual {@link Row}s, {@link Column}s or {@link Nonet}s.
+     *
+     * This method is agnostic to a particular {@link House} type it operates with.
+     * Such specifics should be defined by sub-classes which should call this method.
+     *
+     * @param houseCellsIndices
+     */
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
         if (minAdjacentAreas === 1) {
             for (const index of House.COUNT_RANGE) {
