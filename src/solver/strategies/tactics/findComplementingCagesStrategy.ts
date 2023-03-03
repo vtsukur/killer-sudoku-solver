@@ -409,6 +409,8 @@ abstract class HouseAreasProcessor {
      *  - pass appropriate {@link houseCellsIndices} input;
      *  - define {@link houseModel} behavior.
      *
+     * Search is executed only if {@link Config.minAdjacentRowsAndColumnsAreas} is set to `1`.
+     *
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set which has all {@link Cell}s of {@link House} of index `i` included.
      */
