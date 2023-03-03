@@ -380,6 +380,7 @@ type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 abstract class HouseAreasProcessor {
 
     protected readonly _isEnabled: boolean;
+    protected readonly _isEnabledForIndividualHouses: boolean;
     protected readonly _context: Context;
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
@@ -387,8 +388,9 @@ abstract class HouseAreasProcessor {
     protected readonly _cageSlicer: CageSlicer;
     protected readonly _isCollectStats: boolean;
 
-    constructor(isEnabled: boolean, processorCtx: ProcessorContext) {
+    constructor(isEnabled: boolean, isEnabledForIndividualHouses: boolean, processorCtx: ProcessorContext) {
         this._isEnabled = isEnabled;
+        this._isEnabledForIndividualHouses = isEnabledForIndividualHouses;
         this._context = processorCtx.context;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
@@ -406,8 +408,8 @@ abstract class HouseAreasProcessor {
      *
      * @param houseCellsIndices
      */
-    protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices, minAdjacentAreas: number) {
-        if (minAdjacentAreas === 1) {
+    protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
+        if (this._isEnabledForIndividualHouses) {
             for (const index of House.COUNT_RANGE) {
                 this.findAndSlice(this.houseModel(index).cageModels, 1, houseCellsIndices[index]);
             }
@@ -477,7 +479,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     protected readonly _maxAdjacentCount;
 
     constructor(isEnabled: boolean, processorCtx: ProcessorContext) {
-        super(isEnabled, processorCtx);
+        super(isEnabled, processorCtx.config.minAdjacentRowsAndColumnsAreas === 1, processorCtx);
         this._minAdjacentCount = this._config.minAdjacentRowsAndColumnsAreas;
         this._maxAdjacentCount = this._config.maxAdjacentRowsAndColumnsAreas;
     }
@@ -537,10 +539,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHouses(
-            RowAreasProcessor._CELLS_INDICES,
-            this._minAdjacentCount
-        );
+        this.applyToIndividualHouses(RowAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
             indexedCageMsTracker.rowIndexedCages,
             RowAreasProcessor._CELLS_INDICES,
@@ -571,10 +570,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void {
-        this.applyToIndividualHouses(
-            ColumnAreasProcessor._CELLS_INDICES,
-            this._minAdjacentCount
-        );
+        this.applyToIndividualHouses(ColumnAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
             indexedCageMsTracker.columnIndexedCages,
             ColumnAreasProcessor._CELLS_INDICES,
@@ -600,13 +596,13 @@ class NonetAreasProcessor extends HouseAreasProcessor {
     private readonly _nonetModels;
 
     constructor(processorCtx: ProcessorContext) {
-        super(processorCtx.config.isApplyToNonetAreas, processorCtx);
+        super(processorCtx.config.isApplyToNonetAreas, true, processorCtx);
         this._nonetModels = this._model.nonetModels;
     }
 
     execute(): void {
         if (this._isEnabled) {
-            this.applyToIndividualHouses(NonetAreasProcessor._CELLS_INDICES, 1);
+            this.applyToIndividualHouses(NonetAreasProcessor._CELLS_INDICES);
         }
     }
 
