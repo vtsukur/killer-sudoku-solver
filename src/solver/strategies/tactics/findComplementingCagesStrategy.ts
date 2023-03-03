@@ -404,9 +404,13 @@ abstract class HouseAreasProcessor {
      * individual {@link Row}s, {@link Column}s or {@link Nonet}s.
      *
      * This method is agnostic to a particular {@link House} type it operates with.
-     * Such specifics should be defined by sub-classes which should call this method.
      *
-     * @param houseCellsIndices
+     * Designed to be called by sub-classes which need to:
+     *  - pass appropriate {@link houseCellsIndices} input;
+     *  - define {@link houseModel} behavior.
+     *
+     * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
+     * Array element of index `i` is a checking set which has all {@link Cell}s of {@link House} of index `i` included.
      */
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
