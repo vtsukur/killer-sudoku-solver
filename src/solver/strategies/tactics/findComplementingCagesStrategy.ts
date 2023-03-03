@@ -452,6 +452,24 @@ abstract class HouseAreasProcessor {
         }
     }
 
+    /**
+     * Determines _complementing_ {@link Cage}
+     * as the difference between the whole {@link House} area and
+     * the area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
+     *
+     * @param cageMs - {@link CageModel}s within the target area.
+     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     *
+     * @returns _Complementing_ {@link Cage}
+     * as the difference between the whole {@link House} area and
+     * the area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s OR
+     * `undefined` if:
+     *
+     * - Found _complementing_ {@link Cage} is empty;
+     * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulComplementSize}
+     * in case search is performed on adjacent {@link House}s. See {@see FindComplementingCagesStrategy} TSDoc for more info.
+     */
     private determineMeaningfulComplement(
             cageMs: ReadonlyArray<CageModel>,
             houseCount: number,
