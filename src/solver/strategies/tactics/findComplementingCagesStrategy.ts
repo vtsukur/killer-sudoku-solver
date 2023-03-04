@@ -566,7 +566,7 @@ abstract class HouseAreasProcessor {
 
     private applySolvedCellsStrategyIfNecessary(complement: Cage) {
         if (complement.cellCount === 1) {
-            const cellM = this._model.cellModelOf(complement.cells[0]);
+            const cellM = this._model.cellModelOf(complement.firstCell);
             cellM.placedNum = complement.sum;
             this._context.recentlySolvedCellModels = [ cellM ];
             this._strategy.executeAnother(ReduceCageNumOptsBySolvedCellsStrategy);

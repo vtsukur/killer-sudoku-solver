@@ -102,6 +102,13 @@ export class Cage {
     }
 
     /**
+     * Returns first {@link Cell} in the {@link Cage} which is the topmost leftmost {@link Cell}.
+     */
+    get firstCell() {
+        return this.cells[0];
+    }
+
+    /**
      * `Cage` Builder with fluent API that validates sum and `Cell`s which denote the group to not duplicate.
      */
     static Builder = class {

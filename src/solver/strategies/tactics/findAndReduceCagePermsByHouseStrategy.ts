@@ -201,17 +201,17 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
         }
         let reduce = false;
         if (positioningFlags.isWithinRow) {
-            if (!checkIfHouseStaysValidWithLeftoverCage(model.rowModels[assumptionCage.cells[0].row], assumptionCage, reducedSingleCellForNumCombos)) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.rowModels[assumptionCage.firstCell.row], assumptionCage, reducedSingleCellForNumCombos)) {
                 reduce = true;
             }
         }
         if (positioningFlags.isWithinColumn) {
-            if (!checkIfHouseStaysValidWithLeftoverCage(model.columnModels[assumptionCage.cells[0].col], assumptionCage, reducedSingleCellForNumCombos)) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.columnModels[assumptionCage.firstCell.col], assumptionCage, reducedSingleCellForNumCombos)) {
                 reduce = true;
             }
         }
         if (positioningFlags.isWithinNonet) {
-            if (!checkIfHouseStaysValidWithLeftoverCage(model.nonetModels[assumptionCage.cells[0].nonet], assumptionCage, reducedSingleCellForNumCombos)) {
+            if (!checkIfHouseStaysValidWithLeftoverCage(model.nonetModels[assumptionCage.firstCell.nonet], assumptionCage, reducedSingleCellForNumCombos)) {
                 reduce = true;
             }
         }

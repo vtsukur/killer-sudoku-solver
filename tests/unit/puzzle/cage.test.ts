@@ -46,6 +46,10 @@ describe('Cage tests', () => {
             Cage.ofSum(10).at(4, 5).at(4, 4).new().key);
     });
 
+    test('First Cell in the Cage is the topmost leftmost Cell', () => {
+        expect(Cage.ofSum(10).at(2, 2).at(1, 1).at(1, 2).new().firstCell).toBe(Cell.at(1, 1));
+    });
+
     test('Construction of invalid Cage with sum outside of the range: <1', () => {
         expect(() => Cage.ofSum(-1)).toThrow(
             new InvalidPuzzleDefError('Invalid Cage. Sum outside of range. Expected to be within [1, 406). Actual: -1')

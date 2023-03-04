@@ -50,7 +50,7 @@ export class CageModel {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
-        this._firstCell = cage.cells[0];
+        this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this._canHaveDuplicateNums = canHaveDuplicateNums === true && !this.positioningFlags.isWithinHouse;
         this.minRow = House.CELL_COUNT + 1;
