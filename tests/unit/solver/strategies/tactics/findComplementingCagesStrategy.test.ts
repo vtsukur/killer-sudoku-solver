@@ -168,7 +168,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(FindComplementingCagesStrategy.STATS.totalCagesFound).toBe(9);
 
         const zeroAdjacentHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[0];
-        expect(zeroAdjacentHouseComplementsStats.n).toBe(0);
+        expect(zeroAdjacentHouseComplementsStats.adjacentHouseCount).toBe(0);
         expect(zeroAdjacentHouseComplementsStats.totalCagesFound).toBe(0);
         expect(zeroAdjacentHouseComplementsStats.foundCagesByCellCount).toEqual([
             0, // 0 `Cell`s
@@ -184,7 +184,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         ]);
 
         const individualHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[1];
-        expect(individualHouseComplementsStats.n).toBe(1);
+        expect(individualHouseComplementsStats.adjacentHouseCount).toBe(1);
         expect(individualHouseComplementsStats.totalCagesFound).toBe(9);
         expect(individualHouseComplementsStats.foundCagesByCellCount).toEqual([
             0, // 0 `Cell`s
@@ -200,7 +200,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         ]);
 
         const multipleAdjacentHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[2];
-        expect(multipleAdjacentHouseComplementsStats.n).toBe(2);
+        expect(multipleAdjacentHouseComplementsStats.adjacentHouseCount).toBe(2);
         expect(multipleAdjacentHouseComplementsStats.totalCagesFound).toBe(0);
         expect(multipleAdjacentHouseComplementsStats.foundCagesByCellCount).toEqual([
             0, // 0 `Cell`s

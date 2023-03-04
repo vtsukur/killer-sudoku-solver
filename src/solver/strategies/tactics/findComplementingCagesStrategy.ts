@@ -135,21 +135,21 @@ const DEFAULT_CONFIG: Config = Object.freeze({
 
 class HouseAreaStats {
 
-    private readonly _n: number;
-    private readonly _foundCagesByCellCount: Array<number>;
+    private readonly _adjacentHouseCount: number;
     private _totalCagesFound = 0;
+    private readonly _foundCagesByCellCount: Array<number>;
 
     constructor(n: number) {
-        this._n = n;
+        this._adjacentHouseCount = n;
         this._foundCagesByCellCount = new Array(House.CELL_COUNT + 1).fill(0);
+    }
+
+    get adjacentHouseCount() {
+        return this._adjacentHouseCount;
     }
 
     get totalCagesFound() {
         return this._totalCagesFound;
-    }
-
-    get n() {
-        return this._n;
     }
 
     get foundCagesByCellCount(): ReadonlyArray<number> {
