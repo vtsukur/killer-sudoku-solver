@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
@@ -7,6 +6,7 @@ import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
+import { CachedNumRanges } from './cachedNumRanges';
 
 export class HouseSumCombosAndPerms {
 
@@ -39,7 +39,7 @@ export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPer
 function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
     const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
 
-    _.range(cageMs.length).forEach(i => {
+    for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[cageMs.length]) {
         const cage = cageMs[i].cage;
         const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
         if (nonOverlappingCageIndex !== -1) {
@@ -48,7 +48,7 @@ function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<Readonl
             const overlappingCageIndex = overlappingCages.findIndex(originalCage => originalCage === cage);
             orderPreservedCombos[i] = combosForOverlappingCages[overlappingCageIndex];
         }
-    });
+    }
 
     return orderPreservedCombos;
 }
