@@ -1,13 +1,13 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
 import { Row } from '../../../../src/puzzle/row';
-import { Combo, combosAndPermsForHouse } from '../../../../src/solver/math';
+import { Combo, HouseModelCagesCombinatorics } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 
 describe('Tests for the finder of sum number combinations and sum permutations forming a HouseModel out of Cages', () => {
     test('Several combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
             Cage.ofSum(10).at(1, 3).at(2, 3).new(),
             Cage.ofSum(7).at(2, 1).at(2, 2).new(),
@@ -38,7 +38,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Many combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
             Cage.ofSum(10).at(0, 0).at(0, 1).new(),
             Cage.ofSum(10).at(0, 2).at(1, 2).new(),
@@ -76,7 +76,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Few combinations and permutations forming an incomplete HouseModel with non-overlapping Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(5).at(0, 0).at(0, 1).new(),
             Cage.ofSum(7).at(0, 2).at(1, 2).new()
         ]));
@@ -98,7 +98,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Several combinations and single permutation forming a complete HouseModel with non-overlapping Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(4).at(1, 1).at(1, 2).new(),
             Cage.ofSum(24).at(1, 3).at(1, 4).at(1, 5).new(),
             Cage.ofSum(7).at(1, 6).at(1, 7).new(),
@@ -125,7 +125,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Combinations and permutations forming a HouseModel with overlapping Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(8).at(2, 5).at(3, 5).new(),
             Cage.ofSum(8).at(7, 5).new(),
             Cage.ofSum(4).at(1, 5).at(2, 5).setIsInput(false).new(),
@@ -153,7 +153,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
     });
 
     test('Combinations and permutations forming a HouseModel out of no Cages', () => {
-        const combosAndPerms = combosAndPermsForHouse(newHouseModel([]));
+        const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([]));
 
         expect(combosAndPerms).toEqual({
             nonOverlappingCages: [],

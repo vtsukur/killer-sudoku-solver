@@ -8,32 +8,27 @@ import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from './cachedNumRanges';
 
-export class HouseSumCombosAndPerms {
+export class HouseModelCagesCombinatorics {
 
-    readonly nonOverlappingCages: ReadonlyArray<Cage>;
-    readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
-    readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
-
-    constructor(nonOverlappingCages: ReadonlyArray<Cage>,
-            sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
-            actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
-        this.nonOverlappingCages = nonOverlappingCages;
-        this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
-        this.actualSumCombos = actualSumCombos;
+    private constructor(
+            readonly nonOverlappingCages: ReadonlyArray<Cage>,
+            readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
+        // No-op
     }
 
-}
+    static for(houseM: HouseModel) {
+        const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
+        const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
+        const overlappingCages = gridAreaModel.overlappingCages;
 
-export function combosAndPermsForHouse(houseM: HouseModel): HouseSumCombosAndPerms {
-    const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
-    const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
-    const overlappingCages = gridAreaModel.overlappingCages;
+        const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
+        const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
+        const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
-    const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
-    const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
-    const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
+        return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
+    }
 
-    return new HouseSumCombosAndPerms(nonOverlappingCages, perms, actualSumCombos);
 }
 
 function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {

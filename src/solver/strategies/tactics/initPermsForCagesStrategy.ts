@@ -1,11 +1,11 @@
-import { combosAndPermsForHouse } from '../../math';
+import { HouseModelCagesCombinatorics } from '../../math';
 import { Strategy } from '../strategy';
 
 export class InitPermsForCagesStrategy extends Strategy {
 
     execute() {
         this._model.houseModels.forEach(houseM => {
-            const sumCombos = combosAndPermsForHouse(houseM).actualSumCombos;
+            const sumCombos = HouseModelCagesCombinatorics.for(houseM).actualSumCombos;
             houseM.cageModels.forEach((cageModel, index) => {
                 cageModel.updateCombinations(sumCombos[index]);
             });
