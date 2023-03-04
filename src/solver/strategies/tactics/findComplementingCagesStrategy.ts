@@ -666,9 +666,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             areaCellsIndices.add(houseCellsIndices[index]);
         } while (++index < rightOrBottomExclusive);
 
-        return {
-            areaCageMs, areaCellsIndices
-        };
+        return { areaCageMs, areaCellsIndices };
     }
 
     protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
