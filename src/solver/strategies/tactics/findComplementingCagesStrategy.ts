@@ -612,8 +612,13 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @param indexedCages - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
      * leftmost {@link Column}.
+     * Use of this data structure enhances implementation performance
+     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
+     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
+     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * due to manipulation on bits via fast bitwise operations.
      * @param minAdjacentAreas - See {@see Config.minAdjacentRowsAndColumnsAreas}.
      * @param maxAdjacentAreas - See {@see Config.maxAdjacentRowsAndColumnsAreas}.
      */
