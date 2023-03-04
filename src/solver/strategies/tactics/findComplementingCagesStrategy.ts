@@ -11,7 +11,7 @@ import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { HouseModel } from '../../models/elements/houseModel';
-import { MasterModel, MasterModelEvents } from '../../models/masterModel';
+import { MasterModel, MasterModelEvents, CageRegisteredEventHandler, CageUnregisteredEventHandler } from '../../models/masterModel';
 import { CageSlicer } from '../../transform/cageSlicer';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
@@ -191,18 +191,27 @@ class Stats {
 type ReadonlyIndexedHouseCageModels = ReadonlyArray<Set<CageModel>>;
 type IndexedHouseCageModels = Array<Set<CageModel>>;
 
+/**
+ * Tracks {@link CageModel}s indexed by {@link Cage}'s topmost {@link Row} and
+ * leftmost {@link Column}.
+ *
+ * Tracking is needed since {@link Cage}s are being registered and unregistered
+ * when _complementing_ {@link Cage}s are found and {@link Cage} slicing occurs.
+ * Tracking is achieved by using event handlers on {@link MasterModel}.
+ *
+ * Use of this data structure enhances implementation performance
+ * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
+ * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+ */
 class IndexedCageModelsTracker {
 
     private readonly _rowIndexedCages: IndexedHouseCageModels;
     private readonly _columnIndexedCages: IndexedHouseCageModels;
 
     constructor(model: MasterModel) {
-        this._rowIndexedCages = new Array(House.CELL_COUNT);
-        this._columnIndexedCages = new Array(House.CELL_COUNT);
-        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
-            this._rowIndexedCages[i] = new Set();
-            this._columnIndexedCages[i] = new Set();
-        }
+        this._rowIndexedCages = House.COUNT_RANGE.map(() => new Set());
+        this._columnIndexedCages = House.COUNT_RANGE.map(() => new Set());
+
         for (const cageM of model.cageModelsMap.values()) {
             this._rowIndexedCages[cageM.minRow].add(cageM);
             this._columnIndexedCages[cageM.minCol].add(cageM);
@@ -217,12 +226,12 @@ class IndexedCageModelsTracker {
         return this._columnIndexedCages;
     }
 
-    readonly cageRegisteredEventHandler = (cageM: CageModel) => {
+    readonly cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
         this._rowIndexedCages[cageM.minRow].add(cageM);
         this._columnIndexedCages[cageM.minCol].add(cageM);
     };
 
-    readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
+    readonly cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
         this._rowIndexedCages[cageM.minRow].delete(cageM);
         this._columnIndexedCages[cageM.minCol].delete(cageM);
     };
