@@ -399,7 +399,7 @@ class ProcessorContext {
  *
  * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
  */
-type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
+type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 
 /**
  * Type alias for the function producing {@link CellsIterator} for a {@link House} by index.
@@ -456,7 +456,7 @@ abstract class HouseAreasProcessor {
      * Use of this data structure enhances implementation performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
-    protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
+    protected applyToIndividualHouses(houseCellsIndices: ReadonlyHouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
             for (const index of House.COUNT_RANGE) {
                 this.findAndSlice(this.houseModel(index).cageModels, houseCellsIndices[index], 1);
@@ -657,7 +657,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      */
     protected applyToAdjacentHouses(
             indexedCageMs: ReadonlyIndexedHouseCageModels,
-            houseCellsIndices: HouseCellsIndices,
+            houseCellsIndices: ReadonlyHouseCellsIndices,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
         // Making sure individual `House`s are skipped and `Config.maxAdjacentRowsAndColumnsAreas` is taken into account.
@@ -687,7 +687,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             topOrLeftIndex: number,
             rightOrBottomExclusive: number,
             indexedCageMs: ReadonlyIndexedHouseCageModels,
-            houseCellsIndices: HouseCellsIndices) {
+            houseCellsIndices: ReadonlyHouseCellsIndices) {
         const areaCageMs = new Array<CageModel>();
         const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
         let index = topOrLeftIndex;
