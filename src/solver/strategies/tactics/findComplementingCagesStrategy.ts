@@ -21,6 +21,8 @@ import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySol
  * Configuration options for {@link FindComplementingCagesStrategy}.
  *
  * Can be used for both tuning production execution as well as tailoring testing scenarios.
+ *
+ * @public
  */
 export type Config = {
 
@@ -294,6 +296,8 @@ class IndexedCageModelsTracker {
  *
  * @see {Config}
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
+ *
+ * @public
  */
 export class FindComplementingCagesStrategy extends Strategy {
 
