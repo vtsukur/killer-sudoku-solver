@@ -637,7 +637,11 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     /**
      * Executes key processing work if configuration allows to do so.
      *
-     * @param indexedCageMsTracker -
+     * @param indexedCageMsTracker - Tracks {@link CageModel}s indexed by
+     * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
+     * Use of this data structure enhances implementation performance
+     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
+     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      */
     execute(indexedCageMsTracker: IndexedCageModelsTracker) {
         if (this._isEnabled) {
@@ -650,7 +654,11 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
-     * @param indexedCageMsTracker -
+     * @param indexedCageMsTracker - Tracks {@link CageModel}s indexed by
+     * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
+     * Use of this data structure enhances implementation performance
+     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
+     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      */
     abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
