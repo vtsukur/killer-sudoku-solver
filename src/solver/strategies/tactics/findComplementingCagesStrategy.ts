@@ -592,12 +592,24 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
         this._maxAdjacentCount = this._config.maxAdjacentRowsAndColumnsAreas;
     }
 
+    /**
+     * Executes key processing work if configuration allows to do so.
+     *
+     * @param indexedCageMsTracker -
+     */
     execute(indexedCageMsTracker: IndexedCageModelsTracker) {
         if (this._isEnabled) {
             this.doExecute(indexedCageMsTracker);
         }
     }
 
+    /**
+     * Executes key processing work.
+     *
+     * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
+     *
+     * @param indexedCageMsTracker -
+     */
     abstract doExecute(indexedCageMsTracker: IndexedCageModelsTracker): void;
 
     /**
