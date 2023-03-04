@@ -439,6 +439,8 @@ abstract class HouseAreasProcessor {
      *
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
+     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * due to manipulation on bits via fast bitwise operations.
      */
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
@@ -461,6 +463,8 @@ abstract class HouseAreasProcessor {
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
      * @see {CageSlicer}
@@ -484,6 +488,8 @@ abstract class HouseAreasProcessor {
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
      * @returns _Complementing_ {@link Cage}
@@ -551,6 +557,9 @@ abstract class HouseAreasProcessor {
     /**
      * Collects array of checking sets where element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
+     *
+     * Supposed to be used by sub-classes for caching {@link Cell}s indices
+     * as they remain constant between iterations.
      *
      * @param newCellsIteratorFn - Function producing {@link CellsIterator} for a {@link House} by index.
      *
