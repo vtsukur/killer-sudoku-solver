@@ -593,25 +593,39 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             const maxTopOrLeftIndex = House.CELL_COUNT - n;
             let topOrLeftIndex = 0;
             do {
-                const rightOrBottomExclusive = topOrLeftIndex + n;
-                const areaActualCageMs = new Array<CageModel>();
-                const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
-                let index = topOrLeftIndex;
-                do {
-                    for (const cageM of indexedCages[index]) {
-                        if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
-                            areaActualCageMs.push(cageM);
-                        }
-                    }
-                    areaCellsIndices.add(houseCellsIndices[index]);
-                    index++;
-                } while (index < rightOrBottomExclusive);
-
-                this.findAndSlice(areaActualCageMs, n, areaCellsIndices);
+                const { areaCageMs, areaCellsIndices } = this.collectAreaData(
+                        topOrLeftIndex,
+                        topOrLeftIndex + n,
+                        indexedCages,
+                        houseCellsIndices);
+                this.findAndSlice(areaCageMs, n, areaCellsIndices);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= maxTopOrLeftIndex);
             n++;
         }
+    }
+
+    private collectAreaData(
+            topOrLeftIndex: number,
+            rightOrBottomExclusive: number,
+            indexedCages: ReadonlyArray<Set<CageModel>>,
+            houseCellsIndices: HouseCellsIndices) {
+        const areaCageMs = new Array<CageModel>();
+        const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
+        let index = topOrLeftIndex;
+        do {
+            for (const cageM of indexedCages[index]) {
+                if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
+                    areaCageMs.push(cageM);
+                }
+            }
+            areaCellsIndices.add(houseCellsIndices[index]);
+            index++;
+        } while (index < rightOrBottomExclusive);
+
+        return {
+            areaCageMs, areaCellsIndices
+        };
     }
 
     protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
