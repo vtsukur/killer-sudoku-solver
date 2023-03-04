@@ -7,7 +7,6 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
 import { Row } from '../../../puzzle/row';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
-import { CachedNumRanges } from '../../math/cachedNumRanges';
 import { CageModel } from '../../models/elements/cageModel';
 import { GridAreaModel } from '../../models/elements/gridAreaModel';
 import { HouseModel } from '../../models/elements/houseModel';
@@ -134,7 +133,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
     isCollectStats: false
 });
 
-class AreaStats {
+class HouseAreaStats {
 
     private readonly n: number;
     private readonly foundCagesByCellCount: Array<number>;
@@ -158,7 +157,7 @@ class AreaStats {
 
 class Stats {
 
-    private readonly _data: Array<AreaStats>;
+    private readonly _data: Array<HouseAreaStats>;
     private _totalCagesFound = 0;
 
     constructor() {
@@ -166,7 +165,7 @@ class Stats {
         this.clear();
     }
 
-    get data(): ReadonlyArray<AreaStats> {
+    get data(): ReadonlyArray<HouseAreaStats> {
         return this._data;
     }
 
@@ -180,8 +179,8 @@ class Stats {
     }
 
     clear() {
-        for (const n of CachedNumRanges.ONE_TO_N_LTE_10[House.COUNT_OF_ONE_TYPE_PER_GRID]) {
-            this._data[n] = new AreaStats(n);
+        for (const n of House.COUNT_RANGE) {
+            this._data[n] = new HouseAreaStats(n);
         }
         this._totalCagesFound = 0;
     }
