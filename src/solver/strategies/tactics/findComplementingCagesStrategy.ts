@@ -396,22 +396,24 @@ abstract class HouseAreasProcessor {
 
     protected readonly _isEnabled: boolean;
     protected readonly _isEnabledForIndividualHouses: boolean;
+    protected readonly _isCollectStats: boolean;
+
     protected readonly _context: Context;
     protected readonly _model: MasterModel;
     protected readonly _config: Config;
     protected readonly _strategy: Strategy;
     protected readonly _cageSlicer: CageSlicer;
-    protected readonly _isCollectStats: boolean;
 
     constructor(isEnabled: boolean, isEnabledForIndividualHouses: boolean, processorCtx: ProcessorContext) {
         this._isEnabled = isEnabled;
         this._isEnabledForIndividualHouses = isEnabledForIndividualHouses;
+        this._isCollectStats = processorCtx.config.isCollectStats;
+
         this._context = processorCtx.context;
         this._model = processorCtx.model;
         this._config = processorCtx.config;
         this._strategy = processorCtx.strategy;
         this._cageSlicer = this._context.cageSlicer;
-        this._isCollectStats = this._config.isCollectStats;
     }
 
     /**
