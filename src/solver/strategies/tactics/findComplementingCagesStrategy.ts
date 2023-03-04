@@ -643,8 +643,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                         indexedCages,
                         houseCellsIndices);
                 this.findAndSlice(areaCageMs, areaCellsIndices, adjacentHouseCount);
-                topOrLeftIndex++;
-            } while (topOrLeftIndex <= maxTopOrLeftIndex);
+            } while (++topOrLeftIndex <= maxTopOrLeftIndex);
 
             adjacentHouseCount++;
         }
@@ -665,8 +664,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                 }
             }
             areaCellsIndices.add(houseCellsIndices[index]);
-            index++;
-        } while (index < rightOrBottomExclusive);
+        } while (++index < rightOrBottomExclusive);
 
         return {
             areaCageMs, areaCellsIndices
