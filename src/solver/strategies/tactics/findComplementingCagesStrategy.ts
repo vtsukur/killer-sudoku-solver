@@ -707,6 +707,9 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
 }
 
+/**
+ * Processor for individual {@link Row}s and adjacent {@link Row} areas.
+ */
 class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private static readonly _CELLS_INDICES = this.cellsIndices(Row.newCellsIterator);
@@ -738,6 +741,9 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
 
 }
 
+/**
+ * Processor for individual {@link Column}s and adjacent {@link Column} areas.
+ */
 class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
     private static readonly _CELLS_INDICES = this.cellsIndices(Column.newCellsIterator);
@@ -769,6 +775,9 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
 
 }
 
+/**
+ * Processor for individual {@link Nonet}s.
+ */
 class NonetAreasProcessor extends HouseAreasProcessor {
 
     private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.newCellsIterator);
