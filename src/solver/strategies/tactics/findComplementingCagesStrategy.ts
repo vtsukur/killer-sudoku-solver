@@ -387,6 +387,9 @@ class ProcessorContext {
  */
 type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 
+/**
+ * Type alias for the function producing {@link CellsIterator} for a {@link House} by index.
+ */
 type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
