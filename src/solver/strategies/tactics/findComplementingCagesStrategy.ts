@@ -590,26 +590,26 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             maxAdjacentAreas: number) {
         let n = Math.max(minAdjacentAreas, 2);
         while (n <= maxAdjacentAreas) {
-            const upperBound = House.CELL_COUNT - n;
+            const maxTopOrLeftIndex = House.CELL_COUNT - n;
             let topOrLeftIndex = 0;
             do {
                 const rightOrBottomExclusive = topOrLeftIndex + n;
-                const cageMs = new Array<CageModel>();
-                const indices = CellIndicesCheckingSet.newEmpty();
+                const areaActualCageMs = new Array<CageModel>();
+                const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
                 let index = topOrLeftIndex;
                 do {
                     for (const cageM of indexedCages[index]) {
                         if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
-                            cageMs.push(cageM);
+                            areaActualCageMs.push(cageM);
                         }
                     }
-                    indices.add(houseCellsIndices[index]);
+                    areaCellsIndices.add(houseCellsIndices[index]);
                     index++;
                 } while (index < rightOrBottomExclusive);
 
-                this.findAndSlice(cageMs, n, indices);
+                this.findAndSlice(areaActualCageMs, n, areaCellsIndices);
                 topOrLeftIndex++;
-            } while (topOrLeftIndex <= upperBound);
+            } while (topOrLeftIndex <= maxTopOrLeftIndex);
             n++;
         }
     }
