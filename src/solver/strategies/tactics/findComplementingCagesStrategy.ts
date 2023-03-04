@@ -392,6 +392,14 @@ type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
  */
 type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
+/**
+ * Abstract processor for {@link House} areas
+ * which defines key work of the overall {@link FindComplementingCagesStrategy}.
+ *
+ * This class is agnostic to a particular {@link House} type it operates with.
+ *
+ * This class is designed to be extended with processing logic for specific {@link House} type.
+ */
 abstract class HouseAreasProcessor {
 
     protected readonly _isEnabled: boolean;
