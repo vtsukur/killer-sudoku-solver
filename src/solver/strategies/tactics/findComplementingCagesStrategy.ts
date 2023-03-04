@@ -627,20 +627,20 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
-        let n = Math.max(minAdjacentAreas, 2);
-        while (n <= maxAdjacentAreas) {
-            const maxTopOrLeftIndex = House.CELL_COUNT - n;
+        let adjacentHouseCount = Math.max(minAdjacentAreas, 2);
+        while (adjacentHouseCount <= maxAdjacentAreas) {
+            const maxTopOrLeftIndex = House.CELL_COUNT - adjacentHouseCount;
             let topOrLeftIndex = 0;
             do {
                 const { areaCageMs, areaCellsIndices } = this.collectAreaData(
                         topOrLeftIndex,
-                        topOrLeftIndex + n,
+                        topOrLeftIndex + adjacentHouseCount,
                         indexedCages,
                         houseCellsIndices);
-                this.findAndSlice(areaCageMs, areaCellsIndices, n);
+                this.findAndSlice(areaCageMs, areaCellsIndices, adjacentHouseCount);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= maxTopOrLeftIndex);
-            n++;
+            adjacentHouseCount++;
         }
     }
 
