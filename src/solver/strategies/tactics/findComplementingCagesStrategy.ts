@@ -1,4 +1,6 @@
 import { Cage } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../../puzzle/cell';
 import { CellsIterator } from '../../../puzzle/cellsIterator';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
@@ -418,7 +420,7 @@ abstract class HouseAreasProcessor {
     protected applyToIndividualHouses(houseCellsIndices: HouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
             for (const index of House.COUNT_RANGE) {
-                this.findAndSlice(this.houseModel(index).cageModels, 1, houseCellsIndices[index]);
+                this.findAndSlice(this.houseModel(index).cageModels, houseCellsIndices[index], 1);
             }
         }
     }
@@ -434,17 +436,17 @@ abstract class HouseAreasProcessor {
      *
      * Designed to be called by sub-classes.
      *
-     * @param cageMs - {@link CageModel}s within the target area.
-     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * @param houseCount - Amount of {@link House}s which cover the target area.
      *
      * @see {CageSlicer}
      */
     protected findAndSlice(
-            cageMs: ReadonlyArray<CageModel>,
-            houseCount: number,
-            areaCellIndices: ReadonlyCellIndicesCheckingSet) {
-        const complement = this.determineMeaningfulComplement(cageMs, houseCount, areaCellIndices);
+            areaCageMs: ReadonlyArray<CageModel>,
+            areaCellIndices: ReadonlyCellIndicesCheckingSet,
+            houseCount: number) {
+        const complement = this.determineMeaningfulComplement(areaCageMs, areaCellIndices, houseCount);
         if (complement) {
             this._cageSlicer.addAndSliceResidualCageRecursively(complement);
             this.applySolvedCellsStrategyIfNecessary(complement);
@@ -457,9 +459,9 @@ abstract class HouseAreasProcessor {
      * as the difference between the whole {@link House} area and
      * the area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
      *
-     * @param cageMs - {@link CageModel}s within the target area.
-     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * @param houseCount - Amount of {@link House}s which cover the target area.
      *
      * @returns _Complementing_ {@link Cage}
      * as the difference between the whole {@link House} area and
@@ -471,12 +473,12 @@ abstract class HouseAreasProcessor {
      * in case search is performed on adjacent {@link House}s. See {@see FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulComplement(
-            cageMs: ReadonlyArray<CageModel>,
-            houseCount: number,
-            areaCellIndices: ReadonlyCellIndicesCheckingSet): Cage | undefined {
+            areaCageMs: ReadonlyArray<CageModel>,
+            areaCellIndices: ReadonlyCellIndicesCheckingSet,
+            houseCount: number): Cage | undefined {
         const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
 
-        const { nonOverlappingCagesAreaModel } = GridAreaModel.fromCageModels(cageMs, houseCount);
+        const { nonOverlappingCagesAreaModel } = GridAreaModel.fromCageModels(areaCageMs, houseCount);
 
         const nHouseSum = Math.imul(houseCount, House.SUM);
         const minNonOverlappingAreaCellCount = nHouseCellCount - this._config.maxMeaningfulComplementSize;
@@ -598,7 +600,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                         topOrLeftIndex + n,
                         indexedCages,
                         houseCellsIndices);
-                this.findAndSlice(areaCageMs, n, areaCellsIndices);
+                this.findAndSlice(areaCageMs, areaCellsIndices, n);
                 topOrLeftIndex++;
             } while (topOrLeftIndex <= maxTopOrLeftIndex);
             n++;
