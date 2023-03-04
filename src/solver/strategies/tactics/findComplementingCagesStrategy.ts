@@ -348,7 +348,7 @@ export class FindComplementingCagesStrategy extends Strategy {
             // Running core work.
             this.doExecute(indexedCageMsTracker);
         } finally {
-            // Cleanup event handlers even if error is thrown to avoid broken state.
+            // Cleanup of event handlers even if error is thrown to avoid broken state.
             this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
             this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
         }
