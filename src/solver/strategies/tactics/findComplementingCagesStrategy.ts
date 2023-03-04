@@ -574,6 +574,13 @@ abstract class HouseAreasProcessor {
 
 }
 
+/**
+ * Abstract processor for adjacent {@link House} areas.
+ *
+ * This class is agnostic to a particular {@link House} type it operates with.
+ *
+ * This class is designed to be extended with processing logic for specific {@link House} type.
+ */
 abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
     protected readonly _minAdjacentCount;
