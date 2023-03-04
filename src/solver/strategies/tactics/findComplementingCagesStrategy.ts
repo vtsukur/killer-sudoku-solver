@@ -213,10 +213,23 @@ type IndexedHouseCageModels = Array<Set<CageModel>>;
  */
 class IndexedCageModelsTracker {
 
+    private readonly _model: MasterModel;
+
     private readonly _rowIndexedCages: IndexedHouseCageModels;
     private readonly _columnIndexedCages: IndexedHouseCageModels;
 
+    private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
+        this._rowIndexedCages[cageM.minRow].add(cageM);
+        this._columnIndexedCages[cageM.minCol].add(cageM);
+    };
+    private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
+        this._rowIndexedCages[cageM.minRow].delete(cageM);
+        this._columnIndexedCages[cageM.minCol].delete(cageM);
+    };
+
     constructor(model: MasterModel) {
+        this._model = model;
+
         this._rowIndexedCages = House.COUNT_RANGE.map(() => new Set());
         this._columnIndexedCages = House.COUNT_RANGE.map(() => new Set());
 
@@ -234,15 +247,15 @@ class IndexedCageModelsTracker {
         return this._columnIndexedCages;
     }
 
-    readonly cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].add(cageM);
-        this._columnIndexedCages[cageM.minCol].add(cageM);
-    };
+    attachEventHandlers() {
+        this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
 
-    readonly cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].delete(cageM);
-        this._columnIndexedCages[cageM.minCol].delete(cageM);
-    };
+    deattachEventHandlers() {
+        this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
 
 };
 
@@ -377,15 +390,13 @@ export class FindComplementingCagesStrategy extends Strategy {
             // This is necessary because slicing results in adding and removing of `Cage`s
             // which this class needs to be aware of.
             //
-            this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
-            this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
+            indexedCageMsTracker.attachEventHandlers();
 
             // Running core work.
             this.doExecute(indexedCageMsTracker);
         } finally {
             // Cleanup of event handlers even if error is thrown to avoid broken state.
-            this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, indexedCageMsTracker.cageRegisteredEventHandler);
-            this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, indexedCageMsTracker.cageUnregisteredEventHandler);
+            indexedCageMsTracker.deattachEventHandlers();
         }
     }
 
