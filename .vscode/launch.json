@@ -333,13 +333,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/combosAndPermsForHouse]",
+            "name": "npm run test [solver/math/houseModelCagesCombinatorics]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/math/combosAndPermsForHouse.test.ts"
+                "tests/unit/solver/math/houseModelCagesCombinatorics.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -724,13 +724,13 @@
         },
 
         {
-            "name": "npm run test [solver/math/combosAndPermsForHouse.perf]",
+            "name": "npm run test [solver/math/houseModelCagesCombinatorics.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/math/combosAndPermsForHouse.perf.test.ts"
+                "tests/perf/solver/math/houseModelCagesCombinatorics.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

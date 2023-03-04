@@ -1,5 +1,5 @@
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
-import { combosAndPermsForHouse } from './combosAndPermsForHouse';
+import { combosAndPermsForHouse } from './houseModelCagesCombinatorics';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from './cellIndicesCheckingSet';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 
