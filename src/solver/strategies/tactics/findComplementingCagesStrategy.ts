@@ -135,21 +135,29 @@ const DEFAULT_CONFIG: Config = Object.freeze({
 
 class HouseAreaStats {
 
-    private readonly n: number;
-    private readonly foundCagesByCellCount: Array<number>;
+    private readonly _n: number;
+    private readonly _foundCagesByCellCount: Array<number>;
     private _totalCagesFound = 0;
 
     constructor(n: number) {
-        this.n = n;
-        this.foundCagesByCellCount = new Array(House.CELL_COUNT + 1).fill(0);
+        this._n = n;
+        this._foundCagesByCellCount = new Array(House.CELL_COUNT + 1).fill(0);
     }
 
     get totalCagesFound() {
         return this._totalCagesFound;
     }
 
+    get n() {
+        return this._n;
+    }
+
+    get foundCagesByCellCount(): ReadonlyArray<number> {
+        return this._foundCagesByCellCount;
+    }
+
     addFinding(cageCellCount: number) {
-        this.foundCagesByCellCount[cageCellCount]++;
+        this._foundCagesByCellCount[cageCellCount]++;
         this._totalCagesFound++;
     }
 
@@ -410,15 +418,11 @@ export class FindComplementingCagesStrategy extends Strategy {
 /**
  * Context for {@link HouseAreasProcessor} execution.
  */
-class ProcessorContext {
-
-    constructor(
-            readonly context: Context,
-            readonly model: MasterModel,
-            readonly config: Config,
-            readonly strategy: Strategy
-    ) {}
-
+type ProcessorContext = {
+    readonly context: Context,
+    readonly model: MasterModel,
+    readonly config: Config,
+    readonly strategy: Strategy
 }
 
 /**

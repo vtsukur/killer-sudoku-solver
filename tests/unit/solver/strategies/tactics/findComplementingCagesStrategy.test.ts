@@ -153,6 +153,69 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(3).at(6, 6).at(7, 6).new())).toBeTruthy();
     });
 
+    test('Collecting statistics for `Row`s within Daily Challenge (2022-10-22) by Sudoku.com (shallow coverage)', () => {
+        // When:
+        new FindComplementingCagesStrategy(context, {
+            isApplyToRowAreas: true,
+            isApplyToColumnAreas: false,
+            isApplyToNonetAreas: false,
+            minAdjacentRowsAndColumnsAreas: 1,
+            maxAdjacentRowsAndColumnsAreas: 1,
+            isCollectStats: true
+        }).execute();
+
+        // Then:
+        expect(FindComplementingCagesStrategy.STATS.totalCagesFound).toBe(9);
+
+        const zeroAdjacentHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[0];
+        expect(zeroAdjacentHouseComplementsStats.n).toBe(0);
+        expect(zeroAdjacentHouseComplementsStats.totalCagesFound).toBe(0);
+        expect(zeroAdjacentHouseComplementsStats.foundCagesByCellCount).toEqual([
+            0, // 0 `Cell`s
+            0, // 1 `Cell`
+            0, // 2 `Cell`s
+            0, // 3 `Cell`s
+            0, // 4 `Cell`s
+            0, // 5 `Cell`s
+            0, // 6 `Cell`s
+            0, // 7 `Cell`s
+            0, // 8 `Cell`s
+            0  // 9 `Cell`s
+        ]);
+
+        const individualHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[1];
+        expect(individualHouseComplementsStats.n).toBe(1);
+        expect(individualHouseComplementsStats.totalCagesFound).toBe(9);
+        expect(individualHouseComplementsStats.foundCagesByCellCount).toEqual([
+            0, // 0 `Cell`s
+            0, // 1 `Cell`
+            0, // 2 `Cell`s
+            1, // 3 `Cell`s
+            0, // 4 `Cell`s
+            3, // 5 `Cell`s
+            1, // 6 `Cell`s
+            2, // 7 `Cell`s
+            1, // 8 `Cell`s
+            1  // 9 `Cell`s
+        ]);
+
+        const multipleAdjacentHouseComplementsStats = FindComplementingCagesStrategy.STATS.data[2];
+        expect(multipleAdjacentHouseComplementsStats.n).toBe(2);
+        expect(multipleAdjacentHouseComplementsStats.totalCagesFound).toBe(0);
+        expect(multipleAdjacentHouseComplementsStats.foundCagesByCellCount).toEqual([
+            0, // 0 `Cell`s
+            0, // 1 `Cell`
+            0, // 2 `Cell`s
+            0, // 3 `Cell`s
+            0, // 4 `Cell`s
+            0, // 5 `Cell`s
+            0, // 6 `Cell`s
+            0, // 7 `Cell`s
+            0, // 8 `Cell`s
+            0  // 9 `Cell`s
+        ]);
+    });
+
 });
 
 export const newContext = (puzzle: Puzzle) => {
