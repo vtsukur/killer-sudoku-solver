@@ -10,11 +10,17 @@ import { CachedNumRanges } from './cachedNumRanges';
 
 export class HouseModelCagesCombinatorics {
 
+    readonly nonOverlappingCages: ReadonlyArray<Cage>;
+    readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
+    readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
+
     private constructor(
-            readonly nonOverlappingCages: ReadonlyArray<Cage>,
-            readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
-            readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
-        // No-op
+            nonOverlappingCages: ReadonlyArray<Cage>,
+            sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
+        this.nonOverlappingCages = nonOverlappingCages;
+        this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
+        this.actualSumCombos = actualSumCombos;
     }
 
     static for(houseM: HouseModel) {
