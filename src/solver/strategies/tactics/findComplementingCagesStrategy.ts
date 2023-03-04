@@ -637,6 +637,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
             // Iterating over all adjacent `House` areas of a particular size.
             do {
+                // Key work happens here.
                 const { areaCageMs, areaCellsIndices } = this.collectAreaData(
                         topOrLeftIndex,
                         topOrLeftIndex + adjacentHouseCount,
