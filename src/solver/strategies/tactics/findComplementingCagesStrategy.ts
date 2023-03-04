@@ -380,7 +380,13 @@ class ProcessorContext {
 
 }
 
+/**
+ * Type alias for the array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
+ *
+ * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
+ */
 type HouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
+
 type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
 
 abstract class HouseAreasProcessor {
