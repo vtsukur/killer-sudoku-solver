@@ -188,31 +188,45 @@ class Stats {
 
 }
 
+type ReadonlyIndexedHouseCageModels = ReadonlyArray<Set<CageModel>>;
+type IndexedHouseCageModels = Array<Set<CageModel>>;
+
 class IndexedCageModelsTracker {
-    readonly rowIndexedCages: Array<Set<CageModel>>;
-    readonly columnIndexedCages: Array<Set<CageModel>>;
+
+    private readonly _rowIndexedCages: IndexedHouseCageModels;
+    private readonly _columnIndexedCages: IndexedHouseCageModels;
 
     constructor(model: MasterModel) {
-        this.rowIndexedCages = new Array(House.CELL_COUNT);
-        this.columnIndexedCages = new Array(House.CELL_COUNT);
+        this._rowIndexedCages = new Array(House.CELL_COUNT);
+        this._columnIndexedCages = new Array(House.CELL_COUNT);
         for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT]) {
-            this.rowIndexedCages[i] = new Set();
-            this.columnIndexedCages[i] = new Set();
+            this._rowIndexedCages[i] = new Set();
+            this._columnIndexedCages[i] = new Set();
         }
         for (const cageM of model.cageModelsMap.values()) {
-            this.rowIndexedCages[cageM.minRow].add(cageM);
-            this.columnIndexedCages[cageM.minCol].add(cageM);
+            this._rowIndexedCages[cageM.minRow].add(cageM);
+            this._columnIndexedCages[cageM.minCol].add(cageM);
         }
     }
 
+    get rowIndexedCages(): ReadonlyIndexedHouseCageModels {
+        return this._rowIndexedCages;
+    }
+
+    get columnIndexedCages(): ReadonlyIndexedHouseCageModels {
+        return this._columnIndexedCages;
+    }
+
     readonly cageRegisteredEventHandler = (cageM: CageModel) => {
-        this.rowIndexedCages[cageM.minRow].add(cageM);
-        this.columnIndexedCages[cageM.minCol].add(cageM);
+        this._rowIndexedCages[cageM.minRow].add(cageM);
+        this._columnIndexedCages[cageM.minCol].add(cageM);
     };
+
     readonly cageUnregisteredEventHandler = (cageM: CageModel) => {
-        this.rowIndexedCages[cageM.minRow].delete(cageM);
-        this.columnIndexedCages[cageM.minCol].delete(cageM);
+        this._rowIndexedCages[cageM.minRow].delete(cageM);
+        this._columnIndexedCages[cageM.minCol].delete(cageM);
     };
+
 };
 
 /**
@@ -629,7 +643,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Designed to be called by sub-classes.
      *
-     * @param indexedCages - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
+     * @param indexedCageMs - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
      * leftmost {@link Column}.
      * Use of this data structure enhances implementation performance
      * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
@@ -642,7 +656,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * @param maxAdjacentAreas - See {@see Config.maxAdjacentRowsAndColumnsAreas}.
      */
     protected applyToAdjacentHouses(
-            indexedCages: ReadonlyArray<Set<CageModel>>,
+            indexedCageMs: ReadonlyIndexedHouseCageModels,
             houseCellsIndices: HouseCellsIndices,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
@@ -660,7 +674,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                 const { areaCageMs, areaCellsIndices } = this.collectAreaData(
                         topOrLeftIndex,
                         topOrLeftIndex + adjacentHouseCount,
-                        indexedCages,
+                        indexedCageMs,
                         houseCellsIndices);
                 this.findAndSlice(areaCageMs, areaCellsIndices, adjacentHouseCount);
             } while (++topOrLeftIndex <= maxTopOrLeftIndex);
@@ -672,13 +686,13 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     private collectAreaData(
             topOrLeftIndex: number,
             rightOrBottomExclusive: number,
-            indexedCages: ReadonlyArray<Set<CageModel>>,
+            indexedCageMs: ReadonlyIndexedHouseCageModels,
             houseCellsIndices: HouseCellsIndices) {
         const areaCageMs = new Array<CageModel>();
         const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
         let index = topOrLeftIndex;
         do {
-            for (const cageM of indexedCages[index]) {
+            for (const cageM of indexedCageMs[index]) {
                 if (this.isWithinArea(cageM, rightOrBottomExclusive)) {
                     areaCageMs.push(cageM);
                 }
