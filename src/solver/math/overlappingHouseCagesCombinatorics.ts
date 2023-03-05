@@ -58,11 +58,11 @@ export class OverlappingHouseCagesCombinatorics {
      * @returns Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
      * in the form of {@link HouseCagesCombos} considering {@link Cage}s to be _overlapping_.
      *
-     * @see {houseCagesCombos}
+     * @see {combos}
      */
     static enumerateCombos(houseCagesAreaModel: HouseCagesAreaModel): OverlappingHouseCagesCombinatorics {
         return {
-            houseCagesCombos: houseCagesAreaModel.cages.map(cage => {
+            combos: houseCagesAreaModel.cages.map(cage => {
                 return SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount).val;
             })
         };

@@ -147,11 +147,11 @@ export class HouseModelCagesCombinatorics {
 
         // Enumerating possible numbers for `Cell`s within _non-overlapping_ `Cage`s.
         const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
-        const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
+        const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
 
         // Enumerating possible numbers for `Cell`s within _overlapping_ `Cage`s.
         const overlappingCages = gridAreaModel.overlappingCages;
-        const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
+        const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).combos;
 
         //
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
