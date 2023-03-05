@@ -8,6 +8,7 @@ import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombi
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from './cachedNumRanges';
+import { HouseCagesCombos } from './houseCagesCombinatorics';
 
 /**
  * Combinatorics of possible numbers within {@link CageModel}'s {@link Cage}s
@@ -24,9 +25,9 @@ export class HouseModelCagesCombinatorics {
      * {@link Cage}s without shared {@link Cell}s forming area of maximized size within the {@link House}.
      *
      * Order of elements in this array follows the original order of
-     * _non-overlapping_ {@link Cage}s in the `houseM.cageModels` input of {@link for} method.
+     * _non-overlapping_ {@link Cage}s in the `houseM.cageModels` input of {@link for} static factory method.
      *
-     * For example, if `houseM.cageModels[].cage` is represented as follows:
+     * For example, if the `houseM.cageModels[].cage` is represented as follows:
      * ```
      * [
      *   Cage 1 - non-overlapping,
@@ -63,12 +64,50 @@ export class HouseModelCagesCombinatorics {
      */
     readonly sumPermsForNonOverlappingCages: HouseCagesPerms;
 
-    readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
+    /**
+     * Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
+     * in the form of {@link HouseCagesCombos}.
+     *
+     * Each value in this array is a readonly array of unique {@link Combo}s
+     * of nonrepeating numbers for respective {@link Cage} represented as {@link HouseCageCombos}.
+     *
+     * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
+     *
+     * Each {@link HouseCageCombos} value in this array appears in the same order as respective {@link Cage}s
+     * in the `houseM.cageModels` input of {@link for} static factory method,
+     * meaning {@link Cage} with of `i` in the `houseM.cageModels` input
+     * will be mapped to the array element of {@link HouseCageCombos} with the index `i`.
+     *
+     * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
+     *
+     * For example, if the `houseM.cageModels[].cage` is represented as follows:
+     * ```
+     * [
+     *   Cage 1,
+     *   Cage 2,
+     *   Cage 3,
+     *   Cage 4,
+     *   Cage 5
+     * ]
+     * ```
+     * then {@link actualSumCombos} will be ordered as follows:
+     * ```
+     * [
+     *   [ Combos for Cage 1 ],
+     *   [ Combos for Cage 2 ],
+     *   [ Combos for Cage 3 ],
+     *   [ Combos for Cage 4 ],
+     *   [ Combos for Cage 5 ]
+     * ]
+     * ```
+     */
+    readonly actualSumCombos: HouseCagesCombos;
 
     private constructor(
             nonOverlappingCages: ReadonlyCages,
             sumPermsForNonOverlappingCages: HouseCagesPerms,
-            actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
+            actualSumCombos: HouseCagesCombos) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
         this.actualSumCombos = actualSumCombos;
