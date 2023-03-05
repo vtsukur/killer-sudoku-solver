@@ -6,6 +6,10 @@ describe('House tests', () => {
         expect(House.COUNT).toEqual(9);
     });
 
+    test('There are 9 Houses of one type (Row, Column or Nonet) per Grid', () => {
+        expect(Array.from(House.COUNT_RANGE)).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
+    });
+
     test('House Cell count is 9', () => {
         expect(House.CELL_COUNT).toEqual(9);
     });
