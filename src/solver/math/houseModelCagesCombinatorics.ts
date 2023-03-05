@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
@@ -10,7 +11,7 @@ import { CachedNumRanges } from './cachedNumRanges';
 
 /**
  * Combinatorics of possible numbers within {@link CageModel}'s {@link Cage}s
- * which belong to the same {@link House}.
+ * which belong to the same {@link HouseModel}.
  *
  * This type follows Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -19,12 +20,16 @@ import { CachedNumRanges } from './cachedNumRanges';
  */
 export class HouseModelCagesCombinatorics {
 
-    readonly nonOverlappingCages: ReadonlyArray<Cage>;
+    /**
+     * {@link Cage}s without shared {@link Cell}s forming area of maximized size within the {@link House}.
+     */
+    readonly nonOverlappingCages: ReadonlyCages;
+
     readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
     readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
 
     private constructor(
-            nonOverlappingCages: ReadonlyArray<Cage>,
+            nonOverlappingCages: ReadonlyCages,
             sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
             actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
         this.nonOverlappingCages = nonOverlappingCages;
