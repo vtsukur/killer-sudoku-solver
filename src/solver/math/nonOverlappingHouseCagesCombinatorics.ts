@@ -46,8 +46,8 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
      * represented as {@link HouseCagesPerm}.
      *
      * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
-     * in `houseCagesAreaModel` input of {@link enumerateCombosAndPerms} method,
-     * meaning {@link Cage} of index `i` in `houseCagesAreaModel` input
+     * in the `houseCagesAreaModel` input of {@link enumerateCombosAndPerms} method,
+     * meaning {@link Cage} of index `i` in the `houseCagesAreaModel` input
      * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
      *
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
