@@ -157,7 +157,13 @@ export class HouseModelCagesCombinatorics {
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
         // and making sure that order of output combinations follows the order of input.
         //
-        const actualSumCombos = this.mergeCombosPreservingInputOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
+        const actualSumCombos = this.mergeCombosPreservingInputOrder(
+            combosForNonOverlappingCages,
+            combosForOverlappingCages,
+            houseM.cageModels,
+            nonOverlappingCages,
+            overlappingCages
+        );
 
         return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
     }
