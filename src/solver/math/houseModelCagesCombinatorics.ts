@@ -22,6 +22,28 @@ export class HouseModelCagesCombinatorics {
 
     /**
      * {@link Cage}s without shared {@link Cell}s forming area of maximized size within the {@link House}.
+     *
+     * Order of elements in this array follows the original order of
+     * _non-overlapping_ {@link Cage}s in the `houseM.cageModels` input of {@link for} method.
+     *
+     * For example, if `houseM.cageModels[].cage` is represented as follows:
+     * ```
+     * [
+     *   Cage 1 - non-overlapping,
+     *   Cage 2 - non-overlapping,
+     *   Cage 3 - overlapping,
+     *   Cage 4 - overlapping,
+     *   Cage 5 - non-overlapping
+     * ]
+     * ```
+     * then {@link nonOverlappingCages} will be ordered as follows:
+     * ```
+     * [
+     *   Cage 1 - non-overlapping,
+     *   Cage 2 - non-overlapping,
+     *   Cage 5 - non-overlapping
+     * ]
+     * ```
      */
     readonly nonOverlappingCages: ReadonlyCages;
 
@@ -32,9 +54,8 @@ export class HouseModelCagesCombinatorics {
      * Each value in this array is a single permutation of possible numbers in {@link House} {@link Cage}s
      * represented as {@link HouseCagesPerm}.
      *
-     * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
-     * in the `houseM.cageModels` input of {@link for} method,
-     * meaning {@link Cage} of index `i` in the `houseM.cageModels` input
+     * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as {@link Cage}s
+     * in the {@link nonOverlappingCages}, meaning {@link Cage} of index `i` in the {@link nonOverlappingCages}
      * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
      *
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
