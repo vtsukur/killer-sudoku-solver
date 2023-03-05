@@ -1,6 +1,5 @@
 import { Column } from './column';
-import { CellRowAndColumn, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
-import { GridMatrix } from './gridMatrix';
+import { CellRowAndColumn, GridMatrix } from './gridMatrix';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 import { Row } from './row';
@@ -77,7 +76,7 @@ export class Cell {
     private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridMatrix.new();
 
     static {
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(([ row, col ]) => {
+        GridMatrix.forEachCellPositionOnTheGrid(([ row, col ]) => {
             this._CACHED_INSTANCES[row][col] = new Cell(row, col);
         });
     }
@@ -114,7 +113,7 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
-        this.index = Math.imul(row, GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT) + col;
+        this.index = Math.imul(row, GridMatrix.GRID_SIDE_CELL_COUNT) + col;
         this.key = Cell.keyOf(row, col);
     }
 

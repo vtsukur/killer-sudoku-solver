@@ -1,6 +1,6 @@
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
-import { GridSizeAndCellPositionsIteration } from '../../../src/puzzle/gridSizeAndCellPositionsIteration';
+import { GridMatrix } from '../../../src/puzzle/gridMatrix';
 
 describe('Grid tests', () => {
     test('Sum of all cells in the Grid add up to 405', () => {
@@ -25,7 +25,7 @@ describe('Grid tests', () => {
 
     test('Iteration over `CellRowAndColumn`s', () => {
         const cells = new Array<Cell>();
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(([ row, col ]) => {
+        GridMatrix.forEachCellPositionOnTheGrid(([ row, col ]) => {
             cells.push(Cell.at(row, col));
         });
 

@@ -1,5 +1,5 @@
 import { Cell } from '../../puzzle/cell';
-import { GridSizeAndCellPositionsIteration } from '../../puzzle/gridSizeAndCellPositionsIteration';
+import { GridMatrix } from '../../puzzle/gridMatrix';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
 /**
@@ -7,7 +7,7 @@ import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsChec
  * which can be used to mark {@link Cell}s as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
  * The range of this checking set is [0, 81) to be able to fit
- * all possible {@link Cell} indices on the {@link Grid} (see {@link GridSizeAndCellPositionsIteration.GRID_CELL_COUNT}).
+ * all possible {@link Cell} indices on the {@link Grid} (see {@link GridMatrix.GRID_CELL_COUNT}).
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
@@ -83,7 +83,7 @@ export class CellIndicesCheckingSet implements
     private static readonly _BITS_PER_BIT_STORE = 32;
 
     // Caching data about bit store index and bit position within the bit store to enable fast access.
-    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE.map(cellIndex => {
+    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = GridMatrix.GRID_CELL_INDICES_RANGE.map(cellIndex => {
         const bitStoreIndex = ~~(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         const bitPosition = cellIndex - Math.imul(bitStoreIndex, CellIndicesCheckingSet._BITS_PER_BIT_STORE);
         return { bitStoreIndex, bitPosition };
@@ -153,7 +153,7 @@ export class CellIndicesCheckingSet implements
         ];
 
         // Iterating over all possible `Cell` indices on the `Grid`.
-        for (const index of GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE) {
+        for (const index of GridMatrix.GRID_CELL_INDICES_RANGE) {
             //
             // Calculating index of the bit store (in the [0, 2] range):
             //
@@ -184,12 +184,12 @@ export class CellIndicesCheckingSet implements
             //
             // Calculating index of the `Cell` `Row` from absolute `Cell` index on the `Grid`.
             //
-            // Same as `Math.trunc(index / GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT)` but `~~` is faster.
+            // Same as `Math.trunc(index / GridMatrix.GRID_SIDE_CELL_COUNT)` but `~~` is faster.
             //
-            const row = ~~(index / GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT);
+            const row = ~~(index / GridMatrix.GRID_SIDE_CELL_COUNT);
 
             // Calculating index of the `Cell` `Column` from absolute `Cell` index on the `Grid`.
-            const col = index % GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT;
+            const col = index % GridMatrix.GRID_SIDE_CELL_COUNT;
 
             // Storing `Cell` value in the lookup table.
             val[bitStoreIndex][lutIndex] = Cell.at(row, col);

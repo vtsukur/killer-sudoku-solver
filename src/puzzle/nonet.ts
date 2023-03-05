@@ -1,5 +1,5 @@
 import { Cell } from './cell';
-import { CellRowAndColumn, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
+import { CellRowAndColumn, GridMatrix } from './gridMatrix';
 import { House, HouseIndex } from './house';
 
 /**
@@ -60,8 +60,8 @@ export class Nonet {
     private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellRowAndColumn>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<Array<CellRowAndColumn>> = GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE.map(() => []);
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellRowAndColumn => {
+        const val: Array<Array<CellRowAndColumn>> = GridMatrix.GRID_SIDE_INDICES_RANGE.map(() => []);
+        GridMatrix.forEachCellPositionOnTheGrid(cellRowAndColumn => {
             val[this.GRID_CELLS_TO_NONETS[cellRowAndColumn[0]][cellRowAndColumn[1]]].push(cellRowAndColumn);
         });
         return val;
