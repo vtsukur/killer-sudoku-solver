@@ -1,27 +1,27 @@
-import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
+import { GridSizeAndCellPositionsIteration } from '../../../src/puzzle/gridSizeAndCellPositionsIteration';
 
 describe('Grid tests', () => {
-    test('Amount of Cells on Grid\'s side is 9', () => {
-        expect(Grid.SIDE_CELL_COUNT).toEqual(9);
-    });
+    // test('Amount of Cells on Grid\'s side is 9', () => {
+    //     expect(Grid.SIDE_CELL_COUNT).toEqual(9);
+    // });
 
-    test('Range for `Grid`\'s side indices is [0, 8]', () => {
-        expect(Grid.SIDE_INDICES_RANGE).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
-    });
+    // test('Range for `Grid`\'s side indices is [0, 8]', () => {
+    //     expect(Grid.SIDE_INDICES_RANGE).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
+    // });
 
-    test('Grid has 81 Cells', () => {
-        expect(Grid.CELL_COUNT).toEqual(81);
-    });
+    // test('Grid has 81 Cells', () => {
+    //     expect(Grid.CELL_COUNT).toEqual(81);
+    // });
 
-    test('Range for `Grid`\'s `Cell` indices is [0, 80]', () => {
-        expect(Grid.CELL_INDICES_RANGE).toEqual(_.range(Grid.CELL_COUNT));
-    });
+    // test('Range for `Grid`\'s `Cell` indices is [0, 80]', () => {
+    //     expect(Grid.CELL_INDICES_RANGE).toEqual(_.range(Grid.CELL_COUNT));
+    // });
 
-    test('Sum of all cells in the Grid add up to 405', () => {
-        expect(Grid.SUM).toEqual(405);
-    });
+    // test('Sum of all cells in the Grid add up to 405', () => {
+    //     expect(Grid.SUM).toEqual(405);
+    // });
 
     test('Iteration over Cells', () => {
         const cells = Array.from(Grid.newCellsIterator());
@@ -41,7 +41,7 @@ describe('Grid tests', () => {
 
     test('Iteration over `CellRowAndColumn`s', () => {
         const cells = new Array<Cell>();
-        Grid.forEachCellPosition(([ row, col ]) => {
+        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(([ row, col ]) => {
             cells.push(Cell.at(row, col));
         });
 

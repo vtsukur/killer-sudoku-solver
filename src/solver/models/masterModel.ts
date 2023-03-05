@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Column } from '../../puzzle/column';
-import { Grid } from '../../puzzle/grid';
+import { GridSizeAndCellPositionsIteration } from '../../puzzle/gridSizeAndCellPositionsIteration';
 import { GridSizedMatrix } from '../../puzzle/gridSizedMatrix';
 import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
@@ -227,7 +227,7 @@ export class MasterModel {
     }
 
     get isSolved() {
-        return this._placedNumCount === Grid.CELL_COUNT;
+        return this._placedNumCount === GridSizeAndCellPositionsIteration.GRID_CELL_COUNT;
     }
 
     get solution() {

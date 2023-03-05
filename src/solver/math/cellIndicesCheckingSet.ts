@@ -7,7 +7,7 @@ import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsChec
  * which can be used to mark {@link Cell}s as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
  * The range of this checking set is [0, 81) to be able to fit
- * all possible {@link Cell} indices on the {@link Grid} (see {@link Grid.CELL_COUNT}).
+ * all possible {@link Cell} indices on the {@link Grid} (see {@link GridSizeAndCellPositionsIteration.GRID_CELL_COUNT}).
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *

@@ -1,6 +1,6 @@
 import { Cell } from './cell';
 import { CellsIterator } from './cellsIterator';
-import { CellRowAndColumn, CellRowAndColumnCallback, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
+import { CellRowAndColumn, GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIteration';
 import { House } from './house';
 
 /**
@@ -14,29 +14,9 @@ import { House } from './house';
 export class Grid {
 
     /**
-     * Amount of {@link Cell}s on `Grid`'s side.
-     */
-    static readonly SIDE_CELL_COUNT = GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT;
-
-    /**
-     * Range as a readonly array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
-     */
-    static readonly SIDE_INDICES_RANGE = GridSizeAndCellPositionsIteration.GRID_SIDE_INDICES_RANGE;
-
-    /**
-     * Total amount of {@link Cell}s in a `Grid`.
-     */
-    static readonly CELL_COUNT = GridSizeAndCellPositionsIteration.GRID_CELL_COUNT;
-
-    /**
-     * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
-     */
-    static readonly CELL_INDICES_RANGE = GridSizeAndCellPositionsIteration.GRID_CELL_INDICES_RANGE;
-
-    /**
      * Total sum of all numbers in a `Grid`.
      */
-    static readonly SUM = Math.imul(this.SIDE_CELL_COUNT, House.SUM);
+    static readonly SUM = Math.imul(GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT, House.SUM);
 
     /* istanbul ignore next */
     private constructor() {
@@ -47,7 +27,7 @@ export class Grid {
 
     private static buildIterationCache() {
         const val: Array<CellRowAndColumn> = [];
-        Grid.forEachCellPosition(cellPosition => {
+        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(cellPosition => {
             val.push(cellPosition);
         });
         return val;
@@ -72,18 +52,7 @@ export class Grid {
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.atPosition(this._CELLS_ITERATOR_CACHE[index]);
-        }, Grid.CELL_COUNT);
-    }
-
-    /**
-     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
-     *
-     * Iteration sequence is the same way as in `newCellsIterator` method.
-     *
-     * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
-     */
-    static forEachCellPosition(callback: CellRowAndColumnCallback) {
-        GridSizeAndCellPositionsIteration.forEachCellPositionOnTheGrid(callback);
+        }, GridSizeAndCellPositionsIteration.GRID_CELL_COUNT);
     }
 
 }
