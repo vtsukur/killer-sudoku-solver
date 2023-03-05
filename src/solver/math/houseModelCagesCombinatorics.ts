@@ -1,14 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
-import { Combo, ReadonlyCombos } from './combo';
+import { ReadonlyCombos } from './combo';
 import { HouseCagesPerms, NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from './cachedNumRanges';
-import { HouseCagesCombos } from './houseCagesCombinatorics';
+import { HouseCageCombos, HouseCagesCombos } from './houseCagesCombinatorics';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
 
@@ -169,25 +169,27 @@ export class HouseModelCagesCombinatorics {
     }
 
     private static mergeCombosPreservingInputOrder(
-            combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
-            combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            combosForNonOverlappingCages: HouseCagesCombos,
+            combosForOverlappingCages: HouseCagesCombos,
             allCageMs: ReadonlyArray<CageModel>,
             nonOverlappingCages: ReadonlyCages,
             overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-        const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(allCageMs.length);
+        const combos = new Array<HouseCageCombos>(allCageMs.length);
 
         for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[allCageMs.length]) {
             const cage = allCageMs[i].cage;
+            // `findIndex` for small collections is faster than using `Set`s or `Map`s.
             const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
             if (nonOverlappingCageIndex !== -1) {
-                orderPreservedCombos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];
+                combos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];
             } else {
+                // `findIndex` for small collections is faster than using `Set`s or `Map`s.
                 const overlappingCageIndex = overlappingCages.findIndex(originalCage => originalCage === cage);
-                orderPreservedCombos[i] = combosForOverlappingCages[overlappingCageIndex];
+                combos[i] = combosForOverlappingCages[overlappingCageIndex];
             }
         }
 
-        return orderPreservedCombos;
+        return combos;
     }
 
 }
