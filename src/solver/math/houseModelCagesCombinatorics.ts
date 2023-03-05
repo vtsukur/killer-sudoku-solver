@@ -73,13 +73,16 @@ export class HouseModelCagesCombinatorics {
      *
      * Numbers in each {@link Combo} are enumerated so that they add up to {@link Cage} sum.
      *
+     * _Non-overlapping_ {@link Cage}s have combinations which are unique
+     * to the possible permutations of ALL _non-overlapping_ {@link Cage}s within the {@link House}.
+     *
+     * _Overlapping_ {@link Cage}s have ALL combinations,
+     * regardless of possible permutations in the {@link House}.
+     *
      * Each {@link HouseCageCombos} value in this array appears in the same order as respective {@link Cage}s
      * in the `houseM.cageModels` input of {@link for} static factory method,
      * meaning {@link Cage} with of `i` in the `houseM.cageModels` input
      * will be mapped to the array element of {@link HouseCageCombos} with the index `i`.
-     *
-     * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
-     * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      *
      * For example, if the `houseM.cageModels[].cage` is represented as follows:
      * ```
@@ -101,6 +104,9 @@ export class HouseModelCagesCombinatorics {
      *   [ Combos for Cage 5 ]
      * ]
      * ```
+     *
+     * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
     readonly actualSumCombos: HouseCagesCombos;
 
