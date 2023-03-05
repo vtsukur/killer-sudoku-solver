@@ -2,7 +2,7 @@
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
 import { Combo, ReadonlyCombos } from './combo';
-import { NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
+import { HouseCagesPerms, NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
@@ -25,12 +25,28 @@ export class HouseModelCagesCombinatorics {
      */
     readonly nonOverlappingCages: ReadonlyCages;
 
-    readonly sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>;
+    /**
+     * Possible {@link House} {@link Cell}s' number permutations for {@link nonOverlappingCages}
+     * in the form of {@link HouseCagesPerms}.
+     *
+     * Each value in this array is a single permutation of possible numbers in {@link House} {@link Cage}s
+     * represented as {@link HouseCagesPerm}.
+     *
+     * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
+     * in the `houseM.cageModels` input of {@link for} method,
+     * meaning {@link Cage} of index `i` in the `houseM.cageModels` input
+     * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
+     *
+     * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
+     * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     */
+    readonly sumPermsForNonOverlappingCages: HouseCagesPerms;
+
     readonly actualSumCombos: ReadonlyArray<ReadonlyCombos>;
 
     private constructor(
             nonOverlappingCages: ReadonlyCages,
-            sumPermsForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            sumPermsForNonOverlappingCages: HouseCagesPerms,
             actualSumCombos: ReadonlyArray<ReadonlyCombos>) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
