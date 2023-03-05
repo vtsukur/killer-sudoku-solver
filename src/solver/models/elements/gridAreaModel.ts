@@ -7,6 +7,7 @@ import { House } from '../../../puzzle/house';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
 import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
 import { CageModel } from './cageModel';
+import { CagesAreaModel } from './cagesAreaModel';
 
 /**
  * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
@@ -15,17 +16,7 @@ import { CageModel } from './cageModel';
  *
  * @public
  */
-export interface NonOverlappingCagesAreaModel {
-
-    /**
-     * _Non-overlapping_ {@link Cage}s within {@link GridAreaModel} which are a part of this area.
-     */
-    readonly cages: ReadonlyCages;
-
-    /**
-     * Amount of {@link Cell}s in all _non-overlapping_ {@link cages} within this area.
-     */
-    readonly cellCount: number;
+export interface NonOverlappingCagesAreaModel extends CagesAreaModel {
 
     /**
      * Checking set of {@link Cell} indices which has all
