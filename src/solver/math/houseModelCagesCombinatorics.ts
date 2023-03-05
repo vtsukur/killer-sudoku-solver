@@ -151,7 +151,7 @@ export class HouseModelCagesCombinatorics {
 
         // Enumerating possible numbers for `Cell`s within _overlapping_ `Cage`s.
         const overlappingCages = gridAreaModel.overlappingCages;
-        const overlappingCagesCombinatorics = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages));
+        const overlappingCagesCombinatorics = OverlappingHouseCagesCombinatorics.enumerateCombos(overlappingCages);
 
         //
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s

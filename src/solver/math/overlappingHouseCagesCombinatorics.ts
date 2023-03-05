@@ -1,10 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cage } from '../../puzzle/cage';
+import { Cage, ReadonlyCages } from '../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
-import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 
@@ -44,10 +43,10 @@ export class OverlappingHouseCagesCombinatorics {
      * Enumerates possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
      * in the form of {@link HouseCagesCombos} considering {@link Cage}s to be _overlapping_.
      *
-     * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _overlapping_ {@link Cell}s.
+     * @param overlappingCages - {@link Cage}s which share {@link Cell}s with other {@link Cage}s in the same area.
      *
      * {@link Cage}s may cover either complete set of {@link House} {@link Cell}s or a subset.
-     * Empty {@link HouseCagesAreaModel} is also acceptable.
+     * Empty array is also acceptable.
      *
      * For performance reasons, this method does NOT check:
      *  - if all given {@link Cage}s belong to the same {@link House};
@@ -60,9 +59,9 @@ export class OverlappingHouseCagesCombinatorics {
      *
      * @see {combos}
      */
-    static enumerateCombos(houseCagesAreaModel: HouseCagesAreaModel): OverlappingHouseCagesCombinatorics {
+    static enumerateCombos(overlappingCages: ReadonlyCages): OverlappingHouseCagesCombinatorics {
         return {
-            combos: houseCagesAreaModel.cages.map(cage => {
+            combos: overlappingCages.map(cage => {
                 return SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount).val;
             })
         };
