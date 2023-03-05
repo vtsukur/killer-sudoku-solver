@@ -147,25 +147,25 @@ export class HouseModelCagesCombinatorics {
 
         // Enumerating possible numbers for `Cell`s within _non-overlapping_ `Cage`s.
         const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
-        const { perms: perms, combos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
+        const nonOverlappingCagesCombinatorics = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
 
         // Enumerating possible numbers for `Cell`s within _overlapping_ `Cage`s.
         const overlappingCages = gridAreaModel.overlappingCages;
-        const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).combos;
+        const overlappingCagesCombinatorics = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages));
 
         //
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
         // and making sure that order of output combinations follows the order of input.
         //
         const actualSumCombos = this.mergeCombosPreservingInputOrder(
-            combosForNonOverlappingCages,
-            combosForOverlappingCages,
+            nonOverlappingCagesCombinatorics.combos,
+            overlappingCagesCombinatorics.combos,
             houseM.cageModels,
             nonOverlappingCages,
             overlappingCages
         );
 
-        return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
+        return new HouseModelCagesCombinatorics(nonOverlappingCages, nonOverlappingCagesCombinatorics.perms, actualSumCombos);
     }
 
     private static mergeCombosPreservingInputOrder(
