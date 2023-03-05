@@ -51,7 +51,7 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
      * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
      *
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
-     * _a {@link House} having nonrepeating set of {@link Cell}`s with numbers from 1 to 9.
+     * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
     readonly houseCagesPerms: HouseCagesPerms;
 
