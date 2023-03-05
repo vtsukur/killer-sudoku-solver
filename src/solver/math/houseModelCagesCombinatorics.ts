@@ -3,7 +3,6 @@ import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
 import { ReadonlyCombos } from './combo';
 import { HouseCagesPerms, NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
-import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
@@ -147,7 +146,9 @@ export class HouseModelCagesCombinatorics {
 
         // Enumerating possible numbers for `Cell`s within _non-overlapping_ `Cage`s.
         const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
-        const nonOverlappingCagesCombinatorics = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
+        const nonOverlappingCagesCombinatorics = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(
+            gridAreaModel.nonOverlappingCagesAreaModel
+        );
 
         // Enumerating possible numbers for `Cell`s within _overlapping_ `Cage`s.
         const overlappingCages = gridAreaModel.overlappingCages;

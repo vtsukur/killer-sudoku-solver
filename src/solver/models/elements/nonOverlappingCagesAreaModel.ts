@@ -1,5 +1,5 @@
+import { ReadonlyCages } from '../../../puzzle/cage';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
-import { CagesAreaModel } from './cagesAreaModel';
 
 /**
  * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
@@ -8,7 +8,17 @@ import { CagesAreaModel } from './cagesAreaModel';
  *
  * @public
  */
-export interface NonOverlappingCagesAreaModel extends CagesAreaModel {
+export interface NonOverlappingCagesAreaModel {
+
+    /**
+     * _Non-overlapping_ {@link Cage}s within {@link GridAreaModel} which are a part of this area.
+     */
+    readonly cages: ReadonlyCages;
+
+    /**
+     * Amount of {@link Cell}s in all _non-overlapping_ {@link cages} within this area.
+     */
+    readonly cellCount: number;
 
     /**
      * Checking set of {@link Cell} indices which has all

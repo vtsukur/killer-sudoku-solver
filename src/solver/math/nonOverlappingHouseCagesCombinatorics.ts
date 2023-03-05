@@ -3,7 +3,6 @@ import { Cage } from '../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
-import { HouseCagesAreaModel } from '../models/elements/houseCagesAreaModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
@@ -11,6 +10,7 @@ import { SudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { BitStore32 } from './numsCheckingSet';
+import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s
@@ -46,8 +46,8 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
      * represented as {@link HouseCagesPerm}.
      *
      * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as respective {@link Cage}s
-     * in the `houseCagesAreaModel` input of {@link enumerateCombosAndPerms} method,
-     * meaning {@link Cage} of index `i` in the `houseCagesAreaModel` input
+     * in the `model` input of {@link enumerateCombosAndPerms} method,
+     * meaning {@link Cage} of index `i` in the `model` input
      * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
      *
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
@@ -80,10 +80,10 @@ export class NonOverlappingHouseCagesCombinatorics {
      * possible {@link House} {@link Cell}s' number permutations in the form of {@link HouseCagesPerms}
      * considering {@link Cage}s to be _non-overlapping_.
      *
-     * @param houseCagesAreaModel - {@link HouseCagesAreaModel} with {@link Cage}s having _non-overlapping_ {@link Cell}s.
+     * @param model - {@link NonOverlappingCagesAreaModel}.
      *
      * {@link Cage}s may cover either complete set of {@link House} {@link Cell}s or a subset.
-     * Empty {@link HouseCagesAreaModel} is also acceptable.
+     * Empty {@link NonOverlappingCagesAreaModel} is also acceptable.
      *
      * For performance reasons, this method does NOT check:
      *  - if all given {@link Cage}s belong to the same {@link House};
@@ -99,8 +99,8 @@ export class NonOverlappingHouseCagesCombinatorics {
      * @see {combos}
      * @see {perms}
      */
-    static enumerateCombosAndPerms(houseCagesAreaModel: HouseCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
-        return CAGE_COUNT_BASED_STRATEGIES[houseCagesAreaModel.cages.length](houseCagesAreaModel);
+    static enumerateCombosAndPerms(model: NonOverlappingCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
+        return CAGE_COUNT_BASED_STRATEGIES[model.cages.length](model);
     }
 
 };
@@ -109,7 +109,7 @@ export class NonOverlappingHouseCagesCombinatorics {
  * Computational strategy which encapsulates quickest possible way to do enumeration
  * according to the amount of {@link Cage}s.
  */
-type ComputeStrategyFn = (houseCagesAreaModel: HouseCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
+type ComputeStrategyFn = (model: NonOverlappingCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE: NonOverlappingHouseCagesCombinatorics = {
     combos: [],
@@ -117,7 +117,7 @@ const EMPTY_INSTANCE: NonOverlappingHouseCagesCombinatorics = {
 };
 
 /**
- * In case there are NO {@link Cage}s in {@link HouseCagesAreaModel},
+ * In case there are NO {@link Cage}s in {@link NonOverlappingCagesAreaModel},
  * there is nothing to enumerate, so the same empty readonly array is returned.
  *
  * This technique avoids extra array object construction.
@@ -127,7 +127,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
 };
 
 /**
- * In case there is only 1 {@link Cage} in {@link HouseCagesAreaModel},
+ * In case there is only 1 {@link Cage} in {@link NonOverlappingCagesAreaModel},
  * the full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms} is NOT required.
  *
  * It is enough to enumerate only the {@link Combo}s for the one & only {@link Cage} sum and
@@ -135,8 +135,8 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
  *
  * This technique avoids {@link Context} construction which is relatively _heavy_.
  */
-const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
-    const singleCage = houseCagesAreaModel.cages[0];
+const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
+    const singleCage = model.cages[0];
     const singleCageCombos = SumAddendsCombinatorics.enumerate(singleCage.sum, singleCage.cellCount);
     return {
         combos: singleCageCombos.arrayedVal,
@@ -145,16 +145,16 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (houseCagesAreaModel) => {
 };
 
 /**
- * In case there are 2 or more {@link Cage}s in {@link HouseCagesAreaModel},
+ * In case there are 2 or more {@link Cage}s in {@link NonOverlappingCagesAreaModel},
  * the full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms} is executed.
  */
-const enumerateStrategyForSeveralCages: ComputeStrategyFn = (houseCagesAreaModel) => {
-    return enumerateRecursively_main(new Context(houseCagesAreaModel));
+const enumerateStrategyForSeveralCages: ComputeStrategyFn = (model) => {
+    return enumerateRecursively_main(new Context(model));
 };
 
 /**
  * All enumeration strategies which encapsulate quickest possible way to do enumeration
- * according to the amount of {@link Cage}s in {@link HouseCagesAreaModel}.
+ * according to the amount of {@link Cage}s in {@link NonOverlappingCagesAreaModel}.
  */
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
     shortCircuitForNoCages,         // for 0 `Cage`s
@@ -324,8 +324,8 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         return pipeline;
     }
 
-    constructor(houseCagesAreaModel: HouseCagesAreaModel) {
-        const cages = houseCagesAreaModel.cages;
+    constructor(model: NonOverlappingCagesAreaModel) {
+        const cages = model.cages;
         const cageCount = cages.length;
 
         this.combos = new Array(cageCount);
@@ -333,7 +333,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
-        const isFullHouseCoverage = houseCagesAreaModel.cellCount === House.CELL_COUNT;
+        const isFullHouseCoverage = model.cellCount === House.CELL_COUNT;
         if (isFullHouseCoverage) {
             this.enumerationPipeline = Context._CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE[cageCount];
         } else {

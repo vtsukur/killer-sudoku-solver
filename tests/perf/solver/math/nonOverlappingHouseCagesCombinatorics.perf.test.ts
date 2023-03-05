@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../../../src/puzzle/cage';
 import { Combo } from '../../../../src/solver/math';
 import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/nonOverlappingHouseCagesCombinatorics';
-import { HouseCagesAreaModel } from '../../../../src/solver/models/elements/houseCagesAreaModel';
+import { GridAreaModel } from '../../../../src/solver/models/elements/gridAreaModel';
 
 describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
     const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
@@ -12,14 +12,14 @@ describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => 
 
     _.range(TESTS_COUNT).forEach(i => {
         test(`Enumerating \`Combo\`s and \`Perm\`s [${i + 1}]`, () => {
-            const houseCageAreasModel = new HouseCagesAreaModel([
+            const model = GridAreaModel.from([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
                 Cage.ofSum(10).at(0, 0).at(0, 1).new(),
                 Cage.ofSum(10).at(0, 2).at(1, 2).new(),
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
-            ]);
+            ]).nonOverlappingCagesAreaModel;
 
-            expect(enumerate(houseCageAreasModel).perms).toEqual([
+            expect(enumerate(model).perms).toEqual([
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -35,7 +35,7 @@ describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => 
             ]);
 
             _.range(ITERATION_COUNT).forEach(() => {
-                enumerate(houseCageAreasModel);
+                enumerate(model);
             });
         });
     });
