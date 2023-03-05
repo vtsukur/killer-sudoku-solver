@@ -171,13 +171,13 @@ export class HouseModelCagesCombinatorics {
     private static mergeCombosPreservingInputOrder(
             combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
             combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>,
-            cageMs: ReadonlyArray<CageModel>,
+            allCageMs: ReadonlyArray<CageModel>,
             nonOverlappingCages: ReadonlyCages,
             overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-        const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
+        const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(allCageMs.length);
 
-        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[cageMs.length]) {
-            const cage = cageMs[i].cage;
+        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[allCageMs.length]) {
+            const cage = allCageMs[i].cage;
             const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
             if (nonOverlappingCageIndex !== -1) {
                 orderPreservedCombos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];
