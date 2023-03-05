@@ -21,20 +21,20 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 Cage.ofSum(7).at(2, 1).at(2, 2).new(),
                 Cage.ofSum(13).at(3, 1).at(3, 2).at(3, 3).new()
             ],
-            sumPermsForNonOverlappingCages: [
+            sumPermsOfNonOverlappingCages: [
                 [ Combo.of(6, 9), Combo.of(2, 8), Combo.of(3, 4), Combo.of(1, 5, 7) ],
                 [ Combo.of(6, 9), Combo.of(3, 7), Combo.of(2, 5), Combo.of(1, 4, 8) ],
                 [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(2, 5), Combo.of(3, 4, 6) ],
                 [ Combo.of(7, 8), Combo.of(1, 9), Combo.of(3, 4), Combo.of(2, 5, 6) ],
                 [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
             ],
-            actualSumCombos: [
+            actualSumCombosOfAllCages: [
                 [ Combo.of(6, 9), Combo.of(7, 8) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
                 [ Combo.of(2, 5), Combo.of(3, 4) ],
                 [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
             ]
-        });
+        } as HouseModelCagesCombinatorics);
     });
 
     test('Many combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
@@ -52,7 +52,7 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 Cage.ofSum(10).at(0, 2).at(1, 2).new(),
                 Cage.ofSum(11).at(1, 0).at(1, 1).new()
             ],
-            sumPermsForNonOverlappingCages: [
+            sumPermsOfNonOverlappingCages: [
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
                 [ Combo.of(1, 4, 9), Combo.of(3, 7), Combo.of(2, 8), Combo.of(5, 6) ],
                 [ Combo.of(1, 5, 8), Combo.of(3, 7), Combo.of(4, 6), Combo.of(2, 9) ],
@@ -66,13 +66,13 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(3, 5, 6), Combo.of(1, 9), Combo.of(2, 8), Combo.of(4, 7) ],
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ],
-            actualSumCombos: [
+            actualSumCombosOfAllCages: [
                 [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
                 [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
                 [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ]
             ]
-        });
+        } as HouseModelCagesCombinatorics);
     });
 
     test('Few combinations and permutations forming an incomplete HouseModel with non-overlapping Cages', () => {
@@ -86,15 +86,15 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 Cage.ofSum(5).at(0, 0).at(0, 1).new(),
                 Cage.ofSum(7).at(0, 2).at(1, 2).new()
             ],
-            sumPermsForNonOverlappingCages: [
+            sumPermsOfNonOverlappingCages: [
                 [ Combo.of(1, 4), Combo.of(2, 5) ],
                 [ Combo.of(2, 3), Combo.of(1, 6) ]
             ],
-            actualSumCombos: [
+            actualSumCombosOfAllCages: [
                 [ Combo.of(1, 4), Combo.of(2, 3) ],
                 [ Combo.of(1, 6), Combo.of(2, 5) ]
             ]
-        });
+        } as HouseModelCagesCombinatorics);
     });
 
     test('Several combinations and single permutation forming a complete HouseModel with non-overlapping Cages', () => {
@@ -112,16 +112,16 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 Cage.ofSum(7).at(1, 6).at(1, 7).new(),
                 Cage.ofSum(4).at(1, 8).new()
             ],
-            sumPermsForNonOverlappingCages: [
+            sumPermsOfNonOverlappingCages: [
                 [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
             ],
-            actualSumCombos: [
+            actualSumCombosOfAllCages: [
                 [ Combo.of(1, 3) ],
                 [ Combo.of(7, 8, 9) ],
                 [ Combo.of(2, 5) ],
                 [ Combo.of(4) ]
             ]
-        });
+        } as HouseModelCagesCombinatorics);
     });
 
     test('Combinations and permutations forming a HouseModel with overlapping Cages', () => {
@@ -138,18 +138,18 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 Cage.ofSum(8).at(7, 5).new(),
                 Cage.ofSum(29).at(0, 5).at(1, 5).at(4, 5).at(5, 5).at(6, 5).at(8, 5).new()
             ],
-            sumPermsForNonOverlappingCages: [
+            sumPermsOfNonOverlappingCages: [
                 [ Combo.of(1, 7), Combo.of(8), Combo.of(2, 3, 4, 5, 6, 9) ],
                 [ Combo.of(2, 6), Combo.of(8), Combo.of(1, 3, 4, 5, 7, 9) ],
                 [ Combo.of(3, 5), Combo.of(8), Combo.of(1, 2, 4, 6, 7, 9) ]
             ],
-            actualSumCombos: [
+            actualSumCombosOfAllCages: [
                 [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ],
                 [ Combo.of(8) ],
                 [ Combo.of(1, 3) ],
                 [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ]
             ]
-        });
+        } as HouseModelCagesCombinatorics);
     });
 
     test('Combinations and permutations forming a HouseModel out of no Cages', () => {
@@ -157,9 +157,9 @@ describe('Tests for the finder of sum number combinations and sum permutations f
 
         expect(combosAndPerms).toEqual({
             nonOverlappingCages: [],
-            sumPermsForNonOverlappingCages: [],
-            actualSumCombos: []
-        });
+            sumPermsOfNonOverlappingCages: [],
+            actualSumCombosOfAllCages: []
+        } as HouseModelCagesCombinatorics);
     });
 });
 

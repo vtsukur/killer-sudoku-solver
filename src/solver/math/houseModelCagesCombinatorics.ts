@@ -64,7 +64,7 @@ export class HouseModelCagesCombinatorics {
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
-    readonly sumPermsForNonOverlappingCages: HouseCagesPerms;
+    readonly sumPermsOfNonOverlappingCages: HouseCagesPerms;
 
     /**
      * Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
@@ -83,7 +83,7 @@ export class HouseModelCagesCombinatorics {
      * `(1, 8)`, `(2, 7)`, `(3, 6)`, `(4, 5)`.
      *
      * If enumeration of possible permutations results in finding subset of number combinations
-     * (say `(1, 8)` and `(3, 6)`) then only these combinations will be added to {@link actualSumCombos}.
+     * (say `(1, 8)` and `(3, 6)`) then only these combinations will be added to {@link actualSumCombosOfAllCages}.
      *
      * _Overlapping_ {@link Cage}s have ALL combinations,
      * regardless of possible permutations in the {@link House}.
@@ -103,7 +103,7 @@ export class HouseModelCagesCombinatorics {
      *   Cage 5
      * ]
      * ```
-     * then {@link actualSumCombos} will be ordered as follows:
+     * then {@link actualSumCombosOfAllCages} will be ordered as follows:
      * ```
      * [
      *   [ ... Combos for Cage 1 ],
@@ -117,15 +117,15 @@ export class HouseModelCagesCombinatorics {
      * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
-    readonly actualSumCombos: HouseCagesCombos;
+    readonly actualSumCombosOfAllCages: HouseCagesCombos;
 
     private constructor(
             nonOverlappingCages: ReadonlyCages,
-            sumPermsForNonOverlappingCages: HouseCagesPerms,
+            sumPermsOfNonOverlappingCages: HouseCagesPerms,
             actualSumCombos: HouseCagesCombos) {
         this.nonOverlappingCages = nonOverlappingCages;
-        this.sumPermsForNonOverlappingCages = sumPermsForNonOverlappingCages;
-        this.actualSumCombos = actualSumCombos;
+        this.sumPermsOfNonOverlappingCages = sumPermsOfNonOverlappingCages;
+        this.actualSumCombosOfAllCages = actualSumCombos;
     }
 
     /**
@@ -138,7 +138,7 @@ export class HouseModelCagesCombinatorics {
      * which belong to the same {@link HouseModel}'s {@link House}.
      *
      * @see {nonOverlappingCages}
-     * @see {sumPermsForNonOverlappingCages}
+     * @see {sumPermsOfNonOverlappingCages}
      * @see {actualSumCombos}
      */
     static for(houseM: HouseModel) {
