@@ -8,6 +8,15 @@ import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from './cachedNumRanges';
 
+/**
+ * Combinatorics of possible numbers within {@link CageModel}'s {@link Cage}s
+ * which belong to the same {@link House}.
+ *
+ * This type follows Killer Sudoku constraint,
+ * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
+ *
+ * @public
+ */
 export class HouseModelCagesCombinatorics {
 
     readonly nonOverlappingCages: ReadonlyArray<Cage>;
