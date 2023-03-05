@@ -26,6 +26,28 @@ describe('Unit tests for `GridAreaModel`', () => {
         );
     });
 
+    test('Creation of instance from `CageModel`s', () => {
+        const cageMs = [
+            new CageModel(Cage.ofSum(7).at(0, 0).at(0, 1).new(), []),
+            new CageModel(Cage.ofSum(18).at(1, 0).at(1, 1).at(2, 0).new(), []),
+            new CageModel(Cage.ofSum(20).at(0, 2).at(1, 2).at(2, 1).at(2, 2).new(), []),
+            new CageModel(Cage.ofSum(21).at(0, 2).at(1, 0).at(1, 1).at(1, 2).setIsInput(false).new(), []),
+            new CageModel(Cage.ofSum(17).at(2, 0).at(2, 1).at(2, 2).setIsInput(false).new(), [])
+        ];
+
+        expectGridAreaModel(GridAreaModel.fromCageModels(cageMs),
+            [
+                Cage.ofSum(7).at(0, 0).at(0, 1).new(),
+                Cage.ofSum(18).at(1, 0).at(1, 1).at(2, 0).new(),
+                Cage.ofSum(20).at(0, 2).at(1, 2).at(2, 1).at(2, 2).new()
+            ],
+            [
+                Cage.ofSum(21).at(0, 2).at(1, 0).at(1, 1).at(1, 2).setIsInput(false).new(),
+                Cage.ofSum(17).at(2, 0).at(2, 1).at(2, 2).setIsInput(false).new()
+            ]
+        );
+    });
+
     test('Creation of instance with all input `Cage`s forming non-overlapping area and all derived `Cage`s forming overlapping area', () => {
         const newCageM = (cage: Cage) => new CageModel(cage, []);
         const cageMs = [
