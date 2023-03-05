@@ -157,12 +157,17 @@ export class HouseModelCagesCombinatorics {
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
         // and making sure that order of output combinations follows the order of input.
         //
-        const actualSumCombos = this.preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
+        const actualSumCombos = this.mergeCombosPreservingInputOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
         return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
     }
 
-    private static preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
+    private static mergeCombosPreservingInputOrder(
+            combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>,
+            cageMs: ReadonlyArray<CageModel>,
+            nonOverlappingCages: ReadonlyCages,
+            overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
         const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
 
         for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[cageMs.length]) {
