@@ -76,6 +76,13 @@ export class HouseModelCagesCombinatorics {
      * _Non-overlapping_ {@link Cage}s have combinations which are unique
      * to the possible permutations of ALL _non-overlapping_ {@link Cage}s within the {@link House}.
      *
+     * For example, consider a {@link Cage} of sum `9` occupying 2 {@link Cell}s.
+     * Such a {@link Cage} theoretically can have the following number combinations:
+     * `(1, 8)`, `(2, 7)`, `(3, 6)`, `(4, 5)`.
+     *
+     * If enumeration of possible permutations results in finding subset of number combinations
+     * (say `(1, 8)` and `(3, 6)`) then only these combinations will be added to {@link actualSumCombos}.
+     *
      * _Overlapping_ {@link Cage}s have ALL combinations,
      * regardless of possible permutations in the {@link House}.
      *
