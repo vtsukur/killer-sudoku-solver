@@ -13,7 +13,6 @@ describe('Cage tests', () => {
         expect(cage.cellIndices.equals(CellIndicesCheckingSet.of(40, 41))).toBeTruthy();
         expect(cage.key).toBe('10 [(4, 4), (4, 5)]');
         expect(cage.toString()).toBe('10 [(4, 4), (4, 5)]');
-        expect(cage.tsConstructionCode).toBe('Cage.ofSum(10).at(4, 4).at(4, 5).new()');
     });
 
     test('Construction of Cage using `Cage.Builder.withCell` method', () => {
@@ -71,6 +70,15 @@ describe('Cage tests', () => {
     test('Construction of invalid Cage with no Cells', () => {
         expect(() => Cage.ofSum(8).new()).toThrow(
             new InvalidPuzzleDefError('Invalid Cage. No Cells registered. At least one Cell should be a part of Cage grouping')
+        );
+    });
+
+    test('Generation of TypeScript code construction string through `tsConstructionCode`', () => {
+        expect(Cage.ofSum(10).at(4, 4).at(4, 5).new().tsConstructionCode).toBe(
+            'Cage.ofSum(10).at(4, 4).at(4, 5).new()'
+        );
+        expect(Cage.ofSum(10).at(1, 1).at(1, 2).setIsInput(false).new().tsConstructionCode).toBe(
+            'Cage.ofSum(10).at(1, 1).at(1, 2).setIsInput(false).new()'
         );
     });
 });
