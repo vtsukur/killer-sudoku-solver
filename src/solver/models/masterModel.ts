@@ -3,7 +3,7 @@ import { Cage } from '../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Column } from '../../puzzle/column';
 import { GridSizeAndCellPositionsIteration } from '../../puzzle/gridSizeAndCellPositionsIteration';
-import { GridSizedMatrix } from '../../puzzle/gridSizedMatrix';
+import { GridMatrix } from '../../puzzle/gridMatrix';
 import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
@@ -52,9 +52,9 @@ export class MasterModel {
     readonly nonetModels: Array<NonetModel> = new Array(House.COUNT);
     readonly houseModels: Array<HouseModel>;
     readonly cageModelsMap: Map<string, CageModel> = new Map();
-    readonly cellModelsMatrix: Array<Array<CellModel>> = GridSizedMatrix.new();
+    readonly cellModelsMatrix: Array<Array<CellModel>> = GridMatrix.new();
 
-    private readonly _solution: Array<Array<number>> = GridSizedMatrix.new();
+    private readonly _solution: Array<Array<number>> = GridMatrix.new();
     private _placedNumCount = 0;
     private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
     private readonly _eventHandlers: Map<string, Set<GenericEventHandler>> = MasterModelEvents.newEventHandlersMap();
@@ -62,7 +62,7 @@ export class MasterModel {
     constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
         if (puzzleOrMasterModel instanceof Puzzle) {
             this.puzzle = puzzleOrMasterModel;
-            this._cellsToInputCagesMatrix = GridSizedMatrix.new();
+            this._cellsToInputCagesMatrix = GridMatrix.new();
             this.initWithPuzzle(puzzleOrMasterModel);
         } else {
             this.puzzle = puzzleOrMasterModel.puzzle;

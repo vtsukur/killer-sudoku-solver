@@ -3,7 +3,7 @@ import { GridSizeAndCellPositionsIteration } from './gridSizeAndCellPositionsIte
 /**
  * Provides API to constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
  */
-export class GridSizedMatrix {
+export class GridMatrix {
 
     /* istanbul ignore next */
     private constructor() {

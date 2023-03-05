@@ -1,9 +1,9 @@
 import { GridSizeAndCellPositionsIteration } from '../../../src/puzzle/gridSizeAndCellPositionsIteration';
-import { GridSizedMatrix } from '../../../src/puzzle/gridSizedMatrix';
+import { GridMatrix } from '../../../src/puzzle/gridMatrix';
 
-describe('Unit tests for `GridSizedMatrix`', () => {
-    test('Creation of `GridSizedMatrix`', () => {
-        const matrix = GridSizedMatrix.new();
+describe('Unit tests for `GridMatrix`', () => {
+    test('Creation of `GridMatrix`', () => {
+        const matrix = GridMatrix.new();
 
         expect(matrix.length).toBe(GridSizeAndCellPositionsIteration.GRID_SIDE_CELL_COUNT);
         for (const row of matrix) {
