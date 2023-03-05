@@ -11,8 +11,8 @@ import { CachedNumRanges } from './cachedNumRanges';
 import { HouseCagesCombos } from './houseCagesCombinatorics';
 
 /**
- * Combinatorics of possible numbers within {@link CageModel}'s {@link Cage}s
- * which belong to the same {@link HouseModel}.
+ * Combinatorics of possible numbers within {@link Cage}s
+ * which belong to the same {@link HouseModel}'s {@link House}.
  *
  * This type follows Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -126,6 +126,19 @@ export class HouseModelCagesCombinatorics {
         this.actualSumCombos = actualSumCombos;
     }
 
+    /**
+     * Enumerates possible numbers within {@link Cage}s
+     * which belong to the same {@link HouseModel}'s {@link House}.
+     *
+     * @param houseM - {@link HouseModel} containing {@link House} {@link Cage}s to enumerates possible numbers for.
+     *
+     * @returns Possible numbers within {@link Cage}s
+     * which belong to the same {@link HouseModel}'s {@link House}.
+     *
+     * @see {nonOverlappingCages}
+     * @see {sumPermsForNonOverlappingCages}
+     * @see {actualSumCombos}
+     */
     static for(houseM: HouseModel) {
         const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
 
