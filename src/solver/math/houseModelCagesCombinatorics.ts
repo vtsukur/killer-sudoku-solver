@@ -140,14 +140,21 @@ export class HouseModelCagesCombinatorics {
      * @see {actualSumCombos}
      */
     static for(houseM: HouseModel) {
+        // Determining _non-overlapping_ and _overlapping_ `Cage`s.
         const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
 
+        // Enumerating possible numbers for `Cell`s within _non-overlapping_ `Cage`s.
         const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
         const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
 
+        // Enumerating possible numbers for `Cell`s within _overlapping_ `Cage`s.
         const overlappingCages = gridAreaModel.overlappingCages;
         const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
 
+        //
+        // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
+        // and making sure that order of output combinations follows the order of input.
+        //
         const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
         return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
