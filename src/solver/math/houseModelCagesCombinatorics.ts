@@ -28,7 +28,7 @@ export class HouseModelCagesCombinatorics {
      * Order of elements in this array follows the original order of
      * _non-overlapping_ {@link Cage}s in the `houseM.cageModels` input of {@link for} static factory method.
      *
-     * For example, if the `houseM.cageModels[].cage` is represented as follows:
+     * For example, for `houseM.cageModels[].cage` represented as:
      * ```
      * [
      *   Cage 1 - non-overlapping,
@@ -38,7 +38,8 @@ export class HouseModelCagesCombinatorics {
      *   Cage 5 - non-overlapping
      * ]
      * ```
-     * then {@link nonOverlappingCages} will be ordered as follows:
+     *
+     * {@link nonOverlappingCages} will be ordered as follows:
      * ```
      * [
      *   Cage 1 - non-overlapping,
@@ -54,12 +55,31 @@ export class HouseModelCagesCombinatorics {
      * in the form of {@link HouseCagesPerms}.
      *
      * Each value in this array is a single permutation of possible numbers in {@link House} {@link Cage}s
-     * represented as {@link HouseCagesPerm}.
+     * represented as {@link HouseCagePerm}.
      *
-     * Each {@link Combo} value in {@link HouseCagesPerm} appears in the same order as {@link Cage}s
+     * Each array element of {@link HouseCagesPerm} appears in the same order as {@link Cage}s
      * in the {@link nonOverlappingCages}, meaning {@link Cage} of index `i` in the {@link nonOverlappingCages}
-     * will be mapped to the {@link Combo} of index `i` in each {@link HouseCagesPerm}.
+     * will be mapped to the {@link HouseCagesPerm} of index `i` for all {@link HouseCagesPerms}.
      *
+     * For example, for `houseM.cageModels[].cage` represented as:
+     * ```
+     * [
+     *   Cage 1
+     *   Cage 2
+     *   Cage 3
+     * ]
+     * ```
+     *
+     * {@link sumPermsOfNonOverlappingCages} will be represented as follows:
+     * ```
+     * [
+     *   [ Combo for Cage 1, Combo for Cage 2, Combo for Cage 3 ],
+     *   [ Combo for Cage 1, Combo for Cage 2, Combo for Cage 3 ],
+     *   ...
+     *   [ Combo for Cage 1, Combo for Cage 2, Combo for Cage 3 ]
+     * ]
+     * ```
+      *
      * Numbers in each {@link HouseCagesPerm} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
