@@ -25,11 +25,13 @@ export class HouseModelCagesCombinatorics {
 
     static for(houseM: HouseModel) {
         const gridAreaModel = GridAreaModel.fromCageModels(houseM.cageModels);
-        const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
-        const overlappingCages = gridAreaModel.overlappingCages;
 
+        const nonOverlappingCages = gridAreaModel.nonOverlappingCagesAreaModel.cages;
         const { houseCagesPerms: perms, houseCagesCombos: combosForNonOverlappingCages } = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms(new HouseCagesAreaModel(nonOverlappingCages));
+
+        const overlappingCages = gridAreaModel.overlappingCages;
         const combosForOverlappingCages = OverlappingHouseCagesCombinatorics.enumerateCombos(new HouseCagesAreaModel(overlappingCages)).houseCagesCombos;
+
         const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
         return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
