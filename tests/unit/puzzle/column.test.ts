@@ -6,7 +6,7 @@ import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError
 
 describe('Column tests', () => {
     test('Iteration over Cells', () => {
-        const cells = _.range(House.COUNT_OF_ONE_TYPE_PER_GRID).map(col => {
+        const cells = _.range(House.COUNT).map(col => {
             return Array.from(Column.newCellsIterator(col));
         });
 

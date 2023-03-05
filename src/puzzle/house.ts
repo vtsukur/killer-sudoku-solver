@@ -22,13 +22,13 @@ export class House {
     /**
      * Amount of `House`s of one type (`Row`s, `Column`s or `Nonet`s) within a `Grid`.
      */
-    static readonly COUNT_OF_ONE_TYPE_PER_GRID = 9;
+    static readonly COUNT = 9;
 
     /**
      * Range as a readonly array of numbers from 0 to 8 to represent iteration over `House`s of one type
      * (`Row`s, `Column`s or `Nonet`s) within a `Grid`.
      */
-    static readonly COUNT_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.COUNT_OF_ONE_TYPE_PER_GRID];
+    static readonly COUNT_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.COUNT];
 
     /**
      * Amount of {@link Cell}s in a `House`.

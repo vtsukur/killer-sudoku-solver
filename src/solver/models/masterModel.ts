@@ -47,9 +47,9 @@ export class MasterModelEvents {
 export class MasterModel {
 
     readonly puzzle: Puzzle;
-    readonly rowModels: Array<RowModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
-    readonly columnModels: Array<ColumnModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
-    readonly nonetModels: Array<NonetModel> = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+    readonly rowModels: Array<RowModel> = new Array(House.COUNT);
+    readonly columnModels: Array<ColumnModel> = new Array(House.COUNT);
+    readonly nonetModels: Array<NonetModel> = new Array(House.COUNT);
     readonly houseModels: Array<HouseModel>;
     readonly cageModelsMap: Map<string, CageModel> = new Map();
     readonly cellModelsMatrix: Array<Array<CellModel>> = GridSizedMatrix.new();

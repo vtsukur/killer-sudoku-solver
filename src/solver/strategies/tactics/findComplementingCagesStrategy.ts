@@ -169,7 +169,7 @@ class Stats {
     private _totalCagesFound = 0;
 
     constructor() {
-        this._data = new Array(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        this._data = new Array(House.COUNT);
         this.clear();
     }
 

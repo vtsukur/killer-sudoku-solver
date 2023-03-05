@@ -27,7 +27,7 @@ describe('Tests for master model', () => {
     });
 
     test('Initialization of RowModels', () => {
-        expect(model.rowModels.length).toBe(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(model.rowModels.length).toBe(House.COUNT);
 
         expectHouseM(model.rowModel(0), {
             index: 0,
@@ -108,7 +108,7 @@ describe('Tests for master model', () => {
     });
 
     test('Initialization of ColumnModels', () => {
-        expect(model.columnModels.length).toBe(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(model.columnModels.length).toBe(House.COUNT);
 
         expectHouseM(model.columnModel(0), {
             index: 0,
@@ -185,7 +185,7 @@ describe('Tests for master model', () => {
     });
 
     test('Initialization of NonetModels', () => {
-        expect(model.nonetModels.length).toBe(House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(model.nonetModels.length).toBe(House.COUNT);
 
         expectHouseM(model.nonetModel(0), {
             index: 0,
@@ -332,7 +332,7 @@ describe('Tests for master model', () => {
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);
         expect(model.cellModelAt(2, 7).solved).toBe(true);
 
-        _.range(House.COUNT_OF_ONE_TYPE_PER_GRID).forEach(index => {
+        _.range(House.COUNT).forEach(index => {
             expect(model.rowModel(index).cageModels.length).toBe(House.CELL_COUNT);
             expect(model.columnModel(index).cageModels.length).toBe(House.CELL_COUNT);
             expect(model.nonetModel(index).cageModels.length).toBe(House.CELL_COUNT);

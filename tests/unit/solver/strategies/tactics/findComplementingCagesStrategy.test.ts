@@ -30,7 +30,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
 
         // Then:
         // There should be new `Cage`s in the model, as many as the amount of `Row`s.
-        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT);
         // Complement for `Row` 0.
         expect(context.model.hasCage(Cage.ofSum(34).at(0, 2).at(0, 3).at(0, 4).at(0, 5).at(0, 6).at(0, 7).at(0, 8).new())).toBeTruthy();
         // Complement for `Row` 1.
@@ -82,7 +82,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
 
         // Then:
         // There should be new `Cage`s in the model, as many as the amount of `Column`s.
-        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT);
         // Complement for `Column` 0.
         expect(context.model.hasCage(Cage.ofSum(37).at(0, 0).at(1, 0).at(2, 0).at(3, 0).at(4, 0).at(5, 0).at(6, 0).new())).toBeTruthy();
         // Complement for `Column` 1.
@@ -132,7 +132,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
 
         // Then:
         // There should be new `Cage`s in the model, as many as the amount of `Nonet`s.
-        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT_OF_ONE_TYPE_PER_GRID);
+        expect(context.model.cageModelsMap.size).toBe(originalCageCount + House.COUNT);
         // Complement for `Nonet` 0.
         expect(context.model.hasCage(Cage.ofSum(18).at(0, 2).at(1, 2).at(2, 2).new())).toBeTruthy();
         // Complement for `Nonet` 1.

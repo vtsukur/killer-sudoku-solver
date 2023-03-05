@@ -75,7 +75,7 @@ describe('Nonet tests', () => {
     });
 
     test('Iteration over Cells', () => {
-        const cells = _.range(House.COUNT_OF_ONE_TYPE_PER_GRID).map(nonet => {
+        const cells = _.range(House.COUNT).map(nonet => {
             return Array.from(Nonet.newCellsIterator(nonet));
         });
 
