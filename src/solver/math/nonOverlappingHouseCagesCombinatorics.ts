@@ -21,7 +21,7 @@ import { BitStore32 } from './numsCheckingSet';
 export type HouseCagesPerm = ReadonlyCombos;
 
 /**
- * Readonly array of all possible {@link HouseCagesPerm}s for a {@link House}`.
+ * Readonly array of all possible {@link HouseCagesPerm}s for a {@link House}.
  *
  * @public
  */
