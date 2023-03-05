@@ -9,6 +9,8 @@ import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from './cachedNumRanges';
 import { HouseCagesCombos } from './houseCagesCombinatorics';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { House } from '../../puzzle/house';
 
 /**
  * Combinatorics of possible numbers within {@link Cage}s
@@ -155,26 +157,26 @@ export class HouseModelCagesCombinatorics {
         // Merging number combinations for `Cell`s within _non-overlapping_ and _overlapping_ `Cage`s
         // and making sure that order of output combinations follows the order of input.
         //
-        const actualSumCombos = preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
+        const actualSumCombos = this.preserveCombosOrder(combosForNonOverlappingCages, combosForOverlappingCages, houseM.cageModels, nonOverlappingCages, overlappingCages);
 
         return new HouseModelCagesCombinatorics(nonOverlappingCages, perms, actualSumCombos);
     }
 
-}
+    private static preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
+        const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
 
-function preserveCombosOrder(combosForNonOverlappingCages: ReadonlyArray<ReadonlyCombos>, combosForOverlappingCages: ReadonlyArray<ReadonlyCombos>, cageMs: ReadonlyArray<CageModel>, nonOverlappingCages: ReadonlyCages, overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-    const orderPreservedCombos = new Array<ReadonlyArray<Combo>>(cageMs.length);
-
-    for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[cageMs.length]) {
-        const cage = cageMs[i].cage;
-        const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
-        if (nonOverlappingCageIndex !== -1) {
-            orderPreservedCombos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];
-        } else {
-            const overlappingCageIndex = overlappingCages.findIndex(originalCage => originalCage === cage);
-            orderPreservedCombos[i] = combosForOverlappingCages[overlappingCageIndex];
+        for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[cageMs.length]) {
+            const cage = cageMs[i].cage;
+            const nonOverlappingCageIndex = nonOverlappingCages.findIndex(originalCage => originalCage === cage);
+            if (nonOverlappingCageIndex !== -1) {
+                orderPreservedCombos[i] = combosForNonOverlappingCages[nonOverlappingCageIndex];
+            } else {
+                const overlappingCageIndex = overlappingCages.findIndex(originalCage => originalCage === cage);
+                orderPreservedCombos[i] = combosForOverlappingCages[overlappingCageIndex];
+            }
         }
+
+        return orderPreservedCombos;
     }
 
-    return orderPreservedCombos;
 }
