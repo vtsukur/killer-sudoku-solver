@@ -73,6 +73,11 @@ export class Cell {
      */
     readonly key: CellKey;
 
+    /**
+     * Readonly matrix of all possible {@link Cell}s on the {@link Grid}
+     * which is indexed by {@link Row} and then by {@link Column}
+     * so that {@link Cell} at {@link Row} `i` and {@link Column} `j` can be accessed via `Cell.GRID[i][j]`.
+     */
     static readonly GRID: Array<Array<Cell>> = (() => {
         const val = Grid.newMatrix<Cell>();
         Grid.forEachCellPosition(([ row, col ]) => {
