@@ -12,7 +12,7 @@ export type CellRowAndColumn = [ HouseIndex, HouseIndex ];
 export type CellRowAndColumnCallback = (cellPosition: CellRowAndColumn) => void;
 
 /**
- * Supportive class for Killer Sudoku `Grid`
+ * Supportive class for Killer Sudoku `Grid` matrix
  * which holds useful constants that describe mathematical properties of any `Grid`
  * as well as utility methods that simplify iteration over `Grid` {@link Cell}s' positions,
  * {@link CellRowAndColumn}s and creation of supplementary ranges and matrices of `Grid`'s size.
