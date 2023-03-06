@@ -44,11 +44,23 @@ export class GridMatrix {
      */
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
+    private static _CELL_POSITIONS_CACHE = (() => {
+        const val = new Array<CellRowAndColumn>(this.CELL_COUNT);
+        for (const row of this.SIDE_INDICES_RANGE) {
+            for (const col of this.SIDE_INDICES_RANGE) {
+                val.push([ row, col ]);
+            }
+        }
+        return val;
+    })();
+
     /**
-     * Iterates over all `Cell` positions on the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
+     * Iterates over all `Cell` positions on the `Grid`
+     * consequently calling `callback` with each {@link CellRowAndColumn}.
      *
-     * Rows are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
-     * Each `Row` is iterated starting with its first `Column` consequently to the last one (a.k.a. _left_ to _right_).
+     * `Row`s are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
+     * Each `Row` is iterated starting with its first `Column`
+     * consequently to the last one (a.k.a. _left_ to _right_).
      * `Row` is iterated fully before proceeding to the next one.
      *
      * Iteration looks as follows:
@@ -60,17 +72,15 @@ export class GridMatrix {
      * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s on the `Grid`.
      */
     static forEachCellPosition = (callback: CellRowAndColumnCallback) => {
-        for (const row of this.SIDE_INDICES_RANGE) {
-            for (const col of this.SIDE_INDICES_RANGE) {
-                callback([ row, col ]);
-            }
-        }
+        this._CELL_POSITIONS_CACHE.forEach(cellPosition => {
+            callback(cellPosition);
+        });
     };
 
     /**
-     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
+     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by `Row` and then by `Column`.
      *
-     * @returns new matrix (array of arrays) of `Grid`'s size indexed by row and then by column.
+     * @returns new matrix (array of arrays) of `Grid`'s size indexed by `Row` and then by `Column`.
      *
      * @typeParam T - Type of values in the matrix.
      */
