@@ -100,9 +100,11 @@ export class Cell {
      */
     static readonly GRID: Array<Array<Cell>> = (() => {
         const val = Grid.newMatrix<Cell>();
-        Grid.forEachCellPosition(([ row, col ]) => {
-            val[row][col] = new Cell(row, col);
-        });
+        for (const row of Grid.SIDE_INDICES_RANGE) {
+            for (const col of Grid.SIDE_INDICES_RANGE) {
+                val[row][col] = new Cell(row, col);
+            }
+        }
         return val;
     })();
 

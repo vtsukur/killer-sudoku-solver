@@ -1,15 +1,5 @@
 import { CachedNumRanges } from '../solver/math/cachedNumRanges';
-import { House, HouseIndex } from './house';
-
-/**
- * Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
- */
-export type CellRowAndColumn = [ HouseIndex, HouseIndex ];
-
-/**
- * Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
- */
-export type CellRowAndColumnCallback = (cellPosition: CellRowAndColumn) => void;
+import { House } from './house';
 
 /**
  * Supportive class for Killer Sudoku `Grid`
@@ -46,42 +36,9 @@ export class Grid {
      */
     static readonly SUM = Math.imul(this.SIDE_CELL_COUNT, House.SUM);
 
-    private static readonly _CELL_POSITIONS_CACHE: ReadonlyArray<CellRowAndColumn> = (() => {
-        const val = new Array<CellRowAndColumn>();
-        for (const row of this.SIDE_INDICES_RANGE) {
-            for (const col of this.SIDE_INDICES_RANGE) {
-                val.push([ row, col ]);
-            }
-        }
-        return val;
-    })();
-
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
-    }
-
-    /**
-     * Iterates over all `Cell` positions on the `Grid`
-     * consequently calling `callback` with each {@link CellRowAndColumn}.
-     *
-     * `Row`s are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
-     * Each `Row` is iterated starting with its first `Column`
-     * consequently to the last one (a.k.a. _left_ to _right_).
-     * `Row` is iterated fully before proceeding to the next one.
-     *
-     * Iteration looks as follows:
-     * ```
-     * // (row, column)
-     * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
-     * ```
-     *
-     * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s on the `Grid`.
-     */
-    static forEachCellPosition(callback: CellRowAndColumnCallback) {
-        for (const cellPosition of this._CELL_POSITIONS_CACHE) {
-            callback(cellPosition);
-        }
     }
 
     /**
