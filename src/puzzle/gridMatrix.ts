@@ -45,11 +45,11 @@ export class GridMatrix {
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
     /**
-     * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
+     * Iterates over all `Cell` positions on the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
      *
      * Rows are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
-     * Each row is iterated starting with its first column consequently to the last one (a.k.a. _left_ to _right_).
-     * Row is iterated fully before proceeding to the next one.
+     * Each `Row` is iterated starting with its first `Column` consequently to the last one (a.k.a. _left_ to _right_).
+     * `Row` is iterated fully before proceeding to the next one.
      *
      * Iteration looks as follows:
      * ```
@@ -57,7 +57,7 @@ export class GridMatrix {
      * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
      * ```
      *
-     * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
+     * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s on the `Grid`.
      */
     static forEachCellPosition = (callback: CellRowAndColumnCallback) => {
         for (const row of this.SIDE_INDICES_RANGE) {
