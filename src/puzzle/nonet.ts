@@ -89,8 +89,9 @@ export class Nonet {
      */
     static newCellsIterator(nonet: HouseIndex) {
         Nonet.validateIndex(nonet);
-        return House.newCellsIterator((index: number) => {
-            return Cell.atPosition(Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index]);
+        return House.newCellsIterator(index => {
+            const cacheEntry = Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
+            return Cell.GRID[cacheEntry[0]][cacheEntry[1]];
         });
     }
 

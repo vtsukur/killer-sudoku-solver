@@ -13,16 +13,9 @@ describe('Cell tests', () => {
         expect(cell.toString()).toBe('(4, 5)');
     });
 
-    test('Construction of Cell using `atPosition` method', () => {
-        const cell = Cell.atPosition([ 4, 5 ]);
-        expect(cell.row).toBe(4);
-        expect(cell.col).toBe(5);
-    });
-
     test('There is only one Cell with the same position', () => {
         expect(Cell.at(4, 5)).toBe(Cell.at(4, 5));
-        expect(Cell.atPosition([ 4, 5 ])).toBe(Cell.atPosition([ 4, 5 ]));
-        expect(Cell.at(4, 5)).toBe(Cell.atPosition([ 4, 5 ]));
+        expect(Cell.at(4, 5)).toBe(Cell.GRID[4][5]);
     });
 
     test('Cells are indexed consequently from top left position of the `Grid` to the right bottom one', () => {
@@ -62,9 +55,5 @@ describe('Cell tests', () => {
 
     test('Construction of invalid Cell with Column outside of the range: >8', () => {
         expect(() => Cell.at(4, 9)).toThrow(new InvalidPuzzleDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: 9'));
-    });
-
-    test('Construction of invalid Cell using `atPosition` method', () => {
-        expect(() => Cell.atPosition([ -1, 4 ])).toThrow(new InvalidPuzzleDefError('Invalid House index. Row outside of range. Expected to be within [0, 9). Actual: -1'));
     });
 });

@@ -1,5 +1,5 @@
 import { Column } from './column';
-import { CellRowAndColumn, GridMatrix } from './gridMatrix';
+import { GridMatrix } from './gridMatrix';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 import { Row } from './row';
@@ -95,19 +95,6 @@ export class Cell {
         Row.validateIndex(row);
         Column.validateIndex(col);
         return this.GRID[row][col];
-    }
-
-    /**
-     * Produces `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
-     *
-     * @param val - Tuple of `Cell` `Row` and `Column` indices which identify `Cell` position on the `Grid`.
-     *
-     * @returns `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
-     *
-     * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
-     */
-    static atPosition(val: CellRowAndColumn) {
-        return Cell.at(val[0], val[1]);
     }
 
     private constructor(row: HouseIndex, col: HouseIndex) {
