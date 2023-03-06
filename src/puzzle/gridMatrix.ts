@@ -25,7 +25,7 @@ export class GridMatrix {
     }
 
     /**
-     * Amount of `Cell`s on `Grid`'s side.
+     * Amount of `Cell`s on the `Grid`'s side.
      */
     static readonly SIDE_CELL_COUNT = 9;
 
@@ -35,7 +35,7 @@ export class GridMatrix {
     static readonly SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
 
     /**
-     * Total amount of {@link Cell}s in a `Grid`.
+     * Total amount of {@link Cell}s on the `Grid`.
      */
     static readonly CELL_COUNT = Math.imul(this.SIDE_CELL_COUNT, this.SIDE_CELL_COUNT);
 
