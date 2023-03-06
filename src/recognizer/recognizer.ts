@@ -156,7 +156,7 @@ function findFirstSignificantCoord(map: Map<number, number>, isReverse = false) 
 }
 
 function createCellContours(gridContour: GridContour) {
-    const cellContoursMatrix = GridMatrix.new<CellContour>();
+    const cellContoursMatrix = GridMatrix.newMatrix<CellContour>();
 
     _.range(House.CELL_COUNT).forEach(row => {
         _.range(House.CELL_COUNT).forEach(col => {

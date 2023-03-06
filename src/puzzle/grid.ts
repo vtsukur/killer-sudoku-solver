@@ -16,7 +16,7 @@ export class Grid {
     /**
      * Total sum of all numbers in a `Grid`.
      */
-    static readonly SUM = Math.imul(GridMatrix.GRID_SIDE_CELL_COUNT, House.SUM);
+    static readonly SUM = Math.imul(GridMatrix.SIDE_CELL_COUNT, House.SUM);
 
     /* istanbul ignore next */
     private constructor() {
@@ -27,7 +27,7 @@ export class Grid {
 
     private static buildIterationCache() {
         const val: Array<CellRowAndColumn> = [];
-        GridMatrix.forEachCellPositionOnTheGrid(cellPosition => {
+        GridMatrix.forEachCellPosition(cellPosition => {
             val.push(cellPosition);
         });
         return val;
@@ -52,7 +52,7 @@ export class Grid {
     static newCellsIterator(): CellsIterator {
         return new CellsIterator((index: number) => {
             return Cell.atPosition(this._CELLS_ITERATOR_CACHE[index]);
-        }, GridMatrix.GRID_CELL_COUNT);
+        }, GridMatrix.CELL_COUNT);
     }
 
 }

@@ -73,10 +73,10 @@ export class Cell {
      */
     readonly key: CellKey;
 
-    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridMatrix.new();
+    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridMatrix.newMatrix();
 
     static {
-        GridMatrix.forEachCellPositionOnTheGrid(([ row, col ]) => {
+        GridMatrix.forEachCellPosition(([ row, col ]) => {
             this._CACHED_INSTANCES[row][col] = new Cell(row, col);
         });
     }
@@ -113,7 +113,7 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
-        this.index = Math.imul(row, GridMatrix.GRID_SIDE_CELL_COUNT) + col;
+        this.index = Math.imul(row, GridMatrix.SIDE_CELL_COUNT) + col;
         this.key = Cell.keyOf(row, col);
     }
 

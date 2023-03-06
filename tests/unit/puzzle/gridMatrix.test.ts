@@ -18,11 +18,11 @@ describe('Unit tests for `GridMatrix`', () => {
     // });
 
     test('Creation of `GridMatrix`', () => {
-        const matrix = GridMatrix.new();
+        const matrix = GridMatrix.newMatrix();
 
-        expect(matrix.length).toBe(GridMatrix.GRID_SIDE_CELL_COUNT);
+        expect(matrix.length).toBe(GridMatrix.SIDE_CELL_COUNT);
         for (const row of matrix) {
-            expect(row.length).toBe(GridMatrix.GRID_SIDE_CELL_COUNT);
+            expect(row.length).toBe(GridMatrix.SIDE_CELL_COUNT);
             for (const el of row) {
                 expect(el).toBeUndefined();
             }

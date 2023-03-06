@@ -24,22 +24,22 @@ export class GridMatrix {
     /**
      * Amount of `Cell`s on `Grid`'s side.
      */
-    static readonly GRID_SIDE_CELL_COUNT = 9;
+    static readonly SIDE_CELL_COUNT = 9;
 
     /**
      * Range as a readonly array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
      */
-    static readonly GRID_SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.GRID_SIDE_CELL_COUNT];
+    static readonly SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
 
     /**
      * Total amount of {@link Cell}s in a `Grid`.
      */
-    static readonly GRID_CELL_COUNT = Math.imul(this.GRID_SIDE_CELL_COUNT, this.GRID_SIDE_CELL_COUNT);
+    static readonly CELL_COUNT = Math.imul(this.SIDE_CELL_COUNT, this.SIDE_CELL_COUNT);
 
     /**
      * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
      */
-    static readonly GRID_CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.GRID_CELL_COUNT];
+    static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
     /**
      * Iterates over all `Cell`s in the `Grid` consequently calling `callback` with each {@link CellRowAndColumn}.
@@ -56,9 +56,9 @@ export class GridMatrix {
      *
      * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s in the `Grid`.
      */
-    static forEachCellPositionOnTheGrid = (callback: CellRowAndColumnCallback) => {
-        for (const row of this.GRID_SIDE_INDICES_RANGE) {
-            for (const col of this.GRID_SIDE_INDICES_RANGE) {
+    static forEachCellPosition = (callback: CellRowAndColumnCallback) => {
+        for (const row of this.SIDE_INDICES_RANGE) {
+            for (const col of this.SIDE_INDICES_RANGE) {
                 callback([ row, col ]);
             }
         }
@@ -71,10 +71,10 @@ export class GridMatrix {
      *
      * @typeParam T - Type of values in the matrix.
      */
-    static new<T>(): Array<Array<T>> {
-        const val = new Array<Array<T>>(this.GRID_SIDE_CELL_COUNT);
-        this.GRID_SIDE_INDICES_RANGE.forEach((_empty, index) => {
-            val[index] = new Array<T>(this.GRID_SIDE_CELL_COUNT);
+    static newMatrix<T>(): Array<Array<T>> {
+        const val = new Array<Array<T>>(this.SIDE_CELL_COUNT);
+        this.SIDE_INDICES_RANGE.forEach((_empty, index) => {
+            val[index] = new Array<T>(this.SIDE_CELL_COUNT);
         });
         return val;
     };

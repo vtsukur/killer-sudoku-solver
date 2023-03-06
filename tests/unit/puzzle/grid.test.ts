@@ -25,7 +25,7 @@ describe('Grid tests', () => {
 
     test('Iteration over `CellRowAndColumn`s', () => {
         const cells = new Array<Cell>();
-        GridMatrix.forEachCellPositionOnTheGrid(([ row, col ]) => {
+        GridMatrix.forEachCellPosition(([ row, col ]) => {
             cells.push(Cell.at(row, col));
         });
 
