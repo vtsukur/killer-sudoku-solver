@@ -73,13 +73,13 @@ export class Cell {
      */
     readonly key: CellKey;
 
-    private static readonly _CACHED_INSTANCES: Array<Array<Cell>> = GridMatrix.newMatrix();
-
-    static {
+    static readonly GRID: Array<Array<Cell>> = (() => {
+        const val = GridMatrix.newMatrix<Cell>();
         GridMatrix.forEachCellPosition(([ row, col ]) => {
-            this._CACHED_INSTANCES[row][col] = new Cell(row, col);
+            val[row][col] = new Cell(row, col);
         });
-    }
+        return val;
+    })();
 
     /**
      * Produces `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
@@ -94,7 +94,7 @@ export class Cell {
     static at(row: HouseIndex, col: HouseIndex) {
         Row.validateIndex(row);
         Column.validateIndex(col);
-        return this._CACHED_INSTANCES[row][col];
+        return this.GRID[row][col];
     }
 
     /**

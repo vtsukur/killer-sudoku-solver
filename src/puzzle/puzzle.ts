@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { joinSet } from '../util/readableMessages';
 import { ReadonlyCages } from './cage';
-import { CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
+import { Cell, CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 import { GridMatrix } from './gridMatrix';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
@@ -58,9 +58,11 @@ export class Puzzle {
     private static validateForMissingCells(unique: ReadonlyCellKeysSet) {
         const missingKeys = new Set<CellKey>();
         if (unique.size < GridMatrix.CELL_COUNT) {
-            for (const { key } of Grid.newCellsIterator()) {
-                if (!unique.has(key)) {
-                    missingKeys.add(key);
+            for (const rowOfCells of Cell.GRID) {
+                for (const { key } of rowOfCells) {
+                    if (!unique.has(key)) {
+                        missingKeys.add(key);
+                    }
                 }
             }
             if (missingKeys.size > 0) {
