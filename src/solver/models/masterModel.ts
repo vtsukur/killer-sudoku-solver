@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Cage } from '../../puzzle/cage';
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Column } from '../../puzzle/column';
-import { GridMatrix } from '../../puzzle/gridMatrix';
+import { Grid } from '../../puzzle/grid';
 import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
@@ -51,9 +51,9 @@ export class MasterModel {
     readonly nonetModels: Array<NonetModel> = new Array(House.COUNT);
     readonly houseModels: Array<HouseModel>;
     readonly cageModelsMap: Map<string, CageModel> = new Map();
-    readonly cellModelsMatrix: Array<Array<CellModel>> = GridMatrix.newMatrix();
+    readonly cellModelsMatrix: Array<Array<CellModel>> = Grid.newMatrix();
 
-    private readonly _solution: Array<Array<number>> = GridMatrix.newMatrix();
+    private readonly _solution: Array<Array<number>> = Grid.newMatrix();
     private _placedNumCount = 0;
     private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
     private readonly _eventHandlers: Map<string, Set<GenericEventHandler>> = MasterModelEvents.newEventHandlersMap();
@@ -61,7 +61,7 @@ export class MasterModel {
     constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
         if (puzzleOrMasterModel instanceof Puzzle) {
             this.puzzle = puzzleOrMasterModel;
-            this._cellsToInputCagesMatrix = GridMatrix.newMatrix();
+            this._cellsToInputCagesMatrix = Grid.newMatrix();
             this.initWithPuzzle(puzzleOrMasterModel);
         } else {
             this.puzzle = puzzleOrMasterModel.puzzle;
@@ -226,7 +226,7 @@ export class MasterModel {
     }
 
     get isSolved() {
-        return this._placedNumCount === GridMatrix.CELL_COUNT;
+        return this._placedNumCount === Grid.CELL_COUNT;
     }
 
     get solution() {

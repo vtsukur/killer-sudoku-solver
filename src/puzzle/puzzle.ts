@@ -3,7 +3,6 @@ import { joinSet } from '../util/readableMessages';
 import { ReadonlyCages } from './cage';
 import { Cell, CellKey, ReadonlyCellKeysSet, ReadonlyCells } from './cell';
 import { Grid } from './grid';
-import { GridMatrix } from './gridMatrix';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
 
 /**
@@ -57,7 +56,7 @@ export class Puzzle {
 
     private static validateForMissingCells(unique: ReadonlyCellKeysSet) {
         const missingKeys = new Set<CellKey>();
-        if (unique.size < GridMatrix.CELL_COUNT) {
+        if (unique.size < Grid.CELL_COUNT) {
             for (const rowOfCells of Cell.GRID) {
                 for (const { key } of rowOfCells) {
                     if (!unique.has(key)) {

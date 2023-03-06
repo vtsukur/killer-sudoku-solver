@@ -1,5 +1,5 @@
 import { Column } from './column';
-import { GridMatrix } from './gridMatrix';
+import { Grid } from './grid';
 import { HouseIndex } from './house';
 import { Nonet } from './nonet';
 import { Row } from './row';
@@ -74,8 +74,8 @@ export class Cell {
     readonly key: CellKey;
 
     static readonly GRID: Array<Array<Cell>> = (() => {
-        const val = GridMatrix.newMatrix<Cell>();
-        GridMatrix.forEachCellPosition(([ row, col ]) => {
+        const val = Grid.newMatrix<Cell>();
+        Grid.forEachCellPosition(([ row, col ]) => {
             val[row][col] = new Cell(row, col);
         });
         return val;
@@ -100,7 +100,7 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
-        this.index = Math.imul(row, GridMatrix.SIDE_CELL_COUNT) + col;
+        this.index = Math.imul(row, Grid.SIDE_CELL_COUNT) + col;
         this.key = Cell.keyOf(row, col);
     }
 

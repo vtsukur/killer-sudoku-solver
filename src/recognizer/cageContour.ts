@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cell } from '../puzzle/cell';
-import { GridMatrix } from '../puzzle/gridMatrix';
+import { Grid } from '../puzzle/grid';
 import { CellContour } from './cellContour';
 
 export class CageContour {
@@ -28,7 +28,7 @@ export class CageContour {
     }
 
     private static cellIndexWithinGrid(cell: Cell) {
-        return cell.row * GridMatrix.SIDE_CELL_COUNT + cell.col;
+        return cell.row * Grid.SIDE_CELL_COUNT + cell.col;
     }
 
     get cells() {
