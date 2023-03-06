@@ -44,7 +44,7 @@ export class GridMatrix {
      */
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
-    private static _CELL_POSITIONS_CACHE = (() => {
+    private static _CELL_POSITIONS_CACHE: ReadonlyArray<CellRowAndColumn> = (() => {
         const val = new Array<CellRowAndColumn>(this.CELL_COUNT);
         for (const row of this.SIDE_INDICES_RANGE) {
             for (const col of this.SIDE_INDICES_RANGE) {
@@ -72,9 +72,9 @@ export class GridMatrix {
      * @param callback - Function to be called with {@link CellRowAndColumn} for `Cell`s on the `Grid`.
      */
     static forEachCellPosition = (callback: CellRowAndColumnCallback) => {
-        this._CELL_POSITIONS_CACHE.forEach(cellPosition => {
+        for (const cellPosition of this._CELL_POSITIONS_CACHE) {
             callback(cellPosition);
-        });
+        }
     };
 
     /**
