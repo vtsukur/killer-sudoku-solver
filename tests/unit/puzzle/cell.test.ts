@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
 import { Grid } from '../../../src/puzzle/grid';
 import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
@@ -39,6 +40,71 @@ describe('Cell tests', () => {
             [ Cell.at(7, 0), Cell.at(7, 1), Cell.at(7, 2), Cell.at(7, 3), Cell.at(7, 4), Cell.at(7, 5), Cell.at(7, 6), Cell.at(7, 7), Cell.at(7, 8) ],
             [ Cell.at(8, 0), Cell.at(8, 1), Cell.at(8, 2), Cell.at(8, 3), Cell.at(8, 4), Cell.at(8, 5), Cell.at(8, 6), Cell.at(8, 7), Cell.at(8, 8) ]
         ]);
+    });
+
+    test('`Cell`s\' `Nonet`s', () => {
+        // north-west nonet (0)
+        _.range(0, 3).forEach(row => {
+            _.range(0, 3).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(0);
+            });
+        });
+
+        // north nonet (1)
+        _.range(0, 3).forEach(row => {
+            _.range(3, 6).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(1);
+            });
+        });
+
+        // north-east nonet (2)
+        _.range(0, 3).forEach(row => {
+            _.range(6, 9).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(2);
+            });
+        });
+
+        // east nonet (3)
+        _.range(3, 6).forEach(row => {
+            _.range(0, 3).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(3);
+            });
+        });
+
+        // center nonet (4)
+        _.range(3, 6).forEach(row => {
+            _.range(3, 6).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(4);
+            });
+        });
+
+        // west nonet (5)
+        _.range(3, 6).forEach(row => {
+            _.range(6, 9).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(5);
+            });
+        });
+
+        // south-west nonet (6)
+        _.range(6, 9).forEach(row => {
+            _.range(0, 3).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(6);
+            });
+        });
+
+        // south nonet (7)
+        _.range(6, 9).forEach(row => {
+            _.range(3, 6).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(7);
+            });
+        });
+
+        // south-east nonet (8)
+        _.range(6, 9).forEach(row => {
+            _.range(6, 9).forEach(col => {
+                expect(Cell.at(row, col).nonet).toBe(8);
+            });
+        });
     });
 
     test('Construction of invalid Cell with Row outside of the range: <0', () => {

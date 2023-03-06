@@ -1,7 +1,6 @@
 import { Column } from './column';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
-import { Nonet } from './nonet';
 import { Row } from './row';
 
 /**
@@ -47,6 +46,11 @@ export class Cell {
     readonly col: HouseIndex;
 
     /**
+     * Index of a `Nonet` that this `Cell` is positioned at.
+     */
+    readonly nonet: HouseIndex;
+
+    /**
      * Index of a `Cell` within the `Grid` in the range of [0, 81).
      *
      * `Cell`s are indexed consequently from _top left_ position of the `Grid` to the _right bottom_ one.
@@ -72,6 +76,22 @@ export class Cell {
      * Human-readable key describing square's unique position on the `Grid`.
      */
     readonly key: CellKey;
+
+    /**
+     * Readonly matrix holding `Nonet` index for each {@link Cell} in the {@link Grid}
+     * indexed first by {@link Row} and then by {@link Column}.
+     */
+    static readonly GRID_OF_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
+        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
+    ];
 
     /**
      * Readonly matrix of all possible {@link Cell}s on the {@link Grid}
@@ -105,17 +125,9 @@ export class Cell {
     private constructor(row: HouseIndex, col: HouseIndex) {
         this.row = row;
         this.col = col;
+        this.nonet = Cell.GRID_OF_NONETS[row][col];
         this.index = Math.imul(row, Grid.SIDE_CELL_COUNT) + col;
         this.key = Cell.keyOf(row, col);
-    }
-
-    /**
-     * Index of a `Nonet` that this `Cell` is positioned at.
-     *
-     * `Nonet` index is computed from `Row` and `Column` indices.
-     */
-    get nonet() {
-        return Nonet.indexForCellAt(this.row, this.col);
     }
 
     private static keyOf(row: HouseIndex, col: HouseIndex): CellKey {

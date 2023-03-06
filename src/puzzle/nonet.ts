@@ -1,5 +1,5 @@
 import { Cell } from './cell';
-import { CellRowAndColumn, Grid } from './grid';
+import { Grid } from './grid';
 import { House, HouseIndex } from './house';
 
 /**
@@ -22,48 +22,15 @@ export class Nonet {
         throw new Error('Non-contructible');
     }
 
-    /**
-     * Determines index of `Nonet` to which given {@link Cell} belongs to.
-     *
-     * `Nonet`s are indexed from _left_ to _right_ and from _top_ to _bottom_ as follows:
-     * ```
-     * 0 1 2
-     * 3 4 5
-     * 6 7 8
-     * ```
-     *
-     * @param row - `Cell`'s row index.
-     * @param col - `Cell`'s column index.
-     *
-     * @returns index of `Nonet` to which given {@link Cell} belongs to.
-     */
-    static indexForCellAt(row: HouseIndex, col: HouseIndex): HouseIndex {
-        return this.GRID_CELLS_TO_NONETS[row][col];
-    }
-
-    /**
-     * Matrix holding {@link Nonet} index for each {@link Cell} in the {@link Grid}
-     * indexed first by {@link Row} and then by {@link Column}.
-     */
-    static readonly GRID_CELLS_TO_NONETS: ReadonlyArray<ReadonlyArray<HouseIndex>> = [
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 0, 0, 0, 1, 1, 1, 2, 2, 2 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ],
-        [ 6, 6, 6, 7, 7, 7, 8, 8, 8 ]
-    ];
-
-    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<CellRowAndColumn>> = this.buildIterationCache();
+    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<Cell>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<Array<CellRowAndColumn>> = Grid.SIDE_INDICES_RANGE.map(() => []);
-        Grid.forEachCellPosition(cellRowAndColumn => {
-            val[this.GRID_CELLS_TO_NONETS[cellRowAndColumn[0]][cellRowAndColumn[1]]].push(cellRowAndColumn);
-        });
+        const val: Array<Array<Cell>> = Grid.SIDE_INDICES_RANGE.map(() => []);
+        for (const row of Grid.SIDE_INDICES_RANGE) {
+            for (const col of Grid.SIDE_INDICES_RANGE) {
+                val[Cell.GRID_OF_NONETS[row][col]].push(Cell.GRID[row][col]);
+            }
+        }
         return val;
     }
 
@@ -90,8 +57,7 @@ export class Nonet {
     static newCellsIterator(nonet: HouseIndex) {
         Nonet.validateIndex(nonet);
         return House.newCellsIterator(index => {
-            const cacheEntry = Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
-            return Cell.GRID[cacheEntry[0]][cacheEntry[1]];
+            return Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
         });
     }
 
