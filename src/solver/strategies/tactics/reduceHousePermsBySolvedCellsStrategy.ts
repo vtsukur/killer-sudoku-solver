@@ -13,7 +13,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
                 this._model.columnModels[cellM.cell.col],
                 this._model.nonetModels[cellM.cell.nonet]
             ].forEach(houseM => {
-                for (const { row, col } of houseM.cellsIterator()) {
+                for (const { row, col } of houseM.cells) {
                     if (row === cellM.cell.row && col === cellM.cell.col) continue;
 
                     const aCellM = this._model.cellModelAt(row, col);

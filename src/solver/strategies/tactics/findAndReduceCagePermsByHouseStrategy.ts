@@ -145,7 +145,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 cols: new Set()
             }));
 
-            for (const { row, col } of nonetM.cellsIterator()) {
+            for (const { row, col } of nonetM.cells) {
                 const cellM = this._model.cellModelAt(row, col);
                 if (cellM.solved) continue;
 
@@ -175,7 +175,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 }
 
 const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reducedCellMs: ReducedCellModels) => {
-    for (const { row, col } of houseM.cellsIterator()) {
+    for (const { row, col } of houseM.cells) {
         if (cageM.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);
@@ -269,7 +269,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
 };
 
 const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reducedCellMs: ReducedCellModels) => {
-    for (const { row, col } of houseM.cellsIterator()) {
+    for (const { row, col } of houseM.cells) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {

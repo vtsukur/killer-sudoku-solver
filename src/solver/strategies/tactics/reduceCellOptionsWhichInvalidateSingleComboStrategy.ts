@@ -53,7 +53,7 @@ function collectCellMsToCheck(cellM: CellModel, model: MasterModel) {
 }
 
 function addCellsFromHouse(cellMs: Set<CellModel>, houseM: HouseModel, model: MasterModel) {
-    for (const { row, col } of houseM.cellsIterator()) {
+    for (const { row, col } of houseM.cells) {
         cellMs.add(model.cellModelAt(row, col));
     }
 }
