@@ -5,6 +5,10 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(new SudokuNumsCheckingSet([ 1, 6, 9 ]), [ 1, 6, 9 ]);
     });
 
+    test('Construction of `SudokuNumsCheckingSet` from another set', () => {
+        expectSetWithValues(new SudokuNumsCheckingSet(new SudokuNumsCheckingSet([ 1, 6, 9 ])), [ 1, 6, 9 ]);
+    });
+
     test('Construction of `SudokuNumsCheckingSet` from `BitStore32`', () => {
         expectSetWithValues(new SudokuNumsCheckingSet(1 << 1 | 1 << 6 | 1 << 9), [ 1, 6, 9 ]);
     });
