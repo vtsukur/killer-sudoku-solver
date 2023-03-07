@@ -1,6 +1,4 @@
 import * as _ from 'lodash';
-import { Cell } from '../puzzle/cell';
-import { Grid } from '../puzzle/grid';
 import { CellContour } from './cellContour';
 
 export class CageContour {
@@ -22,13 +20,9 @@ export class CageContour {
 
     private updateTopLeftCellContour(cellContour: CellContour) {
         if (_.isUndefined(this.topLeftCellContour) ||
-                CageContour.cellIndexWithinGrid(cellContour.cell) < CageContour.cellIndexWithinGrid((this.topLeftCellContour as CellContour).cell)) {
+                cellContour.cell.index < (this.topLeftCellContour as CellContour).cell.index) {
             this.topLeftCellContour = cellContour;
         }
-    }
-
-    private static cellIndexWithinGrid(cell: Cell) {
-        return cell.row * Grid.SIDE_CELL_COUNT + cell.col;
     }
 
     get cells() {
