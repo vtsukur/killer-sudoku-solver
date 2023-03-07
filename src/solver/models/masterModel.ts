@@ -162,10 +162,6 @@ export class MasterModel {
         });
     }
 
-    private collectHouseCells(iterator: Iterable<Cell>): ReadonlyCells {
-        return Array.from(iterator).map((coords: Cell) => Cell.at(coords.row, coords.col));
-    }
-
     registerCage(cage: Cage, canHaveDuplicateNums: boolean) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
         cageM.initialReduce();
