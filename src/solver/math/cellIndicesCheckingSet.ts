@@ -1,4 +1,4 @@
-import { Cell } from '../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
 
@@ -28,7 +28,7 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
      *
      * @returns {Cell}s which are included in this checking set.
      */
-    cells(): ReadonlyArray<Cell>;
+    cells(): ReadonlyCells;
 
     /**
      * Creates new checking set which has only the numbers
@@ -144,7 +144,7 @@ export class CellIndicesCheckingSet implements
      * Lookup table for {@link Cell}s represented as the array of arrays
      * indexed by bit store and then by unique number for the 32-bit _power of 2_ integer.
      */
-    private static readonly _BITS_TO_CELLS_LUT: ReadonlyArray<ReadonlyArray<Cell>> = (() => {
+    private static readonly _BITS_TO_CELLS_LUT: ReadonlyArray<ReadonlyCells> = (() => {
         // Creating empty lookup tables for each bit store.
         const val: Array<Array<Cell>> = [
             this._newPowersOfTwoLookUpTable(),
