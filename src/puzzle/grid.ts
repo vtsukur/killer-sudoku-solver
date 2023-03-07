@@ -44,9 +44,11 @@ export class Grid {
     }
 
     /**
-     * Constructs new matrix (array of arrays) of {@link Grid}'s size indexed by `Row` and then by `Column`.
+     * Constructs new matrix (array of arrays) of {@link Grid.SIDE_CELL_COUNT} x {@link Grid.SIDE_CELL_COUNT} size
+     * indexed by `Row` and then by `Column`.
      *
-     * @returns new matrix (array of arrays) of {@link Grid}'s size indexed by `Row` and then by `Column`.
+     * @returns New matrix (array of arrays) of {@link Grid.SIDE_CELL_COUNT} x {@link Grid.SIDE_CELL_COUNT} size
+     * indexed by `Row` and then by `Column`.
      *
      * @typeParam T - Type of values in the matrix.
      */
