@@ -1,4 +1,4 @@
-import { Cell, ReadonlyCells } from './cell';
+import { Cell, CellsMatrix } from './cell';
 import { Grid } from './grid';
 
 /**
@@ -20,7 +20,7 @@ export class Column {
      * {@link Cell}s for each {@link Column}
      * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Column}.
      */
-    static readonly CELLS: ReadonlyArray<ReadonlyCells> = (() => {
+    static readonly CELLS: CellsMatrix = (() => {
         const val = Grid.newMatrix<Cell>();
         for (const rowOfCells of Cell.GRID) {
             for (const cell of rowOfCells) {

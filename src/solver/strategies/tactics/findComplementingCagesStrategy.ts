@@ -1,6 +1,6 @@
 import { Cage } from '../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cell, ReadonlyCells } from '../../../puzzle/cell';
+import { Cell, CellsMatrix, ReadonlyCells } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
@@ -605,7 +605,7 @@ abstract class HouseAreasProcessor {
      * @returns Array of checking sets where element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      */
-    protected static cellsIndices(cells: ReadonlyArray<ReadonlyCells>) {
+    protected static cellsIndices(cells: CellsMatrix) {
         return House.COUNT_RANGE.map(index =>
             new CellIndicesCheckingSet(cells[index].map(cell => cell.index))
         );

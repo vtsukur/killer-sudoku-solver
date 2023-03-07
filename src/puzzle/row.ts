@@ -1,4 +1,4 @@
-import { Cell, ReadonlyCells } from './cell';
+import { Cell, CellsMatrix } from './cell';
 
 /**
  * Supportive class for Killer Sudoku `Row`
@@ -19,6 +19,6 @@ export class Row {
      * {@link Cell}s for each {@link Row}
      * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Row}.
      */
-    static readonly CELLS: ReadonlyArray<ReadonlyCells> = Cell.GRID;
+    static readonly CELLS: CellsMatrix = Cell.GRID;
 
 }

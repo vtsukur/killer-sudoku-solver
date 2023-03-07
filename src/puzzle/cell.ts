@@ -17,6 +17,11 @@ export type CellKeysSet = Set<CellKey>;
 export type ReadonlyCellKeysSet = ReadonlySet<CellKey>;
 
 /**
+ * Matrix (array of arrays) of {@link Cell}s.
+ */
+export type CellsMatrix = ReadonlyArray<ReadonlyCells>;
+
+/**
  * Single square on the Killer Sudoku `Grid`.
  *
  * `Cell` API provides access to indices of a `Row` ({@link Cell#row}),
@@ -96,7 +101,7 @@ export class Cell {
      * which is indexed by {@link Row} and then by {@link Column}
      * so that {@link Cell} at {@link Row} `i` and {@link Column} `j` can be accessed via `Cell.GRID[i][j]`.
      */
-    static readonly GRID: Array<Array<Cell>> = (() => {
+    static readonly GRID: CellsMatrix = (() => {
         const val = Grid.newMatrix<Cell>();
         for (const row of Grid.SIDE_INDICES) {
             for (const col of Grid.SIDE_INDICES) {

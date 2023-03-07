@@ -1,4 +1,4 @@
-import { Cell, ReadonlyCells } from './cell';
+import { Cell, CellsMatrix } from './cell';
 import { Grid } from './grid';
 
 /**
@@ -25,7 +25,7 @@ export class Nonet {
      * {@link Cell}s for each {@link Nonet}
      * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Nonet}.
      */
-    static readonly CELLS: ReadonlyArray<ReadonlyCells> = (() => {
+    static readonly CELLS: CellsMatrix = (() => {
         const val: Array<Array<Cell>> = Grid.SIDE_INDICES.map(() => []);
         for (const row of Grid.SIDE_INDICES) {
             for (const col of Grid.SIDE_INDICES) {
