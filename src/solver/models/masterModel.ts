@@ -83,7 +83,7 @@ export class MasterModel {
         _.range(House.CELL_COUNT).forEach(i => {
             this.rowModels[i] = new RowModel(i, Row.CELLS[i]);
             this.columnModels[i] = new ColumnModel(i, Column.CELLS[i]);
-            this.nonetModels[i] = new NonetModel(i, this.collectHouseCells(Nonet.newCellsIterator(i)));
+            this.nonetModels[i] = new NonetModel(i, Nonet.CELLS[i]);
         });
 
         const cells = puzzle.cages.map(cage => cage.cells).flat();

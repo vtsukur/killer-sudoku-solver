@@ -1,4 +1,4 @@
-import { Cell } from './cell';
+import { Cell, ReadonlyCells } from './cell';
 import { Grid } from './grid';
 import { House, HouseIndex } from './house';
 
@@ -22,9 +22,11 @@ export class Nonet {
         throw new Error('Non-contructible');
     }
 
-    private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<Cell>> = this.buildIterationCache();
-
-    private static buildIterationCache() {
+    /**
+     * {@link Cell}s for each {@link Nonet}
+     * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Nonet}.
+     */
+    static readonly CELLS: ReadonlyArray<ReadonlyCells> = (() => {
         const val: Array<Array<Cell>> = Grid.SIDE_INDICES.map(() => []);
         for (const row of Grid.SIDE_INDICES) {
             for (const col of Grid.SIDE_INDICES) {
@@ -32,7 +34,7 @@ export class Nonet {
             }
         }
         return val;
-    }
+    })();
 
     /**
      * Constructs new iterator over {@link Cell}s for a `Nonet` with the given index
@@ -57,7 +59,7 @@ export class Nonet {
     static newCellsIterator(nonet: HouseIndex) {
         House.validateIndex(nonet);
         return House.newCellsIterator(index => {
-            return Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
+            return Nonet.CELLS[nonet][index];
         });
     }
 
