@@ -592,6 +592,7 @@
                 "group": "solver"
             }
         },
+
         {
             "name": "npm run test [solver/strategies/tactics/findComplementingCagesStrategy]",
             "request": "launch",
@@ -608,7 +609,26 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solver"
+                "group": "solverStrategies"
+            }
+        },
+        {
+            "name": "npm run test [solver/strategies/tactics/findProtrusiveNonetCagesStrategy]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/tactics/findProtrusiveNonetCagesStrategy.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverStrategies"
             }
         },
 
