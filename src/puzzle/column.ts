@@ -22,10 +22,8 @@ export class Column {
      */
     static readonly CELLS: CellsMatrix = (() => {
         const val = Grid.newMatrix<Cell>();
-        for (const rowOfCells of Cell.GRID) {
-            for (const cell of rowOfCells) {
-                val[cell.col][cell.row] = cell;
-            }
+        for (const cell of Cell.ALL) {
+            val[cell.col][cell.row] = cell;
         }
         return val;
     })();

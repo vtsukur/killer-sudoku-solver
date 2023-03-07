@@ -112,6 +112,24 @@ export class Cell {
     })();
 
     /**
+     * Readonly array of all possible {@link Cell}s on the {@link Grid}
+     * which is indexed by {@link Row} and then by {@link Column}
+     * so that {@link Cell} at {@link Row} `i` and {@link Column} `j` can be accessed via `Cell.ALL[i * House.COUNT +j]`.
+     *
+     * `Row`s are iterated consequently from first to last (a.k.a. _top_ to _bottom_).
+     * Each `Row` is iterated starting with its first `Column`
+     * consequently to the last one (a.k.a. _left_ to _right_).
+     * `Row` is iterated fully before proceeding to the next one.
+     *
+     * Final array looks as follows:
+     * ```
+     * // (row, column)
+     * (0, 0) -> (0, 1) -> (0, 2) -> ... -> (0, 7) -> (0, 8) -> (1, 0) -> (1, 1) -> ... -> (8, 8) -> done
+     * ```
+     */
+    static readonly ALL: ReadonlyCells = this.GRID.flat();
+
+    /**
      * Produces `Cell` with the given indices of a `Row` and `Column` the `Cell` is positioned at.
      *
      * @param row - Index of a `Row` that this `Cell` is positioned at.

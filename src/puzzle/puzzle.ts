@@ -57,11 +57,9 @@ export class Puzzle {
     private static validateForMissingCells(unique: ReadonlyCellKeysSet) {
         const missingKeys = new Set<CellKey>();
         if (unique.size < Grid.CELL_COUNT) {
-            for (const rowOfCells of Cell.GRID) {
-                for (const { key } of rowOfCells) {
-                    if (!unique.has(key)) {
-                        missingKeys.add(key);
-                    }
+            for (const { key } of Cell.ALL) {
+                if (!unique.has(key)) {
+                    missingKeys.add(key);
                 }
             }
             if (missingKeys.size > 0) {
