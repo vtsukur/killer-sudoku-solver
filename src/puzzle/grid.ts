@@ -20,7 +20,7 @@ export class Grid {
      * Range as a readonly array of `[0, {@link Grid.SIDE_CELL_COUNT})` numbers
      * to help in iterating over `Cell`s on the {@link Grid}'s side.
      */
-    static readonly SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
+    static readonly SIDE_INDICES = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
 
     /**
      * Total amount of {@link Cell}s on the {@link Grid}.
@@ -31,7 +31,7 @@ export class Grid {
      * Range as a readonly array of `[0, {@link Grid.CELL_COUNT}]` numbers
      * to help in iterating over all `Cell`s on the {@link Grid}.
      */
-    static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
+    static readonly CELL_INDICES = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
     /**
      * Total sum of all numbers in a {@link Grid}.
@@ -54,7 +54,7 @@ export class Grid {
      */
     static newMatrix<T>(): Array<Array<T>> {
         const val = new Array<Array<T>>(this.SIDE_CELL_COUNT);
-        this.SIDE_INDICES_RANGE.forEach((_empty, index) => {
+        this.SIDE_INDICES.forEach((_empty, index) => {
             val[index] = new Array<T>(this.SIDE_CELL_COUNT);
         });
         return val;

@@ -100,8 +100,8 @@ export class Cell {
      */
     static readonly GRID: Array<Array<Cell>> = (() => {
         const val = Grid.newMatrix<Cell>();
-        for (const row of Grid.SIDE_INDICES_RANGE) {
-            for (const col of Grid.SIDE_INDICES_RANGE) {
+        for (const row of Grid.SIDE_INDICES) {
+            for (const col of Grid.SIDE_INDICES) {
                 val[row][col] = new Cell(row, col);
             }
         }

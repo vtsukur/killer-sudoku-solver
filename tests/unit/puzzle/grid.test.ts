@@ -8,7 +8,7 @@ describe('Unit tests for `Grid`', () => {
     });
 
     test('Range of `Grid`\'s side indices is `[0, 8]`', () => {
-        expect(Grid.SIDE_INDICES_RANGE).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
+        expect(Grid.SIDE_INDICES).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
     });
 
     test('Grid has `81` Cells', () => {
@@ -16,7 +16,7 @@ describe('Unit tests for `Grid`', () => {
     });
 
     test('Range of all `Grid`\'s `Cell` indices is `[0, 80]`', () => {
-        expect(Grid.CELL_INDICES_RANGE).toEqual(_.range(Grid.CELL_COUNT));
+        expect(Grid.CELL_INDICES).toEqual(_.range(Grid.CELL_COUNT));
     });
 
     test('Sum of all `Cell`s in the `Grid` add up to `405`', () => {

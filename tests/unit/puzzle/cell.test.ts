@@ -21,8 +21,8 @@ describe('Cell tests', () => {
 
     test('Cells are indexed consequently from top left position of the `Grid` to the right bottom one', () => {
         let index = 0;
-        for (const row of Grid.SIDE_INDICES_RANGE) {
-            for (const col of Grid.SIDE_INDICES_RANGE) {
+        for (const row of Grid.SIDE_INDICES) {
+            for (const col of Grid.SIDE_INDICES) {
                 expect(Cell.at(row, col).index).toBe(index++);
             }
         }

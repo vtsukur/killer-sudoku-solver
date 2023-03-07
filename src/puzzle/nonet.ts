@@ -25,9 +25,9 @@ export class Nonet {
     private static readonly _NONET_CELLS_ITERATOR_CACHE: ReadonlyArray<ReadonlyArray<Cell>> = this.buildIterationCache();
 
     private static buildIterationCache() {
-        const val: Array<Array<Cell>> = Grid.SIDE_INDICES_RANGE.map(() => []);
-        for (const row of Grid.SIDE_INDICES_RANGE) {
-            for (const col of Grid.SIDE_INDICES_RANGE) {
+        const val: Array<Array<Cell>> = Grid.SIDE_INDICES.map(() => []);
+        for (const row of Grid.SIDE_INDICES) {
+            for (const col of Grid.SIDE_INDICES) {
                 val[Cell.GRID_OF_NONETS[row][col]].push(Cell.GRID[row][col]);
             }
         }
