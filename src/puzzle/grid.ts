@@ -17,7 +17,7 @@ export class Grid {
     static readonly SIDE_CELL_COUNT = 9;
 
     /**
-     * Range as a readonly array of numbers from `[0, {@link Grid.SIDE_CELL_COUNT})`
+     * Range as a readonly array of `[0, {@link Grid.SIDE_CELL_COUNT})` numbers
      * to help in iterating over `Cell`s on the {@link Grid}'s side.
      */
     static readonly SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
@@ -28,7 +28,8 @@ export class Grid {
     static readonly CELL_COUNT = Math.imul(this.SIDE_CELL_COUNT, this.SIDE_CELL_COUNT);
 
     /**
-     * Range as a readonly array of numbers from `0` to `80` to represent indices of all `Cell`s on the {@link Grid}.
+     * Range as a readonly array of `[0, {@link Grid.CELL_COUNT}]` numbers
+     * to help in iterating over all `Cell`s on the {@link Grid}.
      */
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
