@@ -186,7 +186,7 @@ class Stats {
     }
 
     clear() {
-        for (const n of House.COUNT_RANGE) {
+        for (const n of House.INDICES) {
             this._data[n] = new HouseAreaStats(n);
         }
         this._totalCagesFound = 0;
@@ -236,8 +236,8 @@ class IndexedCageModelsTracker {
     constructor(model: MasterModel) {
         this._model = model;
 
-        this._rowIndexedCages = House.COUNT_RANGE.map(() => new Set());
-        this._columnIndexedCages = House.COUNT_RANGE.map(() => new Set());
+        this._rowIndexedCages = House.INDICES.map(() => new Set());
+        this._columnIndexedCages = House.INDICES.map(() => new Set());
 
         for (const cageM of model.cageModelsMap.values()) {
             this._rowIndexedCages[cageM.minRow].add(cageM);
@@ -483,7 +483,7 @@ abstract class HouseAreasProcessor {
      */
     protected applyToIndividualHouses(houseCellsIndices: ReadonlyHouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
-            for (const index of House.COUNT_RANGE) {
+            for (const index of House.INDICES) {
                 this.findAndSlice(this.houseModel(index).cageModels, houseCellsIndices[index], 1);
             }
         }
@@ -606,7 +606,7 @@ abstract class HouseAreasProcessor {
      * has all {@link Cell}s of {@link House} of index `i`.
      */
     protected static cellsIndices(cells: CellsMatrix) {
-        return House.COUNT_RANGE.map(index =>
+        return House.INDICES.map(index =>
             new CellIndicesCheckingSet(cells[index].map(cell => cell.index))
         );
     }

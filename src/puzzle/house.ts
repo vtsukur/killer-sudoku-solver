@@ -24,10 +24,11 @@ export class House {
     static readonly COUNT = 9;
 
     /**
-     * Range as a readonly array of numbers from 0 to 8 to represent iteration over `House`s of one type
+     * Readonly array of numbers in the range `[0, {@link House.COUNT}}]`
+     * to represent iteration over {@link House}`s of one type
      * (`Row`s, `Column`s or `Nonet`s) within a `Grid`.
      */
-    static readonly COUNT_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.COUNT];
+    static readonly INDICES = CachedNumRanges.ZERO_TO_N_LTE_81[this.COUNT];
 
     /**
      * Amount of {@link Cell}s in a `House`.

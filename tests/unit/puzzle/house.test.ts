@@ -7,7 +7,7 @@ describe('Unit tests for `House`', () => {
     });
 
     test('There are 9 `House`s of one type (`Row`, `Column` or `Nonet`) per `Grid`', () => {
-        expect(Array.from(House.COUNT_RANGE)).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
+        expect(Array.from(House.INDICES)).toEqual([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]);
     });
 
     test('Amount of `Cell`s in a `House` is `9`', () => {
