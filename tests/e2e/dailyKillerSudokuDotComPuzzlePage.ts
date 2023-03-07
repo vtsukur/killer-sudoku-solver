@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { Browser, KeyInput, Page } from 'puppeteer';
+import { Cell } from '../../src/puzzle/cell';
 import { House, HouseIndex } from '../../src/puzzle/house';
 import { Solution } from '../../src/puzzle/solution';
 import { Rect } from '../../src/recognizer/rect';
@@ -92,7 +93,7 @@ export class DailyKillerSudokuDotComPuzzlePage {
         _.range(House.CELL_COUNT).forEach((row: HouseIndex) => {
             _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
                 const num = solution.numbers[row][col];
-                const n = Math.imul(row, House.CELL_COUNT) + col + 1;
+                const n = Cell.at(row, col).index + 1;
                 solutionCommands.push({
                     selector: SELECTOR_NTH_CELL(n),
                     press: `${num}` as KeyInput
