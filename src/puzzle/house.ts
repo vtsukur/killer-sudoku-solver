@@ -58,11 +58,13 @@ export class House {
     }
 
     /**
-     * @internal
+     * Validates {@link House} index to be within the possible range of `[0, {@link House.COUNT}})`.
+     *
+     * @throws {InvalidPuzzleDefError} If {@link House} index is outside of the possible range of `[0, {@link House.COUNT}})`.
      */
-    static validateIndex(val: HouseIndex, type: string) {
+    static validateIndex(val: HouseIndex) {
         if (!_.inRange(val, 0, this.CELL_COUNT)) {
-            throw new InvalidPuzzleDefError(`Invalid House index. ${type} outside of range. Expected to be within [0, ${this.CELL_COUNT}). Actual: ${val}`);
+            throw new InvalidPuzzleDefError(`Invalid House. Index outside of range. Expected to be within [0, ${this.CELL_COUNT}). Actual: ${val}`);
         }
     }
 

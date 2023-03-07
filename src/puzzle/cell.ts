@@ -1,7 +1,5 @@
-import { Column } from './column';
 import { Grid } from './grid';
-import { HouseIndex } from './house';
-import { Row } from './row';
+import { House, HouseIndex } from './house';
 
 /**
  * Human-readable key describing square's unique position on the `Grid`.
@@ -119,8 +117,8 @@ export class Cell {
      * @throws {InvalidProblemDefError} if `Cell` position is outside of the `Grid`.
      */
     static at(row: HouseIndex, col: HouseIndex) {
-        Row.validateIndex(row);
-        Column.validateIndex(col);
+        House.validateIndex(row);
+        House.validateIndex(col);
         return this.GRID[row][col];
     }
 

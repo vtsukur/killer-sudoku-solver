@@ -59,13 +59,13 @@ describe('Column tests', () => {
 
     test('Invalid iteration over Cells with Column outside of the range: <0', () => {
         expect(() => Column.newCellsIterator(-1)).toThrow(
-            new InvalidPuzzleDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: -1')
+            new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: -1')
         );
     });
 
     test('Invalid iteration over Cells with Column outside of the range: >8', () => {
         expect(() => Column.newCellsIterator(9)).toThrow(
-            new InvalidPuzzleDefError('Invalid House index. Column outside of range. Expected to be within [0, 9). Actual: 9')
+            new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: 9')
         );
     });
 });

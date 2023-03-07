@@ -80,13 +80,13 @@ describe('Nonet tests', () => {
 
     test('Invalid iteration over Cells with Nonet outside of the range: <0', () => {
         expect(() => Nonet.newCellsIterator(-1)).toThrow(
-            new InvalidPuzzleDefError('Invalid House index. Nonet outside of range. Expected to be within [0, 9). Actual: -1')
+            new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: -1')
         );
     });
 
     test('Invalid iteration over Cells with Nonet outside of the range: >8', () => {
         expect(() => Nonet.newCellsIterator(9)).toThrow(
-            new InvalidPuzzleDefError('Invalid House index. Nonet outside of range. Expected to be within [0, 9). Actual: 9')
+            new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: 9')
         );
     });
 });

@@ -55,17 +55,10 @@ export class Nonet {
      * @throws {InvalidProblemDefError} if `Nonet` index is outside of valid [0, 9) range.
      */
     static newCellsIterator(nonet: HouseIndex) {
-        Nonet.validateIndex(nonet);
+        House.validateIndex(nonet);
         return House.newCellsIterator(index => {
             return Nonet._NONET_CELLS_ITERATOR_CACHE[nonet][index];
         });
-    }
-
-    /**
-     * @internal
-     */
-    static validateIndex(val: HouseIndex) {
-        House.validateIndex(val, 'Nonet');
     }
 
 }

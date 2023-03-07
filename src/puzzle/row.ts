@@ -33,17 +33,10 @@ export class Row {
      * @throws {InvalidProblemDefError} if `Row` index is outside of valid [0, 9) range.
      */
     static newCellsIterator(row: HouseIndex) {
-        Row.validateIndex(row);
+        House.validateIndex(row);
         return House.newCellsIterator((col: HouseIndex) => {
             return Cell.at(row, col);
         });
-    }
-
-    /**
-     * @internal
-     */
-    static validateIndex(val: HouseIndex) {
-        House.validateIndex(val, 'Row');
     }
 
 }
