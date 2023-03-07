@@ -4,12 +4,13 @@ import { House } from '../../../src/puzzle/house';
 import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
 import { Nonet } from '../../../src/puzzle/nonet';
 
-describe('Nonet tests', () => {
-    test('Amount of Cells on Nonet\'s side is 3', () => {
+describe('Unit tests for `Nonet`', () => {
+
+    test('Amount of `Cell`s on `Nonet`\'s side is 3', () => {
         expect(Nonet.SIDE_CELL_COUNT).toEqual(3);
     });
 
-    test('Iteration over Cells', () => {
+    test('Iteration over `Cell`s', () => {
         const cells = _.range(House.COUNT).map(nonet => {
             return Array.from(Nonet.newCellsIterator(nonet));
         });
@@ -78,15 +79,16 @@ describe('Nonet tests', () => {
         ]);
     });
 
-    test('Invalid iteration over Cells with Nonet outside of the range: <0', () => {
+    test('Invalid iteration over `Cell`s with `Nonet` outside of the range: <0', () => {
         expect(() => Nonet.newCellsIterator(-1)).toThrow(
             new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: -1')
         );
     });
 
-    test('Invalid iteration over Cells with Nonet outside of the range: >8', () => {
+    test('Invalid iteration over `Cell`s with `Nonet` outside of the range: >8', () => {
         expect(() => Nonet.newCellsIterator(9)).toThrow(
             new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: 9')
         );
     });
+
 });

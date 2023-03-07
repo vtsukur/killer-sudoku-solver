@@ -20,7 +20,7 @@ describe('Unit tests for `Column`', () => {
         ]);
     });
 
-    test('Iteration over Cells', () => {
+    test('Iteration over `Cell`s', () => {
         const cells = _.range(House.COUNT).map(col => {
             return Array.from(Column.newCellsIterator(col));
         });
@@ -72,15 +72,16 @@ describe('Unit tests for `Column`', () => {
         ]);
     });
 
-    test('Invalid iteration over Cells with Column outside of the range: <0', () => {
+    test('Invalid iteration over `Cell`s with `Column` outside of the range: <0', () => {
         expect(() => Column.newCellsIterator(-1)).toThrow(
             new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: -1')
         );
     });
 
-    test('Invalid iteration over Cells with Column outside of the range: >8', () => {
+    test('Invalid iteration over `Cell`s with `Column` outside of the range: >8', () => {
         expect(() => Column.newCellsIterator(9)).toThrow(
             new InvalidPuzzleDefError('Invalid House. Index outside of range. Expected to be within [0, 9). Actual: 9')
         );
     });
+
 });
