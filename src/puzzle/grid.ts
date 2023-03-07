@@ -27,7 +27,7 @@ export class Grid {
     static readonly CELL_COUNT = Math.imul(this.SIDE_CELL_COUNT, this.SIDE_CELL_COUNT);
 
     /**
-     * Range as a readonly array of numbers from 0 to 80 to represent indices of all `Cell`s on the `Grid`.
+     * Range as a readonly array of numbers from `0` to `80` to represent indices of all `Cell`s on the `Grid`.
      */
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
