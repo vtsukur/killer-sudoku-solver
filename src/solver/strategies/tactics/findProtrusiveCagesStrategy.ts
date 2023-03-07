@@ -2,7 +2,7 @@ import { Cage } from '../../../puzzle/cage';
 import { House } from '../../../puzzle/house';
 import { Strategy } from '../strategy';
 
-export class FindProtrusiveNonetCagesStrategy extends Strategy {
+export class FindProtrusiveCagesStrategy extends Strategy {
 
     execute() {
         const nonetCageMsMap = new Map();
