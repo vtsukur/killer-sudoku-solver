@@ -43,7 +43,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
 
         // `Nonet` 4:
         // Protrusive `Cage` added.
-        expect(context.model.hasCage(Cage.ofSum(21).at(2, 5).at(4, 2).at(4, 6).at(5, 2).new())).toBeTruthy();
+        expect(context.model.hasCage(Cage.ofSum(9).at(2, 5).at(4, 6).new())).toBeTruthy();
 
         // `Nonet` 5: NO protrusive `Cage`.
 
