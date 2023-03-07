@@ -1,4 +1,5 @@
-import { Cell } from './cell';
+import { Cell, ReadonlyCells } from './cell';
+import { Grid } from './grid';
 import { House, HouseIndex } from './house';
 
 /**
@@ -15,6 +16,20 @@ export class Column {
     private constructor() {
         throw new Error('Non-contructible');
     }
+
+    /**
+     * {@link Cell}s for each {@link Column}
+     * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Column}.
+     */
+    static readonly CELLS: ReadonlyArray<ReadonlyCells> = (() => {
+        const val = Grid.newMatrix<Cell>();
+        for (const rowOfCells of Cell.GRID) {
+            for (const cell of rowOfCells) {
+                val[cell.col][cell.row] = cell;
+            }
+        }
+        return val;
+    })();
 
     /**
      * Constructs new iterator over {@link Cell}s for a `Column` with the given index
