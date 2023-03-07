@@ -1,7 +1,6 @@
 import { Cage } from '../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cell } from '../../../puzzle/cell';
-import { CellsIterator } from '../../../puzzle/cellsIterator';
+import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Nonet } from '../../../puzzle/nonet';
@@ -433,11 +432,6 @@ type ProcessorContext = {
 type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 
 /**
- * Type alias for the function producing {@link CellsIterator} for a {@link House} by index.
- */
-type NewCellsIteratorFn = (index: HouseIndex) => CellsIterator;
-
-/**
  * Abstract processor for {@link House} areas
  * which defines key work of the overall {@link FindComplementingCagesStrategy}.
  *
@@ -606,14 +600,14 @@ abstract class HouseAreasProcessor {
      * Supposed to be used by sub-classes for caching {@link Cell}s indices
      * as they remain constant between iterations.
      *
-     * @param newCellsIteratorFn - Function producing {@link CellsIterator} for a {@link House} by index.
+     * @param cells - Matrix of {@link Cells} indexed by {@link House}.
      *
      * @returns Array of checking sets where element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      */
-    protected static cellsIndices(newCellsIteratorFn: NewCellsIteratorFn) {
-        return House.COUNT_RANGE.map(row =>
-            new CellIndicesCheckingSet(Array.from(newCellsIteratorFn(row)).map(cell => cell.index))
+    protected static cellsIndices(cells: ReadonlyArray<ReadonlyCells>) {
+        return House.COUNT_RANGE.map(index =>
+            new CellIndicesCheckingSet(cells[index].map(cell => cell.index))
         );
     }
 
@@ -772,7 +766,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
      * Use of this data structure enhances implementation performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
-    private static readonly _CELLS_INDICES = this.cellsIndices(Row.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Row.CELLS);
 
     private readonly _rowModels;
 
@@ -813,7 +807,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
      * Use of this data structure enhances implementation performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
-    private static readonly _CELLS_INDICES = this.cellsIndices(Column.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Column.CELLS);
 
     private readonly _columnModels;
 
@@ -854,7 +848,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
      * Use of this data structure enhances implementation performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
-    private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.newCellsIterator);
+    private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.CELLS);
 
     private readonly _nonetModels;
 
