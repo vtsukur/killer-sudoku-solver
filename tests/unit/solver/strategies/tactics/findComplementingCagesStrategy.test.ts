@@ -1,11 +1,9 @@
 import { Cage } from '../../../../../src/puzzle/cage';
 import { House } from '../../../../../src/puzzle/house';
-import { Puzzle } from '../../../../../src/puzzle/puzzle';
-import { MasterModel } from '../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../src/solver/strategies/context';
 import { FindComplementingCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementingCagesStrategy';
-import { CageSlicer } from '../../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
+import { newContext } from './contextBuilder';
 
 describe('Unit tests for `FindComplementingCagesStrategy`', () => {
 
@@ -217,9 +215,3 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
     });
 
 });
-
-export const newContext = (puzzle: Puzzle) => {
-    const masterModel = new MasterModel(puzzle);
-    const cageSlider = new CageSlicer(masterModel);
-    return new Context(masterModel, cageSlider);
-};
