@@ -3,7 +3,7 @@ import { DeepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
 import { FindComplementingCagesStrategy } from './tactics/findComplementingCagesStrategy';
 import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
-import { FindProtrusiveNonetSumsStrategy } from './tactics/findProtrusiveNonetSumsStrategy';
+import { FindProtrusiveNonetCagesStrategy } from './tactics/findProtrusiveNonetCagesStrategy';
 import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
 import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
@@ -15,7 +15,7 @@ export class MasterStrategy extends Strategy {
 
     execute() {
         if (!this._context.skipInit) {
-            this.executeAnother(FindProtrusiveNonetSumsStrategy);
+            this.executeAnother(FindProtrusiveNonetCagesStrategy);
             this.executeAnother(FindComplementingCagesStrategy);
             this.executeAnother(InitPermsForCagesStrategy);
         }
