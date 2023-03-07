@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../solver/math/cachedNumRanges';
-import { CellProvider, CellsIterator } from './cellsIterator';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
 
 /**
@@ -43,18 +42,6 @@ export class House {
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
-    }
-
-    /**
-     * Constructs new iterator over {@link Cell}s for a `House` with the given {@link CellProvider}
-     * guaranteeing that amount of iterations matches amount of `Cell`s in a `House`.
-     *
-     * @param cellProvider - Function which provides `Cell` by its index within the `House`.
-     *
-     * @returns new iterator over {@link Cell}s for a `House` with the given {@link CellProvider}.
-     */
-    static newCellsIterator(cellProvider: CellProvider) {
-        return new CellsIterator(cellProvider, this.CELL_COUNT);
     }
 
     /**
