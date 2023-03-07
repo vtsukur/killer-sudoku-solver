@@ -135,25 +135,25 @@ export class MasterModel {
         });
         this._placedNumCount = model._placedNumCount;
 
-        const validate = function(bool: boolean) {
-            if (!bool) throw 'false';
-        };
-        _.range(House.CELL_COUNT).forEach(row => {
-            _.range(House.CELL_COUNT).forEach(col => {
-                validate(this.cellModelAt(row, col) !== model.cellModelAt(row, col));
+        // const validate = function(bool: boolean) {
+        //     if (!bool) throw 'false';
+        // };
+        // _.range(House.CELL_COUNT).forEach(row => {
+        //     _.range(House.CELL_COUNT).forEach(col => {
+        //         validate(this.cellModelAt(row, col) !== model.cellModelAt(row, col));
 
-                const cellM = model.cellModelAt(row, col);
-                for (const cageM of this.cellModelAt(row, col).withinCageModels) {
-                    cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== cellM));
-                }
+        //         const cellM = model.cellModelAt(row, col);
+        //         for (const cageM of this.cellModelAt(row, col).withinCageModels) {
+        //             cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== cellM));
+        //         }
 
-                const reverseCellM = this.cellModelAt(row, col);
-                for (const cageM of model.cellModelAt(row, col).withinCageModels) {
-                    cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== reverseCellM));
-                }
+        //         const reverseCellM = this.cellModelAt(row, col);
+        //         for (const cageM of model.cellModelAt(row, col).withinCageModels) {
+        //             cageM.cellMs.every((aCellM: CellModel) => validate(aCellM !== reverseCellM));
+        //         }
 
-            });
-        });
+        //     });
+        // });
     }
 
     private copyHouseCageMs(sourceM: HouseModel, targetM: HouseModel) {
