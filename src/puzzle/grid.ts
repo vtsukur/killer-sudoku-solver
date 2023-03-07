@@ -3,36 +3,37 @@ import { House } from './house';
 
 /**
  * Supportive class for Killer Sudoku `Grid`
- * which holds useful constants that describe mathematical properties of any `Grid`
- * as well as utility methods that simplify iteration over `Grid` {@link Cell}s
- * and creation of matrices with `Grid`'s size.
+ * which defines useful mathematical properties of any {@link Grid}
+ * as well as utility methods that simplify iteration over {@link Grid} {@link Cell}s
+ * and creation of matrices with {@link Grid}'s size.
  *
  * @public
  */
 export class Grid {
 
     /**
-     * Amount of `Cell`s on the `Grid`'s side.
+     * Amount of `Cell`s on the {@link Grid}'s side.
      */
     static readonly SIDE_CELL_COUNT = 9;
 
     /**
-     * Range as a readonly array of numbers from 0 to 8 to represent iteration over `Grid`'s side `Cell`s.
+     * Range as a readonly array of numbers from `[0, {@link Grid.SIDE_CELL_COUNT})`
+     * to help in iterating over `Cell`s on the {@link Grid}'s side.
      */
     static readonly SIDE_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.SIDE_CELL_COUNT];
 
     /**
-     * Total amount of {@link Cell}s on the `Grid`.
+     * Total amount of {@link Cell}s on the {@link Grid}.
      */
     static readonly CELL_COUNT = Math.imul(this.SIDE_CELL_COUNT, this.SIDE_CELL_COUNT);
 
     /**
-     * Range as a readonly array of numbers from `0` to `80` to represent indices of all `Cell`s on the `Grid`.
+     * Range as a readonly array of numbers from `0` to `80` to represent indices of all `Cell`s on the {@link Grid}.
      */
     static readonly CELL_INDICES_RANGE = CachedNumRanges.ZERO_TO_N_LTE_81[this.CELL_COUNT];
 
     /**
-     * Total sum of all numbers in a `Grid`.
+     * Total sum of all numbers in a {@link Grid}.
      */
     static readonly SUM = Math.imul(this.SIDE_CELL_COUNT, House.SUM);
 
@@ -42,9 +43,9 @@ export class Grid {
     }
 
     /**
-     * Constructs new matrix (array of arrays) of `Grid`'s size indexed by `Row` and then by `Column`.
+     * Constructs new matrix (array of arrays) of {@link Grid}'s size indexed by `Row` and then by `Column`.
      *
-     * @returns new matrix (array of arrays) of `Grid`'s size indexed by `Row` and then by `Column`.
+     * @returns new matrix (array of arrays) of {@link Grid}'s size indexed by `Row` and then by `Column`.
      *
      * @typeParam T - Type of values in the matrix.
      */
