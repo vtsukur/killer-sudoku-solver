@@ -1,4 +1,4 @@
-import { Cell } from './cell';
+import { Cell, ReadonlyCells } from './cell';
 import { House, HouseIndex } from './house';
 
 /**
@@ -15,6 +15,12 @@ export class Row {
     private constructor() {
         throw new Error('Non-contructible');
     }
+
+    /**
+     * {@link Cell}s for each {@link Row}
+     * represented as a readonly array of {@link ReadonlyCells} indexed by {@link Row}.
+     */
+    static readonly CELLS: ReadonlyArray<ReadonlyCells> = Cell.GRID;
 
     /**
      * Constructs new iterator over {@link Cell}s for a `Row` with the given index
