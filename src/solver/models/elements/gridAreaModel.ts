@@ -72,7 +72,7 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
  * Defined by {@link overlappingCages}.
  *
  * Maximization is required to minimize the area that complements it so that
- * it is possible to figure out hints for solving Killer Sudoku puzzle.
+ * it is possible to figure out hints for solving Killer Sudoku {@link Puzzle}.
  * Knowing the sum of {@link Cage}s in maximized area and the sum of the full area
  * allows to trivially determine the sum of complementing area and, in this way,
  * potentially restrict possible number options for the {@link Cell}s in the complementing area.
