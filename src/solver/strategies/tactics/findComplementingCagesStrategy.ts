@@ -228,6 +228,7 @@ class IndexedCageModelsTracker {
         this._rowIndexedCages[cageM.minRow].add(cageM);
         this._columnIndexedCages[cageM.minCol].add(cageM);
     };
+
     private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
         this._rowIndexedCages[cageM.minRow].delete(cageM);
         this._columnIndexedCages[cageM.minCol].delete(cageM);
