@@ -1,7 +1,20 @@
 import { Cage } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../../puzzle/cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Column } from '../../../puzzle/column';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Nonet } from '../../../puzzle/nonet';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Puzzle } from '../../../puzzle/puzzle';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Row } from '../../../puzzle/row';
 import { CageModel } from '../../models/elements/cageModel';
-import { MasterModelEvents } from '../../models/masterModel';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { MasterModel, MasterModelEvents } from '../../models/masterModel';
 import { Strategy } from '../strategy';
 
 /**
