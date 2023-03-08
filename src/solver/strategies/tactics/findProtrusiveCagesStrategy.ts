@@ -15,6 +15,8 @@ import { Row } from '../../../puzzle/row';
 import { CageModel } from '../../models/elements/cageModel';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { MasterModel, MasterModelEvents } from '../../models/masterModel';
+import { CageSlicer } from '../../transform/cageSlicer';
+import { Context } from '../context';
 import { Strategy } from '../strategy';
 
 /**
@@ -125,6 +127,29 @@ import { Strategy } from '../strategy';
  */
 export class FindProtrusiveCagesStrategy extends Strategy {
 
+    private readonly _nonetAreasProcesser: NonetProcessor;
+
+    constructor(context: Context) {
+        super(context);
+        this._nonetAreasProcesser = new NonetProcessor(this._model, this._context.cageSlicer);
+    }
+
+    execute() {
+        this._nonetAreasProcesser.execute();
+    }
+
+}
+
+class NonetProcessor {
+
+    private readonly _model;
+    private readonly _cageSlicer;
+
+    constructor(model: MasterModel, cageSlicer: CageSlicer) {
+        this._model = model;
+        this._cageSlicer = cageSlicer;
+    }
+
     execute() {
         const nonetCageMsMap = new Map();
         this._model.nonetModels.forEach(nonetM => {
@@ -172,7 +197,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
             if (redundantCells.length > 0 && redundantCells.length <= 5) {
                 const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).setIsInput(this._model.isDerivedFromInputCage(redundantCells)).new();
-                this._context.cageSlicer.addAndSliceResidualCageRecursively(cage);
+                this._cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
         }
 
