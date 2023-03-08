@@ -5,7 +5,7 @@ import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Nonet } from '../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -193,28 +193,25 @@ class NonetProcessor {
     }
 
     execute() {
-        const nonetCageMsMap = new Map();
-        this._model.nonetModels.forEach(nonetM => {
-            nonetCageMsMap.set(nonetM.index, new Set());
-        });
+        const nonetCageMsMap = new Map<HouseIndex, Set<CageModel>>(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
 
         for (const cageM of this._model.cageModelsMap.values()) {
             for (const cellM of cageM.cellMs) {
-                nonetCageMsMap.get(cellM.cell.nonet).add(cageM);
+                (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
             }
         }
 
         const cageRegisteredEventHandler = (cageM: CageModel) => {
             if (cageM.cage.isInput) {
                 for (const cellM of cageM.cellMs) {
-                    nonetCageMsMap.get(cellM.cell.nonet).add(cageM);
+                    (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
                 }
             }
         };
         const cageUnregisteredEventHandler = (cageM: CageModel) => {
             if (cageM.cage.isInput) {
                 for (const cellM of cageM.cellMs) {
-                    nonetCageMsMap.get(cellM.cell.nonet).delete(cageM);
+                    (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).delete(cageM);
                 }
             }
         };
