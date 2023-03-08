@@ -20,6 +20,41 @@ import { Context } from '../context';
 import { Strategy } from '../strategy';
 
 /**
+ * Configuration options for {@link FindProtrusiveCagesStrategy}.
+ *
+ * Can be used for both tuning production execution as well as tailoring testing scenarios.
+ *
+ * @public
+ */
+export type Config = {
+
+    /**
+     * Maximum amount of {@link Cell}s in a _protrusive_ {@link Cage}
+     * to consider such a {@link Cage} as successful search result.
+     *
+     * The smaller the {@link Cage} the more hints it leads to.
+     * As a result, there is a limited sense of finding bigger {@link Cage}s
+     * as it requires more execution power and memory with less amount produced hints
+     * UNLESS determining all possible hints is critical.
+     *
+     * Should be in the range of `[1, 9]`.
+     *
+     * Default value is `5`.
+     */
+    readonly maxMeaningfulProtrusionSize: number;
+
+}
+
+/**
+ * Default {@link Config} options.
+ *
+ * When changing these defaults, TSDoc for {@link Config} should be updated as well.
+ */
+const DEFAULT_CONFIG: Config = Object.freeze({
+    maxMeaningfulProtrusionSize: 5
+});
+
+/**
  * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
  * which finds _protrusive_ {@link Cage}s for {@link Nonet}s
  * and registers them in the {@link MasterModel}.
@@ -127,11 +162,16 @@ import { Strategy } from '../strategy';
  */
 export class FindProtrusiveCagesStrategy extends Strategy {
 
+    private readonly _config: Config;
+
     private readonly _nonetAreasProcesser: NonetProcessor;
 
-    constructor(context: Context) {
+    constructor(context: Context, config: Config = DEFAULT_CONFIG) {
         super(context);
-        this._nonetAreasProcesser = new NonetProcessor(this._model, this._context.cageSlicer);
+
+        this._config = { ...DEFAULT_CONFIG, ...config };
+
+        this._nonetAreasProcesser = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
     }
 
     execute() {
@@ -142,12 +182,14 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
 class NonetProcessor {
 
-    private readonly _model;
-    private readonly _cageSlicer;
+    private readonly _model: MasterModel;
+    private readonly _cageSlicer: CageSlicer;
+    private readonly _maxMeaningfulProtrusionSize: number;
 
-    constructor(model: MasterModel, cageSlicer: CageSlicer) {
+    constructor(model: MasterModel, cageSlicer: CageSlicer, maxMeaningfulProtrusionSize: number) {
         this._model = model;
         this._cageSlicer = cageSlicer;
+        this._maxMeaningfulProtrusionSize = maxMeaningfulProtrusionSize;
     }
 
     execute() {
@@ -195,7 +237,7 @@ class NonetProcessor {
                 cagesSum += cageM.cage.sum;
             }
 
-            if (redundantCells.length > 0 && redundantCells.length <= 5) {
+            if (redundantCells.length > 0 && redundantCells.length <= this._maxMeaningfulProtrusionSize) {
                 const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).setIsInput(this._model.isDerivedFromInputCage(redundantCells)).new();
                 this._cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
