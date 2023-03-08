@@ -5,7 +5,7 @@ import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
-import { House, HouseIndex } from '../../../puzzle/house';
+import { House } from '../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Nonet } from '../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,6 +13,7 @@ import { Puzzle } from '../../../puzzle/puzzle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Row } from '../../../puzzle/row';
 import { CageModel } from '../../models/elements/cageModel';
+import { CellModel } from '../../models/elements/cellModel';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../models/masterModel';
 import { CageSlicer } from '../../transform/cageSlicer';
@@ -183,36 +184,46 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 class NonetTouchingCagesTracker {
 
     private readonly _model: MasterModel;
-    private readonly _map: Map<HouseIndex, Set<CageModel>>;
+    private readonly _nonetCageModels: Array<Set<CageModel>>;
 
     private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
-        if (cageM.cage.isInput) {
-            for (const cellM of cageM.cellMs) {
-                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
-            }
-        }
+        this.addCageM(cageM);
     };
 
     private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
-        if (cageM.cage.isInput) {
-            for (const cellM of cageM.cellMs) {
-                (this._map.get(cellM.cell.nonet) as Set<CageModel>).delete(cageM);
-            }
-        }
+        this.removeCageM(cageM);
     };
 
     constructor(model: MasterModel) {
         this._model = model;
-        this._map = new Map(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
+        this._nonetCageModels = this._model.nonetModels.map(() => new Set());
         for (const cageM of this._model.cageModelsMap.values()) {
+            this.addCageM(cageM);
+        }
+    }
+
+    get nonetCageModels(): ReadonlyArray<ReadonlySet<CageModel>> {
+        return this._nonetCageModels;
+    }
+
+    private nonetCageMsBy(cellM: CellModel) {
+        return this._nonetCageModels[cellM.cell.nonet];
+    }
+
+    private addCageM(cageM: CageModel) {
+        if (cageM.cage.isInput) {
             for (const cellM of cageM.cellMs) {
-                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
+                this.nonetCageMsBy(cellM).add(cageM);
             }
         }
     }
 
-    get map(): ReadonlyMap<HouseIndex, Set<CageModel>> {
-        return this._map;
+    private removeCageM(cageM: CageModel) {
+        if (cageM.cage.isInput) {
+            for (const cellM of cageM.cellMs) {
+                this.nonetCageMsBy(cellM).delete(cageM);
+            }
+        }
     }
 
     attachEventHandlers() {
@@ -243,10 +254,7 @@ class NonetProcessor {
         const tracker = new NonetTouchingCagesTracker(this._model);
         tracker.attachEventHandlers();
 
-        for (const entry of tracker.map.entries()) {
-            const index = entry[0];
-            const cageMs = entry[1];
-
+        tracker.nonetCageModels.forEach((cageMs, index) => {
             const redundantCells = [];
             let cagesSum = 0;
             for (const cageM of cageMs) {
@@ -263,7 +271,7 @@ class NonetProcessor {
                 const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).setIsInput(this._model.isDerivedFromInputCage(redundantCells)).new();
                 this._cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
-        }
+        });
 
         tracker.deattachEventHandlers();
     }
