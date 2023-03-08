@@ -4,6 +4,112 @@ import { CageModel } from '../../models/elements/cageModel';
 import { MasterModelEvents } from '../../models/masterModel';
 import { Strategy } from '../strategy';
 
+/**
+ * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
+ * which finds _protrusive_ {@link Cage}s for {@link Nonet}s
+ * and registers them in the {@link MasterModel}.
+ *
+ * _Protrusive_ {@link Cage} for a particular {@link Nonet} is determined in the following way:
+ *
+ *  1) A set of all _input_ _non-overlapping_ {@link Cage}s which
+ * contain {@link Nonet}'s {@link Cell}(s) are found. Let's call it `CAGES`:
+ *  - Such a set must contain ALL {@link Nonet}'s {@link Cell}s;
+ *  - Such a set might also contain {@link Cell}s which do NOT belong to a {@link Nonet}
+ * since a {@link Cage} containing {@link Nonet} {@link Cell}(s)
+ * does NOT necessarily reside within the {@link Nonet} _fully_.
+ *  2) All {@link Cell}s which do NOT belong to a {@link Nonet} are becoming a part of
+ * the _protrusive_ {@link Cage}.
+ *  - The sum of such a _protrusive_ {@link Cage} will be
+ * the difference between the sum of `CAGES` and the sum of all numbers in a {@link Nonet} (`45`);
+ *  - These {@link Cell}s may have duplicate numbers.
+ *
+ * For example, let us consider a {@link Nonet} of index `0`
+ * (topmost leftmost {@link Nonet} in the {@link Grid}) with the following {@link Cell}s:
+ * ```
+ * // (row, column)
+ * (0, 0), (0, 1), (0, 2)
+ * (1, 0), (1, 1), (1, 2)
+ * (2, 0), (2, 1), (2, 2)
+ * ```
+ *
+ * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
+ * include all {@link Cell}s of {@link Nonet} of index `0`:
+ * ```
+ * Cage 1. Sum: 14. Cells: (0, 0), (0, 1)
+ * Cage 2. Sum: 15. Cells: (0, 2), (0, 3)
+ * Cage 3. Sum: 3.  Cells: (1, 0), (1, 1)
+ * Cage 4. Sum: 8.  Cells: (1, 2), (1, 3)
+ * Cage 5. Sum: 13. Cells: (2, 0), (2, 1), (2, 2)
+ * ```
+ *
+ * It can be observed, that {@link Cage}s `2` and `4` contain 2 {@link Cell}s
+ * which reside outside of the {@link Nonet} of index `0`:
+ * ```
+ * // (row, column)
+ * (0, 3), (1, 3)
+ * ```
+ * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
+ * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ * ```
+ * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 8 + 13 - 45 = 8). Cells: (0, 3), (1, 3)
+ * ```
+ *
+ * Such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s at `(0, 3)` and `(1, 3)`,
+ * to `1`, `2`, `3`, `5`, `6`, `7` (unique Sudoku numbers that add up to `8`)
+ * and excludes `4`, `8` and `9`.
+ * This is an extra hint for {@link Column} of index `3` and {@link Nonet} of index `1`,
+ * which was NOT evident from original input.
+ *
+ * The protrusive {@link Cage} in the example above must have unique numbers
+ * as it lies within {@link Column} of index `3` (and {@link Nonet} of index `1`).
+ * But, as initially stated in the definition of protrusive {@link Cage} this is NOT always the case.
+ *
+ * Let us consider another example for the same {@link Nonet} of index `0`.
+ *
+ * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
+ * include all {@link Cell}s of {@link Nonet} of index `0`:
+ * ```
+ * Cage 1. Sum: 14. Cells: (0, 0), (0, 1)
+ * Cage 2. Sum: 15. Cells: (0, 2), (0, 3)
+ * Cage 3. Sum: 3.  Cells: (1, 0), (1, 1), (1, 2)
+ * Cage 4. Sum: 13. Cells: (2, 0), (2, 1)
+ * Cage 5. Sum: 8.  Cells: (2, 2), (3, 2)
+ * ```
+ *
+ * It can be observed, that {@link Cage}s `2` and `5` contain 2 {@link Cell}s
+ * which reside outside of the {@link Nonet} of index `0`:
+ * ```
+ * // (row, column)
+ * (0, 3), (3, 2)
+ * ```
+ * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
+ * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ * ```
+ * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 13 + 8 - 45 = 8). Cells: (0, 3), (3, 2)
+ * ```
+ *
+ * These 2 {@link Cell}s are NOT within the same {@link House}
+ * (neither {@link Row}, nor {@link Column} or {@link Nonet})
+ * so they MIGHT contain duplicates.
+ * Still, such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s at `(0, 3)` and `(3, 2)`,
+ * limits possible numbers to `1`, `2`, `3`, `4`, `5`, `6`, `7`
+ * and excludes `8` and `9` as possible numbers in those {@link Cell}s.
+ * `4` is an option for both {@link Cell}s at `(0, 3)` and `(3, 2)` since it adds up to `8`
+ * driven by the possibility of having non-unique numbers.
+ * Still, this is an extra hint, which was also NOT evident from original input.
+ *
+ * {@link Nonet}s are analyzed only individually meaning
+ * adjacent {@link Nonet} areas are NOT taken into account.
+ *
+ * This strategy is an _initialization_ strategy,
+ * so it is applied just once on the particular {@link Puzzle}.
+ *
+ * The way this strategy works can be configured by {@link Config} options.
+ *
+ * @see {Config}
+ *
+ * @public
+ */
 export class FindProtrusiveCagesStrategy extends Strategy {
 
     execute() {
