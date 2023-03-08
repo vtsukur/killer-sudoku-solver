@@ -270,9 +270,6 @@ class IndexedCageModelsTracker {
  * which finds _complementing_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
- * This {@link Strategy} produces hints which help to narrow down the possible numbers
- * for the {@link Cell}s on the {@link Grid}.
- *
  * _Complementing_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
  * along with already present {@link Cage}s so that such area is fully covered with {@link Cell}s.
  *

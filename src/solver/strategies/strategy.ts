@@ -7,6 +7,13 @@ interface StrategyFactory {
 
 }
 
+/**
+ * {@link Strategy} produces hints which help to narrow down the possible numbers
+ * for the {@link Cell}s on the {@link Grid}
+ * and potentially advances towards solving Killer Sudoku {@link Puzzle}.
+ *
+ * @public
+ */
 export abstract class Strategy {
 
     protected readonly _context: Context;
