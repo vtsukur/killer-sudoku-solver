@@ -183,18 +183,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 class NonetTouchingCagesTracker {
 
     private readonly _model: MasterModel;
-
     private readonly _map: Map<HouseIndex, Set<CageModel>>;
-
-    constructor(model: MasterModel) {
-        this._model = model;
-        this._map = new Map(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
-        for (const cageM of this._model.cageModelsMap.values()) {
-            for (const cellM of cageM.cellMs) {
-                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
-            }
-        }
-    }
 
     private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
         if (cageM.cage.isInput) {
@@ -211,6 +200,16 @@ class NonetTouchingCagesTracker {
             }
         }
     };
+
+    constructor(model: MasterModel) {
+        this._model = model;
+        this._map = new Map(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
+        for (const cageM of this._model.cageModelsMap.values()) {
+            for (const cellM of cageM.cellMs) {
+                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
+            }
+        }
+    }
 
     get map(): ReadonlyMap<HouseIndex, Set<CageModel>> {
         return this._map;
