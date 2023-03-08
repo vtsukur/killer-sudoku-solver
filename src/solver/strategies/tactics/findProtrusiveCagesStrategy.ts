@@ -14,7 +14,7 @@ import { Puzzle } from '../../../puzzle/puzzle';
 import { Row } from '../../../puzzle/row';
 import { CageModel } from '../../models/elements/cageModel';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MasterModel, MasterModelEvents } from '../../models/masterModel';
+import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../models/masterModel';
 import { CageSlicer } from '../../transform/cageSlicer';
 import { Context } from '../context';
 import { Strategy } from '../strategy';
@@ -180,6 +180,54 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
 }
 
+class NonetTouchingCagesTracker {
+
+    private readonly _model: MasterModel;
+
+    private readonly _map: Map<HouseIndex, Set<CageModel>>;
+
+    constructor(model: MasterModel) {
+        this._model = model;
+        this._map = new Map(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
+        for (const cageM of this._model.cageModelsMap.values()) {
+            for (const cellM of cageM.cellMs) {
+                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
+            }
+        }
+    }
+
+    private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
+        if (cageM.cage.isInput) {
+            for (const cellM of cageM.cellMs) {
+                (this._map.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
+            }
+        }
+    };
+
+    private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
+        if (cageM.cage.isInput) {
+            for (const cellM of cageM.cellMs) {
+                (this._map.get(cellM.cell.nonet) as Set<CageModel>).delete(cageM);
+            }
+        }
+    };
+
+    get map(): ReadonlyMap<HouseIndex, Set<CageModel>> {
+        return this._map;
+    }
+
+    attachEventHandlers() {
+        this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
+
+    deattachEventHandlers() {
+        this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
+
+}
+
 class NonetProcessor {
 
     private readonly _model: MasterModel;
@@ -193,32 +241,10 @@ class NonetProcessor {
     }
 
     execute() {
-        const nonetCageMsMap = new Map<HouseIndex, Set<CageModel>>(this._model.nonetModels.map(nonetM => [ nonetM.index, new Set() ]));
+        const tracker = new NonetTouchingCagesTracker(this._model);
+        tracker.attachEventHandlers();
 
-        for (const cageM of this._model.cageModelsMap.values()) {
-            for (const cellM of cageM.cellMs) {
-                (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
-            }
-        }
-
-        const cageRegisteredEventHandler = (cageM: CageModel) => {
-            if (cageM.cage.isInput) {
-                for (const cellM of cageM.cellMs) {
-                    (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).add(cageM);
-                }
-            }
-        };
-        const cageUnregisteredEventHandler = (cageM: CageModel) => {
-            if (cageM.cage.isInput) {
-                for (const cellM of cageM.cellMs) {
-                    (nonetCageMsMap.get(cellM.cell.nonet) as Set<CageModel>).delete(cageM);
-                }
-            }
-        };
-        this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
-        this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
-
-        for (const entry of nonetCageMsMap.entries()) {
+        for (const entry of tracker.map.entries()) {
             const index = entry[0];
             const cageMs = entry[1];
 
@@ -240,8 +266,7 @@ class NonetProcessor {
             }
         }
 
-        this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, cageRegisteredEventHandler);
-        this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, cageUnregisteredEventHandler);
+        tracker.deattachEventHandlers();
     }
 
 }
