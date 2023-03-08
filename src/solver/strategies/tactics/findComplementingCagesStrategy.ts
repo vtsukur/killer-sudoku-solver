@@ -302,9 +302,8 @@ class IndexedCageModelsTracker {
  * Complementing Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
  * ```
  *
- * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s,
- * which, in this case, limits possible numbers to `7` and `9` for {@link Cell}s at `(1, 2)` and `(1, 6)`
- * (unique Sudoku numbers that add up to `16`).
+ * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s at `(1, 2)` and `(1, 6)`
+ * to `7` and `9` for {@link Cell}s  (unique Sudoku numbers that add up to `16`).
  * And, as a by-product of this hint, possible number options for `Cage 2` with sum `10`
  * which occupy {@link Cell}s `(1, 3)`, `(1, 4)`, `(1, 5)` are also reduced:
  * combination of numbers `1`, `2` and `7` is NOT relevant since it overlaps with `7`
