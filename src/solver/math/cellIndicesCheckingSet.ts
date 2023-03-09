@@ -526,9 +526,9 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.remove}
+     * @see {NumsCheckingSet.delete}
      */
-    remove(val: ReadonlyCellIndicesCheckingSet) {
+    delete(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.
@@ -549,18 +549,18 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * Removes given numbers from this checking numbers set.
+     * Deletes given number from this checking numbers set.
      *
      * This method changes this checking numbers set.
      *
-     * The given number is removed only if it is NOT yet present in this checking set.
+     * The given number is deleted only if it is NOT yet present in this checking set.
      * Duplicate number is ignored.
      *
-     * @param val - Number to remove from this set.
+     * @param val - Number to delete from this set.
      *
      * @returns This checking set.
      */
-    removeOne(val: number) {
+    deleteOne(val: number) {
         const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //

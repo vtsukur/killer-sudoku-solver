@@ -3,6 +3,7 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../..
 import { CachedNumRanges } from '../../../../src/solver/math/cachedNumRanges';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
+
     test('Construction of `SudokuNumsCheckingSet` from array of numbers', () => {
         expectSetWithValues(new CellIndicesCheckingSet([ 1, 30, 75 ]), [ 1, 30, 75 ]);
     });
@@ -19,7 +20,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(CellIndicesCheckingSet.newEmpty(), []);
     });
 
-    test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
+    test('Adding and deleting numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
 
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 30))).toBeTruthy();
@@ -38,7 +39,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(1, 9))).toBeFalsy();
 
-        numsCheckingSet.remove(CellIndicesCheckingSet.of(1, 7, 30, 75));
+        numsCheckingSet.delete(CellIndicesCheckingSet.of(1, 7, 30, 75));
         expectSetWithValues(numsCheckingSet, [ 0, 28, 80 ]);
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 28))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 80))).toBeTruthy();
@@ -59,12 +60,12 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(numsCheckingSet, [ 0, 1, 30, 31, 75, 80 ]);
     });
 
-    test('Removing numbers one by one', () => {
+    test('Deleting numbers one by one', () => {
         const numsCheckingSet = CellIndicesCheckingSet.of(0, 1, 30, 31, 75, 80);
 
-        numsCheckingSet.removeOne(0);
-        numsCheckingSet.removeOne(31);
-        numsCheckingSet.removeOne(80);
+        numsCheckingSet.deleteOne(0);
+        numsCheckingSet.deleteOne(31);
+        numsCheckingSet.deleteOne(80);
 
         expectSetWithValues(numsCheckingSet, [ 1, 30, 75 ]);
     });
@@ -117,7 +118,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does NOT change the clone
 
-        cloned.remove(CellIndicesCheckingSet.of(1));
+        cloned.delete(CellIndicesCheckingSet.of(1));
         expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does NOT change the clone
     });
@@ -132,7 +133,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does NOT change the clone
 
-        cloned.remove(CellIndicesCheckingSet.of(1));
+        cloned.delete(CellIndicesCheckingSet.of(1));
         expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does NOT change the clone
     });
@@ -140,4 +141,5 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
     const expectSetWithValues = (numsCheckingSet: ReadonlyCellIndicesCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
     };
+
 });

@@ -1,6 +1,7 @@
 import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../../../../src/solver/math/sudokuNumsCheckingSet';
 
 describe('Unit tests for `SudokuNumsCheckingSet`', () => {
+
     test('Construction of `SudokuNumsCheckingSet` from array of numbers', () => {
         expectSetWithValues(new SudokuNumsCheckingSet([ 1, 6, 9 ]), [ 1, 6, 9 ]);
     });
@@ -25,7 +26,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.newEmpty(), []);
     });
 
-    test('Adding and removing numbers with `hasAll` and `doesNotHaveAny` checks', () => {
+    test('Adding and deleting numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
@@ -41,7 +42,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(5, 9))).toBeFalsy();
 
-        numsCheckingSet.remove(SudokuNumsCheckingSet.of(2, 6, 9));
+        numsCheckingSet.delete(SudokuNumsCheckingSet.of(2, 6, 9));
         expectSetWithValues(numsCheckingSet, [ 1, 7, 8 ]);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(7, 8))).toBeTruthy();
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 7, 8))).toBeTruthy();
@@ -92,7 +93,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
 
-        cloned.remove(SudokuNumsCheckingSet.of(1));
+        cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
     });
@@ -107,7 +108,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
 
-        cloned.remove(SudokuNumsCheckingSet.of(1));
+        cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
     });
@@ -122,7 +123,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
 
-        cloned.remove(SudokuNumsCheckingSet.of(1));
+        cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
     });
@@ -130,4 +131,5 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
         expect(numsCheckingSet.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
     };
+
 });

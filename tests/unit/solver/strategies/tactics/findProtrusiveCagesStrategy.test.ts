@@ -38,7 +38,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(2).at(5, 3).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         expect(context.model.hasCage(Cage.ofSum(12).at(4, 2).at(5, 2).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(context.model.hasCage(Cage.ofSum(14).at(4, 2).at(4, 3).at(5, 3).new())).toBeFalsy();
 
         // `Nonet` 4:
@@ -52,7 +52,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(3).at(6, 3).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         expect(context.model.hasCage(Cage.ofSum(12).at(6, 2).at(7, 2).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(context.model.hasCage(Cage.ofSum(15).at(6, 2).at(6, 3).at(7, 2).new())).toBeFalsy();
 
         // `Nonet` 7: protrusive `Cage` already processed.
@@ -62,7 +62,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(8).at(5, 6).at(5, 7).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         expect(context.model.hasCage(Cage.ofSum(14).at(6, 6).at(6, 7).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(context.model.hasCage(Cage.ofSum(22).at(5, 6).at(5, 7).at(6, 6).at(6, 7).new())).toBeFalsy();
     });
 
@@ -91,7 +91,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(2).at(5, 3).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         expect(context.model.hasCage(Cage.ofSum(12).at(4, 2).at(5, 2).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(context.model.hasCage(Cage.ofSum(14).at(4, 2).at(4, 3).at(5, 3).new())).toBeFalsy();
 
         // `Nonet` 4:
@@ -105,7 +105,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(3).at(6, 3).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         expect(context.model.hasCage(Cage.ofSum(12).at(6, 2).at(7, 2).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(context.model.hasCage(Cage.ofSum(15).at(6, 2).at(6, 3).at(7, 2).new())).toBeFalsy();
 
         // `Nonet` 7: protrusive `Cage` already processed.
@@ -115,7 +115,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         // expect(context.model.hasCage(Cage.ofSum(8).at(5, 6).at(5, 7).new())).toBeTruthy();
         // By-product of slicing protrusive `Cage`.
         // expect(context.model.hasCage(Cage.ofSum(14).at(6, 6).at(6, 7).new())).toBeTruthy();
-        // Original `Cage` sliced by protrusive `Cage` is removed.
+        // Original `Cage` sliced by protrusive `Cage` is deleted.
         // expect(context.model.hasCage(Cage.ofSum(22).at(5, 6).at(5, 7).at(6, 6).at(6, 7).new())).toBeFalsy();
     });
 

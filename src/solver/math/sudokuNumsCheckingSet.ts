@@ -235,9 +235,9 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.remove}
+     * @see {NumsCheckingSet.delete}
      */
-    remove(val: ReadonlySudokuNumsCheckingSet) {
+    delete(val: ReadonlySudokuNumsCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.

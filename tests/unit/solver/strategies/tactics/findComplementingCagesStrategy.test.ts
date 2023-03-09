@@ -95,7 +95,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(39).at(0, 5).at(1, 5).at(2, 5).at(3, 5).at(4, 5).at(6, 5).at(7, 5).at(8, 5).new())).toBeTruthy();
         // Complement for `Column` 6.
         expect(context.model.hasCage(Cage.ofSum(45).at(0, 6).at(1, 6).at(2, 6).at(3, 6).at(4, 6).at(5, 6).at(6, 6).at(7, 6).at(8, 6).new())).toBeTruthy();
-        // Complement for `Column` 7 with `Cell` at `(2, 7)` removed since it is sliced when processing `Column` 8.
+        // Complement for `Column` 7 with `Cell` at `(2, 7)` is deleted since it is sliced when processing `Column` 8.
         expect(context.model.hasCage(Cage.ofSum(15).at(0, 7).at(1, 7).at(3, 7).at(8, 7).new())).toBeTruthy();
         // Complement for `Column` 8.
         expect(context.model.hasCage(Cage.ofSum(9).at(2, 8).at(3, 8).new())).toBeTruthy();

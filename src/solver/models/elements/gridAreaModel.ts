@@ -408,7 +408,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private removeNonOverlappingCage(cage: Cage) {
-        this.usedCellIndices.remove(cage.cellIndices);
+        this.usedCellIndices.delete(cage.cellIndices);
         this.usedCages.pop();
         this.usedCellCount -= cage.cellCount;
     }

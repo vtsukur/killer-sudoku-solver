@@ -93,18 +93,18 @@ export interface NumsCheckingSet<
     add(val: ROSET): MUSET;
 
     /**
-     * Removes all numbers present in another checking set from this checking numbers set.
+     * Deletes all numbers present in another checking set from this checking numbers set.
      *
      * This method changes this checking numbers set and does NOT modify `val` checking numbers set.
      *
-     * Only the numbers which are present in this checking set are removed.
+     * Only the numbers which are present in this checking set are deleted.
      * Missing numbers are ignored.
      *
-     * @param val - Another checking set containing numbers to remove from this checking set.
+     * @param val - Another checking set containing numbers to delete from this checking set.
      *
      * @returns This checking numbers set.
      */
-    remove(val: ROSET): MUSET;
+    delete(val: ROSET): MUSET;
 
     /**
      * Clones this checking numbers set by creating new instance based on the copy of the state of this set.
