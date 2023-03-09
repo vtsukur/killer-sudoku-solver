@@ -58,17 +58,17 @@ export class Sets {
     }
 
     /**
-     * Deletes all values from the given `differentiateWith` {@link Iterable} from the `target` {@link Set}
+     * Deletes all values present in the given `differentiateWith` {@link Iterable} from the `target` {@link Set}
      * if they are present in the `Set`.
      *
-     * Essentially, this operation implements 'difference' `–` operation for two `Set`s.
+     * Essentially, this operation implements _difference_ `–` operation for two `Set`s.
      *
      * This method modifies `target` `Set`.
      *
-     * @param target - `Set` from which values are to deleted.
+     * @param target - `Set` from which values are to be deleted.
      * @param uniteWith - `Iterable` of values to be deleted from the `target` Set.
      *
-     * @returns `target` `Set` to which values have been supposedly added.
+     * @returns `target` `Set` to which values have been suppossedly added.
      */
     static _<T>(target: Set<T>, differentiateWith: Iterable<T>) {
         for (const oneOf of differentiateWith) {
