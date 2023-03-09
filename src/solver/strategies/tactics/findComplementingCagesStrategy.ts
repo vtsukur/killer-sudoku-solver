@@ -385,7 +385,7 @@ export class FindComplementingCagesStrategy extends Strategy {
      * @see {Strategy.execute}
      */
     execute() {
-        const indexedCageMsTracker = new IndexedCageModelsTracker(this._model);
+        const tracker = new IndexedCageModelsTracker(this._model);
         try {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
@@ -393,19 +393,19 @@ export class FindComplementingCagesStrategy extends Strategy {
             // This is necessary because slicing results in adding and removing of `Cage`s
             // which this class needs to be aware of.
             //
-            indexedCageMsTracker.attachEventHandlers();
+            tracker.attachEventHandlers();
 
             // Running core work.
-            this.doExecute(indexedCageMsTracker);
+            this.doExecute(tracker);
         } finally {
             // Cleanup of event handlers even if error is thrown to avoid broken state.
-            indexedCageMsTracker.deattachEventHandlers();
+            tracker.deattachEventHandlers();
         }
     }
 
-    private doExecute(indexedCageMsTracker: IndexedCageModelsTracker) {
-        this._rowAreasProcessor.execute(indexedCageMsTracker);
-        this._columnAreasProcessor.execute(indexedCageMsTracker);
+    private doExecute(tracker: IndexedCageModelsTracker) {
+        this._rowAreasProcessor.execute(tracker);
+        this._columnAreasProcessor.execute(tracker);
         this._nonetAreasProcessor.execute();
     }
 
