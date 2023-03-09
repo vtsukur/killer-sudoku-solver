@@ -171,7 +171,7 @@ export class CageModel {
 
     private reduceOptimalForSize2() {
         const modifiedCellMs = new Set<CellModel>();
-        const combosToPotentiallyRemoveMap = new Map<string, Combo>();
+        const combosToPotentiallyDeleteMap = new Map<string, Combo>();
 
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
@@ -181,18 +181,18 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
                         modifiedCellMs.add(oneCellM);
-                        combosToPotentiallyRemoveMap.set(combo.key, combo);
+                        combosToPotentiallyDeleteMap.set(combo.key, combo);
                     }
                 }
             }
         }
 
-        for (const comboToPotentiallyRemove of combosToPotentiallyRemoveMap.values()) {
-            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.number0) &&
-                    !this.cellMs[0].hasNumOpt(comboToPotentiallyRemove.number1) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.number0) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyRemove.number1)) {
-                this.deleteCombo(comboToPotentiallyRemove);
+        for (const comboToPotentiallyDelete of combosToPotentiallyDeleteMap.values()) {
+            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number0) &&
+                    !this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number1) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number0) &&
+                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number1)) {
+                this.deleteCombo(comboToPotentiallyDelete);
             }
         }
 
@@ -485,7 +485,7 @@ export class CageModel {
         if (this.hasSingleCombination() || !this._combosMap.size) return new Set();
 
         const newCombosMap = new Map();
-        const removedCombos = [];
+        const deleteCombos = [];
         const newNumOptions = new Set<number>();
 
         for (const comboEntry of this._combosMap.entries()) {
@@ -496,11 +496,11 @@ export class CageModel {
                 newCombosMap.set(key, value);
                 Sets.U(newNumOptions, numSet);
             } else {
-                removedCombos.push(value);
+                deleteCombos.push(value);
             }
         }
 
-        if (removedCombos.length > 0) {
+        if (deleteCombos.length > 0) {
             this._combosMap = newCombosMap;
             const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {

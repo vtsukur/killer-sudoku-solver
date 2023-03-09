@@ -33,7 +33,7 @@ export class CellModel {
         this._withinCageMs.add(val);
     }
 
-    removeWithinCageModel(val: CageModel) {
+    deleteWithinCageModel(val: CageModel) {
         this._withinCageMs.delete(val);
     }
 
@@ -57,16 +57,16 @@ export class CellModel {
     }
 
     reduceNumOptions(val: Set<number>) {
-        const removedNumOptions = new Set<number>();
+        const deletedNumOptions = new Set<number>();
         for (const existingNumOption of this._numOpts) {
             if (!val.has(existingNumOption)) {
-                removedNumOptions.add(existingNumOption);
+                deletedNumOptions.add(existingNumOption);
             }
         }
-        for (const numToRemove of removedNumOptions) {
-            this.deleteNumOpt(numToRemove);
+        for (const numToDelete of deletedNumOptions) {
+            this.deleteNumOpt(numToDelete);
         }
-        return removedNumOptions;
+        return deletedNumOptions;
     }
 
     get solved() {

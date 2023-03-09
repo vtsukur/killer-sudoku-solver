@@ -212,7 +212,7 @@ class NonetTouchingCagesTracker {
     };
 
     private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
-        this.removeCageM(cageM);
+        this.deleteCageM(cageM);
     };
 
     constructor(model: MasterModel) {
@@ -245,7 +245,7 @@ class NonetTouchingCagesTracker {
         }
     }
 
-    private removeCageM(cageM: CageModel) {
+    private deleteCageM(cageM: CageModel) {
         //
         // Algorithm requires `Cage`s to be _non-overlapping_ with each other,
         // so only _input_ `Cage`s are processed.
@@ -255,7 +255,7 @@ class NonetTouchingCagesTracker {
             // As opposed to `addCageM` method, this implementation
             // does NOT check `Cage` to be within 1 `Nonet`
             // because there are NO circumstances under which such a `Cage`
-            // will be actually removed as a result of slicing.
+            // will be actually deleted as a result of slicing.
             //
             // In other words, the strategy will NOT slice `Nonet` `Cage`s.
             //

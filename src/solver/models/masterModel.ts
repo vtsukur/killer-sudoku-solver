@@ -190,16 +190,16 @@ export class MasterModel {
     unregisterCage(cage: Cage) {
         const cageM = this.cageModelsMap.get(cage.key) as CageModel;
         if (cageM.positioningFlags.isWithinRow) {
-            this.rowModels[cageM.anyRow()].removeCageModel(cageM);
+            this.rowModels[cageM.anyRow()].deleteCageModel(cageM);
         }
         if (cageM.positioningFlags.isWithinColumn) {
-            this.columnModels[cageM.anyColumn()].removeCageModel(cageM);
+            this.columnModels[cageM.anyColumn()].deleteCageModel(cageM);
         }
         if (cageM.positioningFlags.isWithinNonet) {
-            this.nonetModels[cageM.anyNonet()].removeCageModel(cageM);
+            this.nonetModels[cageM.anyNonet()].deleteCageModel(cageM);
         }
         cage.cells.forEach((cell: Cell) => {
-            this.cellModelOf(cell).removeWithinCageModel(cageM);
+            this.cellModelOf(cell).deleteWithinCageModel(cageM);
         });
         this.cageModelsMap.delete(cage.key);
         this.onCageUnregisteredEvent(cageM);

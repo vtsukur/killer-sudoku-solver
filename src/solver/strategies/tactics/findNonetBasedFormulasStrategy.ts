@@ -22,7 +22,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             if (!_.isUndefined(area) && area.outerCageMs.size > 0) {
                 const outerCageMs = new Set<CageModel>(area.outerCageMs);
                 for (const outerCageM of outerCageMs) {
-                    area.removeCageM(outerCageM);
+                    area.deleteCageM(outerCageM);
                     const unfilledInnerCellMs = area.unfilledInnerCellMs(this._model);
                     const outerCellMs = area.outerCellMs;
                     if (unfilledInnerCellMs.size === 1 && outerCellMs.size <= 2) {
@@ -81,7 +81,7 @@ class ExpandableNonOverlappingNonetAreaModel {
         this._sum += cageM.cage.sum;
     }
 
-    removeCageM(cageM: CageModel) {
+    deleteCageM(cageM: CageModel) {
         this._cageMs.delete(cageM);
         this._outerCageMs.delete(cageM);
         cageM.cellMs.forEach(cellM => {

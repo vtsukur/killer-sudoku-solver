@@ -372,7 +372,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
             }
 
             // Recursively try to find new maximized area WITHOUT the current `Cage` ...
-            this.removeNonOverlappingCage(cage);
+            this.deleteNonOverlappingCage(cage);
         }
         // ... here comes the actual recursive try to find new maximum area WITHOUT the current `Cage`.
         return this.doFind(step + 1);
@@ -407,7 +407,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         this.usedCellCount += cage.cellCount;
     }
 
-    private removeNonOverlappingCage(cage: Cage) {
+    private deleteNonOverlappingCage(cage: Cage) {
         this.usedCellIndices.delete(cage.cellIndices);
         this.usedCages.pop();
         this.usedCellCount -= cage.cellCount;

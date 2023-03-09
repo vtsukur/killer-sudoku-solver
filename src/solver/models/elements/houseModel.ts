@@ -21,10 +21,10 @@ export class HouseModel {
         this._cageMs.push(val);
     }
 
-    removeCageModel(val: CageModel) {
-        const indexToRemove = this._cageMs.indexOf(val);
-        if (indexToRemove !== -1) {
-            this._cageMs.splice(indexToRemove, 1);
+    deleteCageModel(val: CageModel) {
+        const indexToDelete = this._cageMs.indexOf(val);
+        if (indexToDelete !== -1) {
+            this._cageMs.splice(indexToDelete, 1);
         }
     }
 
