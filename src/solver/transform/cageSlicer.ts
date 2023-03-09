@@ -38,9 +38,9 @@ export class CageSlicer {
                     canHaveDuplicateNums = canHaveDuplicateNums && cageM.canHaveDuplicateNums;
                 });
 
-                this.model.registerCage(residualCage, canHaveDuplicateNums);
-
                 cagesToUnregister.forEach(cage => this.model.unregisterCage(cage));
+
+                this.model.registerCage(residualCage, canHaveDuplicateNums);
             });
 
             residualCages = nextResidualCages;
