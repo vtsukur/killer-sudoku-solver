@@ -236,7 +236,7 @@ class NonetTouchingCagesTracker {
         //
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
-                // Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
+                // [perf] Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.nonetCageMsByCageM(cageM).add(cageM);
             } else {
                 // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
@@ -254,7 +254,7 @@ class NonetTouchingCagesTracker {
         //
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
-                // Removing `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
+                // [perf] Removing `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.nonetCageMsByCageM(cageM).delete(cageM);
             } else {
                 // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
