@@ -230,10 +230,16 @@ class NonetTouchingCagesTracker {
     }
 
     private addCageM(cageM: CageModel) {
+        //
+        // Algorithm requires `Cage`s to be _non-overlapping_ with each other,
+        // so only _input_ `Cage`s are processed.
+        //
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
+                // Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.nonetCageMsByCageM(cageM).add(cageM);
             } else {
+                // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
                 for (const cellM of cageM.cellMs) {
                     this.nonetCageMsByCellM(cellM).add(cageM);
                 }
@@ -242,10 +248,16 @@ class NonetTouchingCagesTracker {
     }
 
     private removeCageM(cageM: CageModel) {
+        //
+        // Algorithm requires `Cage`s to be _non-overlapping_ with each other,
+        // so only _input_ `Cage`s are processed.
+        //
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
+                // Removing `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.nonetCageMsByCageM(cageM).delete(cageM);
             } else {
+                // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
                 for (const cellM of cageM.cellMs) {
                     this.nonetCageMsByCellM(cellM).delete(cageM);
                 }
