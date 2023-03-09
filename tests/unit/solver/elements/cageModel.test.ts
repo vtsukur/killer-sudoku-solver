@@ -59,7 +59,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reduction for CageModel of size 2 with several combinations after removing one of the cell options', () => {
+    test('Reduction for CageModel of size 2 with several combinations after deleting one of the cell options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
@@ -81,7 +81,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reduction for CageModel of size 2 with several combinations after removing few cell options', () => {
+    test('Reduction for CageModel of size 2 with several combinations after deletin few cell options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();

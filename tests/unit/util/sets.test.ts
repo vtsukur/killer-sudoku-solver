@@ -15,7 +15,7 @@ describe('Sets tests', () => {
         expect(set).toEqual(new Set([ 1, 2, 3, 4, 5 ]));
     });
 
-    test('Removing `Iterable` values from the Set', () => {
+    test('Deleting `Iterable` values from the Set', () => {
         const set = new Set<number>([ 1, 2, 3, 4, 5 ]);
 
         expect(Sets._(set, [ 2, 3 ])).toBe(set);

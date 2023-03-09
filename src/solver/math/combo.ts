@@ -123,7 +123,7 @@ export class Combo implements Iterable<number> {
     }
 
     /**
-     * Reduces the size of the combination by removing the given number.
+     * Reduces the size of the combination by deleting the given number.
      *
      * @param num - Number to reduce this combination by.
      *

@@ -390,7 +390,7 @@ export class FindComplementingCagesStrategy extends Strategy {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
             // when _complementing_ `Cage`s are found and `Cage` slicing occurs.
-            // This is necessary because slicing results in adding and removing of `Cage`s
+            // This is necessary because slicing results in addition and deletion of `Cage`s
             // which this class needs to be aware of.
             //
             tracker.attachEventHandlers();

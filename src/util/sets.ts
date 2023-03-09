@@ -2,7 +2,7 @@
  * Utility methods that aid {@link Set} manipulation with the following useful capabilities:
  *
  * - constructing new `Set`s out of rest parameters using {@link new} static factory method;
- * - adding and removing {@link Iterable} of values using {@link U} and {@link _} respectively;
+ * - adding and deleting {@link Iterable} of values using {@link U} and {@link _} respectively;
  * - getting first value in the `Set` using {@link firstValue}.
  *
  * @see {@link Set}
