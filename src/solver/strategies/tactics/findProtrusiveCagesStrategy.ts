@@ -207,7 +207,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 class NonetTouchingCagesTracker {
 
     private readonly _model: MasterModel;
-    private readonly _nonetCageModels: Array<Set<CageModel>>;
+    private readonly _cageModels: Array<Set<CageModel>>;
 
     private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
         this.addCageM(cageM);
@@ -219,14 +219,14 @@ class NonetTouchingCagesTracker {
 
     constructor(model: MasterModel) {
         this._model = model;
-        this._nonetCageModels = this._model.nonetModels.map(() => new Set());
+        this._cageModels = this._model.nonetModels.map(() => new Set());
         for (const cageM of this._model.cageModelsMap.values()) {
             this.addCageM(cageM);
         }
     }
 
-    get nonetCageModels(): ReadonlyArray<ReadonlySet<CageModel>> {
-        return this._nonetCageModels;
+    get cageModels(): ReadonlyArray<ReadonlySet<CageModel>> {
+        return this._cageModels;
     }
 
     private addCageM(cageM: CageModel) {
@@ -237,11 +237,11 @@ class NonetTouchingCagesTracker {
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
                 // [perf] Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
-                this.nonetCageMsByCageM(cageM).add(cageM);
+                this.cageMsByCageM(cageM).add(cageM);
             } else {
                 // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
                 for (const cellM of cageM.cellMs) {
-                    this.nonetCageMsByCellM(cellM).add(cageM);
+                    this.cageMsByCellM(cellM).add(cageM);
                 }
             }
         }
@@ -255,22 +255,22 @@ class NonetTouchingCagesTracker {
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
                 // [perf] Removing `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
-                this.nonetCageMsByCageM(cageM).delete(cageM);
+                this.cageMsByCageM(cageM).delete(cageM);
             } else {
                 // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
                 for (const cellM of cageM.cellMs) {
-                    this.nonetCageMsByCellM(cellM).delete(cageM);
+                    this.cageMsByCellM(cellM).delete(cageM);
                 }
             }
         }
     }
 
-    private nonetCageMsByCellM(cellM: CellModel) {
-        return this._nonetCageModels[cellM.cell.nonet];
+    private cageMsByCellM(cellM: CellModel) {
+        return this._cageModels[cellM.cell.nonet];
     }
 
-    private nonetCageMsByCageM(cageM: CageModel) {
-        return this._nonetCageModels[cageM.anyNonet()];
+    private cageMsByCageM(cageM: CageModel) {
+        return this._cageModels[cageM.anyNonet()];
     }
 
     attachEventHandlers() {
@@ -323,7 +323,7 @@ class NonetProcessor {
     }
 
     private doExecute(tracker: NonetTouchingCagesTracker) {
-        tracker.nonetCageModels.forEach((cageMs, index) => {
+        tracker.cageModels.forEach((cageMs, index) => {
             const redundantCells = [];
             let cagesSum = 0;
             for (const cageM of cageMs) {
