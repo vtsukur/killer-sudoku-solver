@@ -327,10 +327,16 @@ class NonetProcessor {
             const protrusiveCells = [];
             let cagesSum = 0;
             for (const cageM of cageMs) {
-                for (const cellM of cageM.cellMs) {
-                    const cell = cellM.cell;
-                    if (cell.nonet !== nonet) {
-                        protrusiveCells.push(cell);
+                //
+                // [perf] `Nonet`-only `Cage` does NOT have protrusive `Cell`s by definition,
+                // so analysis is performed only for `Cage`s which touch more than 1 `Nonet`.
+                //
+                if (!cageM.positioningFlags.isWithinNonet) {
+                    for (const cellM of cageM.cellMs) {
+                        const cell = cellM.cell;
+                        if (cell.nonet !== nonet) {
+                            protrusiveCells.push(cell);
+                        }
                     }
                 }
                 cagesSum += cageM.cage.sum;
