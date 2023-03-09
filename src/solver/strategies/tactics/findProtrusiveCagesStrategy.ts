@@ -5,7 +5,7 @@ import { Cell } from '../../../puzzle/cell';
 import { Column } from '../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Nonet } from '../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -323,21 +323,21 @@ class NonetProcessor {
     }
 
     private doExecute(tracker: NonetTouchingCagesTracker) {
-        tracker.cageModels.forEach((cageMs, index) => {
-            const redundantCells = [];
+        tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
+            const protrusiveCells = [];
             let cagesSum = 0;
             for (const cageM of cageMs) {
                 for (const cellM of cageM.cellMs) {
                     const cell = cellM.cell;
-                    if (cell.nonet !== index) {
-                        redundantCells.push(cell);
+                    if (cell.nonet !== nonet) {
+                        protrusiveCells.push(cell);
                     }
                 }
                 cagesSum += cageM.cage.sum;
             }
 
-            if (redundantCells.length > 0 && redundantCells.length <= this._maxMeaningfulProtrusionSize) {
-                const cage = Cage.ofSum(cagesSum - House.SUM).withCells(redundantCells).setIsInput(this._model.isDerivedFromInputCage(redundantCells)).new();
+            if (protrusiveCells.length > 0 && protrusiveCells.length <= this._maxMeaningfulProtrusionSize) {
+                const cage = Cage.ofSum(cagesSum - House.SUM).withCells(protrusiveCells).setIsInput(this._model.isDerivedFromInputCage(protrusiveCells)).new();
                 this._cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
         });
