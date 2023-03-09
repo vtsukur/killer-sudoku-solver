@@ -165,18 +165,18 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
     private readonly _config: Config;
 
-    private readonly _nonetAreasProcesser: NonetProcessor;
+    private readonly _nonetAreasProcessor: NonetProcessor;
 
     constructor(context: Context, config: Config = DEFAULT_CONFIG) {
         super(context);
 
         this._config = { ...DEFAULT_CONFIG, ...config };
 
-        this._nonetAreasProcesser = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
+        this._nonetAreasProcessor = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
     }
 
     execute() {
-        this._nonetAreasProcesser.execute();
+        this._nonetAreasProcessor.execute();
     }
 
 }
