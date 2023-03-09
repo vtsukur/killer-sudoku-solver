@@ -281,8 +281,24 @@ class NonetProcessor {
 
     execute() {
         const tracker = new NonetTouchingCagesTracker(this._model);
-        tracker.attachEventHandlers();
+        try {
+            //
+            // Add event handlers to listen to `Cage` registration and unregistration
+            // when _protrusive_ `Cage`s are found and `Cage` slicing occurs.
+            // This is necessary because slicing results in adding and removing of `Cage`s
+            // which this class needs to be aware of.
+            //
+            tracker.attachEventHandlers();
 
+            // Running core work.
+            this.doExecute(tracker);
+        } finally {
+            // Cleanup of event handlers even if error is thrown to avoid broken state.
+            tracker.deattachEventHandlers();
+        }
+    }
+
+    private doExecute(tracker: NonetTouchingCagesTracker) {
         tracker.nonetCageModels.forEach((cageMs, index) => {
             const redundantCells = [];
             let cagesSum = 0;
@@ -301,8 +317,6 @@ class NonetProcessor {
                 this._cageSlicer.addAndSliceResidualCageRecursively(cage);
             }
         });
-
-        tracker.deattachEventHandlers();
     }
 
 }
