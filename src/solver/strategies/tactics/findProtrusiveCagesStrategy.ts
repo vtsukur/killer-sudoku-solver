@@ -324,29 +324,39 @@ class NonetProcessor {
 
     private doExecute(tracker: NonetTouchingCagesTracker) {
         tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
-            const protrusiveCells = [];
-            let cagesSum = 0;
-            for (const cageM of cageMs) {
-                //
-                // [perf] `Nonet`-only `Cage` does NOT have protrusive `Cell`s by definition,
-                // so analysis is performed only for `Cage`s which touch more than 1 `Nonet`.
-                //
-                if (!cageM.positioningFlags.isWithinNonet) {
-                    for (const cellM of cageM.cellMs) {
-                        const cell = cellM.cell;
-                        if (cell.nonet !== nonet) {
-                            protrusiveCells.push(cell);
-                        }
-                    }
-                }
-                cagesSum += cageM.cage.sum;
-            }
-
-            if (protrusiveCells.length > 0 && protrusiveCells.length <= this._maxMeaningfulProtrusionSize) {
-                const cage = Cage.ofSum(cagesSum - House.SUM).withCells(protrusiveCells).setIsInput(this._model.isDerivedFromInputCage(protrusiveCells)).new();
-                this._cageSlicer.addAndSliceResidualCageRecursively(cage);
+            const protrusion = this.determineMeaningfulProtrusion(cageMs, nonet);
+            if (protrusion) {
+                this._cageSlicer.addAndSliceResidualCageRecursively(protrusion);
             }
         });
+    }
+
+    private determineMeaningfulProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
+        const protrusiveCells = [];
+        let cagesSum = 0;
+
+        for (const cageM of cageMs) {
+            //
+            // [perf] `Nonet`-only `Cage` does NOT have protrusive `Cell`s by definition,
+            // so analysis is performed only for `Cage`s which touch more than 1 `Nonet`.
+            //
+            if (!cageM.positioningFlags.isWithinNonet) {
+                for (const cellM of cageM.cellMs) {
+                    const cell = cellM.cell;
+                    if (cell.nonet !== nonet) {
+                        protrusiveCells.push(cell);
+                    }
+                }
+            }
+            cagesSum += cageM.cage.sum;
+        }
+
+        if (protrusiveCells.length > 0 && protrusiveCells.length <= this._maxMeaningfulProtrusionSize) {
+            return Cage.ofSum(cagesSum - House.SUM)
+                .withCells(protrusiveCells)
+                .setIsInput(this._model.isDerivedFromInputCage(protrusiveCells))
+                .new();
+        }
     }
 
 }
