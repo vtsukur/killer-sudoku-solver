@@ -181,6 +181,17 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
 }
 
+/**
+ * Tracks {@link CageModel}s indexed by {@link Nonet}.
+ *
+ * Tracking is needed since {@link Cage}s are being registered and unregistered
+ * when _protrusive_ {@link Cage}s are found and {@link Cage} slicing occurs.
+ * Tracking is achieved by using event handlers on {@link MasterModel}.
+ *
+ * Use of this data structure enhances implementation performance
+ * since indexing allows faster enumeration of {@link CageModel}s by {@link Nonet} index
+ * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+ */
 class NonetTouchingCagesTracker {
 
     private readonly _model: MasterModel;
