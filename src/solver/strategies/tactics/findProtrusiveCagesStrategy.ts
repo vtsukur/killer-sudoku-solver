@@ -175,6 +175,9 @@ export class FindProtrusiveCagesStrategy extends Strategy {
         this._nonetAreasProcessor = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
     }
 
+    /**
+     * @see {Strategy.execute}
+     */
     execute() {
         this._nonetAreasProcessor.execute();
     }
