@@ -42,6 +42,19 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
     and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
 
     /**
+     * Creates new checking set which is the _difference_ between this checking set
+     * and the given `val` checking set,
+     * meaning produced set has values from this checking set
+     * WITHOUT the values in the `val` set.
+     *
+     * @param val - Checking set used to produce difference with this checking set.
+     *
+     * @returns New checking set which is the _difference_ between this checking set
+     * and the given `val` checking set,
+     */
+    _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
+
+    /**
      * Creates new checking set which has the numbers NOT present in this set.
      *
      * @returns New checking set which has the numbers NOT present in this set.
@@ -212,22 +225,7 @@ export class CellIndicesCheckingSet implements
     constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesCheckingSet) {
         if (Array.isArray(val)) {
             for (const num of val) {
-                const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[num];
-
-                //
-                // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
-                //
-                // Examples:
-                //  - for `num = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-                //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-                //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
-                //  - ...
-                //  - for `num = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
-                //  - and so on, up to `num` value of 27 per one bit store.
-                //
-                // For `num = 1` and `num = 4` `bitStore` will be `0b00010010`.
-                //
-                this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+                this.addOne(num);
             }
         } else {
             const anotherSet = val as ReadonlyCellIndicesCheckingSet;
@@ -422,6 +420,30 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
+     * @see {ReadonlyCellIndicesCheckingSet._}
+     */
+    _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
+        const and = CellIndicesCheckingSet.newEmpty();
+
+        //
+        // Applying bitwise XOR onto each bit store of this checking set and the `val` checking set
+        // to produce `0`s on the positions where both sets have `1`s.
+        //
+        // Example (applied to a single bit store of index `x` for simplicity):
+        // ```
+        //      this._bitStores[x]                    = 0b10010101
+        //      val.bitStores[x]                      = 0b01111100
+        //      this._bitStores[x] & val.bitStores[x] = 0b10000001 (`1` on positions 3 and 5 are set to `0`)
+        // ```
+        //
+        and._bitStores[0] = this._bitStores[0] ^ val.bitStores[0];
+        and._bitStores[1] = this._bitStores[1] ^ val.bitStores[1];
+        and._bitStores[2] = this._bitStores[2] ^ val.bitStores[2];
+
+        return and;
+    }
+
+    /**
      * @see {ReadonlyCellIndicesCheckingSet.not}
      */
     not(): ReadonlyCellIndicesCheckingSet {
@@ -473,6 +495,37 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
+     * Adds given number to this checking set.
+     *
+     * This method changes this checking set.
+     *
+     * The given number is added only if it is NOT yet present in this checking set.
+     * Duplicate number is ignored.
+     *
+     * @param val - Number to add to this set.
+     *
+     * @returns This checking numbers set.
+     */
+    addOne(val: number) {
+        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+
+        //
+        // Applying bitwise OR with left-wise shift to set bit at position `entry.bitStoreIndex` to `1`.
+        //
+        // Examples:
+        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
+        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
+        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - ...
+        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
+        //
+        this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+
+        return this;
+    }
+
+    /**
      * @see {NumsCheckingSet.remove}
      */
     remove(val: ReadonlyCellIndicesCheckingSet) {
@@ -493,6 +546,35 @@ export class CellIndicesCheckingSet implements
         this._bitStores[2] &= ~val.bitStores[2]; // for numbers in the range of [64, 80]
 
         return this;
+    }
+
+    /**
+     * Removes given numbers from this checking numbers set.
+     *
+     * This method changes this checking numbers set.
+     *
+     * The given number is removed only if it is NOT yet present in this checking set.
+     * Duplicate number is ignored.
+     *
+     * @param val - Number to remove from this set.
+     *
+     * @returns This checking set.
+     */
+    removeOne(val: number) {
+        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+
+        //
+        // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitStoreIndex` to `0`.
+        //
+        // Examples:
+        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise AND-ed with `0b11111110`;
+        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise AND-ed with `0b11111101`;
+        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise AND-ed with `0b11111011`;
+        //  - ...
+        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise AND-ed with `0b01111111`;
+        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
+        //
+        this._bitStores[entry.bitStoreIndex] &= ~(1 << entry.bitPosition);
     }
 
     /**

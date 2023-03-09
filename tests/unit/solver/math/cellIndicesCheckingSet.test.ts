@@ -49,6 +49,26 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
     });
 
+    test('Adding numbers one by one', () => {
+        const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
+
+        numsCheckingSet.addOne(0);
+        numsCheckingSet.addOne(31);
+        numsCheckingSet.addOne(80);
+
+        expectSetWithValues(numsCheckingSet, [ 0, 1, 30, 31, 75, 80 ]);
+    });
+
+    test('Removing numbers one by one', () => {
+        const numsCheckingSet = CellIndicesCheckingSet.of(0, 1, 30, 31, 75, 80);
+
+        numsCheckingSet.removeOne(0);
+        numsCheckingSet.removeOne(31);
+        numsCheckingSet.removeOne(80);
+
+        expectSetWithValues(numsCheckingSet, [ 1, 30, 75 ]);
+    });
+
     test('Checking with `doesNotHave`', () => {
         const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
         expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
@@ -76,6 +96,10 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(new CellIndicesCheckingSet(CachedNumRanges.ZERO_TO_N_LTE_81[75]).not(), [
             75, 76, 77, 78, 79, 80
         ]);
+    });
+
+    test('Producing difference set', () => {
+        expectSetWithValues(CellIndicesCheckingSet.of(1, 30, 75)._(CellIndicesCheckingSet.of(30, 75)), [ 1 ]);
     });
 
     test('Checking equality', () => {
