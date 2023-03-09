@@ -249,6 +249,12 @@ class NonetTouchingCagesTracker {
 
 }
 
+/**
+ * Processor for {@link Nonet} areas
+ * which defines key work of the overall {@link FindProtrusiveCagesStrategy}.
+ *
+ * The focus is around finding and registering _protrusive_ {@link Cage}s.
+ */
 class NonetProcessor {
 
     private readonly _model: MasterModel;
