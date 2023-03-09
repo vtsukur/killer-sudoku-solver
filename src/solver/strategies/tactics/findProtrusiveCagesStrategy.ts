@@ -322,6 +322,15 @@ class NonetProcessor {
         }
     }
 
+    /**
+     * Executes key processing work by iterating over all {@link Nonet}s,
+     * determining _protrusive_ {@link Cage}s for each and
+     * registering such {@link Cage}s if they are considered to be meaningful.
+     *
+     * @param tracker - Tracks {@link CageModel}s indexed by {@link Nonet}.
+     *
+     * @see {Config.maxMeaningfulProtrusionSize}
+     */
     private doExecute(tracker: NonetTouchingCagesTracker) {
         tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
             const protrusion = this.determineMeaningfulProtrusion(cageMs, nonet);
@@ -331,6 +340,28 @@ class NonetProcessor {
         });
     }
 
+    /**
+     * Determines _protrusive_ {@link Cage} for a particular {@link Nonet}
+     * by finding all {@link Cell}s which are outside of the {@link Nonet}
+     * and calculating the sum as the difference between the sum of
+     * {@link Cage}s which have at least one {@link Cell} within the {@link Nonet}
+     * and {@link House.SUM}.
+     *
+     * @param cageMs - {@link CageModel}s with {@link Cage}s
+     * which have at least one {@link Cell} within the {@link Nonet}.
+     * @param nonet - Index of the target {@link Nonet}.
+     *
+     * @returns _Protrusive_ {@link Cage} for a particular {@link Nonet} defined
+     * by finding all {@link Cell}s which are outside of the {@link Nonet}
+     * and calculating the sum as the difference between the sum of
+     * {@link Cage}s which have at least one {@link Cell} within the {@link Nonet}
+     * and {@link House.SUM} OR
+     * `undefined` if:
+     *
+     * - Found _protrusive_ {@link Cage} is empty;
+     * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulProtrusionSize}.
+     * See {@see FindComplementingCagesStrategy} TSDoc for more info.
+     */
     private determineMeaningfulProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
         const protrusiveCells = [];
         let cagesSum = 0;
