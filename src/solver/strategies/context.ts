@@ -25,12 +25,6 @@ export class Context {
         this.foundSolution = undefined;
     }
 
-    run(strategyFn: () => void) {
-        if (!this.isSolutionFound) {
-            strategyFn.apply(this);
-        }
-    }
-
     get hasCageModelsToReduce() {
         return this._cageModelsToReduce.size > 0;
     }
