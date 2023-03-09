@@ -167,6 +167,15 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 
     private readonly _nonetAreasProcessor: NonetProcessor;
 
+    /**
+     * Constructs new {@link Strategy} with the given solution {@link Context}
+     * and {@link Config} options.
+     *
+     * @param context - Solution {@link Context}.
+     * @param config - {@link Config} options to apply on top of the defaults.
+     *
+     * @see {Strategy.constructor}
+     */
     constructor(context: Context, config: Config = DEFAULT_CONFIG) {
         super(context);
 
