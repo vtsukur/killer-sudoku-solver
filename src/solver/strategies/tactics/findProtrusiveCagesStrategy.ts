@@ -251,14 +251,16 @@ class NonetTouchingCagesTracker {
         // so only _input_ `Cage`s are processed.
         //
         if (cageM.cage.isInput) {
-            if (cageM.positioningFlags.isWithinNonet) {
-                // [perf] Removing `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
-                this.cageMsByCageM(cageM).delete(cageM);
-            } else {
-                // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
-                for (const cellM of cageM.cellMs) {
-                    this.cageMsByCellM(cellM).delete(cageM);
-                }
+            //
+            // As opposed to `addCageM` method, this implementation
+            // does NOT check `Cage` to be within 1 `Nonet`
+            // because there are NO circumstances under which such a `Cage`
+            // will be actually removed as a result of slicing.
+            //
+            // In other words, the strategy will NOT slice `Nonet` `Cage`s.
+            //
+            for (const cellM of cageM.cellMs) {
+                this.cageMsByCellM(cellM).delete(cageM);
             }
         }
     }
