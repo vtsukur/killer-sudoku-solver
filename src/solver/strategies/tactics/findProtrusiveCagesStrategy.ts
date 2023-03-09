@@ -229,24 +229,36 @@ class NonetTouchingCagesTracker {
         return this._nonetCageModels;
     }
 
-    private nonetCageMsBy(cellM: CellModel) {
-        return this._nonetCageModels[cellM.cell.nonet];
-    }
-
     private addCageM(cageM: CageModel) {
         if (cageM.cage.isInput) {
-            for (const cellM of cageM.cellMs) {
-                this.nonetCageMsBy(cellM).add(cageM);
+            if (cageM.positioningFlags.isWithinNonet) {
+                this.nonetCageMsByCageM(cageM).add(cageM);
+            } else {
+                for (const cellM of cageM.cellMs) {
+                    this.nonetCageMsByCellM(cellM).add(cageM);
+                }
             }
         }
     }
 
     private removeCageM(cageM: CageModel) {
         if (cageM.cage.isInput) {
-            for (const cellM of cageM.cellMs) {
-                this.nonetCageMsBy(cellM).delete(cageM);
+            if (cageM.positioningFlags.isWithinNonet) {
+                this.nonetCageMsByCageM(cageM).delete(cageM);
+            } else {
+                for (const cellM of cageM.cellMs) {
+                    this.nonetCageMsByCellM(cellM).delete(cageM);
+                }
             }
         }
+    }
+
+    private nonetCageMsByCellM(cellM: CellModel) {
+        return this._nonetCageModels[cellM.cell.nonet];
+    }
+
+    private nonetCageMsByCageM(cageM: CageModel) {
+        return this._nonetCageModels[cageM.anyNonet()];
     }
 
     attachEventHandlers() {
