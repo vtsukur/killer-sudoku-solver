@@ -164,7 +164,6 @@ const DEFAULT_CONFIG: Config = Object.freeze({
 export class FindProtrusiveCagesStrategy extends Strategy {
 
     private readonly _config: Config;
-
     private readonly _nonetAreasProcessor: NonetProcessor;
 
     /**
@@ -180,7 +179,6 @@ export class FindProtrusiveCagesStrategy extends Strategy {
         super(context);
 
         this._config = { ...DEFAULT_CONFIG, ...config };
-
         this._nonetAreasProcessor = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
     }
 
