@@ -35,7 +35,7 @@ describe('Unit tests for `InitCagesCombosStrategy`', () => {
         expect(nonet3_cageM2.combos).toEqual([ Combo.of(2) ]);
 
         const nonet3_cageM3 = cageM(27, [ Cell.at(4, 0), Cell.at(4, 1), Cell.at(5, 0), Cell.at(5, 1) ]);
-        expect(nonet3_cageM3.combos).toEqual([ Combo.of(3, 7, 8, 9), Combo.of(4, 6, 8, 9), Combo.of(5, 6, 7, 9) ]);
+        expect(nonet3_cageM3.combos).toEqual([ Combo.of(4, 6, 8, 9), Combo.of(5, 6, 7, 9) ]);
 
         const nonet3_cageM4 = cageM(12, [ Cell.at(4, 2), Cell.at(5, 2) ]);
         expect(nonet3_cageM4.combos).toEqual([ Combo.of(4, 8), Combo.of(5, 7) ]);
