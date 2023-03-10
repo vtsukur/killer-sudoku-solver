@@ -131,12 +131,28 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        this._combosMap.clear();
         const nums = new Set<number>();
-        combos.forEach(combo => {
-            Sets.U(nums, combo);
-            this._combosMap.set(combo.key, combo);
-        });
+
+        if (this._combosMap.size !== 0) {
+            const newCombosMap = new Map<ComboKey, Combo>();
+
+            combos.forEach(combo => {
+                Sets.U(nums, combo);
+                newCombosMap.set(combo.key, combo);
+            });
+
+            for (const [ comboKey ] of this._combosMap.entries()) {
+                if (!newCombosMap.has(comboKey)) {
+                    this._combosMap.delete(comboKey);
+                }
+            }
+        } else {
+            combos.forEach(combo => {
+                Sets.U(nums, combo);
+                this._combosMap.set(combo.key, combo);
+            });
+        }
+
         this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
     }
 
