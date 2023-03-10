@@ -90,13 +90,13 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  *
  * These hints are signicant since they reduce possible numbers for {@link Cell}s in the {@link Nonet}.
  *
- * In the same way the strategy is applied to {@link Row}s and {@link Column}s.
+ * In the same way the {@link Strategy} is applied to {@link Row}s and {@link Column}s.
  *
  * This {@link Strategy} requires each {@link HouseModel} to have
  * a defined set of {@link Cage}s which cover whole {@link House} and do NOT have shared {@link Cell}s.
  * It is achieved by executing {@link FindComplementingCagesStrategy} beforehand.
  *
- * This {@link Strategy} is an _initialization_ strategy,
+ * This {@link Strategy} is an _initialization_ {@link Strategy},
  * so it is applied just once on the particular {@link Puzzle}.
  *
  * @public

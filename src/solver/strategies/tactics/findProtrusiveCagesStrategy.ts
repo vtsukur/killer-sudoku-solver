@@ -152,10 +152,10 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * {@link Nonet}s are analyzed only individually meaning
  * adjacent {@link Nonet} areas are NOT taken into account.
  *
- * This strategy is an _initialization_ strategy,
+ * This {@link Strategy} is an _initialization_ {@link Strategy},
  * so it is applied just once on the particular {@link Puzzle}.
  *
- * The way this strategy works can be configured by {@link Config} options.
+ * The way this {@link Strategy} works can be configured by {@link Config} options.
  *
  * @see {Config}
  *
@@ -257,7 +257,7 @@ class NonetTouchingCagesTracker {
             // because there are NO circumstances under which such a `Cage`
             // will be actually deleted as a result of slicing.
             //
-            // In other words, the strategy will NOT slice `Nonet` `Cage`s.
+            // In other words, the `Strategy` will NOT slice `Nonet` `Cage`s.
             //
             for (const cellM of cageM.cellMs) {
                 this.cageMsByCellM(cellM).delete(cageM);

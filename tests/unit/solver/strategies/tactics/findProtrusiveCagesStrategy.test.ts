@@ -15,7 +15,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         originalCageCount = context.model.cageModelsMap.size;
     });
 
-    test('Applying strategy onto `Nonet`s within Daily Challenge (2022-11-01) by Sudoku.com', () => {
+    test('Applying `Strategy` onto `Nonet`s within Daily Challenge (2022-11-01) by Sudoku.com', () => {
         // When:
         new FindProtrusiveCagesStrategy(context).execute();
 
@@ -66,7 +66,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(22).at(5, 6).at(5, 7).at(6, 6).at(6, 7).new())).toBeFalsy();
     });
 
-    test('Applying strategy with adjusted `Config` onto `Nonet`s within Daily Challenge (2022-11-01) by Sudoku.com', () => {
+    test('Applying `Strategy` with adjusted `Config` onto `Nonet`s within Daily Challenge (2022-11-01) by Sudoku.com', () => {
         // When:
         new FindProtrusiveCagesStrategy(context, {
             maxMeaningfulProtrusionSize: 1

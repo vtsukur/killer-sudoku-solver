@@ -9,7 +9,7 @@ describe('Performance tests for `FindComplementingCagesStrategy`', () => {
     const ITERATION_COUNT = 500;
 
     _.range(TESTS_COUNT).forEach(i => {
-        test(`Applying strategy within Daily Challenge (2022-10-22) by Sudoku.com [${i}]`, () => {
+        test(`Applying \`Strategy\` within Daily Challenge (2022-10-22) by Sudoku.com [${i}]`, () => {
             _.range(ITERATION_COUNT).forEach(() => {
                 const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
                 new FindComplementingCagesStrategy(context).execute();

@@ -25,41 +25,41 @@ import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySol
 export type Config = {
 
     /**
-     * Whether to apply the strategy to individual {@link Row}s
+     * Whether to apply the {@link Strategy} to individual {@link Row}s
      * and adjacent {@link Row} areas.
      *
      * Size of adjacent {@link Row} areas can be configured by
      * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
      *
-     * Default value is `true`, which means enabling the strategy
+     * Default value is `true`, which means enabling the {@link Strategy}
      * to {@link Row}s and adjacent {@link Row} areas.
      */
     readonly isApplyToRowAreas: boolean;
 
     /**
-     * Whether to apply the strategy to individual {@link Column}s
+     * Whether to apply the {@link Strategy} to individual {@link Column}s
      * and adjacent {@link Column} areas.
      *
      * Size of adjacent {@link Column} areas can be configured by
      * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
      *
-     * Default value is `true`, which means enabling the strategy
+     * Default value is `true`, which means enabling the {@link Strategy}
      * to {@link Column}s and adjacent {@link Column} areas.
      */
     readonly isApplyToColumnAreas: boolean;
 
     /**
-     * Whether to apply the strategy to {@link Nonet}s.
+     * Whether to apply the {@link Strategy} to {@link Nonet}s.
      *
      * Only individual {@link Nonet} are analyzed, NOT adjacent {@link Nonet}s.
      *
-     * Default value is `true`, which means enabling the strategy to {@link Nonet}s.
+     * Default value is `true`, which means enabling the {@link Strategy} to {@link Nonet}s.
      */
     readonly isApplyToNonetAreas: boolean;
 
     /**
      * Minimum amount of adjacent {@link Row} and {@link Column} areas
-     * to apply the strategy to.
+     * to apply the {@link Strategy} to.
      *
      * Should be in the range of `[1, 8]`.
      * Upper bound in this range excludes value `9`
@@ -68,14 +68,14 @@ export type Config = {
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
      * is set to `true`.
      *
-     * Default value is `1`, which means enabling the strategy
+     * Default value is `1`, which means enabling the {@link Strategy}
      * at least to all individual {@link Row}s and {@link Column}s.
      */
     readonly minAdjacentRowsAndColumnsAreas: number;
 
     /**
      * Maximum amount of adjacent {@link Row} and {@link Column} areas
-     * to apply the strategy to.
+     * to apply the {@link Strategy} to.
      *
      * Should be in the range of `[1, 8]`.
      * Upper bound in this range excludes value `9`
@@ -313,7 +313,7 @@ class IndexedCageModelsTracker {
  *
  * Same approach is applied NOT only to {@link Row}s, but also to {@link Column}s and {@link Nonet}s.
  *
- * Also, this strategy applies complement determination to the areas of
+ * Also, this {@link Strategy} applies complement determination to the areas of
  * adjacent {@link Row}s and {@link Column}s in addition to individual {@link Row}s and {@link Column}s.
  *
  * For example, adjacent area of two {@link Column}s with indices 3 and 4
@@ -336,10 +336,10 @@ class IndexedCageModelsTracker {
  * {@link Nonet}s are analyzed only individually meaning
  * adjacent {@link Nonet} areas are NOT taken into account.
  *
- * This strategy is an _initialization_ strategy,
+ * This {@link Strategy} is an _initialization_ {@link Strategy},
  * so it is applied just once on the particular {@link Puzzle}.
  *
- * The way this strategy works can be configured by {@link Config} options.
+ * The way this {@link Strategy} works can be configured by {@link Config} options.
  *
  * @see {Config}
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements

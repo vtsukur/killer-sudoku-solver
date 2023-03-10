@@ -16,7 +16,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         originalCageCount = context.model.cageModelsMap.size;
     });
 
-    test('Applying strategy onto single `Row`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying `Strategy` onto single `Row`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
         new FindComplementingCagesStrategy(context, {
             isApplyToRowAreas: true,
@@ -49,7 +49,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(18).at(8, 0).at(8, 5).at(8, 8).new())).toBeTruthy();
     });
 
-    test('Applying strategy onto adjacent `Row`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying `Strategy` onto adjacent `Row`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
         new FindComplementingCagesStrategy(context, {
             isApplyToRowAreas: true,
@@ -68,7 +68,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(19).at(4, 6).at(6, 7).at(6, 8).new())).toBeTruthy();
     });
 
-    test('Applying strategy onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying `Strategy` onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
         new FindComplementingCagesStrategy(context, {
             isApplyToRowAreas: false,
@@ -101,7 +101,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(9).at(2, 8).at(3, 8).new())).toBeTruthy();
     });
 
-    test('Applying strategy onto adjacent `Column`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying `Strategy` onto adjacent `Column`s (in groups of 3) within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
         new FindComplementingCagesStrategy(context, {
             isApplyToRowAreas: false,
@@ -118,7 +118,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         expect(context.model.hasCage(Cage.ofSum(21).at(0, 6).at(2, 6).at(5, 6).at(6, 6).at(7, 6).new())).toBeTruthy();
     });
 
-    test('Applying strategy onto `Nonet`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
+    test('Applying `Strategy` onto `Nonet`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
         // When:
         new FindComplementingCagesStrategy(context, {
             isApplyToRowAreas: false,
