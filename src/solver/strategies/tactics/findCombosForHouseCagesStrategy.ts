@@ -7,7 +7,7 @@ import { Column } from '../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { House } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Nonet } from '../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -106,8 +106,8 @@ export class FindCombosForHouseCagesStrategy extends Strategy {
     execute() {
         for (const houseM of this._model.houseModels) {
             const { actualSumCombosOfAllCages: actualSumCombos } = HouseModelCagesCombinatorics.for(houseM);
-            houseM.cageModels.forEach((cageM, index) => {
-                cageM.updateCombinations(actualSumCombos[index]);
+            houseM.cageModels.forEach((cageM, nonet: HouseIndex) => {
+                cageM.updateCombinations(actualSumCombos[nonet]);
             });
         }
 
