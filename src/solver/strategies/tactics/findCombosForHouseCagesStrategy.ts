@@ -103,15 +103,33 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  */
 export class FindCombosForHouseCagesStrategy extends Strategy {
 
+    /**
+     * @see Strategy.execute
+     */
     execute() {
+        this.doExecute();
+        this._context.setCageModelsToReduceToAll();
+    }
+
+    /**
+     * Executes key processing work by iterating over all {@link HouseModel}s,
+     * enumerating possible numbers within {@link Cage}s
+     * which belong to each {@link HouseModel}'s {@link House}
+     * and updating {@link Combo}s for these {@link Cages}.
+     */
+    private doExecute() {
         for (const houseM of this._model.houseModels) {
+            //
+            // Enumerating possible numbers within `Cage`s
+            // which belong to the `HouseModel`s `House`.
+            //
             const { actualSumCombosOfAllCages: actualSumCombos } = HouseModelCagesCombinatorics.for(houseM);
+
+            // Updating `Combo`s for the `Cage`s.
             houseM.cageModels.forEach((cageM, nonet: HouseIndex) => {
                 cageM.updateCombinations(actualSumCombos[nonet]);
             });
         }
-
-        this._context.setCageModelsToReduceToAll();
     }
 
 }
