@@ -27,18 +27,18 @@ describe('Unit tests for `InitCagesCombosStrategy`', () => {
 
         // Then:
 
-        // Checking `Nonet 4`:
-        const nonet4_cageM1 = cageM(4, [ Cell.at(3, 0), Cell.at(3, 1) ]);
-        expect(nonet4_cageM1.combos).toEqual([ Combo.of(1, 3) ]);
+        // Checking `Nonet 3`:
+        const nonet3_cageM1 = cageM(4, [ Cell.at(3, 0), Cell.at(3, 1) ]);
+        expect(nonet3_cageM1.combos).toEqual([ Combo.of(1, 3) ]);
 
-        const nonet4_cageM2 = cageM(2, [ Cell.at(3, 2) ]);
-        expect(nonet4_cageM2.combos).toEqual([ Combo.of(2) ]);
+        const nonet3_cageM2 = cageM(2, [ Cell.at(3, 2) ]);
+        expect(nonet3_cageM2.combos).toEqual([ Combo.of(2) ]);
 
-        const nonet4_cageM3 = cageM(27, [ Cell.at(4, 0), Cell.at(4, 1), Cell.at(5, 0), Cell.at(5, 1) ]);
-        expect(nonet4_cageM3.combos).toEqual([ Combo.of(3, 7, 8, 9), Combo.of(4, 6, 8, 9), Combo.of(5, 6, 7, 9) ]);
+        const nonet3_cageM3 = cageM(27, [ Cell.at(4, 0), Cell.at(4, 1), Cell.at(5, 0), Cell.at(5, 1) ]);
+        expect(nonet3_cageM3.combos).toEqual([ Combo.of(3, 7, 8, 9), Combo.of(4, 6, 8, 9), Combo.of(5, 6, 7, 9) ]);
 
-        const nonet4_cageM4 = cageM(12, [ Cell.at(4, 2), Cell.at(5, 2) ]);
-        expect(nonet4_cageM4.combos).toEqual([ Combo.of(4, 8), Combo.of(5, 7) ]);
+        const nonet3_cageM4 = cageM(12, [ Cell.at(4, 2), Cell.at(5, 2) ]);
+        expect(nonet3_cageM4.combos).toEqual([ Combo.of(4, 8), Combo.of(5, 7) ]);
     });
 
     const cageM = (sum: number, cells: ReadonlyArray<Cell>) => {
