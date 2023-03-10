@@ -118,14 +118,15 @@ export class FindCombosForHouseCagesStrategy extends Strategy {
      * and updating {@link Combo}s for these {@link Cages}.
      */
     private doExecute() {
+        // For each `HouseModel` ...
         for (const houseM of this._model.houseModels) {
             //
-            // Enumerating possible numbers within `Cage`s
+            // ... Enumerating possible numbers within `Cage`s
             // which belong to the `HouseModel`s `House`.
             //
             const { actualSumCombosOfAllCages: actualSumCombos } = HouseModelCagesCombinatorics.for(houseM);
 
-            // Updating `Combo`s for the `Cage`s.
+            // ... Updating `Combo`s for each `Cage` in the `HouseModel`s `House`.
             houseM.cageModels.forEach((cageM, nonet: HouseIndex) => {
                 cageM.updateCombinations(actualSumCombos[nonet]);
             });
