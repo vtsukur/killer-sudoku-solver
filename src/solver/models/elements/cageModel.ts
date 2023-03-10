@@ -111,12 +111,7 @@ export class CageModel {
         if (this._canHaveDuplicateNums) return;
 
         const combos = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount).val;
-        const nums = new Set<number>();
-        combos.forEach(combo => {
-            Sets.U(nums, combo);
-            this._combosMap.set(combo.key, combo);
-        });
-        this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
+        this.updateCombinations(combos);
     }
 
     anyRow() {
@@ -136,12 +131,13 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        const numOpts = new Set<number>();
+        this._combosMap.clear();
+        const nums = new Set<number>();
         combos.forEach(combo => {
-            Sets.U(numOpts, combo);
+            Sets.U(nums, combo);
+            this._combosMap.set(combo.key, combo);
         });
-
-        this.cellMs.forEach(cellM => cellM.reduceNumOptions(numOpts));
+        this.cellMs.forEach(cellM => cellM.reduceNumOptions(nums));
     }
 
     reduce(): ReadonlySet<CellModel> {
