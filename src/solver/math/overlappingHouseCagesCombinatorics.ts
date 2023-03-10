@@ -57,7 +57,7 @@ export class OverlappingHouseCagesCombinatorics {
      * @returns Possible {@link Cell}s' numbers for the {@link Cage}s within the same {@link House}
      * in the form of {@link HouseCagesCombos} considering {@link Cage}s to be _overlapping_.
      *
-     * @see {combos}
+     * @see combos
      */
     static enumerateCombos(overlappingCages: ReadonlyCages): OverlappingHouseCagesCombinatorics {
         return {

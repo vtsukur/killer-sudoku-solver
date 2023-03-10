@@ -156,9 +156,9 @@ export class HouseModelCagesCombinatorics {
      * @returns Possible numbers within {@link Cage}s
      * which belong to the same {@link HouseModel}'s {@link House}.
      *
-     * @see {nonOverlappingCages}
-     * @see {sumPermsOfNonOverlappingCages}
-     * @see {actualSumCombos}
+     * @see nonOverlappingCages
+     * @see sumPermsOfNonOverlappingCages
+     * @see actualSumCombos
      */
     static for(houseM: HouseModel) {
         // Determining _non-overlapping_ and _overlapping_ `Cage`s.

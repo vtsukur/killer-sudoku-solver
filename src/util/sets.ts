@@ -5,7 +5,7 @@
  * - adding and deleting {@link Iterable} of values using {@link U} and {@link _} respectively;
  * - getting first value in the `Set` using {@link firstValue}.
  *
- * @see {@link Set}
+ * @see Set
  *
  * @public
  */

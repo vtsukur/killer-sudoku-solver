@@ -157,7 +157,7 @@ export class GridAreaModel implements GridAreaModel {
      * @returns New area on the {@link Grid} defined by a group of the given {@link Cage}s
      * with {@link Cage}s without shared {@link Cell}s forming area of maximized size.
      *
-     * @see {from}
+     * @see from
      */
     static fromCageModels(cageMs: ReadonlyArray<CageModel>, houseCount = 1): GridAreaModel {
         return cageMs.length !== 0 ? newGridAreaModelWithMaxNonOverlappingArea(this.cageModelsToCages(cageMs), houseCount) : this._EMPTY_INSTANCE;

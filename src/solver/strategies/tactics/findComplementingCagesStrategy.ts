@@ -341,7 +341,7 @@ class IndexedCageModelsTracker {
  *
  * The way this {@link Strategy} works can be configured by {@link Config} options.
  *
- * @see {Config}
+ * @see Config
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
  *
  * @public
@@ -363,7 +363,7 @@ export class FindComplementingCagesStrategy extends Strategy {
      * @param context - Solution {@link Context}.
      * @param config - {@link Config} options to apply on top of the defaults.
      *
-     * @see {Strategy.constructor}
+     * @see Strategy.constructor
      */
     constructor(context: Context, config: Partial<Config> = DEFAULT_CONFIG) {
         super(context);
@@ -382,7 +382,7 @@ export class FindComplementingCagesStrategy extends Strategy {
     }
 
     /**
-     * @see {Strategy.execute}
+     * @see Strategy.execute
      */
     execute() {
         const tracker = new IndexedCageModelsTracker(this._model);
@@ -503,7 +503,7 @@ abstract class HouseAreasProcessor {
      * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
-     * @see {CageSlicer}
+     * @see CageSlicer
      */
     protected findAndSlice(
             areaCageMs: ReadonlyArray<CageModel>,
@@ -535,7 +535,7 @@ abstract class HouseAreasProcessor {
      *
      * - Found _complementing_ {@link Cage} is empty;
      * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulComplementSize}
-     * in case search is performed on adjacent {@link House}s. See {@see FindComplementingCagesStrategy} TSDoc for more info.
+     * in case search is performed on adjacent {@link House}s. See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulComplement(
             areaCageMs: ReadonlyArray<CageModel>,
@@ -682,8 +682,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
      * Use of this data structure enhances implementation performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
-     * @param minAdjacentAreas - See {@see Config.minAdjacentRowsAndColumnsAreas}.
-     * @param maxAdjacentAreas - See {@see Config.maxAdjacentRowsAndColumnsAreas}.
+     * @param minAdjacentAreas - See {@link Config.minAdjacentRowsAndColumnsAreas}.
+     * @param maxAdjacentAreas - See {@link Config.maxAdjacentRowsAndColumnsAreas}.
      */
     protected applyToAdjacentHouses(
             indexedCageMs: ReadonlyIndexedHouseCageModels,

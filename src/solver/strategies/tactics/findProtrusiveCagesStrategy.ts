@@ -157,7 +157,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * The way this {@link Strategy} works can be configured by {@link Config} options.
  *
- * @see {Config}
+ * @see Config
  *
  * @public
  */
@@ -173,7 +173,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
      * @param context - Solution {@link Context}.
      * @param config - {@link Config} options to apply on top of the defaults.
      *
-     * @see {Strategy.constructor}
+     * @see Strategy.constructor
      */
     constructor(context: Context, config: Config = DEFAULT_CONFIG) {
         super(context);
@@ -183,7 +183,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
     }
 
     /**
-     * @see {Strategy.execute}
+     * @see Strategy.execute
      */
     execute() {
         this._nonetAreasProcessor.execute();
@@ -329,7 +329,7 @@ class NonetProcessor {
      *
      * @param tracker - Tracks {@link CageModel}s indexed by {@link Nonet}.
      *
-     * @see {Config.maxMeaningfulProtrusionSize}
+     * @see Config.maxMeaningfulProtrusionSize
      */
     private doExecute(tracker: NonetTouchingCagesTracker) {
         tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
@@ -360,7 +360,7 @@ class NonetProcessor {
      *
      * - Found _protrusive_ {@link Cage} is empty;
      * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulProtrusionSize}.
-     * See {@see FindComplementingCagesStrategy} TSDoc for more info.
+     * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
         const protrusiveCells = [];

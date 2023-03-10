@@ -96,8 +96,8 @@ export class NonOverlappingHouseCagesCombinatorics {
      * possible {@link House} {@link Cell}s' number permutations in the form of {@link HouseCagesPerms}
      * considering {@link Cage}s to be _non-overlapping_.
      *
-     * @see {combos}
-     * @see {perms}
+     * @see combos
+     * @see perms
      */
     static enumerateCombosAndPerms(model: NonOverlappingCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
         return CAGE_COUNT_BASED_STRATEGIES[model.cages.length](model);

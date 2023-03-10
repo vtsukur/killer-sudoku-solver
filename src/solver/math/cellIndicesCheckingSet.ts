@@ -73,8 +73,8 @@ type CellIndexToBitStoreLocator = {
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see {ReadonlyCellIndicesCheckingSet}
- * @see {NumsCheckingSet}
+ * @see ReadonlyCellIndicesCheckingSet
+ * @see NumsCheckingSet
  *
  * @public
  */
@@ -265,14 +265,14 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyCellIndicesCheckingSet.bitStores}
+     * @see ReadonlyCellIndicesCheckingSet.bitStores
      */
     get bitStores() {
         return this._bitStores;
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.hasAll}
+     * @see ReadonlyNumsCheckingSet.hasAll
      */
     hasAll(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -312,7 +312,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.doesNotHave}
+     * @see ReadonlyNumsCheckingSet.doesNotHave
      */
     doesNotHave(val: number) {
         const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
@@ -320,7 +320,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.doesNotHaveAny}
+     * @see ReadonlyNumsCheckingSet.doesNotHaveAny
      */
     doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -357,7 +357,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyCellIndicesCheckingSet.cells}
+     * @see ReadonlyCellIndicesCheckingSet.cells
      */
     cells() {
         const val = new Array<Cell>();
@@ -396,7 +396,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyCellIndicesCheckingSet.and}
+     * @see ReadonlyCellIndicesCheckingSet.and
      */
     and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
         const and = CellIndicesCheckingSet.newEmpty();
@@ -420,7 +420,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyCellIndicesCheckingSet._}
+     * @see ReadonlyCellIndicesCheckingSet._
      */
     _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
         const and = CellIndicesCheckingSet.newEmpty();
@@ -444,7 +444,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyCellIndicesCheckingSet.not}
+     * @see ReadonlyCellIndicesCheckingSet.not
      */
     not(): ReadonlyCellIndicesCheckingSet {
         const not = CellIndicesCheckingSet.newEmpty();
@@ -473,7 +473,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.add}
+     * @see NumsCheckingSet.add
      */
     add(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -526,7 +526,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.delete}
+     * @see NumsCheckingSet.delete
      */
     delete(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -578,7 +578,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.equals}
+     * @see ReadonlyNumsCheckingSet.equals
      */
     equals(val: ReadonlyCellIndicesCheckingSet) {
         return (
@@ -589,7 +589,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.clone}
+     * @see NumsCheckingSet.clone
      */
     clone() {
         return new CellIndicesCheckingSet(this);

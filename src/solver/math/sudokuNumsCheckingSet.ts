@@ -36,8 +36,8 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see {ReadonlySudokuNumsCheckingSet}
- * @see {NumsCheckingSet}
+ * @see ReadonlySudokuNumsCheckingSet
+ * @see NumsCheckingSet
  *
  * @public
  */
@@ -115,14 +115,14 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {ReadonlySudokuNumsCheckingSet.bitStore}
+     * @see ReadonlySudokuNumsCheckingSet.bitStore
      */
     get bitStore() {
         return this._bitStore;
     }
 
     /**
-     * @see {ReadonlySudokuNumsCheckingSet.hasAll}
+     * @see ReadonlySudokuNumsCheckingSet.hasAll
      */
     hasAll(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -154,14 +154,14 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.doesNotHave}
+     * @see ReadonlyNumsCheckingSet.doesNotHave
      */
     doesNotHave(val: number) {
         return (this._bitStore & (1 << val)) === 0;
     }
 
     /**
-     * @see {ReadonlySudokuNumsCheckingSet.doesNotHaveAny}
+     * @see ReadonlySudokuNumsCheckingSet.doesNotHaveAny
      */
     doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -195,7 +195,7 @@ export class SudokuNumsCheckingSet implements
     );
 
     /**
-     * @see {ReadonlySudokuNumsCheckingSet.remaining}
+     * @see ReadonlySudokuNumsCheckingSet.remaining
      */
     get remaining(): SudokuNumsCheckingSet {
         //
@@ -215,7 +215,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.add}
+     * @see NumsCheckingSet.add
      */
     add(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -235,7 +235,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {NumsCheckingSet.delete}
+     * @see NumsCheckingSet.delete
      */
     delete(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -256,14 +256,14 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see {ReadonlyNumsCheckingSet.equals}
+     * @see ReadonlyNumsCheckingSet.equals
      */
     equals(val: ReadonlySudokuNumsCheckingSet) {
         return this._bitStore === val.bitStore;
     }
 
     /**
-     * @see {NumsCheckingSet.clone}
+     * @see NumsCheckingSet.clone
      */
     clone() {
         return new SudokuNumsCheckingSet(this._bitStore);
