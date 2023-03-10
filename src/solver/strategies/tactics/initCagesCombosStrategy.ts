@@ -1,7 +1,7 @@
 import { HouseModelCagesCombinatorics } from '../../math';
 import { Strategy } from '../strategy';
 
-export class InitPermsForCagesStrategy extends Strategy {
+export class InitCagesCombosStrategy extends Strategy {
 
     execute() {
         this._model.houseModels.forEach(houseM => {

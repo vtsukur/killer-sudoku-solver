@@ -5,7 +5,7 @@ import { FindComplementingCagesStrategy } from './tactics/findComplementingCages
 import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
 import { FindProtrusiveCagesStrategy } from './tactics/findProtrusiveCagesStrategy';
 import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
-import { InitPermsForCagesStrategy } from './tactics/initPermsForCagesStrategy';
+import { InitCagesCombosStrategy } from './tactics/initCagesCombosStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
@@ -17,7 +17,7 @@ export class MasterStrategy extends Strategy {
         if (!this._context.skipInit) {
             this.executeAnother(FindProtrusiveCagesStrategy);
             this.executeAnother(FindComplementingCagesStrategy);
-            this.executeAnother(InitPermsForCagesStrategy);
+            this.executeAnother(InitCagesCombosStrategy);
         }
 
         do {
