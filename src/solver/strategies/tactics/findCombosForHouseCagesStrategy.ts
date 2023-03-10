@@ -104,12 +104,12 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
 export class FindCombosForHouseCagesStrategy extends Strategy {
 
     execute() {
-        this._model.houseModels.forEach(houseM => {
-            const sumCombos = HouseModelCagesCombinatorics.for(houseM).actualSumCombosOfAllCages;
-            houseM.cageModels.forEach((cageModel, index) => {
-                cageModel.updateCombinations(sumCombos[index]);
+        for (const houseM of this._model.houseModels) {
+            const { actualSumCombosOfAllCages: actualSumCombos } = HouseModelCagesCombinatorics.for(houseM);
+            houseM.cageModels.forEach((cageM, index) => {
+                cageM.updateCombinations(actualSumCombos[index]);
             });
-        });
+        }
 
         this._context.setCageModelsToReduceToAll();
     }
