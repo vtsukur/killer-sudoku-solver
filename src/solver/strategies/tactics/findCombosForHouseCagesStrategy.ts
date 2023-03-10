@@ -101,7 +101,7 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  *
  * @public
  */
-export class InitCagesCombosStrategy extends Strategy {
+export class FindCombosForHouseCagesStrategy extends Strategy {
 
     execute() {
         this._model.houseModels.forEach(houseM => {

@@ -594,13 +594,13 @@
         },
 
         {
-            "name": "npm run test [solver/strategies/tactics/initCagesCombosStrategy]",
+            "name": "npm run test [solver/strategies/tactics/findCombosForHouseCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/strategies/tactics/initCagesCombosStrategy.test.ts"
+                "tests/unit/solver/strategies/tactics/findCombosForHouseCagesStrategy.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

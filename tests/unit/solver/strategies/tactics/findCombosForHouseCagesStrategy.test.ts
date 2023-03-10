@@ -5,11 +5,11 @@ import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { MasterModel } from '../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../src/solver/strategies/context';
 import { FindComplementingCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementingCagesStrategy';
-import { InitCagesCombosStrategy } from '../../../../../src/solver/strategies/tactics/initCagesCombosStrategy';
+import { FindCombosForHouseCagesStrategy } from '../../../../../src/solver/strategies/tactics/findCombosForHouseCagesStrategy';
 import { puzzleSamples } from '../../../puzzle/puzzleSamples';
 import { newContext } from './contextBuilder';
 
-describe('Unit tests for `InitCagesCombosStrategy`', () => {
+describe('Unit tests for `FindCombosForHouseCagesStrategy`', () => {
 
     let context: Context;
     let model: MasterModel;
@@ -23,7 +23,7 @@ describe('Unit tests for `InitCagesCombosStrategy`', () => {
 
     test('Applying `Strategy` for Daily Challenge (2022-11-01) by Sudoku.com', () => {
         // When:
-        new InitCagesCombosStrategy(context).execute();
+        new FindCombosForHouseCagesStrategy(context).execute();
 
         // Then (selective assertion):
 
