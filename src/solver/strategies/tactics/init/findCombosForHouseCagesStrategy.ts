@@ -107,17 +107,6 @@ export class FindCombosForHouseCagesStrategy extends Strategy {
      * @see Strategy.execute
      */
     execute() {
-        this.doExecute();
-        this._context.setCageModelsToReduceToAll();
-    }
-
-    /**
-     * Executes key processing work by iterating over all {@link HouseModel}s,
-     * enumerating possible numbers within {@link Cage}s
-     * which belong to each {@link HouseModel}'s {@link House}
-     * and updating {@link Combo}s for these {@link Cages}.
-     */
-    private doExecute() {
         // For each `HouseModel` ...
         for (const houseM of this._model.houseModels) {
             //

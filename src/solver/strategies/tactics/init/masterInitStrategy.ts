@@ -6,6 +6,7 @@ import { Strategy } from '../../strategy';
 import { FindCombosForHouseCagesStrategy } from './findCombosForHouseCagesStrategy';
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
+import { InstructToReduceAllCagesStrategy } from './instructToReduceAllCagesStrategy';
 
 /**
  * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
@@ -19,6 +20,7 @@ import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
  * @see FindProtrusiveCagesStrategy
  * @see FindComplementingCagesStrategy
  * @see FindCombosForHouseCagesStrategy
+ * @see InstructToReduceAllCagesStrategy
  */
 export class MasterInitStrategy extends Strategy {
 
@@ -30,6 +32,7 @@ export class MasterInitStrategy extends Strategy {
             this.executeAnother(FindProtrusiveCagesStrategy);
             this.executeAnother(FindComplementingCagesStrategy);
             this.executeAnother(FindCombosForHouseCagesStrategy);
+            this.executeAnother(InstructToReduceAllCagesStrategy);
         }
     }
 
