@@ -1,24 +1,24 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cage } from '../../../puzzle/cage';
+import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cell } from '../../../puzzle/cell';
+import { Cell } from '../../../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Column } from '../../../puzzle/column';
+import { Column } from '../../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Grid } from '../../../puzzle/grid';
+import { Grid } from '../../../../puzzle/grid';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { House, HouseIndex } from '../../../puzzle/house';
+import { House, HouseIndex } from '../../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Nonet } from '../../../puzzle/nonet';
+import { Nonet } from '../../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Puzzle } from '../../../puzzle/puzzle';
+import { Puzzle } from '../../../../puzzle/puzzle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Row } from '../../../puzzle/row';
+import { Row } from '../../../../puzzle/row';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Combo, HouseModelCagesCombinatorics } from '../../math';
+import { Combo, HouseModelCagesCombinatorics } from '../../../math';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HouseModel } from '../../models/elements/houseModel';
-import { Strategy } from '../strategy';
+import { HouseModel } from '../../../models/elements/houseModel';
+import { Strategy } from '../../strategy';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
 

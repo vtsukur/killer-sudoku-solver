@@ -1,9 +1,9 @@
-import { Cage } from '../../../../../src/puzzle/cage';
-import { House } from '../../../../../src/puzzle/house';
-import { MasterModel } from '../../../../../src/solver/models/masterModel';
-import { Context } from '../../../../../src/solver/strategies/context';
-import { FindComplementingCagesStrategy } from '../../../../../src/solver/strategies/tactics/findComplementingCagesStrategy';
-import { puzzleSamples } from '../../../puzzle/puzzleSamples';
+import { Cage } from '../../../../../../src/puzzle/cage';
+import { House } from '../../../../../../src/puzzle/house';
+import { MasterModel } from '../../../../../../src/solver/models/masterModel';
+import { Context } from '../../../../../../src/solver/strategies/context';
+import { FindComplementingCagesStrategy } from '../../../../../../src/solver/strategies/tactics/init/findComplementingCagesStrategy';
+import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
 import { newContext } from './contextBuilder';
 
 describe('Unit tests for `FindComplementingCagesStrategy`', () => {

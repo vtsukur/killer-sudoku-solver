@@ -1,11 +1,11 @@
 import { Strategy } from './strategy';
 import { DeepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
-import { FindComplementingCagesStrategy } from './tactics/findComplementingCagesStrategy';
+import { FindComplementingCagesStrategy } from './tactics/init/findComplementingCagesStrategy';
 import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
-import { FindProtrusiveCagesStrategy } from './tactics/findProtrusiveCagesStrategy';
+import { FindProtrusiveCagesStrategy } from './tactics/init/findProtrusiveCagesStrategy';
 import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
-import { FindCombosForHouseCagesStrategy } from './tactics/findCombosForHouseCagesStrategy';
+import { FindCombosForHouseCagesStrategy } from './tactics/init/findCombosForHouseCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';

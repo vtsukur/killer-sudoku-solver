@@ -1,19 +1,19 @@
-import { Cage } from '../../../puzzle/cage';
+import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cell, CellsMatrix, ReadonlyCells } from '../../../puzzle/cell';
-import { Column } from '../../../puzzle/column';
-import { House, HouseIndex } from '../../../puzzle/house';
-import { Nonet } from '../../../puzzle/nonet';
-import { Row } from '../../../puzzle/row';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../math';
-import { CageModel } from '../../models/elements/cageModel';
-import { GridAreaModel } from '../../models/elements/gridAreaModel';
-import { HouseModel } from '../../models/elements/houseModel';
-import { MasterModel, MasterModelEvents, CageRegisteredEventHandler, CageUnregisteredEventHandler } from '../../models/masterModel';
-import { CageSlicer } from '../../transform/cageSlicer';
-import { Context } from '../context';
-import { Strategy } from '../strategy';
-import { ReduceCageNumOptsBySolvedCellsStrategy } from './reduceCageNumOptsBySolvedCellsStrategy';
+import { Cell, CellsMatrix, ReadonlyCells } from '../../../../puzzle/cell';
+import { Column } from '../../../../puzzle/column';
+import { House, HouseIndex } from '../../../../puzzle/house';
+import { Nonet } from '../../../../puzzle/nonet';
+import { Row } from '../../../../puzzle/row';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../math';
+import { CageModel } from '../../../models/elements/cageModel';
+import { GridAreaModel } from '../../../models/elements/gridAreaModel';
+import { HouseModel } from '../../../models/elements/houseModel';
+import { MasterModel, MasterModelEvents, CageRegisteredEventHandler, CageUnregisteredEventHandler } from '../../../models/masterModel';
+import { CageSlicer } from '../../../transform/cageSlicer';
+import { Context } from '../../context';
+import { Strategy } from '../../strategy';
+import { ReduceCageNumOptsBySolvedCellsStrategy } from '../reduceCageNumOptsBySolvedCellsStrategy';
 
 /**
  * Configuration options for {@link FindComplementingCagesStrategy}.

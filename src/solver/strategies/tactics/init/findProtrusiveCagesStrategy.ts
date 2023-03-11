@@ -1,24 +1,24 @@
-import { Cage } from '../../../puzzle/cage';
+import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cell } from '../../../puzzle/cell';
+import { Cell } from '../../../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Column } from '../../../puzzle/column';
+import { Column } from '../../../../puzzle/column';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Grid } from '../../../puzzle/grid';
-import { House, HouseIndex } from '../../../puzzle/house';
+import { Grid } from '../../../../puzzle/grid';
+import { House, HouseIndex } from '../../../../puzzle/house';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Nonet } from '../../../puzzle/nonet';
+import { Nonet } from '../../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Puzzle } from '../../../puzzle/puzzle';
+import { Puzzle } from '../../../../puzzle/puzzle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Row } from '../../../puzzle/row';
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
+import { Row } from '../../../../puzzle/row';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../models/masterModel';
-import { CageSlicer } from '../../transform/cageSlicer';
-import { Context } from '../context';
-import { Strategy } from '../strategy';
+import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';
+import { CageSlicer } from '../../../transform/cageSlicer';
+import { Context } from '../../context';
+import { Strategy } from '../../strategy';
 
 /**
  * Configuration options for {@link FindProtrusiveCagesStrategy}.

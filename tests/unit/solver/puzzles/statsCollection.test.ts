@@ -1,5 +1,5 @@
 import { Solver } from '../../../../src/solver/solver';
-import { FindComplementingCagesStrategy } from '../../../../src/solver/strategies/tactics/findComplementingCagesStrategy';
+import { FindComplementingCagesStrategy } from '../../../../src/solver/strategies/tactics/init/findComplementingCagesStrategy';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Stats collection', () => {

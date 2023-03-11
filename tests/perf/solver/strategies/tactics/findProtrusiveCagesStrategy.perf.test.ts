@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import { FindProtrusiveCagesStrategy } from '../../../../../src/solver/strategies/tactics/findProtrusiveCagesStrategy';
+import { FindProtrusiveCagesStrategy } from '../../../../../src/solver/strategies/tactics/init/findProtrusiveCagesStrategy';
 import { puzzleSamples } from '../../../../unit/puzzle/puzzleSamples';
-import { newContext } from '../../../../unit/solver/strategies/tactics/contextBuilder';
+import { newContext } from '../../../../unit/solver/strategies/tactics/init/contextBuilder';
 
 describe('Performance tests for `FindProtrusiveCagesStrategy`', () => {
 
