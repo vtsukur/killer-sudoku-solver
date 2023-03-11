@@ -16,6 +16,8 @@ describe('Unit tests for `FindCombosForHouseCagesStrategy`', () => {
     beforeEach(() => {
         context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
         model = context.model;
+
+        // Running this `Strategy` is a prerequisite for `FindCombosForHouseCagesStrategy`.
         new FindComplementingCagesStrategy(context).execute();
     });
 
