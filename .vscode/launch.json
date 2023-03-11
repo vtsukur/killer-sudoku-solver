@@ -594,7 +594,7 @@
         },
 
         {
-            "name": "npm run test [solver/strategies/tactics/init/findCombosForHouseCagesStrategy]",
+            "name": "npm run test [solver/strategies/../findCombosForHouseCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -613,7 +613,7 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/init/findComplementingCagesStrategy]",
+            "name": "npm run test [solver/strategies/../findComplementingCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
@@ -632,13 +632,32 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/tactics/init/findProtrusiveCagesStrategy]",
+            "name": "npm run test [solver/strategies/../findProtrusiveCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/strategies/tactics/init/findProtrusiveCagesStrategy.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverInitStrategies"
+            }
+        },
+        {
+            "name": "npm run test [solver/strategies/../masterInitStrategy]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/tactics/init/masterInitStrategy.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
