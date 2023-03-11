@@ -671,6 +671,26 @@
         },
 
         {
+            "name": "npm run test [solver/strategies/../instructToReduceAllCagesStrategy]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/tactics/instructToReduceAllCagesStrategy.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverLoopStrategies"
+            }
+        },
+
+        {
             "name": "npm run test [recognizer]",
             "request": "launch",
             "runtimeArgs": [
