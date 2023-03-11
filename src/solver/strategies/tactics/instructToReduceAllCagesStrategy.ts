@@ -1,3 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cage } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Puzzle } from '../../../puzzle/puzzle';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { MasterModel } from '../../models/masterModel';
 import { Strategy } from '../strategy';
 
 /**
