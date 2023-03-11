@@ -1,10 +1,9 @@
 import { Cage } from '../../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../../src/puzzle/cell';
-import { CageModel } from '../../../../../../src/solver/models/elements/cageModel';
 import { MasterModel } from '../../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../../src/solver/strategies/context';
 import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
-import { newContext } from './contextBuilder';
+import { newCageM, newContext } from './builders';
 import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init/masterInitStrategy';
 import { Combo } from '../../../../../../src/solver/math';
 
@@ -48,7 +47,7 @@ describe('Unit tests for `MasterInitStrategy`', () => {
     });
 
     const cageM = (sum: number, cells: ReadonlyArray<Cell>) => {
-        return model.cageModelsMap.get(Cage.ofSum(sum).withCells(cells).new().key) as CageModel;
+        return newCageM(model, sum, cells);
     };
 
 });

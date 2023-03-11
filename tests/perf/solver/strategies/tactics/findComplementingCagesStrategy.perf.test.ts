@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { FindComplementingCagesStrategy } from '../../../../../src/solver/strategies/tactics/init/findComplementingCagesStrategy';
 import { puzzleSamples } from '../../../../unit/puzzle/puzzleSamples';
-import { newContext } from '../../../../unit/solver/strategies/tactics/init/contextBuilder';
+import { newContext } from '../../../../unit/solver/strategies/tactics/init/builders';
 
 describe('Performance tests for `FindComplementingCagesStrategy`', () => {
 

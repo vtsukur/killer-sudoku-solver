@@ -4,7 +4,7 @@ import { MasterModel } from '../../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../../src/solver/strategies/context';
 import { FindComplementingCagesStrategy } from '../../../../../../src/solver/strategies/tactics/init/findComplementingCagesStrategy';
 import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
-import { newContext } from './contextBuilder';
+import { newContext } from './builders';
 
 describe('Unit tests for `FindComplementingCagesStrategy`', () => {
 

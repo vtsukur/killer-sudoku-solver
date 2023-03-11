@@ -3,7 +3,7 @@ import { MasterModel } from '../../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../../src/solver/strategies/context';
 import { FindProtrusiveCagesStrategy } from '../../../../../../src/solver/strategies/tactics/init/findProtrusiveCagesStrategy';
 import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
-import { newContext } from './contextBuilder';
+import { newContext } from './builders';
 
 describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
 
