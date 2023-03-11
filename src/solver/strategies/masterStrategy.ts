@@ -1,24 +1,18 @@
 import { Strategy } from './strategy';
 import { DeepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
 import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
-import { FindComplementingCagesStrategy } from './tactics/init/findComplementingCagesStrategy';
 import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
-import { FindProtrusiveCagesStrategy } from './tactics/init/findProtrusiveCagesStrategy';
 import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
-import { FindCombosForHouseCagesStrategy } from './tactics/init/findCombosForHouseCagesStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
 import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
 import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
 import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
+import { MasterInitStrategy } from './tactics/init/masterInitStrategy';
 
 export class MasterStrategy extends Strategy {
 
     execute() {
-        if (!this._context.skipInit) {
-            this.executeAnother(FindProtrusiveCagesStrategy);
-            this.executeAnother(FindComplementingCagesStrategy);
-            this.executeAnother(FindCombosForHouseCagesStrategy);
-        }
+        this.executeAnother(MasterInitStrategy);
 
         do {
             this.executeAnother(ReducePermsInCagesStrategy);
