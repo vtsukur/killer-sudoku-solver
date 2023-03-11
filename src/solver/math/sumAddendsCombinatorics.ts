@@ -85,8 +85,6 @@ export class SumAddendsCombinatorics {
      * If there are no combinations found, empty array is returned.
      *
      * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
-     *
-     * @public
      */
     static enumerate(sum: number, addendCount: number): SumAddendsCombinatorics {
         validate(sum, addendCount);

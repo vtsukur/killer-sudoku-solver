@@ -12,9 +12,9 @@ export type HouseIndex = number | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
  * which holds useful constants that describe mathematical properties of any `House`
  * as well as utility methods that simplify iteration over `House` {@link Cell}s.
  *
- * @public
- *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
+ *
+ * @public
  */
 export class House {
 

@@ -6,7 +6,7 @@ import { Strategy } from '../../strategy';
 import { FindCombosForHouseCagesStrategy } from './findCombosForHouseCagesStrategy';
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
-import { InstructToReduceAllCagesStrategy } from './instructToReduceAllCagesStrategy';
+import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStrategy';
 
 /**
  * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
@@ -15,12 +15,12 @@ import { InstructToReduceAllCagesStrategy } from './instructToReduceAllCagesStra
  *
  * No {@link Strategy}-ies are executed if {@link Context.skipInit} is set to `true`.
  *
- * @public
- *
  * @see FindProtrusiveCagesStrategy
  * @see FindComplementingCagesStrategy
  * @see FindCombosForHouseCagesStrategy
  * @see InstructToReduceAllCagesStrategy
+ *
+ * @public
  */
 export class MasterInitStrategy extends Strategy {
 

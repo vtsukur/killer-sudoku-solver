@@ -19,9 +19,9 @@ import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
  *
  * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the `Cell`s' numbers.
  *
- * @public
- *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
+ *
+ * @public
  */
 export class Cage {
 

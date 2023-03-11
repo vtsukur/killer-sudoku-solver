@@ -4,9 +4,9 @@ import { Cell, CellsMatrix } from './cell';
  * Supportive class for Killer Sudoku `Row`
  * which holds utility method that simplifies iteration over `Row` {@link Cell}s.
  *
- * @public
- *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
+ *
+ * @public
  */
 export class Row {
 

@@ -5,9 +5,9 @@ import { Grid } from './grid';
  * Supportive class for Killer Sudoku `Nonet` (also called a `Box`)
  * which holds utility method that simplifies iteration over `Nonet` {@link Cell}s.
  *
- * @public
- *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
+ *
+ * @public
  */
 export class Nonet {
 
