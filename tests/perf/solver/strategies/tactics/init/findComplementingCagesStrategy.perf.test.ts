@@ -6,15 +6,17 @@ import { newContext } from '../../../../../unit/solver/strategies/tactics/init/b
 describe('Performance tests for `FindComplementingCagesStrategy`', () => {
 
     const TESTS_COUNT = 10;
-    const ITERATION_COUNT = 500;
+    const ITERATIONS = _.range(500);
 
     _.range(TESTS_COUNT).forEach(i => {
+
         test(`Applying \`Strategy\` within Daily Challenge (2022-10-22) by Sudoku.com [${i}]`, () => {
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
                 new FindComplementingCagesStrategy(context).execute();
             });
         });
+
     });
 
 });

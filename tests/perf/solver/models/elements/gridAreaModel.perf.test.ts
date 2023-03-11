@@ -4,10 +4,12 @@ import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAre
 import { expectGridAreaModel } from '../../../../unit/solver/models/elements/gridAreaModel.test';
 
 describe('Performance tests for `GridAreaModel`', () => {
+
     const TESTS_COUNT = 10;
-    const ITERATION_COUNT = 10000;
+    const ITERATIONS = _.range(10000);
 
     _.range(TESTS_COUNT).forEach(i => {
+
         test(`Sudoku.com 2022-10-19: 4 derived \`Cage\`s and 2 with obvious overlap [${i + 1}]`, () => {
             const cages = [
                 Cage.ofSum(9).at(7, 8).at(8, 8).new(),
@@ -31,7 +33,7 @@ describe('Performance tests for `GridAreaModel`', () => {
                 ]
             );
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 GridAreaModel.from(cages);
             });
         });
@@ -77,7 +79,7 @@ describe('Performance tests for `GridAreaModel`', () => {
                 ]
             );
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 GridAreaModel.from(cages, 4);
             });
         });
@@ -134,7 +136,7 @@ describe('Performance tests for `GridAreaModel`', () => {
                 ]
             );
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 GridAreaModel.from(cages, 4);
             });
         });
@@ -174,9 +176,11 @@ describe('Performance tests for `GridAreaModel`', () => {
                 ]
             );
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 GridAreaModel.from(cages, 6);
             });
         });
+
     });
+
 });

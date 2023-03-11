@@ -5,12 +5,14 @@ import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/ma
 import { GridAreaModel } from '../../../../src/solver/models/elements/gridAreaModel';
 
 describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => {
+
     const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
 
     const TESTS_COUNT = 10;
-    const ITERATION_COUNT = 50000;
+    const ITERATIONS = _.range(50000);
 
     _.range(TESTS_COUNT).forEach(i => {
+
         test(`Enumerating \`Combo\`s and \`Perm\`s [${i + 1}]`, () => {
             const model = GridAreaModel.from([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
@@ -34,9 +36,11 @@ describe('Performance tests for `NonOverlappingHouseCagesCombinatorics`', () => 
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ]);
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 enumerate(model);
             });
         });
+
     });
+
 });

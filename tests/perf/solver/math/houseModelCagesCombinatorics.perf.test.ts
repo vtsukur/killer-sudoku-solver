@@ -3,11 +3,13 @@ import { Cage } from '../../../../src/puzzle/cage';
 import { Combo, HouseModelCagesCombinatorics } from '../../../../src/solver/math';
 import { newHouseModel } from '../../../unit/solver/math/houseModelCagesCombinatorics.test';
 
-describe('Performance tests for the finder of sum number combinations and sum permutations to form a HouseModel out of Cages', () => {
+describe('Performance tests for `HouseModelCagesCombinatorics`', () => {
+
     const TESTS_COUNT = 10;
-    const ITERATION_COUNT = 50000;
+    const ITERATIONS = _.range(50000);
 
     _.range(TESTS_COUNT).forEach(i => {
+
         test(`Cages in descending order of combination count [${i}]`, () => {
             const houseM = newHouseModel([
                 Cage.ofSum(14).at(2, 0).at(2, 1).at(2, 2).new(),
@@ -31,7 +33,7 @@ describe('Performance tests for the finder of sum number combinations and sum pe
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ]);
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 HouseModelCagesCombinatorics.for(houseM);
             });
         });
@@ -59,9 +61,11 @@ describe('Performance tests for the finder of sum number combinations and sum pe
                 [ Combo.of(4, 6), Combo.of(3, 7), Combo.of(2, 9), Combo.of(1, 5, 8) ]
             ]);
 
-            _.range(ITERATION_COUNT).forEach(() => {
+            ITERATIONS.forEach(() => {
                 HouseModelCagesCombinatorics.for(houseM);
             });
         });
+
     });
+
 });

@@ -3,13 +3,14 @@ import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
 
 describe('Performance tests for Solver', () => {
+
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();
-    const ITERATION_COUNT = 10;
+    const ITERATIONS = _.range(10);
 
     test('Find solution Sudoku.com puzzles', () => {
-        _.range(ITERATION_COUNT).forEach(() => {
+        ITERATIONS.forEach(() => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
@@ -24,11 +25,12 @@ describe('Performance tests for Solver', () => {
     });
 
     test('Find solution DailyKillerSudoku.com puzzles', () => {
-        _.range(ITERATION_COUNT).forEach(() => {
+        ITERATIONS.forEach(() => {
             solver.solve(dailyKillerSudokuDotCom.puzzle24789_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24889_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24914_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24919_difficulty10);
         });
     });
+
 });
