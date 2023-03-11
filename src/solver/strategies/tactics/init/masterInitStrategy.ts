@@ -5,6 +5,7 @@ import { Context } from '../../context';
 import { Strategy } from '../../strategy';
 import { FindCombosForHouseCagesStrategy } from './findCombosForHouseCagesStrategy';
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
 import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStrategy';
 
@@ -29,7 +30,13 @@ export class MasterInitStrategy extends Strategy {
      */
     execute() {
         if (!this._context.skipInit) {
-            this.executeAnother(FindProtrusiveCagesStrategy);
+            //
+            // [perf] Empirical test runs have shown that applying `FindProtrusiveCagesStrategy`
+            // slows down overall solving by up to 20%,
+            // so it is NOT being applied.
+            //
+            // this.executeAnother(FindProtrusiveCagesStrategy);
+
             this.executeAnother(FindComplementingCagesStrategy);
             this.executeAnother(FindCombosForHouseCagesStrategy);
             this.executeAnother(InstructToReduceAllCagesStrategy);
