@@ -127,8 +127,8 @@ export class FindCombosForHouseCagesStrategy extends Strategy {
             const { actualSumCombosOfAllCages: actualSumCombos } = HouseModelCagesCombinatorics.for(houseM);
 
             // ... Updating `Combo`s for each `Cage` in the `HouseModel`s `House`.
-            houseM.cageModels.forEach((cageM, nonet: HouseIndex) => {
-                cageM.updateCombinations(actualSumCombos[nonet]);
+            houseM.cageModels.forEach((cageM, index) => {
+                cageM.updateCombinations(actualSumCombos[index]);
             });
         }
     }
