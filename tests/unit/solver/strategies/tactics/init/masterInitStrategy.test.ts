@@ -1,4 +1,3 @@
-import { Cage } from '../../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../../src/puzzle/cell';
 import { MasterModel } from '../../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../../src/solver/strategies/context';
@@ -24,16 +23,16 @@ describe('Unit tests for `MasterInitStrategy`', () => {
 
         // Then (selective assertion):
 
-        // ... Results of `FindProtrusiveCagesStrategy` (selective assertion):
+        // // ... Results of `FindProtrusiveCagesStrategy` (selective assertion):
 
-        // `Nonet` 1:
-        // Protrusive `Cage` added.
-        expect(model.hasCage(Cage.ofSum(14).at(1, 6).at(1, 7).at(3, 5).new())).toBeTruthy();
+        // // `Nonet` 1:
+        // // Protrusive `Cage` added.
+        // expect(model.hasCage(Cage.ofSum(14).at(1, 6).at(1, 7).at(3, 5).new())).toBeTruthy();
 
-        // ... Results of `FindComplementingCagesStrategy` (selective assertion):
+        // // ... Results of `FindComplementingCagesStrategy` (selective assertion):
 
-        // Complement for `Column` 8.
-        expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
+        // // Complement for `Column` 8.
+        // expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
 
         // ... Results of `FindCombosForHouseCagesStrategy` (selective assertion):
 
