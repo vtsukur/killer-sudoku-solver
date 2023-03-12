@@ -221,7 +221,7 @@ type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
  * as opposed to an iteration over all {@link CageModel}s
  * present within the {@link MasterModel}.
  */
-class CageModelsIndex {
+class IndexedCageModelsStorage {
 
     private readonly _model: MasterModel;
 
@@ -400,7 +400,7 @@ export class FindComplementingCagesStrategy extends Strategy {
      * @see Strategy.execute
      */
     execute() {
-        const cageMsIndex = new CageModelsIndex(this._model);
+        const cageMsStorage = new IndexedCageModelsStorage(this._model);
         try {
             //
             // Adding event handlers to listen to `Cage` registration and deregistration
@@ -408,19 +408,19 @@ export class FindComplementingCagesStrategy extends Strategy {
             // This is necessary because slicing results in the addition and deletion of `Cage`s
             // which this class is tracking.
             //
-            cageMsIndex.attachEventHandlers();
+            cageMsStorage.attachEventHandlers();
 
             // Running core work.
-            this.doExecute(cageMsIndex);
+            this.doExecute(cageMsStorage);
         } finally {
             // Cleaning up event handlers to avoid a broken state even if an error throws.
-            cageMsIndex.deattachEventHandlers();
+            cageMsStorage.deattachEventHandlers();
         }
     }
 
-    private doExecute(cageMsIndex: CageModelsIndex) {
-        this._rowAreasProcessor.execute(cageMsIndex);
-        this._columnAreasProcessor.execute(cageMsIndex);
+    private doExecute(cageMsStorage: IndexedCageModelsStorage) {
+        this._rowAreasProcessor.execute(cageMsStorage);
+        this._columnAreasProcessor.execute(cageMsStorage);
         this._nonetAreasProcessor.execute();
     }
 
@@ -646,12 +646,12 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     /**
      * Executes key processing work if configuration allows to do so.
      *
-     * @param cageMsIndex - Stores actual {@link CageModel}s
+     * @param cageMsStorage - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
-    execute(cageMsIndex: CageModelsIndex) {
+    execute(cageMsStorage: IndexedCageModelsStorage) {
         if (this._isEnabled) {
-            this.doExecute(cageMsIndex);
+            this.doExecute(cageMsStorage);
         }
     }
 
@@ -660,10 +660,10 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
-     * @param cageMsIndex - Stores actual {@link CageModel}s
+     * @param cageMsStorage - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
-    abstract doExecute(cageMsIndex: CageModelsIndex): void;
+    abstract doExecute(cageMsStorage: IndexedCageModelsStorage): void;
 
     /**
      * Searches for _complementing_ {@link Cage}s within
@@ -743,7 +743,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * Checks whether given {@link CageModel}'s {@link Cage} resides within the adjacent {@link House} area.
      *
      * This method checks only the upper bound coordinate of the {@link CageModel}'s {@link Cage}:
-     * lower bound is supposed to be taken into account already with the help of {@link CageModelsIndex}.
+     * lower bound is supposed to be taken into account already with the help of {@link IndexedCageModelsStorage}.
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
@@ -778,10 +778,10 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
         this._rowModels = this._model.rowModels;
     }
 
-    doExecute(cageMsIndex: CageModelsIndex): void {
+    doExecute(cageMsStorage: IndexedCageModelsStorage): void {
         this.applyToIndividualHouses(RowAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
-            cageMsIndex.rowIndexedCages,
+            cageMsStorage.rowIndexedCages,
             RowAreasProcessor._CELLS_INDICES,
             this._minAdjacentCount,
             this._maxAdjacentCount
@@ -819,10 +819,10 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
         this._columnModels = this._model.columnModels;
     }
 
-    doExecute(cageMsIndex: CageModelsIndex): void {
+    doExecute(cageMsStorage: IndexedCageModelsStorage): void {
         this.applyToIndividualHouses(ColumnAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
-            cageMsIndex.columnIndexedCages,
+            cageMsStorage.columnIndexedCages,
             ColumnAreasProcessor._CELLS_INDICES,
             this._minAdjacentCount,
             this._maxAdjacentCount
