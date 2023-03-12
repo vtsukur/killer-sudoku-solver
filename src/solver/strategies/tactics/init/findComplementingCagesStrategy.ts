@@ -642,7 +642,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     }
 
     /**
-     * Executes key processing work if configuration allows to do so.
+     * Executes core processing work if configuration permits.
      *
      * @param cageMsStorage - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
@@ -654,9 +654,10 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     }
 
     /**
-     * Executes key processing work.
+     * Executes core processing work.
      *
-     * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
+     * Sub-classes should implement this method
+     * to define specifics for particular {@link House} types.
      *
      * @param cageMsStorage - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
@@ -684,8 +685,6 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
-     * This data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
      * @param minAdjacentAreas - See {@link Config.minAdjacentRowsAndColumnsAreas}.
      * @param maxAdjacentAreas - See {@link Config.maxAdjacentRowsAndColumnsAreas}.
      */
