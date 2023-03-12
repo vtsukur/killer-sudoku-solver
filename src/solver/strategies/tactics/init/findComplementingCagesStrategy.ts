@@ -435,7 +435,7 @@ type ProcessorContext = {
 }
 
 /**
- * Type alias for the array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
+ * Type alias for the read-only array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
  *
  * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
  */
@@ -443,11 +443,11 @@ type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 
 /**
  * Abstract processor for {@link House} areas
- * which defines key work of the overall {@link FindComplementingCagesStrategy}.
+ * which defines the critical work of the overall {@link FindComplementingCagesStrategy}.
  *
  * This class is agnostic to a particular {@link House} type it operates with.
  *
- * This class is designed to be extended with processing logic for specific {@link House} type.
+ * Subclasses should extend this class with processing logic for specific {@link House} types.
  */
 abstract class HouseAreasProcessor {
 
