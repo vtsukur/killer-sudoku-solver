@@ -215,7 +215,7 @@ type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
  * since {@link Cage}s are registered and unregistered
  * when finding _complementing_ `Cage`s and slicing `Cage`s.
  *
- * The use of this data structure enhances implementation performance
+ * The use of this data structure improves performance
  * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
  * as opposed to an iteration over all {@link CageModel}s present within the {@link MasterModel}.
  */
@@ -488,7 +488,7 @@ abstract class HouseAreasProcessor {
      *
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
     protected applyToIndividualHouses(houseCellsIndices: ReadonlyHouseCellsIndices) {
@@ -512,7 +512,7 @@ abstract class HouseAreasProcessor {
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
@@ -537,7 +537,7 @@ abstract class HouseAreasProcessor {
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
@@ -646,7 +646,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @param tracker - Tracks {@link CageModel}s indexed by
      * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
-     * Use of this data structure enhances implementation performance
+     * Use of this data structure improves performance
      * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
      * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      */
@@ -663,7 +663,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @param tracker - Tracks {@link CageModel}s indexed by
      * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
-     * Use of this data structure enhances implementation performance
+     * Use of this data structure improves performance
      * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
      * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      */
@@ -688,12 +688,12 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @param indexedCageMs - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
      * leftmost {@link Column}.
-     * Use of this data structure enhances implementation performance
+     * Use of this data structure improves performance
      * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
      * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      * @param minAdjacentAreas - See {@link Config.minAdjacentRowsAndColumnsAreas}.
      * @param maxAdjacentAreas - See {@link Config.maxAdjacentRowsAndColumnsAreas}.
@@ -773,7 +773,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Row}s
      * which remain constant between iterations.
      *
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Row.CELLS);
@@ -814,7 +814,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Column}s
      * which remain constant between iterations.
      *
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Column.CELLS);
@@ -855,7 +855,7 @@ class NonetAreasProcessor extends HouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Nonet}s
      * which remain constant between iterations.
      *
-     * Use of this data structure enhances implementation performance and minimizes memory footprint
+     * Use of this data structure improves performance and minimizes memory footprint
      * due to manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.CELLS);
