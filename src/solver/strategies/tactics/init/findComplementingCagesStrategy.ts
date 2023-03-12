@@ -28,10 +28,10 @@ export type Config = {
      * Whether to apply the {@link Strategy} to individual {@link Row}s
      * and adjacent {@link Row} areas.
      *
-     * Size of adjacent {@link Row} areas can be configured by
-     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
+     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}
+     * configure the size of adjacent {@link Row} areas.
      *
-     * Default value is `true`, which means enabling the {@link Strategy}
+     * The default value is `true`, enabling the {@link Strategy}
      * to {@link Row}s and adjacent {@link Row} areas.
      */
     readonly isApplyToRowAreas: boolean;
@@ -40,10 +40,10 @@ export type Config = {
      * Whether to apply the {@link Strategy} to individual {@link Column}s
      * and adjacent {@link Column} areas.
      *
-     * Size of adjacent {@link Column} areas can be configured by
-     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}.
+     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}
+     * configure the size of adjacent {@link Column} areas.
      *
-     * Default value is `true`, which means enabling the {@link Strategy}
+     * The default value is `true`, enabling the {@link Strategy}
      * to {@link Column}s and adjacent {@link Column} areas.
      */
     readonly isApplyToColumnAreas: boolean;
@@ -51,56 +51,56 @@ export type Config = {
     /**
      * Whether to apply the {@link Strategy} to {@link Nonet}s.
      *
-     * Only individual {@link Nonet} are analyzed, *not* adjacent {@link Nonet}s.
+     * Only individual {@link Nonet}s are analyzed, *not* adjacent {@link Nonet}s.
      *
-     * Default value is `true`, which means enabling the {@link Strategy} to {@link Nonet}s.
+     * The default value is `true`, enabling the {@link Strategy} to {@link Nonet}s.
      */
     readonly isApplyToNonetAreas: boolean;
 
     /**
-     * Minimum amount of adjacent {@link Row} and {@link Column} areas
+     * The minimum amount of adjacent {@link Row} and {@link Column} areas
      * to apply the {@link Strategy} to.
      *
-     * Should be in the range of `[1, 8]`.
-     * Upper bound in this range excludes value `9`
-     * since applying it to the whole {@link Grid} will *not* produce any hint.
+     * It should be in the range of `[1, 8]`.
+     * The upper bound in this range excludes value `9`
+     * since applying it to the entire {@link Grid} will *not* produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
-     * is set to `true`.
+     * is `true`.
      *
-     * Default value is `1`, which means enabling the {@link Strategy}
-     * at least to all individual {@link Row}s and {@link Column}s.
+     * The default value is `1`, enabling the {@link Strategy}
+     * to at least all individual {@link Row}s and {@link Column}s.
      */
     readonly minAdjacentRowsAndColumnsAreas: number;
 
     /**
-     * Maximum amount of adjacent {@link Row} and {@link Column} areas
+     * The maximum amount of adjacent {@link Row} and {@link Column} areas
      * to apply the {@link Strategy} to.
      *
-     * Should be in the range of `[1, 8]`.
-     * Upper bound in this range excludes value `9`
-     * since applying it to the whole {@link Grid} will *not* produce any hint.
+     * It should be in the range of `[1, 8]`.
+     * The upper bound in this range excludes value `9`
+     * since applying it to the entire {@link Grid} will *not* produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
-     * is set to `true`.
+     * is `true`.
      *
-     * Default value is `4`, which covers more than 90% of all
+     * The default value is `4`, which covers over 90% of all
      * possible {@link Cage} complements.
      */
     readonly maxAdjacentRowsAndColumnsAreas: number;
 
     /**
-     * Maximum amount of {@link Cell}s in a complementing {@link Cage}
-     * to consider such a {@link Cage} as successful search result.
+     * The maximum amount of {@link Cell}s in a complementing {@link Cage}
+     * to consider such a {@link Cage} as a successful search result.
      *
-     * The smaller the {@link Cage} the more hints it leads to.
+     * The smaller the {@link Cage}, the more hints it generates.
      * As a result, there is a limited sense of finding bigger {@link Cage}s
-     * as it requires more execution power and memory with less amount produced hints
-     * UNLESS determining all possible hints is critical.
+     * as it requires more execution power and memory with fewer produced suggestions
+     * *unless* determining all possible hints is critical.
      *
-     * Should be in the range of `[1, 9]`.
+     * It should be in the range of `[1, 9]`.
      *
-     * Default value is `5`, which covers between 80% and 90% of all
+     * The default value is `5`, which covers between 80% and 90% of all
      * possible {@link Cage} complements.
      */
     readonly maxMeaningfulComplementSize: number;
@@ -108,10 +108,10 @@ export type Config = {
     /**
      * Whether to collect statistics about found complementing {@link Cage}s.
      *
-     * Useful for finding the distribution of cases and understanding real-world usage
-     * so that this {@link Config} can be tweaked further.
+     * It helps find the distribution of cases and understand real-world usage,
+     * enabling further configruing of this {@link Config}.
      *
-     * Default value is `false`, which disables the collection of statistics.
+     * The default value is `false`, which disables the collection of statistics.
      */
     readonly isCollectingStats: boolean;
 
