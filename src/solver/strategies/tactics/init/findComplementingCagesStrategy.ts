@@ -267,8 +267,8 @@ class IndexedCageModelsTracker {
 };
 
 /**
- * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
- * which finds _complementing_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
+ * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
+ * finds _complementing_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
  * _Complementing_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
