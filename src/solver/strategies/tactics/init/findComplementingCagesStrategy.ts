@@ -197,8 +197,8 @@ class Stats {
 }
 
 /**
- * Type alias for the array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
- * leftmost {@link Column}.
+ * Type alias for the array of {@link CageModel} `Set`s
+ * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
  */
 type IndexedHouseCageModels = Array<Set<CageModel>>;
 
@@ -208,16 +208,18 @@ type IndexedHouseCageModels = Array<Set<CageModel>>;
 type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
 
 /**
- * Stores actual {@link CageModel}s indexed by {@link Cage}'s topmost {@link Row} and
- * leftmost {@link Column}.
+ * Stores actual {@link CageModel}s
+ * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
  *
  * {@link MasterModel} event handlers help keep track of actual {@link CageModel}s
  * since {@link Cage}s are registered and unregistered
  * when finding _complementing_ `Cage`s and slicing `Cage`s.
  *
  * This data structure improves performance
- * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
- * as opposed to an iteration over all {@link CageModel}s present within the {@link MasterModel}.
+ * since indexing allows faster enumeration of {@link CageModel}s
+ * by their topmost {@link Row} and leftmost {@link Column}
+ * as opposed to an iteration over all {@link CageModel}s
+ * present within the {@link MasterModel}.
  */
 class IndexedCageModelsTracker {
 
@@ -644,11 +646,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     /**
      * Executes key processing work if configuration allows to do so.
      *
-     * @param tracker - Tracks {@link CageModel}s indexed by
-     * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
-     * This data structure improves performance
-     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
-     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+     * @param tracker - Stores actual {@link CageModel}s
+     * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
     execute(tracker: IndexedCageModelsTracker) {
         if (this._isEnabled) {
@@ -661,11 +660,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
-     * @param tracker - Tracks {@link CageModel}s indexed by
-     * {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
-     * This data structure improves performance
-     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
-     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+     * @param tracker - Stores actual {@link CageModel}s
+     * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
     abstract doExecute(tracker: IndexedCageModelsTracker): void;
 
@@ -686,11 +682,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Designed to be called by sub-classes.
      *
-     * @param indexedCageMs - Array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
-     * leftmost {@link Column}.
-     * This data structure improves performance
-     * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
-     * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+     * @param indexedCageMs - Array of {@link CageModel} `Set`s
+     * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
      * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
      * This data structure improves performance and minimizes memory footprint
