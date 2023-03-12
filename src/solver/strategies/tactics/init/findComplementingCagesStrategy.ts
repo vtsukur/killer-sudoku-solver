@@ -197,15 +197,15 @@ class Stats {
 }
 
 /**
- * Type alias for the read-only version of {@link IndexedHouseCageModels}.
- */
-type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
-
-/**
  * Type alias for the array of {@link CageModel} `Set`s indexed by {@link Cage}'s topmost {@link Row} or
  * leftmost {@link Column}.
  */
 type IndexedHouseCageModels = Array<Set<CageModel>>;
+
+/**
+ * Type alias for the read-only version of {@link IndexedHouseCageModels}.
+ */
+type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
 
 /**
  * Stores actual {@link CageModel}s indexed by {@link Cage}'s topmost {@link Row} and
