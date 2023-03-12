@@ -162,7 +162,7 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
             isApplyToNonetAreas: false,
             minAdjacentRowsAndColumnsAreas: 1,
             maxAdjacentRowsAndColumnsAreas: 1,
-            isCollectStats: true
+            isCollectingStats: true
         }).execute();
 
         // Then:

@@ -113,7 +113,7 @@ export type Config = {
      *
      * Default value is `false`, which disables the collection of statistics.
      */
-    readonly isCollectStats: boolean;
+    readonly isCollectingStats: boolean;
 
 }
 
@@ -129,7 +129,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
     minAdjacentRowsAndColumnsAreas: 1,
     maxAdjacentRowsAndColumnsAreas: 4,
     maxMeaningfulComplementSize: 5,
-    isCollectStats: false
+    isCollectingStats: false
 });
 
 class HouseAreaStats {
@@ -451,7 +451,7 @@ abstract class HouseAreasProcessor {
 
     protected readonly _isEnabled: boolean;
     protected readonly _isEnabledForIndividualHouses: boolean;
-    protected readonly _isCollectStats: boolean;
+    protected readonly _isCollectingStats: boolean;
 
     protected readonly _context: Context;
     protected readonly _model: MasterModel;
@@ -462,7 +462,7 @@ abstract class HouseAreasProcessor {
     constructor(isEnabled: boolean, isEnabledForIndividualHouses: boolean, processorCtx: ProcessorContext) {
         this._isEnabled = isEnabled;
         this._isEnabledForIndividualHouses = isEnabledForIndividualHouses;
-        this._isCollectStats = processorCtx.config.isCollectStats;
+        this._isCollectingStats = processorCtx.config.isCollectingStats;
 
         this._context = processorCtx.context;
         this._model = processorCtx.model;
@@ -580,7 +580,7 @@ abstract class HouseAreasProcessor {
     }
 
     private collectStatsIfNecessary(houseCount: number, complement: Cage) {
-        if (this._isCollectStats) {
+        if (this._isCollectingStats) {
             FindComplementingCagesStrategy.STATS.addFinding(houseCount, complement.cellCount);
         }
     }
