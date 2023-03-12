@@ -342,8 +342,8 @@ class IndexedCageModelsTracker {
  * (8, 3), (8, 4)
  * ```
  *
- * Non-adjacent areas are *not* analyzed because such an analysis will produce no valuable hints
- * given _input_ {@link Cage}s have connected {@link Cell}s.
+ * Non-adjacent areas are *not* analyzed because such an analysis will produce no valuable hints,
+ * given that _input_ {@link Cage}s have connected {@link Cell}s.
  *
  * {@link Nonet}s are analyzed only individually without considering adjacent {@link Nonet} areas.
  *
