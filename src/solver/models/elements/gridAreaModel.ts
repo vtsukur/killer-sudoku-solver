@@ -17,7 +17,7 @@ import { NonOverlappingCagesAreaModel } from './nonOverlappingCagesAreaModel';
  * during staged processing while finding area of _non-overlapping_ {@link Cage}s with maximum size.
  *
  * {@link sum} is computed on every access
- * since many usages of {@link NonOverlappingCagesAreaModel} does NOT need sum at all.
+ * since many usages of {@link NonOverlappingCagesAreaModel} does *not* need sum at all.
  * Lazy initialization of {@link sum} is omitted to avoid code complexity.
  * If the caller needs faster performance it is adviced to store and reuse computed value.
  */
@@ -40,7 +40,7 @@ class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlapping
  * being precomputed externally and passed to constructor.
  *
  * Designed for the external use for maximum performance
- * as all values are referenced and NOT computed multiple times.
+ * as all values are referenced and *not* computed multiple times.
  */
 class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOverlappingCagesAreaModel {
 
@@ -82,7 +82,7 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
 export interface GridAreaModel {
 
     /**
-     * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
+     * Area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s.
      */
     readonly nonOverlappingCagesAreaModel: NonOverlappingCagesAreaModel;
 
@@ -97,7 +97,7 @@ export interface GridAreaModel {
 /**
  * Area on the {@link Grid} defined by a group of {@link Cage}s
  * which can be built by static factory method {@link from} producing
- * maximized area of {@link Cage}s which do NOT have shared {@link Cell}s.
+ * maximized area of {@link Cage}s which do *not* have shared {@link Cell}s.
  *
  * @public
  */
@@ -130,7 +130,7 @@ export class GridAreaModel implements GridAreaModel {
      *  - {@link Cage}s which have `Cage.isInput === true`
      * are always added to the {@link nonOverlappingCagesAreaModel} even it will result in finding
      * an area of a size smaller than potential maximum.
-     *  - {@link Cage}s are NOT validated to be within the supposed area boundaries.
+     *  - {@link Cage}s are *not* validated to be within the supposed area boundaries.
      *
      * It is up to the caller to collect {@link Cage}s correctly with respect to the area boundaries.
      *
@@ -207,8 +207,8 @@ const newGridAreaModelWithMaxNonOverlappingArea = (allCages: ReadonlyCages, hous
  * to the area of {@link Cage}s without shared {@link Cell}s (called _non-overlapping_ area)
  * and all _derived_ {@link Cage}s being added to _overlapping_ area.
  *
- * Produced _non-overlapping_ area is NOT guaranteed to be maximized
- * as this stage does NOT process _derived_ {@link Cage}s which can potentially maximize the _non-overlapping_ area.
+ * Produced _non-overlapping_ area is *not* guaranteed to be maximized
+ * as this stage does *not* process _derived_ {@link Cage}s which can potentially maximize the _non-overlapping_ area.
  *
  * @param allCages - All {@link Cage}s belonging to the area on the {@link Grid}.
  *
@@ -299,7 +299,7 @@ const stage2_tryToMaximizeNonOverlappingArea = (absMaxAreaCellCount: number, inp
  *  - Schroeppel and Shamir: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Schroeppel_and_Shamir}
  *  - Howgrave-Graham and Joux: {@see https://en.wikipedia.org/wiki/Subset_sum_problem#Howgrave-Graham_and_Joux}
  *
- * However, it is NOT worth the complexity given the prior stages of processing which minimize `n`.
+ * However, it is *not* worth the complexity given the prior stages of processing which minimize `n`.
  *
  * Still, faster alternatives can be considered if performance will prove to be slow.
  *
@@ -358,7 +358,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         }
 
         if (this.isLastStep(step)) {
-            // Cannot go any deeper than the last step which does NOT have `Cage`s to advance on.
+            // Cannot go any deeper than the last step which does *not* have `Cage`s to advance on.
             return;
         }
 

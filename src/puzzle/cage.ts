@@ -15,9 +15,9 @@ import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
  * It also provides {@link Cage#key} which can be used both
  * as a unique `Cage` id within a `Grid` as well as human-readable representation of a `Cage`.
  *
- * **Input `Cage`s are assumed to NOT include duplicate numbers while derivative `Cage`s can have duplicates.**
+ * **Input `Cage`s are assumed to *not* include duplicate numbers while derivative `Cage`s can have duplicates.**
  *
- * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the `Cell`s' numbers.
+ * As this type is used to model input problem only (as opposed to modeling solution), it does *not* hold the `Cell`s' numbers.
  *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  *

@@ -20,12 +20,12 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
     get bitStore(): BitStore32;
 
     /**
-     * Returns new checking set with Sudoku numbers which are NOT present in the current checking set.
+     * Returns new checking set with Sudoku numbers which are *not* present in the current checking set.
      *
      * For example, if a checking set has numbers [1, 2, 5, 9] then
      * the remaining checking set of numbers will be [3, 4, 6, 7, 8].
      *
-     * @returns new checking set with Sudoku numbers which are NOT present in the current checking set.
+     * @returns new checking set with Sudoku numbers which are *not* present in the current checking set.
      */
     get remaining(): SudokuNumsCheckingSet;
 
@@ -166,7 +166,7 @@ export class SudokuNumsCheckingSet implements
     doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
-        // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
+        // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
         //
         // Example for `doesNotHaveAny` returning `true`:
         // ```

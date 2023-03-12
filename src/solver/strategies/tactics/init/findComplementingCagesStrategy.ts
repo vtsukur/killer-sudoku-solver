@@ -51,7 +51,7 @@ export type Config = {
     /**
      * Whether to apply the {@link Strategy} to {@link Nonet}s.
      *
-     * Only individual {@link Nonet} are analyzed, NOT adjacent {@link Nonet}s.
+     * Only individual {@link Nonet} are analyzed, *not* adjacent {@link Nonet}s.
      *
      * Default value is `true`, which means enabling the {@link Strategy} to {@link Nonet}s.
      */
@@ -63,7 +63,7 @@ export type Config = {
      *
      * Should be in the range of `[1, 8]`.
      * Upper bound in this range excludes value `9`
-     * since applying it to the whole {@link Grid} will NOT produce any hint.
+     * since applying it to the whole {@link Grid} will *not* produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
      * is set to `true`.
@@ -79,7 +79,7 @@ export type Config = {
      *
      * Should be in the range of `[1, 8]`.
      * Upper bound in this range excludes value `9`
-     * since applying it to the whole {@link Grid} will NOT produce any hint.
+     * since applying it to the whole {@link Grid} will *not* produce any hint.
      *
      * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
      * is set to `true`.
@@ -531,7 +531,7 @@ abstract class HouseAreasProcessor {
     /**
      * Determines _complementing_ {@link Cage}
      * as the difference between the whole {@link House} area and
-     * the area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
+     * the area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s.
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
@@ -541,7 +541,7 @@ abstract class HouseAreasProcessor {
      *
      * @returns _Complementing_ {@link Cage}
      * as the difference between the whole {@link House} area and
-     * the area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s OR
+     * the area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s OR
      * `undefined` if:
      *
      * - Found _complementing_ {@link Cage} is empty;
@@ -672,7 +672,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * adjacent {@link Row} or {@link Column} areas.
      *
      * This method is agnostic to a particular {@link House} type it operates with
-     * (but NOT applicable to {@link Nonet}s).
+     * (but *not* applicable to {@link Nonet}s).
      *
      * Search is executed for each adjacent group sized in the range of
      * `[{@link Config.minAdjacentRowsAndColumnsAreas}, {@link Config.maxAdjacentRowsAndColumnsAreas}]`

@@ -30,7 +30,7 @@ export type CellsMatrix = ReadonlyArray<ReadonlyCells>;
  * It also provides {@link Cell#key} which can be used both
  * as a unique `Cell` id within a `Grid` as well as human-readable representation of `Cell` position.
  *
- * As this type is used to model input problem only (as opposed to modeling solution), it does NOT hold the number in the square.
+ * As this type is used to model input problem only (as opposed to modeling solution), it does *not* hold the number in the square.
  *
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Terminology
  *

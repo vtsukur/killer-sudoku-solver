@@ -32,20 +32,20 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
     hasAll(val: T): boolean;
 
     /**
-     * Checks if this set does NOT have the given number.
+     * Checks if this set does *not* have the given number.
      *
      * @param val - Number to check.
      *
-     * @returns `true` if this checking set does NOT have the given number; otherwise `false`.
+     * @returns `true` if this checking set does *not* have the given number; otherwise `false`.
      */
     doesNotHave(val: number): boolean;
 
     /**
-     * Checks if this set does NOT have any numbers from another checking set.
+     * Checks if this set does *not* have any numbers from another checking set.
      *
      * @param val - Another set to check against.
      *
-     * @returns `true` if this checking set does NOT have any numbers from another checking set; otherwise `false`.
+     * @returns `true` if this checking set does *not* have any numbers from another checking set; otherwise `false`.
      */
     doesNotHaveAny(val: T): boolean;
 
@@ -81,9 +81,9 @@ export interface NumsCheckingSet<
     /**
      * Adds all numbers from another checking set to this checking numbers set.
      *
-     * This method changes this checking numbers set and does NOT modify `val` checking numbers set.
+     * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
      *
-     * Only the numbers which are NOT yet present in this checking set are added.
+     * Only the numbers which are *not* yet present in this checking set are added.
      * Duplicate numbers are ignored.
      *
      * @param val - Another checking set containing numbers to add to this set.
@@ -95,7 +95,7 @@ export interface NumsCheckingSet<
     /**
      * Deletes all numbers present in another checking set from this checking numbers set.
      *
-     * This method changes this checking numbers set and does NOT modify `val` checking numbers set.
+     * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
      *
      * Only the numbers which are present in this checking set are deleted.
      * Missing numbers are ignored.

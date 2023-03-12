@@ -65,10 +65,10 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *  1) A set of all _input_ _non-overlapping_ {@link Cage}s which
  * contain {@link Nonet}'s {@link Cell}(s) are found. Let's call it `CAGES`:
  *  - Such a set must contain ALL {@link Nonet}'s {@link Cell}s;
- *  - Such a set might also contain {@link Cell}s which do NOT belong to a {@link Nonet}
+ *  - Such a set might also contain {@link Cell}s which do *not* belong to a {@link Nonet}
  * since a {@link Cage} containing {@link Nonet} {@link Cell}(s)
- * does NOT necessarily reside within the {@link Nonet} _fully_.
- *  2) All {@link Cell}s which do NOT belong to a {@link Nonet} are becoming a part of
+ * does *not* necessarily reside within the {@link Nonet} _fully_.
+ *  2) All {@link Cell}s which do *not* belong to a {@link Nonet} are becoming a part of
  * the _protrusive_ {@link Cage}.
  *  - The sum of such a _protrusive_ {@link Cage} will be
  * the difference between the sum of `CAGES` and the sum of all numbers in a {@link Nonet} (`45`);
@@ -109,11 +109,11 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * to `1`, `2`, `3`, `5`, `6`, `7` (unique Sudoku numbers that add up to `8`)
  * and excludes `4`, `8` and `9`.
  * This is an extra hint for {@link Column} of index `3` and {@link Nonet} of index `1`,
- * which was NOT evident from original input.
+ * which was *not* evident from original input.
  *
  * The protrusive {@link Cage} in the example above must have unique numbers
  * as it lies within {@link Column} of index `3` (and {@link Nonet} of index `1`).
- * But, as initially stated in the definition of protrusive {@link Cage} this is NOT always the case.
+ * But, as initially stated in the definition of protrusive {@link Cage} this is *not* always the case.
  *
  * Let us consider another example for the same {@link Nonet} of index `0`.
  *
@@ -139,7 +139,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 13 + 8 - 45 = 8). Cells: (0, 3), (3, 2)
  * ```
  *
- * These 2 {@link Cell}s are NOT within the same {@link House}
+ * These 2 {@link Cell}s are *not* within the same {@link House}
  * (neither {@link Row}, nor {@link Column} or {@link Nonet})
  * so they MIGHT contain duplicates.
  * Still, such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s at `(0, 3)` and `(3, 2)`,
@@ -147,10 +147,10 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * and excludes `8` and `9` as possible numbers in those {@link Cell}s.
  * `4` is an option for both {@link Cell}s at `(0, 3)` and `(3, 2)` since it adds up to `8`
  * driven by the possibility of having non-unique numbers.
- * Still, this is an extra hint, which was also NOT evident from original input.
+ * Still, this is an extra hint, which was also *not* evident from original input.
  *
  * {@link Nonet}s are analyzed only individually meaning
- * adjacent {@link Nonet} areas are NOT taken into account.
+ * adjacent {@link Nonet} areas are *not* taken into account.
  *
  * This {@link Strategy} is an _initialization_ {@link Strategy},
  * so it is applied just once on the particular {@link Puzzle}.
@@ -253,11 +253,11 @@ class NonetTouchingCagesTracker {
         if (cageM.cage.isInput) {
             //
             // As opposed to `addCageM` method, this implementation
-            // does NOT check `Cage` to be within 1 `Nonet`
+            // does *not* check `Cage` to be within 1 `Nonet`
             // because there are NO circumstances under which such a `Cage`
             // will be actually deleted as a result of slicing.
             //
-            // In other words, the `Strategy` will NOT slice `Nonet` `Cage`s.
+            // In other words, the `Strategy` will *not* slice `Nonet` `Cage`s.
             //
             for (const cellM of cageM.cellMs) {
                 this.cageMsByCellM(cellM).delete(cageM);
@@ -368,7 +368,7 @@ class NonetProcessor {
 
         for (const cageM of cageMs) {
             //
-            // [perf] `Nonet`-only `Cage` does NOT have protrusive `Cell`s by definition,
+            // [perf] `Nonet`-only `Cage` does *not* have protrusive `Cell`s by definition,
             // so analysis is performed only for `Cage`s which touch more than 1 `Nonet`.
             //
             if (!cageM.positioningFlags.isWithinNonet) {

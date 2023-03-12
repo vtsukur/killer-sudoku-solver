@@ -55,9 +55,9 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
     _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
 
     /**
-     * Creates new checking set which has the numbers NOT present in this set.
+     * Creates new checking set which has the numbers *not* present in this set.
      *
-     * @returns New checking set which has the numbers NOT present in this set.
+     * @returns New checking set which has the numbers *not* present in this set.
      */
     not(): ReadonlyCellIndicesCheckingSet;
 
@@ -325,7 +325,7 @@ export class CellIndicesCheckingSet implements
     doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
-        // does NOT have `1`s at the same positions as each bit store of the `val` checking set.
+        // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
         //
         // Example for `doesNotHaveAny` returning `true`
         // (applied to a single bit store of index `x` for simplicity):
@@ -465,7 +465,7 @@ export class CellIndicesCheckingSet implements
         //
         // Additional bitwise AND is applied to the last bit store
         // to erase `1`s for `Cell` indices which are out of range
-        // so that irrelevant `Cell`s will NOT be mapped as _included_ in the set.
+        // so that irrelevant `Cell`s will *not* be mapped as _included_ in the set.
         //
         not._bitStores[2] = (~this._bitStores[2] & 0b11111111111111111);
 
@@ -499,7 +499,7 @@ export class CellIndicesCheckingSet implements
      *
      * This method changes this checking set.
      *
-     * The given number is added only if it is NOT yet present in this checking set.
+     * The given number is added only if it is *not* yet present in this checking set.
      * Duplicate number is ignored.
      *
      * @param val - Number to add to this set.
@@ -553,7 +553,7 @@ export class CellIndicesCheckingSet implements
      *
      * This method changes this checking numbers set.
      *
-     * The given number is deleted only if it is NOT yet present in this checking set.
+     * The given number is deleted only if it is *not* yet present in this checking set.
      * Duplicate number is ignored.
      *
      * @param val - Number to delete from this set.

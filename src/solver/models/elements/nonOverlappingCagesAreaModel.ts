@@ -2,7 +2,7 @@ import { ReadonlyCages } from '../../../puzzle/cage';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
 
 /**
- * Area of {@link Cage}s within {@link GridAreaModel} which do NOT have shared {@link Cell}s.
+ * Area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s.
  *
  * Such {@link Cage}s are called _non-overlapping_.
  *

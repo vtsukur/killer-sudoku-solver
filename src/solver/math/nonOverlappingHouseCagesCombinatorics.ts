@@ -30,7 +30,7 @@ export type HouseCagesPerms = ReadonlyArray<HouseCagesPerm>;
 /**
  * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
+ * {@link Cage}s are considered _non-overlapping_ if they do *not* have the same {@link Cell}s.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -60,7 +60,7 @@ export interface NonOverlappingHouseCagesCombinatorics extends HouseCagesCombina
 /**
  * Combinatorics of possible _non-overlapping_ {@link Cage}s' numbers within the same {@link House}.
  *
- * {@link Cage}s are considered _non-overlapping_ if they do NOT have the same {@link Cell}s.
+ * {@link Cage}s are considered _non-overlapping_ if they do *not* have the same {@link Cell}s.
  *
  * Implementation of this interface should follow Killer Sudoku constraint,
  * which states that _a {@link House} has nonrepeating set of {@link Cell}s with numbers from 1 to 9_.
@@ -85,7 +85,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * {@link Cage}s may cover either complete set of {@link House} {@link Cell}s or a subset.
      * Empty {@link NonOverlappingCagesAreaModel} is also acceptable.
      *
-     * For performance reasons, this method does NOT check:
+     * For performance reasons, this method does *not* check:
      *  - if all given {@link Cage}s belong to the same {@link House};
      *  - if {@link Cell}s in the given {@link Cage}s are _non-overlapping_;
      *  - if total sum of all {@link Cage}s is no greater than {@link House} sum.
@@ -128,7 +128,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
 
 /**
  * In case there is only 1 {@link Cage} in {@link NonOverlappingCagesAreaModel},
- * the full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms} is NOT required.
+ * the full enumeration of {@link HouseCagesCombos} and {@link HouseCagesPerms} is *not* required.
  *
  * It is enough to enumerate only the {@link Combo}s for the one & only {@link Cage} sum and
  * trivially derive resulting {@link HouseCagesCombos} and {@link HouseCagesPerms}.
@@ -219,10 +219,10 @@ const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAd
 
 /**
  * In case enumeration is in the second (and further) and non last step, the algorithm is just like for the first step
- * with extra check that next {@link Combo} does NOT overlap with currently used numbers.
+ * with extra check that next {@link Combo} does *not* overlap with currently used numbers.
  *
- * This logic is NOT unified with the first step on purpose for performance reasons:
- * checking overlap with currently used numbers is NOT needed at all in the first step.
+ * This logic is *not* unified with the first step on purpose for performance reasons:
+ * checking overlap with currently used numbers is *not* needed at all in the first step.
  */
 const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
@@ -247,7 +247,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
 
 /**
  * In case enumeration is in the last step, and the enumeration is executed for the whole {@link House},
- * it is possible to short circuit check of the last {@link Combo} according to the numbers NOT yet in use.
+ * it is possible to short circuit check of the last {@link Combo} according to the numbers *not* yet in use.
  * (since {@link House} must contain all numbers from 1 to 9).
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
@@ -311,7 +311,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         return pipeline;
     }
 
-    // enumeration for incomplete `House` is NOT short circuited in the last step.
+    // enumeration for incomplete `House` is *not* short circuited in the last step.
     private static newEnumerationPipelineForIncompleteHouse(cageCount: number) {
         const pipeline = new Array<EnumerationStepFunction>(cageCount + 1);
 

@@ -47,10 +47,10 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * Cage 4. Sum: 11. Cells: (2, 0), (2, 1), (2, 2)
  * ```
  *
- * These {@link Cage}s cover full {@link Nonet} and do NOT have shared {@link Cell}s,
+ * These {@link Cage}s cover full {@link Nonet} and do *not* have shared {@link Cell}s,
  * so {@link Cell}s within these {@link Cage}s must have unique numbers from `1` to `9`.
  *
- * Since positions of particular {@link Cell}s do NOT matter (only their count for each {@link Cage}),
+ * Since positions of particular {@link Cell}s do *not* matter (only their count for each {@link Cage}),
  * let us simplify {@link Cage} definitions for {@link Nonet} of index `0` to the following form:
  * ```
  * Cage 1. Sum: 15. Cells: 2
@@ -70,7 +70,7 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * Now, it is trivial to observe that single-{@link Cell} `Cage 2` may have
  * only one {@link Combo} which is `(8)` and one number in the {@link Cell} which is `8`.
  *
- * It means that {@link Combo}s for other {@link Cage}s should NOT have `8`:
+ * It means that {@link Combo}s for other {@link Cage}s should *not* have `8`:
  * ```
  * Cage 1. Sum: 15. Cells: 2. Combinations: (6, 9)                                     // 1 `Combo` is removed
  * Cage 2. Sum: 8.  Cells: 1. Combinations: (8)
@@ -79,7 +79,7 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * ```
  *
  * As a result, it is trivial to observe that `Cage 1` has only one valid {@link Combo} `(6, 9)`.
- * So numbers `6` and `9` should NOT appear in {@link Combo}s for other {@link Cage}s.
+ * So numbers `6` and `9` should *not* appear in {@link Combo}s for other {@link Cage}s.
  * Specifically, it affects `Cage 3` and `Cage 4`:
  * ```
  * Cage 1. Sum: 15. Cells: 2. Combinations: (6, 9)
@@ -93,7 +93,7 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * In the same way the {@link Strategy} is applied to {@link Row}s and {@link Column}s.
  *
  * This {@link Strategy} requires each {@link HouseModel} to have
- * a defined set of {@link Cage}s which cover whole {@link House} and do NOT have shared {@link Cell}s.
+ * a defined set of {@link Cage}s which cover whole {@link House} and do *not* have shared {@link Cell}s.
  * It is achieved by executing {@link FindComplementingCagesStrategy} beforehand.
  *
  * This {@link Strategy} is an _initialization_ {@link Strategy},

@@ -91,11 +91,11 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         original.add(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
-        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 
         cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
-        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does *not* change the clone
     });
 
     test('Cloning using `clone`', () => {
@@ -106,11 +106,11 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         original.add(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
-        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 
         cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
-        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does *not* change the clone
     });
 
     test('Cloning using constructor', () => {
@@ -121,11 +121,11 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         original.add(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
-        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does NOT change the clone
+        expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 
         cloned.delete(SudokuNumsCheckingSet.of(1));
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(9)); // changing a clone ...
-        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does NOT change the clone
+        expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does *not* change the clone
     });
 
     const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {

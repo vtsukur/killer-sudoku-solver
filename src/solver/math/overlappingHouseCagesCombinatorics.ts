@@ -48,7 +48,7 @@ export class OverlappingHouseCagesCombinatorics {
      * {@link Cage}s may cover either complete set of {@link House} {@link Cell}s or a subset.
      * Empty array is also acceptable.
      *
-     * For performance reasons, this method does NOT check:
+     * For performance reasons, this method does *not* check:
      *  - if all given {@link Cage}s belong to the same {@link House};
      *  - if {@link Cell}s in the given {@link Cage}s are _overlapping_;
      *  - if total sum of all {@link Cage}s is no greater than {@link House} sum.
