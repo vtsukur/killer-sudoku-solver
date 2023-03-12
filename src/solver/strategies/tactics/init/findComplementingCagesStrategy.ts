@@ -445,7 +445,7 @@ type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
 
 /**
  * Abstract processor for {@link House} areas
- * which defines the critical work of the overall {@link FindComplementingCagesStrategy}.
+ * which defines the core work of the overall {@link FindComplementingCagesStrategy}.
  *
  * This class is agnostic to a particular {@link House} type it operates.
  *
@@ -488,7 +488,7 @@ abstract class HouseAreasProcessor {
      *
      * Search happens if the value of {@link Config.minAdjacentRowsAndColumnsAreas} is `1`.
      *
-     * @param houseCellsIndices - The array of checking sets
+     * @param houseCellsIndices - Array of checking sets
      * of {@link Cell}s' indices that belong to {@link House}s.
      * Array element of index `i` is a checking set
      * with all {@link Cell}s of {@link House} of index `i`.
@@ -502,20 +502,16 @@ abstract class HouseAreasProcessor {
     }
 
     /**
-     * Key method of the overall {@link FindComplementingCagesStrategy}
+     * Core method of the overall {@link FindComplementingCagesStrategy}
      * which determines _complementing_ {@link Cage} for an individual {@link House} or
-     * adjacent {@link House} area and, if such a {@link Cage} is found:
+     * adjacent {@link House} area and, in case a search is successful:
      *
-     *  - registeres it in the {@link MasterModel} with slicing;
-     *  - applies {@link ReduceCageNumOptsBySolvedCellsStrategy} for single-{@link Cell} complement (if applicable);
-     *  - and records statistics (if applicable).
-     *
-     * Designed to be called by sub-classes.
+     *  - registers _complementing_ {@link Cage} in the {@link MasterModel} with slicing;
+     *  - executes {@link ReduceCageNumOptsBySolvedCellsStrategy} for single-{@link Cell} complement (if applicable);
+     *  - records statistics (if applicable).
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
-     * This data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
      * @param houseCount - Amount of {@link House}s which cover the target area.
      *
      * @see CageSlicer
