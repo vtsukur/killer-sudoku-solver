@@ -12,17 +12,17 @@ import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStr
 import { DeepTryOptionsStrategy } from '../deepTryOptionsStrategy';
 
 /**
- * {@link Strategy} for solving Killer Sudoku {@link Puzzle}
- * which performs initialization actions
+ * This {@link Strategy} for solving Killer Sudoku {@link Puzzle}
+ * performs initialization actions
  * by applying several tactical _initialization_ {@link Strategy}-ies.
  *
  * _Initialization_ {@link Strategy}-ies are applied at most once
- * in the very beginning of solving process for a particular {@link Puzzle}
+ * at the beginning of solving process for a particular {@link Puzzle}
  * as opposed to _looping_ {@link Strategy}-ies
- * which may be applied several times for the same {@link Puzzle}.
+ * which may execute several times for the same {@link Puzzle}.
  *
- * No initialization is done if {@link Context.skipInit} is set to `true`.
- * This is useful for recursive problem solving, see {@link DeepTryOptionsStrategy}.
+ * No initialization happens if {@link Context.skipInit} is set to `true`,
+ * which is helpful for recursive problem-solving. See {@link DeepTryOptionsStrategy}.
  *
  * @see FindProtrusiveCagesStrategy
  * @see FindComplementingCagesStrategy
