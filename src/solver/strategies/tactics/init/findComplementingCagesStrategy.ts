@@ -445,7 +445,7 @@ type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
  * Abstract processor for {@link House} areas
  * which defines the critical work of the overall {@link FindComplementingCagesStrategy}.
  *
- * This class is agnostic to a particular {@link House} type it operates with.
+ * This class is agnostic to a particular {@link House} type it operates.
  *
  * Subclasses should extend this class with processing logic for specific {@link House} types.
  */
@@ -626,9 +626,9 @@ abstract class HouseAreasProcessor {
 /**
  * Abstract processor for adjacent {@link House} areas.
  *
- * This class is agnostic to a particular {@link House} type it operates with.
+ * This class is agnostic to a particular {@link House} type it operates.
  *
- * This class is designed to be extended with processing logic for specific {@link House} type.
+ * Subclasses should extend this class with processing logic for specific {@link House} types.
  */
 abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
 
