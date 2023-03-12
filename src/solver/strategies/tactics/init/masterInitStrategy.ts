@@ -8,14 +8,21 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
 import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStrategy';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { DeepTryOptionsStrategy } from '../deepTryOptionsStrategy';
 
 /**
- * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
- * which executes several _initialization_ {@link Strategy}-ies
- * applied just once on the particular {@link Puzzle}
- * in the very beginning of solving process.
+ * {@link Strategy} for solving Killer Sudoku {@link Puzzle}
+ * which performs initialization actions
+ * by applying several tactical _initialization_ {@link Strategy}-ies.
  *
- * No {@link Strategy}-ies are executed if {@link Context.skipInit} is set to `true`.
+ * _Initialization_ {@link Strategy}-ies are applied at most once
+ * in the very beginning of solving process for a particular {@link Puzzle}
+ * as opposed to _looping_ {@link Strategy}-ies
+ * which may be applied several times for the same {@link Puzzle}.
+ *
+ * No initialization is done if {@link Context.skipInit} is set to `true`.
+ * This is useful for recursive problem solving, see {@link DeepTryOptionsStrategy}.
  *
  * @see FindProtrusiveCagesStrategy
  * @see FindComplementingCagesStrategy
@@ -32,9 +39,8 @@ export class MasterInitStrategy extends Strategy {
     execute() {
         if (!this._context.skipInit) {
             //
-            // [perf] Empirical test runs have shown that applying `FindProtrusiveCagesStrategy`
-            // slows down overall solving by up to 20%,
-            // so it is NOT being applied.
+            // [perf] Disabling `FindProtrusiveCagesStrategy` as real-world test runs
+            // showed that overall solving is slowed down by up to 20% without producing significant hints.
             //
             // this.executeAnother(FindProtrusiveCagesStrategy);
 
