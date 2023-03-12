@@ -604,15 +604,15 @@ abstract class HouseAreasProcessor {
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
     /**
-     * Collects array of checking sets where element of index `i`
+     * Collects an array of checking sets where an element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      *
-     * Supposed to be used by sub-classes for caching {@link Cell}s indices
+     * This method allows sub-classes to cache {@link Cell}s' indices
      * as they remain constant between iterations.
      *
      * @param cells - Matrix of {@link Cells} indexed by {@link House}.
      *
-     * @returns Array of checking sets where element of index `i`
+     * @returns Array of checking sets where an element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      */
     protected static cellsIndices(cells: CellsMatrix) {
