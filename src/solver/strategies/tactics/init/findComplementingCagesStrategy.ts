@@ -477,21 +477,21 @@ abstract class HouseAreasProcessor {
 
     /**
      * Searches for _complementing_ {@link Cage}s within
-     * individual {@link Row}s, {@link Column}s or {@link Nonet}s.
+     * individual {@link Row}s, {@link Column}s, or {@link Nonet}s.
      *
-     * This method is agnostic to a particular {@link House} type it operates with.
+     * This method is agnostic to a particular {@link House} type it operates.
      *
-     * Designed to be called by sub-classes which need to:
+     * Sub-classes need to:
      *
      *  - pass appropriate {@link houseCellsIndices} input;
      *  - define {@link houseModel} behavior.
      *
-     * Search is executed only if {@link Config.minAdjacentRowsAndColumnsAreas} is set to `1`.
+     * Search happens if the value of {@link Config.minAdjacentRowsAndColumnsAreas} is `1`.
      *
-     * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
-     * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
-     * This data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
+     * @param houseCellsIndices - The array of checking sets
+     * of {@link Cell}s' indices that belong to {@link House}s.
+     * Array element of index `i` is a checking set
+     * with all {@link Cell}s of {@link House} of index `i`.
      */
     protected applyToIndividualHouses(houseCellsIndices: ReadonlyHouseCellsIndices) {
         if (this._isEnabledForIndividualHouses) {
