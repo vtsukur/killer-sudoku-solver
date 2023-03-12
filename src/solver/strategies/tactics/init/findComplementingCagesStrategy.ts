@@ -197,7 +197,7 @@ class Stats {
 }
 
 /**
- * Type alias for the readonly version of {@link IndexedHouseCageModels}.
+ * Type alias for the read-only version of {@link IndexedHouseCageModels}.
  */
 type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
 
@@ -208,16 +208,16 @@ type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
 type IndexedHouseCageModels = Array<Set<CageModel>>;
 
 /**
- * Tracks {@link CageModel}s indexed by {@link Cage}'s topmost {@link Row} and
+ * Stores actual {@link CageModel}s indexed by {@link Cage}'s topmost {@link Row} and
  * leftmost {@link Column}.
  *
- * Tracking is needed since {@link Cage}s are being registered and unregistered
- * when _complementing_ {@link Cage}s are found and {@link Cage} slicing occurs.
- * Tracking is achieved by using event handlers on {@link MasterModel}.
+ * {@link MasterModel} event handlers help keep track of actual {@link CageModel}s
+ * since {@link Cage}s are registered and unregistered
+ * when finding _complementing_ `Cage`s and slicing `Cage`s.
  *
- * Use of this data structure enhances implementation performance
+ * The use of this data structure enhances implementation performance
  * since indexing allows faster enumeration of {@link CageModel}s by their topmost/leftmost coordinate
- * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+ * as opposed to an iteration over all {@link CageModel}s present within the {@link MasterModel}.
  */
 class IndexedCageModelsTracker {
 
