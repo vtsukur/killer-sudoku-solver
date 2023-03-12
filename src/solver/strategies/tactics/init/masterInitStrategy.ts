@@ -12,7 +12,8 @@ import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStr
 /**
  * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
  * which executes several _initialization_ {@link Strategy}-ies
- * applied just once on the particular {@link Puzzle}.
+ * applied just once on the particular {@link Puzzle}
+ * in the very beginning of solving process.
  *
  * No {@link Strategy}-ies are executed if {@link Context.skipInit} is set to `true`.
  *
