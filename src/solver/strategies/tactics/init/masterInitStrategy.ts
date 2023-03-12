@@ -45,7 +45,14 @@ export class MasterInitStrategy extends Strategy {
             // this.executeAnother(FindProtrusiveCagesStrategy);
 
             this.executeAnother(FindComplementingCagesStrategy);
+
+            //
+            // `FindCombosForHouseCagesStrategy` must run after `FindComplementingCagesStrategy`
+            // so that each `House` will have `Cage`s that cover the entire `House` area
+            // since it is necessary for `Combo`s enumeration.
+            //
             this.executeAnother(FindCombosForHouseCagesStrategy);
+
             this.executeAnother(InstructToReduceAllCagesStrategy);
         }
     }
