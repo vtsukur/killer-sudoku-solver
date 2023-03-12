@@ -755,17 +755,20 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             houseCellsIndices: ReadonlyHouseCellsIndices,
             minAdjacentAreas: number,
             maxAdjacentAreas: number) {
-        // Making sure individual `House`s are skipped and `Config.maxAdjacentRowsAndColumnsAreas` is taken into account.
+        //
+        // Making sure the logic skips individual `House`s
+        // and takes `Config.maxAdjacentRowsAndColumnsAreas` into account.
+        //
         let adjacentHouseCount = Math.max(minAdjacentAreas, 2);
 
-        // Iterating over adjacent `House` areas sizes in the target range.
+        // Iterating over adjacent `House` areas sized in the target range.
         while (adjacentHouseCount <= maxAdjacentAreas) {
             const maxTopOrLeftIndex = House.CELL_COUNT - adjacentHouseCount;
             let topOrLeftIndex = 0;
 
             // Iterating over all adjacent `House` areas of a particular size.
             do {
-                // Key work happens here.
+                // Core work happens here.
                 const { areaCageMs, areaCellsIndices } = this.collectAreaData(
                         topOrLeftIndex,
                         topOrLeftIndex + adjacentHouseCount,
