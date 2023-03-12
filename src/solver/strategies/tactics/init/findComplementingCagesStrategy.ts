@@ -2,6 +2,8 @@ import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell, CellsMatrix, ReadonlyCells } from '../../../../puzzle/cell';
 import { Column } from '../../../../puzzle/column';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Grid } from '../../../../puzzle/grid';
 import { House, HouseIndex } from '../../../../puzzle/house';
 import { Nonet } from '../../../../puzzle/nonet';
 import { Row } from '../../../../puzzle/row';
@@ -28,7 +30,7 @@ export type Config = {
      * Whether to apply the {@link Strategy} to individual {@link Row}s
      * and adjacent {@link Row} areas.
      *
-     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}
+     * `Config.minAdjacentRowsAndColumnsAreas` and `Config.maxAdjacentRowsAndColumnsAreas`
      * configure the size of adjacent {@link Row} areas.
      *
      * The default value is `true`, enabling the {@link Strategy}
@@ -40,7 +42,7 @@ export type Config = {
      * Whether to apply the {@link Strategy} to individual {@link Column}s
      * and adjacent {@link Column} areas.
      *
-     * {@link minAdjacentRowsAndColumnsAreas} and {@link maxAdjacentRowsAndColumnsAreas}
+     * `Config.minAdjacentRowsAndColumnsAreas` and `Config.maxAdjacentRowsAndColumnsAreas`
      * configure the size of adjacent {@link Column} areas.
      *
      * The default value is `true`, enabling the {@link Strategy}
@@ -65,7 +67,7 @@ export type Config = {
      * The upper bound in this range excludes value `9`
      * since applying it to the entire {@link Grid} will *not* produce any hint.
      *
-     * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
+     * This configuration is relevant only when `Config.isApplyToRowAreas` or `Config.isApplyToColumnAreas`
      * is `true`.
      *
      * The default value is `1`, enabling the {@link Strategy}
@@ -81,7 +83,7 @@ export type Config = {
      * The upper bound in this range excludes value `9`
      * since applying it to the entire {@link Grid} will *not* produce any hint.
      *
-     * This configuration is relevant only when {@link isApplyToRowAreas} or {@link isApplyToColumnAreas}
+     * This configuration is relevant only when `Config.isApplyToRowAreas` or `Config.isApplyToColumnAreas`
      * is `true`.
      *
      * The default value is `4`, which covers over 90% of all
