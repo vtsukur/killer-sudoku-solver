@@ -668,18 +668,80 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * Searches for _complementing_ {@link Cage}s within
      * adjacent {@link Row} or {@link Column} areas.
      *
-     * This method is agnostic to a particular {@link House} type it operates with
-     * (but *not* applicable to {@link Nonet}s).
+     * This method is agnostic to a particular {@link House} type it operates,
+     * but it does *not* apply to {@link Nonet}s.
      *
-     * Search is executed for each adjacent group sized in the range of
+     * The search runs for each adjacent group sized in the range of
      * `[{@link Config.minAdjacentRowsAndColumnsAreas}, {@link Config.maxAdjacentRowsAndColumnsAreas}]`
-     * with lower bound always being above `1`.
+     * with the lower bound always being above `1`.
      *
-     * For example, if {@link Config.minAdjacentRowsAndColumnsAreas} is set to `1` and
-     * {@link Config.maxAdjacentRowsAndColumnsAreas} is set to `4`,
-     * search will be applied for all areas of adjacent groups sized `2`, `3` and `4` {@link House}s.
+     * For example, if {@link Config.minAdjacentRowsAndColumnsAreas} is `1` and
+     * {@link Config.maxAdjacentRowsAndColumnsAreas} is `4`,
+     * the search will run for all adjacent groups of sized `2`, `3`, and `4` {@link House}s.
      *
-     * Designed to be called by sub-classes.
+     * For such a configuration in application to {@link Row}s,
+     * the adjacent groups are as follows:
+     *
+     * ```
+     * Adjacent groups of size 2:
+     *  - Row 0, Row 1
+     *  - Row 1, Row 2
+     *  - Row 2, Row 3
+     *  - Row 3, Row 4
+     *  - Row 4, Row 5
+     *  - Row 5, Row 6
+     *  - Row 6, Row 7
+     *  - Row 7, Row 8
+     *
+     * Adjacent groups of size 3:
+     *  - Row 0, Row 1, Row 2
+     *  - Row 1, Row 2, Row 3
+     *  - Row 2, Row 3, Row 4
+     *  - Row 3, Row 4, Row 5
+     *  - Row 4, Row 5, Row 6
+     *  - Row 5, Row 6, Row 7
+     *  - Row 6, Row 7, Row 8
+     *
+     * Adjacent groups of size 4:
+     *  - Row 0, Row 1, Row 2, Row 3
+     *  - Row 1, Row 2, Row 3, Row 4
+     *  - Row 2, Row 3, Row 4, Row 5
+     *  - Row 3, Row 4, Row 5, Row 6
+     *  - Row 4, Row 5, Row 6, Row 7
+     *  - Row 5, Row 6, Row 7, Row 8
+     * ```
+     *
+     * For the same configuration in application to {@link Column}s,
+     * the adjacent groups are as follows:
+     *
+     * ```
+     * Adjacent groups of size 2:
+     *  - Column 0, Column 1
+     *  - Column 1, Column 2
+     *  - Column 2, Column 3
+     *  - Column 3, Column 4
+     *  - Column 4, Column 5
+     *  - Column 5, Column 6
+     *  - Column 6, Column 7
+     *  - Column 7, Column 8
+     *
+     * Adjacent groups of size 3:
+     *  - Column 0, Column 1, Column 2
+     *  - Column 1, Column 2, Column 3
+     *  - Column 2, Column 3, Column 4
+     *  - Column 3, Column 4, Column 5
+     *  - Column 4, Column 5, Column 6
+     *  - Column 5, Column 6, Column 7
+     *  - Column 6, Column 7, Column 8
+     *
+     * Adjacent groups of size 4:
+     *  - Column 0, Column 1, Column 2, Column 3
+     *  - Column 1, Column 2, Column 3, Column 4
+     *  - Column 2, Column 3, Column 4, Column 5
+     *  - Column 3, Column 4, Column 5, Column 6
+     *  - Column 4, Column 5, Column 6, Column 7
+     *  - Column 5, Column 6, Column 7, Column 8
+     * ```
      *
      * @param indexedCageMs - Array of {@link CageModel} `Set`s
      * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
