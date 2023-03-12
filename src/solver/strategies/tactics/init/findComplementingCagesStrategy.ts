@@ -512,7 +512,7 @@ abstract class HouseAreasProcessor {
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
-     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param houseCount - Amount of {@link House}s that cover the target area.
      *
      * @see CageSlicer
      */
@@ -531,22 +531,21 @@ abstract class HouseAreasProcessor {
     /**
      * Determines _complementing_ {@link Cage}
      * as the difference between the whole {@link House} area and
-     * the area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s.
+     * the area of {@link Cage}s within {@link GridAreaModel}, which do *not* have shared {@link Cell}s.
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
      * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
-     * This data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
-     * @param houseCount - Amount of {@link House}s which cover the target area.
+     * @param houseCount - Amount of {@link House}s that cover the target area.
      *
      * @returns _Complementing_ {@link Cage}
      * as the difference between the whole {@link House} area and
-     * the area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s OR
-     * `undefined` if:
+     * the area of {@link Cage}s within {@link GridAreaModel} which do *not* have shared {@link Cell}s.
+     *
+     * Returns `undefined` if:
      *
      * - Found _complementing_ {@link Cage} is empty;
      * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulComplementSize}
-     * in case search is performed on adjacent {@link House}s. See {@link FindComplementingCagesStrategy} TSDoc for more info.
+     * in case search runs on adjacent {@link House}s. See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulComplement(
             areaCageMs: ReadonlyArray<CageModel>,
