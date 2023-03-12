@@ -268,56 +268,66 @@ class IndexedCageModelsTracker {
 
 /**
  * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
- * finds _complementing_ {@link Cage}s for {@link Row}, {@link Column} and {@link Nonet} areas
+ * finds _complementing_ {@link Cage}s for {@link Row}, {@link Column}, and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
- * _Complementing_ {@link Cage} is a {@link Cage} that completes {@link Row}, {@link Column} or {@link Nonet} area
- * along with already present {@link Cage}s so that such area is fully covered with {@link Cell}s.
+ * _Complementing_ {@link Cage} is a {@link Cage} that completes
+ * {@link Row}, {@link Column}, or {@link Nonet} area
+ * along with already present {@link Cage}s to cover the entire area with {@link Cell}s.
  *
- * For example, let us consider a single {@link Row} of index `1` (second {@link Row} in the {@link Grid})
+ * For example, let us consider a single {@link Row} of index `1`
+ * (the second {@link Row} in the {@link Grid})
  * with the following {@link Cell}s:
+ *
  * ```
  * // (row, column)
  * (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8)
  * ```
  *
- * Let us assume this {@link Row} have the following {@link Cage}s already registered:
+ * Let us assume this {@link Row} has the following {@link Cage}s already registered:
+ *
  * ```
  * Cage 1. Sum: 14. Cells: (1, 0), (1, 1)
  * Cage 2. Sum: 10. Cells: (1, 3), (1, 4), (1, 5)
  * Cage 3. Sum: 5.  Cells: (1, 7), (1, 8)
  * ```
  *
- * It can be observed, that these {@link Cage}s occupy the following {@link Cell}s in the {@link Row} area:
+ * One can observe that these {@link Cage}s occupy the following {@link Cell}s in the {@link Row} area:
+ *
  * ```
  * (1, 0), (1, 1), (1, 3), (1, 4), (1, 5), (1, 7), (1, 8)
  * ```
  *
- * The following {@link Cell}s are NOT occupied by any {@link Cage} in this area:
+ * Any {@link Cage} does *not* occupy the following {@link Cell}s in this area:
+ *
  * ```
  * (1, 2), (1, 6)
  * ```
- * These 2 {@link Cell}s describe a _complement_ to existing {@link Cage}s
+ *
+ * These 2 {@link Cell}s describe a _complement_ to existing {@link Cage}s,
  * and it is trivial to derive its sum given that sum of all {@link Cell}s in a {@link House} is `45`:
+ *
  * ```
  * Complementing Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
  * ```
  *
- * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s at `(1, 2)` and `(1, 6)`
- * to `7` and `9` for {@link Cell}s  (unique Sudoku numbers that add up to `16`).
- * And, as a by-product of this hint, possible number options for `Cage 2` with sum `10`
- * which occupy {@link Cell}s `(1, 3)`, `(1, 4)`, `(1, 5)` are also reduced:
- * combination of numbers `1`, `2` and `7` is NOT relevant since it overlaps with `7`
- * residing in the complementing {@link Cage} (only unique numbers are allowed in the {@link House}).
- * This way, more and more hints can be derived recursively by applying this and other strategies.
+ * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s
+ * at positions `(1, 2)` and `(1, 6)` to `7` and `9` (unique Sudoku numbers that add up to `16`).
  *
- * Same approach is applied NOT only to {@link Row}s, but also to {@link Column}s and {@link Nonet}s.
+ * And, since {@link House} has unique numbers, possible number options for `Cage 2` with sum `10`
+ * and {@link Cell}s at locations `(1, 3)`, `(1, 4)`, `(1, 5)` reduce:
+ * combination of numbers `1`, `2`, and `7` is irrelevant since it overlaps with `7`
+ * residing in the complementing {@link Cage}.
+ * This way, more and more hints can be derived recursively by applying this and other {@link Strategy}-ies.
+ *
+ * The same approach is applied NOT only to {@link Row}s but also to {@link Column}s and {@link Nonet}s.
  *
  * Also, this {@link Strategy} applies complement determination to the areas of
  * adjacent {@link Row}s and {@link Column}s in addition to individual {@link Row}s and {@link Column}s.
  *
- * For example, adjacent area of two {@link Column}s with indices 3 and 4
+ * For example, the adjacent area of two {@link Column}s with indices 3 and 4
  * applies the technique to the {@link Cage}s in the following {@link Cell}s:
+ *
  * ```
  * // (row, column)
  * (0, 3), (0, 4),
@@ -331,15 +341,14 @@ class IndexedCageModelsTracker {
  * (8, 3), (8, 4)
  * ```
  *
- * Non-adjacent areas are NOT analyzed because such an analysis will produce no valuable hints.
+ * Non-adjacent areas are *not* analyzed because such an analysis will produce no valuable hints.
  *
- * {@link Nonet}s are analyzed only individually meaning
- * adjacent {@link Nonet} areas are NOT taken into account.
+ * {@link Nonet}s are analyzed only individually without considering adjacent {@link Nonet} areas.
  *
- * This {@link Strategy} is an _initialization_ {@link Strategy},
- * so it is applied just once on the particular {@link Puzzle}.
+ * This type represents the _initialization_ {@link Strategy} applied at most once
+ * at the beginning of solving process for a particular {@link Puzzle}.
  *
- * The way this {@link Strategy} works can be configured by {@link Config} options.
+ * {@link Config} options allow configuring the way this {@link Strategy} works.
  *
  * @see Config
  * @see https://en.wikipedia.org/wiki/Killer_sudoku#Complements
