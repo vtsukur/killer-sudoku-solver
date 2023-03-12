@@ -7,8 +7,8 @@ import { MasterModel } from '../../models/masterModel';
 import { Strategy } from '../strategy';
 
 /**
- * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
- * which instructs follow-up {@link Strategy}-ies
+ * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
+ * instructs follow-up {@link Strategy}-ies
  * to re-evaluate possible number options for all {@link Cage}s
  * registered in the {@link MasterModel} by applying _reduction_.
  *

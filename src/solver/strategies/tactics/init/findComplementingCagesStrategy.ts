@@ -820,7 +820,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @returns `true` if given {@link CageModel}'s {@link Cage}
      * resides within the adjacent {@link House} area;
-     * othwerise `false`.
+     * otherwise `false`.
      */
     protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
 
