@@ -44,8 +44,12 @@ export class MasterInitStrategy extends Strategy {
             //
             // this.executeAnother(FindProtrusiveCagesStrategy);
 
+            // Find _complementing_ `Cage`s for `Row`, `Column`, and `Nonet` areas.
             this.executeAnother(FindComplementingCagesStrategy);
 
+            //
+            // Analyses possible permutations of number `Combo`s for `Cage`s within each `House`
+            // and initializes each `Cage` with respective `Combo`s.
             //
             // `FindCombosForHouseCagesStrategy` must run after `FindComplementingCagesStrategy`
             // so that each `House` will have `Cage`s that cover the entire `House` area
@@ -53,6 +57,11 @@ export class MasterInitStrategy extends Strategy {
             //
             this.executeAnother(FindCombosForHouseCagesStrategy);
 
+            //
+            // Instruct follow-up `Strategy`-ies
+            // to re-evaluate possible number options for all `Cage`s
+            // by applying _reduction_.
+            //
             this.executeAnother(InstructToReduceAllCagesStrategy);
         }
     }
