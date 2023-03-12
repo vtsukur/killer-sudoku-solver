@@ -221,7 +221,7 @@ type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
  * as opposed to an iteration over all {@link CageModel}s
  * present within the {@link MasterModel}.
  */
-class IndexedCageModelsTracker {
+class CageModelsIndex {
 
     private readonly _model: MasterModel;
 
@@ -400,7 +400,7 @@ export class FindComplementingCagesStrategy extends Strategy {
      * @see Strategy.execute
      */
     execute() {
-        const tracker = new IndexedCageModelsTracker(this._model);
+        const cageMsIndex = new CageModelsIndex(this._model);
         try {
             //
             // Adding event handlers to listen to `Cage` registration and deregistration
@@ -408,19 +408,19 @@ export class FindComplementingCagesStrategy extends Strategy {
             // This is necessary because slicing results in the addition and deletion of `Cage`s
             // which this class is tracking.
             //
-            tracker.attachEventHandlers();
+            cageMsIndex.attachEventHandlers();
 
             // Running core work.
-            this.doExecute(tracker);
+            this.doExecute(cageMsIndex);
         } finally {
             // Cleaning up event handlers to avoid a broken state even if an error throws.
-            tracker.deattachEventHandlers();
+            cageMsIndex.deattachEventHandlers();
         }
     }
 
-    private doExecute(tracker: IndexedCageModelsTracker) {
-        this._rowAreasProcessor.execute(tracker);
-        this._columnAreasProcessor.execute(tracker);
+    private doExecute(cageMsIndex: CageModelsIndex) {
+        this._rowAreasProcessor.execute(cageMsIndex);
+        this._columnAreasProcessor.execute(cageMsIndex);
         this._nonetAreasProcessor.execute();
     }
 
@@ -646,12 +646,12 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     /**
      * Executes key processing work if configuration allows to do so.
      *
-     * @param tracker - Stores actual {@link CageModel}s
+     * @param cageMsIndex - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
-    execute(tracker: IndexedCageModelsTracker) {
+    execute(cageMsIndex: CageModelsIndex) {
         if (this._isEnabled) {
-            this.doExecute(tracker);
+            this.doExecute(cageMsIndex);
         }
     }
 
@@ -660,10 +660,10 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
-     * @param tracker - Stores actual {@link CageModel}s
+     * @param cageMsIndex - Stores actual {@link CageModel}s
      * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
      */
-    abstract doExecute(tracker: IndexedCageModelsTracker): void;
+    abstract doExecute(cageMsIndex: CageModelsIndex): void;
 
     /**
      * Searches for _complementing_ {@link Cage}s within
@@ -743,7 +743,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      * Checks whether given {@link CageModel}'s {@link Cage} resides within the adjacent {@link House} area.
      *
      * This method checks only the upper bound coordinate of the {@link CageModel}'s {@link Cage}:
-     * lower bound is supposed to be taken into account already with the help of {@link IndexedCageModelsTracker}.
+     * lower bound is supposed to be taken into account already with the help of {@link CageModelsIndex}.
      *
      * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
      *
@@ -778,10 +778,10 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
         this._rowModels = this._model.rowModels;
     }
 
-    doExecute(tracker: IndexedCageModelsTracker): void {
+    doExecute(cageMsIndex: CageModelsIndex): void {
         this.applyToIndividualHouses(RowAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
-            tracker.rowIndexedCages,
+            cageMsIndex.rowIndexedCages,
             RowAreasProcessor._CELLS_INDICES,
             this._minAdjacentCount,
             this._maxAdjacentCount
@@ -819,10 +819,10 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
         this._columnModels = this._model.columnModels;
     }
 
-    doExecute(tracker: IndexedCageModelsTracker): void {
+    doExecute(cageMsIndex: CageModelsIndex): void {
         this.applyToIndividualHouses(ColumnAreasProcessor._CELLS_INDICES);
         this.applyToAdjacentHouses(
-            tracker.columnIndexedCages,
+            cageMsIndex.columnIndexedCages,
             ColumnAreasProcessor._CELLS_INDICES,
             this._minAdjacentCount,
             this._maxAdjacentCount
