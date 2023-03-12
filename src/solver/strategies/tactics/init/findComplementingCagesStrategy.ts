@@ -802,17 +802,24 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
     }
 
     /**
-     * Checks whether given {@link CageModel}'s {@link Cage} resides within the adjacent {@link House} area.
+     * Checks whether given {@link CageModel}'s {@link Cage}
+     * resides within the adjacent {@link House} area.
      *
-     * This method checks only the upper bound coordinate of the {@link CageModel}'s {@link Cage}:
-     * lower bound is supposed to be taken into account already with the help of {@link IndexedCageModelsStorage}.
+     * This method checks only the upper bound coordinate
+     * of the {@link CageModel}'s {@link Cage}
+     * as the use of {@link IndexedCageModelsStorage}
+     * should already consider the lower bound.
      *
-     * Should be implemented by sub-classes to define specifics for a particular {@link House} type.
+     * Sub-classes should implement this method
+     * to define specifics for particular {@link House} types.
      *
-     * @param cageM - {@link CageModel}'s {@link Cage} to check for being within the adjacent {@link House} area.
-     * @param bottomOrRightIndexExclusive - upper bound coordinate of the adjacent {@link House} area.
+     * @param cageM - {@link CageModel}'s {@link Cage}
+     * to check for being within the adjacent {@link House} area.
+     * @param bottomOrRightIndexExclusive - The upper bound coordinate
+     * of the adjacent {@link House} area.
      *
-     * @returns `true` if given {@link CageModel}'s {@link Cage} resides within the adjacent {@link House} area;
+     * @returns `true` if given {@link CageModel}'s {@link Cage}
+     * resides within the adjacent {@link House} area;
      * othwerise `false`.
      */
     protected abstract isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex): boolean;
