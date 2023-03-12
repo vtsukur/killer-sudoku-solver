@@ -3,7 +3,7 @@ import { MasterModel } from '../../../../../../src/solver/models/masterModel';
 import { Context } from '../../../../../../src/solver/strategies/context';
 import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
 import { newCageM, newContext } from './builders';
-import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init/masterInitStrategy';
+import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init';
 import { Combo } from '../../../../../../src/solver/math';
 
 describe('Unit tests for `MasterInitStrategy`', () => {

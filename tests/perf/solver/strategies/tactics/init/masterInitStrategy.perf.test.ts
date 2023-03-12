@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init/masterInitStrategy';
+import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init';
 import { puzzleSamples } from '../../../../../unit/puzzle/puzzleSamples';
 import { newContext } from '../../../../../unit/solver/strategies/tactics/init/builders';
 
