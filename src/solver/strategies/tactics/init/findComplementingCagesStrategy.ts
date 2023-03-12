@@ -409,7 +409,7 @@ export class FindComplementingCagesStrategy extends Strategy {
             // Running core work.
             this.doExecute(tracker);
         } finally {
-            // Cleanup of event handlers even if error is thrown to avoid broken state.
+            // Cleaning up event handlers even if error is thrown to avoid broken state.
             tracker.deattachEventHandlers();
         }
     }
