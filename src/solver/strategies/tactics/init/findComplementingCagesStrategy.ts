@@ -773,8 +773,8 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Row}s
      * which remain constant between iterations.
      *
-     * Use of this data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
+     * This data structure improves performance and minimizes memory footprint
+     * due to the manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Row.CELLS);
 
@@ -814,8 +814,8 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Column}s
      * which remain constant between iterations.
      *
-     * Use of this data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
+     * This data structure improves performance and minimizes memory footprint
+     * due to the manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Column.CELLS);
 
@@ -855,8 +855,8 @@ class NonetAreasProcessor extends HouseAreasProcessor {
      * Cache of {@link Cell}s' indices for all {@link Nonet}s
      * which remain constant between iterations.
      *
-     * Use of this data structure improves performance and minimizes memory footprint
-     * due to manipulation on bits via fast bitwise operations.
+     * This data structure improves performance and minimizes memory footprint
+     * due to the manipulation on bits via fast bitwise operations.
      */
     private static readonly _CELLS_INDICES = this.cellsIndices(Nonet.CELLS);
 
