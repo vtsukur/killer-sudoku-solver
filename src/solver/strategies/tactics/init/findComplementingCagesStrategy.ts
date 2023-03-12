@@ -276,8 +276,7 @@ class IndexedCageModelsTracker {
  * along with already present {@link Cage}s to cover the entire area with {@link Cell}s.
  *
  * For example, let us consider a single {@link Row} of index `1`
- * (the second {@link Row} in the {@link Grid})
- * with the following {@link Cell}s:
+ * (the second {@link Row} in the {@link Grid}) with the following {@link Cell}s:
  *
  * ```
  * // (row, column)
@@ -311,16 +310,18 @@ class IndexedCageModelsTracker {
  * Complementing Cage. Sum: 16 (calculated as 45 - 14 - 10 - 5 = 16). Cells: (1, 2), (1, 6)
  * ```
  *
- * Such a complementing {@link Cage} reduces possible numbers for its {@link Cell}s
- * at positions `(1, 2)` and `(1, 6)` to `7` and `9` (unique Sudoku numbers that add up to `16`).
+ * Such a complementing {@link Cage} reduces possible numbers to `7` and `9`
+ * (unique Sudoku numbers that add up to `16`)
+ * for its {@link Cell}s at positions `(1, 2)` and `(1, 6)`.
  *
  * And, since {@link House} has unique numbers, possible number options for `Cage 2` with sum `10`
  * and {@link Cell}s at locations `(1, 3)`, `(1, 4)`, `(1, 5)` reduce:
  * combination of numbers `1`, `2`, and `7` is irrelevant since it overlaps with `7`
  * residing in the complementing {@link Cage}.
+ *
  * This way, more and more hints can be derived recursively by applying this and other {@link Strategy}-ies.
  *
- * The same approach is applied NOT only to {@link Row}s but also to {@link Column}s and {@link Nonet}s.
+ * The same approach is applied *not* only to {@link Row}s but also to {@link Column}s and {@link Nonet}s.
  *
  * Also, this {@link Strategy} applies complement determination to the areas of
  * adjacent {@link Row}s and {@link Column}s in addition to individual {@link Row}s and {@link Column}s.
@@ -341,7 +342,8 @@ class IndexedCageModelsTracker {
  * (8, 3), (8, 4)
  * ```
  *
- * Non-adjacent areas are *not* analyzed because such an analysis will produce no valuable hints.
+ * Non-adjacent areas are *not* analyzed because such an analysis will produce no valuable hints
+ * given _input_ {@link Cage}s have connected {@link Cell}s.
  *
  * {@link Nonet}s are analyzed only individually without considering adjacent {@link Nonet} areas.
  *
