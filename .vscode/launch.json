@@ -933,6 +933,25 @@
             "presentation": {
                 "group": "Xperf"
             }
+        },
+        {
+            "name": "npm run test [solver/strategies/../reducePermsForCagesStrategy.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/strategies/tactics/loop/reducePermsForCagesStrategy.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
         }
     ]
 }
