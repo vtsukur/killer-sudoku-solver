@@ -49,10 +49,10 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * Cage 4. Sum: 11. Cells: (2, 0), (2, 1), (2, 2)
  * ```
  *
- * These {@link Cage}s cover full {@link Nonet} and do *not* have shared {@link Cell}s,
+ * These {@link Cage}s cover the entire {@link Nonet} and do *not* have shared {@link Cell}s,
  * so {@link Cell}s within these {@link Cage}s must have unique numbers from `1` to `9`.
  *
- * Since positions of particular {@link Cell}s do *not* matter (only their count for each {@link Cage}),
+ * Since the positions of particular {@link Cell}s do *not* matter (only their count for each {@link Cage}),
  * let us simplify {@link Cage} definitions for {@link Nonet} of index `0` to the following form:
  *
  * ```
@@ -71,8 +71,8 @@ import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy
  * Cage 4. Sum: 11. Cells: 3. Combinations: (1, 2, 8), (1, 3, 7), (1, 4, 6), (2, 3, 6), (2, 4, 5)
  * ```
  *
- * Now, it is trivial to observe that single-{@link Cell} `Cage 2` may have
- * only one {@link Combo}, which is `(8)`, and one number in the {@link Cell}, which is `8`.
+ * It is trivial to observe that single-{@link Cell} `Cage 2` may have
+ * only one {@link Combo} `(8)` and one number in the {@link Cell}, which is `8`.
  *
  * It means that {@link Combo}s for other {@link Cage}s should *not* have `8`:
  *
