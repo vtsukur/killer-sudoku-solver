@@ -341,7 +341,7 @@ class NonetProcessor {
      */
     private doExecute(cageMsStorage: IndexedNonetTouchingCageModelsStorage) {
         cageMsStorage.cageModels.forEach((cageMs, nonet: HouseIndex) => {
-            const protrusion = this.determineMeaningfulProtrusion(cageMs, nonet);
+            const protrusion = this.determineProtrusion(cageMs, nonet);
             if (protrusion) {
                 this._cageSlicer.addAndSliceResidualCageRecursively(protrusion);
             }
@@ -371,7 +371,7 @@ class NonetProcessor {
      * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxProtrusionSize}.
      * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
-    private determineMeaningfulProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
+    private determineProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
         const protrusiveCells = [];
         let cagesSum = 0;
 

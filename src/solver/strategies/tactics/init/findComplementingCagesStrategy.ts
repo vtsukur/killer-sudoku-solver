@@ -519,7 +519,7 @@ abstract class HouseAreasProcessor {
             areaCageMs: ReadonlyArray<CageModel>,
             areaCellIndices: ReadonlyCellIndicesCheckingSet,
             houseCount: number) {
-        const complement = this.determineMeaningfulComplement(areaCageMs, areaCellIndices, houseCount);
+        const complement = this.determineComplement(areaCageMs, areaCellIndices, houseCount);
         if (complement) {
             this._cageSlicer.addAndSliceResidualCageRecursively(complement);
             this.applySolvedCellsStrategyIfNecessary(complement);
@@ -547,7 +547,7 @@ abstract class HouseAreasProcessor {
      * in case search runs on adjacent {@link House}s.
      * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
-    private determineMeaningfulComplement(
+    private determineComplement(
             areaCageMs: ReadonlyArray<CageModel>,
             areaCellIndices: ReadonlyCellIndicesCheckingSet,
             houseCount: number): Cage | undefined {
