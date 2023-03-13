@@ -94,8 +94,8 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * Cage 5. Sum: 13. Cells: (2, 0), (2, 1), (2, 2)
  * ```
  *
- * It can be observed, that {@link Cage}s `2` and `4` contain 2 {@link Cell}s
- * which reside outside of the {@link Nonet} of index `0`:
+ * One can observe that {@link Cage}s `2` and `4` contain 2 {@link Cell}s
+ * that reside outside of the {@link Nonet} of index `0`:
  *
  * ```
  * // (row, column)
@@ -103,25 +103,26 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * ```
  *
  * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
- * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ * and it is trivial to derive the sum of the _protrusive_ {@link Cage}:
  *
  * ```
  * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 8 + 13 - 45 = 8). Cells: (0, 3), (1, 3)
  * ```
  *
- * Such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s at `(0, 3)` and `(1, 3)`,
- * to `1`, `2`, `3`, `5`, `6`, `7` (unique Sudoku numbers that add up to `8`)
- * and excludes `4`, `8` and `9`.
- * This is an extra hint for {@link Column} of index `3` and {@link Nonet} of index `1`,
- * which was *not* evident from original input.
+ * Such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s
+ * to `1`, `2`, `3`, `5`, `6`, and `7` (unique Sudoku numbers that add up to `8`)
+ * and excludes `4`, `8`, and `9`.
+ * This extra hint for {@link Column} of index `3` and {@link Nonet} of index `1`
+ * was *not* evident from the original input.
  *
- * The protrusive {@link Cage} in the example above must have unique numbers
+ * The _protrusive_ {@link Cage} in the example above must have unique numbers
  * as it lies within {@link Column} of index `3` (and {@link Nonet} of index `1`).
- * But, as initially stated in the definition of protrusive {@link Cage} this is *not* always the case.
+ * But, as initially stated in the definition of _protrusive_ {@link Cage},
+ * this is only *sometimes* the case.
  *
  * Let us consider another example for the same {@link Nonet} of index `0`.
  *
- * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
+ * Let us assume the following _input_ _non-overlapping_ {@link Cage}s
  * include all {@link Cell}s of {@link Nonet} of index `0`:
  *
  * ```
@@ -132,8 +133,8 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * Cage 5. Sum: 8.  Cells: (2, 2), (3, 2)
  * ```
  *
- * It can be observed, that {@link Cage}s `2` and `5` contain 2 {@link Cell}s
- * which reside outside of the {@link Nonet} of index `0`:
+ * One can observe that {@link Cage}s `2` and `5` contain 2 {@link Cell}s
+ * that reside outside of the {@link Nonet} of index `0`:
  *
  * ```
  * // (row, column)
@@ -141,24 +142,24 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * ```
  *
  * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
- * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ * and it is trivial to derive the sum of the _protrusive_ {@link Cage}:
  *
  * ```
  * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 13 + 8 - 45 = 8). Cells: (0, 3), (3, 2)
  * ```
  *
  * These 2 {@link Cell}s are *not* within the same {@link House}
- * (neither {@link Row}, nor {@link Column} or {@link Nonet})
- * so they MIGHT contain duplicates.
- * Still, such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s at `(0, 3)` and `(3, 2)`,
- * limits possible numbers to `1`, `2`, `3`, `4`, `5`, `6`, `7`
+ * (neither {@link Row} nor {@link Column} nor {@link Nonet})
+ * so they *might* contain duplicates.
+ * Still, such a _protrusive_ {@link Cage} reduces possible numbers for its {@link Cell}s
+ * to `1`, `2`, `3`, `4`, `5`, `6`, and `7`
  * and excludes `8` and `9` as possible numbers in those {@link Cell}s.
  * `4` is an option for both {@link Cell}s at `(0, 3)` and `(3, 2)` since it adds up to `8`
  * driven by the possibility of having non-unique numbers.
- * Still, this is an extra hint, which was also *not* evident from original input.
+ * Still, this extra hint was also *not* evident from the original input.
  *
- * {@link Nonet}s are analyzed only individually meaning
- * adjacent {@link Nonet} areas are *not* taken into account.
+ * {@link Nonet}s are analyzed *only* individually.
+ * This {@link Strategy} does not explore adjacent {@link Nonet} areas.
  *
  * This type represents the _initialization_ {@link Strategy} applied at most once
  * at the beginning of solving process for a particular {@link Puzzle}.
