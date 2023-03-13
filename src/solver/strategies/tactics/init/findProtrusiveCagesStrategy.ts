@@ -29,17 +29,17 @@ import { Strategy } from '../../strategy';
 export type Config = {
 
     /**
-     * Maximum amount of {@link Cell}s in a _protrusive_ {@link Cage}
-     * to consider such a {@link Cage} as successful search result.
+     * The maximum amount of {@link Cell}s in a _protrusive_ {@link Cage}
+     * to consider such a {@link Cage} as a successful search result.
      *
-     * The smaller the {@link Cage} the more hints it leads to.
+     * The smaller the {@link Cage}, the more hints it generates.
      * As a result, there is a limited sense of finding bigger {@link Cage}s
-     * as it requires more execution power and memory with less amount produced hints
-     * UNLESS determining all possible hints is critical.
+     * as it requires more execution power and memory with fewer produced suggestions
+     * *unless* determining all possible hints is critical.
      *
-     * Should be in the range of `[1, 9]`.
+     * It should be in the range of `[1, 9]`.
      *
-     * Default value is `5`.
+     * The default value is `5`.
      */
     readonly maxMeaningfulProtrusionSize: number;
 
