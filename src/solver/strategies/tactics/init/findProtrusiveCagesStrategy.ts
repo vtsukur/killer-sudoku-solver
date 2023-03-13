@@ -160,10 +160,10 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * {@link Nonet}s are analyzed only individually meaning
  * adjacent {@link Nonet} areas are *not* taken into account.
  *
- * This {@link Strategy} is an _initialization_ {@link Strategy},
- * so it is applied just once on the particular {@link Puzzle}.
+ * This type represents the _initialization_ {@link Strategy} applied at most once
+ * at the beginning of solving process for a particular {@link Puzzle}.
  *
- * The way this {@link Strategy} works can be configured by {@link Config} options.
+ * {@link Config} options allow configuring the way this {@link Strategy} works.
  *
  * @see Config
  *
