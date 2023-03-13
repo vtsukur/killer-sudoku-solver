@@ -122,7 +122,7 @@ export class HouseModelCagesCombinatorics {
      *   Cage 5
      * ]
      * ```
-     * then {@link actualSumCombosOfAllCages} will be ordered as follows:
+     * then `actualSumCombosOfAllCages` will be ordered as follows:
      * ```
      * [
      *   [ ... Combos for Cage 1 ],
