@@ -104,7 +104,7 @@ export type Config = {
      * The default value is `5`, which covers between 80% and 90% of all
      * possible {@link Cage} complements.
      */
-    readonly maxMeaningfulComplementSize: number;
+    readonly maxComplementSize: number;
 
     /**
      * Whether to collect statistics about found complementing {@link Cage}s.
@@ -129,7 +129,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
     isApplyToNonetAreas: true,
     minAdjacentRowsAndColumnsAreas: 1,
     maxAdjacentRowsAndColumnsAreas: 4,
-    maxMeaningfulComplementSize: 5,
+    maxComplementSize: 5,
     isCollectingStats: false
 });
 
@@ -543,7 +543,7 @@ abstract class HouseAreasProcessor {
      * Returns `undefined` if:
      *
      * - Found _complementing_ {@link Cage} is empty;
-     * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulComplementSize}
+     * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxComplementSize}
      * in case search runs on adjacent {@link House}s.
      * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
@@ -556,7 +556,7 @@ abstract class HouseAreasProcessor {
         const { nonOverlappingCagesAreaModel } = GridAreaModel.fromCageModels(areaCageMs, houseCount);
 
         const nHouseSum = Math.imul(houseCount, House.SUM);
-        const minNonOverlappingAreaCellCount = nHouseCellCount - this._config.maxMeaningfulComplementSize;
+        const minNonOverlappingAreaCellCount = nHouseCellCount - this._config.maxComplementSize;
 
         if (nonOverlappingCagesAreaModel.cellCount !== nHouseCellCount &&
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {

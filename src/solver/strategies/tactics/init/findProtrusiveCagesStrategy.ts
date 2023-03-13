@@ -41,7 +41,7 @@ export type Config = {
      *
      * The default value is `5`.
      */
-    readonly maxMeaningfulProtrusionSize: number;
+    readonly maxProtrusionSize: number;
 
 }
 
@@ -51,7 +51,7 @@ export type Config = {
  * Changing these defaults requires updating TSDoc for {@link Config}.
  */
 const DEFAULT_CONFIG: Config = Object.freeze({
-    maxMeaningfulProtrusionSize: 5
+    maxProtrusionSize: 5
 });
 
 /**
@@ -188,7 +188,7 @@ export class FindProtrusiveCagesStrategy extends Strategy {
         super(context);
 
         this._config = { ...DEFAULT_CONFIG, ...config };
-        this._nonetAreasProcessor = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxMeaningfulProtrusionSize);
+        this._nonetAreasProcessor = new NonetProcessor(this._model, this._context.cageSlicer, this._config.maxProtrusionSize);
     }
 
     /**
@@ -303,12 +303,12 @@ class NonetProcessor {
 
     private readonly _model: MasterModel;
     private readonly _cageSlicer: CageSlicer;
-    private readonly _maxMeaningfulProtrusionSize: number;
+    private readonly _maxProtrusionSize: number;
 
-    constructor(model: MasterModel, cageSlicer: CageSlicer, maxMeaningfulProtrusionSize: number) {
+    constructor(model: MasterModel, cageSlicer: CageSlicer, maxProtrusionSize: number) {
         this._model = model;
         this._cageSlicer = cageSlicer;
-        this._maxMeaningfulProtrusionSize = maxMeaningfulProtrusionSize;
+        this._maxProtrusionSize = maxProtrusionSize;
     }
 
     execute() {
@@ -337,7 +337,7 @@ class NonetProcessor {
      *
      * @param cageMsStorage - Stores actual {@link CageModel}s indexed by {@link Nonet}.
      *
-     * @see Config.maxMeaningfulProtrusionSize
+     * @see Config.maxProtrusionSize
      */
     private doExecute(cageMsStorage: IndexedNonetTouchingCageModelsStorage) {
         cageMsStorage.cageModels.forEach((cageMs, nonet: HouseIndex) => {
@@ -368,7 +368,7 @@ class NonetProcessor {
      * Returns `undefined` if:
      *
      * - Found _protrusive_ {@link Cage} is empty;
-     * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulProtrusionSize}.
+     * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxProtrusionSize}.
      * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulProtrusion(cageMs: ReadonlySet<CageModel>, nonet: HouseIndex): Cage | undefined {
@@ -391,7 +391,7 @@ class NonetProcessor {
             cagesSum += cageM.cage.sum;
         }
 
-        if (protrusiveCells.length > 0 && protrusiveCells.length <= this._maxMeaningfulProtrusionSize) {
+        if (protrusiveCells.length > 0 && protrusiveCells.length <= this._maxProtrusionSize) {
             return Cage.ofSum(cagesSum - House.SUM)
                 .withCells(protrusiveCells)
                 .setIsInput(this._model.isDerivedFromInputCage(protrusiveCells))

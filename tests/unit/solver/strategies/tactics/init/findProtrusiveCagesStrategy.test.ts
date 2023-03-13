@@ -72,7 +72,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
     test('Applying `Strategy` with adjusted `Config` onto `Nonet`s within Daily Challenge (2022-11-01) by Sudoku.com', () => {
         // When:
         new FindProtrusiveCagesStrategy(context, {
-            maxMeaningfulProtrusionSize: 1
+            maxProtrusionSize: 1
         }).execute();
 
         // Then:
