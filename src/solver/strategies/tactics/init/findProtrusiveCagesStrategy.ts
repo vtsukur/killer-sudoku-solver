@@ -256,17 +256,16 @@ class IndexedNonetTouchingCageModelsStorage {
 
     private deleteCageM(cageM: CageModel) {
         //
-        // Algorithm requires `Cage`s to be _non-overlapping_ with each other,
+        // The algorithm requires `Cage`s to have no shared `Cell`s,
         // so only _input_ `Cage`s are processed.
         //
         if (cageM.cage.isInput) {
             //
             // As opposed to `addCageM` method, this implementation
-            // does *not* check `Cage` to be within 1 `Nonet`
-            // because there are NO circumstances under which such a `Cage`
-            // will be actually deleted as a result of slicing.
+            // does *not* check `Cage` to be within 1 `Nonet` for faster processing
+            // because slicing does *not* happen for such `Cage`s.
             //
-            // In other words, the `Strategy` will *not* slice `Nonet` `Cage`s.
+            // In other words, the `Strategy` does *not* slice `Nonet` `Cage`s.
             //
             for (const cellM of cageM.cellMs) {
                 this.cageMsByCellM(cellM).delete(cageM);
