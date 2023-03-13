@@ -331,7 +331,7 @@ class NonetProcessor {
     }
 
     /**
-     * Executes key processing work by iterating over all {@link Nonet}s,
+     * Executes core processing work by iterating over all {@link Nonet}s,
      * determining _protrusive_ {@link Cage}s for each and
      * registering such {@link Cage}s if they are considered to be meaningful.
      *
