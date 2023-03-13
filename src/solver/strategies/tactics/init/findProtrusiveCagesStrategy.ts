@@ -156,7 +156,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * and excludes `8` and `9` as possible numbers in those {@link Cell}s.
  * `4` is an option for both {@link Cell}s at `(0, 3)` and `(3, 2)` since it adds up to `8`
  * driven by the possibility of having non-unique numbers.
- * Still, this extra hint was also *not* evident from the original input.
+ * Still, this extra hint was *not* evident from the original input.
  *
  * {@link Nonet}s are analyzed *only* individually.
  * This {@link Strategy} does not explore adjacent {@link Nonet} areas.
