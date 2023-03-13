@@ -332,10 +332,10 @@ class NonetProcessor {
 
     /**
      * Executes core processing work by iterating over all {@link Nonet}s,
-     * determining _protrusive_ {@link Cage}s for each and
-     * registering such {@link Cage}s if they are considered to be meaningful.
+     * determining _protrusive_ {@link Cage}s for each,
+     * and registering such {@link Cage}s if they are meaningful.
      *
-     * @param cageMsStorage - Tracks {@link CageModel}s indexed by {@link Nonet}.
+     * @param cageMsStorage - Stores actual {@link CageModel}s indexed by {@link Nonet}.
      *
      * @see Config.maxMeaningfulProtrusionSize
      */
