@@ -201,17 +201,17 @@ export class FindProtrusiveCagesStrategy extends Strategy {
 }
 
 /**
- * Tracks {@link CageModel}s indexed by {@link Nonet}.
+ * Stores actual {@link CageModel}s indexed by {@link Nonet}.
  *
- * Tracking is needed since {@link Cage}s are being registered and unregistered
- * when _protrusive_ {@link Cage}s are found and {@link Cage} slicing occurs.
- * Tracking is achieved by using event handlers on {@link MasterModel}.
+ * {@link MasterModel} event handlers help keep track of actual {@link CageModel}s
+ * since {@link Cage}s are registered and unregistered
+ * when finding _protrusive_ `Cage`s and slicing `Cage`s.
  *
- * Use of this data structure enhances implementation performance
- * since indexing allows faster enumeration of {@link CageModel}s by {@link Nonet} index
- * as opposed to full enumeration of {@link CageModel}s present within the {@link MasterModel}.
+ * This data structure improves performance
+ * since indexing allows faster enumeration of {@link CageModel}s
+ * by by {@link Nonet} index as opposed to an iteration over all {@link CageModel}s
  */
-class NonetTouchingCagesTracker {
+class IndexedNonetTouchingCageModelsStorage {
 
     private readonly _model: MasterModel;
     private readonly _cageModels: Array<Set<CageModel>>;
@@ -313,7 +313,7 @@ class NonetProcessor {
     }
 
     execute() {
-        const tracker = new NonetTouchingCagesTracker(this._model);
+        const tracker = new IndexedNonetTouchingCageModelsStorage(this._model);
         try {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
@@ -340,7 +340,7 @@ class NonetProcessor {
      *
      * @see Config.maxMeaningfulProtrusionSize
      */
-    private doExecute(tracker: NonetTouchingCagesTracker) {
+    private doExecute(tracker: IndexedNonetTouchingCageModelsStorage) {
         tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
             const protrusion = this.determineMeaningfulProtrusion(cageMs, nonet);
             if (protrusion) {
