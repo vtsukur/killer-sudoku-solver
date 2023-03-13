@@ -59,19 +59,19 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * finds _protrusive_ {@link Cage}s for {@link Nonet}s
  * and registers them in the {@link MasterModel}.
  *
- * A _protrusive_ {@link Cage} for a particular {@link Nonet} is determined in the following way:
+ * A _protrusive_ {@link Cage} for a particular {@link Nonet} is defined as follows:
  *
- *  1) A set of all _input_ _non-overlapping_ {@link Cage}s which
- * contain {@link Nonet}'s {@link Cell}(s) are found. Let's call it `CAGES`:
+ *  1) All _input_ _non-overlapping_ {@link Cage}s
+ * containing {@link Nonet}'s {@link Cell}(s) are found. Let's call it `CAGES`:
  *  - Such a set must contain ALL {@link Nonet}'s {@link Cell}s;
- *  - Such a set might also contain {@link Cell}s which do *not* belong to a {@link Nonet}
+ *  - Such a set might also contain {@link Cell}s that do *not* belong to a {@link Nonet}
  * since a {@link Cage} containing {@link Nonet} {@link Cell}(s)
- * does *not* necessarily reside within the {@link Nonet} _fully_.
+ * does *not* necessarily reside within the {@link Nonet} _entirely_.
  *  2) All {@link Cell}s which do *not* belong to a {@link Nonet} are becoming a part of
  * the _protrusive_ {@link Cage}.
  *  - The sum of such a _protrusive_ {@link Cage} will be
  * the difference between the sum of `CAGES` and the sum of all numbers in a {@link Nonet} (`45`);
- *  - These {@link Cell}s may have duplicate numbers.
+ *  - These {@link Cell}s *may have* duplicate numbers.
  *
  * For example, let us consider a {@link Nonet} of index `0`
  * (topmost leftmost {@link Nonet} in the {@link Grid}) with the following {@link Cell}s:
@@ -83,7 +83,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * (2, 0), (2, 1), (2, 2)
  * ```
  *
- * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
+ * Let us assume the following _input_ _non-overlapping_ {@link Cage}s
  * include all {@link Cell}s of {@link Nonet} of index `0`:
  *
  * ```
