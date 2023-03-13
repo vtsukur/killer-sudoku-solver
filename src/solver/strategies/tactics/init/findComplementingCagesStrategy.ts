@@ -6,6 +6,8 @@ import { Column } from '../../../../puzzle/column';
 import { Grid } from '../../../../puzzle/grid';
 import { House, HouseIndex } from '../../../../puzzle/house';
 import { Nonet } from '../../../../puzzle/nonet';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Puzzle } from '../../../../puzzle/puzzle';
 import { Row } from '../../../../puzzle/row';
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
