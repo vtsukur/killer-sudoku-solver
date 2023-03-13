@@ -10,6 +10,7 @@
     "test-single-puzzle": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/unit/solver/puzzles/solver.dailyKillerSudokuDotCom.test.js -t '24919'",
     "test-e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=\\.\\/tests\\/e2e\\/",
     "test-perf-gridAreaModel": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/models/elements/gridAreaModel.perf.test.ts",
+    "test-perf-masterInitStrategy": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/strategies/tactics/init/masterInitStrategy.perf.test.ts",
     "lint": "eslint . --ext .ts",
     "profile": "ndb ."
   },
