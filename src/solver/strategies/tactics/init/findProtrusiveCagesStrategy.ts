@@ -294,10 +294,10 @@ class IndexedNonetTouchingCageModelsStorage {
 }
 
 /**
- * Processor for {@link Nonet} areas
- * which defines key work of the overall {@link FindProtrusiveCagesStrategy}.
+ * Processor for individual {@link Nonet},
+ * which defines the core work of the overall {@link FindProtrusiveCagesStrategy}.
  *
- * The focus is around finding and registering _protrusive_ {@link Cage}s.
+ * The focus is on finding and registering _protrusive_ {@link Cage}s.
  */
 class NonetProcessor {
 
