@@ -1,6 +1,6 @@
-import { InstructToReduceAllCagesStrategy } from '../../../../../src/solver/strategies/tactics/instructToReduceAllCagesStrategy';
-import { puzzleSamples } from '../../../puzzle/puzzleSamples';
-import { newContext } from './init/builders';
+import { InstructToReduceAllCagesStrategy } from '../../../../../../src/solver/strategies/tactics/common/instructToReduceAllCagesStrategy';
+import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
+import { newContext } from '../init/builders';
 
 describe('Unit tests for `InstructToReduceAllCagesStrategy`', () => {
 

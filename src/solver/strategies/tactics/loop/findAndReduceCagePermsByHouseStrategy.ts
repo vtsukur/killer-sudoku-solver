@@ -1,16 +1,16 @@
 import * as _ from 'lodash';
-import { Cage } from '../../../puzzle/cage';
-import { Cell } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
-import { Sets } from '../../../util/sets';
-import { Combo, ReadonlyCombos } from '../../math';
-import { CageModel } from '../../models/elements/cageModel';
-import { HouseModel } from '../../models/elements/houseModel';
-import { NonetModel } from '../../models/elements/nonetModel';
-import { MasterModel } from '../../models/masterModel';
-import { CageSlicer } from '../../transform/cageSlicer';
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { Cage } from '../../../../puzzle/cage';
+import { Cell } from '../../../../puzzle/cell';
+import { House } from '../../../../puzzle/house';
+import { Sets } from '../../../../util/sets';
+import { Combo, ReadonlyCombos } from '../../../math';
+import { CageModel } from '../../../models/elements/cageModel';
+import { HouseModel } from '../../../models/elements/houseModel';
+import { NonetModel } from '../../../models/elements/nonetModel';
+import { MasterModel } from '../../../models/masterModel';
+import { CageSlicer } from '../../../transform/cageSlicer';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 

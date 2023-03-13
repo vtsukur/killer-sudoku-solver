@@ -13,11 +13,11 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../..
 import { CageModel } from '../../../models/elements/cageModel';
 import { GridAreaModel } from '../../../models/elements/gridAreaModel';
 import { HouseModel } from '../../../models/elements/houseModel';
-import { MasterModel, MasterModelEvents, CageRegisteredEventHandler, CageUnregisteredEventHandler } from '../../../models/masterModel';
+import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';
 import { CageSlicer } from '../../../transform/cageSlicer';
 import { Context } from '../../context';
 import { Strategy } from '../../strategy';
-import { ReduceCageNumOptsBySolvedCellsStrategy } from '../reduceCageNumOptsBySolvedCellsStrategy';
+import { ReduceCageNumOptsBySolvedCellsStrategy } from '../loop/reduceCageNumOptsBySolvedCellsStrategy';
 
 /**
  * Configuration options for {@link FindComplementingCagesStrategy}

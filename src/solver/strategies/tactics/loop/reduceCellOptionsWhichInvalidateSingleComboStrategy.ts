@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
-import { Grid } from '../../../puzzle/grid';
-import { HouseIndex } from '../../../puzzle/house';
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
-import { HouseModel } from '../../models/elements/houseModel';
-import { MasterModel } from '../../models/masterModel';
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { Grid } from '../../../../puzzle/grid';
+import { HouseIndex } from '../../../../puzzle/house';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
+import { HouseModel } from '../../../models/elements/houseModel';
+import { MasterModel } from '../../../models/masterModel';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
 

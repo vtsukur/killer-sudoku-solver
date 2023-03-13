@@ -1,13 +1,13 @@
 import { Strategy } from './strategy';
-import { DeepTryOptionsStrategy } from './tactics/deepTryOptionsStrategy';
-import { FindAndReduceCagePermsByHouseStrategy } from './tactics/findAndReduceCagePermsByHouseStrategy';
-import { FindNonetBasedFormulasStrategy } from './tactics/findNonetBasedFormulasStrategy';
-import { FindSameNumberOptsInSameCellsStrategy } from './tactics/findSameNumberOptsInSameCellsStrategy';
 import { MasterInitStrategy } from './tactics/init';
-import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/placeNumsForSingleOptionCellsStrategy';
-import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/reduceCellOptionsWhichInvalidateSingleComboStrategy';
-import { ReducePermsInCagesStrategy } from './tactics/reducePermsInCagesStrategy';
-import { ReflectSolvedCellsStrategy } from './tactics/reflectSolvedCellsStrategy';
+import { DeepTryOptionsStrategy } from './tactics/loop/deepTryOptionsStrategy';
+import { FindAndReduceCagePermsByHouseStrategy } from './tactics/loop/findAndReduceCagePermsByHouseStrategy';
+import { FindNonetBasedFormulasStrategy } from './tactics/loop/findNonetBasedFormulasStrategy';
+import { FindSameNumberOptsInSameCellsStrategy } from './tactics/loop/findSameNumberOptsInSameCellsStrategy';
+import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/loop/placeNumsForSingleOptionCellsStrategy';
+import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/loop/reduceCellOptionsWhichInvalidateSingleComboStrategy';
+import { ReducePermsInCagesStrategy } from './tactics/loop/reducePermsInCagesStrategy';
+import { ReflectSolvedCellsStrategy } from './tactics/loop/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends Strategy {
 

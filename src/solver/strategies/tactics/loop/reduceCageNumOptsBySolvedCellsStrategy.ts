@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
 

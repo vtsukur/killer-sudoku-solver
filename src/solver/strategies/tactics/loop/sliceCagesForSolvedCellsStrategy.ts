@@ -1,5 +1,5 @@
-import { Cage } from '../../../puzzle/cage';
-import { Strategy } from '../strategy';
+import { Cage } from '../../../../puzzle/cage';
+import { Strategy } from '../../strategy';
 
 export class SliceCagesForSolvedCellsStrategy extends Strategy {
 

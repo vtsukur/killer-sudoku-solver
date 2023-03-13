@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
-import { Cell, CellKey } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
-import { CellModel } from '../../models/elements/cellModel';
-import { ColumnModel } from '../../models/elements/columnModel';
-import { HouseModel } from '../../models/elements/houseModel';
-import { RowModel } from '../../models/elements/rowModel';
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { Cell, CellKey } from '../../../../puzzle/cell';
+import { House } from '../../../../puzzle/house';
+import { CellModel } from '../../../models/elements/cellModel';
+import { ColumnModel } from '../../../models/elements/columnModel';
+import { HouseModel } from '../../../models/elements/houseModel';
+import { RowModel } from '../../../models/elements/rowModel';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
 

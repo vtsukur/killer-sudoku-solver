@@ -5,11 +5,11 @@ import { Context } from '../../context';
 import { Strategy } from '../../strategy';
 import { FindCombosForHouseCagesStrategy } from './findCombosForHouseCagesStrategy';
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
+import { InstructToReduceAllCagesStrategy } from '../common/instructToReduceAllCagesStrategy';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
-import { InstructToReduceAllCagesStrategy } from '../instructToReduceAllCagesStrategy';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DeepTryOptionsStrategy } from '../deepTryOptionsStrategy';
+import { DeepTryOptionsStrategy } from '../loop/deepTryOptionsStrategy';
 
 /**
  * This {@link Strategy} for solving Killer Sudoku {@link Puzzle}

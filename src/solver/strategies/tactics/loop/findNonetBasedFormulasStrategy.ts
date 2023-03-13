@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
-import { Cell, CellKeysSet } from '../../../puzzle/cell';
-import { House, HouseIndex } from '../../../puzzle/house';
-import { SumAddendsCombinatorics } from '../../math';
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
-import { NonetModel } from '../../models/elements/nonetModel';
-import { MasterModel } from '../../models/masterModel';
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { Cell, CellKeysSet } from '../../../../puzzle/cell';
+import { House, HouseIndex } from '../../../../puzzle/house';
+import { SumAddendsCombinatorics } from '../../../math';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
+import { NonetModel } from '../../../models/elements/nonetModel';
+import { MasterModel } from '../../../models/masterModel';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
 

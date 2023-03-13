@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import { House, HouseIndex } from '../../../puzzle/house';
-import { Sets } from '../../../util/sets';
-import { CellModel } from '../../models/elements/cellModel';
-import { Strategy } from '../strategy';
+import { House, HouseIndex } from '../../../../puzzle/house';
+import { Sets } from '../../../../util/sets';
+import { CellModel } from '../../../models/elements/cellModel';
+import { Strategy } from '../../strategy';
 
 export class PlaceNumsForSingleOptionCellsStrategy extends Strategy {
 

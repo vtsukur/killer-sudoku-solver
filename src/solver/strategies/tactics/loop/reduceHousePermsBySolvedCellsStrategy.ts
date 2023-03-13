@@ -1,5 +1,5 @@
-import { ReducedCellModels } from '../reducedCellModels';
-import { Strategy } from '../strategy';
+import { ReducedCellModels } from '../../reducedCellModels';
+import { Strategy } from '../../strategy';
 
 export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 

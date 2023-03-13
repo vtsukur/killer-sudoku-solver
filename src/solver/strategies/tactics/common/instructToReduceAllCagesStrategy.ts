@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Cage } from '../../../puzzle/cage';
+import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Puzzle } from '../../../puzzle/puzzle';
+import { Puzzle } from '../../../../puzzle/puzzle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MasterModel } from '../../models/masterModel';
-import { Strategy } from '../strategy';
+import { MasterModel } from '../../../models/masterModel';
+import { Strategy } from '../../strategy';
 
 /**
  * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
