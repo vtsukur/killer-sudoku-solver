@@ -59,7 +59,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  * finds _protrusive_ {@link Cage}s for {@link Nonet}s
  * and registers them in the {@link MasterModel}.
  *
- * _Protrusive_ {@link Cage} for a particular {@link Nonet} is determined in the following way:
+ * A _protrusive_ {@link Cage} for a particular {@link Nonet} is determined in the following way:
  *
  *  1) A set of all _input_ _non-overlapping_ {@link Cage}s which
  * contain {@link Nonet}'s {@link Cell}(s) are found. Let's call it `CAGES`:

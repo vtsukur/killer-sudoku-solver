@@ -274,7 +274,7 @@ class IndexedCageModelsStorage {
  * finds _complementing_ {@link Cage}s for {@link Row}, {@link Column}, and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
  *
- * _Complementing_ {@link Cage} is a {@link Cage} that completes
+ * A _complementing_ {@link Cage} is a {@link Cage} that completes
  * {@link Row}, {@link Column}, or {@link Nonet} area
  * along with already present {@link Cage}s to cover the entire area with {@link Cell}s.
  *
