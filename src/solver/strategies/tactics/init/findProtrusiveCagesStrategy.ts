@@ -238,7 +238,7 @@ class IndexedNonetTouchingCageModelsStorage {
 
     private addCageM(cageM: CageModel) {
         //
-        // Algorithm requires `Cage`s to be _non-overlapping_ with each other,
+        // The algorithm requires `Cage`s to have no shared `Cell`s,
         // so only _input_ `Cage`s are processed.
         //
         if (cageM.cage.isInput) {
@@ -246,7 +246,7 @@ class IndexedNonetTouchingCageModelsStorage {
                 // [perf] Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.cageMsByCageM(cageM).add(cageM);
             } else {
-                // `Cage`s which touch more than 1 `Nonet` has to be iterated over fully.
+                // `Cage`s touching more than 1 `Nonet` must be fully iterated over.
                 for (const cellM of cageM.cellMs) {
                     this.cageMsByCellM(cellM).add(cageM);
                 }
