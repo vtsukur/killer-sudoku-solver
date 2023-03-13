@@ -378,7 +378,7 @@ class NonetProcessor {
         for (const cageM of cageMs) {
             //
             // [perf] `Nonet`-only `Cage` does *not* have protrusive `Cell`s by definition,
-            // so analysis is performed only for `Cage`s which touch more than 1 `Nonet`.
+            // so analysis is performed only for `Cage`s that touch more than 1 `Nonet`.
             //
             if (!cageM.positioningFlags.isWithinNonet) {
                 for (const cellM of cageM.cellMs) {
