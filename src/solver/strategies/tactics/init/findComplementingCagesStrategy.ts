@@ -18,9 +18,8 @@ import { Strategy } from '../../strategy';
 import { ReduceCageNumOptsBySolvedCellsStrategy } from '../reduceCageNumOptsBySolvedCellsStrategy';
 
 /**
- * Configuration options for {@link FindComplementingCagesStrategy}.
- *
- * Can be used for both tuning production execution as well as tailoring testing scenarios.
+ * Configuration options for {@link FindComplementingCagesStrategy}
+ * help tune production execution and tailor testing scenarios.
  *
  * @public
  */

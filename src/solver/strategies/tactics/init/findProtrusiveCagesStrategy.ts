@@ -21,9 +21,8 @@ import { Context } from '../../context';
 import { Strategy } from '../../strategy';
 
 /**
- * Configuration options for {@link FindProtrusiveCagesStrategy}.
- *
- * Can be used for both tuning production execution as well as tailoring testing scenarios.
+ * Configuration options for {@link FindProtrusiveCagesStrategy}
+ * help tune production execution and tailor testing scenarios.
  *
  * @public
  */
