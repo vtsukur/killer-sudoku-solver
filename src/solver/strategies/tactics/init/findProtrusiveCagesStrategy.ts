@@ -48,7 +48,7 @@ export type Config = {
 /**
  * Default {@link Config} options.
  *
- * When changing these defaults, TSDoc for {@link Config} should be updated as well.
+ * Changing these defaults requires updating TSDoc for {@link Config}.
  */
 const DEFAULT_CONFIG: Config = Object.freeze({
     maxMeaningfulProtrusionSize: 5
