@@ -196,80 +196,6 @@ class Stats {
 }
 
 /**
- * Type alias for the array of {@link CageModel} `Set`s
- * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
- */
-type IndexedHouseCageModels = Array<Set<CageModel>>;
-
-/**
- * Type alias for the read-only version of {@link IndexedHouseCageModels}.
- */
-type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
-
-/**
- * Stores actual {@link CageModel}s
- * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
- *
- * {@link MasterModel} event handlers help keep track of actual {@link CageModel}s
- * since {@link Cage}s are registered and unregistered
- * when finding _complementing_ `Cage`s and slicing `Cage`s.
- *
- * This data structure improves performance
- * since indexing allows faster enumeration of {@link CageModel}s
- * by their topmost {@link Row} and leftmost {@link Column}
- * as opposed to an iteration over all {@link CageModel}s
- * present within the {@link MasterModel}.
- */
-class IndexedCageModelsStorage {
-
-    private readonly _model: MasterModel;
-
-    private readonly _rowIndexedCages: IndexedHouseCageModels;
-    private readonly _columnIndexedCages: IndexedHouseCageModels;
-
-    private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].add(cageM);
-        this._columnIndexedCages[cageM.minCol].add(cageM);
-    };
-
-    private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].delete(cageM);
-        this._columnIndexedCages[cageM.minCol].delete(cageM);
-    };
-
-    constructor(model: MasterModel) {
-        this._model = model;
-
-        this._rowIndexedCages = House.INDICES.map(() => new Set());
-        this._columnIndexedCages = House.INDICES.map(() => new Set());
-
-        for (const cageM of model.cageModelsMap.values()) {
-            this._rowIndexedCages[cageM.minRow].add(cageM);
-            this._columnIndexedCages[cageM.minCol].add(cageM);
-        }
-    }
-
-    get rowIndexedCages(): ReadonlyIndexedHouseCageModels {
-        return this._rowIndexedCages;
-    }
-
-    get columnIndexedCages(): ReadonlyIndexedHouseCageModels {
-        return this._columnIndexedCages;
-    }
-
-    attachEventHandlers() {
-        this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
-        this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
-    }
-
-    deattachEventHandlers() {
-        this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
-        this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
-    }
-
-};
-
-/**
  * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
  * finds _complementing_ {@link Cage}s for {@link Row}, {@link Column}, and {@link Nonet} areas
  * and registers them in the {@link MasterModel}.
@@ -424,6 +350,80 @@ export class FindComplementingCagesStrategy extends Strategy {
     }
 
 }
+
+/**
+ * Type alias for the array of {@link CageModel} `Set`s
+ * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
+ */
+type IndexedHouseCageModels = Array<Set<CageModel>>;
+
+/**
+ * Type alias for the read-only version of {@link IndexedHouseCageModels}.
+ */
+type ReadonlyIndexedHouseCageModels = ReadonlyArray<ReadonlySet<CageModel>>;
+
+/**
+ * Stores actual {@link CageModel}s
+ * indexed by {@link Cage}'s topmost {@link Row} and leftmost {@link Column}.
+ *
+ * {@link MasterModel} event handlers help keep track of actual {@link CageModel}s
+ * since {@link Cage}s are registered and unregistered
+ * when finding _complementing_ `Cage`s and slicing `Cage`s.
+ *
+ * This data structure improves performance
+ * since indexing allows faster enumeration of {@link CageModel}s
+ * by their topmost {@link Row} and leftmost {@link Column}
+ * as opposed to an iteration over all {@link CageModel}s
+ * present within the {@link MasterModel}.
+ */
+class IndexedCageModelsStorage {
+
+    private readonly _model: MasterModel;
+
+    private readonly _rowIndexedCages: IndexedHouseCageModels;
+    private readonly _columnIndexedCages: IndexedHouseCageModels;
+
+    private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
+        this._rowIndexedCages[cageM.minRow].add(cageM);
+        this._columnIndexedCages[cageM.minCol].add(cageM);
+    };
+
+    private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
+        this._rowIndexedCages[cageM.minRow].delete(cageM);
+        this._columnIndexedCages[cageM.minCol].delete(cageM);
+    };
+
+    constructor(model: MasterModel) {
+        this._model = model;
+
+        this._rowIndexedCages = House.INDICES.map(() => new Set());
+        this._columnIndexedCages = House.INDICES.map(() => new Set());
+
+        for (const cageM of model.cageModelsMap.values()) {
+            this._rowIndexedCages[cageM.minRow].add(cageM);
+            this._columnIndexedCages[cageM.minCol].add(cageM);
+        }
+    }
+
+    get rowIndexedCages(): ReadonlyIndexedHouseCageModels {
+        return this._rowIndexedCages;
+    }
+
+    get columnIndexedCages(): ReadonlyIndexedHouseCageModels {
+        return this._columnIndexedCages;
+    }
+
+    attachEventHandlers() {
+        this._model.addEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.addEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
+
+    deattachEventHandlers() {
+        this._model.removeEventHandler(MasterModelEvents.CAGE_REGISTERED, this._cageRegisteredEventHandler);
+        this._model.removeEventHandler(MasterModelEvents.CAGE_UNREGISTERED, this._cageUnregisteredEventHandler);
+    }
+
+};
 
 /**
  * Context for {@link HouseAreasProcessor} execution.
