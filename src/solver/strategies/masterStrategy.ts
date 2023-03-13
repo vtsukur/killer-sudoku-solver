@@ -6,7 +6,7 @@ import { FindNonetBasedFormulasStrategy } from './tactics/loop/findNonetBasedFor
 import { FindSameNumberOptsInSameCellsStrategy } from './tactics/loop/findSameNumberOptsInSameCellsStrategy';
 import { PlaceNumsForSingleOptionCellsStrategy } from './tactics/loop/placeNumsForSingleOptionCellsStrategy';
 import { ReduceCellOptionsWhichInvalidateSingleComboStrategy } from './tactics/loop/reduceCellOptionsWhichInvalidateSingleComboStrategy';
-import { ReducePermsForCagesStrategy } from './tactics/loop/reducePermsInCagesStrategy';
+import { ReducePermsForCagesStrategy } from './tactics/loop/reducePermsForCagesStrategy';
 import { ReflectSolvedCellsStrategy } from './tactics/loop/reflectSolvedCellsStrategy';
 
 export class MasterStrategy extends Strategy {
