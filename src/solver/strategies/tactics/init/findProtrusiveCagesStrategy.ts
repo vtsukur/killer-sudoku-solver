@@ -333,7 +333,7 @@ class NonetProcessor {
     /**
      * Executes core processing work by iterating over all {@link Nonet}s,
      * determining _protrusive_ {@link Cage}s for each,
-     * and registering such {@link Cage}s if they are meaningful.
+     * and registering such {@link Cage}s.
      *
      * @param cageMsStorage - Stores actual {@link CageModel}s indexed by {@link Nonet}.
      *
