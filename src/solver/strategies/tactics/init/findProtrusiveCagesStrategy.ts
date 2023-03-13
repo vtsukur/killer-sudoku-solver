@@ -356,15 +356,16 @@ class NonetProcessor {
      * and {@link House.SUM}.
      *
      * @param cageMs - {@link CageModel}s with {@link Cage}s
-     * which have at least one {@link Cell} within the {@link Nonet}.
+     * that have at least one {@link Cell} within the {@link Nonet}.
      * @param nonet - Index of the target {@link Nonet}.
      *
      * @returns _Protrusive_ {@link Cage} for a particular {@link Nonet}
      * by finding all {@link Cell}s which are outside of the {@link Nonet}
      * and calculating the sum as the difference between the sum of
      * {@link Cage}s that have at least one {@link Cell} within the {@link Nonet}
-     * and {@link House.SUM} OR
-     * `undefined` if:
+     * and {@link House.SUM}.
+     *
+     * Returns `undefined` if:
      *
      * - Found _protrusive_ {@link Cage} is empty;
      * - Found _protrusive_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulProtrusionSize}.

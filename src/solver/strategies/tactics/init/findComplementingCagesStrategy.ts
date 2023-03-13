@@ -544,7 +544,8 @@ abstract class HouseAreasProcessor {
      *
      * - Found _complementing_ {@link Cage} is empty;
      * - Found _complementing_ {@link Cage} has more {@link Cell}s than {@link Config.maxMeaningfulComplementSize}
-     * in case search runs on adjacent {@link House}s. See {@link FindComplementingCagesStrategy} TSDoc for more info.
+     * in case search runs on adjacent {@link House}s.
+     * See {@link FindComplementingCagesStrategy} TSDoc for more info.
      */
     private determineMeaningfulComplement(
             areaCageMs: ReadonlyArray<CageModel>,
