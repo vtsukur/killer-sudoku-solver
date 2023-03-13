@@ -55,8 +55,8 @@ const DEFAULT_CONFIG: Config = Object.freeze({
 });
 
 /**
- * {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
- * which finds _protrusive_ {@link Cage}s for {@link Nonet}s
+ * This {@link Strategy} for solving the Killer Sudoku {@link Puzzle}
+ * finds _protrusive_ {@link Cage}s for {@link Nonet}s
  * and registers them in the {@link MasterModel}.
  *
  * _Protrusive_ {@link Cage} for a particular {@link Nonet} is determined in the following way:
@@ -75,6 +75,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * For example, let us consider a {@link Nonet} of index `0`
  * (topmost leftmost {@link Nonet} in the {@link Grid}) with the following {@link Cell}s:
+ *
  * ```
  * // (row, column)
  * (0, 0), (0, 1), (0, 2)
@@ -84,6 +85,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
  * include all {@link Cell}s of {@link Nonet} of index `0`:
+ *
  * ```
  * Cage 1. Sum: 14. Cells: (0, 0), (0, 1)
  * Cage 2. Sum: 15. Cells: (0, 2), (0, 3)
@@ -94,12 +96,15 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * It can be observed, that {@link Cage}s `2` and `4` contain 2 {@link Cell}s
  * which reside outside of the {@link Nonet} of index `0`:
+ *
  * ```
  * // (row, column)
  * (0, 3), (1, 3)
  * ```
+ *
  * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
  * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ *
  * ```
  * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 8 + 13 - 45 = 8). Cells: (0, 3), (1, 3)
  * ```
@@ -118,6 +123,7 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * Let us assume the following set of _input_ _non-overlapping_ {@link Cage}s
  * include all {@link Cell}s of {@link Nonet} of index `0`:
+ *
  * ```
  * Cage 1. Sum: 14. Cells: (0, 0), (0, 1)
  * Cage 2. Sum: 15. Cells: (0, 2), (0, 3)
@@ -128,12 +134,15 @@ const DEFAULT_CONFIG: Config = Object.freeze({
  *
  * It can be observed, that {@link Cage}s `2` and `5` contain 2 {@link Cell}s
  * which reside outside of the {@link Nonet} of index `0`:
+ *
  * ```
  * // (row, column)
  * (0, 3), (3, 2)
  * ```
+ *
  * These 2 {@link Cell}s describe the _protrusive_ {@link Cage} to {@link Nonet} of index `0`,
  * and it is trivial to derive sum of the _protrusive_ {@link Cage}:
+ *
  * ```
  * Protrusive Cage. Sum: 8 (calculated as 14 + 15 + 3 + 13 + 8 - 45 = 8). Cells: (0, 3), (3, 2)
  * ```
