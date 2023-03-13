@@ -1,7 +1,7 @@
 import { ReducedCellModels } from '../../reducedCellModels';
 import { Strategy } from '../../strategy';
 
-export class ReducePermsInCagesStrategy extends Strategy {
+export class ReducePermsForCagesStrategy extends Strategy {
 
     execute() {
         do {
