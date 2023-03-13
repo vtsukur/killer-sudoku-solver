@@ -315,17 +315,17 @@ class NonetProcessor {
         const cageMsStorage = new IndexedNonetTouchingCageModelsStorage(this._model);
         try {
             //
-            // Add event handlers to listen to `Cage` registration and unregistration
-            // when _protrusive_ `Cage`s are found and `Cage` slicing occurs.
-            // This is necessary because slicing results in addition and deletion of `Cage`s
-            // which this class needs to be aware of.
+            // Adding event handlers to listen to `Cage` registration and deregistration
+            // when finding _protrusive_ `Cage`s and slicing `Cage`s.
+            // This is necessary because slicing results in the addition and deletion of `Cage`s
+            // which this class is tracking.
             //
             cageMsStorage.attachEventHandlers();
 
             // Running core work.
             this.doExecute(cageMsStorage);
         } finally {
-            // Cleanup of event handlers even if error is thrown to avoid broken state.
+            // Cleaning up event handlers to avoid a broken state even if an error throws.
             cageMsStorage.deattachEventHandlers();
         }
     }
