@@ -594,6 +594,26 @@
         },
 
         {
+            "name": "npm run test [solver/strategies/../instructToReduceAllCagesStrategy]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/tactics/common/instructToReduceAllCagesStrategy.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverCommonStrategies"
+            }
+        },
+
+        {
             "name": "npm run test [solver/strategies/../findCombosForHouseCagesStrategy]",
             "request": "launch",
             "runtimeArgs": [
@@ -667,26 +687,6 @@
             "type": "node",
             "presentation": {
                 "group": "solverInitStrategies"
-            }
-        },
-
-        {
-            "name": "npm run test [solver/strategies/../instructToReduceAllCagesStrategy]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/strategies/tactics/instructToReduceAllCagesStrategy.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solverLoopStrategies"
             }
         },
 
