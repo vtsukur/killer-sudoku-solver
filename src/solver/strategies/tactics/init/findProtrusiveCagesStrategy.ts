@@ -313,7 +313,7 @@ class NonetProcessor {
     }
 
     execute() {
-        const tracker = new IndexedNonetTouchingCageModelsStorage(this._model);
+        const cageMsStorage = new IndexedNonetTouchingCageModelsStorage(this._model);
         try {
             //
             // Add event handlers to listen to `Cage` registration and unregistration
@@ -321,13 +321,13 @@ class NonetProcessor {
             // This is necessary because slicing results in addition and deletion of `Cage`s
             // which this class needs to be aware of.
             //
-            tracker.attachEventHandlers();
+            cageMsStorage.attachEventHandlers();
 
             // Running core work.
-            this.doExecute(tracker);
+            this.doExecute(cageMsStorage);
         } finally {
             // Cleanup of event handlers even if error is thrown to avoid broken state.
-            tracker.deattachEventHandlers();
+            cageMsStorage.deattachEventHandlers();
         }
     }
 
@@ -336,12 +336,12 @@ class NonetProcessor {
      * determining _protrusive_ {@link Cage}s for each and
      * registering such {@link Cage}s if they are considered to be meaningful.
      *
-     * @param tracker - Tracks {@link CageModel}s indexed by {@link Nonet}.
+     * @param cageMsStorage - Tracks {@link CageModel}s indexed by {@link Nonet}.
      *
      * @see Config.maxMeaningfulProtrusionSize
      */
-    private doExecute(tracker: IndexedNonetTouchingCageModelsStorage) {
-        tracker.cageModels.forEach((cageMs, nonet: HouseIndex) => {
+    private doExecute(cageMsStorage: IndexedNonetTouchingCageModelsStorage) {
+        cageMsStorage.cageModels.forEach((cageMs, nonet: HouseIndex) => {
             const protrusion = this.determineMeaningfulProtrusion(cageMs, nonet);
             if (protrusion) {
                 this._cageSlicer.addAndSliceResidualCageRecursively(protrusion);
