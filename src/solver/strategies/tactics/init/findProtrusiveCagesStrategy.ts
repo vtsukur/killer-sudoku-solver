@@ -243,7 +243,7 @@ class IndexedNonetTouchingCageModelsStorage {
         //
         if (cageM.cage.isInput) {
             if (cageM.positioningFlags.isWithinNonet) {
-                // [perf] Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
+                // [performance] Adding `Nonet`-only `Cage` is simpler: NO need to iterate over each `Cell`.
                 this.cageMsByCageM(cageM).add(cageM);
             } else {
                 // `Cage`s touching more than 1 `Nonet` must be fully iterated over.
@@ -377,7 +377,7 @@ class NonetProcessor {
 
         for (const cageM of cageMs) {
             //
-            // [perf] `Nonet`-only `Cage` does *not* have protrusive `Cell`s by definition,
+            // [performance] `Nonet`-only `Cage` does *not* have protrusive `Cell`s by definition,
             // so analysis is performed only for `Cage`s that touch more than 1 `Nonet`.
             //
             if (!cageM.positioningFlags.isWithinNonet) {

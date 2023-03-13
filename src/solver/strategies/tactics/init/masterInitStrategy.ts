@@ -39,7 +39,7 @@ export class MasterInitStrategy extends Strategy {
     execute() {
         if (!this._context.skipInit) {
             //
-            // [perf] Disabling `FindProtrusiveCagesStrategy` as real-world test runs
+            // [performance] Disabling `FindProtrusiveCagesStrategy` as real-world test runs
             // showed that overall solving is slowed down by up to 20% without producing significant hints.
             //
             // this.executeAnother(FindProtrusiveCagesStrategy);
