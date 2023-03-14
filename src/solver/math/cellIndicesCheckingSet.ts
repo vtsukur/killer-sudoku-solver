@@ -372,7 +372,7 @@ export class CellIndicesCheckingSet implements
             while (i !== 0) {
                 //
                 // Produce a number which has only 1 bit set to `1` -
-                // and that bit is a `Cell`s bit at the rightmost position.
+                // and that bit is a `Cell`'s bit at the rightmost position.
                 // This number is a _power of 2_.
                 //
                 const rightMostBit = i & -i;
