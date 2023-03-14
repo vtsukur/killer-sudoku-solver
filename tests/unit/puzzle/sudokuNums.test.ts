@@ -1,6 +1,7 @@
 import { SudokuNums } from '../../../src/puzzle/sudokuNums';
 
 describe('Unit tests for `SudokuNums`', () => {
+
     test('Minimum Sudoku number is 1', () => {
         expect(SudokuNums.MIN).toEqual(1);
     });
@@ -14,4 +15,5 @@ describe('Unit tests for `SudokuNums`', () => {
             1, 2, 3, 4, 5, 6, 7, 8, 9
         ]);
     });
+
 });
