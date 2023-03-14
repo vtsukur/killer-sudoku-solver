@@ -103,9 +103,7 @@ export class PowersOf2Lut<T> {
         return this._vals[lutIndex];
     }
 
-    collect(bitStore: number): ReadonlyArray<T> {
-        const val = new Array<T>();
-
+    collect(bitStore: number, to: Array<T> = new Array<T>): ReadonlyArray<T> {
         // Capturing bit store value.
         let i = bitStore;
 
@@ -119,7 +117,7 @@ export class PowersOf2Lut<T> {
             const rightMostBit = PowersOf2Lut.rightMostBit(i);
 
             // Add a `Cell` from the lookup table.
-            val.push(this.get(rightMostBit));
+            to.push(this.get(rightMostBit));
 
             //
             // Reset rightmost `1` bit to `0` so that the next iteration
@@ -128,7 +126,7 @@ export class PowersOf2Lut<T> {
             i = PowersOf2Lut.resetRightMostBit(i, rightMostBit);
         }
 
-        return val;
+        return to;
     }
 
 }

@@ -1,6 +1,7 @@
-import { Cell, CellsMatrix, ReadonlyCells } from '../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
  * Checking set of {@link Cell} indices with efficient storage & fast checking operations
@@ -103,66 +104,15 @@ export class CellIndicesCheckingSet implements
     });
 
     /**
-     * Magic number `k` that produces unique small number for a 32-bit _power of 2_ integer `n`
-     * with `n % k` (modulp) operation.
-     *
-     * These `n % k` numbers are used to index the lookup table.
-     *
-     * Full table of association between the _power of 2_ (`n`) and this `k`:
-     *
-     * ----------
-     *  n   |   k
-     * ----------
-     *  0   |   1
-     *  1   |   2
-     *  2   |   4
-     *  3   |   8
-     *  4   |  16
-     *  5   |  32
-     *  6   |  27
-     *  7   |  17
-     *  8   |  34
-     *  9   |  31
-     * 10   |  25
-     * 11   |  13
-     * 12   |  26
-     * 13   |  15
-     * 14   |  30
-     * 15   |  23
-     * 16   |   9
-     * 17   |  18
-     * 18   |  36
-     * 19   |  35
-     * 20   |  33
-     * 21   |  29
-     * 22   |  21
-     * 23   |   5
-     * 24   |  10
-     * 25   |  20
-     * 26   |   3
-     * 27   |   6
-     * 28   |  12
-     * 29   |  24
-     * 30   |  11
-     * 31   | -22
-     * ----------
-     */
-    private static readonly _POWERS_OF_TWO_LUT_K = 37;
-
-    private static _newPowersOfTwoLookUpTable() {
-        return new Array<Cell>(this._POWERS_OF_TWO_LUT_K);
-    }
-
-    /**
      * Lookup table for {@link Cell}s represented as the array of arrays
      * indexed by bit store and then by unique number for the 32-bit _power of 2_ integer.
      */
-    private static readonly _BITS_TO_CELLS_LUT: CellsMatrix = (() => {
+    private static readonly _LOOKUP_TABLE: ReadonlyArray<PowersOf2Lut<Cell>> = (() => {
         // Creating empty lookup tables for each bit store.
-        const val: Array<Array<Cell>> = [
-            this._newPowersOfTwoLookUpTable(),
-            this._newPowersOfTwoLookUpTable(),
-            this._newPowersOfTwoLookUpTable()
+        const val: Array<PowersOf2Lut<Cell>> = [
+            new PowersOf2Lut<Cell>(),
+            new PowersOf2Lut<Cell>(),
+            new PowersOf2Lut<Cell>()
         ];
 
         // Iterating over all possible `Cell` indices on the `Grid`.
@@ -179,22 +129,6 @@ export class CellIndicesCheckingSet implements
             const bitStoreIndex = ~~(index / this._BITS_PER_BIT_STORE);
 
             //
-            // Calculating index of the entry in the lookup table.
-            //
-            //  - `index % this._BITS_PER_BIT_STORE` returns index of the `Cell`s bit in the bit store.
-            //  - `1 << (index % this._BITS_PER_BIT_STORE)` produces a number which has only 1 bit set -
-            //    and that bit is a `Cell`s bit. This number is a _power of 2_.
-            //  - modulo on `K` produces unique small number for 32-bit _power of 2_ integer.
-            //
-            // Example:
-            //  - `index`                                                                 // => `35`
-            //  - `index % this._BITS_PER_BIT_STORE`                                      // => `3`
-            //  - `1 << (index % this._BITS_PER_BIT_STORE)`                               // => `8`
-            //  - `(1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K` // => `34` (see {@link _POWERS_OF_TWO_LUT_K})
-            //
-            const lutIndex = (1 << (index % this._BITS_PER_BIT_STORE)) % this._POWERS_OF_TWO_LUT_K;
-
-            //
             // Calculating index of the `Cell` `Row` from absolute `Cell` index on the `Grid`.
             //
             // Same as `Math.trunc(index / Grid.GRID_SIDE_CELL_COUNT)` but `~~` is faster.
@@ -204,8 +138,11 @@ export class CellIndicesCheckingSet implements
             // Calculating index of the `Cell` `Column` from absolute `Cell` index on the `Grid`.
             const col = index % Grid.SIDE_CELL_COUNT;
 
+            // Creating `Cell` with calculated `Row` and `Column` indices.
+            const cell = Cell.at(row, col);
+
             // Storing `Cell` value in the lookup table.
-            val[bitStoreIndex][lutIndex] = Cell.at(row, col);
+            val[bitStoreIndex].set(index % this._BITS_PER_BIT_STORE, cell);
         }
 
         return val;
@@ -363,32 +300,8 @@ export class CellIndicesCheckingSet implements
         const val = new Array<Cell>();
         let bitStoreIndex = 0;
 
-        // For each bit store ...
         while (bitStoreIndex < 3) {
-            // ... capture it's value
-            let i = this._bitStores[bitStoreIndex];
-            // ... for fast iteration consider `1` bits ONLY -- as these bits represent included `Cell`s
-            // and the vast majority of use cases involve `Cage`s with up to 9 `Cell`s.
-            while (i !== 0) {
-                //
-                // Produce a number which has only 1 bit set to `1` -
-                // and that bit is a `Cell`'s bit at the rightmost position.
-                // This number is a _power of 2_.
-                //
-                const rightMostBit = i & -i;
-
-                // Calculate index of the entry in the lookup table.
-                const lutIndex = rightMostBit % CellIndicesCheckingSet._POWERS_OF_TWO_LUT_K;
-
-                // Add a `Cell` from the lookup table.
-                val.push(CellIndicesCheckingSet._BITS_TO_CELLS_LUT[bitStoreIndex][lutIndex]);
-
-                //
-                // Reset rightmost `1` bit to `0` so that the next iteration
-                // find next `1` bit (if present) in the right-to-left direction.
-                //
-                i = i ^ rightMostBit;
-            }
+            CellIndicesCheckingSet._LOOKUP_TABLE[bitStoreIndex].collect(this._bitStores[bitStoreIndex], val);
             bitStoreIndex++;
         }
 
