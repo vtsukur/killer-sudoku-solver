@@ -5,7 +5,6 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { SudokuNumsCheckingSet } from '../../math/sudokuNumsCheckingSet';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -132,13 +131,13 @@ export class CageModel {
     }
 
     updateCombinations(combos: ReadonlyArray<Combo>) {
-        const nums = SudokuNumsCheckingSet.newEmpty();
+        const nums = new Set<number>();
 
         if (this._combosMap.size !== 0) {
             const newCombosMap = new Map<ComboKey, Combo>();
 
             combos.forEach(combo => {
-                nums.add(combo.numsCheckingSet);
+                Sets.U(nums, combo);
                 newCombosMap.set(combo.key, combo);
             });
 
@@ -149,7 +148,7 @@ export class CageModel {
             }
         } else {
             combos.forEach(combo => {
-                nums.add(combo.numsCheckingSet);
+                Sets.U(nums, combo);
                 this._combosMap.set(combo.key, combo);
             });
         }
