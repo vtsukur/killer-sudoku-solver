@@ -9,8 +9,9 @@ const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
 const cell3 = Cell.at(0, 2);
 
-describe('CageModel tests', () => {
-    test('Initial reduction for CageModel of size 2 with a single combination', () => {
+describe('Unit test for `CageModel`', () => {
+
+    test('Initial reduction for `CageModel` of size 2 with a single `Combo`', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
@@ -25,7 +26,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Initial reduction for CageModel of size 2 with several combinations', () => {
+    test('Initial reduction for `CageModel` of size 2 with several `Combo`s', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(13).withCell(cell1).withCell(cell2).new();
@@ -42,7 +43,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Initial reduction for CageModel of size 3 with a single combination', () => {
+    test('Initial reduction for `CageModel` of size 3 with a single `Combo`', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cellM3 = new CellModel(cell3);
@@ -59,7 +60,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reduction for CageModel of size 2 with several combinations after deleting one of the cell options', () => {
+    test('Reduction for `CageModel` of size 2 with several `Combo`s after deleting one of the `Cell` number options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
@@ -81,7 +82,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reduction for CageModel of size 2 with several combinations after deletin few cell options', () => {
+    test('Reduction for `CageModel` of size 2 with several `Combo`s after deletin few `Cell` number options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
@@ -103,7 +104,7 @@ describe('CageModel tests', () => {
         ]);
     });
 
-    test('Reduction for CageModel of size 7 and sum 31 with 2 combinations after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
+    test('Reduction for `CageModel` of size 7 and sum 31 with 2 `Combo`s after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
         const cell_04 = Cell.at(0, 4);
         const cell_05 = Cell.at(0, 5);
         const cell_06 = Cell.at(0, 6);
@@ -151,4 +152,5 @@ describe('CageModel tests', () => {
             Combo.of(1, 2, 3, 4, 6, 7, 8)
         ]);
     });
+
 });
