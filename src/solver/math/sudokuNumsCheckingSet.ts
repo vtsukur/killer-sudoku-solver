@@ -1,5 +1,6 @@
 import { SudokuNums } from '../../puzzle/sudokuNums';
 import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
  * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations
@@ -18,6 +19,13 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
      * Returns copy of the bit storage used for efficient checking for this numbers set.
      */
     get bitStore(): BitStore32;
+
+    /**
+     * Produces numbers which are included in this checking set.
+     *
+     * @returns Numbers which are included in this checking set.
+     */
+    nums(): ReadonlyArray<number>;
 
     /**
      * Returns new checking set with Sudoku numbers which are *not* present in the current checking set.
@@ -44,6 +52,22 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
 export class SudokuNumsCheckingSet implements
         ReadonlySudokuNumsCheckingSet,
         NumsCheckingSet<ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet> {
+
+    /**
+     * Lookup table for numbers represented as the array
+     * indexed by unique number for the 32-bit _power of 2_ integer.
+     */
+    private static readonly _LOOKUP_TABLE: PowersOf2Lut<number> = (() => {
+        // Creating empty lookup tables for each bit store.
+        const val = new PowersOf2Lut<number>();
+
+        // Iterating over all possible `Cell` indices on the `Grid`.
+        for (const index of SudokuNums.RANGE) {
+            val.set(index, index);
+        }
+
+        return val;
+    })();
 
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,
@@ -119,6 +143,13 @@ export class SudokuNumsCheckingSet implements
      */
     get bitStore() {
         return this._bitStore;
+    }
+
+    /**
+     * @see ReadonlySudokuNumsCheckingSet.nums
+     */
+    nums() {
+        return SudokuNumsCheckingSet._LOOKUP_TABLE.collect(this._bitStore);
     }
 
     /**

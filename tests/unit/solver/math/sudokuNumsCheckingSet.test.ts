@@ -66,6 +66,10 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHave(9)).toBeFalsy();
     });
 
+    test('Producing included numbers', () => {
+        expect(SudokuNumsCheckingSet.of(1, 5, 9).nums()).toEqual([ 1, 5, 9 ]);
+    });
+
     test('Instance of `SudokuNumsCheckingSet` with remaining numbers', () => {
         expect(SudokuNumsCheckingSet.newEmpty().remaining.bitStore).toBe(
             SudokuNumsCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore
