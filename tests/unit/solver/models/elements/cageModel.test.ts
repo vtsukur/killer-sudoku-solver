@@ -9,7 +9,7 @@ const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
 const cell3 = Cell.at(0, 2);
 
-describe('Unit test for `CageModel`', () => {
+describe('Unit tests for `CageModel`', () => {
 
     test('Initial reduction for `CageModel` of size 2 with a single `Combo`', () => {
         const cellM1 = new CellModel(cell1);
