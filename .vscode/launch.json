@@ -840,7 +840,26 @@
             }
         },
         {
-            "name": "npm run test [solver/models/elements/gridAreaModel.perf]",
+            "name": "npm run test [solver/models/**/cageModel.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/models/elements/cageModel.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
+            "name": "npm run test [solver/models/**/gridAreaModel.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
