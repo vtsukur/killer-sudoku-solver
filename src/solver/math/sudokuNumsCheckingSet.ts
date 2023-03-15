@@ -30,6 +30,15 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
     hasOne(val: number): boolean;
 
     /**
+     * Checks if this set has only the given number.
+     *
+     * @param val - Number to check for being the only number in this checking set.
+     *
+     * @returns `true` if this checking set has only the given number; otherwise `false`.
+     */
+    hasOnly(val: number): boolean;
+
+    /**
      * Produces numbers which are included in this checking set.
      *
      * @returns Numbers which are included in this checking set.
@@ -182,6 +191,13 @@ export class SudokuNumsCheckingSet implements
      */
     hasOne(val: number) {
         return (this._bitStore & (1 << val)) !== 0;
+    }
+
+    /**
+     * @see ReadonlySudokuNumsCheckingSet.hasOne
+     */
+    hasOnly(val: number) {
+        return this.hasOne(val) && (this._bitStore & (this._bitStore - 1)) === 0;
     }
 
     /**

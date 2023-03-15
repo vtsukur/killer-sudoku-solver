@@ -1,3 +1,4 @@
+import { SudokuNums } from '../../../../src/puzzle/sudokuNums';
 import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../../../../src/solver/math/sudokuNumsCheckingSet';
 
 describe('Unit tests for `SudokuNumsCheckingSet`', () => {
@@ -68,6 +69,13 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(numsCheckingSet.hasOne(7)).toBeFalsy();
         expect(numsCheckingSet.hasOne(8)).toBeFalsy();
         expect(numsCheckingSet.hasOne(9)).toBeTruthy();
+    });
+
+    test('Checking with `hasOnly`', () => {
+        for (const num of SudokuNums.RANGE) {
+            expect(SudokuNumsCheckingSet.of(num).hasOnly(num)).toBeTruthy();
+        }
+        expect(SudokuNumsCheckingSet.of(1, 6, 9).hasOnly(1)).toBeFalsy();
     });
 
     test('Checking with `doesNotHave`', () => {
