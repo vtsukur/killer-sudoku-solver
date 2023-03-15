@@ -289,9 +289,9 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.add
+     * @see NumsCheckingSet.addAll
      */
-    add(val: ReadonlySudokuNumsCheckingSet) {
+    addAll(val: ReadonlySudokuNumsCheckingSet) {
         //
         // Applying bitwise OR assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.

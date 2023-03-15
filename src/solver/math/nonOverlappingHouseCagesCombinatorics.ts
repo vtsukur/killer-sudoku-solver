@@ -200,7 +200,7 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.usedCombos[step] = combo;
 
-    ctx.usedNums.add(combo.numsCheckingSet);
+    ctx.usedNums.addAll(combo.numsCheckingSet);
     enumerateRecursively_next(ctx, step + 1);
     ctx.usedNums.delete(combo.numsCheckingSet);
 };

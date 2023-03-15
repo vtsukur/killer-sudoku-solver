@@ -20,7 +20,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expectSetWithValues(CellIndicesCheckingSet.newEmpty(), []);
     });
 
-    test('Adding and deleting numbers with `hasAll` and `doesNotHaveAny` checks', () => {
+    test('Adding and deleting many `Cell`s\' indices with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
 
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 30))).toBeTruthy();
@@ -30,7 +30,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 40))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(30, 40))).toBeFalsy();
 
-        numsCheckingSet.add(CellIndicesCheckingSet.of(0, 1, 7, 28, 80));
+        numsCheckingSet.addAll(CellIndicesCheckingSet.of(0, 1, 7, 28, 80));
         expectSetWithValues(numsCheckingSet, [ 0, 1, 7, 28, 30, 75, 80 ]);
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeTruthy();
@@ -114,7 +114,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
 
         expect(cloned).not.toBe(original);
 
-        original.add(CellIndicesCheckingSet.of(8));
+        original.addAll(CellIndicesCheckingSet.of(8));
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does *not* change the clone
 
@@ -129,7 +129,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
 
         expect(cloned).not.toBe(original);
 
-        original.add(CellIndicesCheckingSet.of(8));
+        original.addAll(CellIndicesCheckingSet.of(8));
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does *not* change the clone
 

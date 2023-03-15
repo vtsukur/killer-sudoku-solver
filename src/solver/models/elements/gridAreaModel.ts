@@ -228,7 +228,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
     for (const cage of allCages) {
         if (cage.isInput) {
             inputCages.push(cage);
-            inputCagesCellIndices.add(cage.cellIndices);
+            inputCagesCellIndices.addAll(cage.cellIndices);
             inputCagesCellCount += cage.cells.length;
         } else {
             derivedCages.push(cage);
@@ -402,7 +402,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     }
 
     private takeNonOverlappingCage(cage: Cage) {
-        this.usedCellIndices.add(cage.cellIndices);
+        this.usedCellIndices.addAll(cage.cellIndices);
         this.usedCages.push(cage);
         this.usedCellCount += cage.cellCount;
     }

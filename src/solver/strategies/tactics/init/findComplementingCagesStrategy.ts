@@ -797,7 +797,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                     areaCageMs.push(cageM);
                 }
             }
-            areaCellsIndices.add(houseCellsIndices[index]);
+            areaCellsIndices.addAll(houseCellsIndices[index]);
         } while (++index < rightOrBottomExclusive);
 
         return { areaCageMs, areaCellsIndices };

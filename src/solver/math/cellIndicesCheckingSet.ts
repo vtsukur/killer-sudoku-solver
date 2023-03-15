@@ -386,9 +386,9 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.add
+     * @see NumsCheckingSet.addAll
      */
-    add(val: ReadonlyCellIndicesCheckingSet) {
+    addAll(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise OR assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.

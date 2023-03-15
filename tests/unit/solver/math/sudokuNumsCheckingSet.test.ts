@@ -31,13 +31,13 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.all(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
 
-    test('Adding and deleting numbers with `hasAll` and `doesNotHaveAny` checks', () => {
+    test('Adding and deleting many numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
 
-        numsCheckingSet.add(SudokuNumsCheckingSet.of(1, 7, 8));
+        numsCheckingSet.addAll(SudokuNumsCheckingSet.of(1, 7, 8));
         expectSetWithValues(numsCheckingSet, [ 1, 6, 7, 8, 9 ]);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(7, 8, 9))).toBeTruthy();
@@ -134,7 +134,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         expect(cloned).not.toBe(original);
 
-        original.add(SudokuNumsCheckingSet.of(8));
+        original.addAll(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 
@@ -149,7 +149,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         expect(cloned).not.toBe(original);
 
-        original.add(SudokuNumsCheckingSet.of(8));
+        original.addAll(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 
@@ -164,7 +164,7 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
         expect(cloned).not.toBe(original);
 
-        original.add(SudokuNumsCheckingSet.of(8));
+        original.addAll(SudokuNumsCheckingSet.of(8));
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // changing original ...
         expect(cloned).toEqual(SudokuNumsCheckingSet.of(1, 9)); // ... does *not* change the clone
 

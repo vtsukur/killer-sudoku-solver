@@ -90,7 +90,7 @@ export interface NumsCheckingSet<
      *
      * @returns This checking numbers set.
      */
-    add(val: ROSET): MUSET;
+    addAll(val: ROSET): MUSET;
 
     /**
      * Deletes all numbers present in another checking set from this checking numbers set.
