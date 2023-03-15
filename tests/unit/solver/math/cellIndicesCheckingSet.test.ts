@@ -90,7 +90,9 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
     test('Uniting `CellIndicesCheckingSet` with another `CellIndicesCheckingSet`', () => {
         const one = CellIndicesCheckingSet.of(0, 46, 80);
         const second = CellIndicesCheckingSet.of(1, 46, 70, 80);
-        expectSetWithValues(one.union(second), [ 46, 80 ]);
+        const result = one.union(second);
+        expect(result).toBe(one);
+        expectSetWithValues(result, [ 46, 80 ]);
     });
 
     test('Producing `NOT` set', () => {
