@@ -104,8 +104,11 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     });
 
     test('Uniting `SudokuNumsCheckingSet` with another `SudokuNumsCheckingSet`', () => {
-        expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(1, 5, 7)),
-            [ 1, 5 ]);
+        const set = SudokuNumsCheckingSet.of(1, 5, 9);
+        const union = set.union(SudokuNumsCheckingSet.of(1, 5, 7));
+        expect(union).toEqual(set);
+        expectSetWithValues(union, [ 1, 5 ]);
+
         expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(1, 5, 9)),
             [ 1, 5, 9 ]);
         expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(2, 4, 8)), []);
