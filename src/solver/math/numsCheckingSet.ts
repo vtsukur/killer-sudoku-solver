@@ -107,6 +107,17 @@ export interface NumsCheckingSet<
     deleteAll(val: ROSET): MUSET;
 
     /**
+     * Updates this checking set so that it has only the numbers
+     * present in this set `AND` the given `val` checking numbers set.
+     *
+     * @param val - Another checking set to `AND` with this set.
+     *
+     * @returns This checking numbers set having only the numbers
+     * present in this set `AND` the given `val` checking set.
+     */
+    union(val: ROSET): MUSET;
+
+    /**
      * Clones this checking numbers set by creating new instance based on the copy of the state of this set.
      *
      * @returns new checking numbers set based on the copy of the state of this set.

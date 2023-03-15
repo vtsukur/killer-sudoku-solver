@@ -359,13 +359,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * Updates this checking set so that it has only the numbers
-     * present in this set `AND` the given `val` checking set.
-     *
-     * @param val - Another checking set to `AND` with this set.
-     *
-     * @returns This checking numbers set having only the numbers
-     * present in this set `AND` the given `val` checking set.
+     * @see NumsCheckingSet.union
      */
     union(val: ReadonlySudokuNumsCheckingSet) {
         //

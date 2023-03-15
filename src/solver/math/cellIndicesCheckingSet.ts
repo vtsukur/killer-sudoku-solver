@@ -298,15 +298,9 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * Updates this checking set so that it has only the numbers
-     * present in this set `AND` the given `val` checking set.
-     *
-     * @param val - Another checking set to `AND` with this set.
-     *
-     * @returns This checking set having only the numbers
-     * present in this set `AND` the given `val` checking set.
+     * @see NumsCheckingSet.union
      */
-    union(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
+    union(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
         // to produce `1`s on the positions where both sets have `1`s.
