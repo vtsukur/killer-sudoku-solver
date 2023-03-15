@@ -27,7 +27,7 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
      *
      * @returns `true` if this checking set has the given number; otherwise `false`.
      */
-    hasOne(val: number): boolean;
+    has(val: number): boolean;
 
     /**
      * Checks if this set has only the given number.
@@ -187,17 +187,17 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.hasOne
+     * @see ReadonlySudokuNumsCheckingSet.has
      */
-    hasOne(val: number) {
+    has(val: number) {
         return (this._bitStore & (1 << val)) !== 0;
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.hasOne
+     * @see ReadonlySudokuNumsCheckingSet.hasOnly
      */
     hasOnly(val: number) {
-        return this.hasOne(val) && (this._bitStore & (this._bitStore - 1)) === 0;
+        return this.has(val) && (this._bitStore & (this._bitStore - 1)) === 0;
     }
 
     /**
@@ -339,7 +339,7 @@ export class SudokuNumsCheckingSet implements
      * @returns This checking set.
      */
     deleteOne(val: number) {
-        if (this.hasOne(val)) {
+        if (this.has(val)) {
             //
             // Applying bitwise XOR assignment on the bit store of this checking set
             // to clear `1` on the position corresponding to the number `val`.

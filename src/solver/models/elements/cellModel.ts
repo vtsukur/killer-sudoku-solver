@@ -54,7 +54,7 @@ export class CellModel {
     }
 
     hasNumOpt(val: number) {
-        return this._numOptsCheckingSet.hasOne(val);
+        return this._numOptsCheckingSet.has(val);
     }
 
     deleteNumOpt(val: number) {

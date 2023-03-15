@@ -60,15 +60,15 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 
     test('Checking with `hasOne`', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
-        expect(numsCheckingSet.hasOne(1)).toBeTruthy();
-        expect(numsCheckingSet.hasOne(2)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(3)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(4)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(5)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(6)).toBeTruthy();
-        expect(numsCheckingSet.hasOne(7)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(8)).toBeFalsy();
-        expect(numsCheckingSet.hasOne(9)).toBeTruthy();
+        expect(numsCheckingSet.has(1)).toBeTruthy();
+        expect(numsCheckingSet.has(2)).toBeFalsy();
+        expect(numsCheckingSet.has(3)).toBeFalsy();
+        expect(numsCheckingSet.has(4)).toBeFalsy();
+        expect(numsCheckingSet.has(5)).toBeFalsy();
+        expect(numsCheckingSet.has(6)).toBeTruthy();
+        expect(numsCheckingSet.has(7)).toBeFalsy();
+        expect(numsCheckingSet.has(8)).toBeFalsy();
+        expect(numsCheckingSet.has(9)).toBeTruthy();
     });
 
     test('Checking with `hasOnly`', () => {
