@@ -62,7 +62,7 @@ export class CellModel {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
         this._reevalNumOpts = true;
-        return this._numOptsCheckingSet.deleteOne(val);
+        return this._numOptsCheckingSet.delete(val);
     }
 
     reduceNumOptions(val: Set<number>) {

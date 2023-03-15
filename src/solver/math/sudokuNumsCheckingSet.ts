@@ -338,7 +338,7 @@ export class SudokuNumsCheckingSet implements
      *
      * @returns This checking set.
      */
-    deleteOne(val: number) {
+    delete(val: number) {
         if (this.has(val)) {
             //
             // Applying bitwise XOR assignment on the bit store of this checking set
