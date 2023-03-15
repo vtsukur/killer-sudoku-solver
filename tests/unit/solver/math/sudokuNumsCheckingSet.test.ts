@@ -70,6 +70,14 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(SudokuNumsCheckingSet.of(1, 5, 9).nums()).toEqual([ 1, 5, 9 ]);
     });
 
+    test('Uniting `SudokuNumsCheckingSet` with another `SudokuNumsCheckingSet`', () => {
+        expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(1, 5, 7)),
+            [ 1, 5 ]);
+        expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(1, 5, 9)),
+            [ 1, 5, 9 ]);
+        expectSetWithValues(SudokuNumsCheckingSet.of(1, 5, 9).union(SudokuNumsCheckingSet.of(2, 4, 8)), []);
+    });
+
     test('Instance of `SudokuNumsCheckingSet` with remaining numbers', () => {
         expect(SudokuNumsCheckingSet.newEmpty().remaining.bitStore).toBe(
             SudokuNumsCheckingSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore

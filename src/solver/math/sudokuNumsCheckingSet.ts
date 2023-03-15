@@ -287,6 +287,31 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
+     * Updates this checking set so that it has only the numbers
+     * present in this set `AND` the given `val` checking set.
+     *
+     * @param val - Another checking set to `AND` with this set.
+     *
+     * @returns This checking numbers set.
+     */
+    union(val: ReadonlySudokuNumsCheckingSet) {
+        //
+        // Applying bitwise AND assignment on the bit store of this checking set
+        // to `AND` `1`s from the bit store of the `val` checking set.
+        //
+        // Example:
+        // ```
+        //      this._bitStore                 = 0b10011001
+        //      val.bitStore                   = 0b01001001
+        //      this._bitStore &= val.bitStore = 0b00001001 (only 2 bits at the same position are `1`s)
+        // ```
+        //
+        this._bitStore &= val.bitStore;
+
+        return this;
+    }
+
+    /**
      * @see ReadonlyNumsCheckingSet.equals
      */
     equals(val: ReadonlySudokuNumsCheckingSet) {
