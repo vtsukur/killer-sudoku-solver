@@ -32,17 +32,6 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<
     cells(): ReadonlyCells;
 
     /**
-     * Creates new checking set which has only the numbers
-     * present in this set `AND` the given `val` checking set.
-     *
-     * @param val - Another checking set to `AND` with this set.
-     *
-     * @returns New checking set which has only the numbers
-     * present in this set `AND` the given `val` checking set.
-     */
-    and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
-
-    /**
      * Creates new checking set which is the _difference_ between this checking set
      * and the given `val` checking set,
      * meaning produced set has values from this checking set
@@ -309,11 +298,15 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyCellIndicesCheckingSet.and
+     * Updates this checking set so that it has only the numbers
+     * present in this set `AND` the given `val` checking set.
+     *
+     * @param val - Another checking set to `AND` with this set.
+     *
+     * @returns This checking set having only the numbers
+     * present in this set `AND` the given `val` checking set.
      */
-    and(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
-        const and = CellIndicesCheckingSet.newEmpty();
-
+    union(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
         //
         // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
         // to produce `1`s on the positions where both sets have `1`s.
@@ -325,11 +318,11 @@ export class CellIndicesCheckingSet implements
         //      this._bitStores[x] & val.bitStores[x] = 0b00010100 (`1` on positions 3 and 5)
         // ```
         //
-        and._bitStores[0] = this._bitStores[0] & val.bitStores[0];
-        and._bitStores[1] = this._bitStores[1] & val.bitStores[1];
-        and._bitStores[2] = this._bitStores[2] & val.bitStores[2];
+        this._bitStores[0] = this._bitStores[0] & val.bitStores[0];
+        this._bitStores[1] = this._bitStores[1] & val.bitStores[1];
+        this._bitStores[2] = this._bitStores[2] & val.bitStores[2];
 
-        return and;
+        return this;
     }
 
     /**

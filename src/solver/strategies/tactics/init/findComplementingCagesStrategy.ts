@@ -563,7 +563,7 @@ abstract class HouseAreasProcessor {
         if (nonOverlappingCagesAreaModel.cellCount !== nHouseCellCount &&
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {
             const sum = nHouseSum - nonOverlappingCagesAreaModel.sum;
-            const cells = areaCellIndices.and(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
+            const cells = new CellIndicesCheckingSet(areaCellIndices).union(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
             return Cage.ofSum(sum)
                 .withCells(cells)
                 .setIsInput(this._model.isDerivedFromInputCage(cells))

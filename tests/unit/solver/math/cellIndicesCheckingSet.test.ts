@@ -87,10 +87,10 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         ]);
     });
 
-    test('Producing `AND` for two sets', () => {
+    test('Uniting `CellIndicesCheckingSet` with another `CellIndicesCheckingSet`', () => {
         const one = CellIndicesCheckingSet.of(0, 46, 80);
         const second = CellIndicesCheckingSet.of(1, 46, 70, 80);
-        expectSetWithValues(one.and(second), [ 46, 80 ]);
+        expectSetWithValues(one.union(second), [ 46, 80 ]);
     });
 
     test('Producing `NOT` set', () => {
