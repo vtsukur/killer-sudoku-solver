@@ -39,7 +39,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
         expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(1, 9))).toBeFalsy();
 
-        numsCheckingSet.delete(CellIndicesCheckingSet.of(1, 7, 30, 75));
+        numsCheckingSet.deleteAll(CellIndicesCheckingSet.of(1, 7, 30, 75));
         expectSetWithValues(numsCheckingSet, [ 0, 28, 80 ]);
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 28))).toBeTruthy();
         expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 80))).toBeTruthy();
@@ -118,7 +118,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does *not* change the clone
 
-        cloned.delete(CellIndicesCheckingSet.of(1));
+        cloned.deleteAll(CellIndicesCheckingSet.of(1));
         expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does *not* change the clone
     });
@@ -133,7 +133,7 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // changing original ...
         expect(cloned).toEqual(CellIndicesCheckingSet.of(1, 30, 75)); // ... does *not* change the clone
 
-        cloned.delete(CellIndicesCheckingSet.of(1));
+        cloned.deleteAll(CellIndicesCheckingSet.of(1));
         expect(cloned).toEqual(CellIndicesCheckingSet.of(30, 75)); // changing a clone ...
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does *not* change the clone
     });

@@ -441,7 +441,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see NumsCheckingSet.delete
      */
-    delete(val: ReadonlyCellIndicesCheckingSet) {
+    deleteAll(val: ReadonlyCellIndicesCheckingSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.

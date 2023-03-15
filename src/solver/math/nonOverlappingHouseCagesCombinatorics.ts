@@ -202,7 +202,7 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
 
     ctx.usedNums.addAll(combo.numsCheckingSet);
     enumerateRecursively_next(ctx, step + 1);
-    ctx.usedNums.delete(combo.numsCheckingSet);
+    ctx.usedNums.deleteAll(combo.numsCheckingSet);
 };
 
 /**

@@ -104,7 +104,7 @@ export interface NumsCheckingSet<
      *
      * @returns This checking numbers set.
      */
-    delete(val: ROSET): MUSET;
+    deleteAll(val: ROSET): MUSET;
 
     /**
      * Clones this checking numbers set by creating new instance based on the copy of the state of this set.
