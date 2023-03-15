@@ -1,8 +1,6 @@
-import * as _ from 'lodash';
 import { Cell } from '../../../puzzle/cell';
-import { House } from '../../../puzzle/house';
-import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
+import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../../math/sudokuNumsCheckingSet';
 import { CageModel } from './cageModel';
 
 export class CellModel {
@@ -10,14 +8,14 @@ export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
-    private _numOpts: Set<number>;
+    private _numOptsCheckingSet: SudokuNumsCheckingSet;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOpts = new Set(_.range(House.CELL_COUNT).map(i => i + 1));
+        this._numOptsCheckingSet = SudokuNumsCheckingSet.all();
         this._withinCageMs = new Set();
     }
 
@@ -25,7 +23,7 @@ export class CellModel {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOpts = new Set(this._numOpts);
+        copy._numOptsCheckingSet = this._numOptsCheckingSet.clone();
         return copy;
     }
 
@@ -42,23 +40,23 @@ export class CellModel {
     }
 
     numOpts(): Set<number> {
-        return this._numOpts;
+        return new Set(this._numOptsCheckingSet.nums());
     }
 
     hasNumOpt(val: number) {
-        return this._numOpts.has(val);
+        return this._numOptsCheckingSet.hasOne(val);
     }
 
     deleteNumOpt(val: number) {
-        if (this._numOpts.size === 1 && this._numOpts.has(val)) {
+        if (this._numOptsCheckingSet.hasOnly(val)) {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
-        return this._numOpts.delete(val);
+        return this._numOptsCheckingSet.deleteOne(val);
     }
 
     reduceNumOptions(val: Set<number>) {
         const deletedNumOptions = new Set<number>();
-        for (const existingNumOption of this._numOpts) {
+        for (const existingNumOption of this.numOpts()) {
             if (!val.has(existingNumOption)) {
                 deletedNumOptions.add(existingNumOption);
             }
@@ -69,13 +67,17 @@ export class CellModel {
         return deletedNumOptions;
     }
 
+    reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet) {
+        this._numOptsCheckingSet.union(val);
+    }
+
     get solved() {
         return this._solved;
     }
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOpts = Sets.new(val);
+        this._numOptsCheckingSet = SudokuNumsCheckingSet.of(val);
         this._solved = true;
     }
 
