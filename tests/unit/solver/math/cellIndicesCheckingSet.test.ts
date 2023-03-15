@@ -92,6 +92,10 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         const union = original.union(CellIndicesCheckingSet.of(1, 46, 70, 80));
         expect(union).toBe(original);
         expectSetWithValues(union, [ 46, 80 ]);
+
+        expectSetWithValues(CellIndicesCheckingSet.of(0, 46, 80).union(CellIndicesCheckingSet.of(0, 46, 80)),
+            [ 0, 46, 80 ]);
+        expectSetWithValues(CellIndicesCheckingSet.of(0, 46, 80).union(CellIndicesCheckingSet.of(2, 47, 75)), []);
     });
 
     test('Producing `NOT` set', () => {
