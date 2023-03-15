@@ -26,6 +26,10 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.newEmpty(), []);
     });
 
+    test('Construction of `SudokuNumsCheckingSet` with all numbers using `all` static factory method', () => {
+        expectSetWithValues(SudokuNumsCheckingSet.all(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+    });
+
     test('Adding and deleting numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
         expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();

@@ -69,6 +69,11 @@ export class SudokuNumsCheckingSet implements
         return val;
     })();
 
+    // Numbers from 1 to 9 are marked as `1` bits on respective positions.
+    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
+        (prev, current) => prev | 1 << current, 0
+    );
+
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,
     // which is more than enough to represents numbers in the range of [1, 9].
@@ -132,10 +137,21 @@ export class SudokuNumsCheckingSet implements
      * over `SudokuNumsCheckingSet.of()` as it avoids construction of an empty array argument
      * and array iterator in constructor.
      *
-     * @returns new empty checking set.
+     * @returns New empty checking set.
      */
     static newEmpty() {
         return new SudokuNumsCheckingSet(0);
+    }
+
+    /**
+     * Constructs new checking set with all unique Sudoku numbers
+     * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
+     *
+     * @returns New checking set with all unique Sudoku numbers
+     * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
+     */
+    static all() {
+        return new SudokuNumsCheckingSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
     }
 
     /**
@@ -220,11 +236,6 @@ export class SudokuNumsCheckingSet implements
         return (this._bitStore & val.bitStore) === 0;
     }
 
-    // Numbers from 1 to 9 are marked as `1` bits on respective positions.
-    private static readonly ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
-        (prev, current) => prev | 1 << current, 0
-    );
-
     /**
      * @see ReadonlySudokuNumsCheckingSet.remaining
      */
@@ -242,7 +253,7 @@ export class SudokuNumsCheckingSet implements
         //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
         // ```
         //
-        return new SudokuNumsCheckingSet(SudokuNumsCheckingSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+        return new SudokuNumsCheckingSet(SudokuNumsCheckingSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
     /**
