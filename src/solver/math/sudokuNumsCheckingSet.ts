@@ -330,6 +330,35 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
+     * Deletes given number from this checking set if it is present.
+     *
+     * This method changes this checking set.
+     *
+     * @param val - Number to delete from this checking set if it is present.
+     *
+     * @returns This checking set.
+     */
+    deleteOne(val: number) {
+        if (this.hasOne(val)) {
+            //
+            // Applying bitwise XOR assignment on the bit store of this checking set
+            // to clear `1` on the position corresponding to the number `val`.
+            //
+            // Example:
+            // ```
+            //      this._bitStore             = 0b10011001
+            //      val                        = 4
+            //      1 << val                   = 0b00001000 (4)
+            //      this._bitStore ^= 1 << val = 0b10010001 (bit at position `4` is reset to `0`)
+            // ```
+            //
+            this._bitStore ^= 1 << val;
+        }
+
+        return this;
+    }
+
+    /**
      * Updates this checking set so that it has only the numbers
      * present in this set `AND` the given `val` checking set.
      *
