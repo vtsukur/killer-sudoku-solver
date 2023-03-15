@@ -21,6 +21,15 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<R
     get bitStore(): BitStore32;
 
     /**
+     * Checks if this set has the given number.
+     *
+     * @param val - Number to check for being included in this checking set.
+     *
+     * @returns `true` if this checking set has the given number; otherwise `false`.
+     */
+    hasOne(val: number): boolean;
+
+    /**
      * Produces numbers which are included in this checking set.
      *
      * @returns Numbers which are included in this checking set.
@@ -166,6 +175,13 @@ export class SudokuNumsCheckingSet implements
      */
     nums() {
         return SudokuNumsCheckingSet._LOOKUP_TABLE.collect(this._bitStore);
+    }
+
+    /**
+     * @see ReadonlySudokuNumsCheckingSet.hasOne
+     */
+    hasOne(val: number) {
+        return (this._bitStore & (1 << val)) !== 0;
     }
 
     /**

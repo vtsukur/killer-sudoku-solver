@@ -57,6 +57,19 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
     });
 
+    test('Checking with `hasOne`', () => {
+        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
+        expect(numsCheckingSet.hasOne(1)).toBeTruthy();
+        expect(numsCheckingSet.hasOne(2)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(3)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(4)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(5)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(6)).toBeTruthy();
+        expect(numsCheckingSet.hasOne(7)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(8)).toBeFalsy();
+        expect(numsCheckingSet.hasOne(9)).toBeTruthy();
+    });
+
     test('Checking with `doesNotHave`', () => {
         const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
         expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
