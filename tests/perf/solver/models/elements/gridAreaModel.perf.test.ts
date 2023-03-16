@@ -6,7 +6,7 @@ import { expectGridAreaModel } from '../../../../unit/solver/models/elements/gri
 describe('Performance tests for `GridAreaModel`', () => {
 
     const TESTS_COUNT = 10;
-    const ITERATIONS = _.range(10000);
+    const ITERATIONS = _.range(10_000);
 
     _.range(TESTS_COUNT).forEach(i => {
 

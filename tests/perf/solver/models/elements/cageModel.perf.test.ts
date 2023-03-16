@@ -7,7 +7,7 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 describe('Performance tests for `CageModel`', () => {
 
     const TESTS_COUNT = 10;
-    const ITERATIONS = _.range(20000);
+    const ITERATIONS = _.range(20_000);
 
     const cell1 = Cell.at(0, 0);
     const cell2 = Cell.at(0, 1);
