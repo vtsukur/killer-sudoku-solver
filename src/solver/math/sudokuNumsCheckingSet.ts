@@ -87,16 +87,26 @@ export class SudokuNumsCheckingSet implements
         return val;
     })();
 
+    // Cache for empty numbers array used by the `nums` method.
+    private static readonly _NO_SUDOKU_NUMS = [];
+
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
     private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
         (prev, current) => prev | 1 << current, 0
     );
+
+    // Cache for all Sudoku numbers array used by the `nums` method.
+    private static readonly _ALL_SUDOKU_NUMS = SudokuNums.RANGE;
 
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,
     // which is more than enough to represents numbers in the range of [1, 9].
     //
     private _bitStore = 0;
+
+    private _numsCache?: ReadonlyArray<number>;
+
+    private _numsCacheValid = false;
 
     /**
      * Constructs new checking set from the unique numbers in the given array
@@ -158,7 +168,9 @@ export class SudokuNumsCheckingSet implements
      * @returns New empty checking set.
      */
     static newEmpty() {
-        return new SudokuNumsCheckingSet(0);
+        const val = new SudokuNumsCheckingSet(0);
+        val.cache(this._NO_SUDOKU_NUMS);
+        return val;
     }
 
     /**
@@ -169,7 +181,14 @@ export class SudokuNumsCheckingSet implements
      * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
      */
     static all() {
-        return new SudokuNumsCheckingSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
+        const val = new SudokuNumsCheckingSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
+        val.cache(this._ALL_SUDOKU_NUMS);
+        return val;
+    }
+
+    private cache(val: ReadonlyArray<number>) {
+        this._numsCache = val;
+        this._numsCacheValid = true;
     }
 
     /**
@@ -183,7 +202,10 @@ export class SudokuNumsCheckingSet implements
      * @see ReadonlySudokuNumsCheckingSet.nums
      */
     nums() {
-        return SudokuNumsCheckingSet._LOOKUP_TABLE.collect(this._bitStore);
+        if (!this._numsCacheValid) {
+            this.cache(SudokuNumsCheckingSet._LOOKUP_TABLE.collect(this._bitStore));
+        }
+        return this._numsCache as ReadonlyArray<number>;
     }
 
     /**
@@ -292,6 +314,8 @@ export class SudokuNumsCheckingSet implements
      * @see NumsCheckingSet.addAll
      */
     addAll(val: ReadonlySudokuNumsCheckingSet) {
+        const oldBitStore = this._bitStore;
+
         //
         // Applying bitwise OR assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.
@@ -305,6 +329,8 @@ export class SudokuNumsCheckingSet implements
         //
         this._bitStore |= val.bitStore;
 
+        this._numsCacheValid &&= (oldBitStore === this._bitStore);
+
         return this;
     }
 
@@ -312,6 +338,8 @@ export class SudokuNumsCheckingSet implements
      * @see NumsCheckingSet.delete
      */
     deleteAll(val: ReadonlySudokuNumsCheckingSet) {
+        const oldBitStore = this._bitStore;
+
         //
         // Applying bitwise AND assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.
@@ -325,6 +353,8 @@ export class SudokuNumsCheckingSet implements
         // ```
         //
         this._bitStore &= ~val.bitStore;
+
+        this._numsCacheValid &&= (oldBitStore === this._bitStore);
 
         return this;
     }
@@ -340,6 +370,8 @@ export class SudokuNumsCheckingSet implements
      */
     delete(val: number) {
         if (this.has(val)) {
+            const oldBitStore = this._bitStore;
+
             //
             // Applying bitwise XOR assignment on the bit store of this checking set
             // to clear `1` on the position corresponding to the number `val`.
@@ -353,6 +385,8 @@ export class SudokuNumsCheckingSet implements
             // ```
             //
             this._bitStore ^= 1 << val;
+
+            this._numsCacheValid &&= (oldBitStore === this._bitStore);
         }
 
         return this;
@@ -362,6 +396,8 @@ export class SudokuNumsCheckingSet implements
      * @see NumsCheckingSet.union
      */
     union(val: ReadonlySudokuNumsCheckingSet) {
+        const oldBitStore = this._bitStore;
+
         //
         // Applying bitwise AND assignment on the bit store of this checking set
         // to `AND` `1`s from the bit store of the `val` checking set.
@@ -374,6 +410,8 @@ export class SudokuNumsCheckingSet implements
         // ```
         //
         this._bitStore &= val.bitStore;
+
+        this._numsCacheValid &&= (oldBitStore === this._bitStore);
 
         return this;
     }

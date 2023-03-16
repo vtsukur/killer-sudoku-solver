@@ -10,16 +10,12 @@ export class CellModel {
     private readonly _withinCageMs: Set<CageModel>;
     private _numOptsCheckingSet: SudokuNumsCheckingSet;
     private _solved: boolean;
-    private _reevalNumOpts: boolean;
-    private _numOptsSet: Set<number>;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
         this._numOptsCheckingSet = SudokuNumsCheckingSet.all();
-        this._numOptsSet = new Set(this._numOptsCheckingSet.nums());
-        this._reevalNumOpts = false;
         this._withinCageMs = new Set();
     }
 
@@ -28,8 +24,6 @@ export class CellModel {
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
         copy._numOptsCheckingSet = this._numOptsCheckingSet.clone();
-        copy._numOptsSet = new Set(this._numOptsSet);
-        copy._reevalNumOpts = this._reevalNumOpts;
         return copy;
     }
 
@@ -46,11 +40,7 @@ export class CellModel {
     }
 
     numOpts(): Set<number> {
-        if (this._reevalNumOpts) {
-            this._numOptsSet = new Set(this._numOptsCheckingSet.nums());
-            this._reevalNumOpts = false;
-        }
-        return this._numOptsSet;
+        return new Set(this._numOptsCheckingSet.nums());
     }
 
     hasNumOpt(val: number) {
@@ -61,7 +51,6 @@ export class CellModel {
         if (this._numOptsCheckingSet.hasOnly(val)) {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
-        this._reevalNumOpts = true;
         return this._numOptsCheckingSet.delete(val);
     }
 
@@ -75,13 +64,11 @@ export class CellModel {
         for (const numToDelete of deletedNumOptions) {
             this.deleteNumOpt(numToDelete);
         }
-        this._reevalNumOpts = true;
         return deletedNumOptions;
     }
 
     reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet) {
         this._numOptsCheckingSet.union(val);
-        this._reevalNumOpts = true;
     }
 
     get solved() {
@@ -92,7 +79,6 @@ export class CellModel {
         this.placedNum = val;
         this._numOptsCheckingSet = SudokuNumsCheckingSet.of(val);
         this._solved = true;
-        this._reevalNumOpts = true;
     }
 
 }
