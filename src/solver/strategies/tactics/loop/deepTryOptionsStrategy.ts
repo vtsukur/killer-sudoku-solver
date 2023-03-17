@@ -3,6 +3,7 @@ import { House, HouseIndex } from '../../../../puzzle/house';
 import { logFactory } from '../../../../util/logFactory';
 import { Sets } from '../../../../util/sets';
 import { InvalidSolverStateError } from '../../../invalidSolverStateError';
+import { CellModel } from '../../../models/elements/cellModel';
 import { MasterModel } from '../../../models/masterModel';
 import { MasterStrategy } from '../../masterStrategy';
 import { ReducedCellModels } from '../../reducedCellModels';
@@ -18,7 +19,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         const cellMTarget = findCellMTarget(this._model);
         if (_.isUndefined(cellMTarget)) return;
 
-        const size = cellMTarget.numOpts().size;
+        const size = cellMTarget.numOpts().length;
         let solution;
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
@@ -63,14 +64,14 @@ export class DeepTryOptionsStrategy extends Strategy {
             } else {
                 this._context.foundSolution = solution;
             }
-        } else if (cellMTarget.numOpts().size < size) {
+        } else if (cellMTarget.numOpts().length < size) {
             this._context.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTarget));
         }
     }
 
 }
 
-function findCellMTarget(model: MasterModel) {
+function findCellMTarget(model: MasterModel): CellModel | undefined {
     const cellNumOptsMap = new Map();
     _.range(House.CELL_COUNT).forEach((index: number) => cellNumOptsMap.set(index + 1, []));
 
