@@ -86,7 +86,7 @@ export class Sets {
      *
      * @throws {RangeError} if the `Set` has no values.
      */
-    static firstValue<T>(val: Set<T>) {
+    static firstValue<T>(val: ReadonlySet<T>) {
         if (val.size === 0) {
             throw new RangeError('Can\'t get first value. Set has no values');
         } else {
