@@ -67,8 +67,10 @@ export class CellModel {
         return deletedNumOptions;
     }
 
-    reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet) {
+    reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet): boolean {
+        const oldVal = this._numOptsCheckingSet.bitStore;
         this._numOptsCheckingSet.union(val);
+        return this._numOptsCheckingSet.bitStore !== oldVal;
     }
 
     get solved() {

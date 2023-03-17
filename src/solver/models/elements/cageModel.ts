@@ -499,17 +499,16 @@ export class CageModel {
 
         const newCombosMap = new Map();
         const deleteCombos = [];
-        const newNumOptions = new Set<number>();
+        const newNumOptions = SudokuNumsCheckingSet.newEmpty();
 
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
-            const value = comboEntry[1];
-            const numSet = new Set(value);
-            if (numSet.has(withNum)) {
-                newCombosMap.set(key, value);
-                Sets.U(newNumOptions, numSet);
+            const combo = comboEntry[1];
+            if (combo.numsCheckingSet.has(withNum)) {
+                newCombosMap.set(key, combo);
+                newNumOptions.addAll(combo.numsCheckingSet);
             } else {
-                deleteCombos.push(value);
+                deleteCombos.push(combo);
             }
         }
 
@@ -517,7 +516,7 @@ export class CageModel {
             this._combosMap = newCombosMap;
             const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
-                if (cellM.reduceNumOptions(newNumOptions).size > 0) {
+                if (cellM.reduceNumOptionsByCheckingSet(newNumOptions)) {
                     reducedCellMs.add(cellM);
                 }
             });
