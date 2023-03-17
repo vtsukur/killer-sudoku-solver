@@ -442,7 +442,7 @@ export class CageModel {
         const numOptsFn = (cellM: CellModel) => {
             if (_.isUndefined(forNum)) {
                 return cellM.numOpts();
-            } else if (cellM.numOpts().indexOf(forNum) !== -1) {
+            } else if (cellM.hasNumOpt(forNum)) {
                 return Sets.new(forNum);
             } else {
                 return new Set();
