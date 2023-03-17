@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { House, HouseIndex } from '../../../../puzzle/house';
 import { logFactory } from '../../../../util/logFactory';
-import { Sets } from '../../../../util/sets';
 import { InvalidSolverStateError } from '../../../invalidSolverStateError';
+import { SudokuNumsCheckingSet } from '../../../math/sudokuNumsCheckingSet';
 import { CellModel } from '../../../models/elements/cellModel';
 import { MasterModel } from '../../../models/masterModel';
 import { MasterStrategy } from '../../masterStrategy';
@@ -24,7 +24,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-            cellMTargetCpy.reduceNumOptions(Sets.new(tryNum));
+            cellMTargetCpy.reduceNumOptionsByCheckingSet(SudokuNumsCheckingSet.of(tryNum));
             ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
 
             try {
@@ -50,7 +50,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
-                cellMTarget.reduceNumOptions(Sets.new(tryNum));
+                cellMTarget.reduceNumOptionsByCheckingSet(SudokuNumsCheckingSet.of(tryNum));
                 break;
             } else if (ctxCpy.isSolutionFound) {
                 solution = ctxCpy.foundSolution;

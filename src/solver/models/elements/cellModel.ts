@@ -54,19 +54,6 @@ export class CellModel {
         return this._numOptsCheckingSet.delete(val);
     }
 
-    reduceNumOptions(val: Set<number>) {
-        const deletedNumOptions = new Set<number>();
-        for (const existingNumOption of this.numOpts()) {
-            if (!val.has(existingNumOption)) {
-                deletedNumOptions.add(existingNumOption);
-            }
-        }
-        for (const numToDelete of deletedNumOptions) {
-            this.deleteNumOpt(numToDelete);
-        }
-        return deletedNumOptions;
-    }
-
     reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet): boolean {
         const oldVal = this._numOptsCheckingSet.bitStore;
         this._numOptsCheckingSet.union(val);
