@@ -39,7 +39,7 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): Set<number> {
+    numOpts(): ReadonlySet<number> {
         return new Set(this._numOptsCheckingSet.nums());
     }
 
