@@ -154,7 +154,7 @@ export class CageModel {
             });
         }
 
-        this.cellMs.forEach(cellM => cellM.reduceNumOptionsByCheckingSet(nums));
+        this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
     }
 
     reduce(): ReadonlySet<CellModel> {
@@ -516,7 +516,7 @@ export class CageModel {
             this._combosMap = newCombosMap;
             const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
-                if (cellM.reduceNumOptionsByCheckingSet(newNumOptions)) {
+                if (cellM.reduceNumOpts(newNumOptions)) {
                     reducedCellMs.add(cellM);
                 }
             });

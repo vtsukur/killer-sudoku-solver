@@ -54,7 +54,7 @@ export class CellModel {
         return this._numOptsCheckingSet.delete(val);
     }
 
-    reduceNumOptionsByCheckingSet(val: ReadonlySudokuNumsCheckingSet): boolean {
+    reduceNumOpts(val: ReadonlySudokuNumsCheckingSet): boolean {
         const oldVal = this._numOptsCheckingSet.bitStore;
         this._numOptsCheckingSet.union(val);
         return this._numOptsCheckingSet.bitStore !== oldVal;
