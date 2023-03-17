@@ -62,7 +62,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                 if (entry.keys.length > 1 && entry.keys.length === entry.nums.size) {
                     for (const key of entry.keys) {
                         const cellM = cellMMap.get(key);
-                        if (cellM.numOpts().size > entry.keys.length) {
+                        if (cellM.numOpts().length > entry.keys.length) {
                             for (const num of cellM.numOpts()) {
                                 if (!entry.nums.has(num)) {
                                     cellM.deleteNumOpt(num);
