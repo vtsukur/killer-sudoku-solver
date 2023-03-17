@@ -39,8 +39,8 @@ export class CellModel {
         return this._withinCageMs;
     }
 
-    numOpts(): ReadonlySet<number> {
-        return new Set(this._numOptsCheckingSet.nums());
+    numOpts(): ReadonlyArray<number> {
+        return this._numOptsCheckingSet.nums();
     }
 
     hasNumOpt(val: number) {

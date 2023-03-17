@@ -77,7 +77,7 @@ function findCellMTarget(model: MasterModel) {
     _.range(House.CELL_COUNT).forEach((row: HouseIndex) => {
         _.range(House.CELL_COUNT).forEach((col: HouseIndex) => {
             const cellM = model.cellModelAt(row, col);
-            cellNumOptsMap.get(cellM.numOpts().size).push(cellM);
+            cellNumOptsMap.get(cellM.numOpts().length).push(cellM);
         });
     });
 

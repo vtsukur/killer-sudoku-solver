@@ -7,7 +7,6 @@ import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { Context } from '../../../../src/solver/strategies/context';
 import { MasterStrategy } from '../../../../src/solver/strategies/masterStrategy';
 import { CageSlicer } from '../../../../src/solver/transform/cageSlicer';
-import { Sets } from '../../../../src/util/sets';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
@@ -23,7 +22,7 @@ describe('Tests for master model', () => {
         const aCellModel = model.cellModelAt(2, 3);
         expect(aCellModel.cell).toEqual(Cell.at(2, 3));
         expect(aCellModel.placedNum).toBe(undefined);
-        expect(aCellModel.numOpts()).toEqual(Sets.new(2, 3, 4, 5, 6, 7, 8, 9));
+        expect(aCellModel.numOpts()).toEqual([ 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
 
     test('Initialization of RowModels', () => {

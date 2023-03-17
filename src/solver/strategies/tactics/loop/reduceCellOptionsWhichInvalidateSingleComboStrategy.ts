@@ -20,7 +20,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
         _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: HouseIndex) => {
             _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: HouseIndex) => {
                 const cellM = this._model.cellModelsMatrix[row][col];
-                if (cellM.solved || cellM.numOpts().size !== TARGET_CELL_NUM_OPTS_COUNT) return;
+                if (cellM.solved || cellM.numOpts().length !== TARGET_CELL_NUM_OPTS_COUNT) return;
 
                 const cellMsToCheck = collectCellMsToCheck(cellM, this._model);
                 const cageMsToCheck = collectCageMsToCheck(cellMsToCheck);
