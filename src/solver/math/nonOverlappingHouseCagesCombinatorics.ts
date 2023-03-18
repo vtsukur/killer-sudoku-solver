@@ -3,7 +3,7 @@ import { Cage } from '../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
-import { SudokuNumsCheckingSet } from '../sets';
+import { SudokuNumsSet } from '../sets';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
@@ -283,7 +283,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
-    readonly usedNums = SudokuNumsCheckingSet.newEmpty();
+    readonly usedNums = SudokuNumsSet.newEmpty();
 
     // caching enumeration pipelines improves performance by around 5-10%
     private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =

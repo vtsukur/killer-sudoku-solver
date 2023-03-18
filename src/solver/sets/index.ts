@@ -1,6 +1,6 @@
 import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from './cellIndicesCheckingSet';
 import { BitStore32, ReadonlyNumsSet } from './numsSet';
-import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from './sudokuNumsSet';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
 export {
     BitStore32,
@@ -9,6 +9,6 @@ export {
     CellIndicesCheckingSet,
     ReadonlyCellIndicesCheckingSet,
 
-    ReadonlySudokuNumsCheckingSet,
-    SudokuNumsCheckingSet
+    ReadonlySudokuNumsSet,
+    SudokuNumsSet
 };

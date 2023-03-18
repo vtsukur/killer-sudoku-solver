@@ -14,7 +14,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
  *
  * @public
  */
-export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsSet<ReadonlySudokuNumsCheckingSet> {
+export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNumsSet> {
 
     /**
      * Returns copy of the bit storage used for efficient checking for this numbers set.
@@ -54,23 +54,23 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsSet<ReadonlyS
      *
      * @returns new checking set with Sudoku numbers which are *not* present in the current checking set.
      */
-    get remaining(): SudokuNumsCheckingSet;
+    get remaining(): SudokuNumsSet;
 
 }
 
 /**
- * Extends {@link ReadonlySudokuNumsCheckingSet} with fast manipulation operations.
+ * Extends {@link ReadonlySudokuNumsSet} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see ReadonlySudokuNumsCheckingSet
+ * @see ReadonlySudokuNumsSet
  * @see NumsSet
  *
  * @public
  */
-export class SudokuNumsCheckingSet implements
-        ReadonlySudokuNumsCheckingSet,
-        NumsSet<ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet> {
+export class SudokuNumsSet implements
+        ReadonlySudokuNumsSet,
+        NumsSet<ReadonlySudokuNumsSet, SudokuNumsSet> {
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
     private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
@@ -115,7 +115,7 @@ export class SudokuNumsCheckingSet implements
      * ```
      */
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
-        _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsCheckingSet._LOOKUP_TABLE.collect(i));
+        _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
 
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,
@@ -128,17 +128,17 @@ export class SudokuNumsCheckingSet implements
 
     /**
      * Constructs new checking set from the unique numbers in the given array
-     * or from another {@link ReadonlySudokuNumsCheckingSet} or from the {@link BitStore32}.
+     * or from another {@link ReadonlySudokuNumsSet} or from the {@link BitStore32}.
      *
      * In case array is specified, only unique numbers are added to the checking set.
      * Number duplicates are silently ignored.
      *
      * Checking set is constructed as empty if no numbers are given.
      *
-     * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsCheckingSet}
+     * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsSet}
      * or {@link BitStore32} to construct this checking set from.
      */
-    constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsCheckingSet | BitStore32) {
+    constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | BitStore32) {
         if (typeof val === 'number') {
             this._bitStore = val;
         } else if (Array.isArray(val)) {
@@ -157,10 +157,10 @@ export class SudokuNumsCheckingSet implements
                 this._bitStore |= 1 << num;
             }
         } else {
-            this._bitStore = (val as ReadonlySudokuNumsCheckingSet).bitStore;
+            this._bitStore = (val as ReadonlySudokuNumsSet).bitStore;
         }
 
-        this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
     /**
@@ -175,7 +175,7 @@ export class SudokuNumsCheckingSet implements
      * @returns new checking set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
-        return new SudokuNumsCheckingSet(val);
+        return new SudokuNumsSet(val);
     }
 
     /**
@@ -186,20 +186,20 @@ export class SudokuNumsCheckingSet implements
      * @returns new checking set from the given single number.
      */
     static ofSingle(val: number) {
-        return new SudokuNumsCheckingSet(1 << val);
+        return new SudokuNumsSet(1 << val);
     }
 
     /**
      * Constructs new empty checking set.
      *
      * This method of construction for an empty set is preferable in terms of readability, memory and performance
-     * over `SudokuNumsCheckingSet.of()` as it avoids construction of an empty array argument
+     * over `SudokuNumsSet.of()` as it avoids construction of an empty array argument
      * and array iterator in constructor.
      *
      * @returns New empty checking set.
      */
     static newEmpty() {
-        return new SudokuNumsCheckingSet(0);
+        return new SudokuNumsSet(0);
     }
 
     /**
@@ -210,41 +210,41 @@ export class SudokuNumsCheckingSet implements
      * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
      */
     static all() {
-        return new SudokuNumsCheckingSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
+        return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.bitStore
+     * @see ReadonlySudokuNumsSet.bitStore
      */
     get bitStore() {
         return this._bitStore;
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.nums
+     * @see ReadonlySudokuNumsSet.nums
      */
     nums() {
         return this._nums;
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.has
+     * @see ReadonlySudokuNumsSet.has
      */
     has(val: number) {
         return (this._bitStore & (1 << val)) !== 0;
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.hasOnly
+     * @see ReadonlySudokuNumsSet.hasOnly
      */
     hasOnly(val: number) {
         return this.has(val) && (this._bitStore & (this._bitStore - 1)) === 0;
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.hasAll
+     * @see ReadonlySudokuNumsSet.hasAll
      */
-    hasAll(val: ReadonlySudokuNumsCheckingSet) {
+    hasAll(val: ReadonlySudokuNumsSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // has `1`s at the same positions as each bit store of the `val` checking set.
@@ -281,9 +281,9 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.doesNotHaveAny
+     * @see ReadonlySudokuNumsSet.doesNotHaveAny
      */
-    doesNotHaveAny(val: ReadonlySudokuNumsCheckingSet) {
+    doesNotHaveAny(val: ReadonlySudokuNumsSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
@@ -310,9 +310,9 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see ReadonlySudokuNumsCheckingSet.remaining
+     * @see ReadonlySudokuNumsSet.remaining
      */
-    get remaining(): SudokuNumsCheckingSet {
+    get remaining(): SudokuNumsSet {
         //
         // Applying bitwise XOR on the bit store of this checking set
         // and the constant bit store with all Sudoku numbers so that:
@@ -326,13 +326,13 @@ export class SudokuNumsCheckingSet implements
         //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
         // ```
         //
-        return new SudokuNumsCheckingSet(SudokuNumsCheckingSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+        return new SudokuNumsSet(SudokuNumsSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
     /**
      * @see NumsSet.addAll
      */
-    addAll(val: ReadonlySudokuNumsCheckingSet) {
+    addAll(val: ReadonlySudokuNumsSet) {
         //
         // Applying bitwise OR assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.
@@ -346,7 +346,7 @@ export class SudokuNumsCheckingSet implements
         //
         this._bitStore |= val.bitStore;
 
-        this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
 
         return this;
     }
@@ -354,7 +354,7 @@ export class SudokuNumsCheckingSet implements
     /**
      * @see NumsSet.delete
      */
-    deleteAll(val: ReadonlySudokuNumsCheckingSet) {
+    deleteAll(val: ReadonlySudokuNumsSet) {
         //
         // Applying bitwise AND assignment on the bit store of this checking set
         // to merge `1`s from the bit store of the `val` checking set.
@@ -369,7 +369,7 @@ export class SudokuNumsCheckingSet implements
         //
         this._bitStore &= ~val.bitStore;
 
-        this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
 
         return this;
     }
@@ -399,7 +399,7 @@ export class SudokuNumsCheckingSet implements
             //
             this._bitStore ^= 1 << val;
 
-            this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+            this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
         }
 
         return this;
@@ -408,7 +408,7 @@ export class SudokuNumsCheckingSet implements
     /**
      * @see NumsSet.union
      */
-    union(val: ReadonlySudokuNumsCheckingSet) {
+    union(val: ReadonlySudokuNumsSet) {
         //
         // Applying bitwise AND assignment on the bit store of this checking set
         // to `AND` `1`s from the bit store of the `val` checking set.
@@ -422,7 +422,7 @@ export class SudokuNumsCheckingSet implements
         //
         this._bitStore &= val.bitStore;
 
-        this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
 
         return this;
     }
@@ -430,7 +430,7 @@ export class SudokuNumsCheckingSet implements
     /**
      * @see ReadonlyNumsSet.equals
      */
-    equals(val: ReadonlySudokuNumsCheckingSet) {
+    equals(val: ReadonlySudokuNumsSet) {
         return this._bitStore === val.bitStore;
     }
 
@@ -438,7 +438,7 @@ export class SudokuNumsCheckingSet implements
      * @see NumsSet.clone
      */
     clone() {
-        return new SudokuNumsCheckingSet(this._bitStore);
+        return new SudokuNumsSet(this._bitStore);
     }
 
 }

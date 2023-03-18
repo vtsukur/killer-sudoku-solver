@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { SudokuNums } from '../../puzzle/sudokuNums';
-import { BitStore32, ReadonlySudokuNumsCheckingSet } from '../sets';
+import { BitStore32, ReadonlySudokuNumsSet } from '../sets';
 import { Combo, ReadonlyCombos } from './combo';
 
 type PrecomputeComboKey = number;
@@ -55,15 +55,15 @@ export class SumAddendsCombinatorics {
     }
 
     /**
-     * Returns specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsCheckingSet}
+     * Returns specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
      * if it is present amongst registered combinations.
      *
      * @param numsSet - Checking set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
      *
-     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsCheckingSet}
+     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
-    get(numsSet: ReadonlySudokuNumsCheckingSet) {
+    get(numsSet: ReadonlySudokuNumsSet) {
         return this._bitStore32ToComboMap.get(numsSet.bitStore);
     }
 

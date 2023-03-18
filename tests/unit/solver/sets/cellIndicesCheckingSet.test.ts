@@ -4,7 +4,7 @@ import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../..
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
 
-    test('Construction of `SudokuNumsCheckingSet` from array of numbers', () => {
+    test('Construction of `CellIndicesCheckingSet` from array of numbers', () => {
         expectSetWithValues(new CellIndicesCheckingSet([ 1, 30, 75 ]), [ 1, 30, 75 ]);
     });
 

@@ -1,6 +1,6 @@
 import { Cell } from '../../../puzzle/cell';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../../sets';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModel } from './cageModel';
 
 export class CellModel {
@@ -8,14 +8,14 @@ export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
-    private _numOptsCheckingSet: SudokuNumsCheckingSet;
+    private _numOptsCheckingSet: SudokuNumsSet;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOptsCheckingSet = SudokuNumsCheckingSet.all();
+        this._numOptsCheckingSet = SudokuNumsSet.all();
         this._withinCageMs = new Set();
     }
 
@@ -54,7 +54,7 @@ export class CellModel {
         return this._numOptsCheckingSet.delete(val);
     }
 
-    reduceNumOpts(val: ReadonlySudokuNumsCheckingSet): boolean {
+    reduceNumOpts(val: ReadonlySudokuNumsSet): boolean {
         const oldVal = this._numOptsCheckingSet.bitStore;
         this._numOptsCheckingSet.union(val);
         return this._numOptsCheckingSet.bitStore !== oldVal;
@@ -66,7 +66,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOptsCheckingSet = SudokuNumsCheckingSet.ofSingle(val);
+        this._numOptsCheckingSet = SudokuNumsSet.ofSingle(val);
         this._solved = true;
     }
 

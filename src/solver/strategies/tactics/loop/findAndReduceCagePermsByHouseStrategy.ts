@@ -7,7 +7,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
-import { SudokuNumsCheckingSet } from '../../../sets';
+import { SudokuNumsSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
 import { ReducedCellModels } from '../../reducedCellModels';
 import { Strategy } from '../../strategy';
@@ -44,7 +44,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 if (!_.isUndefined(singleCellForNum)) {
                     const singleOptionCellM = this._model.cellModelOf(singleCellForNum as Cell);
-                    singleOptionCellM.reduceNumOpts(SudokuNumsCheckingSet.ofSingle(num));
+                    singleOptionCellM.reduceNumOpts(SudokuNumsSet.ofSingle(num));
                 }
 
                 const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);

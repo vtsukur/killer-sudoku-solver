@@ -1,5 +1,5 @@
 import { Combo } from '../../../../src/solver/math';
-import { SudokuNumsCheckingSet } from '../../../../src/solver/sets';
+import { SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Combo tests', () => {
     test('Construction of Combo from array of numbers', () => {
@@ -8,9 +8,9 @@ describe('Combo tests', () => {
         expect(combo.number0).toBe(1);
         expect(combo.number1).toBe(6);
         expect(combo.nthNumber(2)).toBe(9);
-        expect(combo.numsSet.hasAll(SudokuNumsCheckingSet.of(1, 6, 9))).toBeTruthy();
-        expect(combo.numsSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 5))).toBeTruthy();
-        expect(combo.numsSet.doesNotHaveAny(SudokuNumsCheckingSet.of(1, 5, 6))).toBeFalsy();
+        expect(combo.numsSet.hasAll(SudokuNumsSet.of(1, 6, 9))).toBeTruthy();
+        expect(combo.numsSet.doesNotHaveAny(SudokuNumsSet.of(2, 5))).toBeTruthy();
+        expect(combo.numsSet.doesNotHaveAny(SudokuNumsSet.of(1, 5, 6))).toBeFalsy();
         expectComboWithValues(combo, [ 1, 6, 9 ]);
     });
 

@@ -1,5 +1,5 @@
 import { joinArray } from '../../util/readableMessages';
-import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../sets';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 /**
  * Human-readable key describing combination of numbers.
@@ -24,7 +24,7 @@ export class Combo implements Iterable<number> {
      * Checking set of unique Sudoku numbers between 1 and 9 present in this {@link Combo}
      * with efficient storage & fast checking/manipulation operations.
      */
-    readonly numsSet: ReadonlySudokuNumsCheckingSet;
+    readonly numsSet: ReadonlySudokuNumsSet;
 
     private readonly _nums: ReadonlyArray<number>;
     private readonly _numSet: ReadonlySet<number>;
@@ -37,7 +37,7 @@ export class Combo implements Iterable<number> {
     constructor(val: ReadonlyArray<number>) {
         this._nums = [...val];
         this._numSet = new Set(val);
-        this.numsSet = new SudokuNumsCheckingSet(val);
+        this.numsSet = new SudokuNumsSet(val);
         this.key = joinArray(val);
     }
 
