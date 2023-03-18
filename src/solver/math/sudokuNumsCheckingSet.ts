@@ -96,6 +96,23 @@ export class SudokuNumsCheckingSet implements
     /**
      * [PERFORMANCE] Cache for the arrays of numbers by a bit store
      * to avoid recalculation of `nums` each time it is needed.
+     *
+     * It has 512 elements (`2 ^ 9`) and looks as follows:
+     * ```
+     * [
+     *      [],             // 0'th element for the bit store `0`.
+     *      [ 1 ],          // 1'th element for the bit store `1`.
+     *      [ 2 ],          // 2'th element for the bit store `2`.
+     *      [ 1, 2 ],       // 3'th element for the bit store `3`.
+     *      [ 3 ],          // 4'th element for the bit store `4`.
+     *      [ 1, 3 ],       // 5'th element for the bit store `5`.
+     *      [ 2, 3 ],       // 6'th element for the bit store `6`.
+     *      [ 1, 2, 3 ],    // 7'th element for the bit store `7`.
+     *      [ 4 ],          // 8'th element for the bit store `8`.
+     *      ...
+     *      [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] // 511'th element for the bit store `511`.
+     * ]
+     * ```
      */
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
         _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsCheckingSet._LOOKUP_TABLE.collect(i));
@@ -106,7 +123,7 @@ export class SudokuNumsCheckingSet implements
     //
     private _bitStore = 0;
 
-    // Cached numbers array for fast `nums` return.
+    // Cached numbers array for the fast `nums` retrieval.
     private _nums: ReadonlyArray<number>;
 
     /**
