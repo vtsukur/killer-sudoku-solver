@@ -1,6 +1,6 @@
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
-import { BitStore32, NumsCheckingSet, ReadonlyNumsSet } from './numsSet';
+import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -64,13 +64,13 @@ type CellIndexToBitStoreLocator = {
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
  * @see ReadonlyCellIndicesCheckingSet
- * @see NumsCheckingSet
+ * @see NumsSet
  *
  * @public
  */
 export class CellIndicesCheckingSet implements
         ReadonlyCellIndicesCheckingSet,
-        NumsCheckingSet<ReadonlyCellIndicesCheckingSet, CellIndicesCheckingSet> {
+        NumsSet<ReadonlyCellIndicesCheckingSet, CellIndicesCheckingSet> {
 
     //
     // It is enough to have 3 bit stores of size 32 bits each
@@ -298,7 +298,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.union
+     * @see NumsSet.union
      */
     union(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -373,7 +373,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.addAll
+     * @see NumsSet.addAll
      */
     addAll(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -426,7 +426,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.delete
+     * @see NumsSet.delete
      */
     deleteAll(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -489,7 +489,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.clone
+     * @see NumsSet.clone
      */
     clone() {
         return new CellIndicesCheckingSet(this);

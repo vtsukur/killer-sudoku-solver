@@ -36,43 +36,43 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     });
 
     test('Adding and deleting many numbers with `hasAll` and `doesNotHaveAny` checks', () => {
-        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
+        const set = SudokuNumsCheckingSet.of(1, 6, 9);
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
 
-        numsCheckingSet.addAll(SudokuNumsCheckingSet.of(1, 7, 8));
-        expectSetWithValues(numsCheckingSet, [ 1, 6, 7, 8, 9 ]);
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(7, 8, 9))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6, 7, 8, 9))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 5))).toBeFalsy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(2, 6, 9))).toBeFalsy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(5, 9))).toBeFalsy();
+        set.addAll(SudokuNumsCheckingSet.of(1, 7, 8));
+        expectSetWithValues(set, [ 1, 6, 7, 8, 9 ]);
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 6))).toBeTruthy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(7, 8, 9))).toBeTruthy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 6, 7, 8, 9))).toBeTruthy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 5))).toBeFalsy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(2, 6, 9))).toBeFalsy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(5, 9))).toBeFalsy();
 
-        numsCheckingSet.deleteAll(SudokuNumsCheckingSet.of(2, 6, 9));
-        expectSetWithValues(numsCheckingSet, [ 1, 7, 8 ]);
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(7, 8))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 7, 8))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 9))).toBeFalsy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(2, 6, 9))).toBeFalsy();
-        expect(numsCheckingSet.hasAll(SudokuNumsCheckingSet.of(1, 6, 7, 8, 9))).toBeFalsy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
+        set.deleteAll(SudokuNumsCheckingSet.of(2, 6, 9));
+        expectSetWithValues(set, [ 1, 7, 8 ]);
+        expect(set.hasAll(SudokuNumsCheckingSet.of(7, 8))).toBeTruthy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 7, 8))).toBeTruthy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 9))).toBeFalsy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(2, 6, 9))).toBeFalsy();
+        expect(set.hasAll(SudokuNumsCheckingSet.of(1, 6, 7, 8, 9))).toBeFalsy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(SudokuNumsCheckingSet.of(8, 9))).toBeFalsy();
     });
 
     test('Checking with `has`', () => {
-        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
-        expect(numsCheckingSet.has(1)).toBeTruthy();
-        expect(numsCheckingSet.has(2)).toBeFalsy();
-        expect(numsCheckingSet.has(3)).toBeFalsy();
-        expect(numsCheckingSet.has(4)).toBeFalsy();
-        expect(numsCheckingSet.has(5)).toBeFalsy();
-        expect(numsCheckingSet.has(6)).toBeTruthy();
-        expect(numsCheckingSet.has(7)).toBeFalsy();
-        expect(numsCheckingSet.has(8)).toBeFalsy();
-        expect(numsCheckingSet.has(9)).toBeTruthy();
+        const set = SudokuNumsCheckingSet.of(1, 6, 9);
+        expect(set.has(1)).toBeTruthy();
+        expect(set.has(2)).toBeFalsy();
+        expect(set.has(3)).toBeFalsy();
+        expect(set.has(4)).toBeFalsy();
+        expect(set.has(5)).toBeFalsy();
+        expect(set.has(6)).toBeTruthy();
+        expect(set.has(7)).toBeFalsy();
+        expect(set.has(8)).toBeFalsy();
+        expect(set.has(9)).toBeTruthy();
     });
 
     test('Checking with `hasOnly`', () => {
@@ -83,24 +83,24 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
     });
 
     test('Checking with `delete`', () => {
-        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
-        expectSetWithValues(numsCheckingSet.delete(6), [ 1, 9 ]);
-        expectSetWithValues(numsCheckingSet.delete(5), [ 1, 9 ]);
-        expectSetWithValues(numsCheckingSet.delete(1), [ 9 ]);
-        expectSetWithValues(numsCheckingSet.delete(9), []);
+        const set = SudokuNumsCheckingSet.of(1, 6, 9);
+        expectSetWithValues(set.delete(6), [ 1, 9 ]);
+        expectSetWithValues(set.delete(5), [ 1, 9 ]);
+        expectSetWithValues(set.delete(1), [ 9 ]);
+        expectSetWithValues(set.delete(9), []);
     });
 
     test('Checking with `doesNotHave`', () => {
-        const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
-        expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
-        expect(numsCheckingSet.doesNotHave(2)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(3)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(4)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(5)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(6)).toBeFalsy();
-        expect(numsCheckingSet.doesNotHave(7)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(8)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(9)).toBeFalsy();
+        const set = SudokuNumsCheckingSet.of(1, 6, 9);
+        expect(set.doesNotHave(1)).toBeFalsy();
+        expect(set.doesNotHave(2)).toBeTruthy();
+        expect(set.doesNotHave(3)).toBeTruthy();
+        expect(set.doesNotHave(4)).toBeTruthy();
+        expect(set.doesNotHave(5)).toBeTruthy();
+        expect(set.doesNotHave(6)).toBeFalsy();
+        expect(set.doesNotHave(7)).toBeTruthy();
+        expect(set.doesNotHave(8)).toBeTruthy();
+        expect(set.doesNotHave(9)).toBeFalsy();
     });
 
     test('Producing included numbers', () => {
@@ -180,8 +180,8 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expect(original).toEqual(SudokuNumsCheckingSet.of(1, 8, 9)); // ... does *not* change the clone
     });
 
-    const expectSetWithValues = (numsCheckingSet: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
-        expect(numsCheckingSet.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
+    const expectSetWithValues = (set: ReadonlySudokuNumsCheckingSet, values: ReadonlyArray<number>) => {
+        expect(set.equals(new SudokuNumsCheckingSet(values))).toBeTruthy();
     };
 
 });

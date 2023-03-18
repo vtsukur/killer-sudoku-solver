@@ -138,7 +138,7 @@ export class CageModel {
             const newCombosMap = new Map<ComboKey, Combo>();
 
             combos.forEach(combo => {
-                nums.addAll(combo.numsCheckingSet);
+                nums.addAll(combo.numsSet);
                 newCombosMap.set(combo.key, combo);
             });
 
@@ -149,7 +149,7 @@ export class CageModel {
             }
         } else {
             combos.forEach(combo => {
-                nums.addAll(combo.numsCheckingSet);
+                nums.addAll(combo.numsSet);
                 this._combosMap.set(combo.key, combo);
             });
         }
@@ -504,9 +504,9 @@ export class CageModel {
         for (const comboEntry of this._combosMap.entries()) {
             const key = comboEntry[0];
             const combo = comboEntry[1];
-            if (combo.numsCheckingSet.has(withNum)) {
+            if (combo.numsSet.has(withNum)) {
                 newCombosMap.set(key, combo);
-                newNumOptions.addAll(combo.numsCheckingSet);
+                newNumOptions.addAll(combo.numsSet);
             } else {
                 deleteCombos.push(combo);
             }

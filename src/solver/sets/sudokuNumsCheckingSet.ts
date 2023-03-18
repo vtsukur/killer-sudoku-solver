@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { SudokuNums } from '../../puzzle/sudokuNums';
-import { BitStore32, NumsCheckingSet, ReadonlyNumsSet } from './numsSet';
+import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -64,13 +64,13 @@ export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsSet<ReadonlyS
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
  * @see ReadonlySudokuNumsCheckingSet
- * @see NumsCheckingSet
+ * @see NumsSet
  *
  * @public
  */
 export class SudokuNumsCheckingSet implements
         ReadonlySudokuNumsCheckingSet,
-        NumsCheckingSet<ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet> {
+        NumsSet<ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet> {
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
     private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
@@ -330,7 +330,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.addAll
+     * @see NumsSet.addAll
      */
     addAll(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -352,7 +352,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.delete
+     * @see NumsSet.delete
      */
     deleteAll(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -406,7 +406,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.union
+     * @see NumsSet.union
      */
     union(val: ReadonlySudokuNumsCheckingSet) {
         //
@@ -435,7 +435,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see NumsCheckingSet.clone
+     * @see NumsSet.clone
      */
     clone() {
         return new SudokuNumsCheckingSet(this._bitStore);

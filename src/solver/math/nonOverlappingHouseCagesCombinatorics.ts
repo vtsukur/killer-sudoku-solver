@@ -200,9 +200,9 @@ const enumerateRecursively_next = (ctx: Context, step: number) => {
 const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: number) => {
     ctx.usedCombos[step] = combo;
 
-    ctx.usedNums.addAll(combo.numsCheckingSet);
+    ctx.usedNums.addAll(combo.numsSet);
     enumerateRecursively_next(ctx, step + 1);
-    ctx.usedNums.deleteAll(combo.numsCheckingSet);
+    ctx.usedNums.deleteAll(combo.numsSet);
 };
 
 /**
@@ -226,7 +226,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAd
  */
 const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
-        if (ctx.usedNums.doesNotHaveAny(combo.numsCheckingSet)) {
+        if (ctx.usedNums.doesNotHaveAny(combo.numsSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
     }
@@ -241,7 +241,7 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombin
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numsCheckingSet.bitStore);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numsSet.bitStore);
     };
 };
 
@@ -357,7 +357,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             this.combos[cageIndex] = new Array(actualSumCombosSet.size);
             let comboIndex = 0;
             for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.numsCheckingSet.bitStore)) {
+                if (actualSumCombosSet.has(combo.numsSet.bitStore)) {
                     this.combos[cageIndex][comboIndex++] = combo;
                 }
             }

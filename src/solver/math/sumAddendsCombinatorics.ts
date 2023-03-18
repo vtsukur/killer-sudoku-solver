@@ -48,7 +48,7 @@ export class SumAddendsCombinatorics {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         for (const combo of val) {
-            this._bitStore32ToComboMap.set(combo.numsCheckingSet.bitStore, combo);
+            this._bitStore32ToComboMap.set(combo.numsSet.bitStore, combo);
         }
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
@@ -58,13 +58,13 @@ export class SumAddendsCombinatorics {
      * Returns specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsCheckingSet}
      * if it is present amongst registered combinations.
      *
-     * @param numsCheckingSet - Checking set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
+     * @param numsSet - Checking set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
      *
      * @returns Specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsCheckingSet}
      * if it is present amongst registered combinations; otherwise returns `undefined`.
      */
-    get(numsCheckingSet: ReadonlySudokuNumsCheckingSet) {
-        return this._bitStore32ToComboMap.get(numsCheckingSet.bitStore);
+    get(numsSet: ReadonlySudokuNumsCheckingSet) {
+        return this._bitStore32ToComboMap.get(numsSet.bitStore);
     }
 
     /**

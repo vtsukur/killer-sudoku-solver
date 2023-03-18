@@ -21,64 +21,64 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
     });
 
     test('Adding and deleting many `Cell`s\' indices with `hasAll` and `doesNotHaveAny` checks', () => {
-        const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
+        const set = CellIndicesCheckingSet.of(1, 30, 75);
 
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 30))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(30, 75))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 30, 75))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(2, 75))).toBeFalsy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 40))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(30, 40))).toBeFalsy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(1, 30))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(30, 75))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(1, 30, 75))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(2, 75))).toBeFalsy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(2, 40))).toBeTruthy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(30, 40))).toBeFalsy();
 
-        numsCheckingSet.addAll(CellIndicesCheckingSet.of(0, 1, 7, 28, 80));
-        expectSetWithValues(numsCheckingSet, [ 0, 1, 7, 28, 30, 75, 80 ]);
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 5))).toBeFalsy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(2, 6, 9))).toBeFalsy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(1, 9))).toBeFalsy();
+        set.addAll(CellIndicesCheckingSet.of(0, 1, 7, 28, 80));
+        expectSetWithValues(set, [ 0, 1, 7, 28, 30, 75, 80 ]);
+        expect(set.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(1, 5))).toBeFalsy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(2, 6, 9))).toBeFalsy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(1, 9))).toBeFalsy();
 
-        numsCheckingSet.deleteAll(CellIndicesCheckingSet.of(1, 7, 30, 75));
-        expectSetWithValues(numsCheckingSet, [ 0, 28, 80 ]);
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 28))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 80))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(28, 80))).toBeTruthy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeFalsy();
-        expect(numsCheckingSet.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeFalsy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
-        expect(numsCheckingSet.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
+        set.deleteAll(CellIndicesCheckingSet.of(1, 7, 30, 75));
+        expectSetWithValues(set, [ 0, 28, 80 ]);
+        expect(set.hasAll(CellIndicesCheckingSet.of(0, 28))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(0, 80))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(28, 80))).toBeTruthy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(0, 7))).toBeFalsy();
+        expect(set.hasAll(CellIndicesCheckingSet.of(1, 7, 28, 80))).toBeFalsy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(2, 3))).toBeTruthy();
+        expect(set.doesNotHaveAny(CellIndicesCheckingSet.of(0, 9))).toBeFalsy();
     });
 
     test('Adding numbers one by one', () => {
-        const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
+        const set = CellIndicesCheckingSet.of(1, 30, 75);
 
-        numsCheckingSet.addOne(0);
-        numsCheckingSet.addOne(31);
-        numsCheckingSet.addOne(80);
+        set.addOne(0);
+        set.addOne(31);
+        set.addOne(80);
 
-        expectSetWithValues(numsCheckingSet, [ 0, 1, 30, 31, 75, 80 ]);
+        expectSetWithValues(set, [ 0, 1, 30, 31, 75, 80 ]);
     });
 
     test('Deleting numbers one by one', () => {
-        const numsCheckingSet = CellIndicesCheckingSet.of(0, 1, 30, 31, 75, 80);
+        const set = CellIndicesCheckingSet.of(0, 1, 30, 31, 75, 80);
 
-        numsCheckingSet.deleteOne(0);
-        numsCheckingSet.deleteOne(31);
-        numsCheckingSet.deleteOne(80);
+        set.deleteOne(0);
+        set.deleteOne(31);
+        set.deleteOne(80);
 
-        expectSetWithValues(numsCheckingSet, [ 1, 30, 75 ]);
+        expectSetWithValues(set, [ 1, 30, 75 ]);
     });
 
     test('Checking with `doesNotHave`', () => {
-        const numsCheckingSet = CellIndicesCheckingSet.of(1, 30, 75);
-        expect(numsCheckingSet.doesNotHave(1)).toBeFalsy();
-        expect(numsCheckingSet.doesNotHave(2)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(29)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(30)).toBeFalsy();
-        expect(numsCheckingSet.doesNotHave(45)).toBeTruthy();
-        expect(numsCheckingSet.doesNotHave(75)).toBeFalsy();
-        expect(numsCheckingSet.doesNotHave(80)).toBeTruthy();
+        const set = CellIndicesCheckingSet.of(1, 30, 75);
+        expect(set.doesNotHave(1)).toBeFalsy();
+        expect(set.doesNotHave(2)).toBeTruthy();
+        expect(set.doesNotHave(29)).toBeTruthy();
+        expect(set.doesNotHave(30)).toBeFalsy();
+        expect(set.doesNotHave(45)).toBeTruthy();
+        expect(set.doesNotHave(75)).toBeFalsy();
+        expect(set.doesNotHave(80)).toBeTruthy();
     });
 
     test('Producing included `Cell`s', () => {
@@ -143,8 +143,8 @@ describe('Unit tests for `CellIndicesCheckingSet`', () => {
         expect(original).toEqual(CellIndicesCheckingSet.of(1, 8, 30, 75)); // ... does *not* change the clone
     });
 
-    const expectSetWithValues = (numsCheckingSet: ReadonlyCellIndicesCheckingSet, values: ReadonlyArray<number>) => {
-        expect(numsCheckingSet.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
+    const expectSetWithValues = (set: ReadonlyCellIndicesCheckingSet, values: ReadonlyArray<number>) => {
+        expect(set.equals(new CellIndicesCheckingSet(values))).toBeTruthy();
     };
 
 });

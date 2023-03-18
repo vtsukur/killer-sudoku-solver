@@ -70,12 +70,12 @@ export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
  *
  * @typeParam ROSET - Specific subtype of {@link ReadonlyNumsSet}
  * to be used as an argument for checking and manipulation operations.
- * @typeParam MUSET - Specific subtype of {@link NumsCheckingSet}
+ * @typeParam MUSET - Specific subtype of {@link NumsSet}
  * to be used as a return type for manipulation operations.
  */
-export interface NumsCheckingSet<
+export interface NumsSet<
             ROSET extends ReadonlyNumsSet<ROSET>,
-            MUSET extends NumsCheckingSet<ROSET, MUSET>
+            MUSET extends NumsSet<ROSET, MUSET>
         > extends ReadonlyNumsSet<ROSET> {
 
     /**
