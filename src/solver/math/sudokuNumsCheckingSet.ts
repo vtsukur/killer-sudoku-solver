@@ -139,7 +139,9 @@ export class SudokuNumsCheckingSet implements
      * or {@link BitStore32} to construct this checking set from.
      */
     constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsCheckingSet | BitStore32) {
-        if (Array.isArray(val)) {
+        if (typeof val === 'number') {
+            this._bitStore = val;
+        } else if (Array.isArray(val)) {
             for (const num of val) {
                 //
                 // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
@@ -154,8 +156,6 @@ export class SudokuNumsCheckingSet implements
                 //
                 this._bitStore |= 1 << num;
             }
-        } else if (typeof val === 'number') {
-            this._bitStore = val;
         } else {
             this._bitStore = (val as ReadonlySudokuNumsCheckingSet).bitStore;
         }
