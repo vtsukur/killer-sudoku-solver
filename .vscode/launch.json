@@ -556,13 +556,13 @@
         },
 
         {
-            "name": "npm run test [solver/sets/cellIndicesCheckingSet]",
+            "name": "npm run test [solver/sets/cellIndicesSet]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/sets/cellIndicesCheckingSet.test.ts"
+                "tests/unit/solver/sets/cellIndicesSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

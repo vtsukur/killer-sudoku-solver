@@ -1,4 +1,4 @@
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from './cellIndicesCheckingSet';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from './cellIndicesSet';
 import { BitStore32, ReadonlyNumsSet } from './numsSet';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
