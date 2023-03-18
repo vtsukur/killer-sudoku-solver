@@ -8,14 +8,14 @@ export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
-    private _numOptsCheckingSet: SudokuNumsSet;
+    private _numOptsSet: SudokuNumsSet;
     private _solved: boolean;
 
     constructor(cell: Cell) {
         this.cell = cell;
         this._solved = false;
 
-        this._numOptsCheckingSet = SudokuNumsSet.all();
+        this._numOptsSet = SudokuNumsSet.all();
         this._withinCageMs = new Set();
     }
 
@@ -23,7 +23,7 @@ export class CellModel {
         const copy = new CellModel(this.cell);
         copy.placedNum = this.placedNum;
         copy._solved = this._solved;
-        copy._numOptsCheckingSet = this._numOptsCheckingSet.clone();
+        copy._numOptsSet = this._numOptsSet.clone();
         return copy;
     }
 
@@ -40,24 +40,24 @@ export class CellModel {
     }
 
     numOpts(): ReadonlyArray<number> {
-        return this._numOptsCheckingSet.nums();
+        return this._numOptsSet.nums();
     }
 
     hasNumOpt(val: number) {
-        return this._numOptsCheckingSet.has(val);
+        return this._numOptsSet.has(val);
     }
 
     deleteNumOpt(val: number) {
-        if (this._numOptsCheckingSet.hasOnly(val)) {
+        if (this._numOptsSet.hasOnly(val)) {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
-        return this._numOptsCheckingSet.delete(val);
+        return this._numOptsSet.delete(val);
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): boolean {
-        const oldVal = this._numOptsCheckingSet.bitStore;
-        this._numOptsCheckingSet.union(val);
-        return this._numOptsCheckingSet.bitStore !== oldVal;
+        const oldVal = this._numOptsSet.bitStore;
+        this._numOptsSet.union(val);
+        return this._numOptsSet.bitStore !== oldVal;
     }
 
     get solved() {
@@ -66,7 +66,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOptsCheckingSet = SudokuNumsSet.ofSingle(val);
+        this._numOptsSet = SudokuNumsSet.ofSingle(val);
         this._solved = true;
     }
 

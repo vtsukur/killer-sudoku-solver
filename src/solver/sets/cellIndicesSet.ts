@@ -404,7 +404,7 @@ export class CellIndicesSet implements
      *
      * @param val - Number to add to this set.
      *
-     * @returns This checking numbers set.
+     * @returns This numbers set.
      */
     addOne(val: number) {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
@@ -449,9 +449,9 @@ export class CellIndicesSet implements
     }
 
     /**
-     * Deletes given number from this checking numbers set.
+     * Deletes given number from this numbers set.
      *
-     * This method changes this checking numbers set.
+     * This method changes this numbers set.
      *
      * The given number is deleted only if it is *not* yet present in this set.
      * Duplicate number is ignored.

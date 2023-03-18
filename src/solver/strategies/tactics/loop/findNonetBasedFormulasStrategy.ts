@@ -184,9 +184,9 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
 
     const reduced = new Set<CellModel>();
 
-    const checkingNumOpts = new Map();
+    const numOpts = new Map();
     formula.equalToCellMs.forEach(cellM => {
-        checkingNumOpts.set(cellM, new Set());
+        numOpts.set(cellM, new Set());
     });
 
     // also check for duplicate nums possibility?
@@ -199,7 +199,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
                 formula.cellM.deleteNumOpt(num);
                 reduced.add(formula.cellM);
             } else {
-                checkingNumOpts.get(otherCellM).add(targetSum);
+                numOpts.get(otherCellM).add(targetSum);
             }
         } else if (formula.equalToCellMs.size === 2) {
             const cellMArr = Array.from(formula.equalToCellMs);
@@ -211,12 +211,12 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
                 const hasDirect = otherCellM1.hasNumOpt(combo.number0) && otherCellM2.hasNumOpt(combo.number1);
                 const hasInverse = otherCellM1.hasNumOpt(combo.number1) && otherCellM2.hasNumOpt(combo.number0);
                 if (hasDirect) {
-                    checkingNumOpts.get(otherCellM1).add(combo.number0);
-                    checkingNumOpts.get(otherCellM2).add(combo.number1);
+                    numOpts.get(otherCellM1).add(combo.number0);
+                    numOpts.get(otherCellM2).add(combo.number1);
                 }
                 if (hasInverse) {
-                    checkingNumOpts.get(otherCellM1).add(combo.number1);
-                    checkingNumOpts.get(otherCellM2).add(combo.number0);
+                    numOpts.get(otherCellM1).add(combo.number1);
+                    numOpts.get(otherCellM2).add(combo.number0);
                 }
                 hasAtLeastOneCombo ||= hasDirect || hasInverse;
             }
@@ -227,9 +227,9 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
         }
     }
 
-    for (const checkingEntry of checkingNumOpts.entries()) {
-        const cellM = checkingEntry[0];
-        const numOpts = checkingEntry[1];
+    for (const entry of numOpts.entries()) {
+        const cellM = entry[0];
+        const numOpts = entry[1];
 
         for (const num of cellM.numOpts()) {
             if (!numOpts.has(num)) {

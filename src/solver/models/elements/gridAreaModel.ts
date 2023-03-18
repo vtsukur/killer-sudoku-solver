@@ -328,14 +328,14 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         const {
             cages: inputCages,
             cellCount: inputCagesCellCount,
-            cellIndices: inputCagesCellIndicesCheckingSet
+            cellIndices: inputCagesCellIndicesSet
         } = nonOverlappingCagesAreaModel;
         this.usedCages = [...inputCages];
         this.usedCellCount = inputCagesCellCount;
-        this.usedCellIndices = new CellIndicesSet(inputCagesCellIndicesCheckingSet);
+        this.usedCellIndices = new CellIndicesSet(inputCagesCellIndicesSet);
         this.maxAreaCages = [...inputCages];
         this.maxAreaCellCount = inputCagesCellCount;
-        this.maxAreaCellIndices = inputCagesCellIndicesCheckingSet;
+        this.maxAreaCellIndices = inputCagesCellIndicesSet;
         this.foundAbsMax = false;
     }
 

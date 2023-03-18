@@ -1,5 +1,5 @@
 /**
- * Bit storage used for efficient checking/manipulation of the checking numbers sets of sizes up to 32.
+ * Bit storage used for efficient checking/manipulation of the numbers sets of sizes up to 32.
  *
  * Represented as built-in `number`, where each bit at position `x` is:
  *  - `0` if the number is included in the set;
@@ -10,7 +10,7 @@
 export type BitStore32 = number;
 
 /**
- * Checking numbers set with efficient storage & fast checking operations.
+ * Numbers set with efficient storage & fast checking operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
@@ -79,48 +79,48 @@ export interface NumsSet<
         > extends ReadonlyNumsSet<ROSET> {
 
     /**
-     * Adds all numbers from another set to this checking numbers set.
+     * Adds all numbers from another set to this numbers set.
      *
-     * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
+     * This method changes this numbers set and does *not* modify `val` numbers set.
      *
      * Only the numbers which are *not* yet present in this set are added.
      * Duplicate numbers are ignored.
      *
      * @param val - Another set containing numbers to add to this set.
      *
-     * @returns This checking numbers set.
+     * @returns This numbers set.
      */
     addAll(val: ROSET): MUSET;
 
     /**
-     * Deletes all numbers present in another set from this checking numbers set.
+     * Deletes all numbers present in another set from this numbers set.
      *
-     * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
+     * This method changes this numbers set and does *not* modify `val` numbers set.
      *
      * Only the numbers which are present in this set are deleted.
      * Missing numbers are ignored.
      *
      * @param val - Another set containing numbers to delete from this set.
      *
-     * @returns This checking numbers set.
+     * @returns This numbers set.
      */
     deleteAll(val: ROSET): MUSET;
 
     /**
      * Updates this set so that it has only the numbers
-     * present in this set `AND` the given `val` checking numbers set.
+     * present in this set `AND` the given `val` numbers set.
      *
      * @param val - Another set to `AND` with this set.
      *
-     * @returns This checking numbers set having only the numbers
+     * @returns This numbers set having only the numbers
      * present in this set `AND` the given `val` set.
      */
     union(val: ROSET): MUSET;
 
     /**
-     * Clones this checking numbers set by creating new instance based on the copy of the state of this set.
+     * Clones this numbers set by creating new instance based on the copy of the state of this set.
      *
-     * @returns new checking numbers set based on the copy of the state of this set.
+     * @returns New numbers set based on the copy of the state of this set.
      */
     clone(): MUSET;
 
