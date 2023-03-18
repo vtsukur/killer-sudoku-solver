@@ -3,7 +3,7 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../src/solver/set
 describe('Unit tests for `SudokuNumsSet`', () => {
 
     test('Minimum Sudoku number is 1', () => {
-        expect(SudokuNumsSet.MIN).toEqual(1);
+        expect(SudokuNumsSet.MIN_NUM).toEqual(1);
     });
 
     test('Maximum Sudoku number is 9', () => {

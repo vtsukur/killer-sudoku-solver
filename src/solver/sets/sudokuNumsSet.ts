@@ -75,7 +75,7 @@ export class SudokuNumsSet implements
     /**
      * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
      */
-    static readonly MIN = 1;
+    static readonly MIN_NUM = 1;
 
     /**
      * Maximum Sudoku number (`9`) which can be placed in a {@link Cell}.
@@ -220,10 +220,10 @@ export class SudokuNumsSet implements
 
     /**
      * Constructs new set with all unique Sudoku numbers
-     * in the range from {@link SudokuNumsSet.MIN} to {@link SudokuNumsSet.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX} (inclusive).
      *
      * @returns New set with all unique Sudoku numbers
-     * in the range from {@link SudokuNumsSet.MIN} to {@link SudokuNumsSet.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX} (inclusive).
      */
     static all() {
         return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);

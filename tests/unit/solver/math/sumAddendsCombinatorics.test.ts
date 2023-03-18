@@ -611,7 +611,7 @@ describe('Tests for `SumAddendsCombinatorics`', () => {
     });
 
     const rangeFromMinSumToX = (x: number) => {
-        return _.range(SudokuNumsSet.MIN, x + 1);
+        return _.range(SudokuNumsSet.MIN_NUM, x + 1);
     };
 
     const rangeFromXToMaxSum = (x: number) => {
