@@ -8,7 +8,7 @@ describe('Performance tests for `SudokuNumsCheckingSet`', () => {
 
     _.range(TESTS_COUNT).forEach(i => {
 
-        test.skip(`Multiple mutations of different kinds and getting \`nums\` after each [${i}]`, () => {
+        test(`Multiple mutations of different kinds and getting \`nums\` after each [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 const numsCheckingSet = SudokuNumsCheckingSet.of(1, 6, 9);
                 numsCheckingSet.addAll(SudokuNumsCheckingSet.of(2, 3, 4));
@@ -20,7 +20,7 @@ describe('Performance tests for `SudokuNumsCheckingSet`', () => {
             });
         });
 
-        test(`Creation of single num set [${i}]`, () => {
+        test.skip(`Creation of single num set [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 SudokuNumsCheckingSet.ofSingle(5);
             });
