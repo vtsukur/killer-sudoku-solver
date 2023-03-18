@@ -1,4 +1,4 @@
-import { CachedNumRanges } from '../solver/math/cachedNumRanges';
+import { CachedNumRanges } from '../util/cachedNumRanges';
 import { House } from './house';
 
 /**

@@ -4,7 +4,7 @@ import { Cage } from '../../puzzle/cage';
 import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { SudokuNumsSet } from '../sets';
-import { CachedNumRanges } from './cachedNumRanges';
+import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';

@@ -1,5 +1,5 @@
 import { Cell } from '../../../../src/puzzle/cell';
-import { CachedNumRanges } from '../../../../src/solver/math/cachedNumRanges';
+import { CachedNumRanges } from '../../../../src/util/cachedNumRanges';
 import { CellIndicesSet, ReadonlyCellIndicesSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `CellIndicesSet`', () => {

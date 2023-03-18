@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { CachedNumRanges } from '../solver/math/cachedNumRanges';
+import { CachedNumRanges } from '../util/cachedNumRanges';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
 
 /**

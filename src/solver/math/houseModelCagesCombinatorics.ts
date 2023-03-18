@@ -6,7 +6,7 @@ import { HouseCagesPerms, NonOverlappingHouseCagesCombinatorics } from './nonOve
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
-import { CachedNumRanges } from './cachedNumRanges';
+import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { HouseCageCombos, HouseCagesCombos } from './houseCagesCombinatorics';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
