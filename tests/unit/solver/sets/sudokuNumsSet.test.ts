@@ -11,7 +11,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Range of possibe Sudoku numbers [1, 9]', () => {
-        expect(SudokuNumsSet.RANGE).toEqual([
+        expect(SudokuNumsSet.NUM_RANGE).toEqual([
             1, 2, 3, 4, 5, 6, 7, 8, 9
         ]);
     });
@@ -89,7 +89,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Checking with `hasOnly`', () => {
-        for (const num of SudokuNumsSet.RANGE) {
+        for (const num of SudokuNumsSet.NUM_RANGE) {
             expect(SudokuNumsSet.of(num).hasOnly(num)).toBeTruthy();
         }
         expect(SudokuNumsSet.of(1, 6, 9).hasOnly(1)).toBeFalsy();

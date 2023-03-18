@@ -86,10 +86,10 @@ export class SudokuNumsSet implements
      * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
      * in the form of readonly array.
      */
-    static readonly RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM + 1];
+    static readonly NUM_RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM + 1];
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
-    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.RANGE.reduce(
+    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.NUM_RANGE.reduce(
         (prev, current) => prev | 1 << current, 0
     );
 
@@ -102,7 +102,7 @@ export class SudokuNumsSet implements
         const val = new PowersOf2Lut<number>();
 
         // Iterating over all possible `Cell` indices on the `Grid`.
-        for (const index of this.RANGE) {
+        for (const index of this.NUM_RANGE) {
             val.set(index, index);
         }
 
