@@ -2,8 +2,8 @@
  * Bit storage used for efficient checking/manipulation of the checking numbers sets of sizes up to 32.
  *
  * Represented as built-in `number`, where each bit at position `x` is:
- *  - `0` if the number is included in the checking set;
- *  - `1` if the number is excluded from the checking set.
+ *  - `0` if the number is included in the set;
+ *  - `1` if the number is excluded from the set.
  *
  * @public
  */
@@ -23,11 +23,11 @@ export type BitStore32 = number;
 export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
 
     /**
-     * Checks if this set has ALL numbers from another checking set.
+     * Checks if this set has ALL numbers from another set.
      *
      * @param val - Another set to check against.
      *
-     * @returns `true` if this checking set has ALL numbers from another checking set; otherwise `false`.
+     * @returns `true` if this set has ALL numbers from another set; otherwise `false`.
      */
     hasAll(val: T): boolean;
 
@@ -36,25 +36,25 @@ export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
      *
      * @param val - Number to check.
      *
-     * @returns `true` if this checking set does *not* have the given number; otherwise `false`.
+     * @returns `true` if this set does *not* have the given number; otherwise `false`.
      */
     doesNotHave(val: number): boolean;
 
     /**
-     * Checks if this set does *not* have any numbers from another checking set.
+     * Checks if this set does *not* have any numbers from another set.
      *
      * @param val - Another set to check against.
      *
-     * @returns `true` if this checking set does *not* have any numbers from another checking set; otherwise `false`.
+     * @returns `true` if this set does *not* have any numbers from another set; otherwise `false`.
      */
     doesNotHaveAny(val: T): boolean;
 
     /**
-     * Checks whether numbers in this checking set are exactly the same as in another checking set.
+     * Checks whether numbers in this set are exactly the same as in another set.
      *
      * @param val - Another set to check equality with this set.
      *
-     * @returns `true` if this checking set has the same numbers as the `val` checking set; otherwise `false`.
+     * @returns `true` if this set has the same numbers as the `val` set; otherwise `false`.
      */
     equals(val: T): boolean;
 
@@ -79,41 +79,41 @@ export interface NumsSet<
         > extends ReadonlyNumsSet<ROSET> {
 
     /**
-     * Adds all numbers from another checking set to this checking numbers set.
+     * Adds all numbers from another set to this checking numbers set.
      *
      * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
      *
-     * Only the numbers which are *not* yet present in this checking set are added.
+     * Only the numbers which are *not* yet present in this set are added.
      * Duplicate numbers are ignored.
      *
-     * @param val - Another checking set containing numbers to add to this set.
+     * @param val - Another set containing numbers to add to this set.
      *
      * @returns This checking numbers set.
      */
     addAll(val: ROSET): MUSET;
 
     /**
-     * Deletes all numbers present in another checking set from this checking numbers set.
+     * Deletes all numbers present in another set from this checking numbers set.
      *
      * This method changes this checking numbers set and does *not* modify `val` checking numbers set.
      *
-     * Only the numbers which are present in this checking set are deleted.
+     * Only the numbers which are present in this set are deleted.
      * Missing numbers are ignored.
      *
-     * @param val - Another checking set containing numbers to delete from this checking set.
+     * @param val - Another set containing numbers to delete from this set.
      *
      * @returns This checking numbers set.
      */
     deleteAll(val: ROSET): MUSET;
 
     /**
-     * Updates this checking set so that it has only the numbers
+     * Updates this set so that it has only the numbers
      * present in this set `AND` the given `val` checking numbers set.
      *
-     * @param val - Another checking set to `AND` with this set.
+     * @param val - Another set to `AND` with this set.
      *
      * @returns This checking numbers set having only the numbers
-     * present in this set `AND` the given `val` checking set.
+     * present in this set `AND` the given `val` set.
      */
     union(val: ROSET): MUSET;
 

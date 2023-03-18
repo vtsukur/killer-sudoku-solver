@@ -51,7 +51,7 @@ export class Cage {
     readonly isInput: boolean;
 
     /**
-     * Checking set of {@link Cell} indices with efficient storage & fast checking operations
+     * Set of {@link Cell} indices with efficient storage & fast checking operations
      * which has {@link Cage} {@link Cell}s included.
      */
     readonly cellIndices: ReadonlyCellIndicesSet;

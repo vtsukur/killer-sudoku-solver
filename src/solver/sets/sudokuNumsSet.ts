@@ -4,7 +4,7 @@ import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
- * Checking set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations
+ * Set of Sudoku numbers between 1 and 9 with efficient storage & fast checking operations
  * which can be used to mark numbers as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
@@ -24,35 +24,35 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
     /**
      * Checks if this set has the given number.
      *
-     * @param val - Number to check for being included in this checking set.
+     * @param val - Number to check for being included in this set.
      *
-     * @returns `true` if this checking set has the given number; otherwise `false`.
+     * @returns `true` if this set has the given number; otherwise `false`.
      */
     has(val: number): boolean;
 
     /**
      * Checks if this set has only the given number.
      *
-     * @param val - Number to check for being the only number in this checking set.
+     * @param val - Number to check for being the only number in this set.
      *
-     * @returns `true` if this checking set has only the given number; otherwise `false`.
+     * @returns `true` if this set has only the given number; otherwise `false`.
      */
     hasOnly(val: number): boolean;
 
     /**
-     * Produces numbers which are included in this checking set.
+     * Produces numbers which are included in this set.
      *
-     * @returns Numbers which are included in this checking set.
+     * @returns Numbers which are included in this set.
      */
     nums(): ReadonlyArray<number>;
 
     /**
-     * Returns new checking set with Sudoku numbers which are *not* present in the current checking set.
+     * Returns new set with Sudoku numbers which are *not* present in the current set.
      *
-     * For example, if a checking set has numbers [1, 2, 5, 9] then
-     * the remaining checking set of numbers will be [3, 4, 6, 7, 8].
+     * For example, if a set has numbers [1, 2, 5, 9] then
+     * the remaining set of numbers will be [3, 4, 6, 7, 8].
      *
-     * @returns new checking set with Sudoku numbers which are *not* present in the current checking set.
+     * @returns new set with Sudoku numbers which are *not* present in the current set.
      */
     get remaining(): SudokuNumsSet;
 
@@ -127,16 +127,16 @@ export class SudokuNumsSet implements
     private _nums: ReadonlyArray<number>;
 
     /**
-     * Constructs new checking set from the unique numbers in the given array
+     * Constructs new set from the unique numbers in the given array
      * or from another {@link ReadonlySudokuNumsSet} or from the {@link BitStore32}.
      *
-     * In case array is specified, only unique numbers are added to the checking set.
+     * In case array is specified, only unique numbers are added to the set.
      * Number duplicates are silently ignored.
      *
-     * Checking set is constructed as empty if no numbers are given.
+     * Set is constructed as empty if no numbers are given.
      *
      * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsSet}
-     * or {@link BitStore32} to construct this checking set from.
+     * or {@link BitStore32} to construct this set from.
      */
     constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | BitStore32) {
         if (typeof val === 'number') {
@@ -164,49 +164,49 @@ export class SudokuNumsSet implements
     }
 
     /**
-     * Constructs new checking set from the unique numbers specified via rest parameters.
+     * Constructs new set from the unique numbers specified via rest parameters.
      *
-     * Only unique numbers are added to the checking set. Number duplicates are silently ignored.
+     * Only unique numbers are added to the set. Number duplicates are silently ignored.
      *
-     * Checking set is constructed as empty if no numbers are given.
+     * Set is constructed as empty if no numbers are given.
      *
-     * @param val - Array of numbers to construct this checking set from.
+     * @param val - Array of numbers to construct this set from.
      *
-     * @returns new checking set from the given numbers.
+     * @returns new set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
         return new SudokuNumsSet(val);
     }
 
     /**
-     * Constructs new checking set from the given single number.
+     * Constructs new set from the given single number.
      *
-     * @param val - Single number to construct this checking set from.
+     * @param val - Single number to construct this set from.
      *
-     * @returns new checking set from the given single number.
+     * @returns new set from the given single number.
      */
     static ofSingle(val: number) {
         return new SudokuNumsSet(1 << val);
     }
 
     /**
-     * Constructs new empty checking set.
+     * Constructs new empty set.
      *
      * This method of construction for an empty set is preferable in terms of readability, memory and performance
      * over `SudokuNumsSet.of()` as it avoids construction of an empty array argument
      * and array iterator in constructor.
      *
-     * @returns New empty checking set.
+     * @returns New empty set.
      */
     static newEmpty() {
         return new SudokuNumsSet(0);
     }
 
     /**
-     * Constructs new checking set with all unique Sudoku numbers
+     * Constructs new set with all unique Sudoku numbers
      * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
      *
-     * @returns New checking set with all unique Sudoku numbers
+     * @returns New set with all unique Sudoku numbers
      * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
      */
     static all() {
@@ -246,8 +246,8 @@ export class SudokuNumsSet implements
      */
     hasAll(val: ReadonlySudokuNumsSet) {
         //
-        // Applying bitwise AND to check that each bit store of this checking set
-        // has `1`s at the same positions as each bit store of the `val` checking set.
+        // Applying bitwise AND to check that each bit store of this set
+        // has `1`s at the same positions as each bit store of the `val` set.
         //
         // Example for `hasAll` returning `true`:
         // ```
@@ -285,8 +285,8 @@ export class SudokuNumsSet implements
      */
     doesNotHaveAny(val: ReadonlySudokuNumsSet) {
         //
-        // Applying bitwise AND to check that each bit store of this checking set
-        // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
+        // Applying bitwise AND to check that each bit store of this set
+        // does *not* have `1`s at the same positions as each bit store of the `val` set.
         //
         // Example for `doesNotHaveAny` returning `true`:
         // ```
@@ -314,7 +314,7 @@ export class SudokuNumsSet implements
      */
     get remaining(): SudokuNumsSet {
         //
-        // Applying bitwise XOR on the bit store of this checking set
+        // Applying bitwise XOR on the bit store of this set
         // and the constant bit store with all Sudoku numbers so that:
         //  - `1`+`0` bits are turned into `1`s (to include number);
         //  - `1`+`1` bits are turned into `0`s (to exclude number).
@@ -334,8 +334,8 @@ export class SudokuNumsSet implements
      */
     addAll(val: ReadonlySudokuNumsSet) {
         //
-        // Applying bitwise OR assignment on the bit store of this checking set
-        // to merge `1`s from the bit store of the `val` checking set.
+        // Applying bitwise OR assignment on the bit store of this set
+        // to merge `1`s from the bit store of the `val` set.
         //
         // Example:
         // ```
@@ -356,8 +356,8 @@ export class SudokuNumsSet implements
      */
     deleteAll(val: ReadonlySudokuNumsSet) {
         //
-        // Applying bitwise AND assignment on the bit store of this checking set
-        // to merge `1`s from the bit store of the `val` checking set.
+        // Applying bitwise AND assignment on the bit store of this set
+        // to merge `1`s from the bit store of the `val` set.
         //
         // Example:
         // ```
@@ -375,18 +375,18 @@ export class SudokuNumsSet implements
     }
 
     /**
-     * Deletes given number from this checking set if it is present.
+     * Deletes given number from this set if it is present.
      *
-     * This method changes this checking set.
+     * This method changes this set.
      *
-     * @param val - Number to delete from this checking set if it is present.
+     * @param val - Number to delete from this set if it is present.
      *
-     * @returns This checking set.
+     * @returns This set.
      */
     delete(val: number) {
         if (this.has(val)) {
             //
-            // Applying bitwise XOR assignment on the bit store of this checking set
+            // Applying bitwise XOR assignment on the bit store of this set
             // to clear `1` on the position corresponding to the number `val`.
             //
             // Example:
@@ -410,8 +410,8 @@ export class SudokuNumsSet implements
      */
     union(val: ReadonlySudokuNumsSet) {
         //
-        // Applying bitwise AND assignment on the bit store of this checking set
-        // to `AND` `1`s from the bit store of the `val` checking set.
+        // Applying bitwise AND assignment on the bit store of this set
+        // to `AND` `1`s from the bit store of the `val` set.
         //
         // Example:
         // ```

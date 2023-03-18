@@ -4,10 +4,10 @@ import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
- * Checking set of {@link Cell} indices with efficient storage & fast checking operations
+ * Set of {@link Cell} indices with efficient storage & fast checking operations
  * which can be used to mark {@link Cell}s as included or excluded in {@link Cage}s and {@link Cage} areas.
  *
- * The range of this checking set is [0, 81) to be able to fit
+ * The range of this set is [0, 81) to be able to fit
  * all possible {@link Cell} indices on the {@link Grid} (see {@link Grid.CELL_COUNT}).
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
@@ -25,29 +25,29 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
     get bitStores(): ReadonlyArray<BitStore32>;
 
     /**
-     * Produces {@link Cell}s which are included in this checking set.
+     * Produces {@link Cell}s which are included in this set.
      *
-     * @returns {Cell}s which are included in this checking set.
+     * @returns {Cell}s which are included in this set.
      */
     cells(): ReadonlyCells;
 
     /**
-     * Creates new checking set which is the _difference_ between this checking set
-     * and the given `val` checking set,
-     * meaning produced set has values from this checking set
+     * Creates new set which is the _difference_ between this set
+     * and the given `val` set,
+     * meaning produced set has values from this set
      * WITHOUT the values in the `val` set.
      *
-     * @param val - Checking set used to produce difference with this checking set.
+     * @param val - Set used to produce difference with this set.
      *
-     * @returns New checking set which is the _difference_ between this checking set
-     * and the given `val` checking set,
+     * @returns New set which is the _difference_ between this set
+     * and the given `val` set,
      */
     _(val: ReadonlyCellIndicesSet): ReadonlyCellIndicesSet;
 
     /**
-     * Creates new checking set which has the numbers *not* present in this set.
+     * Creates new set which has the numbers *not* present in this set.
      *
-     * @returns New checking set which has the numbers *not* present in this set.
+     * @returns New set which has the numbers *not* present in this set.
      */
     not(): ReadonlyCellIndicesSet;
 
@@ -138,15 +138,15 @@ export class CellIndicesSet implements
     })();
 
     /**
-     * Constructs new checking set from the unique numbers in the given array
+     * Constructs new set from the unique numbers in the given array
      * or from another {@link ReadonlyCellIndicesSet}.
      *
-     * In case array is specified, only unique numbers are added to the checking set.
+     * In case array is specified, only unique numbers are added to the set.
      * Number duplicates are silently ignored.
      *
-     * Checking set is constructed as empty if no numbers are given.
+     * Set is constructed as empty if no numbers are given.
      *
-     * @param val - Readonly array of numbers or {@link ReadonlyCellIndicesSet} to construct this checking set from.
+     * @param val - Readonly array of numbers or {@link ReadonlyCellIndicesSet} to construct this set from.
      */
     constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesSet) {
         if (Array.isArray(val)) {
@@ -162,15 +162,15 @@ export class CellIndicesSet implements
     }
 
     /**
-     * Constructs new checking set from the unique numbers specified via rest parameters.
+     * Constructs new set from the unique numbers specified via rest parameters.
      *
-     * Only unique numbers are added to the checking set. Number duplicates are silently ignored.
+     * Only unique numbers are added to the set. Number duplicates are silently ignored.
      *
-     * Checking set is constructed as empty if no numbers are given.
+     * Set is constructed as empty if no numbers are given.
      *
-     * @param val - Array of numbers to construct this checking set from.
+     * @param val - Array of numbers to construct this set from.
      *
-     * @returns new checking set from the given numbers.
+     * @returns new set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
         return new CellIndicesSet(val);
@@ -179,12 +179,12 @@ export class CellIndicesSet implements
     private static readonly _EMPTY_ARRAY = [];
 
     /**
-     * Constructs new empty checking set.
+     * Constructs new empty set.
      *
      * This method of construction for an empty set is preferable in terms of readability, memory and performance
      * over `CellIndicesSet.of()` as it avoids construction of an empty array argument.
      *
-     * @returns new checking set.
+     * @returns new set.
      */
     static newEmpty() {
         return new CellIndicesSet(this._EMPTY_ARRAY);
@@ -202,8 +202,8 @@ export class CellIndicesSet implements
      */
     hasAll(val: ReadonlyCellIndicesSet) {
         //
-        // Applying bitwise AND to check that each bit store of this checking set
-        // has `1`s at the same positions as each bit store of the `val` checking set.
+        // Applying bitwise AND to check that each bit store of this set
+        // has `1`s at the same positions as each bit store of the `val` set.
         //
         // Example for `hasAll` returning `true`
         // (applied to a single bit store of index `x` for simplicity):
@@ -250,8 +250,8 @@ export class CellIndicesSet implements
      */
     doesNotHaveAny(val: ReadonlyCellIndicesSet) {
         //
-        // Applying bitwise AND to check that each bit store of this checking set
-        // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
+        // Applying bitwise AND to check that each bit store of this set
+        // does *not* have `1`s at the same positions as each bit store of the `val` set.
         //
         // Example for `doesNotHaveAny` returning `true`
         // (applied to a single bit store of index `x` for simplicity):
@@ -302,7 +302,7 @@ export class CellIndicesSet implements
      */
     union(val: ReadonlyCellIndicesSet) {
         //
-        // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
+        // Applying bitwise AND onto each bit store of this set and the `val` set
         // to produce `1`s on the positions where both sets have `1`s.
         //
         // Example (applied to a single bit store of index `x` for simplicity):
@@ -326,7 +326,7 @@ export class CellIndicesSet implements
         const and = CellIndicesSet.newEmpty();
 
         //
-        // Applying bitwise XOR onto each bit store of this checking set and the `val` checking set
+        // Applying bitwise XOR onto each bit store of this set and the `val` set
         // to produce `0`s on the positions where both sets have `1`s.
         //
         // Example (applied to a single bit store of index `x` for simplicity):
@@ -350,7 +350,7 @@ export class CellIndicesSet implements
         const not = CellIndicesSet.newEmpty();
 
         //
-        // Applying bitwise NOT onto each bit store of this checking set
+        // Applying bitwise NOT onto each bit store of this set
         // to turn `0`s into `1`s and `1`s into `0`s.
         //
         // Example (applied to a single bit store of index `x` for simplicity):
@@ -377,8 +377,8 @@ export class CellIndicesSet implements
      */
     addAll(val: ReadonlyCellIndicesSet) {
         //
-        // Applying bitwise OR assignment on the bit stores of this checking set
-        // to merge `1`s from the bit stores of the `val` checking set.
+        // Applying bitwise OR assignment on the bit stores of this set
+        // to merge `1`s from the bit stores of the `val` set.
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
@@ -395,11 +395,11 @@ export class CellIndicesSet implements
     }
 
     /**
-     * Adds given number to this checking set.
+     * Adds given number to this set.
      *
-     * This method changes this checking set.
+     * This method changes this set.
      *
-     * The given number is added only if it is *not* yet present in this checking set.
+     * The given number is added only if it is *not* yet present in this set.
      * Duplicate number is ignored.
      *
      * @param val - Number to add to this set.
@@ -430,8 +430,8 @@ export class CellIndicesSet implements
      */
     deleteAll(val: ReadonlyCellIndicesSet) {
         //
-        // Applying bitwise AND assignment on the bit stores of this checking set
-        // to merge `1`s from the bit stores of the `val` checking set.
+        // Applying bitwise AND assignment on the bit stores of this set
+        // to merge `1`s from the bit stores of the `val` set.
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
@@ -453,12 +453,12 @@ export class CellIndicesSet implements
      *
      * This method changes this checking numbers set.
      *
-     * The given number is deleted only if it is *not* yet present in this checking set.
+     * The given number is deleted only if it is *not* yet present in this set.
      * Duplicate number is ignored.
      *
      * @param val - Number to delete from this set.
      *
-     * @returns This checking set.
+     * @returns This set.
      */
     deleteOne(val: number) {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];

@@ -21,7 +21,7 @@ export class Combo implements Iterable<number> {
     readonly key: ComboKey;
 
     /**
-     * Checking set of unique Sudoku numbers between 1 and 9 present in this {@link Combo}
+     * Set of unique Sudoku numbers between 1 and 9 present in this {@link Combo}
      * with efficient storage & fast checking/manipulation operations.
      */
     readonly numsSet: ReadonlySudokuNumsSet;

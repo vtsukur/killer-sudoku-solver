@@ -58,7 +58,7 @@ export class SumAddendsCombinatorics {
      * Returns specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
      * if it is present amongst registered combinations.
      *
-     * @param numsSet - Checking set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
+     * @param numsSet - Set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
      *
      * @returns Specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
      * if it is present amongst registered combinations; otherwise returns `undefined`.

@@ -438,9 +438,9 @@ type ProcessorContext = {
 }
 
 /**
- * Type alias for the read-only array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
+ * Type alias for the read-only array of sets of {@link Cell}s' indices that belong to {@link House}s.
  *
- * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
+ * Array element of index `i` is a set with all {@link Cell}s of {@link House} of index `i`.
  */
 type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesSet>;
 
@@ -489,9 +489,9 @@ abstract class HouseAreasProcessor {
      *
      * Search happens if the value of {@link Config.minAdjacentRowsAndColumnsAreas} is `1`.
      *
-     * @param houseCellsIndices - Array of checking sets
+     * @param houseCellsIndices - Array of sets
      * of {@link Cell}s' indices that belong to {@link House}s.
-     * Array element of index `i` is a checking set
+     * Array element of index `i` is a set
      * with all {@link Cell}s of {@link House} of index `i`.
      */
     protected applyToIndividualHouses(houseCellsIndices: ReadonlyHouseCellsIndices) {
@@ -512,7 +512,7 @@ abstract class HouseAreasProcessor {
      *  - records statistics (if applicable).
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
-     * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * @param areaCellIndices - Set with all {@link Cell}s of the target area.
      * @param houseCount - Amount of {@link House}s that cover the target area.
      *
      * @see CageSlicer
@@ -535,7 +535,7 @@ abstract class HouseAreasProcessor {
      * the area of {@link Cage}s within {@link GridAreaModel}, which do *not* have shared {@link Cell}s.
      *
      * @param areaCageMs - {@link CageModel}s within the target area.
-     * @param areaCellIndices - Checking set with all {@link Cell}s of the target area.
+     * @param areaCellIndices - Set with all {@link Cell}s of the target area.
      * @param houseCount - Amount of {@link House}s that cover the target area.
      *
      * @returns _Complementing_ {@link Cage}
@@ -606,7 +606,7 @@ abstract class HouseAreasProcessor {
     protected abstract houseModel(index: HouseIndex): HouseModel;
 
     /**
-     * Collects an array of checking sets where an element of index `i`
+     * Collects an array of sets where an element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      *
      * This method allows sub-classes to cache {@link Cell}s' indices
@@ -614,7 +614,7 @@ abstract class HouseAreasProcessor {
      *
      * @param cells - Matrix of {@link Cells} indexed by {@link House}.
      *
-     * @returns Array of checking sets where an element of index `i`
+     * @returns Array of sets where an element of index `i`
      * has all {@link Cell}s of {@link House} of index `i`.
      */
     protected static cellsIndices(cells: CellsMatrix) {
@@ -747,8 +747,8 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
      *
      * @param indexedCageMs - Array of {@link CageModel} `Set`s
      * indexed by {@link Cage}'s topmost {@link Row} or leftmost {@link Column}.
-     * @param houseCellsIndices - Array of checking sets of {@link Cell}s' indices that belong to {@link House}s.
-     * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
+     * @param houseCellsIndices - Array of sets of {@link Cell}s' indices that belong to {@link House}s.
+     * Array element of index `i` is a set with all {@link Cell}s of {@link House} of index `i`.
      * @param minAdjacentAreas - See {@link Config.minAdjacentRowsAndColumnsAreas}.
      * @param maxAdjacentAreas - See {@link Config.maxAdjacentRowsAndColumnsAreas}.
      */
