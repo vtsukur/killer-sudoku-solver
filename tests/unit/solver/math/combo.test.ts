@@ -1,5 +1,5 @@
 import { Combo } from '../../../../src/solver/math';
-import { SudokuNumsCheckingSet } from '../../../../src/solver/math/sudokuNumsCheckingSet';
+import { SudokuNumsCheckingSet } from '../../../../src/solver/sets/sudokuNumsCheckingSet';
 
 describe('Combo tests', () => {
     test('Construction of Combo from array of numbers', () => {

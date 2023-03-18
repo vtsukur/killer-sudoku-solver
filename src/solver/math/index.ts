@@ -1,4 +1,4 @@
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from './cellIndicesCheckingSet';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../sets/cellIndicesCheckingSet';
 import { Combo, ComboKey, ReadonlyCombos } from './combo';
 import { HouseModelCagesCombinatorics } from './houseModelCagesCombinatorics';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';

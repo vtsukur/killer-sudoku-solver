@@ -3,8 +3,8 @@ import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { SudokuNums } from '../../puzzle/sudokuNums';
 import { Combo, ReadonlyCombos } from './combo';
-import { ReadonlySudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
-import { BitStore32 } from './numsCheckingSet';
+import { ReadonlySudokuNumsCheckingSet } from '../sets/sudokuNumsCheckingSet';
+import { BitStore32 } from '../sets/numsCheckingSet';
 
 type PrecomputeComboKey = number;
 

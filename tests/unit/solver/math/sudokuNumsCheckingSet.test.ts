@@ -1,5 +1,5 @@
 import { SudokuNums } from '../../../../src/puzzle/sudokuNums';
-import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../../../../src/solver/math/sudokuNumsCheckingSet';
+import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../../../../src/solver/sets/sudokuNumsCheckingSet';
 
 describe('Unit tests for `SudokuNumsCheckingSet`', () => {
 

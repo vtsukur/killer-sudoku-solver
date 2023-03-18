@@ -5,7 +5,7 @@ import { Cell } from '../../../puzzle/cell';
 import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
 import { ReadonlyCellIndicesCheckingSet } from '../../math';
-import { CellIndicesCheckingSet } from '../../math/cellIndicesCheckingSet';
+import { CellIndicesCheckingSet } from '../../sets/cellIndicesCheckingSet';
 import { CageModel } from './cageModel';
 import { NonOverlappingCagesAreaModel } from './nonOverlappingCagesAreaModel';
 

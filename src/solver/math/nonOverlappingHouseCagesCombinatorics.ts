@@ -6,10 +6,10 @@ import { House } from '../../puzzle/house';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
-import { SudokuNumsCheckingSet } from './sudokuNumsCheckingSet';
+import { SudokuNumsCheckingSet } from '../sets/sudokuNumsCheckingSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
-import { BitStore32 } from './numsCheckingSet';
+import { BitStore32 } from '../sets/numsCheckingSet';
 import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
 
 /**

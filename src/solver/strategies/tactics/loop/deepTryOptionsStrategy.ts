@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { House, HouseIndex } from '../../../../puzzle/house';
 import { logFactory } from '../../../../util/logFactory';
 import { InvalidSolverStateError } from '../../../invalidSolverStateError';
-import { SudokuNumsCheckingSet } from '../../../math/sudokuNumsCheckingSet';
+import { SudokuNumsCheckingSet } from '../../../sets/sudokuNumsCheckingSet';
 import { CellModel } from '../../../models/elements/cellModel';
 import { MasterModel } from '../../../models/masterModel';
 import { MasterStrategy } from '../../masterStrategy';
