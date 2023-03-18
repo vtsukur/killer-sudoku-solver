@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { SudokuNums } from '../../puzzle/sudokuNums';
+import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
@@ -72,8 +72,24 @@ export class SudokuNumsSet implements
         ReadonlySudokuNumsSet,
         NumsSet<ReadonlySudokuNumsSet, SudokuNumsSet> {
 
+    /**
+     * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
+     */
+    static readonly MIN = 1;
+
+    /**
+     * Maximum Sudoku number (`9`) which can be placed in a {@link Cell}.
+     */
+    static readonly MAX = 9;
+
+    /**
+     * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
+     * in the form of readonly array.
+     */
+    static readonly RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX + 1];
+
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
-    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = SudokuNums.RANGE.reduce(
+    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.RANGE.reduce(
         (prev, current) => prev | 1 << current, 0
     );
 
@@ -86,7 +102,7 @@ export class SudokuNumsSet implements
         const val = new PowersOf2Lut<number>();
 
         // Iterating over all possible `Cell` indices on the `Grid`.
-        for (const index of SudokuNums.RANGE) {
+        for (const index of this.RANGE) {
             val.set(index, index);
         }
 
@@ -204,10 +220,10 @@ export class SudokuNumsSet implements
 
     /**
      * Constructs new set with all unique Sudoku numbers
-     * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN} to {@link SudokuNumsSet.MAX} (inclusive).
      *
      * @returns New set with all unique Sudoku numbers
-     * in the range from {@link SudokuNums.MIN} to {@link SudokuNums.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN} to {@link SudokuNumsSet.MAX} (inclusive).
      */
     static all() {
         return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);

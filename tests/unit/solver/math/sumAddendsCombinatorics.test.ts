@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
-import { SudokuNums } from '../../../../src/puzzle/sudokuNums';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../../../src/solver/math';
 import { computeSumAddendsCombos } from '../../../../src/solver/math/sumAddendsCombinatorics';
+import { SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Tests for `SumAddendsCombinatorics`', () => {
     [
@@ -14,10 +14,10 @@ describe('Tests for `SumAddendsCombinatorics`', () => {
         };
 
         test(`[${combosFnVal.name}] Number combinations to form a sum out of 1 number`, () => {
-            rangeFromMinSumToX(SudokuNums.MAX).forEach(sum => {
+            rangeFromMinSumToX(SudokuNumsSet.MAX).forEach(sum => {
                 expect(combosFnVal(sum, 1)).toEqual([ Combo.of(sum) ]);
             });
-            rangeFromXToMaxSum(SudokuNums.MAX + 1).forEach(sum => {
+            rangeFromXToMaxSum(SudokuNumsSet.MAX + 1).forEach(sum => {
                 expect(combosFnVal(sum, 1)).toEqual(NO_COMBOS);
             });
         });
@@ -611,7 +611,7 @@ describe('Tests for `SumAddendsCombinatorics`', () => {
     });
 
     const rangeFromMinSumToX = (x: number) => {
-        return _.range(SudokuNums.MIN, x + 1);
+        return _.range(SudokuNumsSet.MIN, x + 1);
     };
 
     const rangeFromXToMaxSum = (x: number) => {

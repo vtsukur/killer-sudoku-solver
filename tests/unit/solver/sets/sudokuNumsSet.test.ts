@@ -1,7 +1,20 @@
-import { SudokuNums } from '../../../../src/puzzle/sudokuNums';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `SudokuNumsSet`', () => {
+
+    test('Minimum Sudoku number is 1', () => {
+        expect(SudokuNumsSet.MIN).toEqual(1);
+    });
+
+    test('Maximum Sudoku number is 9', () => {
+        expect(SudokuNumsSet.MAX).toEqual(9);
+    });
+
+    test('Range of possibe Sudoku numbers [1, 9]', () => {
+        expect(SudokuNumsSet.RANGE).toEqual([
+            1, 2, 3, 4, 5, 6, 7, 8, 9
+        ]);
+    });
 
     test('Construction of `SudokuNumsSet` from array of numbers', () => {
         expectSetWithValues(new SudokuNumsSet([ 1, 6, 9 ]), [ 1, 6, 9 ]);
@@ -76,7 +89,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Checking with `hasOnly`', () => {
-        for (const num of SudokuNums.RANGE) {
+        for (const num of SudokuNumsSet.RANGE) {
             expect(SudokuNumsSet.of(num).hasOnly(num)).toBeTruthy();
         }
         expect(SudokuNumsSet.of(1, 6, 9).hasOnly(1)).toBeFalsy();
