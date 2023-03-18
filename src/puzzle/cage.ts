@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../solver/math';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../solver/sets';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { SudokuNumsCheckingSet } from '../../../../src/solver/sets/sudokuNumsCheckingSet';
+import { SudokuNumsCheckingSet } from '../../../../src/solver/sets';
 
 describe('Performance tests for `SudokuNumsCheckingSet`', () => {
 

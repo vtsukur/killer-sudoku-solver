@@ -1,6 +1,6 @@
 import { Cell } from '../../../../src/puzzle/cell';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../../src/solver/math';
 import { CachedNumRanges } from '../../../../src/solver/math/cachedNumRanges';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `CellIndicesCheckingSet`', () => {
 

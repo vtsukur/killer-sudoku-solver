@@ -1,6 +1,6 @@
 import { Cell } from '../../../puzzle/cell';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../../sets/sudokuNumsCheckingSet';
+import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../../sets';
 import { CageModel } from './cageModel';
 
 export class CellModel {

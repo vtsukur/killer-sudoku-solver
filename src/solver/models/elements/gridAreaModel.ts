@@ -4,8 +4,7 @@ import { Cell } from '../../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
-import { ReadonlyCellIndicesCheckingSet } from '../../math';
-import { CellIndicesCheckingSet } from '../../sets/cellIndicesCheckingSet';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../sets';
 import { CageModel } from './cageModel';
 import { NonOverlappingCagesAreaModel } from './nonOverlappingCagesAreaModel';
 

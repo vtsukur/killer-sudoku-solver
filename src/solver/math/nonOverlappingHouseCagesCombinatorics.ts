@@ -3,14 +3,14 @@ import { Cage } from '../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
+import { SudokuNumsCheckingSet } from '../sets';
 import { CachedNumRanges } from './cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
-import { SudokuNumsCheckingSet } from '../sets/sudokuNumsCheckingSet';
+import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
+import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
-import { BitStore32 } from '../sets/numsCheckingSet';
-import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s

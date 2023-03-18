@@ -1,5 +1,5 @@
 import { joinArray } from '../../util/readableMessages';
-import { SudokuNumsCheckingSet, ReadonlySudokuNumsCheckingSet } from '../sets/sudokuNumsCheckingSet';
+import { ReadonlySudokuNumsCheckingSet, SudokuNumsCheckingSet } from '../sets';
 
 /**
  * Human-readable key describing combination of numbers.

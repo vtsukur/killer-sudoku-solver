@@ -1,7 +1,7 @@
 import { Cage, ReadonlyCages } from '../../../../../src/puzzle/cage';
-import { CellIndicesCheckingSet } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAreaModel';
+import { CellIndicesCheckingSet } from '../../../../../src/solver/sets';
 
 describe('Unit tests for `GridAreaModel`', () => {
     test('Creation of instance with all input `Cage`s forming non-overlapping area and all derived `Cage`s forming overlapping area', () => {

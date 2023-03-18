@@ -9,11 +9,11 @@ import { Nonet } from '../../../../puzzle/nonet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Puzzle } from '../../../../puzzle/puzzle';
 import { Row } from '../../../../puzzle/row';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
 import { GridAreaModel } from '../../../models/elements/gridAreaModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';
+import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
 import { Context } from '../../context';
 import { Strategy } from '../../strategy';

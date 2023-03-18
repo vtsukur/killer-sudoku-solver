@@ -1,7 +1,7 @@
 import { Cage } from '../../../src/puzzle/cage';
 import { Cell } from '../../../src/puzzle/cell';
 import { InvalidPuzzleDefError } from '../../../src/puzzle/invalidPuzzleDefError';
-import { CellIndicesCheckingSet } from '../../../src/solver/math';
+import { CellIndicesCheckingSet } from '../../../src/solver/sets';
 
 describe('Cage tests', () => {
     test('Construction of Cage using `Cage.Builder.at` method', () => {
