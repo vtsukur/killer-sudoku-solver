@@ -295,25 +295,6 @@
             }
         },
         {
-            "name": "npm run test [solver/math/cellIndicesCheckingSet]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/cellIndicesCheckingSet.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
             "name": "npm run test [solver/math/combo]",
             "request": "launch",
             "runtimeArgs": [
@@ -378,25 +359,6 @@
                 "test",
                 "--findRelatedTests",
                 "tests/unit/solver/math/overlappingHouseCagesCombinatorics.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "solver"
-            }
-        },
-        {
-            "name": "npm run test [solver/math/sudokuNumsCheckingSet]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/unit/solver/math/sudokuNumsCheckingSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -590,6 +552,45 @@
             "type": "node",
             "presentation": {
                 "group": "solver"
+            }
+        },
+
+        {
+            "name": "npm run test [solver/sets/cellIndicesCheckingSet]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/sets/cellIndicesCheckingSet.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverSets"
+            }
+        },
+        {
+            "name": "npm run test [solver/sets/sudokuNumsCheckingSet]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/sets/sudokuNumsCheckingSet.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverSets"
             }
         },
 
@@ -840,25 +841,6 @@
             }
         },
         {
-            "name": "npm run test [solver/math/sudokuNumsCheckingSet.perf]",
-            "request": "launch",
-            "runtimeArgs": [
-                "run",
-                "test",
-                "--findRelatedTests",
-                "tests/perf/solver/math/sudokuNumsCheckingSet.perf.test.ts"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "type": "node",
-            "presentation": {
-                "group": "Xperf"
-            }
-        },
-        {
             "name": "npm run test [solver/models/**/cageModel.perf]",
             "request": "launch",
             "runtimeArgs": [
@@ -885,6 +867,25 @@
                 "test",
                 "--findRelatedTests",
                 "tests/perf/solver/models/elements/gridAreaModel.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
+            "name": "npm run test [solver/sets/sudokuNumsCheckingSet.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/sets/sudokuNumsCheckingSet.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
