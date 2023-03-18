@@ -159,6 +159,17 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
+     * Constructs new checking set from the given single number.
+     *
+     * @param val - Single number to construct this checking set from.
+     *
+     * @returns new checking set from the given single number.
+     */
+    static ofSingle(val: number) {
+        return new SudokuNumsCheckingSet(1 << val);
+    }
+
+    /**
      * Constructs new empty checking set.
      *
      * This method of construction for an empty set is preferable in terms of readability, memory and performance
