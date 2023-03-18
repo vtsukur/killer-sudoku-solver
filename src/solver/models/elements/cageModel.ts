@@ -135,11 +135,11 @@ export class CageModel {
         const nums = SudokuNumsSet.newEmpty();
 
         if (this._combosMap.size !== 0) {
-            const newCombosMap = new Map<ComboKey, Combo>();
+            const newCombosMap = new Set<ComboKey>();
 
             combos.forEach(combo => {
                 nums.addAll(combo.numsSet);
-                newCombosMap.set(combo.key, combo);
+                newCombosMap.add(combo.key);
             });
 
             for (const [ comboKey ] of this._combosMap.entries()) {
