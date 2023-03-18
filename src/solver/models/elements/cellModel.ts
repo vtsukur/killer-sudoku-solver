@@ -66,7 +66,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOptsCheckingSet = SudokuNumsCheckingSet.of(val);
+        this._numOptsCheckingSet = SudokuNumsCheckingSet.ofSingle(val);
         this._solved = true;
     }
 

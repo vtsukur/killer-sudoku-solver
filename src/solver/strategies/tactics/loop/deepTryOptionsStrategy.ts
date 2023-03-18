@@ -24,7 +24,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-            cellMTargetCpy.reduceNumOpts(SudokuNumsCheckingSet.of(tryNum));
+            cellMTargetCpy.reduceNumOpts(SudokuNumsCheckingSet.ofSingle(tryNum));
             ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
 
             try {
@@ -50,7 +50,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
-                cellMTarget.reduceNumOpts(SudokuNumsCheckingSet.of(tryNum));
+                cellMTarget.reduceNumOpts(SudokuNumsCheckingSet.ofSingle(tryNum));
                 break;
             } else if (ctxCpy.isSolutionFound) {
                 solution = ctxCpy.foundSolution;
