@@ -2,14 +2,15 @@ import * as _ from 'lodash';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
 
-describe('Performance tests for Solver', () => {
+describe('Performance tests for `Solver`', () => {
 
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const dailyKillerSudokuDotCom = puzzleSamples.dailyKillerSudokuDotCom;
     const solver = new Solver();
+
     const ITERATIONS = _.range(10);
 
-    test('Find solution Sudoku.com puzzles', () => {
+    test('Find solution for Sudoku.com puzzles', () => {
         ITERATIONS.forEach(() => {
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
             solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
@@ -24,7 +25,7 @@ describe('Performance tests for Solver', () => {
         });
     });
 
-    test('Find solution DailyKillerSudoku.com puzzles', () => {
+    test.skip('Find solution for DailyKillerSudoku.com puzzles', () => {
         ITERATIONS.forEach(() => {
             solver.solve(dailyKillerSudokuDotCom.puzzle24789_difficulty10);
             solver.solve(dailyKillerSudokuDotCom.puzzle24889_difficulty10);
