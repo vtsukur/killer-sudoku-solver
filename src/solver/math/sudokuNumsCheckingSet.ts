@@ -142,6 +142,7 @@ export class SudokuNumsCheckingSet implements
         } else {
             this._bitStore = (val as ReadonlySudokuNumsCheckingSet).bitStore;
         }
+
         this._nums = SudokuNumsCheckingSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
