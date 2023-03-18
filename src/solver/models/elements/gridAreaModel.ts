@@ -4,7 +4,7 @@ import { Cell } from '../../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../sets';
+import { CellIndicesSet, ReadonlyCellIndicesSet } from '../../sets';
 import { CageModel } from './cageModel';
 import { NonOverlappingCagesAreaModel } from './nonOverlappingCagesAreaModel';
 
@@ -25,7 +25,7 @@ class PartiallyPrecomputedNonOverlappingCagesAreaModel implements NonOverlapping
     constructor(
             readonly cages: ReadonlyCages,
             readonly cellCount: number,
-            readonly cellIndices: ReadonlyCellIndicesCheckingSet) {
+            readonly cellIndices: ReadonlyCellIndicesSet) {
     }
 
     get sum() {
@@ -48,7 +48,7 @@ class PrecomputedNonOverlappingCagesAreaModel extends PartiallyPrecomputedNonOve
     constructor(
             cages: ReadonlyCages,
             cellCount: number,
-            cellIndices: ReadonlyCellIndicesCheckingSet) {
+            cellIndices: ReadonlyCellIndicesSet) {
         super(cages, cellCount, cellIndices);
         this._sum = super.sum;
     }
@@ -108,7 +108,7 @@ export class GridAreaModel implements GridAreaModel {
 
     private static readonly _EMPTY_INSTANCE = new GridAreaModel(
         new PartiallyPrecomputedNonOverlappingCagesAreaModel(
-            [], 0, CellIndicesCheckingSet.newEmpty()
+            [], 0, CellIndicesSet.newEmpty()
         ), []
     );
 
@@ -223,7 +223,7 @@ const stage1_splitCagesIntoInputAndDerivedCagesArea = (allCages: ReadonlyCages):
 
     const derivedCages = new Array<Cage>();
 
-    const inputCagesCellIndices = CellIndicesCheckingSet.newEmpty();
+    const inputCagesCellIndices = CellIndicesSet.newEmpty();
     for (const cage of allCages) {
         if (cage.isInput) {
             inputCages.push(cage);
@@ -314,10 +314,10 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
     private readonly cageCount: number;
     private readonly usedCages: Cages;
     private usedCellCount: number;
-    private readonly usedCellIndices: CellIndicesCheckingSet;
+    private readonly usedCellIndices: CellIndicesSet;
     private maxAreaCages: Cages;
     private maxAreaCellCount: number;
-    private maxAreaCellIndices: ReadonlyCellIndicesCheckingSet;
+    private maxAreaCellIndices: ReadonlyCellIndicesSet;
     private foundAbsMax: boolean;
 
     constructor(readonly cages: ReadonlyCages,
@@ -332,7 +332,7 @@ class Stage3_InclusionExclusionBasedFinderForMaxNonOverlappingArea {
         } = nonOverlappingCagesAreaModel;
         this.usedCages = [...inputCages];
         this.usedCellCount = inputCagesCellCount;
-        this.usedCellIndices = new CellIndicesCheckingSet(inputCagesCellIndicesCheckingSet);
+        this.usedCellIndices = new CellIndicesSet(inputCagesCellIndicesCheckingSet);
         this.maxAreaCages = [...inputCages];
         this.maxAreaCellCount = inputCagesCellCount;
         this.maxAreaCellIndices = inputCagesCellIndicesCheckingSet;

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../solver/sets';
+import { CellIndicesSet, ReadonlyCellIndicesSet } from '../solver/sets';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
 import { Grid } from './grid';
@@ -54,7 +54,7 @@ export class Cage {
      * Checking set of {@link Cell} indices with efficient storage & fast checking operations
      * which has {@link Cage} {@link Cell}s included.
      */
-    readonly cellIndices: ReadonlyCellIndicesCheckingSet;
+    readonly cellIndices: ReadonlyCellIndicesSet;
 
     /**
      * Produces new `Cage` Builder with the given sum of `Cage` `Cell`s
@@ -94,7 +94,7 @@ export class Cage {
         this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
         this.isInput = isFromInput;
-        this.cellIndices = new CellIndicesCheckingSet(cells.map(cell => cell.index));
+        this.cellIndices = new CellIndicesSet(cells.map(cell => cell.index));
     }
 
     private static keyOf(sum: number, cells: ReadonlyCells) {

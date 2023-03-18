@@ -17,7 +17,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
  *
  * @public
  */
-export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsSet<ReadonlyCellIndicesCheckingSet> {
+export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndicesSet> {
 
     /**
      * Returns readonly array of the bit storages used for efficient checking for this numbers set.
@@ -42,14 +42,14 @@ export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsSet<Readonly
      * @returns New checking set which is the _difference_ between this checking set
      * and the given `val` checking set,
      */
-    _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet;
+    _(val: ReadonlyCellIndicesSet): ReadonlyCellIndicesSet;
 
     /**
      * Creates new checking set which has the numbers *not* present in this set.
      *
      * @returns New checking set which has the numbers *not* present in this set.
      */
-    not(): ReadonlyCellIndicesCheckingSet;
+    not(): ReadonlyCellIndicesSet;
 
 }
 
@@ -59,18 +59,18 @@ type CellIndexToBitStoreLocator = {
 }
 
 /**
- * Extends {@link ReadonlyCellIndicesCheckingSet} with fast manipulation operations.
+ * Extends {@link ReadonlyCellIndicesSet} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see ReadonlyCellIndicesCheckingSet
+ * @see ReadonlyCellIndicesSet
  * @see NumsSet
  *
  * @public
  */
-export class CellIndicesCheckingSet implements
-        ReadonlyCellIndicesCheckingSet,
-        NumsSet<ReadonlyCellIndicesCheckingSet, CellIndicesCheckingSet> {
+export class CellIndicesSet implements
+        ReadonlyCellIndicesSet,
+        NumsSet<ReadonlyCellIndicesSet, CellIndicesSet> {
 
     //
     // It is enough to have 3 bit stores of size 32 bits each
@@ -87,8 +87,8 @@ export class CellIndicesCheckingSet implements
 
     // Caching data about bit store index and bit position within the bit store to enable fast access.
     private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = Grid.CELL_INDICES.map(cellIndex => {
-        const bitStoreIndex = ~~(cellIndex / CellIndicesCheckingSet._BITS_PER_BIT_STORE);
-        const bitPosition = cellIndex - Math.imul(bitStoreIndex, CellIndicesCheckingSet._BITS_PER_BIT_STORE);
+        const bitStoreIndex = ~~(cellIndex / CellIndicesSet._BITS_PER_BIT_STORE);
+        const bitPosition = cellIndex - Math.imul(bitStoreIndex, CellIndicesSet._BITS_PER_BIT_STORE);
         return { bitStoreIndex, bitPosition };
     });
 
@@ -139,22 +139,22 @@ export class CellIndicesCheckingSet implements
 
     /**
      * Constructs new checking set from the unique numbers in the given array
-     * or from another {@link ReadonlyCellIndicesCheckingSet}.
+     * or from another {@link ReadonlyCellIndicesSet}.
      *
      * In case array is specified, only unique numbers are added to the checking set.
      * Number duplicates are silently ignored.
      *
      * Checking set is constructed as empty if no numbers are given.
      *
-     * @param val - Readonly array of numbers or {@link ReadonlyCellIndicesCheckingSet} to construct this checking set from.
+     * @param val - Readonly array of numbers or {@link ReadonlyCellIndicesSet} to construct this checking set from.
      */
-    constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesCheckingSet) {
+    constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesSet) {
         if (Array.isArray(val)) {
             for (const num of val) {
                 this.addOne(num);
             }
         } else {
-            const anotherSet = val as ReadonlyCellIndicesCheckingSet;
+            const anotherSet = val as ReadonlyCellIndicesSet;
             this._bitStores[0] = anotherSet.bitStores[0];
             this._bitStores[1] = anotherSet.bitStores[1];
             this._bitStores[2] = anotherSet.bitStores[2];
@@ -173,7 +173,7 @@ export class CellIndicesCheckingSet implements
      * @returns new checking set from the given numbers.
      */
     static of(...val: ReadonlyArray<number>) {
-        return new CellIndicesCheckingSet(val);
+        return new CellIndicesSet(val);
     }
 
     private static readonly _EMPTY_ARRAY = [];
@@ -182,16 +182,16 @@ export class CellIndicesCheckingSet implements
      * Constructs new empty checking set.
      *
      * This method of construction for an empty set is preferable in terms of readability, memory and performance
-     * over `CellIndicesCheckingSet.of()` as it avoids construction of an empty array argument.
+     * over `CellIndicesSet.of()` as it avoids construction of an empty array argument.
      *
      * @returns new checking set.
      */
     static newEmpty() {
-        return new CellIndicesCheckingSet(this._EMPTY_ARRAY);
+        return new CellIndicesSet(this._EMPTY_ARRAY);
     }
 
     /**
-     * @see ReadonlyCellIndicesCheckingSet.bitStores
+     * @see ReadonlyCellIndicesSet.bitStores
      */
     get bitStores() {
         return this._bitStores;
@@ -200,7 +200,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see ReadonlyNumsSet.hasAll
      */
-    hasAll(val: ReadonlyCellIndicesCheckingSet) {
+    hasAll(val: ReadonlyCellIndicesSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // has `1`s at the same positions as each bit store of the `val` checking set.
@@ -241,14 +241,14 @@ export class CellIndicesCheckingSet implements
      * @see ReadonlyNumsSet.doesNotHave
      */
     doesNotHave(val: number) {
-        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+        const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
         return (this._bitStores[entry.bitStoreIndex] & (1 << entry.bitPosition)) === 0;
     }
 
     /**
      * @see ReadonlyNumsSet.doesNotHaveAny
      */
-    doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {
+    doesNotHaveAny(val: ReadonlyCellIndicesSet) {
         //
         // Applying bitwise AND to check that each bit store of this checking set
         // does *not* have `1`s at the same positions as each bit store of the `val` checking set.
@@ -283,14 +283,14 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyCellIndicesCheckingSet.cells
+     * @see ReadonlyCellIndicesSet.cells
      */
     cells() {
         const val = new Array<Cell>();
         let bitStoreIndex = 0;
 
         while (bitStoreIndex < 3) {
-            CellIndicesCheckingSet._LOOKUP_TABLE[bitStoreIndex].collect(this._bitStores[bitStoreIndex], val);
+            CellIndicesSet._LOOKUP_TABLE[bitStoreIndex].collect(this._bitStores[bitStoreIndex], val);
             bitStoreIndex++;
         }
 
@@ -300,7 +300,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see NumsSet.union
      */
-    union(val: ReadonlyCellIndicesCheckingSet) {
+    union(val: ReadonlyCellIndicesSet) {
         //
         // Applying bitwise AND onto each bit store of this checking set and the `val` checking set
         // to produce `1`s on the positions where both sets have `1`s.
@@ -320,10 +320,10 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyCellIndicesCheckingSet._
+     * @see ReadonlyCellIndicesSet._
      */
-    _(val: ReadonlyCellIndicesCheckingSet): ReadonlyCellIndicesCheckingSet {
-        const and = CellIndicesCheckingSet.newEmpty();
+    _(val: ReadonlyCellIndicesSet): ReadonlyCellIndicesSet {
+        const and = CellIndicesSet.newEmpty();
 
         //
         // Applying bitwise XOR onto each bit store of this checking set and the `val` checking set
@@ -344,10 +344,10 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyCellIndicesCheckingSet.not
+     * @see ReadonlyCellIndicesSet.not
      */
-    not(): ReadonlyCellIndicesCheckingSet {
-        const not = CellIndicesCheckingSet.newEmpty();
+    not(): ReadonlyCellIndicesSet {
+        const not = CellIndicesSet.newEmpty();
 
         //
         // Applying bitwise NOT onto each bit store of this checking set
@@ -375,7 +375,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see NumsSet.addAll
      */
-    addAll(val: ReadonlyCellIndicesCheckingSet) {
+    addAll(val: ReadonlyCellIndicesSet) {
         //
         // Applying bitwise OR assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.
@@ -407,7 +407,7 @@ export class CellIndicesCheckingSet implements
      * @returns This checking numbers set.
      */
     addOne(val: number) {
-        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+        const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
         // Applying bitwise OR with left-wise shift to set bit at position `entry.bitStoreIndex` to `1`.
@@ -428,7 +428,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see NumsSet.delete
      */
-    deleteAll(val: ReadonlyCellIndicesCheckingSet) {
+    deleteAll(val: ReadonlyCellIndicesSet) {
         //
         // Applying bitwise AND assignment on the bit stores of this checking set
         // to merge `1`s from the bit stores of the `val` checking set.
@@ -461,7 +461,7 @@ export class CellIndicesCheckingSet implements
      * @returns This checking set.
      */
     deleteOne(val: number) {
-        const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+        const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
         // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitStoreIndex` to `0`.
@@ -480,7 +480,7 @@ export class CellIndicesCheckingSet implements
     /**
      * @see ReadonlyNumsSet.equals
      */
-    equals(val: ReadonlyCellIndicesCheckingSet) {
+    equals(val: ReadonlyCellIndicesSet) {
         return (
             this._bitStores[0] === val.bitStores[0] &&
             this._bitStores[1] === val.bitStores[1] &&
@@ -492,7 +492,7 @@ export class CellIndicesCheckingSet implements
      * @see NumsSet.clone
      */
     clone() {
-        return new CellIndicesCheckingSet(this);
+        return new CellIndicesSet(this);
     }
 
 }

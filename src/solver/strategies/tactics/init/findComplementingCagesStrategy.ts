@@ -13,7 +13,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { GridAreaModel } from '../../../models/elements/gridAreaModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';
-import { CellIndicesCheckingSet, ReadonlyCellIndicesCheckingSet } from '../../../sets';
+import { CellIndicesSet, ReadonlyCellIndicesSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
 import { Context } from '../../context';
 import { Strategy } from '../../strategy';
@@ -442,7 +442,7 @@ type ProcessorContext = {
  *
  * Array element of index `i` is a checking set with all {@link Cell}s of {@link House} of index `i`.
  */
-type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesCheckingSet>;
+type ReadonlyHouseCellsIndices = ReadonlyArray<ReadonlyCellIndicesSet>;
 
 /**
  * Abstract processor for {@link House} areas
@@ -519,7 +519,7 @@ abstract class HouseAreasProcessor {
      */
     protected findAndSlice(
             areaCageMs: ReadonlyArray<CageModel>,
-            areaCellIndices: ReadonlyCellIndicesCheckingSet,
+            areaCellIndices: ReadonlyCellIndicesSet,
             houseCount: number) {
         const complement = this.determineComplement(areaCageMs, areaCellIndices, houseCount);
         if (complement) {
@@ -551,7 +551,7 @@ abstract class HouseAreasProcessor {
      */
     private determineComplement(
             areaCageMs: ReadonlyArray<CageModel>,
-            areaCellIndices: ReadonlyCellIndicesCheckingSet,
+            areaCellIndices: ReadonlyCellIndicesSet,
             houseCount: number): Cage | undefined {
         const nHouseCellCount = Math.imul(houseCount, House.CELL_COUNT);
 
@@ -563,7 +563,7 @@ abstract class HouseAreasProcessor {
         if (nonOverlappingCagesAreaModel.cellCount !== nHouseCellCount &&
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {
             const sum = nHouseSum - nonOverlappingCagesAreaModel.sum;
-            const cells = new CellIndicesCheckingSet(areaCellIndices).union(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
+            const cells = new CellIndicesSet(areaCellIndices).union(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
             return Cage.ofSum(sum)
                 .withCells(cells)
                 .setIsInput(this._model.isDerivedFromInputCage(cells))
@@ -619,7 +619,7 @@ abstract class HouseAreasProcessor {
      */
     protected static cellsIndices(cells: CellsMatrix) {
         return House.INDICES.map(index =>
-            new CellIndicesCheckingSet(cells[index].map(cell => cell.index))
+            new CellIndicesSet(cells[index].map(cell => cell.index))
         );
     }
 
@@ -789,7 +789,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
             indexedCageMs: ReadonlyIndexedHouseCageModels,
             houseCellsIndices: ReadonlyHouseCellsIndices) {
         const areaCageMs = new Array<CageModel>();
-        const areaCellsIndices = CellIndicesCheckingSet.newEmpty();
+        const areaCellsIndices = CellIndicesSet.newEmpty();
         let index = topOrLeftIndex;
         do {
             for (const cageM of indexedCageMs[index]) {

@@ -1,7 +1,7 @@
 import { Cage, ReadonlyCages } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { GridAreaModel } from '../../../../../src/solver/models/elements/gridAreaModel';
-import { CellIndicesCheckingSet } from '../../../../../src/solver/sets';
+import { CellIndicesSet } from '../../../../../src/solver/sets';
 
 describe('Unit tests for `GridAreaModel`', () => {
     test('Creation of instance with all input `Cage`s forming non-overlapping area and all derived `Cage`s forming overlapping area', () => {
@@ -235,7 +235,7 @@ export const expectGridAreaModel = (gridAreaModel: GridAreaModel, nonOverlapping
     }));
 
     const nonOverlappingCagesCellIndicesCheckingSet = nonOverlappingCages.reduce(
-        (prev, current) => prev.addAll(current.cellIndices), CellIndicesCheckingSet.newEmpty());
+        (prev, current) => prev.addAll(current.cellIndices), CellIndicesSet.newEmpty());
     expect(gridAreaModel.nonOverlappingCagesAreaModel.cellIndices).toEqual(nonOverlappingCagesCellIndicesCheckingSet);
 
     expect(gridAreaModel.overlappingCages).toEqual(overlappingCages);
