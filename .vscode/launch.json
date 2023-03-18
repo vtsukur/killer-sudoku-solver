@@ -575,13 +575,13 @@
             }
         },
         {
-            "name": "npm run test [solver/sets/sudokuNumsCheckingSet]",
+            "name": "npm run test [solver/sets/sudokuNumsSet]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/sets/sudokuNumsCheckingSet.test.ts"
+                "tests/unit/solver/sets/sudokuNumsSet.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
