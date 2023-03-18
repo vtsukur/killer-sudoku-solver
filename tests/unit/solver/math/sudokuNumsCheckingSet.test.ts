@@ -19,6 +19,10 @@ describe('Unit tests for `SudokuNumsCheckingSet`', () => {
         expectSetWithValues(SudokuNumsCheckingSet.of(2, 4, 5), [ 2, 4, 5 ]);
     });
 
+    test('Construction of `SudokuNumsCheckingSet` with a single number using `ofSingle` static factory method', () => {
+        expectSetWithValues(SudokuNumsCheckingSet.of(3), [ 3 ]);
+    });
+
     test('Construction of empty `SudokuNumsCheckingSet` using `of` static factory method', () => {
         expectSetWithValues(SudokuNumsCheckingSet.of(), []);
     });
