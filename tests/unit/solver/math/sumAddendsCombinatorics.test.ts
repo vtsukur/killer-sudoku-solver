@@ -14,10 +14,10 @@ describe('Tests for `SumAddendsCombinatorics`', () => {
         };
 
         test(`[${combosFnVal.name}] Number combinations to form a sum out of 1 number`, () => {
-            rangeFromMinSumToX(SudokuNumsSet.MAX).forEach(sum => {
+            rangeFromMinSumToX(SudokuNumsSet.MAX_NUM).forEach(sum => {
                 expect(combosFnVal(sum, 1)).toEqual([ Combo.of(sum) ]);
             });
-            rangeFromXToMaxSum(SudokuNumsSet.MAX + 1).forEach(sum => {
+            rangeFromXToMaxSum(SudokuNumsSet.MAX_NUM + 1).forEach(sum => {
                 expect(combosFnVal(sum, 1)).toEqual(NO_COMBOS);
             });
         });

@@ -7,7 +7,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Maximum Sudoku number is 9', () => {
-        expect(SudokuNumsSet.MAX).toEqual(9);
+        expect(SudokuNumsSet.MAX_NUM).toEqual(9);
     });
 
     test('Range of possibe Sudoku numbers [1, 9]', () => {

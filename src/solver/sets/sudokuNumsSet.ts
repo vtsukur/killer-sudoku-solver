@@ -80,13 +80,13 @@ export class SudokuNumsSet implements
     /**
      * Maximum Sudoku number (`9`) which can be placed in a {@link Cell}.
      */
-    static readonly MAX = 9;
+    static readonly MAX_NUM = 9;
 
     /**
      * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
      * in the form of readonly array.
      */
-    static readonly RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX + 1];
+    static readonly RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM + 1];
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
     private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.RANGE.reduce(
@@ -220,10 +220,10 @@ export class SudokuNumsSet implements
 
     /**
      * Constructs new set with all unique Sudoku numbers
-     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX_NUM} (inclusive).
      *
      * @returns New set with all unique Sudoku numbers
-     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX} (inclusive).
+     * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX_NUM} (inclusive).
      */
     static all() {
         return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
