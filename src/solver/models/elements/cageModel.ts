@@ -516,7 +516,7 @@ export class CageModel {
             this._combosMap = newCombosMap;
             const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
-                if (cellM.reduceNumOpts(newNumOptions)) {
+                if (cellM.reduceNumOptsWithImpact(newNumOptions)) {
                     reducedCellMs.add(cellM);
                 }
             });

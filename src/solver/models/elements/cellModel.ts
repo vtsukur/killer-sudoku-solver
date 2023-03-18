@@ -54,7 +54,11 @@ export class CellModel {
         return this._numOptsSet.delete(val);
     }
 
-    reduceNumOpts(val: ReadonlySudokuNumsSet): boolean {
+    reduceNumOpts(val: ReadonlySudokuNumsSet) {
+        this._numOptsSet.union(val);
+    }
+
+    reduceNumOptsWithImpact(val: ReadonlySudokuNumsSet): boolean {
         const oldVal = this._numOptsSet.bitStore;
         this._numOptsSet.union(val);
         return this._numOptsSet.bitStore !== oldVal;
