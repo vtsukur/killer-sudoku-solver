@@ -610,7 +610,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverCommonStrategies"
+                "group": "solverStrategiesCommon"
             }
         },
 
@@ -630,7 +630,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverInitStrategies"
+                "group": "solverStrategiesInit"
             }
         },
         {
@@ -649,7 +649,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverInitStrategies"
+                "group": "solverStrategiesInit"
             }
         },
         {
@@ -668,7 +668,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverInitStrategies"
+                "group": "solverStrategiesInit"
             }
         },
         {
@@ -687,7 +687,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverInitStrategies"
+                "group": "solverStrategiesInit"
             }
         },
 
