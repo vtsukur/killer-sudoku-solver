@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { SudokuNums } from '../../puzzle/sudokuNums';
-import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { BitStore32, NumsCheckingSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -14,7 +14,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
  *
  * @public
  */
-export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsCheckingSet<ReadonlySudokuNumsCheckingSet> {
+export interface ReadonlySudokuNumsCheckingSet extends ReadonlyNumsSet<ReadonlySudokuNumsCheckingSet> {
 
     /**
      * Returns copy of the bit storage used for efficient checking for this numbers set.
@@ -274,7 +274,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.doesNotHave
+     * @see ReadonlyNumsSet.doesNotHave
      */
     doesNotHave(val: number) {
         return (this._bitStore & (1 << val)) === 0;
@@ -428,7 +428,7 @@ export class SudokuNumsCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.equals
+     * @see ReadonlyNumsSet.equals
      */
     equals(val: ReadonlySudokuNumsCheckingSet) {
         return this._bitStore === val.bitStore;

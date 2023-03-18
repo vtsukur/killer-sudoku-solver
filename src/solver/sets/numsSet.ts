@@ -17,10 +17,10 @@ export type BitStore32 = number;
  * For performance reasons, implementations of this interface are NEITHER required to do range checks,
  * NOR to guarantee correct work for the values outside of the range.
  *
- * @typeParam T - Specific subtype of {@link ReadonlyNumsCheckingSet}
+ * @typeParam T - Specific subtype of {@link ReadonlyNumsSet}
  * to be used as an argument for checking operations.
  */
-export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
+export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
 
     /**
      * Checks if this set has ALL numbers from another checking set.
@@ -61,22 +61,22 @@ export interface ReadonlyNumsCheckingSet<T extends ReadonlyNumsCheckingSet<T>> {
 }
 
 /**
- * Extends {@link ReadonlyNumsCheckingSet} with fast manipulation operations.
+ * Extends {@link ReadonlyNumsSet} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
  * For performance reasons, implementations of this interface are NEITHER required to do range checks,
  * NOR to guarantee correct work for the values outside of the range.
  *
- * @typeParam ROSET - Specific subtype of {@link ReadonlyNumsCheckingSet}
+ * @typeParam ROSET - Specific subtype of {@link ReadonlyNumsSet}
  * to be used as an argument for checking and manipulation operations.
  * @typeParam MUSET - Specific subtype of {@link NumsCheckingSet}
  * to be used as a return type for manipulation operations.
  */
 export interface NumsCheckingSet<
-            ROSET extends ReadonlyNumsCheckingSet<ROSET>,
+            ROSET extends ReadonlyNumsSet<ROSET>,
             MUSET extends NumsCheckingSet<ROSET, MUSET>
-        > extends ReadonlyNumsCheckingSet<ROSET> {
+        > extends ReadonlyNumsSet<ROSET> {
 
     /**
      * Adds all numbers from another checking set to this checking numbers set.

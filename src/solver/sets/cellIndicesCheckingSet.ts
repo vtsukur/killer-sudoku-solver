@@ -1,6 +1,6 @@
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
-import { BitStore32, NumsCheckingSet, ReadonlyNumsCheckingSet } from './numsCheckingSet';
+import { BitStore32, NumsCheckingSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -17,7 +17,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
  *
  * @public
  */
-export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsCheckingSet<ReadonlyCellIndicesCheckingSet> {
+export interface ReadonlyCellIndicesCheckingSet extends ReadonlyNumsSet<ReadonlyCellIndicesCheckingSet> {
 
     /**
      * Returns readonly array of the bit storages used for efficient checking for this numbers set.
@@ -198,7 +198,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.hasAll
+     * @see ReadonlyNumsSet.hasAll
      */
     hasAll(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -238,7 +238,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.doesNotHave
+     * @see ReadonlyNumsSet.doesNotHave
      */
     doesNotHave(val: number) {
         const entry = CellIndicesCheckingSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
@@ -246,7 +246,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.doesNotHaveAny
+     * @see ReadonlyNumsSet.doesNotHaveAny
      */
     doesNotHaveAny(val: ReadonlyCellIndicesCheckingSet) {
         //
@@ -478,7 +478,7 @@ export class CellIndicesCheckingSet implements
     }
 
     /**
-     * @see ReadonlyNumsCheckingSet.equals
+     * @see ReadonlyNumsSet.equals
      */
     equals(val: ReadonlyCellIndicesCheckingSet) {
         return (
