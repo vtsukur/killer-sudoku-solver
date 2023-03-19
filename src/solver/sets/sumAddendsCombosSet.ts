@@ -1,4 +1,4 @@
-import { Combo, ComboKey } from './combo';
+import { Combo, ComboKey } from '../math/combo';
 
 export class SumAddendsCombosSet {
 

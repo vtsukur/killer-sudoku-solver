@@ -5,7 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { SumAddendsCombosSet } from '../../math/sumAddendsCombosSet';
+import { SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 
