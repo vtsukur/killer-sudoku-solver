@@ -4,7 +4,7 @@ import { SumAddendsCombinatorics } from '../../../../src/solver/math';
 describe('Performance tests for `SumAddendsCombinatorics`', () => {
 
     const TESTS_COUNT = 10;
-    const ITERATIONS = _.range(100_000);
+    const ITERATIONS = _.range(500_000);
 
     _.range(TESTS_COUNT).forEach(i => {
 
