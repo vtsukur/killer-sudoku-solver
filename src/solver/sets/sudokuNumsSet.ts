@@ -101,7 +101,7 @@ export class SudokuNumsSet implements
         // Creating empty lookup tables for each bit store.
         const val = new PowersOf2Lut<number>();
 
-        // Iterating over all possible `Cell` indices on the `Grid`.
+        // Iterating over all possible Sudoku numbers.
         for (const index of this.NUM_RANGE) {
             val.set(index, index);
         }
