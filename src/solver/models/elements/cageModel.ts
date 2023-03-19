@@ -5,6 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
+import { SumAddendsCombos } from '../../math/sumAddendsCombos';
 import { SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 
@@ -44,7 +45,7 @@ export class CageModel {
     private _firstCell;
     private _cellsSet;
     private _cellCount;
-    private _combosMap;
+    private _combosMap: SumAddendsCombos;
     private _canHaveDuplicateNums: boolean;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean) {
@@ -65,13 +66,13 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new Map<ComboKey, Combo>();
+        this._combosMap = new SumAddendsCombos();
     }
 
     deepCopyWithSameCellModels() {
         const copy = new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums);
-        for (const entry of this._combosMap.entries()) {
-            copy._combosMap.set(entry[0], entry[1]);
+        for (const combo of this._combosMap.values) {
+            copy._combosMap.add(combo);
         }
         return copy;
     }
@@ -142,15 +143,15 @@ export class CageModel {
                 newCombosMap.add(combo.key);
             });
 
-            for (const [ comboKey ] of this._combosMap.entries()) {
-                if (!newCombosMap.has(comboKey)) {
-                    this._combosMap.delete(comboKey);
+            for (const combo of this._combosMap.values) {
+                if (!newCombosMap.has(combo.key)) {
+                    this._combosMap.delete(combo.key);
                 }
             }
         } else {
             combos.forEach(combo => {
                 nums.addAll(combo.numsSet);
-                this._combosMap.set(combo.key, combo);
+                this._combosMap.add(combo);
             });
         }
 
@@ -254,7 +255,7 @@ export class CageModel {
             }
         }
 
-        for (const combo of this._combosMap.values()) {
+        for (const combo of this._combosMap.values) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
                 const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
@@ -272,7 +273,7 @@ export class CageModel {
     }
 
     private combosWithNum(num: number) {
-        return Array.from(this._combosMap.values()).filter(combo => combo.has(num));
+        return Array.from(this._combosMap.values).filter(combo => combo.has(num));
     }
 
     private deleteCombo(combo: Combo) {
@@ -313,7 +314,7 @@ export class CageModel {
             }
         };
 
-        this._combosMap = new Map();
+        this._combosMap = new SumAddendsCombos();
 
         const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
@@ -347,7 +348,7 @@ export class CageModel {
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const combo = new Combo(sortedNums);
-                this._combosMap.set(combo.key, combo);
+                this._combosMap.add(combo);
             }
         } else {
             this.cellMs.forEach(cellM => {
@@ -373,7 +374,7 @@ export class CageModel {
         const commonComboNums = new Set<number>();
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
-            for (const combo of this._combosMap.values()) {
+            for (const combo of this._combosMap.values) {
                 hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
             }
             if (hasNumInAllCombos) {
@@ -391,7 +392,7 @@ export class CageModel {
         const validComboNums = new Set<number>();
         const noLongerValidCombos = [];
         const noLongerValidComboNums = new Set<number>();
-        for (const combo of this._combosMap.values()) {
+        for (const combo of this._combosMap.values) {
             let validCombo = true;
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
@@ -476,7 +477,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this._combosMap.values()) {
+                for (const combo of this._combosMap.values) {
                     if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -484,7 +485,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (positioningFlags.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this._combosMap.values()).every(combo => {
+                clue.presentInAllCombos = Array.from(this._combosMap.values).every(combo => {
                     return combo.has(num);
                 });
                 clues.push(clue);
@@ -497,15 +498,13 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
         if (this.hasSingleCombination() || !this._combosMap.size) return new Set();
 
-        const newCombosMap = new Map();
+        const newCombosMap = new SumAddendsCombos();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
-        for (const comboEntry of this._combosMap.entries()) {
-            const key = comboEntry[0];
-            const combo = comboEntry[1];
+        for (const combo of this._combosMap.values) {
             if (combo.numsSet.has(withNum)) {
-                newCombosMap.set(key, combo);
+                newCombosMap.add(combo);
                 newNumOptions.addAll(combo.numsSet);
             } else {
                 deleteCombos.push(combo);
@@ -536,7 +535,7 @@ export class CageModel {
     }
 
     get combos() {
-        return Array.from(this._combosMap.values());
+        return Array.from(this._combosMap.values);
     }
 
     get comboCount() {
