@@ -5,7 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { SumAddendsCombos } from '../../math/sumAddendsCombos';
+import { SumAddendsCombosSet } from '../../math/sumAddendsCombos';
 import { SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 
@@ -45,7 +45,7 @@ export class CageModel {
     private _firstCell;
     private _cellsSet;
     private _cellCount;
-    private _combosMap: SumAddendsCombos;
+    private _combosMap: SumAddendsCombosSet;
     private _canHaveDuplicateNums: boolean;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean) {
@@ -66,7 +66,7 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        this._combosMap = new SumAddendsCombos();
+        this._combosMap = new SumAddendsCombosSet();
     }
 
     deepCopyWithSameCellModels() {
@@ -314,7 +314,7 @@ export class CageModel {
             }
         };
 
-        this._combosMap = new SumAddendsCombos();
+        this._combosMap = new SumAddendsCombosSet();
 
         const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
@@ -498,7 +498,7 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
         if (this.hasSingleCombination() || !this._combosMap.size) return new Set();
 
-        const newCombosMap = new SumAddendsCombos();
+        const newCombosMap = new SumAddendsCombosSet();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 

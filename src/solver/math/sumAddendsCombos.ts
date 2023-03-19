@@ -1,6 +1,6 @@
 import { Combo, ComboKey } from './combo';
 
-export class SumAddendsCombos {
+export class SumAddendsCombosSet {
 
     private readonly _combosMap = new Map<ComboKey, Combo>();
 
