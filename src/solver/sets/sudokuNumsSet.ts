@@ -68,9 +68,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
  *
  * @public
  */
-export class SudokuNumsSet implements
-        ReadonlySudokuNumsSet,
-        NumsSet<ReadonlySudokuNumsSet, SudokuNumsSet> {
+export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
 
     /**
      * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
@@ -347,8 +345,10 @@ export class SudokuNumsSet implements
 
     /**
      * @see NumsSet.addAll
+     *
+     * @returns This set.
      */
-    addAll(val: ReadonlySudokuNumsSet) {
+    addAll(val: ReadonlySudokuNumsSet): SudokuNumsSet {
         //
         // Applying bitwise OR assignment on the bit store of this set
         // to merge `1`s from the bit store of the `val` set.
@@ -368,9 +368,11 @@ export class SudokuNumsSet implements
     }
 
     /**
-     * @see NumsSet.delete
+     * @see NumsSet.deleteAll
+     *
+     * @returns This set.
      */
-    deleteAll(val: ReadonlySudokuNumsSet) {
+    deleteAll(val: ReadonlySudokuNumsSet): SudokuNumsSet {
         //
         // Applying bitwise AND assignment on the bit store of this set
         // to merge `1`s from the bit store of the `val` set.
@@ -399,7 +401,7 @@ export class SudokuNumsSet implements
      *
      * @returns This set.
      */
-    delete(val: number) {
+    delete(val: number): SudokuNumsSet {
         if (this.has(val)) {
             //
             // Applying bitwise XOR assignment on the bit store of this set
@@ -423,8 +425,10 @@ export class SudokuNumsSet implements
 
     /**
      * @see NumsSet.union
+     *
+     * @returns This set.
      */
-    union(val: ReadonlySudokuNumsSet) {
+    union(val: ReadonlySudokuNumsSet): SudokuNumsSet {
         //
         // Applying bitwise AND assignment on the bit store of this set
         // to `AND` `1`s from the bit store of the `val` set.
@@ -451,7 +455,9 @@ export class SudokuNumsSet implements
     }
 
     /**
-     * @see NumsSet.clone
+     * Clones this set by creating new instance based on the copy of the state of this set.
+     *
+     * @returns New set based on the copy of the state of this set.
      */
     clone() {
         return new SudokuNumsSet(this._bitStore);

@@ -68,9 +68,7 @@ type CellIndexToBitStoreLocator = {
  *
  * @public
  */
-export class CellIndicesSet implements
-        ReadonlyCellIndicesSet,
-        NumsSet<ReadonlyCellIndicesSet, CellIndicesSet> {
+export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
 
     //
     // It is enough to have 3 bit stores of size 32 bits each
@@ -299,8 +297,10 @@ export class CellIndicesSet implements
 
     /**
      * @see NumsSet.union
+     *
+     * @returns This set.
      */
-    union(val: ReadonlyCellIndicesSet) {
+    union(val: ReadonlyCellIndicesSet): CellIndicesSet {
         //
         // Applying bitwise AND onto each bit store of this set and the `val` set
         // to produce `1`s on the positions where both sets have `1`s.
@@ -374,8 +374,10 @@ export class CellIndicesSet implements
 
     /**
      * @see NumsSet.addAll
+     *
+     * @returns This set.
      */
-    addAll(val: ReadonlyCellIndicesSet) {
+    addAll(val: ReadonlyCellIndicesSet): CellIndicesSet {
         //
         // Applying bitwise OR assignment on the bit stores of this set
         // to merge `1`s from the bit stores of the `val` set.
@@ -421,14 +423,14 @@ export class CellIndicesSet implements
         //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
         //
         this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
-
-        return this;
     }
 
     /**
-     * @see NumsSet.delete
+     * @see NumsSet.deleteAll
+     *
+     * @returns This set.
      */
-    deleteAll(val: ReadonlyCellIndicesSet) {
+    deleteAll(val: ReadonlyCellIndicesSet): CellIndicesSet {
         //
         // Applying bitwise AND assignment on the bit stores of this set
         // to merge `1`s from the bit stores of the `val` set.
@@ -489,7 +491,9 @@ export class CellIndicesSet implements
     }
 
     /**
-     * @see NumsSet.clone
+     * Clones this set by creating new instance based on the copy of the state of this set.
+     *
+     * @returns New set based on the copy of the state of this set.
      */
     clone() {
         return new CellIndicesSet(this);

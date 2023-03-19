@@ -70,13 +70,8 @@ export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
  *
  * @typeParam ROSET - Specific subtype of {@link ReadonlyNumsSet}
  * to be used as an argument for checking and manipulation operations.
- * @typeParam MUSET - Specific subtype of {@link NumsSet}
- * to be used as a return type for manipulation operations.
  */
-export interface NumsSet<
-            ROSET extends ReadonlyNumsSet<ROSET>,
-            MUSET extends NumsSet<ROSET, MUSET>
-        > extends ReadonlyNumsSet<ROSET> {
+export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyNumsSet<ROSET> {
 
     /**
      * Adds all numbers from another set to this numbers set.
@@ -87,10 +82,8 @@ export interface NumsSet<
      * Duplicate numbers are ignored.
      *
      * @param val - Another set containing numbers to add to this set.
-     *
-     * @returns This numbers set.
      */
-    addAll(val: ROSET): MUSET;
+    addAll(val: ROSET): void;
 
     /**
      * Deletes all numbers present in another set from this numbers set.
@@ -101,27 +94,15 @@ export interface NumsSet<
      * Missing numbers are ignored.
      *
      * @param val - Another set containing numbers to delete from this set.
-     *
-     * @returns This numbers set.
      */
-    deleteAll(val: ROSET): MUSET;
+    deleteAll(val: ROSET): void;
 
     /**
      * Updates this set so that it has only the numbers
      * present in this set `AND` the given `val` numbers set.
      *
      * @param val - Another set to `AND` with this set.
-     *
-     * @returns This numbers set having only the numbers
-     * present in this set `AND` the given `val` set.
      */
-    union(val: ROSET): MUSET;
-
-    /**
-     * Clones this numbers set by creating new instance based on the copy of the state of this set.
-     *
-     * @returns New numbers set based on the copy of the state of this set.
-     */
-    clone(): MUSET;
+    union(val: ROSET): void;
 
 }
