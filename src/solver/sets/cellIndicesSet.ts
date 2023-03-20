@@ -462,7 +462,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    deleteOne(val: number) {
+    delete(val: number) {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
