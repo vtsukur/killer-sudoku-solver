@@ -373,6 +373,28 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     }
 
     /**
+     * @see NumsSet.add
+     *
+     * @returns This numbers set.
+     */
+    add(val: number) {
+        const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
+
+        //
+        // Applying bitwise OR with left-wise shift to set bit at position `entry.bitStoreIndex` to `1`.
+        //
+        // Examples:
+        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
+        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
+        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - ...
+        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
+        //
+        this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+    }
+
+    /**
      * @see NumsSet.addAll
      *
      * @returns This set.
@@ -397,32 +419,27 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     }
 
     /**
-     * Adds given number to this set.
+     * @see SudokuNumsSet.delete
      *
-     * This method changes this set.
-     *
-     * The given number is added only if it is *not* yet present in this set.
-     * Duplicate number is ignored.
-     *
-     * @param val - Number to add to this set.
-     *
-     * @returns This numbers set.
+     * @returns This set.
      */
-    add(val: number) {
+    delete(val: number): CellIndicesSet {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
-        // Applying bitwise OR with left-wise shift to set bit at position `entry.bitStoreIndex` to `1`.
+        // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitStoreIndex` to `0`.
         //
         // Examples:
-        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise AND-ed with `0b11111110`;
+        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise AND-ed with `0b11111101`;
+        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise AND-ed with `0b11111011`;
         //  - ...
-        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise AND-ed with `0b01111111`;
         //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
         //
-        this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+        this._bitStores[entry.bitStoreIndex] &= ~(1 << entry.bitPosition);
+
+        return this;
     }
 
     /**
@@ -446,30 +463,6 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         this._bitStores[0] &= ~val.bitStores[0]; // for numbers in the range of [0, 31]
         this._bitStores[1] &= ~val.bitStores[1]; // for numbers in the range of [32, 63]
         this._bitStores[2] &= ~val.bitStores[2]; // for numbers in the range of [64, 80]
-
-        return this;
-    }
-
-    /**
-     * @see SudokuNumsSet.delete
-     *
-     * @returns This set.
-     */
-    delete(val: number): CellIndicesSet {
-        const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
-
-        //
-        // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitStoreIndex` to `0`.
-        //
-        // Examples:
-        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise AND-ed with `0b11111110`;
-        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise AND-ed with `0b11111101`;
-        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise AND-ed with `0b11111011`;
-        //  - ...
-        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise AND-ed with `0b01111111`;
-        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
-        //
-        this._bitStores[entry.bitStoreIndex] &= ~(1 << entry.bitPosition);
 
         return this;
     }
