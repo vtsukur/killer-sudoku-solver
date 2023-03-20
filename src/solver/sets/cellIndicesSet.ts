@@ -149,7 +149,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     constructor(val: ReadonlyArray<number> | ReadonlyCellIndicesSet) {
         if (Array.isArray(val)) {
             for (const num of val) {
-                this.addOne(num);
+                this.add(num);
             }
         } else {
             const anotherSet = val as ReadonlyCellIndicesSet;
@@ -408,7 +408,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This numbers set.
      */
-    addOne(val: number) {
+    add(val: number) {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
