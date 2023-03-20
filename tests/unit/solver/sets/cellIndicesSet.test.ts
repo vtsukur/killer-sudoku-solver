@@ -53,11 +53,9 @@ describe('Unit tests for `CellIndicesSet`', () => {
     test('Adding numbers one by one', () => {
         const set = CellIndicesSet.of(1, 30, 75);
 
-        set.add(0);
-        set.add(31);
-        set.add(80);
-
-        expectSetWithValues(set, [ 0, 1, 30, 31, 75, 80 ]);
+        expectSetWithValues(set.add(0), [ 0, 1, 30, 75 ]);
+        expectSetWithValues(set.add(31), [ 0, 1, 30, 31, 75 ]);
+        expectSetWithValues(set.add(80), [ 0, 1, 30, 31, 75, 80 ]);
     });
 
     test('Deleting numbers one by one', () => {

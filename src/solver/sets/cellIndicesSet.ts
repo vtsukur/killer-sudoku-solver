@@ -377,7 +377,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This numbers set.
      */
-    add(val: number) {
+    add(val: number): CellIndicesSet {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
@@ -392,6 +392,8 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
         //
         this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+
+        return this;
     }
 
     /**
