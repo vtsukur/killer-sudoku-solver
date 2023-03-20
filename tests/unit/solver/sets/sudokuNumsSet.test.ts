@@ -95,14 +95,6 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.of(1, 6, 9).hasOnly(1)).toBeFalsy();
     });
 
-    test('Checking with `delete`', () => {
-        const set = SudokuNumsSet.of(1, 6, 9);
-        expectSetWithValues(set.delete(6), [ 1, 9 ]);
-        expectSetWithValues(set.delete(5), [ 1, 9 ]);
-        expectSetWithValues(set.delete(1), [ 9 ]);
-        expectSetWithValues(set.delete(9), []);
-    });
-
     test('Checking with `doesNotHave`', () => {
         const set = SudokuNumsSet.of(1, 6, 9);
         expect(set.doesNotHave(1)).toBeFalsy();
@@ -118,6 +110,24 @@ describe('Unit tests for `SudokuNumsSet`', () => {
 
     test('Producing included numbers', () => {
         expect(SudokuNumsSet.of(1, 5, 9).nums()).toEqual([ 1, 5, 9 ]);
+    });
+
+    test('Adding numbers one by one', () => {
+        const set = SudokuNumsSet.of(1, 6, 9);
+
+        expectSetWithValues(set.add(2), [ 1, 2, 6, 9 ]);
+        expectSetWithValues(set.add(3), [ 1, 2, 3, 6, 9 ]);
+        expectSetWithValues(set.add(6), [ 1, 2, 3, 6, 9 ]);
+        expectSetWithValues(set.add(7), [ 1, 2, 3, 6, 7, 9 ]);
+    });
+
+    test('Deleting numbers one by one', () => {
+        const set = SudokuNumsSet.of(1, 6, 9);
+
+        expectSetWithValues(set.delete(6), [ 1, 9 ]);
+        expectSetWithValues(set.delete(5), [ 1, 9 ]);
+        expectSetWithValues(set.delete(1), [ 9 ]);
+        expectSetWithValues(set.delete(9), []);
     });
 
     test('Uniting `SudokuNumsSet` with another `SudokuNumsSet`', () => {

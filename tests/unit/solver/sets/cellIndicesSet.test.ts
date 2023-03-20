@@ -54,6 +54,7 @@ describe('Unit tests for `CellIndicesSet`', () => {
         const set = CellIndicesSet.of(1, 30, 75);
 
         expectSetWithValues(set.add(0), [ 0, 1, 30, 75 ]);
+        expectSetWithValues(set.add(30), [ 0, 1, 30, 75 ]);
         expectSetWithValues(set.add(31), [ 0, 1, 30, 31, 75 ]);
         expectSetWithValues(set.add(80), [ 0, 1, 30, 31, 75, 80 ]);
     });
@@ -63,6 +64,7 @@ describe('Unit tests for `CellIndicesSet`', () => {
 
         expectSetWithValues(set.delete(0), [ 1, 30, 31, 75, 80 ]);
         expectSetWithValues(set.delete(31), [ 1, 30, 75, 80 ]);
+        expectSetWithValues(set.delete(76), [ 1, 30, 75, 80 ]);
         expectSetWithValues(set.delete(80), [ 1, 30, 75 ]);
     });
 
