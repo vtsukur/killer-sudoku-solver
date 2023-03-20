@@ -74,6 +74,18 @@ export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
 export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyNumsSet<ROSET> {
 
     /**
+     * Adds given number to this set.
+     *
+     * This method changes this set.
+     *
+     * The given number is added only if it is *not* yet present in this set.
+     * Duplicate number is ignored.
+     *
+     * @param val - Number to add to this set.
+     */
+    add(val: number): void;
+
+    /**
      * Adds all numbers from another set to this numbers set.
      *
      * This method changes this numbers set and does *not* modify `val` numbers set.

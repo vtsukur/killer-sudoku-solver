@@ -157,18 +157,7 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
             this._bitStore = val;
         } else if (Array.isArray(val)) {
             for (const num of val) {
-                //
-                // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
-                //
-                // Examples:
-                //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b000000010`;
-                //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b000000100`;
-                //  - ...
-                //  - for `num = 9`, `bitStore` will be bitwise OR-ed with `0b100000000`;
-                //
-                // For `num = 1` and `num = 4` `bitStore` will be `0b000010010`.
-                //
-                this._bitStore |= 1 << num;
+                this.add(num);
             }
         } else {
             this._bitStore = (val as ReadonlySudokuNumsSet).bitStore;
@@ -341,6 +330,27 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
         // ```
         //
         return new SudokuNumsSet(SudokuNumsSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+    }
+
+    /**
+     * @see NumsSet.add
+     *
+     * @returns This set.
+     */
+    add(val: number): SudokuNumsSet {
+        //
+        // Applying bitwise OR with left-wise shift to set bit at position `val` to `1`.
+        //
+        // Examples:
+        //  - for `val = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
+        //  - for `val = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
+        //  - for `val = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - ...
+        //  - for `val = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+        //
+        this._bitStore |= 1 << val;
+
+        return this;
     }
 
     /**
