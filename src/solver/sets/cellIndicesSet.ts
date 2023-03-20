@@ -20,7 +20,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
 export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndicesSet> {
 
     /**
-     * Returns readonly array of the bit storages used for efficient checking for this numbers set.
+     * Returns readonly array of the bit storages used for efficient checking for this set.
      */
     get bitStores(): ReadonlyArray<BitStore32>;
 
@@ -375,7 +375,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     /**
      * @see NumsSet.add
      *
-     * @returns This numbers set.
+     * @returns This set.
      */
     add(val: number): CellIndicesSet {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];

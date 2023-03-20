@@ -17,7 +17,7 @@ import { PowersOf2Lut } from './powersOf2Lut';
 export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNumsSet> {
 
     /**
-     * Returns copy of the bit storage used for efficient checking for this numbers set.
+     * Returns copy of the bit storage used for efficient checking for this set.
      */
     get bitStore(): BitStore32;
 

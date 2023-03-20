@@ -1,5 +1,5 @@
 /**
- * Bit storage used for efficient checking/manipulation of the numbers sets of sizes up to 32.
+ * Bit storage used for efficient checking/manipulation of the sets of sizes up to 32.
  *
  * Represented as built-in `number`, where each bit at position `x` is:
  *  - `0` if the number is included in the set;
@@ -86,9 +86,9 @@ export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyN
     add(val: number): void;
 
     /**
-     * Adds all numbers from another set to this numbers set.
+     * Adds all numbers from another set to this set.
      *
-     * This method changes this numbers set and does *not* modify `val` numbers set.
+     * This method changes this set and does *not* modify `val` set.
      *
      * Only the numbers which are *not* yet present in this set are added.
      * Duplicate numbers are ignored.
@@ -98,9 +98,9 @@ export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyN
     addAll(val: ROSET): void;
 
     /**
-     * Deletes given number from this numbers set.
+     * Deletes given number from this set.
      *
-     * This method changes this numbers set.
+     * This method changes this set.
      *
      * The given number is deleted only if it is *not* yet present in this set.
      * Duplicate number is ignored.
@@ -110,9 +110,9 @@ export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyN
     delete(val: number): void;
 
     /**
-     * Deletes all numbers present in another set from this numbers set.
+     * Deletes all numbers present in another set from this set.
      *
-     * This method changes this numbers set and does *not* modify `val` numbers set.
+     * This method changes this set and does *not* modify `val` set.
      *
      * Only the numbers which are present in this set are deleted.
      * Missing numbers are ignored.
@@ -123,7 +123,7 @@ export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyN
 
     /**
      * Updates this set so that it has only the numbers
-     * present in this set `AND` the given `val` numbers set.
+     * present in this set `AND` the given `val` set.
      *
      * @param val - Another set to `AND` with this set.
      */
