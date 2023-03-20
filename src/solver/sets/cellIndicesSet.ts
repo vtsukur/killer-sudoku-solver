@@ -451,18 +451,11 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     }
 
     /**
-     * Deletes given number from this numbers set.
-     *
-     * This method changes this numbers set.
-     *
-     * The given number is deleted only if it is *not* yet present in this set.
-     * Duplicate number is ignored.
-     *
-     * @param val - Number to delete from this set.
+     * @see SudokuNumsSet.delete
      *
      * @returns This set.
      */
-    delete(val: number) {
+    delete(val: number): CellIndicesSet {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
@@ -477,6 +470,8 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
         //
         this._bitStores[entry.bitStoreIndex] &= ~(1 << entry.bitPosition);
+
+        return this;
     }
 
     /**

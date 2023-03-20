@@ -368,11 +368,7 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
     }
 
     /**
-     * Deletes given number from this set if it is present.
-     *
-     * This method changes this set.
-     *
-     * @param val - Number to delete from this set if it is present.
+     * @see SudokuNumsSet.delete
      *
      * @returns This set.
      */

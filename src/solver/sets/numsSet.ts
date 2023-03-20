@@ -86,6 +86,18 @@ export interface NumsSet<ROSET extends ReadonlyNumsSet<ROSET>> extends ReadonlyN
     addAll(val: ROSET): void;
 
     /**
+     * Deletes given number from this numbers set.
+     *
+     * This method changes this numbers set.
+     *
+     * The given number is deleted only if it is *not* yet present in this set.
+     * Duplicate number is ignored.
+     *
+     * @param val - Number to delete from this set.
+     */
+    delete(val: number): void;
+
+    /**
      * Deletes all numbers present in another set from this numbers set.
      *
      * This method changes this numbers set and does *not* modify `val` numbers set.
