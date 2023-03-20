@@ -917,6 +917,25 @@
             }
         },
         {
+            "name": "npm run test [solver/sets/sumAddendsCombosSet.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/sets/sumAddendsCombosSet.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
             "name": "npm run test [solver/solver.perf]",
             "request": "launch",
             "runtimeArgs": [
