@@ -1,6 +1,6 @@
 import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
 
-export interface ReadonlyBitStore32Set<T> extends ReadonlyNumsSet<ReadonlyBitStore32Set<T>> {
+export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<T>> {
 
     /**
      * Returns copy of the bit storage used for efficient checking for this set.
@@ -14,13 +14,13 @@ export interface ReadonlyBitStore32Set<T> extends ReadonlyNumsSet<ReadonlyBitSto
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
- * @see ReadonlyBitStore32Set
+ * @see ReadonlyBits32Set
  * @see NumsSet
  *
  * @public
  */
-export abstract class BitStore32Set<
-            ROSET extends ReadonlyBitStore32Set<ROSET>> implements NumsSet<ROSET> {
+export abstract class Bits32Set<
+            ROSET extends ReadonlyBits32Set<ROSET>> implements NumsSet<ROSET> {
 
     //
     // One bit store in the form of a built-in `number` can store up to 32 bits,

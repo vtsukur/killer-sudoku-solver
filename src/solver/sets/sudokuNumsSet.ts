@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { BitStore32Set } from './bitStore32Set';
+import { Bits32Set } from './bits32Set';
 import { BitStore32, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
@@ -69,7 +69,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
  *
  * @public
  */
-export class SudokuNumsSet extends BitStore32Set<ReadonlySudokuNumsSet> {
+export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
 
     /**
      * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
