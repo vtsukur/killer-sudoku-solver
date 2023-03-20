@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
+import { BitStore32Set } from './bitStore32Set';
+import { BitStore32, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -68,7 +69,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
  *
  * @public
  */
-export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
+export class SudokuNumsSet extends BitStore32Set<ReadonlySudokuNumsSet> {
 
     /**
      * Minimum Sudoku number (`1`) which can be placed in a {@link Cell}.
@@ -131,12 +132,6 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
         _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
 
-    //
-    // One bit store in the form of a built-in `number` can store up to 32 bits,
-    // which is more than enough to represents numbers in the range of [1, 9].
-    //
-    private _bitStore = 0;
-
     // Cached numbers array for the fast `nums` retrieval.
     private _nums: ReadonlyArray<number>;
 
@@ -153,15 +148,7 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
      * or {@link BitStore32} to construct this set from.
      */
     constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | BitStore32) {
-        if (typeof val === 'number') {
-            this._bitStore = val;
-        } else if (Array.isArray(val)) {
-            for (const num of val) {
-                this.add(num);
-            }
-        } else {
-            this._bitStore = (val as ReadonlySudokuNumsSet).bitStore;
-        }
+        super(val);
 
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
@@ -217,99 +204,10 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
     }
 
     /**
-     * @see ReadonlySudokuNumsSet.bitStore
-     */
-    get bitStore() {
-        return this._bitStore;
-    }
-
-    /**
      * @see ReadonlySudokuNumsSet.nums
      */
     nums() {
         return this._nums;
-    }
-
-    /**
-     * @see ReadonlySudokuNumsSet.has
-     */
-    has(val: number) {
-        return (this._bitStore & (1 << val)) !== 0;
-    }
-
-    /**
-     * @see ReadonlySudokuNumsSet.hasOnly
-     */
-    hasOnly(val: number) {
-        return this.has(val) && (this._bitStore & (this._bitStore - 1)) === 0;
-    }
-
-    /**
-     * @see ReadonlySudokuNumsSet.hasAll
-     */
-    hasAll(val: ReadonlySudokuNumsSet) {
-        //
-        // Applying bitwise AND to check that each bit store of this set
-        // has `1`s at the same positions as each bit store of the `val` set.
-        //
-        // Example for `hasAll` returning `true`:
-        // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b010000100
-        //      this._bitStore & val.bitStore = 0b010000100
-        //
-        //      0b010000100 === 0b010000100
-        //      (this._bitStore & val.bitStore) === val.bitStore
-        //
-        // ```
-        //
-        // Example for `hasAll` returning `false`:
-        // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b000001100
-        //      this._bitStore & val.bitStore = 0b000000100
-        //
-        //      0b000001100 !== 0b000000100
-        //      (this._bitStore & val.bitStore) !== val.bitStore
-        // ```
-        //
-        return (this._bitStore & val.bitStore) === val.bitStore;
-    }
-
-    /**
-     * @see ReadonlyNumsSet.doesNotHave
-     */
-    doesNotHave(val: number) {
-        return (this._bitStore & (1 << val)) === 0;
-    }
-
-    /**
-     * @see ReadonlySudokuNumsSet.doesNotHaveAny
-     */
-    doesNotHaveAny(val: ReadonlySudokuNumsSet) {
-        //
-        // Applying bitwise AND to check that each bit store of this set
-        // does *not* have `1`s at the same positions as each bit store of the `val` set.
-        //
-        // Example for `doesNotHaveAny` returning `true`:
-        // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b001101000
-        //      this._bitStore & val.bitStore = 0b000000000 (no overlaps on the same bit positions)
-        //
-        //      (this._bitStore & val.bitStore) === 0
-        // ```
-        //
-        // Example for `doesNotHaveAny` returning `false`:
-        // ```
-        //      this._bitStore                = 0b10010101
-        //      val.bitStore                  = 0b00001100
-        //      this._bitStore & val.bitStore = 0b00000100 (one overlap on the bit position 3)
-        //
-        //      (this._bitStore & val.bitStore) !== 0
-        // ```
-        //
-        return (this._bitStore & val.bitStore) === 0;
     }
 
     /**
@@ -332,132 +230,8 @@ export class SudokuNumsSet implements NumsSet<ReadonlySudokuNumsSet> {
         return new SudokuNumsSet(SudokuNumsSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
-    /**
-     * @see NumsSet.add
-     *
-     * @returns This set.
-     */
-    add(val: number): SudokuNumsSet {
-        //
-        // Applying bitwise OR with left-wise shift to set bit at position `val` to `1`.
-        //
-        // Examples:
-        //  - for `val = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-        //  - for `val = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-        //  - for `val = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
-        //  - ...
-        //  - for `val = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
-        //
-        this._bitStore |= 1 << val;
-
-        return this;
-    }
-
-    /**
-     * @see NumsSet.addAll
-     *
-     * @returns This set.
-     */
-    addAll(val: ReadonlySudokuNumsSet): SudokuNumsSet {
-        //
-        // Applying bitwise OR assignment on the bit store of this set
-        // to merge `1`s from the bit store of the `val` set.
-        //
-        // Example:
-        // ```
-        //      this._bitStore                 = 0b010010001
-        //      val.bitStore                   = 0b001001000
-        //      this._bitStors |= val.bitStore = 0b011011001
-        // ```
-        //
-        this._bitStore |= val.bitStore;
-
+    protected updateCache() {
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
-
-        return this;
-    }
-
-    /**
-     * @see SudokuNumsSet.delete
-     *
-     * @returns This set.
-     */
-    delete(val: number): SudokuNumsSet {
-        if (this.has(val)) {
-            //
-            // Applying bitwise XOR assignment on the bit store of this set
-            // to clear `1` on the position corresponding to the number `val`.
-            //
-            // Example:
-            // ```
-            //      this._bitStore             = 0b10011001
-            //      val                        = 4
-            //      1 << val                   = 0b00001000 (4)
-            //      this._bitStore ^= 1 << val = 0b10010001 (bit at position `4` is reset to `0`)
-            // ```
-            //
-            this._bitStore ^= 1 << val;
-
-            this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
-        }
-
-        return this;
-    }
-
-    /**
-     * @see NumsSet.deleteAll
-     *
-     * @returns This set.
-     */
-    deleteAll(val: ReadonlySudokuNumsSet): SudokuNumsSet {
-        //
-        // Applying bitwise AND assignment on the bit store of this set
-        // to merge `1`s from the bit store of the `val` set.
-        //
-        // Example:
-        // ```
-        //      this._bitStore                  = 0b10011001
-        //      val.bitStore                    = 0b01001001
-        //      ~val.bitStore                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
-        //      this._bitStore &= ~val.bitStore = 0b10010000
-        // ```
-        //
-        this._bitStore &= ~val.bitStore;
-
-        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
-
-        return this;
-    }
-
-    /**
-     * @see NumsSet.union
-     *
-     * @returns This set.
-     */
-    union(val: ReadonlySudokuNumsSet): SudokuNumsSet {
-        //
-        // Applying bitwise AND assignment on the bit store of this set
-        // to `AND` `1`s from the bit store of the `val` set.
-        //
-        // Example:
-        // ```
-        //      this._bitStore                 = 0b10011001
-        //      val.bitStore                   = 0b01001001
-        //      this._bitStore &= val.bitStore = 0b00001001 (only 2 bits at the same position are `1`s)
-        // ```
-        //
-        this._bitStore &= val.bitStore;
-
-        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
-
-        return this;
-    }
-
-    /**
-     * @see ReadonlyNumsSet.equals
-     */
-    equals(val: ReadonlySudokuNumsSet) {
-        return this._bitStore === val.bitStore;
     }
 
     /**
