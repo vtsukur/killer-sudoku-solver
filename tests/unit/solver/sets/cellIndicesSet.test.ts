@@ -63,11 +63,9 @@ describe('Unit tests for `CellIndicesSet`', () => {
     test('Deleting numbers one by one', () => {
         const set = CellIndicesSet.of(0, 1, 30, 31, 75, 80);
 
-        set.delete(0);
-        set.delete(31);
-        set.delete(80);
-
-        expectSetWithValues(set, [ 1, 30, 75 ]);
+        expectSetWithValues(set.delete(0), [ 1, 30, 31, 75, 80 ]);
+        expectSetWithValues(set.delete(31), [ 1, 30, 75, 80 ]);
+        expectSetWithValues(set.delete(80), [ 1, 30, 75 ]);
     });
 
     test('Checking with `doesNotHave`', () => {
