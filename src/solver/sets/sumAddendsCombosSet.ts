@@ -172,26 +172,34 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private readonly _combinatorics: SumAddendsCombinatorics;
 
-    // private _combos: ReadonlyArray<Combo>;
+    private static _NO_COMBOS = [];
+
+    private _combos: ReadonlyArray<Combo> = CombosSet._NO_COMBOS;
+
+    private _isDirtyCache = true;
 
     private constructor(
             val: BitStore32,
             combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
-        // this._combos = combos;
     }
 
     protected updateCache(): void {
-        // this._combos = powersOf2Lut.collect(this._bitStore).map(index => this._combinatorics.val[index]);
+        this._isDirtyCache = true;
     }
 
     get combos() {
-        return powersOf2Lut.collect(this._bitStore).map(index => this._combinatorics.val[index]);
+        if (this._isDirtyCache) {
+            this._combos = powersOf2Lut.collect(this._bitStore).map(index => this._combinatorics.val[index]);
+            this._isDirtyCache = false;
+        }
+        return this._combos;
     }
 
     fill() {
         this._bitStore = this._combinatorics.combosSet.bitStore;
+        this.updateCache();
     }
 
     static newEmpty(sumAddendsCombinatorics: SumAddendsCombinatorics) {
