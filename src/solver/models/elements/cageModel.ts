@@ -120,8 +120,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        const combos = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount).val;
-        this.updateCombinations(combos);
+        this.updateCombinations(this._sumAddendsCombinatorics.val);
     }
 
     anyRow() {
