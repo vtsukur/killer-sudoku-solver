@@ -7,7 +7,12 @@ import { PowersOf2Lut } from './powersOf2Lut';
 
 export class SumAddendsCombosSet {
 
+    private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosMap = new Map<ComboKey, Combo>();
+
+    constructor(combinatorics: SumAddendsCombinatorics) {
+        this._combinatorics = combinatorics;
+    }
 
     get values() {
         return this._combosMap.values();

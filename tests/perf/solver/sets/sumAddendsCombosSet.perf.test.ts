@@ -14,7 +14,7 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
 
         test(`Multiple mutations of different kinds and getting \`Combo\`s after each [${i}]`, () => {
             ITERATIONS.forEach(() => {
-                const set = new SumAddendsCombosSet();
+                const set = new SumAddendsCombosSet(combinatorics);
                 for (const combo of combinatorics.val) {
                     set.add(combo);
                 }
