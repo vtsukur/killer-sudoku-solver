@@ -96,7 +96,7 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
 
     constructor(combinatorics: SumAddendsCombinatorics) {
         this._combinatorics = combinatorics;
-        this._combosSet = combinatorics.combosSet.clone();
+        this._combosSet = CombosSet.newEmpty(combinatorics);
     }
 
     get values() {
@@ -108,14 +108,8 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
     }
 
     init() {
-        const nums = SudokuNumsSet.newEmpty();
-
-        for (const combo of this._combinatorics.val) {
-            nums.addAll(combo.numsSet);
-            this.add(combo);
-        }
-
-        return nums;
+        this._combosSet.fill();
+        return this._combinatorics.allNumsSet;
     }
 
     update(combos: ReadonlyCombos) {
@@ -155,9 +149,10 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
-    clone(): CombosSet;
+    //clone(): CombosSet;
 
 }
 
@@ -195,16 +190,20 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         return powersOf2Lut.collect(this._bitStore).map(index => this._combinatorics.val[index]);
     }
 
-    static newRefSet(sumAddendsCombinatorics: SumAddendsCombinatorics): ReadonlyCombosSet {
-        // let bitStore = 0;
-        // for (const num of CachedNumRanges.ZERO_TO_N_LTE_81[sumAddendsCombinatorics.val.length]) {
-        //     bitStore |= 1 << num;
-        // }
+    fill() {
+        this._bitStore = this._combinatorics.combosSet.bitStore;
+    }
+
+    static newEmpty(sumAddendsCombinatorics: SumAddendsCombinatorics) {
         return new CombosSet(0, sumAddendsCombinatorics);
     }
 
-    clone(): CombosSet {
-        return new CombosSet(this._bitStore, this._combinatorics);
+    static newRefSet(sumAddendsCombinatorics: SumAddendsCombinatorics): ReadonlyCombosSet {
+        let bitStore = 0;
+        for (const num of CachedNumRanges.ZERO_TO_N_LTE_81[sumAddendsCombinatorics.val.length]) {
+            bitStore |= 1 << num;
+        }
+        return new CombosSet(bitStore, sumAddendsCombinatorics);
     }
 
 }

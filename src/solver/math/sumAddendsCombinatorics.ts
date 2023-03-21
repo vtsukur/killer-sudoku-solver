@@ -40,6 +40,8 @@ export class SumAddendsCombinatorics {
 
     readonly combosSet: ReadonlyCombosSet;
 
+    readonly allNumsSet: ReadonlySudokuNumsSet;
+
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
     private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
 
@@ -51,10 +53,13 @@ export class SumAddendsCombinatorics {
     constructor(val: ReadonlyCombos) {
         this.val = val;
         let index = 0;
+        const allNumsSet = SudokuNumsSet.newEmpty();
         for (const combo of val) {
             this._bitStore32ToComboMap.set(combo.numsSet.bitStore, combo);
             this._bitStore32ToIndex.set(combo.numsSet.bitStore, index++);
+            allNumsSet.addAll(combo.numsSet);
         }
+        this.allNumsSet = allNumsSet;
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
         this.combosSet = CombosSet.newRefSet(this);
