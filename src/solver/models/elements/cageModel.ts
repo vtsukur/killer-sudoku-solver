@@ -145,7 +145,7 @@ export class CageModel {
 
             for (const combo of this._sumAddendsComboSet.values) {
                 if (!newCombosMap.has(combo.key)) {
-                    this._sumAddendsComboSet.delete(combo.key);
+                    this._sumAddendsComboSet.delete(combo);
                 }
             }
         } else {
@@ -277,7 +277,7 @@ export class CageModel {
     }
 
     private deleteCombo(combo: Combo) {
-        this._sumAddendsComboSet.delete(combo.key);
+        this._sumAddendsComboSet.delete(combo);
     }
 
     private reduceSmallCage() {
@@ -390,7 +390,7 @@ export class CageModel {
 
         const validCombos = [];
         const validComboNums = new Set<number>();
-        const noLongerValidCombos = [];
+        const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = new Set<number>();
         for (const combo of this._sumAddendsComboSet.values) {
             let validCombo = true;
@@ -431,7 +431,7 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this._sumAddendsComboSet.delete(noLongerValidCombo.key);
+                this._sumAddendsComboSet.delete(noLongerValidCombo);
             }
         }
 

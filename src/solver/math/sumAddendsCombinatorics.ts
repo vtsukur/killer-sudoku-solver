@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { CombosSet, ReadonlyCombosSet } from '../sets/sumAddendsCombosSet';
 import { Combo, ReadonlyCombos } from './combo';
 
 type PrecomputeComboKey = number;
@@ -37,7 +38,10 @@ export class SumAddendsCombinatorics {
      */
     readonly arrayedVal: ReadonlyArray<ReadonlyCombos>;
 
+    readonly combosSet: ReadonlyCombosSet;
+
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
+    private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
 
     /**
      * Constucts new combinations of unique numbers to form a sum.
@@ -46,11 +50,14 @@ export class SumAddendsCombinatorics {
      */
     constructor(val: ReadonlyCombos) {
         this.val = val;
+        let index = 0;
         for (const combo of val) {
             this._bitStore32ToComboMap.set(combo.numsSet.bitStore, combo);
+            this._bitStore32ToIndex.set(combo.numsSet.bitStore, index++);
         }
         this.perms = val.map(combo => [ combo ]);
         this.arrayedVal = [ val ];
+        this.combosSet = CombosSet.newRefSet(this);
     }
 
     /**
@@ -64,6 +71,10 @@ export class SumAddendsCombinatorics {
      */
     get(numsSet: ReadonlySudokuNumsSet) {
         return this._bitStore32ToComboMap.get(numsSet.bitStore);
+    }
+
+    indexOf(combo: Combo): number {
+        return this._bitStore32ToIndex.get(combo.numsSet.bitStore) as number;
     }
 
     /**
