@@ -50,7 +50,7 @@ export class CageModel {
     private _sumAddendsComboSet: ISumAddendsCombosSet;
     private _canHaveDuplicateNums: boolean;
 
-    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean) {
+    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, sumAddendsComboSet?: ISumAddendsCombosSet) {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -70,19 +70,19 @@ export class CageModel {
         this._cellCount = cage.cellCount;
         // do not initialize if `_canHaveDuplicateNums` is `true`
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
-        this._sumAddendsComboSet = this.newSumAddendsComboSet();
+        if (sumAddendsComboSet) {
+            this._sumAddendsComboSet = sumAddendsComboSet.clone();
+        } else {
+            this._sumAddendsComboSet = this.newSumAddendsComboSet();
+        }
     }
 
     private newSumAddendsComboSet(): ISumAddendsCombosSet {
-        return new SumAddendsCombosSetPerf(this._sumAddendsCombinatorics);
+        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {
-        const copy = new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums);
-        for (const combo of this._sumAddendsComboSet.values) {
-            copy._sumAddendsComboSet.add(combo);
-        }
-        return copy;
+        return new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums, this._sumAddendsComboSet);
     }
 
     static positioningFlagsFor(cells: ReadonlyCells) {

@@ -15,6 +15,8 @@ export interface ISumAddendsCombosSet {
 
     delete(combo: Combo): void;
 
+    clone(): ISumAddendsCombosSet;
+
 }
 
 export class SumAddendsCombosSet implements ISumAddendsCombosSet {
@@ -40,6 +42,14 @@ export class SumAddendsCombosSet implements ISumAddendsCombosSet {
 
     delete(combo: Combo) {
         this._combosMap.delete(combo.key);
+    }
+
+    clone() {
+        const copy = new SumAddendsCombosSet(this._combinatorics);
+        for (const combo of this.values) {
+            copy.add(combo);
+        }
+        return copy;
     }
 
 }
@@ -68,6 +78,14 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
 
     delete(combo: Combo) {
         this._combosSet.delete(this._combinatorics.indexOf(combo));
+    }
+
+    clone() {
+        const copy = new SumAddendsCombosSetPerf(this._combinatorics);
+        for (const combo of this.values) {
+            copy.add(combo);
+        }
+        return copy;
     }
 
 }
