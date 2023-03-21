@@ -140,32 +140,12 @@ export class CageModel {
     }
 
     private initCombos() {
-        const nums = SudokuNumsSet.newEmpty();
-
-        this._sumAddendsCombinatorics.val.forEach(combo => {
-            nums.addAll(combo.numsSet);
-            this._sumAddendsComboSet.add(combo);
-        });
-
+        const nums = this._sumAddendsComboSet.init();
         this.updateCellMsNums(nums);
     }
 
     updateCombos(combos: ReadonlyArray<Combo>) {
-        const nums = SudokuNumsSet.newEmpty();
-
-        const newCombosSet = new Set<ComboKey>();
-
-        combos.forEach(combo => {
-            nums.addAll(combo.numsSet);
-            newCombosSet.add(combo.key);
-        });
-
-        for (const combo of this._sumAddendsComboSet.values) {
-            if (!newCombosSet.has(combo.key)) {
-                this._sumAddendsComboSet.delete(combo);
-            }
-        }
-
+        const nums = this._sumAddendsComboSet.update(combos);
         this.updateCellMsNums(nums);
     }
 

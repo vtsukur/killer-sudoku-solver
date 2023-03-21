@@ -4,12 +4,17 @@ import { Combo, ComboKey, ReadonlyCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ISumAddendsCombosSet {
 
     values: Iterable<Combo>;
 
     size: number;
+
+    init(): ReadonlySudokuNumsSet;
+
+    update(combos: ReadonlyCombos): ReadonlySudokuNumsSet;
 
     add(combo: Combo): void;
 
@@ -34,6 +39,36 @@ export class SumAddendsCombosSet implements ISumAddendsCombosSet {
 
     get size() {
         return this._combosMap.size;
+    }
+
+    init() {
+        const nums = SudokuNumsSet.newEmpty();
+
+        for (const combo of this._combinatorics.val) {
+            nums.addAll(combo.numsSet);
+            this.add(combo);
+        }
+
+        return nums;
+    }
+
+    update(combos: ReadonlyCombos) {
+        const nums = SudokuNumsSet.newEmpty();
+
+        const newCombosSet = new Set<ComboKey>();
+
+        for (const combo of combos) {
+            nums.addAll(combo.numsSet);
+            newCombosSet.add(combo.key);
+        }
+
+        for (const combo of this.values) {
+            if (!newCombosSet.has(combo.key)) {
+                this.delete(combo);
+            }
+        }
+
+        return nums;
     }
 
     add(combo: Combo) {
@@ -70,6 +105,36 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
 
     get size() {
         return this._combosSet.combos.length;
+    }
+
+    init() {
+        const nums = SudokuNumsSet.newEmpty();
+
+        for (const combo of this._combinatorics.val) {
+            nums.addAll(combo.numsSet);
+            this.add(combo);
+        }
+
+        return nums;
+    }
+
+    update(combos: ReadonlyCombos) {
+        const nums = SudokuNumsSet.newEmpty();
+
+        const newCombosSet = new Set<ComboKey>();
+
+        for (const combo of combos) {
+            nums.addAll(combo.numsSet);
+            newCombosSet.add(combo.key);
+        }
+
+        for (const combo of this.values) {
+            if (!newCombosSet.has(combo.key)) {
+                this.delete(combo);
+            }
+        }
+
+        return nums;
     }
 
     add(combo: Combo) {
