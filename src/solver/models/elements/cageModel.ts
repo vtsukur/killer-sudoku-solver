@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
-import { ISumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
+import { ISumAddendsCombosSet, SumAddendsCombosSetPerf } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -74,7 +74,7 @@ export class CageModel {
     }
 
     private newSumAddendsComboSet(): ISumAddendsCombosSet {
-        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+        return new SumAddendsCombosSetPerf(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {

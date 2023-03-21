@@ -78,7 +78,17 @@ export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
 }
 
-const powersOf2Lut = new PowersOf2Lut<number>();
+const powersOf2Lut = (() => {
+    // Creating empty lookup tables for each bit store.
+    const val = new PowersOf2Lut<number>();
+
+    // Iterating over all possible Sudoku numbers.
+    for (const index of CachedNumRanges.ZERO_TO_N_LTE_81[32]) {
+        val.set(index, index);
+    }
+
+    return val;
+})();
 
 export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
 
