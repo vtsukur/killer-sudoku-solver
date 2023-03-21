@@ -120,7 +120,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        this.updateCombinations(this._sumAddendsCombinatorics.val);
+        this.initializeCombinations();
     }
 
     anyRow() {
@@ -139,27 +139,31 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
+    private initializeCombinations() {
+        const nums = SudokuNumsSet.newEmpty();
+
+        this._sumAddendsCombinatorics.val.forEach(combo => {
+            nums.addAll(combo.numsSet);
+            this._sumAddendsComboSet.add(combo);
+        });
+
+        this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
+    }
+
     updateCombinations(combos: ReadonlyArray<Combo>) {
         const nums = SudokuNumsSet.newEmpty();
 
-        if (this._sumAddendsComboSet.size !== 0) {
-            const newCombosSet = new Set<ComboKey>();
+        const newCombosSet = new Set<ComboKey>();
 
-            combos.forEach(combo => {
-                nums.addAll(combo.numsSet);
-                newCombosSet.add(combo.key);
-            });
+        combos.forEach(combo => {
+            nums.addAll(combo.numsSet);
+            newCombosSet.add(combo.key);
+        });
 
-            for (const combo of this._sumAddendsComboSet.values) {
-                if (!newCombosSet.has(combo.key)) {
-                    this._sumAddendsComboSet.delete(combo);
-                }
+        for (const combo of this._sumAddendsComboSet.values) {
+            if (!newCombosSet.has(combo.key)) {
+                this._sumAddendsComboSet.delete(combo);
             }
-        } else {
-            combos.forEach(combo => {
-                nums.addAll(combo.numsSet);
-                this._sumAddendsComboSet.add(combo);
-            });
         }
 
         this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
