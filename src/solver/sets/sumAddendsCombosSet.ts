@@ -112,15 +112,14 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private readonly _combinatorics: SumAddendsCombinatorics;
 
-    private _combos: ReadonlyArray<Combo>;
+    // private _combos: ReadonlyArray<Combo>;
 
     private constructor(
             val: BitStore32,
-            combinatorics: SumAddendsCombinatorics,
-            combos: ReadonlyCombos = combinatorics.val) {
+            combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
-        this._combos = combos;
+        // this._combos = combos;
     }
 
     protected updateCache(): void {
@@ -132,15 +131,15 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     static newRefSet(sumAddendsCombinatorics: SumAddendsCombinatorics): ReadonlyCombosSet {
-        let bitStore = 0;
-        for (const num of CachedNumRanges.ZERO_TO_N_LTE_81[sumAddendsCombinatorics.val.length]) {
-            bitStore |= 1 << num;
-        }
-        return new CombosSet(bitStore, sumAddendsCombinatorics);
+        // let bitStore = 0;
+        // for (const num of CachedNumRanges.ZERO_TO_N_LTE_81[sumAddendsCombinatorics.val.length]) {
+        //     bitStore |= 1 << num;
+        // }
+        return new CombosSet(0, sumAddendsCombinatorics);
     }
 
     clone(): CombosSet {
-        return new CombosSet(this._bitStore, this._combinatorics, this.combos);
+        return new CombosSet(this._bitStore, this._combinatorics);
     }
 
 }

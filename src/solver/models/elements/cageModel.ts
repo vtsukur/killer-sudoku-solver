@@ -78,7 +78,7 @@ export class CageModel {
     }
 
     private newSumAddendsComboSet(): ISumAddendsCombosSet {
-        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+        return new SumAddendsCombosSetPerf(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {
@@ -167,23 +167,20 @@ export class CageModel {
     }
 
     reduce(): ReadonlySet<CellModel> {
+        if (this._canHaveDuplicateNums) {
+            return new Set();
+        }
+
         if (this.isEligibleForReductionOfSmallSize()) {
-            if (!this._canHaveDuplicateNums && _.inRange(this._cellCount, 2, 4)) {
-                if (this._cellCount === 2) {
-                    return this.reduceOptimalForSize2();
-                } else if (this._cellCount === 3) {
-                    return this.reduceOptimalForSize3();
-                } else {
-                    // remove for refactoring
-                    throw 'Should not reach here';
-                }
+            if (this._cellCount === 2) {
+                return this.reduceOptimalForSize2();
+            } else if (this._cellCount === 3) {
+                return this.reduceOptimalForSize3();
             } else {
                 return this.reduceSmallCage();
             }
-        } else if (!this._canHaveDuplicateNums) {
-            return this.reduceLargeCage();
         } else {
-            return new Set();
+            return this.reduceLargeCage();
         }
     }
 
