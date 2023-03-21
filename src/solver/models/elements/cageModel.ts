@@ -4,7 +4,7 @@ import { Cell, CellKey, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
+import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
 import { ISumAddendsCombosSet, SumAddendsCombosSetPerf } from '../../sets/sumAddendsCombosSet';
