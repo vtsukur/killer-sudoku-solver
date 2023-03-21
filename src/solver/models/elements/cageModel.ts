@@ -5,7 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { SumAddendsCombosSet } from '../../sets';
+import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
 import { ISumAddendsCombosSet, SumAddendsCombosSetPerf } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
@@ -147,7 +147,7 @@ export class CageModel {
             this._sumAddendsComboSet.add(combo);
         });
 
-        this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
+        this.updateCellMsNums(nums);
     }
 
     updateCombos(combos: ReadonlyArray<Combo>) {
@@ -166,7 +166,13 @@ export class CageModel {
             }
         }
 
-        this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
+        this.updateCellMsNums(nums);
+    }
+
+    private updateCellMsNums(nums: ReadonlySudokuNumsSet) {
+        for (const cellM of this.cellMs) {
+            cellM.reduceNumOpts(nums);
+        }
     }
 
     reduce(): ReadonlySet<CellModel> {
