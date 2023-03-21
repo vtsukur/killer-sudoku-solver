@@ -120,7 +120,7 @@ export class CageModel {
     initialReduce() {
         if (this._canHaveDuplicateNums) return;
 
-        this.initializeCombinations();
+        this.initCombos();
     }
 
     anyRow() {
@@ -139,7 +139,7 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    private initializeCombinations() {
+    private initCombos() {
         const nums = SudokuNumsSet.newEmpty();
 
         this._sumAddendsCombinatorics.val.forEach(combo => {
@@ -150,7 +150,7 @@ export class CageModel {
         this.cellMs.forEach(cellM => cellM.reduceNumOpts(nums));
     }
 
-    updateCombinations(combos: ReadonlyArray<Combo>) {
+    updateCombos(combos: ReadonlyArray<Combo>) {
         const nums = SudokuNumsSet.newEmpty();
 
         const newCombosSet = new Set<ComboKey>();
