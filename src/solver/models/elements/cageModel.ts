@@ -136,15 +136,15 @@ export class CageModel {
         const nums = SudokuNumsSet.newEmpty();
 
         if (this._sumAddendsComboSet.size !== 0) {
-            const newCombosMap = new Set<ComboKey>();
+            const newCombosSet = new Set<ComboKey>();
 
             combos.forEach(combo => {
                 nums.addAll(combo.numsSet);
-                newCombosMap.add(combo.key);
+                newCombosSet.add(combo.key);
             });
 
             for (const combo of this._sumAddendsComboSet.values) {
-                if (!newCombosMap.has(combo.key)) {
+                if (!newCombosSet.has(combo.key)) {
                     this._sumAddendsComboSet.delete(combo);
                 }
             }
