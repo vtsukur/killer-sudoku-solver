@@ -5,7 +5,19 @@ import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
-export class SumAddendsCombosSet {
+export interface ISumAddendsCombosSet {
+
+    values: Iterable<Combo>;
+
+    size: number;
+
+    add(combo: Combo): void;
+
+    delete(combo: Combo): void;
+
+}
+
+export class SumAddendsCombosSet implements ISumAddendsCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosMap = new Map<ComboKey, Combo>();
@@ -32,7 +44,7 @@ export class SumAddendsCombosSet {
 
 }
 
-export class SumAddendsCombosSetPerf {
+export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosSet: CombosSet;

@@ -7,6 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ComboKey, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
+import { ISumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -46,7 +47,7 @@ export class CageModel {
     private _cellsSet;
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
-    private _sumAddendsComboSet: SumAddendsCombosSet;
+    private _sumAddendsComboSet: ISumAddendsCombosSet;
     private _canHaveDuplicateNums: boolean;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean) {
@@ -69,7 +70,11 @@ export class CageModel {
         this._cellCount = cage.cellCount;
         // do not initialize if `_canHaveDuplicateNums` is `true`
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
-        this._sumAddendsComboSet = new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+        this._sumAddendsComboSet = this.newSumAddendsComboSet();
+    }
+
+    private newSumAddendsComboSet(): ISumAddendsCombosSet {
+        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {
@@ -317,7 +322,7 @@ export class CageModel {
             }
         };
 
-        this._sumAddendsComboSet = new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+        this._sumAddendsComboSet = this.newSumAddendsComboSet();
 
         const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
@@ -501,7 +506,7 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
         if (this.hasSingleCombination() || !this._sumAddendsComboSet.size) return new Set();
 
-        const newCombosMap = new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+        const newCombosMap = this.newSumAddendsComboSet();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
