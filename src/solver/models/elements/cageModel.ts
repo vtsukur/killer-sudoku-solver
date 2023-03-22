@@ -73,12 +73,12 @@ export class CageModel {
         if (sumAddendsComboSet) {
             this._sumAddendsComboSet = sumAddendsComboSet.clone();
         } else {
-            this._sumAddendsComboSet = this.newSumAddendsComboSet();
+            this._sumAddendsComboSet = this.newSumAddendsCombosSet();
         }
     }
 
-    private newSumAddendsComboSet(): ISumAddendsCombosSet {
-        return new SumAddendsCombosSetPerf(this._sumAddendsCombinatorics);
+    private newSumAddendsCombosSet(): ISumAddendsCombosSet {
+        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {
@@ -308,7 +308,7 @@ export class CageModel {
             }
         };
 
-        this._sumAddendsComboSet = this.newSumAddendsComboSet();
+        this._sumAddendsComboSet = this.newSumAddendsCombosSet();
 
         const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
@@ -492,7 +492,7 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
         if (this.hasSingleCombination() || !this._sumAddendsComboSet.size) return new Set();
 
-        const newCombosMap = this.newSumAddendsComboSet();
+        const newCombosMap = this.newSumAddendsCombosSet();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
