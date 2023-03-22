@@ -12,6 +12,8 @@ export interface ReadonlySumAddendsCombosSet {
 
     size: number;
 
+    underlyingCombosSet: ReadonlyCombosSet;
+
 }
 
 export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
@@ -41,6 +43,10 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
 
     get size() {
         return this._combosSet.combos.length;
+    }
+
+    get underlyingCombosSet() {
+        return this._combosSet;
     }
 
     init() {
@@ -134,7 +140,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     fill() {
-        this._bitStore = this._combinatorics.combosSet.bitStore;
+        this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
         this.updateCache();
     }
 
