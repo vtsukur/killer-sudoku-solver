@@ -143,10 +143,10 @@ export class HouseModelCagesCombinatorics {
     private constructor(
             nonOverlappingCages: ReadonlyCages,
             sumPermsOfNonOverlappingCages: HouseCagesPerms,
-            actualSumCombos: HouseCagesCombos) {
+            actualSumCombosForAllCages: HouseCagesCombos) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsOfNonOverlappingCages = sumPermsOfNonOverlappingCages;
-        this.actualSumCombosOfAllCages = actualSumCombos;
+        this.actualSumCombosOfAllCages = actualSumCombosForAllCages;
     }
 
     /**
