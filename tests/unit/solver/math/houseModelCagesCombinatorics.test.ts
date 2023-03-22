@@ -1,10 +1,14 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
-import { Combo, HouseModelCagesCombinatorics } from '../../../../src/solver/math';
+import { Combo, HouseModelCagesCombinatorics, SumAddendsCombinatorics } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
+import { SumAddendsCombosSet } from '../../../../src/solver/sets';
 
-describe('Tests for the finder of sum number combinations and sum permutations forming a HouseModel out of Cages', () => {
+describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
+
+    const enumerateSumAddends = SumAddendsCombinatorics.enumerate;
+
     test('Several combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
         const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
@@ -28,10 +32,10 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
             ],
             actualSumCombosOfAllCages: [
-                [ Combo.of(6, 9), Combo.of(7, 8) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(2, 5), Combo.of(3, 4) ],
-                [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ]
+                new SumAddendsCombosSet(enumerateSumAddends(15, 2), [ Combo.of(6, 9), Combo.of(7, 8) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(7, 2), [ Combo.of(2, 5), Combo.of(3, 4) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(13, 3), [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -66,10 +70,10 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ],
             actualSumCombosOfAllCages: [
-                [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ],
-                [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ]
+                new SumAddendsCombosSet(enumerateSumAddends(14, 3), [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(11, 2), [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -90,8 +94,8 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(2, 3), Combo.of(1, 6) ]
             ],
             actualSumCombosOfAllCages: [
-                [ Combo.of(1, 4), Combo.of(2, 3) ],
-                [ Combo.of(1, 6), Combo.of(2, 5) ]
+                new SumAddendsCombosSet(enumerateSumAddends(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(7, 2), [ Combo.of(1, 6), Combo.of(2, 5) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -115,10 +119,10 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
             ],
             actualSumCombosOfAllCages: [
-                [ Combo.of(1, 3) ],
-                [ Combo.of(7, 8, 9) ],
-                [ Combo.of(2, 5) ],
-                [ Combo.of(4) ]
+                new SumAddendsCombosSet(enumerateSumAddends(4, 2), [ Combo.of(1, 3) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(24, 3), [ Combo.of(7, 8, 9) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(7, 2), [ Combo.of(2, 5) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(4, 1), [ Combo.of(4) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -143,10 +147,10 @@ describe('Tests for the finder of sum number combinations and sum permutations f
                 [ Combo.of(3, 5), Combo.of(8), Combo.of(1, 2, 4, 6, 7, 9) ]
             ],
             actualSumCombosOfAllCages: [
-                [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ],
-                [ Combo.of(8) ],
-                [ Combo.of(1, 3) ],
-                [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ]
+                new SumAddendsCombosSet(enumerateSumAddends(8, 2), [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(8, 1), [ Combo.of(8) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(4, 2), [ Combo.of(1, 3) ]),
+                new SumAddendsCombosSet(enumerateSumAddends(29, 6), [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ])
             ]
         } as HouseModelCagesCombinatorics);
     });

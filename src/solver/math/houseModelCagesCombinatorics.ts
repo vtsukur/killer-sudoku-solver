@@ -3,15 +3,14 @@ import { Cell } from '../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
-import { ReadonlyCombos } from './combo';
 import { HouseCagesPerms, NonOverlappingHouseCagesCombinatorics } from './nonOverlappingHouseCagesCombinatorics';
 import { OverlappingHouseCagesCombinatorics } from './overlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../models/elements/gridAreaModel';
 import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { HouseCageCombos, HouseCagesCombos } from './houseCagesCombinatorics';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
+import { SumAddendsCombosSet } from '../sets';
 
 /**
  * Combinatorics of possible numbers within {@link Cage}s
@@ -138,12 +137,12 @@ export class HouseModelCagesCombinatorics {
      * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
-    readonly actualSumCombosOfAllCages: HouseCagesCombos;
+    readonly actualSumCombosOfAllCages: ReadonlyArray<SumAddendsCombosSet>;
 
     private constructor(
             nonOverlappingCages: ReadonlyCages,
             sumPermsOfNonOverlappingCages: HouseCagesPerms,
-            actualSumCombosForAllCages: HouseCagesCombos) {
+            actualSumCombosForAllCages: ReadonlyArray<SumAddendsCombosSet>) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsOfNonOverlappingCages = sumPermsOfNonOverlappingCages;
         this.actualSumCombosOfAllCages = actualSumCombosForAllCages;
@@ -181,8 +180,8 @@ export class HouseModelCagesCombinatorics {
         // and making sure that order of output combinations follows the order of input.
         //
         const actualSumCombos = this.mergeCombosPreservingInputOrder(
-            nonOverlappingCagesCombinatorics.combos,
-            overlappingCagesCombinatorics.combos,
+            nonOverlappingCagesCombinatorics.combosSets,
+            overlappingCagesCombinatorics.combosSets,
             houseM.cageModels,
             nonOverlappingCages,
             overlappingCages
@@ -192,12 +191,12 @@ export class HouseModelCagesCombinatorics {
     }
 
     private static mergeCombosPreservingInputOrder(
-            combosForNonOverlappingCages: HouseCagesCombos,
-            combosForOverlappingCages: HouseCagesCombos,
+            combosForNonOverlappingCages: ReadonlyArray<SumAddendsCombosSet>,
+            combosForOverlappingCages: ReadonlyArray<SumAddendsCombosSet>,
             allCageMs: ReadonlyArray<CageModel>,
             nonOverlappingCages: ReadonlyCages,
-            overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlyCombos> {
-        const combos = new Array<HouseCageCombos>(allCageMs.length);
+            overlappingCages: ReadonlyCages): ReadonlyArray<SumAddendsCombosSet> {
+        const combos = new Array<SumAddendsCombosSet>(allCageMs.length);
 
         for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[allCageMs.length]) {
             const cage = allCageMs[i].cage;

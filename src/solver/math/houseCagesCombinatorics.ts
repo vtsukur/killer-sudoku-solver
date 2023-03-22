@@ -4,6 +4,7 @@ import { Cage } from '../../puzzle/cage';
 import { Cell } from '../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
+import { SumAddendsCombosSet } from '../sets/sumAddendsCombosSet';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Combo, ReadonlyCombos } from './combo';
 
@@ -50,5 +51,7 @@ export interface HouseCagesCombinatorics {
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
     readonly combos: HouseCagesCombos;
+
+    readonly combosSets: ReadonlyArray<SumAddendsCombosSet>;
 
 }

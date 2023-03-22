@@ -6,11 +6,15 @@ import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
-export interface ISumAddendsCombosSet {
+export interface ReadonlySumAddendsCombosSet {
 
     values: Iterable<Combo>;
 
     size: number;
+
+}
+
+export interface ISumAddendsCombosSet extends ReadonlySumAddendsCombosSet {
 
     init(): ReadonlySudokuNumsSet;
 
@@ -29,9 +33,14 @@ export class SumAddendsCombosSet implements ISumAddendsCombosSet {
     private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosSet: CombosSet;
 
-    constructor(combinatorics: SumAddendsCombinatorics) {
+    constructor(combinatorics: SumAddendsCombinatorics, combos?: ReadonlyCombos) {
         this._combinatorics = combinatorics;
         this._combosSet = CombosSet.newEmpty(combinatorics);
+        if (combos) {
+            for (const combo of combos) {
+                this.add(combo);
+            }
+        }
     }
 
     get values() {
