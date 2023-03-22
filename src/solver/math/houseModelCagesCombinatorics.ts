@@ -1,4 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../puzzle/cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cage, ReadonlyCages } from '../../puzzle/cage';
 import { HouseModel } from '../models/elements/houseModel';
 import { ReadonlyCombos } from './combo';
