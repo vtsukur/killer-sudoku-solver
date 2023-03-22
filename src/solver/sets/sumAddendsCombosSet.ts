@@ -4,7 +4,7 @@ import { Combo, ComboKey, ReadonlyCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
-import { SudokuNumsSet } from './sudokuNumsSet';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlySumAddendsCombosSet {
 
@@ -71,6 +71,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         }
 
         return nums;
+        // return this._combosSet.reduce(combos);
     }
 
     add(combo: Combo) {
@@ -118,6 +119,8 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private _combos: ReadonlyArray<Combo> = CombosSet._NO_COMBOS;
 
+    private _numsSet: SudokuNumsSet;
+
     private _isDirtyCache = true;
 
     private constructor(
@@ -125,10 +128,20 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
             combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
+        this._numsSet = SudokuNumsSet.newEmpty();
     }
 
     protected updateCache(): void {
         this._isDirtyCache = true;
+    }
+
+    reduce(combos: ReadonlySumAddendsCombosSet): ReadonlySudokuNumsSet {
+        this._bitStore &= combos.underlyingCombosSet.bitStore;
+        this._numsSet = SudokuNumsSet.newEmpty();
+        for (const combo of this.combos) {
+            this._numsSet.addAll(combo.numsSet);
+        }
+        return this._numsSet;
     }
 
     get combos() {
@@ -141,6 +154,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     fill() {
         this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
+        this._numsSet = new SudokuNumsSet(this._combinatorics.allNumsSet);
         this.updateCache();
     }
 
