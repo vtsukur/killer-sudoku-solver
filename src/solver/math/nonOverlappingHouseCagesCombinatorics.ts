@@ -97,7 +97,7 @@ export class NonOverlappingHouseCagesCombinatorics {
      * possible {@link House} {@link Cell}s' number permutations in the form of {@link HouseCagesPerms}
      * considering {@link Cage}s to be _non-overlapping_.
      *
-     * @see combos
+     * @see combosSets
      * @see perms
      */
     static enumerateCombosAndPerms(model: NonOverlappingCagesAreaModel): NonOverlappingHouseCagesCombinatorics {
@@ -160,8 +160,8 @@ const enumerateStrategyForSeveralCages: ComputeStrategyFn = (model) => {
  * according to the amount of {@link Cage}s in {@link NonOverlappingCagesAreaModel}.
  */
 const CAGE_COUNT_BASED_STRATEGIES: Array<ComputeStrategyFn> = [
-    shortCircuitForNoCages,         // for 0 `Cage`s
-    shortCircuitFor1Cage,           // for 1 `Cage`
+    shortCircuitForNoCages,           // for 0 `Cage`s
+    shortCircuitFor1Cage,             // for 1 `Cage`
     enumerateStrategyForSeveralCages, // for 2 `Cage`s
     enumerateStrategyForSeveralCages, // for 3 `Cage`s
     enumerateStrategyForSeveralCages, // for 4 `Cage`s
