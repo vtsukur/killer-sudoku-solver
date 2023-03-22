@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { SumAddendsCombinatorics } from '../../../../src/solver/math';
 import { SumAddendsCombosSet } from '../../../../src/solver/sets';
-import { SumAddendsCombosSetPerf } from '../../../../src/solver/sets/sumAddendsCombosSet';
 
 describe('Performance tests for `SumAddendsCombosSet`', () => {
 
@@ -18,8 +17,6 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
                 for (const combo of combinatorics.val) {
                     set.add(combo);
                 }
-
-                // const set = new SumAddendsCombosSetPerf(combinatorics);
             });
         });
 
