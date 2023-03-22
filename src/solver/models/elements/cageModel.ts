@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
-import { ISumAddendsCombosSet, SumAddendsCombosSetPerf } from '../../sets/sumAddendsCombosSet';
+import { ISumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
 
 type Clue = {

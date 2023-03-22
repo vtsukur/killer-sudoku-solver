@@ -27,71 +27,6 @@ export interface ISumAddendsCombosSet {
 export class SumAddendsCombosSet implements ISumAddendsCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
-    private readonly _combosMap = new Map<ComboKey, Combo>();
-
-    constructor(combinatorics: SumAddendsCombinatorics) {
-        this._combinatorics = combinatorics;
-    }
-
-    get values() {
-        return this._combosMap.values();
-    }
-
-    get size() {
-        return this._combosMap.size;
-    }
-
-    init() {
-        const nums = SudokuNumsSet.newEmpty();
-
-        for (const combo of this._combinatorics.val) {
-            nums.addAll(combo.numsSet);
-            this.add(combo);
-        }
-
-        return nums;
-    }
-
-    reduce(combos: ReadonlyCombos) {
-        const nums = SudokuNumsSet.newEmpty();
-
-        const newCombosSet = new Set<ComboKey>();
-
-        for (const combo of combos) {
-            nums.addAll(combo.numsSet);
-            newCombosSet.add(combo.key);
-        }
-
-        for (const combo of this.values) {
-            if (!newCombosSet.has(combo.key)) {
-                this.delete(combo);
-            }
-        }
-
-        return nums;
-    }
-
-    add(combo: Combo) {
-        this._combosMap.set(combo.key, combo);
-    }
-
-    delete(combo: Combo) {
-        this._combosMap.delete(combo.key);
-    }
-
-    clone() {
-        const copy = new SumAddendsCombosSet(this._combinatorics);
-        for (const combo of this.values) {
-            copy.add(combo);
-        }
-        return copy;
-    }
-
-}
-
-export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
-
-    private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosSet: CombosSet;
 
     constructor(combinatorics: SumAddendsCombinatorics) {
@@ -140,7 +75,7 @@ export class SumAddendsCombosSetPerf implements ISumAddendsCombosSet {
     }
 
     clone() {
-        const copy = new SumAddendsCombosSetPerf(this._combinatorics);
+        const copy = new SumAddendsCombosSet(this._combinatorics);
         for (const combo of this.values) {
             copy.add(combo);
         }
