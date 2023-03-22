@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
-import { ISumAddendsCombosSet, ReadonlySumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
+import { ReadonlySumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -47,10 +47,10 @@ export class CageModel {
     private _cellsSet;
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
-    private _sumAddendsComboSet: ISumAddendsCombosSet;
+    private _sumAddendsComboSet: SumAddendsCombosSet;
     private _canHaveDuplicateNums: boolean;
 
-    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, sumAddendsComboSet?: ISumAddendsCombosSet) {
+    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, sumAddendsComboSet?: SumAddendsCombosSet) {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -77,7 +77,7 @@ export class CageModel {
         }
     }
 
-    private newSumAddendsCombosSet(): ISumAddendsCombosSet {
+    private newSumAddendsCombosSet(): SumAddendsCombosSet {
         return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
     }
 

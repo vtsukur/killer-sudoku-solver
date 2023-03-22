@@ -4,7 +4,7 @@ import { Combo, ComboKey, ReadonlyCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
-import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
+import { SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlySumAddendsCombosSet {
 
@@ -14,21 +14,7 @@ export interface ReadonlySumAddendsCombosSet {
 
 }
 
-export interface ISumAddendsCombosSet extends ReadonlySumAddendsCombosSet {
-
-    init(): ReadonlySudokuNumsSet;
-
-    reduce(combos: ReadonlySumAddendsCombosSet): ReadonlySudokuNumsSet;
-
-    add(combo: Combo): void;
-
-    delete(combo: Combo): void;
-
-    clone(): ISumAddendsCombosSet;
-
-}
-
-export class SumAddendsCombosSet implements ISumAddendsCombosSet {
+export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
     private readonly _combosSet: CombosSet;
