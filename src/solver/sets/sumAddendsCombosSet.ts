@@ -29,6 +29,12 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         }
     }
 
+    static newFilled(combinatorics: SumAddendsCombinatorics) {
+        const val = new SumAddendsCombosSet(combinatorics);
+        val._combosSet.fill();
+        return val;
+    }
+
     get values() {
         return this._combosSet.combos;
     }

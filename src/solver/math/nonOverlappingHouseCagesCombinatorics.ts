@@ -139,10 +139,8 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
 const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
     const singleCage = model.cages[0];
     const singleCageCombos = SumAddendsCombinatorics.enumerate(singleCage.sum, singleCage.cellCount);
-    const combosSet = new SumAddendsCombosSet(singleCageCombos);
-    combosSet.init();
     return {
-        combosSets: [ combosSet ],
+        combosSets: singleCageCombos.combosSets,
         perms: singleCageCombos.perms
     };
 };
