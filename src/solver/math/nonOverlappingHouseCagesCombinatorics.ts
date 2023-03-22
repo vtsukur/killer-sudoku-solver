@@ -113,7 +113,6 @@ export class NonOverlappingHouseCagesCombinatorics {
 type ComputeStrategyFn = (model: NonOverlappingCagesAreaModel) => NonOverlappingHouseCagesCombinatorics;
 
 const EMPTY_INSTANCE: NonOverlappingHouseCagesCombinatorics = {
-    combos: [],
     combosSets: [],
     perms: []
 };
@@ -143,7 +142,6 @@ const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
     const combosSet = new SumAddendsCombosSet(singleCageCombos);
     combosSet.init();
     return {
-        combos: singleCageCombos.arrayedVal,
         combosSets: [ combosSet ],
         perms: singleCageCombos.perms
     };
@@ -184,7 +182,7 @@ const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombin
     // finalization: collecting `HouseCagesCombos` from marked `Combo`s.
     ctx.collectUsedCombos();
 
-    return { combos: ctx.combos, combosSets: ctx.combosSets, perms: ctx.perms };
+    return { combosSets: ctx.combosSets, perms: ctx.perms };
 };
 
 /**
@@ -280,7 +278,6 @@ type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
  */
 class Context implements NonOverlappingHouseCagesCombinatorics {
 
-    readonly combos: Array<Array<Combo>>;
     readonly combosSets: Array<SumAddendsCombosSet>;
     readonly perms = new Array<ReadonlyCombos>();
 
@@ -334,7 +331,6 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cages = model.cages;
         const cageCount = cages.length;
 
-        this.combos = new Array(cageCount);
         this.combosSets = new Array(cageCount);
         this.allCageCombos = cages.map(cage => SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount));
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
@@ -351,7 +347,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     }
 
     /**
-     * Collects {@link HouseCagesCombos} into {@link combos}.
+     * Collects {@link HouseCagesCombos} into {@link combosSets}.
      *
      * {@link Combo}s collected are the ones which were marked as _used_
      * during enumeration of {@link HouseCagesPerms}.
@@ -361,12 +357,9 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             const sumCombos = this.allCageCombos[cageIndex];
             const actualSumCombosSet = this.usedCombosHashes[cageIndex];
 
-            this.combos[cageIndex] = new Array(actualSumCombosSet.size);
             this.combosSets[cageIndex] = new SumAddendsCombosSet(sumCombos);
-            let comboIndex = 0;
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.numsSet.bitStore)) {
-                    this.combos[cageIndex][comboIndex++] = combo;
                     this.combosSets[cageIndex].add(combo);
                 }
             }

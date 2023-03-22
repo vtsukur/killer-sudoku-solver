@@ -50,8 +50,6 @@ export interface HouseCagesCombinatorics {
      * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
-    readonly combos: HouseCagesCombos;
-
     readonly combosSets: ReadonlyArray<SumAddendsCombosSet>;
 
 }

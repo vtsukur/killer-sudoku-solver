@@ -62,9 +62,6 @@ export class OverlappingHouseCagesCombinatorics {
      */
     static enumerateCombos(overlappingCages: ReadonlyCages): OverlappingHouseCagesCombinatorics {
         return {
-            combos: overlappingCages.map(cage => {
-                return SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount).val;
-            }),
             combosSets: overlappingCages.map(cage => {
                 const combinatorics = SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount);
                 const combosSet = new SumAddendsCombosSet(combinatorics);
