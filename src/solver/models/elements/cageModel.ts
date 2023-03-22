@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
 import { SudokuNumsSet } from '../../sets';
-import { ISumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
+import { ISumAddendsCombosSet, ReadonlySumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -144,7 +144,7 @@ export class CageModel {
         this.updateCellMsNums(nums);
     }
 
-    reduceCombos(combos: ReadonlyArray<Combo>) {
+    reduceCombos(combos: ReadonlySumAddendsCombosSet) {
         const nums = this._sumAddendsComboSet.reduce(combos);
         this.updateCellMsNums(nums);
     }

@@ -11,7 +11,7 @@ import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingC
 import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
-import { SumAddendsCombosSet } from '../sets/sumAddendsCombosSet';
+import { SumAddendsCombosSet } from '../sets';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s

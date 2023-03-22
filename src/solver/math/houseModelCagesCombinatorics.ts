@@ -10,7 +10,7 @@ import { CageModel } from '../models/elements/cageModel';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
-import { SumAddendsCombosSet } from '../sets';
+import { ReadonlySumAddendsCombosSet } from '../sets';
 
 /**
  * Combinatorics of possible numbers within {@link Cage}s
@@ -137,12 +137,12 @@ export class HouseModelCagesCombinatorics {
      * Numbers in each {@link HouseCageCombos} are guaranteed to be nonrepeating following Killer Sudoku constraint of
      * _a {@link House} having nonrepeating set of {@link Cell}'s with numbers from 1 to 9.
      */
-    readonly actualSumCombosOfAllCages: ReadonlyArray<SumAddendsCombosSet>;
+    readonly actualSumCombosOfAllCages: ReadonlyArray<ReadonlySumAddendsCombosSet>;
 
     private constructor(
             nonOverlappingCages: ReadonlyCages,
             sumPermsOfNonOverlappingCages: HouseCagesPerms,
-            actualSumCombosForAllCages: ReadonlyArray<SumAddendsCombosSet>) {
+            actualSumCombosForAllCages: ReadonlyArray<ReadonlySumAddendsCombosSet>) {
         this.nonOverlappingCages = nonOverlappingCages;
         this.sumPermsOfNonOverlappingCages = sumPermsOfNonOverlappingCages;
         this.actualSumCombosOfAllCages = actualSumCombosForAllCages;
@@ -191,12 +191,12 @@ export class HouseModelCagesCombinatorics {
     }
 
     private static mergeCombosPreservingInputOrder(
-            combosForNonOverlappingCages: ReadonlyArray<SumAddendsCombosSet>,
-            combosForOverlappingCages: ReadonlyArray<SumAddendsCombosSet>,
+            combosForNonOverlappingCages: ReadonlyArray<ReadonlySumAddendsCombosSet>,
+            combosForOverlappingCages: ReadonlyArray<ReadonlySumAddendsCombosSet>,
             allCageMs: ReadonlyArray<CageModel>,
             nonOverlappingCages: ReadonlyCages,
-            overlappingCages: ReadonlyCages): ReadonlyArray<SumAddendsCombosSet> {
-        const combos = new Array<SumAddendsCombosSet>(allCageMs.length);
+            overlappingCages: ReadonlyCages): ReadonlyArray<ReadonlySumAddendsCombosSet> {
+        const combos = new Array<ReadonlySumAddendsCombosSet>(allCageMs.length);
 
         for (const i of CachedNumRanges.ZERO_TO_N_LTE_81[allCageMs.length]) {
             const cage = allCageMs[i].cage;

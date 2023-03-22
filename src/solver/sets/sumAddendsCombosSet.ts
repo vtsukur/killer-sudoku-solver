@@ -18,7 +18,7 @@ export interface ISumAddendsCombosSet extends ReadonlySumAddendsCombosSet {
 
     init(): ReadonlySudokuNumsSet;
 
-    reduce(combos: ReadonlyCombos): ReadonlySudokuNumsSet;
+    reduce(combos: ReadonlySumAddendsCombosSet): ReadonlySudokuNumsSet;
 
     add(combo: Combo): void;
 
@@ -56,12 +56,12 @@ export class SumAddendsCombosSet implements ISumAddendsCombosSet {
         return this._combinatorics.allNumsSet;
     }
 
-    reduce(combos: ReadonlyCombos) {
+    reduce(combos: ReadonlySumAddendsCombosSet) {
         const nums = SudokuNumsSet.newEmpty();
 
         const newCombosSet = new Set<ComboKey>();
 
-        for (const combo of combos) {
+        for (const combo of combos.values) {
             nums.addAll(combo.numsSet);
             newCombosSet.add(combo.key);
         }
