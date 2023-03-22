@@ -144,8 +144,8 @@ export class CageModel {
         this.updateCellMsNums(nums);
     }
 
-    updateCombos(combos: ReadonlyArray<Combo>) {
-        const nums = this._sumAddendsComboSet.update(combos);
+    reduceCombos(combos: ReadonlyArray<Combo>) {
+        const nums = this._sumAddendsComboSet.reduce(combos);
         this.updateCellMsNums(nums);
     }
 

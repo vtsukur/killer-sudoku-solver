@@ -123,7 +123,7 @@ export class FindCombosForHouseCagesStrategy extends Strategy {
 
             // ... Updating `Combo`s for each `Cage` in the `HouseModel`s `House`.
             houseM.cageModels.forEach((cageM, index) => {
-                cageM.updateCombos(actualSumCombos[index]);
+                cageM.reduceCombos(actualSumCombos[index]);
             });
         }
     }
