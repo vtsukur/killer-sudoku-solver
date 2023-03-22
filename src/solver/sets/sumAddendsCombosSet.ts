@@ -75,7 +75,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
     }
 
     add(combo: Combo) {
-        this._combosSet.add(this._combinatorics.indexOf(combo));
+        this._combosSet.addCombo(combo);
     }
 
     delete(combo: Combo) {
@@ -142,6 +142,11 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
             this._numsSet.addAll(combo.numsSet);
         }
         return this._numsSet;
+    }
+
+    addCombo(combo: Combo) {
+        this.add(this._combinatorics.indexOf(combo));
+        this._numsSet.addAll(combo.numsSet);
     }
 
     get combos() {
