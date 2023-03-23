@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { SumAddendsCombinatorics } from '../../../../src/solver/math';
-import { SumAddendsCombosSet } from '../../../../src/solver/sets';
+import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Performance tests for `SumAddendsCombosSet`', () => {
 
@@ -13,7 +13,7 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
 
         test(`Multiple mutations of different kinds and getting \`Combo\`s after each [${i}]`, () => {
             ITERATIONS.forEach(() => {
-                const set = new SumAddendsCombosSet(combinatorics);
+                const set = CombosSet.newEmpty(combinatorics);
                 for (const combo of combinatorics.val) {
                     set.addCombo(combo);
                 }
