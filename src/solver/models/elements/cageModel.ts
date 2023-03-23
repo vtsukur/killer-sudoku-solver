@@ -342,7 +342,7 @@ export class CageModel {
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const combo = new Combo(sortedNums);
-                this._sumAddendsComboSet.add(combo);
+                this._sumAddendsComboSet.addCombo(combo);
             }
         } else {
             this.cellMs.forEach(cellM => {
@@ -498,7 +498,7 @@ export class CageModel {
 
         for (const combo of this._sumAddendsComboSet.values) {
             if (combo.numsSet.has(withNum)) {
-                newCombosMap.add(combo);
+                newCombosMap.addCombo(combo);
                 newNumOptions.addAll(combo.numsSet);
             } else {
                 deleteCombos.push(combo);

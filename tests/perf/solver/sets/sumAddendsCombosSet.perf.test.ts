@@ -15,7 +15,7 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
             ITERATIONS.forEach(() => {
                 const set = new SumAddendsCombosSet(combinatorics);
                 for (const combo of combinatorics.val) {
-                    set.add(combo);
+                    set.addCombo(combo);
                 }
             });
         });

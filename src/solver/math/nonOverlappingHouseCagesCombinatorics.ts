@@ -358,7 +358,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             this.combosSets[cageIndex] = new SumAddendsCombosSet(sumCombos);
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.numsSet.bitStore)) {
-                    this.combosSets[cageIndex].add(combo);
+                    this.combosSets[cageIndex].addCombo(combo);
                 }
             }
         }

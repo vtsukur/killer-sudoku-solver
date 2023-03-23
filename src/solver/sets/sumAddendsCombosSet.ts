@@ -24,7 +24,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         this._combosSet = CombosSet.newEmpty(combinatorics);
         if (combos) {
             for (const combo of combos) {
-                this.add(combo);
+                this.addCombo(combo);
             }
         }
     }
@@ -55,7 +55,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         return this._combosSet.reduce(combos);
     }
 
-    add(combo: Combo) {
+    addCombo(combo: Combo) {
         this._combosSet.addCombo(combo);
     }
 
@@ -66,7 +66,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
     clone() {
         const copy = new SumAddendsCombosSet(this._combinatorics);
         for (const combo of this.values) {
-            copy.add(combo);
+            copy.addCombo(combo);
         }
         return copy;
     }
