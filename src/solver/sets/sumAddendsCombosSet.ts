@@ -152,12 +152,4 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         return new CombosSet(0, sumAddendsCombinatorics);
     }
 
-    static newRefSet(sumAddendsCombinatorics: SumAddendsCombinatorics): ReadonlyCombosSet {
-        let bitStore = 0;
-        for (const num of CachedNumRanges.ZERO_TO_N_LTE_81[sumAddendsCombinatorics.val.length]) {
-            bitStore |= 1 << num;
-        }
-        return new CombosSet(bitStore, sumAddendsCombinatorics);
-    }
-
 }
