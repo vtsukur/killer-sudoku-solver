@@ -141,8 +141,8 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
         this.updateCache();
     }
 
-    static newEmpty(sumAddendsCombinatorics: SumAddendsCombinatorics) {
-        return new CombosSet(0, sumAddendsCombinatorics);
+    static newEmpty(combinatorics: SumAddendsCombinatorics) {
+        return new CombosSet(0, combinatorics);
     }
 
 }
