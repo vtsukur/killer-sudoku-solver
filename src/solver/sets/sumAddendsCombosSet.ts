@@ -4,76 +4,7 @@ import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { SudokuNumsSet } from './sudokuNumsSet';
 
-export interface ReadonlySumAddendsCombosSet {
-
-    values: Iterable<Combo>;
-
-    size: number;
-
-    underlyingCombosSet: ReadonlyCombosSet;
-
-}
-
-export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
-
-    private readonly _combinatorics: SumAddendsCombinatorics;
-    private readonly _combosSet: CombosSet;
-
-    constructor(combinatorics: SumAddendsCombinatorics, combos?: ReadonlyCombos) {
-        this._combinatorics = combinatorics;
-        this._combosSet = CombosSet.newEmpty(combinatorics);
-        if (combos) {
-            for (const combo of combos) {
-                this.addCombo(combo);
-            }
-        }
-    }
-
-    static newFilled(combinatorics: SumAddendsCombinatorics) {
-        const val = new SumAddendsCombosSet(combinatorics);
-        val._combosSet.fill();
-        return val;
-    }
-
-    get values() {
-        return this._combosSet.combos;
-    }
-
-    get size() {
-        return this._combosSet.combos.length;
-    }
-
-    get underlyingCombosSet() {
-        return this._combosSet;
-    }
-
-    fill() {
-        return this._combosSet.fill();
-    }
-
-    reduce(combos: ReadonlySumAddendsCombosSet) {
-        return this._combosSet.reduce(combos);
-    }
-
-    addCombo(combo: Combo) {
-        this._combosSet.addCombo(combo);
-    }
-
-    deleteCombo(combo: Combo) {
-        this._combosSet.deleteCombo(combo);
-    }
-
-    clone() {
-        const copy = new SumAddendsCombosSet(this._combinatorics);
-        for (const combo of this.values) {
-            copy.addCombo(combo);
-        }
-        return copy;
-    }
-
-}
-
-interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
+export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
     // TODO rename to `combos` or `val`
     values: Iterable<Combo>;
@@ -82,7 +13,7 @@ interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
 }
 
-class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
+export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
 
@@ -112,8 +43,8 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
         return this.combos.length;
     }
 
-    reduce(combos: ReadonlySumAddendsCombosSet) {
-        this._bitStore &= combos.underlyingCombosSet.bitStore;
+    reduce(combos: ReadonlyCombosSet) {
+        this._bitStore &= combos.bitStore;
         this.updateCache();
 
         return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
@@ -136,9 +67,13 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
     }
 
     fill() {
-        this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
+        this._bitStore = this._combinatorics.combosSet.bitStore;
         this.updateCache();
         return this._combinatorics.allNumsSet;
+    }
+
+    clone() {
+        return new CombosSet(this._bitStore, this._combinatorics);
     }
 
     static newEmpty(combinatorics: SumAddendsCombinatorics) {

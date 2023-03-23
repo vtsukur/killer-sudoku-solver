@@ -1,18 +1,18 @@
 import { CellIndicesSet, ReadonlyCellIndicesSet } from './cellIndicesSet';
+import { CombosSet, ReadonlyCombosSet } from './sumAddendsCombosSet';
 import { BitStore32, ReadonlyNumsSet } from './numsSet';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
-import { ReadonlySumAddendsCombosSet, SumAddendsCombosSet } from './sumAddendsCombosSet';
 
 export {
-    BitStore32,
-    ReadonlyNumsSet,
-
     CellIndicesSet,
     ReadonlyCellIndicesSet,
 
-    ReadonlySudokuNumsSet,
-    SudokuNumsSet,
+    CombosSet,
+    ReadonlyCombosSet,
 
-    ReadonlySumAddendsCombosSet,
-    SumAddendsCombosSet
+    BitStore32,
+    ReadonlyNumsSet,
+
+    ReadonlySudokuNumsSet,
+    SudokuNumsSet
 };

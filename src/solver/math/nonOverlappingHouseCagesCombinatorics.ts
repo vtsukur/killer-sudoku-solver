@@ -11,7 +11,7 @@ import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingC
 import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
-import { SumAddendsCombosSet } from '../sets';
+import { CombosSet } from '../sets';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s
@@ -276,7 +276,7 @@ type EnumerationPipeline = ReadonlyArray<EnumerationStepFunction>;
  */
 class Context implements NonOverlappingHouseCagesCombinatorics {
 
-    readonly combosSets: Array<SumAddendsCombosSet>;
+    readonly combosSets: Array<CombosSet>;
     readonly perms = new Array<ReadonlyCombos>();
 
     readonly allCageCombos: Array<SumAddendsCombinatorics>;
@@ -355,7 +355,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
             const sumCombos = this.allCageCombos[cageIndex];
             const actualSumCombosSet = this.usedCombosHashes[cageIndex];
 
-            this.combosSets[cageIndex] = new SumAddendsCombosSet(sumCombos);
+            this.combosSets[cageIndex] = CombosSet.newEmpty(sumCombos);
             for (const combo of sumCombos.val) {
                 if (actualSumCombosSet.has(combo.numsSet.bitStore)) {
                     this.combosSets[cageIndex].addCombo(combo);

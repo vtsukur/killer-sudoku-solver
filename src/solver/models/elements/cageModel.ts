@@ -5,9 +5,7 @@ import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { ReadonlySudokuNumsSet, SumAddendsCombosSet } from '../../sets';
-import { SudokuNumsSet } from '../../sets';
-import { ReadonlySumAddendsCombosSet } from '../../sets/sumAddendsCombosSet';
+import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 
 type Clue = {
@@ -47,10 +45,10 @@ export class CageModel {
     private _cellsSet;
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
-    private _sumAddendsComboSet: SumAddendsCombosSet;
+    private _comboSet: CombosSet;
     private _canHaveDuplicateNums: boolean;
 
-    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, sumAddendsComboSet?: SumAddendsCombosSet) {
+    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, comboSet?: CombosSet) {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
@@ -70,19 +68,19 @@ export class CageModel {
         this._cellCount = cage.cellCount;
         // do not initialize if `_canHaveDuplicateNums` is `true`
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
-        if (sumAddendsComboSet) {
-            this._sumAddendsComboSet = sumAddendsComboSet.clone();
+        if (comboSet) {
+            this._comboSet = comboSet.clone();
         } else {
-            this._sumAddendsComboSet = this.newSumAddendsCombosSet();
+            this._comboSet = this.newSumAddendsCombosSet();
         }
     }
 
-    private newSumAddendsCombosSet(): SumAddendsCombosSet {
-        return new SumAddendsCombosSet(this._sumAddendsCombinatorics);
+    private newSumAddendsCombosSet(): CombosSet {
+        return CombosSet.newEmpty(this._sumAddendsCombinatorics);
     }
 
     deepCopyWithSameCellModels() {
-        return new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums, this._sumAddendsComboSet);
+        return new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums, this._comboSet);
     }
 
     static positioningFlagsFor(cells: ReadonlyCells) {
@@ -140,12 +138,12 @@ export class CageModel {
     }
 
     private initCombos() {
-        const nums = this._sumAddendsComboSet.fill();
+        const nums = this._comboSet.fill();
         this.updateCellMsNums(nums);
     }
 
-    reduceCombos(combos: ReadonlySumAddendsCombosSet) {
-        const nums = this._sumAddendsComboSet.reduce(combos);
+    reduceCombos(combos: ReadonlyCombosSet) {
+        const nums = this._comboSet.reduce(combos);
         this.updateCellMsNums(nums);
     }
 
@@ -249,7 +247,7 @@ export class CageModel {
             }
         }
 
-        for (const combo of this._sumAddendsComboSet.values) {
+        for (const combo of this._comboSet.values) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
                 const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
@@ -267,11 +265,11 @@ export class CageModel {
     }
 
     private combosWithNum(num: number) {
-        return Array.from(this._sumAddendsComboSet.values).filter(combo => combo.has(num));
+        return Array.from(this._comboSet.values).filter(combo => combo.has(num));
     }
 
     private deleteCombo(combo: Combo) {
-        this._sumAddendsComboSet.deleteCombo(combo);
+        this._comboSet.deleteCombo(combo);
     }
 
     private reduceSmallCage() {
@@ -308,7 +306,7 @@ export class CageModel {
             }
         };
 
-        this._sumAddendsComboSet = this.newSumAddendsCombosSet();
+        this._comboSet = this.newSumAddendsCombosSet();
 
         const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
@@ -342,7 +340,7 @@ export class CageModel {
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const combo = new Combo(sortedNums);
-                this._sumAddendsComboSet.addCombo(combo);
+                this._comboSet.addCombo(combo);
             }
         } else {
             this.cellMs.forEach(cellM => {
@@ -368,7 +366,7 @@ export class CageModel {
         const commonComboNums = new Set<number>();
         _.range(1, House.CELL_COUNT + 1).forEach(num => {
             let hasNumInAllCombos = true;
-            for (const combo of this._sumAddendsComboSet.values) {
+            for (const combo of this._comboSet.values) {
                 hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
             }
             if (hasNumInAllCombos) {
@@ -386,7 +384,7 @@ export class CageModel {
         const validComboNums = new Set<number>();
         const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = new Set<number>();
-        for (const combo of this._sumAddendsComboSet.values) {
+        for (const combo of this._comboSet.values) {
             let validCombo = true;
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
@@ -425,7 +423,7 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this._sumAddendsComboSet.deleteCombo(noLongerValidCombo);
+                this._comboSet.deleteCombo(noLongerValidCombo);
             }
         }
 
@@ -471,7 +469,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this._sumAddendsComboSet.values) {
+                for (const combo of this._comboSet.values) {
                     if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -479,7 +477,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (positioningFlags.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this._sumAddendsComboSet.values).every(combo => {
+                clue.presentInAllCombos = Array.from(this._comboSet.values).every(combo => {
                     return combo.has(num);
                 });
                 clues.push(clue);
@@ -490,13 +488,13 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
-        if (this.hasSingleCombination() || !this._sumAddendsComboSet.size) return new Set();
+        if (this.hasSingleCombination() || !this._comboSet.size) return new Set();
 
         const newCombosMap = this.newSumAddendsCombosSet();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
-        for (const combo of this._sumAddendsComboSet.values) {
+        for (const combo of this._comboSet.values) {
             if (combo.numsSet.has(withNum)) {
                 newCombosMap.addCombo(combo);
                 newNumOptions.addAll(combo.numsSet);
@@ -506,7 +504,7 @@ export class CageModel {
         }
 
         if (deleteCombos.length > 0) {
-            this._sumAddendsComboSet = newCombosMap;
+            this._comboSet = newCombosMap;
             const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
                 if (cellM.reduceNumOptsWithImpact(newNumOptions)) {
@@ -521,7 +519,7 @@ export class CageModel {
     }
 
     hasSingleCombination() {
-        return this._sumAddendsComboSet.size === 1;
+        return this._comboSet.size === 1;
     }
 
     get cellCount() {
@@ -529,11 +527,11 @@ export class CageModel {
     }
 
     get combos() {
-        return Array.from(this._sumAddendsComboSet.values);
+        return Array.from(this._comboSet.values);
     }
 
     get comboCount() {
-        return this._sumAddendsComboSet.size;
+        return this._comboSet.size;
     }
 
 }

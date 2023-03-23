@@ -1,7 +1,7 @@
 import { Cage } from '../../../../src/puzzle/cage';
 import { Combo, SumAddendsCombinatorics } from '../../../../src/solver/math';
 import { OverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/overlappingHouseCagesCombinatorics';
-import { SumAddendsCombosSet } from '../../../../src/solver/sets';
+import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
 
@@ -13,7 +13,7 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(4).at(1, 5).at(2, 5).new()
         ]), {
             combosSets: [
-                new SumAddendsCombosSet(enumerateSumAddends(4, 2), [ Combo.of(1, 3) ])
+                CombosSet.from(enumerateSumAddends(4, 2), [ Combo.of(1, 3) ])
             ]
         });
     });
@@ -25,9 +25,9 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(9).at(1, 3).at(1, 4).new()
         ]), {
             combosSets: [
-                new SumAddendsCombosSet(enumerateSumAddends(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ]),
-                new SumAddendsCombosSet(enumerateSumAddends(14, 2), [ Combo.of(5, 9), Combo.of(6, 8) ]),
-                new SumAddendsCombosSet(enumerateSumAddends(9, 2), [ Combo.of(1, 8), Combo.of(2, 7), Combo.of(3, 6), Combo.of(4, 5) ])
+                CombosSet.from(enumerateSumAddends(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ]),
+                CombosSet.from(enumerateSumAddends(14, 2), [ Combo.of(5, 9), Combo.of(6, 8) ]),
+                CombosSet.from(enumerateSumAddends(9, 2), [ Combo.of(1, 8), Combo.of(2, 7), Combo.of(3, 6), Combo.of(4, 5) ])
             ]
         });
     });
