@@ -75,13 +75,13 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
+interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
     //clone(): CombosSet;
 
 }
 
-export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
+class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
 
     private readonly _combinatorics: SumAddendsCombinatorics;
 
