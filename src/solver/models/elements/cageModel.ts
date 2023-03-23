@@ -271,7 +271,7 @@ export class CageModel {
     }
 
     private deleteCombo(combo: Combo) {
-        this._sumAddendsComboSet.delete(combo);
+        this._sumAddendsComboSet.deleteCombo(combo);
     }
 
     private reduceSmallCage() {
@@ -425,7 +425,7 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this._sumAddendsComboSet.delete(noLongerValidCombo);
+                this._sumAddendsComboSet.deleteCombo(noLongerValidCombo);
             }
         }
 

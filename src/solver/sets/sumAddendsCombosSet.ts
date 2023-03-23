@@ -59,7 +59,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         this._combosSet.addCombo(combo);
     }
 
-    delete(combo: Combo) {
+    deleteCombo(combo: Combo) {
         this._combosSet.deleteCombo(combo);
     }
 
