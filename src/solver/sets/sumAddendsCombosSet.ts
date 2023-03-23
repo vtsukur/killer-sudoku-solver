@@ -63,10 +63,9 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
             newCombosSet.add(combo.key);
         }
 
+        this._combosSet.reduce(combos);
         for (const combo of this.values) {
-            if (!newCombosSet.has(combo.key)) {
-                this.delete(combo);
-            } else {
+            if (newCombosSet.has(combo.key)) {
                 nums.addAll(combo.numsSet);
             }
         }
@@ -120,34 +119,35 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private _combos: ReadonlyArray<Combo> = CombosSet._NO_COMBOS;
 
-    private _numsSet: SudokuNumsSet;
+    // private _numsSet: SudokuNumsSet;
 
     private _isDirtyCache = true;
 
-    private constructor(
+    constructor(
             val: BitStore32,
             combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
-        this._numsSet = SudokuNumsSet.newEmpty();
+        // this._numsSet = SudokuNumsSet.newEmpty();
     }
 
     protected updateCache(): void {
         this._isDirtyCache = true;
     }
 
-    reduce(combos: ReadonlySumAddendsCombosSet): ReadonlySudokuNumsSet {
+    reduce(combos: ReadonlySumAddendsCombosSet) {
         this._bitStore &= combos.underlyingCombosSet.bitStore;
-        this._numsSet = SudokuNumsSet.newEmpty();
-        for (const combo of this.combos) {
-            this._numsSet.addAll(combo.numsSet);
-        }
-        return this._numsSet;
+        this.updateCache();
+        // this._numsSet = SudokuNumsSet.newEmpty();
+        // for (const combo of this.combos) {
+        //     this._numsSet.addAll(combo.numsSet);
+        // }
+        // return this._numsSet;
     }
 
     addCombo(combo: Combo) {
         this.add(this._combinatorics.indexOf(combo));
-        this._numsSet.addAll(combo.numsSet);
+        // this._numsSet.addAll(combo.numsSet);
     }
 
     get combos() {
@@ -160,7 +160,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     fill() {
         this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
-        this._numsSet = new SudokuNumsSet(this._combinatorics.allNumsSet);
+        // this._numsSet = new SudokuNumsSet(this._combinatorics.allNumsSet);
         this.updateCache();
     }
 
