@@ -1,10 +1,10 @@
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { SumAddendsCombinatorics } from '../math';
-import { Combo, ComboKey, ReadonlyCombos } from '../math/combo';
+import { Combo, ReadonlyCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
-import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
+import { SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlySumAddendsCombosSet {
 
@@ -55,23 +55,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
     }
 
     reduce(combos: ReadonlySumAddendsCombosSet) {
-        const nums = SudokuNumsSet.newEmpty();
-
-        const newCombosSet = new Set<ComboKey>();
-
-        for (const combo of combos.values) {
-            newCombosSet.add(combo.key);
-        }
-
-        this._combosSet.reduce(combos);
-        for (const combo of this.values) {
-            if (newCombosSet.has(combo.key)) {
-                nums.addAll(combo.numsSet);
-            }
-        }
-
-        return nums;
-        // return this._combosSet.reduce(combos);
+        return this._combosSet.reduce(combos);
     }
 
     add(combo: Combo) {
@@ -138,11 +122,12 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     reduce(combos: ReadonlySumAddendsCombosSet) {
         this._bitStore &= combos.underlyingCombosSet.bitStore;
         this.updateCache();
-        // this._numsSet = SudokuNumsSet.newEmpty();
-        // for (const combo of this.combos) {
-        //     this._numsSet.addAll(combo.numsSet);
-        // }
-        // return this._numsSet;
+
+        const numsSet = SudokuNumsSet.newEmpty();
+        for (const combo of this.combos) {
+            numsSet.addAll(combo.numsSet);
+        }
+        return numsSet;
     }
 
     addCombo(combo: Combo) {
@@ -160,7 +145,6 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     fill() {
         this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
-        // this._numsSet = new SudokuNumsSet(this._combinatorics.allNumsSet);
         this.updateCache();
     }
 
