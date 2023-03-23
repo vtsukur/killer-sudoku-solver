@@ -91,8 +91,6 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private _combos: ReadonlyArray<Combo> = CombosSet._NO_COMBOS;
 
-    private _combosLut = new PowersOf2Lut<Combo>();
-
     private _isDirtyCache = true;
 
     private constructor(
@@ -100,9 +98,6 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
             combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
-        combinatorics.val.forEach((combo, index) => {
-            this._combosLut.set(index, combo);
-        });
     }
 
     protected updateCache(): void {
@@ -130,7 +125,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     get combos() {
         if (this._isDirtyCache) {
-            this._combos = this._combosLut.collect(this._bitStore);
+            this._combos = this._combinatorics.combosLut.collect(this._bitStore);
             this._isDirtyCache = false;
         }
         return this._combos;

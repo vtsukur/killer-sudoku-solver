@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { PowersOf2Lut } from '../sets/powersOf2Lut';
 import { ReadonlySumAddendsCombosSet, SumAddendsCombosSet } from '../sets/sumAddendsCombosSet';
 import { Combo, ReadonlyCombos } from './combo';
 
@@ -44,6 +45,8 @@ export class SumAddendsCombinatorics {
 
     readonly allNumsSet: ReadonlySudokuNumsSet;
 
+    readonly combosLut: PowersOf2Lut<Combo>;
+
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
     private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
 
@@ -66,6 +69,10 @@ export class SumAddendsCombinatorics {
         this.arrayedVal = [ val ];
         this.combosSet = new SumAddendsCombosSet(this, val);
         this.combosSets = [ this.combosSet ];
+        this.combosLut = new PowersOf2Lut();
+        val.forEach((combo, index) => {
+            this.combosLut.set(index, combo);
+        });
     }
 
     /**
