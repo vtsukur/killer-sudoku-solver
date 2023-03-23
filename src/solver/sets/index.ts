@@ -1,5 +1,5 @@
 import { CellIndicesSet, ReadonlyCellIndicesSet } from './cellIndicesSet';
-import { CombosSet, ReadonlyCombosSet } from './sumAddendsCombosSet';
+import { CombosSet, ReadonlyCombosSet } from './combosSet';
 import { BitStore32, ReadonlyNumsSet } from './numsSet';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
