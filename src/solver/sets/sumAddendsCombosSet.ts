@@ -47,7 +47,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         return this._combosSet;
     }
 
-    init() {
+    fill() {
         return this._combosSet.fill();
     }
 

@@ -140,7 +140,7 @@ export class CageModel {
     }
 
     private initCombos() {
-        const nums = this._sumAddendsComboSet.init();
+        const nums = this._sumAddendsComboSet.fill();
         this.updateCellMsNums(nums);
     }
 
