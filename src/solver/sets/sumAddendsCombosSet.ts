@@ -74,10 +74,12 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
 
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
-    //clone(): CombosSet;
+    // TODO rename to `combos` or `val`
+    values: Iterable<Combo>;
+
+    size: number;
 
 }
 
@@ -100,6 +102,15 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
 
     protected updateCache(): void {
         this._isDirtyCache = true;
+    }
+
+    get values() {
+        return this.combos;
+    }
+
+    get size() {
+        // TODO optimize
+        return this.combos.length;
     }
 
     reduce(combos: ReadonlySumAddendsCombosSet) {
