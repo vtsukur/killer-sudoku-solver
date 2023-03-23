@@ -106,11 +106,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         this._bitStore &= combos.underlyingCombosSet.bitStore;
         this.updateCache();
 
-        const numsSet = SudokuNumsSet.newEmpty();
-        for (const combo of this.combos) {
-            numsSet.addAll(combo.numsSet);
-        }
-        return numsSet;
+        return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
     }
 
     addCombo(combo: Combo) {

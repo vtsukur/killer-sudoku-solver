@@ -129,4 +129,30 @@ export class PowersOf2Lut<T> {
         return to;
     }
 
+    reduce<V extends T>(bitStore: number, accumulator: V, fn: (accumulator: V, current: T) => void): T {
+        // Capturing bit store value.
+        let i = bitStore;
+
+        // For fast iteration consider `1` bits ONLY -- as these bits represent included numbers.
+        while (i !== 0) {
+            //
+            // Produce a number which has only 1 bit set to `1` -
+            // and that bit is a number's bit at the rightmost position.
+            // This number is a _power of 2_.
+            //
+            const rightMostBit = PowersOf2Lut.rightMostBit(i);
+
+            // Add a `Cell` from the lookup table.
+            fn(accumulator, this.get(rightMostBit));
+
+            //
+            // Reset rightmost `1` bit to `0` so that the next iteration
+            // find next `1` bit (if present) in the right-to-left direction.
+            //
+            i = PowersOf2Lut.resetRightMostBit(i, rightMostBit);
+        }
+
+        return accumulator;
+    }
+
 }

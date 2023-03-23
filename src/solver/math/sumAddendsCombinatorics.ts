@@ -46,6 +46,7 @@ export class SumAddendsCombinatorics {
     readonly allNumsSet: ReadonlySudokuNumsSet;
 
     readonly combosLut: PowersOf2Lut<Combo>;
+    readonly combosNumsSetLut: PowersOf2Lut<ReadonlySudokuNumsSet>;
 
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
     private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
@@ -70,8 +71,10 @@ export class SumAddendsCombinatorics {
         this.combosSet = new SumAddendsCombosSet(this, val);
         this.combosSets = [ this.combosSet ];
         this.combosLut = new PowersOf2Lut();
+        this.combosNumsSetLut = new PowersOf2Lut();
         val.forEach((combo, index) => {
             this.combosLut.set(index, combo);
+            this.combosNumsSetLut.set(index, combo.numsSet);
         });
     }
 
