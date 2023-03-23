@@ -146,8 +146,16 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
     }
 
     static newFilled(combinatorics: SumAddendsCombinatorics) {
-        const val = new CombosSet(0, combinatorics);
+        const val = CombosSet.newEmpty(combinatorics);
         val.fill();
+        return val;
+    }
+
+    static from(combinatorics: SumAddendsCombinatorics, combos: ReadonlyCombos) {
+        const val = CombosSet.newEmpty(combinatorics);
+        for (const combo of combos) {
+            val.addCombo(combo);
+        }
         return val;
     }
 
