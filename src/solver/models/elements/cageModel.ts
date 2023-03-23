@@ -87,6 +87,10 @@ export class CageModel {
         return new CageModel.PositioningFlags(cells);
     }
 
+    static isWithinHouse(cells: ReadonlyCells) {
+        return this.positioningFlagsFor(cells).isWithinHouse;
+    }
+
     private static PositioningFlags = class {
 
         readonly cells;

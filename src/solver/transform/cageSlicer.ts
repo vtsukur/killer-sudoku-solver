@@ -19,7 +19,11 @@ export class CageSlicer {
     }
 
     addAndSliceResidualCageRecursively(initialResidualCage: Cage) {
-        let residualCages = [ { cage: initialResidualCage, canHaveDuplicateNums: !CageModel.positioningFlagsFor(initialResidualCage.cells).isWithinHouse } ];
+        if (!CageModel.isWithinHouse(initialResidualCage.cells)) {
+            return;
+        }
+
+        let residualCages = [ { cage: initialResidualCage, canHaveDuplicateNums: !CageModel.isWithinHouse(initialResidualCage.cells) } ];
 
         while (residualCages.length > 0) {
             const nextResidualCages = new Array<CageInSlicing>();

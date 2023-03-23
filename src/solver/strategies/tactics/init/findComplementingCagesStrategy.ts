@@ -564,10 +564,12 @@ abstract class HouseAreasProcessor {
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {
             const sum = nHouseSum - nonOverlappingCagesAreaModel.sum;
             const cells = new CellIndicesSet(areaCellIndices).union(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
-            return Cage.ofSum(sum)
-                .withCells(cells)
-                .setIsInput(this._model.isDerivedFromInputCage(cells))
-                .new();
+            if (CageModel.isWithinHouse(cells)) {
+                return Cage.ofSum(sum)
+                    .withCells(cells)
+                    .setIsInput(this._model.isDerivedFromInputCage(cells))
+                    .new();
+            }
         }
     }
 
