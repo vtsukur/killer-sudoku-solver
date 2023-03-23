@@ -1,9 +1,7 @@
-import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { SumAddendsCombinatorics } from '../math';
 import { Combo, ReadonlyCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
-import { PowersOf2Lut } from './powersOf2Lut';
 import { SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlySumAddendsCombosSet {
