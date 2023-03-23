@@ -48,8 +48,7 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
     }
 
     init() {
-        this._combosSet.fill();
-        return this._combinatorics.allNumsSet;
+        return this._combosSet.fill();
     }
 
     reduce(combos: ReadonlySumAddendsCombosSet) {
@@ -139,6 +138,7 @@ class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSe
     fill() {
         this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
         this.updateCache();
+        return this._combinatorics.allNumsSet;
     }
 
     static newEmpty(combinatorics: SumAddendsCombinatorics) {
