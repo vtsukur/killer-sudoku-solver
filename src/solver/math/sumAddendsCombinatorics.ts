@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
-import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { BitStore32, PowersOf2Lut, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 import { CombosSet, ReadonlyCombosSet } from '../sets/combosSet';
-import { PowersOf2Lut } from '../sets/powersOf2Lut';
 import { Combo, ReadonlyCombos } from './combo';
 
 type PrecomputeComboKey = number;
