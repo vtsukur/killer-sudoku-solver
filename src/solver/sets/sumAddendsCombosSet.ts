@@ -60,13 +60,14 @@ export class SumAddendsCombosSet implements ReadonlySumAddendsCombosSet {
         const newCombosSet = new Set<ComboKey>();
 
         for (const combo of combos.values) {
-            nums.addAll(combo.numsSet);
             newCombosSet.add(combo.key);
         }
 
         for (const combo of this.values) {
             if (!newCombosSet.has(combo.key)) {
                 this.delete(combo);
+            } else {
+                nums.addAll(combo.numsSet);
             }
         }
 
