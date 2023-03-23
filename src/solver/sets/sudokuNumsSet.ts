@@ -234,11 +234,6 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
-    setRawBitStore(val: BitStore32) {
-        this._bitStore = val;
-        this.updateCache();
-    }
-
     /**
      * Clones this set by creating new instance based on the copy of the state of this set.
      *

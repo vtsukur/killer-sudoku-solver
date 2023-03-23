@@ -103,17 +103,13 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private _combos: ReadonlyArray<Combo> = CombosSet._NO_COMBOS;
 
-    // private _numsSet: SudokuNumsSet;
-
     private _isDirtyCache = true;
-    // private _isDirtyNumSetCache = false;
 
     private constructor(
             val: BitStore32,
             combinatorics: SumAddendsCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
-        // this._numsSet = SudokuNumsSet.newEmpty();
     }
 
     protected updateCache(): void {
@@ -129,31 +125,15 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
             numsSet.addAll(combo.numsSet);
         }
         return numsSet;
-
-        // this.refreshNumSet();
-        // return this._numsSet;
     }
 
     addCombo(combo: Combo) {
         this.add(this._combinatorics.indexOf(combo));
-        // this.refreshNumSet();
-        // this._numsSet.addAll(combo.numsSet);
     }
 
     deleteCombo(combo: Combo) {
         this.delete(this._combinatorics.indexOf(combo));
-        // this._isDirtyNumSetCache = true;
     }
-
-    // private refreshNumSet() {
-    //     if (this._isDirtyNumSetCache) {
-    //         this._numsSet = SudokuNumsSet.newEmpty();
-    //         for (const combo of this.combos) {
-    //             this._numsSet.addAll(combo.numsSet);
-    //         }
-    //         this._isDirtyNumSetCache = true;
-    //     }
-    // }
 
     get combos() {
         if (this._isDirtyCache) {
@@ -166,8 +146,6 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     fill() {
         this._bitStore = this._combinatorics.combosSet.underlyingCombosSet.bitStore;
         this.updateCache();
-        // this._numsSet.bitStore = this._combinatorics.allNumsSet.bitStore;
-        // this._isDirtyNumSetCache = false;
     }
 
     static newEmpty(sumAddendsCombinatorics: SumAddendsCombinatorics) {
