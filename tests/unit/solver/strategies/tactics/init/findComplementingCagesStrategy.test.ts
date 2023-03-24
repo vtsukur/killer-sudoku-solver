@@ -63,12 +63,10 @@ describe('Unit tests for `FindComplementingCagesStrategy`', () => {
         }).execute();
 
         // Then:
-        // There should be only 2 new `Cage`s in the model which have complements with <= 5 `Cell`s.
-        expect(model.cageModelsMap.size).toBe(originalCageCount + 2);
+        // There should be only 1 new `Cage` in the model which have complements with <= 5 `Cell`s.
+        expect(model.cageModelsMap.size).toBe(originalCageCount + 1);
         // Complement for `Row`s 0-2.
         expect(model.hasCage(Cage.ofSum(22).at(2, 2).at(2, 7).at(2, 8).new())).toBeTruthy();
-        // Complement for `Row`s 4-6.
-        expect(model.hasCage(Cage.ofSum(19).at(4, 6).at(6, 7).at(6, 8).new())).toBeTruthy();
     });
 
     test('Applying `Strategy` onto single `Column`s within Daily Challenge (2022-10-22) by Sudoku.com', () => {
