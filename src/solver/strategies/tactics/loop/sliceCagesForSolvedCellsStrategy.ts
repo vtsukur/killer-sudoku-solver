@@ -6,7 +6,7 @@ export class SliceCagesForSolvedCellsStrategy extends Strategy {
     execute() {
         this._context.recentlySolvedCellModels.forEach(cellM => {
             const withinCageMsSet = cellM.withinCageModels;
-            if (!(withinCageMsSet.size === 1 && withinCageMsSet.values().next().value.cage.positioning.isSingleCellCage)) {
+            if (!(withinCageMsSet.size === 1 && withinCageMsSet.values().next().value.cage.placement.isSingleCellCage)) {
                 const firstChunkCage = Cage.ofSum(cellM.placedNum as number).at(cellM.cell.row, cellM.cell.col).new();
                 this._context.cageSlicer.addAndSliceResidualCageRecursively(firstChunkCage);
             }

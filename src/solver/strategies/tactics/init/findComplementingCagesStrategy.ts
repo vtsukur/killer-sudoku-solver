@@ -568,7 +568,7 @@ abstract class HouseAreasProcessor {
                     .withCells(cells)
                     .setIsInput(this._model.isDerivedFromInputCage(cells))
                     .new();
-            if (cage.positioning.isWithinHouse) {
+            if (cage.placement.isWithinHouse) {
                 return cage;
             }
         }

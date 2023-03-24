@@ -398,15 +398,15 @@ export class CageModel {
         for (const numToCellsEntry of numToCells.entries()) {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
-            const positioning = new CellsPlacement(cells);
+            const placement = new CellsPlacement(cells);
             const clue: Clue = { num };
-            if (positioning.isWithinHouse) {
-                if (positioning.isWithinRow) {
+            if (placement.isWithinHouse) {
+                if (placement.isWithinRow) {
                     clue.row = cells[0].row;
-                } else if (positioning.isWithinColumn) {
+                } else if (placement.isWithinColumn) {
                     clue.col = cells[0].col;
                 }
-                if (positioning.isWithinNonet) {
+                if (placement.isWithinNonet) {
                     clue.nonet = cells[0].nonet;
                 }
             }
@@ -420,7 +420,7 @@ export class CageModel {
                 }
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
-            if (positioning.isWithinHouse || cells.length === 1) {
+            if (placement.isWithinHouse || cells.length === 1) {
                 clue.presentInAllCombos = Array.from(this._comboSet.values).every(combo => {
                     return combo.has(num);
                 });

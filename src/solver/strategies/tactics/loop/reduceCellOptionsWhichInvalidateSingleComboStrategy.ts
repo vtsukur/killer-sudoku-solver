@@ -64,7 +64,7 @@ function collectCageMsToCheck(cellMs: ReadonlySet<CellModel>) {
         if (cellM.solved) continue;
 
         for (const cageM of cellM.withinCageModels) {
-            if (cageM.comboCount !== 1 || cageM.cage.positioning.isWithinHouse) continue;
+            if (cageM.comboCount !== 1 || cageM.cage.placement.isWithinHouse) continue;
 
             const withinArea = cageM.cellMs.every(aCellM => cellMs.has(aCellM));
             if (!withinArea) continue;

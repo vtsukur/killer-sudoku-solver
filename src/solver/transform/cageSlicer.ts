@@ -14,7 +14,7 @@ export class CageSlicer {
     }
 
     addAndSliceResidualCageRecursively(initialResidualCage: Cage) {
-        if (!initialResidualCage.positioning.isWithinHouse) {
+        if (!initialResidualCage.placement.isWithinHouse) {
             return;
         }
 

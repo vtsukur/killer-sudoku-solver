@@ -51,7 +51,7 @@ export class Cage {
      */
     readonly isInput: boolean;
 
-    readonly positioning: CellsPlacement;
+    readonly placement: CellsPlacement;
 
     /**
      * Set of {@link Cell} indices with efficient storage & fast checking operations
@@ -97,7 +97,7 @@ export class Cage {
         this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
         this.isInput = isFromInput;
-        this.positioning = new CellsPlacement(this.cells);
+        this.placement = new CellsPlacement(this.cells);
         this.cellIndices = new CellIndicesSet(cells.map(cell => cell.index));
     }
 
