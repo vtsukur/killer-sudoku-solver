@@ -165,13 +165,13 @@ export class MasterModel {
     registerCage(cage: Cage) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
         cageM.initialReduce();
-        if (cageM.positioningFlags.isWithinRow) {
+        if (cageM.positioning.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);
         }
-        if (cageM.positioningFlags.isWithinColumn) {
+        if (cageM.positioning.isWithinColumn) {
             this.columnModels[cageM.anyColumn()].addCageModel(cageM);
         }
-        if (cageM.positioningFlags.isWithinNonet) {
+        if (cageM.positioning.isWithinNonet) {
             this.nonetModels[cageM.anyNonet()].addCageModel(cageM);
         }
         cage.cells.forEach((cell: Cell) => {
@@ -189,13 +189,13 @@ export class MasterModel {
 
     unregisterCage(cage: Cage) {
         const cageM = this.cageModelsMap.get(cage.key) as CageModel;
-        if (cageM.positioningFlags.isWithinRow) {
+        if (cageM.positioning.isWithinRow) {
             this.rowModels[cageM.anyRow()].deleteCageModel(cageM);
         }
-        if (cageM.positioningFlags.isWithinColumn) {
+        if (cageM.positioning.isWithinColumn) {
             this.columnModels[cageM.anyColumn()].deleteCageModel(cageM);
         }
-        if (cageM.positioningFlags.isWithinNonet) {
+        if (cageM.positioning.isWithinNonet) {
             this.nonetModels[cageM.anyNonet()].deleteCageModel(cageM);
         }
         cage.cells.forEach((cell: Cell) => {

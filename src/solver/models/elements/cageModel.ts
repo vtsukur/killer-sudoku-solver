@@ -34,7 +34,7 @@ type Context = {
 export class CageModel {
 
     readonly cage;
-    readonly positioningFlags;
+    readonly positioning;
     readonly cellMs;
     minRow;
     minCol;
@@ -48,7 +48,7 @@ export class CageModel {
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
-        this.positioningFlags = new CellsPositioning(cage.cells);
+        this.positioning = new CellsPositioning(cage.cells);
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this.minRow = House.CELL_COUNT + 1;
@@ -404,15 +404,15 @@ export class CageModel {
         for (const numToCellsEntry of numToCells.entries()) {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
-            const positioningFlags = new CellsPositioning(cells);
+            const positioning = new CellsPositioning(cells);
             const clue: Clue = { num };
-            if (positioningFlags.isWithinHouse) {
-                if (positioningFlags.isWithinRow) {
+            if (positioning.isWithinHouse) {
+                if (positioning.isWithinRow) {
                     clue.row = cells[0].row;
-                } else if (positioningFlags.isWithinColumn) {
+                } else if (positioning.isWithinColumn) {
                     clue.col = cells[0].col;
                 }
-                if (positioningFlags.isWithinNonet) {
+                if (positioning.isWithinNonet) {
                     clue.nonet = cells[0].nonet;
                 }
             }
@@ -426,7 +426,7 @@ export class CageModel {
                 }
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
-            if (positioningFlags.isWithinHouse || cells.length === 1) {
+            if (positioning.isWithinHouse || cells.length === 1) {
                 clue.presentInAllCombos = Array.from(this._comboSet.values).every(combo => {
                     return combo.has(num);
                 });
