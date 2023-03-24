@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { CellIndicesSet, ReadonlyCellIndicesSet } from '../solver/sets';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
-import { CellsPositioning } from './cellsPlacement';
+import { CellsPlacement } from './cellsPlacement';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
@@ -51,7 +51,7 @@ export class Cage {
      */
     readonly isInput: boolean;
 
-    readonly positioning: CellsPositioning;
+    readonly positioning: CellsPlacement;
 
     /**
      * Set of {@link Cell} indices with efficient storage & fast checking operations
@@ -97,7 +97,7 @@ export class Cage {
         this.cells = [...cells].sort();
         this.key = Cage.keyOf(sum, this.cells);
         this.isInput = isFromInput;
-        this.positioning = new CellsPositioning(this.cells);
+        this.positioning = new CellsPlacement(this.cells);
         this.cellIndices = new CellIndicesSet(cells.map(cell => cell.index));
     }
 

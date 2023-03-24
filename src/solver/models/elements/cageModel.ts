@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
-import { CellsPositioning } from '../../../puzzle/cellsPlacement';
+import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 
 type Clue = {
     num: number;
@@ -398,7 +398,7 @@ export class CageModel {
         for (const numToCellsEntry of numToCells.entries()) {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
-            const positioning = new CellsPositioning(cells);
+            const positioning = new CellsPlacement(cells);
             const clue: Clue = { num };
             if (positioning.isWithinHouse) {
                 if (positioning.isWithinRow) {

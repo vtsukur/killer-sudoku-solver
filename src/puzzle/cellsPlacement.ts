@@ -1,6 +1,6 @@
 import { ReadonlyCells } from './cell';
 
-export class CellsPositioning {
+export class CellsPlacement {
 
     readonly isSingleCell: boolean;
     readonly isWithinRow: boolean;
