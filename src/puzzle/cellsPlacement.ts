@@ -44,6 +44,11 @@ export class CellsPlacement {
      */
     readonly isWithinHouse: boolean;
 
+    /**
+     * Constructs a new {@link CellsPlacement} for the given {@link Cell}s.
+     *
+     * @param cells - {@link Cell}s for the construction of {@link CellsPlacement}.
+     */
     constructor(cells: ReadonlyCells) {
         this.isSingleCell = cells.length === 1;
         if (this.isSingleCell) {
