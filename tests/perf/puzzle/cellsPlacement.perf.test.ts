@@ -13,7 +13,7 @@ describe('Performance tests for `CellsPlacement`', () => {
 
     TESTS.forEach(i => {
 
-        test(`Creation of \`CellsPlacement\`s of all possible sizes [${i}]`, () => {
+        test(`Creation of \`CellsPlacement\`s of all possible \`Cell\`s' sizes [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 new CellsPlacement(cellsOfCount[0]);
                 new CellsPlacement(cellsOfCount[1]);
