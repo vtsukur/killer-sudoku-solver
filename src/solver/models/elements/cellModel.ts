@@ -43,6 +43,10 @@ export class CellModel {
         return this._numOptsSet.nums();
     }
 
+    numOptsSet(): ReadonlySudokuNumsSet {
+        return this._numOptsSet;
+    }
+
     hasNumOpt(val: number) {
         return this._numOptsSet.has(val);
     }

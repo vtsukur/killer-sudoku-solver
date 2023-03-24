@@ -344,13 +344,13 @@ export class CageModel {
     }
 
     private reduceLargeCage() {
-        const presentNums = new Set<number>();
-        this.cellMs.forEach(cellM => {
-            Sets.U(presentNums, cellM.numOpts());
-        });
+        const presentNums = SudokuNumsSet.newEmpty();
+        for (const cellM of this.cellMs) {
+            presentNums.addAll(cellM.numOptsSet());
+        }
 
-        const commonComboNums = new Set<number>();
-        _.range(1, House.CELL_COUNT + 1).forEach(num => {
+        const commonComboNums = SudokuNumsSet.newEmpty();
+        for (const num of SudokuNumsSet.NUM_RANGE) {
             let hasNumInAllCombos = true;
             for (const combo of this._comboSet.values) {
                 hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
@@ -358,18 +358,18 @@ export class CageModel {
             if (hasNumInAllCombos) {
                 commonComboNums.add(num);
             }
-        });
+        }
 
-        for (const commonNum of commonComboNums) {
+        for (const commonNum of commonComboNums.nums()) {
             if (!presentNums.has(commonNum)) {
                 throw new InvalidSolverStateError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
             }
         }
 
         const validCombos = [];
-        const validComboNums = new Set<number>();
+        const validComboNums = SudokuNumsSet.newEmpty();
         const noLongerValidCombos = new Array<Combo>();
-        const noLongerValidComboNums = new Set<number>();
+        const noLongerValidComboNums = SudokuNumsSet.newEmpty();
         for (const combo of this._comboSet.values) {
             let validCombo = true;
             for (const num of combo) {
@@ -383,17 +383,17 @@ export class CageModel {
 
             if (validCombo) {
                 validCombos.push(combo);
-                Sets.U(validComboNums, combo);
+                validComboNums.addAll(combo.numsSet);
             } else {
                 noLongerValidCombos.push(combo);
-                Sets.U(noLongerValidComboNums, combo);
+                noLongerValidComboNums.addAll(combo.numsSet);
             }
         }
 
         const modifiedCellMs = new Set<CellModel>();
         if (noLongerValidCombos.length > 0) {
             const numOptsToDelete = new Set<number>();
-            for (const num of noLongerValidComboNums) {
+            for (const num of noLongerValidComboNums.nums()) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
                 }
