@@ -11,6 +11,10 @@ export class CellsPositioning {
     constructor(cells: ReadonlyCells) {
         this.isSingleCell = cells.length === 1;
         if (this.isSingleCell) {
+            //
+            // [PERFORMANCE] By definition, a single `Cell` resides within a single `Row`, `Column`, and `Nonet`,
+            // initializing all respective flags with a `true` value.
+            //
             this.isWithinRow = this.isWithinColumn = this.isWithinNonet = this.isWithinHouse = true;
         } else {
             const firstCell = cells[0];
