@@ -22,4 +22,8 @@ export class CellsPositioning {
         return new Set(this.cells.map(whatFn)).size === 1;
     }
 
+    static isWithinHouse(cells: ReadonlyCells): boolean {
+        return new CellsPositioning(cells).isWithinHouse;
+    }
+
 }

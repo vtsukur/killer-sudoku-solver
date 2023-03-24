@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Cell, ReadonlyCells } from '../../../puzzle/cell';
+import { Cell } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
@@ -76,10 +76,6 @@ export class CageModel {
 
     deepCopyWithSameCellModels() {
         return new CageModel(this.cage, [...this.cellMs], this._comboSet);
-    }
-
-    static isWithinHouse(cells: ReadonlyCells) {
-        return new CellsPositioning(cells).isWithinHouse;
     }
 
     initialReduce() {
