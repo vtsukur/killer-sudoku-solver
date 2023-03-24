@@ -5,10 +5,6 @@ import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { MasterModel } from '../models/masterModel';
 
-type CageInSlicing = {
-    cage: Cage;
-};
-
 export class CageSlicer {
 
     readonly model;
@@ -22,13 +18,12 @@ export class CageSlicer {
             return;
         }
 
-        let residualCages = [ { cage: initialResidualCage } ];
+        let residualCages = [ initialResidualCage ];
 
         while (residualCages.length > 0) {
-            const nextResidualCages = new Array<CageInSlicing>();
+            const nextResidualCages = new Array<Cage>();
 
-            residualCages.forEach(entry => {
-                const residualCage = entry.cage;
+            residualCages.forEach(residualCage => {
                 if (this.model.cageModelsMap.has(residualCage.key)) return;
 
                 const cageMsForResidualCage = this.getCageMsFullyContainingResidualCage(residualCage);
@@ -36,7 +31,7 @@ export class CageSlicer {
                 cageMsForResidualCage.forEach((cageM: CageModel) => {
                     const secondChunkCage = CageSlicer.slice(cageM.cage, residualCage, this.model);
                     cagesToUnregister.push(cageM.cage);
-                    nextResidualCages.push({ cage: secondChunkCage });
+                    nextResidualCages.push(secondChunkCage);
                 });
 
                 cagesToUnregister.forEach(cage => this.model.unregisterCage(cage));
