@@ -89,7 +89,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
         // reduce house by cages where numbers are a part of all combinations and within specific row/column/nonet
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.canHaveDuplicateNums || cageM.hasSingleCombination() || cageM.positioningFlags.isWithinHouse) continue;
+            if (cageM.hasSingleCombination() || cageM.positioningFlags.isWithinHouse) continue;
 
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!numPlacementClue.presentInAllCombos) continue;

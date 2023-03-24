@@ -126,7 +126,7 @@ describe('Unit tests for `CageModel`', () => {
             .withCell(cell_04).withCell(cell_05).withCell(cell_06)
             .withCell(cell_13).withCell(cell_14).withCell(cell_15).withCell(cell_16)
             .new();
-        const cageM = new CageModel(cage, cellMs, false);
+        const cageM = new CageModel(cage, cellMs);
 
         cageM.initialReduce();
 

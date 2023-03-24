@@ -19,7 +19,6 @@ type Clue = {
 }
 
 type Context = {
-    canHaveDuplicateNums: boolean;
     processedCellMs: Set<CellModel>;
     remainingCellMs: Set<CellModel>,
     processedNums: Set<number>,
@@ -46,15 +45,13 @@ export class CageModel {
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
     private _comboSet: CombosSet;
-    private _canHaveDuplicateNums: boolean;
 
-    constructor(cage: Cage, cellMs: Array<CellModel>, canHaveDuplicateNums?: boolean, comboSet?: CombosSet) {
+    constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
         this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
-        this._canHaveDuplicateNums = canHaveDuplicateNums === true && !this.positioningFlags.isWithinHouse;
         this.minRow = House.CELL_COUNT + 1;
         this.minCol = this.minRow;
         this.maxRow = 0;
@@ -80,7 +77,7 @@ export class CageModel {
     }
 
     deepCopyWithSameCellModels() {
-        return new CageModel(this.cage, [...this.cellMs], this._canHaveDuplicateNums, this._comboSet);
+        return new CageModel(this.cage, [...this.cellMs], this._comboSet);
     }
 
     static positioningFlagsFor(cells: ReadonlyCells) {
@@ -115,14 +112,9 @@ export class CageModel {
 
     };
 
-    get canHaveDuplicateNums() {
-        return this._canHaveDuplicateNums;
-    }
-
     initialReduce() {
-        if (this._canHaveDuplicateNums) return;
-
-        this.initCombos();
+        const nums = this._comboSet.fill();
+        this.updateCellMsNums(nums);
     }
 
     anyRow() {
@@ -141,11 +133,6 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    private initCombos() {
-        const nums = this._comboSet.fill();
-        this.updateCellMsNums(nums);
-    }
-
     reduceCombos(combos: ReadonlyCombosSet) {
         const nums = this._comboSet.reduce(combos);
         this.updateCellMsNums(nums);
@@ -158,10 +145,6 @@ export class CageModel {
     }
 
     reduce(): ReadonlySet<CellModel> {
-        if (this._canHaveDuplicateNums) {
-            return new Set();
-        }
-
         if (this.isEligibleForReductionOfSmallSize()) {
             if (this._cellCount === 2) {
                 return this.reduceOptimalForSize2();
@@ -278,7 +261,6 @@ export class CageModel {
 
     private reduceSmallCage() {
         const context: Context = {
-            canHaveDuplicateNums: this.canHaveDuplicateNums,
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
             processedNums: new Set(),
@@ -294,7 +276,7 @@ export class CageModel {
                 return retVal;
             },
             mayNotProceedWithNum: function(num: number) {
-                return this.canHaveDuplicateNums ? false : this.processedNums.has(num);
+                return this.processedNums.has(num);
             },
             processNum: function(num: number, step: number, fn: () => boolean | void) {
                 if (this.mayNotProceedWithNum(num)) return;

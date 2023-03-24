@@ -92,7 +92,7 @@ export class MasterModel {
         });
 
         puzzle.cages.forEach(cage => {
-            this.registerCage(cage, false);
+            this.registerCage(cage);
         });
     }
 
@@ -162,8 +162,8 @@ export class MasterModel {
         });
     }
 
-    registerCage(cage: Cage, canHaveDuplicateNums: boolean) {
-        const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)), canHaveDuplicateNums);
+    registerCage(cage: Cage) {
+        const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
         cageM.initialReduce();
         if (cageM.positioningFlags.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);

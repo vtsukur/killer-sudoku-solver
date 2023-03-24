@@ -7,7 +7,6 @@ import { MasterModel } from '../models/masterModel';
 
 type CageInSlicing = {
     cage: Cage;
-    canHaveDuplicateNums: boolean;
 };
 
 export class CageSlicer {
@@ -23,7 +22,7 @@ export class CageSlicer {
             return;
         }
 
-        let residualCages = [ { cage: initialResidualCage, canHaveDuplicateNums: !CageModel.isWithinHouse(initialResidualCage.cells) } ];
+        let residualCages = [ { cage: initialResidualCage } ];
 
         while (residualCages.length > 0) {
             const nextResidualCages = new Array<CageInSlicing>();
@@ -34,17 +33,15 @@ export class CageSlicer {
 
                 const cageMsForResidualCage = this.getCageMsFullyContainingResidualCage(residualCage);
                 const cagesToUnregister = new Array<Cage>();
-                let canHaveDuplicateNums = entry.canHaveDuplicateNums;
                 cageMsForResidualCage.forEach((cageM: CageModel) => {
                     const secondChunkCage = CageSlicer.slice(cageM.cage, residualCage, this.model);
                     cagesToUnregister.push(cageM.cage);
-                    nextResidualCages.push({ cage: secondChunkCage, canHaveDuplicateNums: cageM.canHaveDuplicateNums });
-                    canHaveDuplicateNums = canHaveDuplicateNums && cageM.canHaveDuplicateNums;
+                    nextResidualCages.push({ cage: secondChunkCage });
                 });
 
                 cagesToUnregister.forEach(cage => this.model.unregisterCage(cage));
 
-                this.model.registerCage(residualCage, canHaveDuplicateNums);
+                this.model.registerCage(residualCage);
             });
 
             residualCages = nextResidualCages;
