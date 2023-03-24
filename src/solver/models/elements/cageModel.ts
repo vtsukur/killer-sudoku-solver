@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
-import { Cell, CellKey, ReadonlyCells } from '../../../puzzle/cell';
+import { Cell, ReadonlyCells } from '../../../puzzle/cell';
 import { House, HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
@@ -41,14 +41,12 @@ export class CageModel {
     maxCol;
 
     private _firstCell;
-    private _cellsSet;
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
     private _comboSet: CombosSet;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
-        this._cellsSet = new Set<CellKey>(cage.cells.map(cell => cell.key));
         this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
@@ -502,7 +500,7 @@ export class CageModel {
     }
 
     get cellCount() {
-        return this._cellsSet.size;
+        return this._cellCount;
     }
 
     get combos() {
