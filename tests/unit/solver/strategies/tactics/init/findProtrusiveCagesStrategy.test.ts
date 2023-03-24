@@ -26,11 +26,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         // There should be new `Cage`s in the model from 3 `Nonet`s.
         expect(model.cageModelsMap.size).toBe(originalCageCount + 3);
 
-        // `Nonet` 0: NO protrusive `Cage`.
-
-        // `Nonet` 1: NO protrusive `Cage`.
-
-        // `Nonet` 2: NO protrusive `Cage`.
+        // `Nonet` 0-2: NO protrusive `Cage`s.
 
         // `Nonet` 3:
         // Protrusive `Cage` added.
@@ -40,9 +36,7 @@ describe('Unit tests for `FindProtrusiveCagesStrategy`', () => {
         // Original `Cage` sliced by protrusive `Cage` is deleted.
         expect(model.hasCage(Cage.ofSum(14).at(4, 2).at(4, 3).at(5, 3).new())).toBeFalsy();
 
-        // `Nonet` 4: NO protrusive `Cage`.
-
-        // `Nonet` 5: NO protrusive `Cage`.
+        // `Nonet` 4-5: NO protrusive `Cage`s.
 
         // `Nonet` 6:
         // Protrusive `Cage` added.
