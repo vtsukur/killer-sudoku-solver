@@ -4,7 +4,7 @@ import { Cell } from '../../../../puzzle/cell';
 import { House } from '../../../../puzzle/house';
 import { Combo, ReadonlyCombos } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
-import { CellsPositioning } from '../../../../puzzle/cellsPositioning';
+import { CellsPositioning } from '../../../../puzzle/cellsPlacement';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';

@@ -1,5 +1,5 @@
 import { Cell } from '../../../src/puzzle/cell';
-import { CellsPositioning } from '../../../src/puzzle/cellsPositioning';
+import { CellsPositioning } from '../../../src/puzzle/cellsPlacement';
 
 describe('Unit tests for `CellsPositioning`', () => {
 

@@ -7,7 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
-import { CellsPositioning } from '../../../puzzle/cellsPositioning';
+import { CellsPositioning } from '../../../puzzle/cellsPlacement';
 
 type Clue = {
     num: number;

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Cell } from '../../../src/puzzle/cell';
-import { CellsPositioning } from '../../../src/puzzle/cellsPositioning';
+import { CellsPositioning } from '../../../src/puzzle/cellsPlacement';
 import { House } from '../../../src/puzzle/house';
 
 describe('Performance tests for `CellsPositioning`', () => {

@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { CellIndicesSet, ReadonlyCellIndicesSet } from '../solver/sets';
 import { joinArray } from '../util/readableMessages';
 import { Cell, CellKeysSet, Cells, ReadonlyCells } from './cell';
-import { CellsPositioning } from './cellsPositioning';
+import { CellsPositioning } from './cellsPlacement';
 import { Grid } from './grid';
 import { HouseIndex } from './house';
 import { InvalidPuzzleDefError } from './invalidPuzzleDefError';
