@@ -1,7 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell, ReadonlyCells } from './cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Column } from './column';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Grid } from './grid';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { House } from './house';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Nonet } from './nonet';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Row } from './row';
 
 /**
  * Placement of {@link Cell}s on the {@link Grid} represented by boolean flags,
@@ -10,10 +18,30 @@ import { Grid } from './grid';
  */
 export class CellsPlacement {
 
+    /**
+     * Whether placement describes a single {@link Cell}.
+     */
     readonly isSingleCell: boolean;
+
+    /**
+     * Whether {@link Cell}s reside within a single {@link Row}.
+     */
     readonly isWithinRow: boolean;
+
+    /**
+     * Whether {@link Cell}s reside within a single {@link Column}.
+     */
     readonly isWithinColumn: boolean;
+
+    /**
+     * Whether {@link Cell}s reside within a single {@link Nonet}.
+     */
     readonly isWithinNonet: boolean;
+
+    /**
+     * Whether {@link Cell}s reside within a single {@link House}
+     * ({@link Row}, {@link Column}, or {@link Nonet}}).
+     */
     readonly isWithinHouse: boolean;
 
     constructor(cells: ReadonlyCells) {
