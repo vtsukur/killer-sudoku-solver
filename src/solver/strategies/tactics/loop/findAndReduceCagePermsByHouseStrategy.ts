@@ -4,6 +4,7 @@ import { Cell } from '../../../../puzzle/cell';
 import { House } from '../../../../puzzle/house';
 import { Combo, ReadonlyCombos } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
+import { CellsPositioning } from '../../../models/elements/cellsPositioning';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
@@ -193,7 +194,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
 };
 
 const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: ReducedCellModels) => {
-    const positioningFlags = CageModel.positioningFlagsFor(assumptionCage.cells);
+    const positioningFlags = new CellsPositioning(assumptionCage.cells);
     if (positioningFlags.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Combo>();
         for (const combo of combos) {

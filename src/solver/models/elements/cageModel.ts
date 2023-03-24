@@ -7,6 +7,7 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
+import { CellsPositioning } from './cellsPositioning';
 
 type Clue = {
     num: number;
@@ -47,7 +48,7 @@ export class CageModel {
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
-        this.positioningFlags = CageModel.positioningFlagsFor(cage.cells);
+        this.positioningFlags = new CellsPositioning(cage.cells);
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this.minRow = House.CELL_COUNT + 1;
@@ -77,37 +78,9 @@ export class CageModel {
         return new CageModel(this.cage, [...this.cellMs], this._comboSet);
     }
 
-    static positioningFlagsFor(cells: ReadonlyCells) {
-        return new CageModel.PositioningFlags(cells);
-    }
-
     static isWithinHouse(cells: ReadonlyCells) {
-        return this.positioningFlagsFor(cells).isWithinHouse;
+        return new CellsPositioning(cells).isWithinHouse;
     }
-
-    private static PositioningFlags = class {
-
-        readonly cells;
-        readonly isSingleCellCage;
-        readonly isWithinRow;
-        readonly isWithinColumn;
-        readonly isWithinNonet;
-        readonly isWithinHouse;
-
-        constructor(cells: ReadonlyCells) {
-            this.cells = cells;
-            this.isSingleCellCage = cells.length === 1;
-            this.isWithinRow = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.row);
-            this.isWithinColumn = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.col);
-            this.isWithinNonet = this.isSingleCellCage || this.isSameForAll((cell: Cell) => cell.nonet);
-            this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
-        }
-
-        private isSameForAll(whatFn: (cell: Cell) => number) {
-            return new Set(this.cells.map(whatFn)).size === 1;
-        }
-
-    };
 
     initialReduce() {
         const nums = this._comboSet.fill();
@@ -431,7 +404,7 @@ export class CageModel {
         for (const numToCellsEntry of numToCells.entries()) {
             const num = numToCellsEntry[0];
             const cells = numToCellsEntry[1];
-            const positioningFlags = CageModel.positioningFlagsFor(cells);
+            const positioningFlags = new CellsPositioning(cells);
             const clue: Clue = { num };
             if (positioningFlags.isWithinHouse) {
                 if (positioningFlags.isWithinRow) {
