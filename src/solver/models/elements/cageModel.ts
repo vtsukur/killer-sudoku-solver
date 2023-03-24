@@ -34,7 +34,6 @@ type Context = {
 export class CageModel {
 
     readonly cage;
-    readonly positioning;
     readonly cellMs;
     minRow;
     minCol;
@@ -48,7 +47,6 @@ export class CageModel {
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
-        this.positioning = new CellsPositioning(cage.cells);
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this.minRow = House.CELL_COUNT + 1;

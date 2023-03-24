@@ -25,7 +25,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 const cageMsWithNum = new Array<CageModel>();
                 // consider overlapping vs non-overlapping cages
                 houseM.cageModels.forEach(cageM => {
-                    if (cageM.positioning.isSingleCellCage) return;
+                    if (cageM.cage.positioning.isSingleCellCage) return;
                     const hasNumInCells = cageM.cellMs.some(cellM => cellM.hasNumOpt(num));
                     if (hasNumInCells) {
                         cageMsWithNum.push(cageM);
@@ -56,24 +56,24 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
         // reduce house by cages with single combination
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.positioning.isSingleCellCage || !cageM.hasSingleCombination() || !cageM.positioning.isWithinHouse) continue;
+            if (cageM.cage.positioning.isSingleCellCage || !cageM.hasSingleCombination() || !cageM.cage.positioning.isWithinHouse) continue;
 
             const combo = cageM.combos[0];
 
-            if (cageM.positioning.isWithinRow) {
+            if (cageM.cage.positioning.isWithinRow) {
                 reduceByHouse(cageM, this._model.rowModels[cageM.anyRow()], this._model, combo, reducedCellMs);
-            } else if (cageM.positioning.isWithinColumn) {
+            } else if (cageM.cage.positioning.isWithinColumn) {
                 reduceByHouse(cageM, this._model.columnModels[cageM.anyColumn()], this._model, combo, reducedCellMs);
             }
 
-            if (cageM.positioning.isWithinNonet) {
+            if (cageM.cage.positioning.isWithinNonet) {
                 reduceByHouse(cageM, this._model.nonetModels[cageM.anyNonet()], this._model, combo, reducedCellMs);
             }
         }
 
         // reduce house by cages where numbers are within specific row/column/nonet
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.positioning.isSingleCellCage || !cageM.hasSingleCombination()) continue;
+            if (cageM.cage.positioning.isSingleCellCage || !cageM.hasSingleCombination()) continue;
 
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!_.isUndefined(numPlacementClue.row)) {
@@ -90,7 +90,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
         // reduce house by cages where numbers are a part of all combinations and within specific row/column/nonet
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.hasSingleCombination() || cageM.positioning.isWithinHouse) continue;
+            if (cageM.hasSingleCombination() || cageM.cage.positioning.isWithinHouse) continue;
 
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!numPlacementClue.presentInAllCombos) continue;
@@ -109,7 +109,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
         // reduce house by cages where numbers are only within specific cell
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.positioning.isSingleCellCage || cageM.positioning.isWithinHouse || cageM.comboCount < 2) continue;
+            if (cageM.cage.positioning.isSingleCellCage || cageM.cage.positioning.isWithinHouse || cageM.comboCount < 2) continue;
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
                     const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).withCell(numPlacementClue.singleCellForNum).new(), this._model);
@@ -119,7 +119,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
         }
 
         for (const cageM of this._model.cageModelsMap.values()) {
-            if (cageM.positioning.isSingleCellCage || cageM.positioning.isWithinHouse || cageM.comboCount !== 1 || cageM.cellCount > 5) continue;
+            if (cageM.cage.positioning.isSingleCellCage || cageM.cage.positioning.isWithinHouse || cageM.comboCount !== 1 || cageM.cellCount > 5) continue;
 
             const slices = CageSlicer.sliceBy(cageM.cage, (cell) => cell.row);
             if (slices.length > 2) continue;
@@ -228,7 +228,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
     const leftoverCageCellKeys = new Set(leftoverCage.cells.map(cell => cell.key));
     const cageMsWithoutLeftover = new Array<CageModel>();
     houseM.cageModels.forEach((cageM: CageModel) => {
-        if (cageM.positioning.isSingleCellCage) return;
+        if (cageM.cage.positioning.isSingleCellCage) return;
 
         let overlaps = false;
         for (const cellM of cageM.cellMs) {
