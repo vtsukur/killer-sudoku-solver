@@ -30,7 +30,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         this._combinatorics = combinatorics;
     }
 
-    protected updateCache(): void {
+    protected onUpdate(): void {
         this._isDirtyCache = true;
     }
 
@@ -45,7 +45,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     reduce(combos: ReadonlyCombosSet) {
         this._bitStore &= combos.bitStore;
-        this.updateCache();
+        this.onUpdate();
 
         return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
     }
@@ -68,7 +68,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     fill() {
         this._bitStore = this._combinatorics.combosSet.bitStore;
-        this.updateCache();
+        this.onUpdate();
         return this._combinatorics.allNumsSet;
     }
 

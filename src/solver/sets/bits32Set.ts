@@ -170,7 +170,7 @@ export abstract class Bits32Set<
         //
         this._bitStore |= 1 << val;
 
-        this.updateCache();
+        this.onUpdate();
 
         return this;
     }
@@ -192,7 +192,7 @@ export abstract class Bits32Set<
         //
         this._bitStore |= val.bitStore;
 
-        this.updateCache();
+        this.onUpdate();
 
         return this;
     }
@@ -215,7 +215,7 @@ export abstract class Bits32Set<
         //
         this._bitStore &= ~val.bitStore;
 
-        this.updateCache();
+        this.onUpdate();
 
         return this;
     }
@@ -245,7 +245,7 @@ export abstract class Bits32Set<
             //
             this._bitStore ^= 1 << val;
 
-            this.updateCache();
+            this.onUpdate();
         }
 
         return this;
@@ -268,12 +268,17 @@ export abstract class Bits32Set<
         //
         this._bitStore &= val.bitStore;
 
-        this.updateCache();
+        this.onUpdate();
 
         return this;
     }
 
-    protected abstract updateCache(): void;
+    /**
+     * Describes the reflection of each update to the bit store value.
+     *
+     * The most typical use case of this method is a manipulation of caches of the subclasses.
+     */
+    protected abstract onUpdate(): void;
 
     /**
      * @see ReadonlyNumsSet.equals

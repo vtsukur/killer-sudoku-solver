@@ -234,7 +234,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         return new SudokuNumsSet(SudokuNumsSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
-    protected updateCache() {
+    protected onUpdate() {
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
