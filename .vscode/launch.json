@@ -112,12 +112,12 @@
             }
         },
         {
-            "name": "npm run test [puzzle/cellsIterator]",
+            "name": "npm run test [puzzle/cellsPositioning]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cellsIterator.test.ts"
+                "cellsPositioning.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
