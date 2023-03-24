@@ -144,21 +144,15 @@ export class CageModel {
     }
 
     reduce(): ReadonlySet<CellModel> {
-        if (this.isEligibleForReductionOfSmallSize()) {
-            if (this._cellCount === 2) {
-                return this.reduceOptimalForSize2();
-            } else if (this._cellCount === 3) {
-                return this.reduceOptimalForSize3();
-            } else {
-                return this.reduceSmallCage();
-            }
+        if (this._cellCount === 2) {
+            return this.reduceOptimalForSize2();
+        } else if (this._cellCount === 3) {
+            return this.reduceOptimalForSize3();
+        } else if (this._cellCount === 4) {
+            return this.reduceSmallCage();
         } else {
             return this.reduceLargeCage();
         }
-    }
-
-    private isEligibleForReductionOfSmallSize() {
-        return _.inRange(this._cellCount, 2, 5);
     }
 
     private reduceOptimalForSize2() {
