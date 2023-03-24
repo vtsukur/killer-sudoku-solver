@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { EOL } from 'os';
 import { House } from '../../puzzle/house';
 import { BitStore32, PowersOf2Lut, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
-import { CombosSet, ReadonlyCombosSet } from '../sets/combosSet';
+import { CombosSet, ReadonlyCombosSet, ReadonlyCombosSets } from '../sets/combosSet';
 import { Combo, ReadonlyCombos } from './combo';
 
 type PrecomputeComboKey = number;
@@ -40,7 +40,7 @@ export class SumAddendsCombinatorics {
 
     readonly combosSet: ReadonlyCombosSet;
 
-    readonly combosSets: ReadonlyArray<ReadonlyCombosSet>;
+    readonly combosSets: ReadonlyCombosSets;
 
     readonly allNumsSet: ReadonlySudokuNumsSet;
 

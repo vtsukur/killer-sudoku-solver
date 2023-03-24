@@ -95,3 +95,5 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
 }
+
+export type ReadonlyCombosSets = ReadonlyArray<ReadonlyCombosSet>;
