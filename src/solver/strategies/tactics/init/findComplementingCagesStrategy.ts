@@ -10,7 +10,6 @@ import { Nonet } from '../../../../puzzle/nonet';
 import { Puzzle } from '../../../../puzzle/puzzle';
 import { Row } from '../../../../puzzle/row';
 import { CageModel } from '../../../models/elements/cageModel';
-import { CellsPositioning } from '../../../../puzzle/cellsPositioning';
 import { GridAreaModel } from '../../../models/elements/gridAreaModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';
@@ -565,11 +564,12 @@ abstract class HouseAreasProcessor {
                 (houseCount === 1 || nonOverlappingCagesAreaModel.cellCount >= minNonOverlappingAreaCellCount)) {
             const sum = nHouseSum - nonOverlappingCagesAreaModel.sum;
             const cells = new CellIndicesSet(areaCellIndices).union(nonOverlappingCagesAreaModel.cellIndices.not()).cells();
-            if (CellsPositioning.isWithinHouse(cells)) {
-                return Cage.ofSum(sum)
+            const cage = Cage.ofSum(sum)
                     .withCells(cells)
                     .setIsInput(this._model.isDerivedFromInputCage(cells))
                     .new();
+            if (cage.positioning.isWithinHouse) {
+                return cage;
             }
         }
     }
