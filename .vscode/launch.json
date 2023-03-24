@@ -112,12 +112,12 @@
             }
         },
         {
-            "name": "npm run test [puzzle/cellsPositioning]",
+            "name": "npm run test [puzzle/cellsPlacement]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "cellsPositioning.test.ts"
+                "cellsPlacement.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -803,13 +803,13 @@
         },
 
         {
-            "name": "npm run test [puzzle/cellsPositioning.perf]",
+            "name": "npm run test [puzzle/cellsPlacement.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/puzzle/cellsPositioning.perf.test.ts"
+                "tests/perf/puzzle/cellsPlacement.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
