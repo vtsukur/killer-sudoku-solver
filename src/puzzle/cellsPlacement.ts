@@ -1,5 +1,13 @@
-import { ReadonlyCells } from './cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell, ReadonlyCells } from './cell';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Grid } from './grid';
 
+/**
+ * Placement of {@link Cell}s on the {@link Grid} represented by boolean flags,
+ * which is helpful to determine if {@link Cell}s reside within a single {@link House}
+ * ({@link Row}, {@link Column}, and {@link Nonet}}).
+ */
 export class CellsPlacement {
 
     readonly isSingleCell: boolean;
