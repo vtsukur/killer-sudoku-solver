@@ -28,7 +28,7 @@ export class CellsPlacement {
 
             const firstCell = cells[0];
 
-            // Saving reference values of `House` indices to be used in the comparisons.
+            // Saving reference values of `House`s' indices for the use in the comparisons.
             const refRow = firstCell.row;
             const refCol = firstCell.col;
             const refNonet = firstCell.nonet;
@@ -38,14 +38,16 @@ export class CellsPlacement {
             let isWithinColumn = true;
             let isWithinNonet = true;
 
+            //
             // Iterating over each `Cell` starting with the second one.
-            // (Logic already processed first `Cell` by capturing reference indices.)
+            // Logic already processed first `Cell` by capturing reference indices.
+            //
             let i = 1;
             do {
                 const cell = cells[i];
 
                 //
-                // If the `House` of the current `Cell` is *not* the same as the reference `House`,
+                // If the `House` index of the current `Cell` is *not* the same as the reference `House` index,
                 // it is clear that at least two `Cell`s are in different `House`s,
                 // so the value of the respective flag should be `false`.
                 // (And subsequent iterations will short-circuit for performance.)
