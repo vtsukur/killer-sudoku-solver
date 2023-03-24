@@ -10,7 +10,7 @@ import { Nonet } from '../../../../puzzle/nonet';
 import { Puzzle } from '../../../../puzzle/puzzle';
 import { Row } from '../../../../puzzle/row';
 import { CageModel } from '../../../models/elements/cageModel';
-import { CellsPositioning } from '../../../models/elements/cellsPositioning';
+import { CellsPositioning } from '../../../../puzzle/cellsPositioning';
 import { GridAreaModel } from '../../../models/elements/gridAreaModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { CageRegisteredEventHandler, CageUnregisteredEventHandler, MasterModel, MasterModelEvents } from '../../../models/masterModel';

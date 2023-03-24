@@ -1,4 +1,4 @@
-import { Cell, ReadonlyCells } from '../../../puzzle/cell';
+import { Cell, ReadonlyCells } from './cell';
 
 export class CellsPositioning {
 

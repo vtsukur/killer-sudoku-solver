@@ -3,7 +3,7 @@ import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
-import { CellsPositioning } from '../models/elements/cellsPositioning';
+import { CellsPositioning } from '../../puzzle/cellsPositioning';
 import { MasterModel } from '../models/masterModel';
 
 export class CageSlicer {
