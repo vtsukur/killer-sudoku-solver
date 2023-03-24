@@ -15,7 +15,7 @@ describe('Performance tests for `CageModel`', () => {
 
     _.range(TESTS_COUNT).forEach(i => {
 
-        test(`Initial reduction for \`CageModel\` of size 2 with a single \`Combo\` [${i}]`, () => {
+        test(`Initial reduction of \`CageModel\` with 2 \`Cell\`s and a single \`Combo\` [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 const cellM1 = new CellModel(cell1);
                 const cellM2 = new CellModel(cell2);
