@@ -6,7 +6,7 @@ import { House } from '../../../src/puzzle/house';
 describe('Performance tests for `CellsPositioning`', () => {
 
     const TESTS = _.range(10);
-    const ITERATIONS = _.range(20_000);
+    const ITERATIONS = _.range(100_000);
 
     const row0Cells = Cell.GRID[0];
     const cellsOfCount = House.INDICES.map(index => row0Cells.slice(0, index + 1));

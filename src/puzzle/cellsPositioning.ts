@@ -1,4 +1,4 @@
-import { Cell, ReadonlyCells } from './cell';
+import { ReadonlyCells } from './cell';
 
 export class CellsPositioning {
 
@@ -13,15 +13,36 @@ export class CellsPositioning {
         if (this.isSingleCell) {
             this.isWithinRow = this.isWithinColumn = this.isWithinNonet = this.isWithinHouse = true;
         } else {
-            this.isWithinRow = CellsPositioning.isSameForAll(cells, (cell: Cell) => cell.row);
-            this.isWithinColumn = CellsPositioning.isSameForAll(cells, (cell: Cell) => cell.col);
-            this.isWithinNonet = CellsPositioning.isSameForAll(cells, (cell: Cell) => cell.nonet);
+            const firstCell = cells[0];
+
+            const refRow = firstCell.row;
+            const refCol = firstCell.col;
+            const refNonet = firstCell.nonet;
+
+            let isWithinRow = true;
+            let isWithinColumn = true;
+            let isWithinNonet = true;
+
+            let i = 1;
+            do {
+                const cell = cells[i];
+                if (isWithinRow && refRow !== cell.row) {
+                    isWithinRow = false;
+                }
+                if (isWithinColumn && refCol !== cell.col) {
+                    isWithinColumn = false;
+                }
+                if (isWithinNonet && refNonet !== cell.nonet) {
+                    isWithinNonet = false;
+                }
+            } while (++i < cells.length);
+
+            this.isWithinRow = isWithinRow;
+            this.isWithinColumn = isWithinColumn;
+            this.isWithinNonet = isWithinNonet;
+
             this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
         }
-    }
-
-    private static isSameForAll(cells: ReadonlyCells, whatFn: (cell: Cell) => number) {
-        return new Set(cells.map(whatFn)).size === 1;
     }
 
 }
