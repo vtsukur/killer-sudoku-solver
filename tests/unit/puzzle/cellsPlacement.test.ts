@@ -1,9 +1,9 @@
 import { Cell } from '../../../src/puzzle/cell';
 import { CellsPlacement } from '../../../src/puzzle/cellsPlacement';
 
-describe('Unit tests for `CellsPositioning`', () => {
+describe('Unit tests for `CellsPlacement`', () => {
 
-    test('Construction of `CellsPositioning` with a single `Cell`', () => {
+    test('Construction of `CellsPlacement` with a single `Cell`', () => {
         const positioning = new CellsPlacement([ Cell.at(3, 4) ]);
 
         expect(positioning).toEqual({
@@ -15,7 +15,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s from a `Cage` placed within `Row`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s from a `Cage` placed within `Row`', () => {
         const positioning = new CellsPlacement([
             Cell.at(3, 5), Cell.at(3, 6)
         ]);
@@ -29,7 +29,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s from a `Cage` placed within `Column`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s from a `Cage` placed within `Column`', () => {
         const positioning = new CellsPlacement([
             Cell.at(5, 3),
             Cell.at(6, 3)
@@ -44,7 +44,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s from a `Cage` placed within `Nonet`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s from a `Cage` placed within `Nonet`', () => {
         const positioning = new CellsPlacement([
             Cell.at(0, 0), Cell.at(0, 1),
             Cell.at(1, 0), Cell.at(1, 1)
@@ -59,7 +59,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s from a `Cage` placed within `Row` and `Nonet`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s from a `Cage` placed within `Row` and `Nonet`', () => {
         const positioning = new CellsPlacement([
             Cell.at(0, 0), Cell.at(0, 1)
         ]);
@@ -73,7 +73,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s from a `Cage` placed within `Column` and `Nonet`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s from a `Cage` placed within `Column` and `Nonet`', () => {
         const positioning = new CellsPlacement([
             Cell.at(0, 0),
             Cell.at(1, 0)
@@ -88,7 +88,7 @@ describe('Unit tests for `CellsPositioning`', () => {
         } as CellsPlacement);
     });
 
-    test('Construction of `CellsPositioning` with the `Cell`s outside of a single `House`', () => {
+    test('Construction of `CellsPlacement` with the `Cell`s outside of a single `House`', () => {
         const positioning = new CellsPlacement([
             Cell.at(2, 2), Cell.at(2, 3),
             Cell.at(3, 2), Cell.at(3, 3)

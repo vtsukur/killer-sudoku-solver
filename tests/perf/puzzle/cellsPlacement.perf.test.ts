@@ -3,7 +3,7 @@ import { Cell } from '../../../src/puzzle/cell';
 import { CellsPlacement } from '../../../src/puzzle/cellsPlacement';
 import { House } from '../../../src/puzzle/house';
 
-describe('Performance tests for `CellsPositioning`', () => {
+describe('Performance tests for `CellsPlacement`', () => {
 
     const TESTS = _.range(10);
     const ITERATIONS = _.range(100_000);
@@ -13,7 +13,7 @@ describe('Performance tests for `CellsPositioning`', () => {
 
     TESTS.forEach(i => {
 
-        test(`Creation of \`CellsPositioning\`s of all possible sizes [${i}]`, () => {
+        test(`Creation of \`CellsPlacement\`s of all possible sizes [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 new CellsPlacement(cellsOfCount[0]);
                 new CellsPlacement(cellsOfCount[1]);
