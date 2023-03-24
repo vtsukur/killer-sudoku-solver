@@ -63,7 +63,6 @@ export class CageModel {
             this.maxCol = Math.max(this.maxCol, cell.col);
         });
         this._cellCount = cage.cellCount;
-        // do not initialize if `_canHaveDuplicateNums` is `true`
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
         if (comboSet) {
             this._comboSet = comboSet.clone();
