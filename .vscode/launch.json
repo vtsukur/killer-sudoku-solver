@@ -803,6 +803,25 @@
         },
 
         {
+            "name": "npm run test [puzzle/cellsPositioning.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/puzzle/cellsPositioning.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
             "name": "npm run test [solver/math/houseModelCagesCombinatorics.perf]",
             "request": "launch",
             "runtimeArgs": [
