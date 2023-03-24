@@ -17,6 +17,7 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
                 for (const combo of combinatorics.val) {
                     set.addCombo(combo);
                 }
+                set.combos;
             });
         });
 
