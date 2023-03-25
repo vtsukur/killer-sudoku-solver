@@ -11,17 +11,29 @@ describe('Performance tests for `CageModel`', () => {
 
     const cell1 = Cell.at(0, 0);
     const cell2 = Cell.at(0, 1);
-    const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
+    const cage_2_cells_of_sum_11 = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
+    const cage_2_cells_of_sum_17 = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
 
     _.range(TESTS_COUNT).forEach(i => {
 
-        test(`Initial reduction of \`CageModel\` with 2 \`Cell\`s and a single \`Combo\` [${i}]`, () => {
+        test.skip(`Initial reduction of \`CageModel\` with 2 \`Cell\`s and a single \`Combo\` [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 const cellM1 = new CellModel(cell1);
                 const cellM2 = new CellModel(cell2);
-                const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+                const cageM = new CageModel(cage_2_cells_of_sum_17, [ cellM1, cellM2 ]);
 
                 cageM.initialReduce();
+            });
+        });
+
+        test(`Reduction of \`CageModel\` with 2 \`Cell\`s and 4 \`Combo\`s — without impact [${i}]`, () => {
+            ITERATIONS.forEach(() => {
+                const cellM1 = new CellModel(cell1);
+                const cellM2 = new CellModel(cell2);
+                const cageM = new CageModel(cage_2_cells_of_sum_11, [ cellM1, cellM2 ]);
+
+                cageM.initialReduce();
+                cageM.reduce();
             });
         });
 
