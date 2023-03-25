@@ -13,8 +13,10 @@ import { Row } from './row';
 
 /**
  * Placement of {@link Cell}s on the {@link Grid} represented by boolean flags,
- * which is helpful to determine if {@link Cell}s reside within a single {@link House}
- * ({@link Row}, {@link Column}, and {@link Nonet}}).
+ * which are helpful to determine if {@link Cell}s reside within a single {@link House}
+ * ({@link Row}, {@link Column}, and {@link Nonet}}),
+ * and minimum and maximum {@link Row} and {@link Column} indices,
+ * which are helpful for efficient boundary checks.
  */
 export class CellsPlacement {
 
