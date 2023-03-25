@@ -35,7 +35,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
 
         const reduction = new NumsReduction();
         for (const formula of formulas.toArray()) {
-            reduction.addAll(reduceByFormula(formula));
+            reduceByFormula(formula, reduction);
         }
         this._context.setReduction(reduction);
 
@@ -179,10 +179,8 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
     return areaModel;
 }
 
-function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
+function reduceByFormula(formula: Formula, reduction: NumsReduction) {
     if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
-
-    const reduced = new Set<CellModel>();
 
     const numOpts = new Map();
     formula.equalToCellMs.forEach(cellM => {
@@ -196,9 +194,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
         if (formula.equalToCellMs.size === 1) {
             const otherCellM = formula.equalToCellMs.values().next().value;
             if (!otherCellM.hasNumOpt(targetSum)) {
-
-                formula.cellM.deleteNumOpt(num);
-                reduced.add(formula.cellM);
+                reduction.deleteNumOpt(formula.cellM, num);
             } else {
                 numOpts.get(otherCellM).add(targetSum);
             }
@@ -222,8 +218,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
                 hasAtLeastOneCombo ||= hasDirect || hasInverse;
             }
             if (!hasAtLeastOneCombo) {
-                formula.cellM.deleteNumOpt(num);
-                reduced.add(formula.cellM);
+                reduction.deleteNumOpt(formula.cellM, num);
             }
         }
     }
@@ -234,11 +229,8 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
 
         for (const num of cellM.numOpts()) {
             if (!numOpts.has(num)) {
-                cellM.deleteNumOpt(num);
-                reduced.add(cellM);
+                reduction.deleteNumOpt(cellM, num);
             }
         }
     }
-
-    return reduced;
 }
