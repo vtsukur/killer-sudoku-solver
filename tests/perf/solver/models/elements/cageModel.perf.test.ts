@@ -3,6 +3,7 @@ import { Cage } from '../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
+import { NumsReduction } from '../../../../../src/solver/strategies/numsReduction';
 
 describe('Performance tests for `CageModel`', () => {
 
@@ -27,13 +28,14 @@ describe('Performance tests for `CageModel`', () => {
         });
 
         test(`Reduction of \`CageModel\` with 2 \`Cell\`s and 4 \`Combo\`s — without impact [${i}]`, () => {
+            const reduction = new NumsReduction();
             ITERATIONS.forEach(() => {
                 const cellM1 = new CellModel(cell1);
                 const cellM2 = new CellModel(cell2);
                 const cageM = new CageModel(cage_2_cells_of_sum_11, [ cellM1, cellM2 ]);
 
                 cageM.initialReduce();
-                cageM.reduce();
+                cageM.reduce(reduction);
             });
         });
 
