@@ -10,7 +10,7 @@ export class Context {
 
     readonly model;
     readonly cageSlicer;
-    reducedModels = new NumsReduction();
+    reduction = new NumsReduction();
     private _cageModelsToReduce = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
@@ -33,16 +33,16 @@ export class Context {
         return this._cageModelsToReduce;
     }
 
-    setCageModelsToReduceToAll() {
+    setReductionToAll() {
         this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
     }
 
-    setCageModelsToReduceFrom(reducedCellMs: NumsReduction) {
-        this._cageModelsToReduce = new Set(reducedCellMs.impactedCageModels);
+    setReduction(reduction: NumsReduction) {
+        this._cageModelsToReduce = new Set(reduction.impactedCageModels);
     }
 
-    addCageModelsToReduceFrom(reducedCellMs: NumsReduction) {
-        Sets.U(this._cageModelsToReduce, reducedCellMs.impactedCageModels);
+    addToReduction(reduction: NumsReduction) {
+        Sets.U(this._cageModelsToReduce, reduction.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {

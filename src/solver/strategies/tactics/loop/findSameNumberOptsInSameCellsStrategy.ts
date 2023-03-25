@@ -13,7 +13,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
 
         const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
@@ -66,7 +66,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                             for (const num of cellM.numOpts()) {
                                 if (!entry.nums.has(num)) {
                                     cellM.deleteNumOpt(num);
-                                    reducedCellMs.add(cellM);
+                                    reduction.add(cellM);
                                 }
                             }
                         }
@@ -79,22 +79,22 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             this._model.rowModels,
             colNumMapForRows,
             (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(directHouseIndex, perpendicularHouseIndex),
-            reducedCellMs
+            reduction
         );
 
         findSameNumberOptsInSameCellsAcrossRowsOrColumns(
             this._model.columnModels,
             rowNumMapForCols,
             (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(perpendicularHouseIndex, directHouseIndex),
-            reducedCellMs
+            reduction
         );
 
-        this._context.setCageModelsToReduceFrom(reducedCellMs);
+        this._context.setReduction(reduction);
     }
 
 }
 
-function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reducedCellMs: NumsReduction) {
+function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reduction: NumsReduction) {
     _.range(0, House.CELL_COUNT).forEach(numIndex => {
         const num = numIndex + 1;
 
@@ -123,7 +123,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
                         const cellM = getCellMFn(directHouseIndex, perpendicularHouseIndex);
                         if (cellM.hasNumOpt(num)) {
                             cellM.deleteNumOpt(num);
-                            reducedCellMs.add(cellM);
+                            reduction.add(cellM);
                         }
                     }
                 });

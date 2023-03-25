@@ -5,7 +5,7 @@ import { Strategy } from '../../strategy';
 export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
 
     execute() {
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
         this._context.recentlySolvedCellModels.forEach(solvedCellM => {
             const num = solvedCellM.placedNum as number;
             for (const cageM of solvedCellM.withinCageModels) {
@@ -14,12 +14,12 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
 
                     if (cellM.hasNumOpt(num)) {
                         cellM.deleteNumOpt(num);
-                        reducedCellMs.add(cellM);
+                        reduction.add(cellM);
                     }
                 }
             }
         });
-        this._context.setCageModelsToReduceFrom(reducedCellMs);
+        this._context.setReduction(reduction);
     }
 
 }

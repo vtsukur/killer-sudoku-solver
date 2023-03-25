@@ -33,11 +33,11 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             }
         });
 
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
         for (const formula of formulas.toArray()) {
-            reducedCellMs.addAll(reduceByFormula(formula));
+            reduction.addAll(reduceByFormula(formula));
         }
-        this._context.setCageModelsToReduceFrom(reducedCellMs);
+        this._context.setReduction(reduction);
 
         return formulas;
     }

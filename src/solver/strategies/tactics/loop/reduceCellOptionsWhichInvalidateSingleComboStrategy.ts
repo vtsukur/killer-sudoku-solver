@@ -15,7 +15,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
 
         _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: HouseIndex) => {
             _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: HouseIndex) => {
@@ -30,7 +30,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
                         for (const num of cellM.numOpts()) {
                             if (cageMToCheck.combos[0].has(num)) {
                                 cellM.deleteNumOpt(num);
-                                reducedCellMs.add(cellM);
+                                reduction.add(cellM);
                             }
                         }
                     }
@@ -38,7 +38,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
             });
         });
 
-        this._context.setCageModelsToReduceFrom(reducedCellMs);
+        this._context.setReduction(reduction);
     }
 
 }

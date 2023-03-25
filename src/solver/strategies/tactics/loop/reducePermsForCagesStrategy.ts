@@ -12,7 +12,7 @@ export class ReducePermsForCagesStrategy extends Strategy {
                 reduction.addAll(reducedCellMsSet);
             }
 
-            this._context.setCageModelsToReduceFrom(reduction);
+            this._context.setReduction(reduction);
         } while (this._context.hasCageModelsToReduce);
     }
 

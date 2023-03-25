@@ -4,7 +4,7 @@ import { Strategy } from '../../strategy';
 export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
     execute() {
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
 
         this._context.recentlySolvedCellModels.forEach(cellM => {
             const num = cellM.placedNum as number;
@@ -19,13 +19,13 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
                     const aCellM = this._model.cellModelAt(row, col);
                     if (aCellM.hasNumOpt(num)) {
                         aCellM.deleteNumOpt(num);
-                        reducedCellMs.add(aCellM);
+                        reduction.add(aCellM);
                     }
                 }
             });
         });
 
-        this._context.addCageModelsToReduceFrom(reducedCellMs);
+        this._context.addToReduction(reduction);
     }
 
 }

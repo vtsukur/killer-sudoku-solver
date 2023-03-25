@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reducedCellMs = new NumsReduction();
+        const reduction = new NumsReduction();
 
         this._model.houseModels.forEach(houseM => {
             _.range(1, House.CELL_COUNT + 1).forEach((num: number) => {
@@ -49,7 +49,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);
 
-                reducedCellMs.addAll(combosReducedCellMs);
+                reduction.addAll(combosReducedCellMs);
             });
         });
 
@@ -60,13 +60,13 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             const combo = cageM.combos[0];
 
             if (cageM.cage.placement.isWithinRow) {
-                reduceByHouse(cageM, this._model.rowModels[cageM.anyRow()], this._model, combo, reducedCellMs);
+                reduceByHouse(cageM, this._model.rowModels[cageM.anyRow()], this._model, combo, reduction);
             } else if (cageM.cage.placement.isWithinColumn) {
-                reduceByHouse(cageM, this._model.columnModels[cageM.anyColumn()], this._model, combo, reducedCellMs);
+                reduceByHouse(cageM, this._model.columnModels[cageM.anyColumn()], this._model, combo, reduction);
             }
 
             if (cageM.cage.placement.isWithinNonet) {
-                reduceByHouse(cageM, this._model.nonetModels[cageM.anyNonet()], this._model, combo, reducedCellMs);
+                reduceByHouse(cageM, this._model.nonetModels[cageM.anyNonet()], this._model, combo, reduction);
             }
         }
 
@@ -76,13 +76,13 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!_.isUndefined(numPlacementClue.row)) {
-                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reduction);
                 } else if (!_.isUndefined(numPlacementClue.col)) {
-                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reduction);
                 }
 
                 if (!_.isUndefined(numPlacementClue.nonet)) {
-                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reduction);
                 }
             }
         }
@@ -95,13 +95,13 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 if (!numPlacementClue.presentInAllCombos) continue;
 
                 if (!_.isUndefined(numPlacementClue.row)) {
-                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reduction);
                 } else if (!_.isUndefined(numPlacementClue.col)) {
-                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reduction);
                 }
 
                 if (!_.isUndefined(numPlacementClue.nonet)) {
-                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reducedCellMs);
+                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reduction);
                 }
             }
         }
@@ -112,7 +112,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!(_.isUndefined(numPlacementClue.singleCellForNum))) {
                     const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(numPlacementClue.num).withCell(numPlacementClue.singleCellForNum).new(), this._model);
-                    checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as ReadonlyCombos, numPlacementClue.singleCellForNum, numPlacementClue.num, this._model, reducedCellMs);
+                    checkAssumptionCage(cageLeft, numPlacementClue.singleCellForNumCombos as ReadonlyCombos, numPlacementClue.singleCellForNum, numPlacementClue.num, this._model, reduction);
                 }
             }
         }
@@ -133,7 +133,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
             for (const num of firstSingleCellM.numOpts()) {
                 const shortCombo = firstSingleCellMCombo.reduce(num);
                 const cageLeft = CageSlicer.slice(cageM.cage, Cage.ofSum(num).withCell(firstSingleCell).new(), this._model);
-                checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this._model, reducedCellMs);
+                checkAssumptionCage(cageLeft, [ shortCombo ], firstSingleCell, num, this._model, reduction);
             }
         }
 
@@ -160,21 +160,21 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 const entry = numMap.get(num);
                 if (entry.rows.size === 1) {
                     const index = entry.rows.values().next().value;
-                    reduceNonetBasedByRowOrColumn(this._model.rowModels[index], num, nonetM, this._model, reducedCellMs);
+                    reduceNonetBasedByRowOrColumn(this._model.rowModels[index], num, nonetM, this._model, reduction);
                 }
                 if (entry.cols.size === 1) {
                     const index = entry.cols.values().next().value;
-                    reduceNonetBasedByRowOrColumn(this._model.columnModels[index], num, nonetM, this._model, reducedCellMs);
+                    reduceNonetBasedByRowOrColumn(this._model.columnModels[index], num, nonetM, this._model, reduction);
                 }
             });
         });
 
-        this._context.setCageModelsToReduceFrom(reducedCellMs);
+        this._context.setReduction(reduction);
     }
 
 }
 
-const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reducedCellMs: NumsReduction) => {
+const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reduction: NumsReduction) => {
     for (const { row, col } of houseM.cells) {
         if (cageM.hasCellAt(row, col)) continue;
 
@@ -187,12 +187,12 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
             }
         }
         if (shouldReduce) {
-            reducedCellMs.add(cellM);
+            reduction.add(cellM);
         }
     }
 };
 
-const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: NumsReduction) => {
+const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reduction: NumsReduction) => {
     const placement = assumptionCage.placement;
     if (placement.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Combo>();
@@ -218,7 +218,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
         if (reduce) {
             const cellMToReduce = model.cellModelOf(cell);
             cellMToReduce.deleteNumOpt(num);
-            reducedCellMs.add(cellMToReduce);
+            reduction.add(cellMToReduce);
         }
     }
 };
@@ -268,13 +268,13 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
     return valid;
 };
 
-const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reducedCellMs: NumsReduction) => {
+const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reduction: NumsReduction) => {
     for (const { row, col } of houseM.cells) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {
             cellM.deleteNumOpt(num);
-            reducedCellMs.add(cellM);
+            reduction.add(cellM);
         }
     }
 };

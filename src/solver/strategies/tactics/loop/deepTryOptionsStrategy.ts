@@ -25,7 +25,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOpts(SudokuNumsSet.ofSingle(tryNum));
-            ctxCpy.setCageModelsToReduceFrom(NumsReduction.forOne(cellMTargetCpy));
+            ctxCpy.setReduction(NumsReduction.forOne(cellMTargetCpy));
 
             try {
                 ctxCpy.skipInit = true;
@@ -65,7 +65,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                 this._context.foundSolution = solution;
             }
         } else if (cellMTarget.numOpts().length < size) {
-            this._context.setCageModelsToReduceFrom(NumsReduction.forOne(cellMTarget));
+            this._context.setReduction(NumsReduction.forOne(cellMTarget));
         }
     }
 
