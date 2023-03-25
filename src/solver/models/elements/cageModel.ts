@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
-import { House, HouseIndex } from '../../../puzzle/house';
+import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
