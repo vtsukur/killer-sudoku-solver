@@ -764,7 +764,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
         // Making sure the logic skips individual `House`s
         // and takes `Config.maxAdjacentRowsAndColumnsAreas` into account.
         //
-        let adjacentHouseCount = Math.max(minAdjacentAreas, 2);
+        let adjacentHouseCount = minAdjacentAreas > 2 ? minAdjacentAreas : 2;
 
         // Iterating over adjacent `House` areas sized in the target range.
         while (adjacentHouseCount <= maxAdjacentAreas) {
