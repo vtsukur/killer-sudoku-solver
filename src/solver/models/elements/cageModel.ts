@@ -108,7 +108,7 @@ export class CageModel {
 
     private reduceOptimalForSize2() {
         const modifiedCellMs = new Set<CellModel>();
-        const combosToPotentiallyDeleteMap = new Map<string, Combo>();
+        const combosToPotentiallyDeleteMap = new Set<Combo>();
 
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
@@ -118,7 +118,7 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         oneCellM.deleteNumOpt(oneNum);
                         modifiedCellMs.add(oneCellM);
-                        combosToPotentiallyDeleteMap.set(combo.key, combo);
+                        combosToPotentiallyDeleteMap.add(combo);
                     }
                 }
             }
