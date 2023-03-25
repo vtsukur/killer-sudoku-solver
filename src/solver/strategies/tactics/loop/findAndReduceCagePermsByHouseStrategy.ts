@@ -179,15 +179,10 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
         if (cageM.hasCellAt(row, col)) continue;
 
         const cellM = model.cellModelAt(row, col);
-        let shouldReduce = false;
         for (const num of combo) {
             if (cellM.hasNumOpt(num)) {
-                cellM.deleteNumOpt(num);
-                shouldReduce = true;
+                reduction.deleteNumOpt(cellM, num);
             }
-        }
-        if (shouldReduce) {
-            reduction.add(cellM);
         }
     }
 };
