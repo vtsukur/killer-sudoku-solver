@@ -7,16 +7,16 @@ export class NumsReduction {
     private _cellMs = new Set<CellModel>();
     private _impactedCageMs = new Set<CageModel>();
 
+    add(val: CellModel) {
+        this._cellMs.add(val);
+        Sets.U(this._impactedCageMs, val.withinCageModels);
+        return this;
+    }
+
     addAll(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {
             this.add(cellM);
         }
-        return this;
-    }
-
-    add(val: CellModel) {
-        this._cellMs.add(val);
-        Sets.U(this._impactedCageMs, val.withinCageModels);
         return this;
     }
 
