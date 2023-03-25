@@ -3,12 +3,19 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
+import { NumsReduction } from '../../../../../src/solver/strategies/numsReduction';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
 const cell3 = Cell.at(0, 2);
 
 describe('Unit tests for `CageModel`', () => {
+
+    let reduction: NumsReduction;
+
+    beforeEach(() => {
+        reduction = new NumsReduction();
+    });
 
     test('Initial reduction for `CageModel` of size 2 with a single `Combo`', () => {
         const cellM1 = new CellModel(cell1);
@@ -68,9 +75,10 @@ describe('Unit tests for `CageModel`', () => {
         cageM.initialReduce();
 
         cellM1.deleteNumOpt(5);
-        const modifiedCellMs = cageM.reduce();
+        cageM.reduce(reduction);
+        const impactedCellMs = reduction.impactedCellModels;
 
-        expect(modifiedCellMs).toEqual(new Set([ cellM2 ]));
+        expect(impactedCellMs).toEqual(new Set([ cellM2 ]));
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
@@ -91,9 +99,10 @@ describe('Unit tests for `CageModel`', () => {
 
         cellM1.deleteNumOpt(5);
         cellM2.deleteNumOpt(5);
-        const modifiedCellMs = cageM.reduce();
+        cageM.reduce(reduction);
+        const impactedCellMs = reduction.impactedCellModels;
 
-        expect(modifiedCellMs).toEqual(new Set([ cellM1, cellM2 ]));
+        expect(impactedCellMs).toEqual(new Set([ cellM1, cellM2 ]));
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
@@ -144,7 +153,7 @@ describe('Unit tests for `CageModel`', () => {
         cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
         cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
 
-        cageM.reduce();
+        cageM.reduce(reduction);
 
         const afterReductionCombos = Array.from(cageM.combos);
         expect(afterReductionCombos).toEqual([

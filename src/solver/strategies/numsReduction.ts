@@ -20,8 +20,17 @@ export class NumsReduction {
         return this;
     }
 
+    deleteNumOpt(cellM: CellModel, num: number) {
+        cellM.deleteNumOpt(num);
+        this.add(cellM);
+    }
+
     get isNotEmpty(): boolean {
         return this._impactedCageMs.size > 0;
+    }
+
+    get impactedCellModels(): ReadonlySet<CellModel> {
+        return this._cellMs;
     }
 
     get impactedCageModels(): ReadonlySet<CageModel> {

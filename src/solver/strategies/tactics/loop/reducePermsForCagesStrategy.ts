@@ -8,8 +8,7 @@ export class ReducePermsForCagesStrategy extends Strategy {
             const reduction = new NumsReduction();
 
             for (const cageM of this._context.cageModelsToReduce) {
-                const reducedCellMsSet = cageM.reduce();
-                reduction.addAll(reducedCellMsSet);
+                cageM.reduce(reduction);
             }
 
             this._context.setReduction(reduction);

@@ -8,6 +8,7 @@ import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
+import { NumsReduction } from '../../strategies/numsReduction';
 
 type Clue = {
     num: number;
@@ -94,20 +95,19 @@ export class CageModel {
         }
     }
 
-    reduce(): ReadonlySet<CellModel> {
+    reduce(reduction: NumsReduction) {
         if (this._cellCount === 2) {
-            return this.reduceOptimalForSize2();
+            this.reduceOptimalForSize2(reduction);
         } else if (this._cellCount === 3) {
-            return this.reduceOptimalForSize3();
+            this.reduceOptimalForSize3(reduction);
         } else if (this._cellCount === 4) {
-            return this.reduceSmallCage();
+            this.reduceSmallCage(reduction);
         } else {
-            return this.reduceLargeCage();
+            this.reduceLargeCage(reduction);
         }
     }
 
-    private reduceOptimalForSize2() {
-        const modifiedCellMs = new Set<CellModel>();
+    private reduceOptimalForSize2(reduction: NumsReduction) {
         const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
 
         for (const oneCellM of this.cellMs) {
@@ -116,8 +116,7 @@ export class CageModel {
                 for (const combo of this.combosWithNum(oneNum)) {
                     const anotherNum = combo.number0 === oneNum ? combo.number1 : combo.number0;
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
-                        oneCellM.deleteNumOpt(oneNum);
-                        modifiedCellMs.add(oneCellM);
+                        reduction.deleteNumOpt(oneCellM, oneNum);
                         combosToPotentiallyDeleteMap.addCombo(combo);
                     }
                 }
@@ -132,13 +131,9 @@ export class CageModel {
                 this.deleteCombo(comboToPotentiallyDelete);
             }
         }
-
-        return modifiedCellMs;
     }
 
-    private reduceOptimalForSize3() {
-        const modifiedCellMs = new Set<CellModel>();
-
+    private reduceOptimalForSize3(reduction: NumsReduction) {
         const PERMS_OF_3 = [
             [0, 1, 2],
             [0, 2, 1],
@@ -172,8 +167,7 @@ export class CageModel {
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    cellM0.deleteNumOpt(num0);
-                    modifiedCellMs.add(cellM0);
+                    reduction.deleteNumOpt(cellM0, num0);
                 }
             }
         }
@@ -191,8 +185,6 @@ export class CageModel {
                 this.deleteCombo(combo);
             }
         }
-
-        return modifiedCellMs;
     }
 
     private combosWithNum(num: number) {
@@ -203,7 +195,7 @@ export class CageModel {
         this._comboSet.deleteCombo(combo);
     }
 
-    private reduceSmallCage() {
+    private reduceSmallCage(reduction: NumsReduction) {
         const context: Context = {
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
@@ -238,21 +230,17 @@ export class CageModel {
 
         this._comboSet = this.newSumAddendsCombosSet();
 
-        const modifiedCellMs = new Set<CellModel>();
         this.cellMs.forEach(cellM => {
             context.processCell(cellM, 0, () => {
                 Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            cellM.deleteNumOpt(num);
-                            modifiedCellMs.add(cellM);
+                            reduction.deleteNumOpt(cellM, num);
                         }
                     });
                 });
             });
         });
-
-        return modifiedCellMs;
     }
 
     private hasSumMatchingPermutationsRecursive(currentSum: number, step: number, context: Context) {
@@ -287,7 +275,7 @@ export class CageModel {
         return has;
     }
 
-    private reduceLargeCage() {
+    private reduceLargeCage(reduction: NumsReduction) {
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this.cellMs) {
             presentNums.addAll(cellM.numOptsSet());
@@ -334,7 +322,6 @@ export class CageModel {
             }
         }
 
-        const modifiedCellMs = new Set<CellModel>();
         if (noLongerValidCombos.length > 0) {
             const numOptsToDelete = new Set<number>();
             for (const num of noLongerValidComboNums.nums()) {
@@ -346,8 +333,7 @@ export class CageModel {
             for (const cellM of this.cellMs) {
                 for (const num of numOptsToDelete) {
                     if (cellM.hasNumOpt(num)) {
-                        cellM.deleteNumOpt(num);
-                        modifiedCellMs.add(cellM);
+                        reduction.deleteNumOpt(cellM, num);
                     }
                 }
             }
@@ -356,8 +342,6 @@ export class CageModel {
                 this._comboSet.deleteCombo(noLongerValidCombo);
             }
         }
-
-        return modifiedCellMs;
     }
 
     findNumPlacementClues(forNum?: number) {
