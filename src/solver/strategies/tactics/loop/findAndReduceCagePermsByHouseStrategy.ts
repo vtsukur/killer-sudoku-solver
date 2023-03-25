@@ -47,9 +47,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                     singleOptionCellM.reduceNumOpts(SudokuNumsSet.ofSingle(num));
                 }
 
-                const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);
-
-                reduction.addAll(combosReducedCellMs);
+                cageMToReDefine.reduceToCombinationsContaining(num, reduction);
             });
         });
 

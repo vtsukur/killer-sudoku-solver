@@ -141,6 +141,17 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(SudokuNumsSet.of(1, 5, 9).union(SudokuNumsSet.of(2, 4, 8)), []);
     });
 
+    test('Uniting `SudokuNumsSet` with another `SudokuNumsSet` producing `SudokuNumsSet` with deleted numbers', () => {
+        const original = SudokuNumsSet.of(1, 5, 9);
+        const deleted = original.unionWithDeleted(SudokuNumsSet.of(1, 5, 7));
+        expectSetWithValues(original, [ 1, 5 ]);
+        expectSetWithValues(deleted, [ 9 ]);
+
+        expectSetWithValues(SudokuNumsSet.of(1, 5, 9).unionWithDeleted(SudokuNumsSet.of(1, 5, 9)), []);
+        expectSetWithValues(SudokuNumsSet.of(1, 5, 9).unionWithDeleted(SudokuNumsSet.of(2, 4, 8)),
+            [ 1, 5, 9 ]);
+    });
+
     test('Instance of `SudokuNumsSet` with remaining numbers', () => {
         expect(SudokuNumsSet.newEmpty().remaining.bitStore).toBe(
             SudokuNumsSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore

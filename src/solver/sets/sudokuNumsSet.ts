@@ -238,6 +238,14 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
+    unionWithDeleted(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+        const oldBitStore = this._bitStore;
+
+        this.union(val);
+
+        return new SudokuNumsSet(oldBitStore ^ this.bitStore);
+    }
+
     /**
      * Clones this set by creating new instance based on the copy of the state of this set.
      *

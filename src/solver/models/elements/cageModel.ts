@@ -401,7 +401,7 @@ export class CageModel {
         return clues;
     }
 
-    reduceToCombinationsContaining(withNum: number): ReadonlySet<CellModel> {
+    reduceToCombinationsContaining(withNum: number, reduction: NumsReduction) {
         if (this.hasSingleCombination() || !this._comboSet.size) return new Set();
 
         const newCombosMap = this.newSumAddendsCombosSet();
@@ -419,16 +419,12 @@ export class CageModel {
 
         if (deleteCombos.length > 0) {
             this._comboSet = newCombosMap;
-            const reducedCellMs = new Set<CellModel>();
             this.cellMs.forEach(cellM => {
-                if (cellM.reduceNumOptsWithImpact(newNumOptions)) {
-                    reducedCellMs.add(cellM);
+                const deletedNumOpts = cellM.reduceNumOptsWithDeleted(newNumOptions);
+                for (const num of deletedNumOpts.nums()) {
+                    reduction.deleteNumOpt(cellM, num);
                 }
             });
-            return reducedCellMs;
-        }
-        else {
-            return new Set();
         }
     }
 
