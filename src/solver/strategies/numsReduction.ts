@@ -9,12 +9,12 @@ export class NumsReduction {
 
     addAll(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {
-            this.addOne(cellM);
+            this.add(cellM);
         }
         return this;
     }
 
-    addOne(val: CellModel) {
+    add(val: CellModel) {
         this._cellMs.add(val);
         Sets.U(this._impactedCageMs, val.withinCageModels);
         return this;
@@ -29,7 +29,7 @@ export class NumsReduction {
     }
 
     static forOne(cellM: CellModel) {
-        return new NumsReduction().addOne(cellM);
+        return new NumsReduction().add(cellM);
     }
 
 }

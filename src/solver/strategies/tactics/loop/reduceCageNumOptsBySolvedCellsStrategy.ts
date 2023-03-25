@@ -14,7 +14,7 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
 
                     if (cellM.hasNumOpt(num)) {
                         cellM.deleteNumOpt(num);
-                        reducedCellMs.addOne(cellM);
+                        reducedCellMs.add(cellM);
                     }
                 }
             }

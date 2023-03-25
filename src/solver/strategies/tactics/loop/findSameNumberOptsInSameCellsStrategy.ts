@@ -66,7 +66,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                             for (const num of cellM.numOpts()) {
                                 if (!entry.nums.has(num)) {
                                     cellM.deleteNumOpt(num);
-                                    reducedCellMs.addOne(cellM);
+                                    reducedCellMs.add(cellM);
                                 }
                             }
                         }
@@ -123,7 +123,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
                         const cellM = getCellMFn(directHouseIndex, perpendicularHouseIndex);
                         if (cellM.hasNumOpt(num)) {
                             cellM.deleteNumOpt(num);
-                            reducedCellMs.addOne(cellM);
+                            reducedCellMs.add(cellM);
                         }
                     }
                 });

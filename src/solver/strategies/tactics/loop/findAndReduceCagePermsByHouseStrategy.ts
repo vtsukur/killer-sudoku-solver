@@ -187,7 +187,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
             }
         }
         if (shouldReduce) {
-            reducedCellMs.addOne(cellM);
+            reducedCellMs.add(cellM);
         }
     }
 };
@@ -218,7 +218,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
         if (reduce) {
             const cellMToReduce = model.cellModelOf(cell);
             cellMToReduce.deleteNumOpt(num);
-            reducedCellMs.addOne(cellMToReduce);
+            reducedCellMs.add(cellMToReduce);
         }
     }
 };
@@ -274,7 +274,7 @@ const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: 
         if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {
             cellM.deleteNumOpt(num);
-            reducedCellMs.addOne(cellM);
+            reducedCellMs.add(cellM);
         }
     }
 };
