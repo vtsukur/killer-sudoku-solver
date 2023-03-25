@@ -196,6 +196,7 @@ function reduceByFormula(formula: Formula): ReadonlySet<CellModel> {
         if (formula.equalToCellMs.size === 1) {
             const otherCellM = formula.equalToCellMs.values().next().value;
             if (!otherCellM.hasNumOpt(targetSum)) {
+
                 formula.cellM.deleteNumOpt(num);
                 reduced.add(formula.cellM);
             } else {

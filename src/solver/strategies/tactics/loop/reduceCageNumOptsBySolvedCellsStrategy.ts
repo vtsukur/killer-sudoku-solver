@@ -13,8 +13,7 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
                     if (!_.isUndefined(cellM.placedNum)) continue;
 
                     if (cellM.hasNumOpt(num)) {
-                        cellM.deleteNumOpt(num);
-                        reduction.add(cellM);
+                        reduction.deleteNumOpt(cellM, num);
                     }
                 }
             }

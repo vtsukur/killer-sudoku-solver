@@ -29,8 +29,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
                     for (const cageMToCheck of cageMsToCheck) {
                         for (const num of cellM.numOpts()) {
                             if (cageMToCheck.combos[0].has(num)) {
-                                cellM.deleteNumOpt(num);
-                                reduction.add(cellM);
+                                reduction.deleteNumOpt(cellM, num);
                             }
                         }
                     }

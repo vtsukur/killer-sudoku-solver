@@ -18,8 +18,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
                     const aCellM = this._model.cellModelAt(row, col);
                     if (aCellM.hasNumOpt(num)) {
-                        aCellM.deleteNumOpt(num);
-                        reduction.add(aCellM);
+                        reduction.deleteNumOpt(aCellM, num);
                     }
                 }
             });
