@@ -9,7 +9,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: true,
             isWithinColumn: true,
             isWithinNonet: true,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 3,
+            minCol: 4,
+            maxRow: 3,
+            maxCol: 4
         } as CellsPlacement);
     });
 
@@ -21,7 +25,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: true,
             isWithinColumn: false,
             isWithinNonet: false,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 3,
+            minCol: 5,
+            maxRow: 3,
+            maxCol: 6
         } as CellsPlacement);
     });
 
@@ -34,7 +42,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: false,
             isWithinColumn: true,
             isWithinNonet: false,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 5,
+            minCol: 3,
+            maxRow: 6,
+            maxCol: 3
         } as CellsPlacement);
     });
 
@@ -47,7 +59,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: false,
             isWithinColumn: false,
             isWithinNonet: true,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 0,
+            minCol: 0,
+            maxRow: 1,
+            maxCol: 1
         } as CellsPlacement);
     });
 
@@ -59,7 +75,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: true,
             isWithinColumn: false,
             isWithinNonet: true,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 0,
+            minCol: 0,
+            maxRow: 0,
+            maxCol: 1
         } as CellsPlacement);
     });
 
@@ -72,7 +92,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: false,
             isWithinColumn: true,
             isWithinNonet: true,
-            isWithinHouse: true
+            isWithinHouse: true,
+            minRow: 0,
+            minCol: 0,
+            maxRow: 1,
+            maxCol: 0
         } as CellsPlacement);
     });
 
@@ -85,7 +109,11 @@ describe('Unit tests for `CellsPlacement`', () => {
             isWithinRow: false,
             isWithinColumn: false,
             isWithinNonet: false,
-            isWithinHouse: false
+            isWithinHouse: false,
+            minRow: 2,
+            minCol: 2,
+            maxRow: 3,
+            maxCol: 3
         } as CellsPlacement);
     });
 

@@ -386,13 +386,13 @@ class IndexedCageModelsStorage {
     private readonly _columnIndexedCages: IndexedHouseCageModels;
 
     private readonly _cageRegisteredEventHandler: CageRegisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].add(cageM);
-        this._columnIndexedCages[cageM.minCol].add(cageM);
+        this._rowIndexedCages[cageM.cage.placement.minRow].add(cageM);
+        this._columnIndexedCages[cageM.cage.placement.minCol].add(cageM);
     };
 
     private readonly _cageUnregisteredEventHandler: CageUnregisteredEventHandler = (cageM: CageModel) => {
-        this._rowIndexedCages[cageM.minRow].delete(cageM);
-        this._columnIndexedCages[cageM.minCol].delete(cageM);
+        this._rowIndexedCages[cageM.cage.placement.minRow].delete(cageM);
+        this._columnIndexedCages[cageM.cage.placement.minCol].delete(cageM);
     };
 
     constructor(model: MasterModel) {
@@ -402,8 +402,8 @@ class IndexedCageModelsStorage {
         this._columnIndexedCages = House.INDICES.map(() => new Set());
 
         for (const cageM of model.cageModelsMap.values()) {
-            this._rowIndexedCages[cageM.minRow].add(cageM);
-            this._columnIndexedCages[cageM.minCol].add(cageM);
+            this._rowIndexedCages[cageM.cage.placement.minRow].add(cageM);
+            this._columnIndexedCages[cageM.cage.placement.minCol].add(cageM);
         }
     }
 
@@ -867,7 +867,7 @@ class RowAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
-        return cageM.maxRow < bottomOrRightIndexExclusive;
+        return cageM.cage.placement.maxRow < bottomOrRightIndexExclusive;
     }
 
 }
@@ -908,7 +908,7 @@ class ColumnAreasProcessor extends AdjacentHouseAreasProcessor {
     }
 
     protected isWithinArea(cageM: CageModel, bottomOrRightIndexExclusive: HouseIndex) {
-        return cageM.maxCol < bottomOrRightIndexExclusive;
+        return cageM.cage.placement.maxCol < bottomOrRightIndexExclusive;
     }
 
 }

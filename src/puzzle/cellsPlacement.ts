@@ -44,6 +44,14 @@ export class CellsPlacement {
      */
     readonly isWithinHouse: boolean;
 
+    readonly minRow: number;
+
+    readonly minCol: number;
+
+    readonly maxRow: number;
+
+    readonly maxCol: number;
+
     /**
      * Constructs a new {@link CellsPlacement} for the given {@link Cell}s.
      *
@@ -58,6 +66,9 @@ export class CellsPlacement {
             // initializing all respective flags with a `true` value.
             //
             this.isWithinRow = this.isWithinColumn = this.isWithinNonet = this.isWithinHouse = true;
+
+            this.minRow = this.maxRow = cells[0].row;
+            this.minCol = this.maxCol = cells[0].col;
         } else {
             //
             // [PERFORMANCE] The following implementation of determining flags
@@ -78,6 +89,11 @@ export class CellsPlacement {
             let isWithinRow = true;
             let isWithinColumn = true;
             let isWithinNonet = true;
+
+            let minRow = firstCell.row;
+            let maxRow = minRow;
+            let minCol = firstCell.col;
+            let maxCol = minCol;
 
             //
             // Iterating over each `Cell` starting with the second one.
@@ -104,6 +120,18 @@ export class CellsPlacement {
                 if (isWithinNonet && refNonet !== cell.nonet) {
                     isWithinNonet = false;
                 }
+
+                if (cell.row < minRow) {
+                    minRow = cell.row;
+                } else if (cell.row > maxRow) {
+                    maxRow = cell.row;
+                }
+
+                if (cell.col < minCol) {
+                    minCol = cell.col;
+                } else if (cell.col > maxCol) {
+                    maxCol = cell.col;
+                }
             } while (++i < cells.length);
 
             // Setting fields.
@@ -111,6 +139,10 @@ export class CellsPlacement {
             this.isWithinColumn = isWithinColumn;
             this.isWithinNonet = isWithinNonet;
             this.isWithinHouse = this.isWithinRow || this.isWithinColumn || this.isWithinNonet;
+            this.minRow = minRow;
+            this.maxRow = maxRow;
+            this.minCol = minCol;
+            this.maxCol = maxCol;
         }
     }
 

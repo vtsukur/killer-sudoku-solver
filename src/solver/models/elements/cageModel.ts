@@ -35,10 +35,6 @@ export class CageModel {
 
     readonly cage;
     readonly cellMs;
-    minRow;
-    minCol;
-    maxRow;
-    maxCol;
 
     private _firstCell;
     private _cellCount;
@@ -49,16 +45,6 @@ export class CageModel {
         this.cage = cage;
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
-        this.minRow = House.CELL_COUNT + 1;
-        this.minCol = this.minRow;
-        this.maxRow = 0;
-        this.maxCol = this.maxRow;
-        for (const cell of cage.cells) {
-            this.minRow = Math.min(this.minRow, cell.row);
-            this.maxRow = Math.max(this.maxRow, cell.row);
-            this.minCol = Math.min(this.minCol, cell.col);
-            this.maxCol = Math.max(this.maxCol, cell.col);
-        }
         this._cellCount = cage.cellCount;
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
         if (comboSet) {
