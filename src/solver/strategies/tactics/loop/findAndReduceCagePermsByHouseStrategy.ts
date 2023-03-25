@@ -211,9 +211,7 @@ const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell:
             }
         }
         if (reduce) {
-            const cellMToReduce = model.cellModelOf(cell);
-            cellMToReduce.deleteNumOpt(num);
-            reduction.add(cellMToReduce);
+            reduction.deleteNumOpt(model.cellModelOf(cell), num);
         }
     }
 };
@@ -268,8 +266,7 @@ const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: 
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;
         if (cellM.hasNumOpt(num)) {
-            cellM.deleteNumOpt(num);
-            reduction.add(cellM);
+            reduction.deleteNumOpt(cellM, num);
         }
     }
 };
