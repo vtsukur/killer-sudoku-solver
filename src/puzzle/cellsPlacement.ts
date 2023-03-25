@@ -70,15 +70,18 @@ export class CellsPlacement {
      * @param cells - {@link Cell}s for the construction of {@link CellsPlacement}.
      */
     constructor(cells: ReadonlyCells) {
+        const firstCell = cells[0];
+
         this.isSingleCell = cells.length === 1;
         if (this.isSingleCell) {
             //
             // [PERFORMANCE] By definition, a single `Cell` resides
             // within a single `Row`, `Column`, and `Nonet`,
-            // initializing all respective flags with a `true` value.
+            // initializing all respective flags with a `true` value
+            // and all positional fields with `Cell`'s `Row` and `Column` indices.
             //
-            this.isWithinRow = this.isWithinColumn = this.isWithinNonet = this.isWithinHouse = true;
 
+            this.isWithinRow = this.isWithinColumn = this.isWithinNonet = this.isWithinHouse = true;
             this.minRow = this.maxRow = cells[0].row;
             this.minCol = this.maxCol = cells[0].col;
         } else {
@@ -89,8 +92,6 @@ export class CellsPlacement {
             // and no extra method calls are several times faster,
             // even for a small number of `Cell`s.
             //
-
-            const firstCell = cells[0];
 
             // Saving reference values of `House`s' indices for the use in the comparisons.
             const refRow = firstCell.row;
@@ -132,6 +133,11 @@ export class CellsPlacement {
                 if (isWithinNonet && refNonet !== cell.nonet) {
                     isWithinNonet = false;
                 }
+
+                //
+                // Updating the minimum and maximum positions considering
+                // the `Row` or `Column` indices of the current `Cell`.
+                //
 
                 if (cell.row < minRow) {
                     minRow = cell.row;
