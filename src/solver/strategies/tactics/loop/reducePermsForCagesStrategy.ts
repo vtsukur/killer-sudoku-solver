@@ -1,11 +1,11 @@
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 export class ReducePermsForCagesStrategy extends Strategy {
 
     execute() {
         do {
-            const reducedCellMs = new ReducedCellModels();
+            const reducedCellMs = new NumsReduction();
 
             for (const cageM of this._context.cageModelsToReduce) {
                 const reducedCellMsSet = cageM.reduce();

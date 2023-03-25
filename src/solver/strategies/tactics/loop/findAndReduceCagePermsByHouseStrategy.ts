@@ -9,7 +9,7 @@ import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reducedCellMs = new ReducedCellModels();
+        const reducedCellMs = new NumsReduction();
 
         this._model.houseModels.forEach(houseM => {
             _.range(1, House.CELL_COUNT + 1).forEach((num: number) => {
@@ -174,7 +174,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
 }
 
-const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reducedCellMs: ReducedCellModels) => {
+const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reducedCellMs: NumsReduction) => {
     for (const { row, col } of houseM.cells) {
         if (cageM.hasCellAt(row, col)) continue;
 
@@ -192,7 +192,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
     }
 };
 
-const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: ReducedCellModels) => {
+const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reducedCellMs: NumsReduction) => {
     const placement = assumptionCage.placement;
     if (placement.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Combo>();
@@ -268,7 +268,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
     return valid;
 };
 
-const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reducedCellMs: ReducedCellModels) => {
+const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reducedCellMs: NumsReduction) => {
     for (const { row, col } of houseM.cells) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;

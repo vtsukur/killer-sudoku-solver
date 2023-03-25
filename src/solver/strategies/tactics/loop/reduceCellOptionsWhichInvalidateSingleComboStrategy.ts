@@ -5,7 +5,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { MasterModel } from '../../../models/masterModel';
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 const TARGET_CELL_NUM_OPTS_COUNT = 2;
@@ -15,7 +15,7 @@ export class ReduceCellOptionsWhichInvalidateSingleComboStrategy extends Strateg
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reducedCellMs = new ReducedCellModels();
+        const reducedCellMs = new NumsReduction();
 
         _.range(0, Grid.SIDE_CELL_COUNT).forEach((row: HouseIndex) => {
             _.range(0, Grid.SIDE_CELL_COUNT).forEach((col: HouseIndex) => {

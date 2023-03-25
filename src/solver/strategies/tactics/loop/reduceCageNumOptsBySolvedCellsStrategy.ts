@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
 
     execute() {
-        const reducedCellMs = new ReducedCellModels();
+        const reducedCellMs = new NumsReduction();
         this._context.recentlySolvedCellModels.forEach(solvedCellM => {
             const num = solvedCellM.placedNum as number;
             for (const cageM of solvedCellM.withinCageModels) {

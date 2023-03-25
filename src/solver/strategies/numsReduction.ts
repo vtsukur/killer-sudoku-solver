@@ -2,7 +2,7 @@ import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 
-export class ReducedCellModels {
+export class NumsReduction {
 
     private _cellMs = new Set<CellModel>();
     private _impactedCageMs = new Set<CageModel>();
@@ -29,7 +29,7 @@ export class ReducedCellModels {
     }
 
     static forOne(cellM: CellModel) {
-        return new ReducedCellModels().addOne(cellM);
+        return new NumsReduction().addOne(cellM);
     }
 
 }

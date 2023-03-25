@@ -6,7 +6,7 @@ import { CellModel } from '../../../models/elements/cellModel';
 import { MasterModel } from '../../../models/masterModel';
 import { SudokuNumsSet } from '../../../sets';
 import { MasterStrategy } from '../../masterStrategy';
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
@@ -25,7 +25,7 @@ export class DeepTryOptionsStrategy extends Strategy {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
             cellMTargetCpy.reduceNumOpts(SudokuNumsSet.ofSingle(tryNum));
-            ctxCpy.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTargetCpy));
+            ctxCpy.setCageModelsToReduceFrom(NumsReduction.forOne(cellMTargetCpy));
 
             try {
                 ctxCpy.skipInit = true;
@@ -65,7 +65,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                 this._context.foundSolution = solution;
             }
         } else if (cellMTarget.numOpts().length < size) {
-            this._context.setCageModelsToReduceFrom(ReducedCellModels.forOne(cellMTarget));
+            this._context.setCageModelsToReduceFrom(NumsReduction.forOne(cellMTarget));
         }
     }
 

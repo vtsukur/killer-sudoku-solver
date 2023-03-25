@@ -6,7 +6,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
-import { ReducedCellModels } from '../../reducedCellModels';
+import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
@@ -33,7 +33,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
             }
         });
 
-        const reducedCellMs = new ReducedCellModels();
+        const reducedCellMs = new NumsReduction();
         for (const formula of formulas.toArray()) {
             reducedCellMs.add(reduceByFormula(formula));
         }

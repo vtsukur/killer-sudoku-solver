@@ -4,13 +4,13 @@ import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
-import { ReducedCellModels } from './reducedCellModels';
+import { NumsReduction } from './numsReduction';
 
 export class Context {
 
     readonly model;
     readonly cageSlicer;
-    reducedModels = new ReducedCellModels();
+    reducedModels = new NumsReduction();
     private _cageModelsToReduce = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
@@ -37,11 +37,11 @@ export class Context {
         this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
     }
 
-    setCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
+    setCageModelsToReduceFrom(reducedCellMs: NumsReduction) {
         this._cageModelsToReduce = new Set(reducedCellMs.impactedCageModels);
     }
 
-    addCageModelsToReduceFrom(reducedCellMs: ReducedCellModels) {
+    addCageModelsToReduceFrom(reducedCellMs: NumsReduction) {
         Sets.U(this._cageModelsToReduce, reducedCellMs.impactedCageModels);
     }
 
