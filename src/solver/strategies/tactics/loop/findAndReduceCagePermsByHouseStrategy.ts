@@ -49,7 +49,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 const combosReducedCellMs = cageMToReDefine.reduceToCombinationsContaining(num);
 
-                reducedCellMs.add(combosReducedCellMs);
+                reducedCellMs.addAll(combosReducedCellMs);
             });
         });
 

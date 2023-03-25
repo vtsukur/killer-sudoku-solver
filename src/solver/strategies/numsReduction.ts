@@ -7,7 +7,7 @@ export class NumsReduction {
     private _cellMs = new Set<CellModel>();
     private _impactedCageMs = new Set<CageModel>();
 
-    add(val: ReadonlySet<CellModel>) {
+    addAll(val: ReadonlySet<CellModel>) {
         for (const cellM of val) {
             this.addOne(cellM);
         }

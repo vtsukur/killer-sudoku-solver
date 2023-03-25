@@ -35,7 +35,7 @@ export class FindNonetBasedFormulasStrategy extends Strategy {
 
         const reducedCellMs = new NumsReduction();
         for (const formula of formulas.toArray()) {
-            reducedCellMs.add(reduceByFormula(formula));
+            reducedCellMs.addAll(reduceByFormula(formula));
         }
         this._context.setCageModelsToReduceFrom(reducedCellMs);
 
