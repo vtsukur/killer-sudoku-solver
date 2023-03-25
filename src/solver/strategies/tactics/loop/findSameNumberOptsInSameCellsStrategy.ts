@@ -65,8 +65,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
                         if (cellM.numOpts().length > entry.keys.length) {
                             for (const num of cellM.numOpts()) {
                                 if (!entry.nums.has(num)) {
-                                    cellM.deleteNumOpt(num);
-                                    reduction.add(cellM);
+                                    reduction.deleteNumOpt(cellM, num);
                                 }
                             }
                         }
