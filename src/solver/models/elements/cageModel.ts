@@ -196,7 +196,7 @@ export class CageModel {
     }
 
     private combosWithNum(num: number) {
-        return Array.from(this._comboSet.values).filter(combo => combo.has(num));
+        return this._comboSet.values.filter(combo => combo.has(num));
     }
 
     private deleteCombo(combo: Combo) {
