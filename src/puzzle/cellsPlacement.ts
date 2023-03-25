@@ -44,12 +44,24 @@ export class CellsPlacement {
      */
     readonly isWithinHouse: boolean;
 
+    /**
+     * A minimal {@link Row} index amongst {@link Cell}s.
+     */
     readonly minRow: number;
 
+    /**
+     * A minimal {@link Column} index amongst {@link Cell}s.
+     */
     readonly minCol: number;
 
+    /**
+     * A maximum {@link Row} index amongst {@link Cell}s.
+     */
     readonly maxRow: number;
 
+    /**
+     * A maximum {@link Column} index amongst {@link Cell}s.
+     */
     readonly maxCol: number;
 
     /**
