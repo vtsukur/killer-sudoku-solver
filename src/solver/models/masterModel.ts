@@ -180,7 +180,6 @@ export class MasterModel {
         cageM.initialReduce(reduction);
         this.cageModelsMap.set(cage.key, cageM);
         this.onCageRegisteredEvent(cageM);
-        return cageM;
     }
 
     isDerivedFromInputCage(cells: ReadonlyCells) {
