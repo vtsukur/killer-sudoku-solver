@@ -6,7 +6,6 @@ import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { Context } from '../../../../src/solver/strategies/context';
 import { MasterStrategy } from '../../../../src/solver/strategies/masterStrategy';
-import { CageSlicer } from '../../../../src/solver/transform/cageSlicer';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
@@ -325,7 +324,7 @@ describe('Tests for master model', () => {
 
         // emulating Solver
         const model = new MasterModel(puzzle);
-        const ctx = new Context(model, new CageSlicer(model));
+        const ctx = new Context(model);
         new MasterStrategy(ctx).execute();
 
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);

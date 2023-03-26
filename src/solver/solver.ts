@@ -3,7 +3,6 @@ import { Solution } from '../puzzle/solution';
 import { MasterModel } from './models/masterModel';
 import { Context } from './strategies/context';
 import { MasterStrategy } from './strategies/masterStrategy';
-import { CageSlicer } from './transform/cageSlicer';
 
 /**
  * `Solver` for Killer Sudoku `Puzzle`.
@@ -23,7 +22,7 @@ export class Solver {
      */
     solve(puzzle: Puzzle) {
         const model = new MasterModel(puzzle);
-        const ctx = new Context(model, new CageSlicer(model));
+        const ctx = new Context(model);
         new MasterStrategy(ctx).execute();
         return new Solution(model.solution);
     }
