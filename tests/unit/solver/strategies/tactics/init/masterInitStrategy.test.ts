@@ -29,10 +29,10 @@ describe('Unit tests for `MasterInitStrategy`', () => {
             // // Protrusive `Cage` added.
             // expect(model.hasCage(Cage.ofSum(14).at(1, 6).at(1, 7).at(3, 5).new())).toBeTruthy();
 
-            // // ... Results of `FindComplementingCagesStrategy` (selective assertion):
+        // // ... Results of `FindComplementingCagesStrategy` (selective assertion):
 
-            // // Complement for `Column` 8.
-            // expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
+        // // Complement for `Column` 8.
+        // expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
 
         // ... Results of `FindCombosForHouseCagesStrategy` (selective assertion):
 
@@ -44,7 +44,7 @@ describe('Unit tests for `MasterInitStrategy`', () => {
             Combo.of(3, 4, 7)
         ]);
 
-        // ... Results of `InstructToReduceAllCagesStrategy`:
+        // ... Accumulated results from several `Strategy`-ies reflecting non-empty reduction:
 
         expect(context.hasCageModelsToReduce).toBeTruthy();
         expect(context.cageModelsToReduce.size).toBeGreaterThan(1);

@@ -5,7 +5,6 @@ import { Context } from '../../context';
 import { Strategy } from '../../strategy';
 import { FindCombosForHouseCagesStrategy } from './findCombosForHouseCagesStrategy';
 import { FindComplementingCagesStrategy } from './findComplementingCagesStrategy';
-import { InstructToReduceAllCagesStrategy } from '../common/instructToReduceAllCagesStrategy';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FindProtrusiveCagesStrategy } from './findProtrusiveCagesStrategy';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,7 +26,6 @@ import { DeepTryOptionsStrategy } from '../loop/deepTryOptionsStrategy';
  * @see FindProtrusiveCagesStrategy
  * @see FindComplementingCagesStrategy
  * @see FindCombosForHouseCagesStrategy
- * @see InstructToReduceAllCagesStrategy
  *
  * @public
  */
@@ -56,13 +54,6 @@ export class MasterInitStrategy extends Strategy {
             // since it is necessary for `Combo`s enumeration.
             //
             this.executeAnother(FindCombosForHouseCagesStrategy);
-
-            //
-            // Instruct follow-up `Strategy`-ies
-            // to re-evaluate possible number options for all `Cage`s
-            // by applying _reduction_.
-            //
-            this.executeAnother(InstructToReduceAllCagesStrategy);
         }
     }
 
