@@ -19,7 +19,7 @@ export class Context {
 
     constructor(model: MasterModel) {
         this.model = model;
-        this.cageSlicer = new CageSlicer(model);
+        this.cageSlicer = new CageSlicer(this);
         this.recentlySolvedCellModels = [];
         this.depth = 0;
         this.foundSolution = undefined;

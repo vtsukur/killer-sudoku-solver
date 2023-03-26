@@ -4,13 +4,16 @@ import { House } from '../../puzzle/house';
 import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { MasterModel } from '../models/masterModel';
+import { Context } from '../strategies/context';
 
 export class CageSlicer {
 
+    private readonly _ctx;
     readonly model;
 
-    constructor(model: MasterModel) {
-        this.model = model;
+    constructor(ctx: Context) {
+        this._ctx = ctx;
+        this.model = ctx.model;
     }
 
     addAndSliceResidualCageRecursively(initialResidualCage: Cage) {
