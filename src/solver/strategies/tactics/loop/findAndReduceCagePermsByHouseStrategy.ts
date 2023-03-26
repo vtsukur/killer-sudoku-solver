@@ -17,7 +17,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reduction = new NumsReduction();
+        const reduction = this._context.reduction;
 
         this._model.houseModels.forEach(houseM => {
             _.range(1, House.CELL_COUNT + 1).forEach((num: number) => {
@@ -166,8 +166,6 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 }
             });
         });
-
-        this._context.setReduction(reduction);
     }
 
 }
