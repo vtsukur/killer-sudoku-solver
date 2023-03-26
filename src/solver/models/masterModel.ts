@@ -165,7 +165,6 @@ export class MasterModel {
 
     registerCage(cage: Cage, reduction: NumsReduction) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
-        cageM.initialReduce(reduction);
         if (cageM.cage.placement.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);
         }
@@ -178,6 +177,7 @@ export class MasterModel {
         cage.cells.forEach((cell: Cell) => {
             this.cellModelOf(cell).addWithinCageModel(cageM);
         });
+        cageM.initialReduce(reduction);
         this.cageModelsMap.set(cage.key, cageM);
         this.onCageRegisteredEvent(cageM);
         return cageM;
