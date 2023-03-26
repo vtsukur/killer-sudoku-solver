@@ -58,7 +58,7 @@ export class CellModel {
         return this._numOptsSet.delete(val);
     }
 
-    reduceNumOptsWithDeleted(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+    reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
         return this._numOptsSet.unionWithDeleted(val);
     }
 
