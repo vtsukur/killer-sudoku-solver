@@ -3,8 +3,6 @@ import { Strategy } from '../../strategy';
 export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
     execute() {
-        const reduction = this._context.reduction;
-
         this._context.recentlySolvedCellModels.forEach(cellM => {
             const num = cellM.placedNum as number;
             [
@@ -17,13 +15,11 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
                     const aCellM = this._model.cellModelAt(row, col);
                     if (aCellM.hasNumOpt(num)) {
-                        reduction.deleteNumOpt(aCellM, num);
+                        this._context.reduction.deleteNumOpt(aCellM, num);
                     }
                 }
             });
         });
-
-        this._context.addToReduction(reduction);
     }
 
 }

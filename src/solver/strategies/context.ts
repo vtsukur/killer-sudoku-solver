@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { Sets } from '../../util/sets';
 import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
@@ -36,10 +35,6 @@ export class Context {
     setReduction(reduction: NumsReduction) {
         this.reduction = reduction;
         this._cageModelsToReduce = new Set(reduction.impactedCageModels);
-    }
-
-    addToReduction(reduction: NumsReduction) {
-        Sets.U(this._cageModelsToReduce, reduction.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {
