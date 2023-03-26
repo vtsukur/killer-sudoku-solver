@@ -31,7 +31,7 @@ export class Context {
         return this.reduction.impactedCageModels;
     }
 
-    setReduction(reduction: NumsReduction) {
+    resetReduction(reduction: NumsReduction) {
         this.reduction = reduction;
     }
 

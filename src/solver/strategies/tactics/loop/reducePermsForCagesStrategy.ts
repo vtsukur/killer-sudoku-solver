@@ -11,7 +11,7 @@ export class ReducePermsForCagesStrategy extends Strategy {
                 cageM.reduce(reduction);
             }
 
-            this._context.setReduction(reduction);
+            this._context.resetReduction(reduction);
         } while (this._context.hasCageModelsToReduce);
     }
 
