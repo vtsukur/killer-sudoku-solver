@@ -324,8 +324,9 @@ describe('Tests for master model', () => {
         const puzzle = puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01;
 
         // emulating Solver
-        const model = new MasterModel(puzzle, new NumsReduction());
-        const ctx = new Context(model);
+        const reduction = new NumsReduction();
+        const model = new MasterModel(puzzle, reduction);
+        const ctx = new Context(model, reduction);
         new MasterStrategy(ctx).execute();
 
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);

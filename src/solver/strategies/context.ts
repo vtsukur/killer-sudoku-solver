@@ -8,14 +8,15 @@ export class Context {
 
     readonly model;
     readonly cageSlicer;
-    reduction = new NumsReduction();
+    reduction: NumsReduction;
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
     skipInit = false;
 
-    constructor(model: MasterModel) {
+    constructor(model: MasterModel, reduction: NumsReduction) {
         this.model = model;
+        this.reduction = reduction;
         this.cageSlicer = new CageSlicer(this);
         this.recentlySolvedCellModels = [];
         this.depth = 0;
@@ -48,7 +49,7 @@ export class Context {
 
     deepCopyForDeepTry() {
         const modelCopy = this.model.deepCopy();
-        const copy = new Context(modelCopy);
+        const copy = new Context(modelCopy, new NumsReduction());
         copy.depth = this.depth + 1;
         return copy;
     }
