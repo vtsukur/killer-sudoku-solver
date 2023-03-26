@@ -5,6 +5,7 @@ import { puzzleSamples } from '../../../../puzzle/puzzleSamples';
 import { newCageM, newContext } from './builders';
 import { MasterInitStrategy } from '../../../../../../src/solver/strategies/tactics/init';
 import { Combo } from '../../../../../../src/solver/math';
+import { Cage } from '../../../../../../src/puzzle/cage';
 
 describe('Unit tests for `MasterInitStrategy`', () => {
 
@@ -29,10 +30,10 @@ describe('Unit tests for `MasterInitStrategy`', () => {
             // // Protrusive `Cage` added.
             // expect(model.hasCage(Cage.ofSum(14).at(1, 6).at(1, 7).at(3, 5).new())).toBeTruthy();
 
-        // // ... Results of `FindComplementingCagesStrategy` (selective assertion):
+        // ... Results of `FindComplementingCagesStrategy` (selective assertion):
 
-        // // Complement for `Column` 8.
-        // expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
+        // Complement for `Column` 8.
+        expect(model.hasCage(Cage.ofSum(1).at(2, 8).new())).toBeTruthy();
 
         // ... Results of `FindCombosForHouseCagesStrategy` (selective assertion):
 
