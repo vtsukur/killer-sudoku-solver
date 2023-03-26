@@ -13,13 +13,6 @@ export class NumsReduction {
         return this;
     }
 
-    addAll(val: ReadonlySet<CellModel>) {
-        for (const cellM of val) {
-            this.add(cellM);
-        }
-        return this;
-    }
-
     deleteNumOpt(cellM: CellModel, num: number) {
         cellM.deleteNumOpt(num);
         this.add(cellM);
