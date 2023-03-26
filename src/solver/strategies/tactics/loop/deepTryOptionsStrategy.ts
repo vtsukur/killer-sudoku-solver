@@ -24,8 +24,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-            cellMTargetCpy.reduceNumOpts(SudokuNumsSet.ofSingle(tryNum));
-            ctxCpy.setReduction(NumsReduction.forOne(cellMTargetCpy));
+            ctxCpy.reduction.reduceNumOpts(cellMTargetCpy, SudokuNumsSet.ofSingle(tryNum));
 
             try {
                 ctxCpy.skipInit = true;
