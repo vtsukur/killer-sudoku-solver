@@ -6,7 +6,6 @@ import { CellModel } from '../../../models/elements/cellModel';
 import { MasterModel } from '../../../models/masterModel';
 import { SudokuNumsSet } from '../../../sets';
 import { MasterStrategy } from '../../masterStrategy';
-import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 const log = logFactory.withLabel('Advanced Solver - DeepTryOptionsStrategy');
@@ -40,7 +39,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                     if (ctxCpy.depth === 1) {
                         log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
                     }
-                    cellMTarget.deleteNumOpt(tryNum);
+                    this._context.reduction.deleteNumOpt(cellMTarget, tryNum);
                     continue;
                 } else {
                     throw e;
@@ -63,8 +62,6 @@ export class DeepTryOptionsStrategy extends Strategy {
             } else {
                 this._context.foundSolution = solution;
             }
-        } else if (cellMTarget.numOpts().length < size) {
-            this._context.setReduction(NumsReduction.forOne(cellMTarget));
         }
     }
 
