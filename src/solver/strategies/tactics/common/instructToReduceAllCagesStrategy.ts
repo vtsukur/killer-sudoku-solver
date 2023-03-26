@@ -20,7 +20,7 @@ export class InstructToReduceAllCagesStrategy extends Strategy {
      * @see Strategy.execute
      */
     execute() {
-        this._context.setReductionToAll();
+        this._context.setReduction(this._context.reduction);
     }
 
 }

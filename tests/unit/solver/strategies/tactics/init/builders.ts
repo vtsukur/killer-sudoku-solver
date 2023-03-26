@@ -7,8 +7,11 @@ import { Context } from '../../../../../../src/solver/strategies/context';
 import { NumsReduction } from '../../../../../../src/solver/strategies/numsReduction';
 
 export const newContext = (puzzle: Puzzle) => {
-    const masterModel = new MasterModel(puzzle, new NumsReduction());
-    return new Context(masterModel);
+    const reduction = new NumsReduction();
+    const masterModel = new MasterModel(puzzle, reduction);
+    const ctx = new Context(masterModel);
+    ctx.setReduction(reduction);
+    return ctx;
 };
 
 export const newCageM = (model: MasterModel, sum: number, cells: ReadonlyArray<Cell>) => {

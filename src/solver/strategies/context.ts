@@ -38,6 +38,7 @@ export class Context {
     }
 
     setReduction(reduction: NumsReduction) {
+        this.reduction = reduction;
         this._cageModelsToReduce = new Set(reduction.impactedCageModels);
     }
 

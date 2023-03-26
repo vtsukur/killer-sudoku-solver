@@ -47,7 +47,8 @@ describe('Unit tests for `MasterInitStrategy`', () => {
         // ... Results of `InstructToReduceAllCagesStrategy`:
 
         expect(context.hasCageModelsToReduce).toBeTruthy();
-        expect(context.cageModelsToReduce).toEqual(new Set(model.cageModelsMap.values()));
+        expect(context.cageModelsToReduce.size).toBeGreaterThan(1);
+        expect(context.cageModelsToReduce.size).toBeLessThan(context.model.cageModelsMap.size);
     });
 
     const cageM = (sum: number, cells: ReadonlyArray<Cell>) => {

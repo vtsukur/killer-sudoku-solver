@@ -1,10 +1,9 @@
-import { NumsReduction } from '../../numsReduction';
 import { Strategy } from '../../strategy';
 
 export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
 
     execute() {
-        const reduction = new NumsReduction();
+        const reduction = this._context.reduction;
 
         this._context.recentlySolvedCellModels.forEach(cellM => {
             const num = cellM.placedNum as number;
