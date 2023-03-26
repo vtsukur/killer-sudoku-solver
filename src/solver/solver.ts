@@ -3,6 +3,7 @@ import { Solution } from '../puzzle/solution';
 import { MasterModel } from './models/masterModel';
 import { Context } from './strategies/context';
 import { MasterStrategy } from './strategies/masterStrategy';
+import { NumsReduction } from './strategies/numsReduction';
 
 /**
  * `Solver` for Killer Sudoku `Puzzle`.
@@ -21,8 +22,10 @@ export class Solver {
      * @throws {InvalidSolverStateError} if `Solver` is stuck in a state that treats `Puzzle` as unsolvable.
      */
     solve(puzzle: Puzzle) {
-        const model = new MasterModel(puzzle);
+        const reduction = new NumsReduction();
+        const model = new MasterModel(puzzle, reduction);
         const ctx = new Context(model);
+        ctx.setReduction(reduction);
         new MasterStrategy(ctx).execute();
         return new Solution(model.solution);
     }

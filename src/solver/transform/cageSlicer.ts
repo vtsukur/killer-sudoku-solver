@@ -39,11 +39,13 @@ export class CageSlicer {
 
                 cagesToUnregister.forEach(cage => this.model.unregisterCage(cage));
 
-                this.model.registerCage(residualCage);
+                this.model.registerCage(residualCage, this._ctx.reduction);
             });
 
             residualCages = nextResidualCages;
         }
+
+        this._ctx.setReduction(this._ctx.reduction);
     }
 
     private getCageMsFullyContainingResidualCage(residualCage: Cage) {

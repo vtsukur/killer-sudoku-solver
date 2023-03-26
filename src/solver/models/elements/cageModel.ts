@@ -63,7 +63,7 @@ export class CageModel {
         return new CageModel(this.cage, [...this.cellMs], this._comboSet);
     }
 
-    initialReduce() {
+    initialReduce(reduction: NumsReduction) {
         const nums = this._comboSet.fill();
         this.updateCellMsNums(nums);
     }

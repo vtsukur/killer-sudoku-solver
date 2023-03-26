@@ -7,6 +7,7 @@ import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
 import { Row } from '../../puzzle/row';
+import { NumsReduction } from '../strategies/numsReduction';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';
@@ -58,11 +59,11 @@ export class MasterModel {
     private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
     private readonly _eventHandlers: Map<string, Set<GenericEventHandler>> = MasterModelEvents.newEventHandlersMap();
 
-    constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
+    constructor(puzzleOrMasterModel: Puzzle | MasterModel, reduction?: NumsReduction) {
         if (puzzleOrMasterModel instanceof Puzzle) {
             this.puzzle = puzzleOrMasterModel;
             this._cellsToInputCagesMatrix = Grid.newMatrix();
-            this.initWithPuzzle(puzzleOrMasterModel);
+            this.initWithPuzzle(puzzleOrMasterModel, reduction as NumsReduction);
         } else {
             this.puzzle = puzzleOrMasterModel.puzzle;
             this._cellsToInputCagesMatrix = puzzleOrMasterModel._cellsToInputCagesMatrix;
@@ -71,7 +72,7 @@ export class MasterModel {
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
-    private initWithPuzzle(puzzle: Puzzle) {
+    private initWithPuzzle(puzzle: Puzzle, reduction: NumsReduction) {
         this._placedNumCount = 0;
 
         puzzle.cages.forEach(cage => {
@@ -92,7 +93,7 @@ export class MasterModel {
         });
 
         puzzle.cages.forEach(cage => {
-            this.registerCage(cage);
+            this.registerCage(cage, reduction);
         });
     }
 
@@ -162,9 +163,9 @@ export class MasterModel {
         });
     }
 
-    registerCage(cage: Cage) {
+    registerCage(cage: Cage, reduction: NumsReduction) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
         if (cageM.cage.placement.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);
         }

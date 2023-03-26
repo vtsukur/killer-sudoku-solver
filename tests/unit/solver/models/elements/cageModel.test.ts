@@ -23,7 +23,7 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         expect(cellM1.numOpts()).toEqual([ 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 8, 9 ]);
@@ -38,7 +38,7 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(13).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         expect(cellM1.numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
@@ -56,7 +56,7 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(24).withCell(cell1).withCell(cell2).withCell(cell3).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         expect(cellM1.numOpts()).toEqual([ 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 7, 8, 9 ]);
@@ -72,7 +72,7 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         cellM1.deleteNumOpt(5);
         cageM.reduce(reduction);
@@ -95,7 +95,7 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         cellM1.deleteNumOpt(5);
         cellM2.deleteNumOpt(5);
@@ -137,7 +137,7 @@ describe('Unit tests for `CageModel`', () => {
             .new();
         const cageM = new CageModel(cage, cellMs);
 
-        cageM.initialReduce();
+        cageM.initialReduce(reduction);
 
         const initialCombos = Array.from(cageM.combos);
         expect(initialCombos).toEqual([

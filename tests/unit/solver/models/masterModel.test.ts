@@ -6,6 +6,7 @@ import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 import { MasterModel } from '../../../../src/solver/models/masterModel';
 import { Context } from '../../../../src/solver/strategies/context';
 import { MasterStrategy } from '../../../../src/solver/strategies/masterStrategy';
+import { NumsReduction } from '../../../../src/solver/strategies/numsReduction';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
@@ -15,7 +16,7 @@ type ExpectedHouse = {
 };
 
 describe('Tests for master model', () => {
-    const model = new MasterModel(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
+    const model = new MasterModel(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01, new NumsReduction());
 
     test('Initialization of CellModels (shallow coverage)', () => {
         const aCellModel = model.cellModelAt(2, 3);
@@ -323,7 +324,7 @@ describe('Tests for master model', () => {
         const puzzle = puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01;
 
         // emulating Solver
-        const model = new MasterModel(puzzle);
+        const model = new MasterModel(puzzle, new NumsReduction());
         const ctx = new Context(model);
         new MasterStrategy(ctx).execute();
 
