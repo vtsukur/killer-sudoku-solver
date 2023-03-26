@@ -13,7 +13,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
     execute() {
         if (this._context.hasCageModelsToReduce) return;
 
-        const reduction = new NumsReduction();
+        const reduction = this._context.reduction;
 
         const colNumMapForRows: Map<HouseModel, Array<Array<number>>> = new Map();
         const rowNumMapForCols: Map<HouseModel, Array<Array<number>>> = new Map();
@@ -87,8 +87,6 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
             (directHouseIndex: number, perpendicularHouseIndex: number) => this._model.cellModelAt(perpendicularHouseIndex, directHouseIndex),
             reduction
         );
-
-        this._context.setReduction(reduction);
     }
 
 }
