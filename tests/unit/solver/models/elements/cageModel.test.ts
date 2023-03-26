@@ -75,6 +75,9 @@ describe('Unit tests for `CageModel`', () => {
         cageM.initialReduce(reduction);
 
         cellM1.deleteNumOpt(5);
+
+        reduction = new NumsReduction();
+
         cageM.reduce(reduction);
         const impactedCellMs = reduction.impactedCellModels;
 

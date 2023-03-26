@@ -5,7 +5,7 @@ import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
-import { CombosSet, ReadonlyCombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
+import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { NumsReduction } from '../../strategies/numsReduction';
@@ -65,7 +65,9 @@ export class CageModel {
 
     initialReduce(reduction: NumsReduction) {
         const nums = this._comboSet.fill();
-        this.updateCellMsNums(nums);
+        for (const cellM of this.cellMs) {
+            reduction.reduceNumOpts(cellM, nums);
+        }
     }
 
     anyRow() {
@@ -86,10 +88,6 @@ export class CageModel {
 
     reduceCombos(combos: ReadonlyCombosSet) {
         const nums = this._comboSet.reduce(combos);
-        this.updateCellMsNums(nums);
-    }
-
-    private updateCellMsNums(nums: ReadonlySudokuNumsSet) {
         for (const cellM of this.cellMs) {
             cellM.reduceNumOpts(nums);
         }
