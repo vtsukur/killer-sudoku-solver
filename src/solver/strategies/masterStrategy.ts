@@ -24,7 +24,7 @@ export class MasterStrategy extends Strategy {
             this.executeAnother(FindSameNumberOptsInSameCellsStrategy);
             this.executeAnother(DeepTryOptionsStrategy);
         }
-        while (!this._model.isSolved && this._context.hasCageModelsToReduce);
+        while (!this._model.isSolved && this._context.reduction.isNotEmpty);
     }
 
 }

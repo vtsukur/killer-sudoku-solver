@@ -12,7 +12,7 @@ import { Strategy } from '../../strategy';
 export class FindNonetBasedFormulasStrategy extends Strategy {
 
     execute() {
-        if (this._context.hasCageModelsToReduce) return;
+        if (this._context.reduction.isNotEmpty) return;
 
         const formulas = new Formulas();
 

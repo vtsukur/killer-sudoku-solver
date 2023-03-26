@@ -23,14 +23,6 @@ export class Context {
         this.foundSolution = undefined;
     }
 
-    get hasCageModelsToReduce() {
-        return this.reduction.impactedCageModels.size > 0;
-    }
-
-    get cageModelsToReduce() {
-        return this.reduction.impactedCageModels;
-    }
-
     resetReduction(reduction: NumsReduction) {
         this.reduction = reduction;
     }
