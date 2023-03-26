@@ -86,10 +86,10 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    reduceCombos(combos: ReadonlyCombosSet) {
+    reduceCombos(combos: ReadonlyCombosSet, reduction: NumsReduction) {
         const nums = this._comboSet.reduce(combos);
         for (const cellM of this.cellMs) {
-            cellM.reduceNumOpts(nums);
+            reduction.reduceNumOpts(cellM, nums);
         }
     }
 
