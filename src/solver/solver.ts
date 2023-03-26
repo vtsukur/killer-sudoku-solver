@@ -23,8 +23,9 @@ export class Solver {
      */
     solve(puzzle: Puzzle) {
         const reduction = new NumsReduction();
-        const model = new MasterModel(puzzle, reduction);
+        const model = new MasterModel(puzzle);
         const ctx = new Context(model, reduction);
+        model.initialReduce(reduction);
         new MasterStrategy(ctx).execute();
         return new Solution(model.solution);
     }

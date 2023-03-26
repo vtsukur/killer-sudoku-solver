@@ -8,8 +8,9 @@ import { NumsReduction } from '../../../../../../src/solver/strategies/numsReduc
 
 export const newContext = (puzzle: Puzzle) => {
     const reduction = new NumsReduction();
-    const masterModel = new MasterModel(puzzle, reduction);
+    const masterModel = new MasterModel(puzzle);
     const ctx = new Context(masterModel, reduction);
+    masterModel.initialReduce(reduction);
     return ctx;
 };
 

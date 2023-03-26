@@ -59,11 +59,11 @@ export class MasterModel {
     private readonly _cellsToInputCagesMatrix: Array<Array<Cage>>;
     private readonly _eventHandlers: Map<string, Set<GenericEventHandler>> = MasterModelEvents.newEventHandlersMap();
 
-    constructor(puzzleOrMasterModel: Puzzle | MasterModel, reduction?: NumsReduction) {
+    constructor(puzzleOrMasterModel: Puzzle | MasterModel) {
         if (puzzleOrMasterModel instanceof Puzzle) {
             this.puzzle = puzzleOrMasterModel;
             this._cellsToInputCagesMatrix = Grid.newMatrix();
-            this.initWithPuzzle(puzzleOrMasterModel, reduction as NumsReduction);
+            this.initWithPuzzle(puzzleOrMasterModel);
         } else {
             this.puzzle = puzzleOrMasterModel.puzzle;
             this._cellsToInputCagesMatrix = puzzleOrMasterModel._cellsToInputCagesMatrix;
@@ -72,7 +72,7 @@ export class MasterModel {
         this.houseModels = [[...this.rowModels], [...this.columnModels], [...this.nonetModels]].flat();
     }
 
-    private initWithPuzzle(puzzle: Puzzle, reduction: NumsReduction) {
+    private initWithPuzzle(puzzle: Puzzle) {
         this._placedNumCount = 0;
 
         puzzle.cages.forEach(cage => {
@@ -93,7 +93,7 @@ export class MasterModel {
         });
 
         puzzle.cages.forEach(cage => {
-            this.registerCage(cage, reduction);
+            this.registerCage(cage);
         });
     }
 
@@ -163,7 +163,7 @@ export class MasterModel {
         });
     }
 
-    registerCage(cage: Cage, reduction: NumsReduction) {
+    registerCage(cage: Cage, reduction?: NumsReduction) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
         if (cageM.cage.placement.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);
@@ -177,9 +177,17 @@ export class MasterModel {
         cage.cells.forEach((cell: Cell) => {
             this.cellModelOf(cell).addWithinCageModel(cageM);
         });
-        cageM.initialReduce(reduction);
+        if (reduction) {
+            cageM.initialReduce(reduction);
+        }
         this.cageModelsMap.set(cage.key, cageM);
         this.onCageRegisteredEvent(cageM);
+    }
+
+    initialReduce(reduction: NumsReduction) {
+        for (const cageM of this.cageModelsMap.values()) {
+            cageM.initialReduce(reduction);
+        }
     }
 
     isDerivedFromInputCage(cells: ReadonlyCells) {
