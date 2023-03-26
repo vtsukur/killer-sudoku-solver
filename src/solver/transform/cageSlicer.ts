@@ -44,8 +44,6 @@ export class CageSlicer {
 
             residualCages = nextResidualCages;
         }
-
-        this._ctx.setReduction(this._ctx.reduction);
     }
 
     private getCageMsFullyContainingResidualCage(residualCage: Cage) {

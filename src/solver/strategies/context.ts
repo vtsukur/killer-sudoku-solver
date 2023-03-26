@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { CageModel } from '../models/elements/cageModel';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
@@ -10,7 +9,6 @@ export class Context {
     readonly model;
     readonly cageSlicer;
     reduction = new NumsReduction();
-    private _cageModelsToReduce = new Set<CageModel>();
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -25,16 +23,15 @@ export class Context {
     }
 
     get hasCageModelsToReduce() {
-        return this._cageModelsToReduce.size > 0;
+        return this.reduction.impactedCageModels.size > 0;
     }
 
     get cageModelsToReduce() {
-        return this._cageModelsToReduce;
+        return this.reduction.impactedCageModels;
     }
 
     setReduction(reduction: NumsReduction) {
         this.reduction = reduction;
-        this._cageModelsToReduce = new Set(reduction.impactedCageModels);
     }
 
     get hasRecentlySolvedCellModels() {
