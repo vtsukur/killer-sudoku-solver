@@ -13,7 +13,6 @@ describe('Performance tests for `ReducePermsForCagesStrategy`', () => {
         test(`Applying \`Strategy\` for Daily Challenge (2022-11-01) by Sudoku.com [${i}]`, () => {
             ITERATIONS.forEach(() => {
                 const context = newContext(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_10_22);
-                context.setReductionToAll();
                 new ReducePermsForCagesStrategy(context).execute();
             });
         });

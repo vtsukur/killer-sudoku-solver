@@ -33,10 +33,6 @@ export class Context {
         return this._cageModelsToReduce;
     }
 
-    setReductionToAll() {
-        this._cageModelsToReduce = new Set(this.model.cageModelsMap.values());
-    }
-
     setReduction(reduction: NumsReduction) {
         this.reduction = reduction;
         this._cageModelsToReduce = new Set(reduction.impactedCageModels);
