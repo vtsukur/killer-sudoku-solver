@@ -418,10 +418,7 @@ export class CageModel {
         if (deleteCombos.length > 0) {
             this._comboSet = newCombosMap;
             this.cellMs.forEach(cellM => {
-                const deletedNumOpts = cellM.reduceNumOptsWithDeleted(newNumOptions);
-                for (const num of deletedNumOpts.nums()) {
-                    reduction.deleteNumOpt(cellM, num);
-                }
+                reduction.reduceNumOpts(cellM, newNumOptions);
             });
         }
     }
