@@ -66,7 +66,7 @@ export class CageModel {
     initialReduce(reduction: NumsReduction) {
         const nums = this._comboSet.fill();
         for (const cellM of this.cellMs) {
-            reduction.reduceNumOpts(cellM, nums);
+            reduction.tryReduceNumOpts(cellM, nums);
         }
     }
 
@@ -89,7 +89,7 @@ export class CageModel {
     reduceCombos(combos: ReadonlyCombosSet, reduction: NumsReduction) {
         const nums = this._comboSet.reduce(combos);
         for (const cellM of this.cellMs) {
-            reduction.reduceNumOpts(cellM, nums);
+            reduction.tryReduceNumOpts(cellM, nums);
         }
     }
 
@@ -418,7 +418,7 @@ export class CageModel {
         if (deleteCombos.length > 0) {
             this._comboSet = newCombosMap;
             this.cellMs.forEach(cellM => {
-                reduction.reduceNumOpts(cellM, newNumOptions);
+                reduction.tryReduceNumOpts(cellM, newNumOptions);
             });
         }
     }

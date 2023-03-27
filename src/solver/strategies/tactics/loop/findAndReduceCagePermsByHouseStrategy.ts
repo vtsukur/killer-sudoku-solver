@@ -44,7 +44,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
                 if (!_.isUndefined(singleCellForNum)) {
                     const singleOptionCellM = this._model.cellModelOf(singleCellForNum as Cell);
-                    reduction.reduceNumOpts(singleOptionCellM, SudokuNumsSet.ofSingle(num));
+                    reduction.tryReduceNumOpts(singleOptionCellM, SudokuNumsSet.ofSingle(num));
                 }
 
                 cageMToReDefine.reduceToCombinationsContaining(num, reduction);

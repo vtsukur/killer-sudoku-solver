@@ -23,7 +23,7 @@ export class DeepTryOptionsStrategy extends Strategy {
         for (const tryNum of cellMTarget.numOpts()) {
             const ctxCpy = this._context.deepCopyForDeepTry();
             const cellMTargetCpy = ctxCpy.model.cellModelAt(cellMTarget.cell.row, cellMTarget.cell.col);
-            ctxCpy.reduction.reduceNumOpts(cellMTargetCpy, SudokuNumsSet.ofSingle(tryNum));
+            ctxCpy.reduction.tryReduceNumOpts(cellMTargetCpy, SudokuNumsSet.ofSingle(tryNum));
 
             try {
                 ctxCpy.skipInit = true;
@@ -48,7 +48,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
-                this._context.reduction.reduceNumOpts(cellMTarget, SudokuNumsSet.ofSingle(tryNum));
+                this._context.reduction.tryReduceNumOpts(cellMTarget, SudokuNumsSet.ofSingle(tryNum));
                 break;
             } else if (ctxCpy.isSolutionFound) {
                 solution = ctxCpy.foundSolution;

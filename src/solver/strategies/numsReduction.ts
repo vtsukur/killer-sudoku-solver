@@ -16,7 +16,7 @@ export class NumsReduction {
         this.add(cellM);
     }
 
-    reduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
+    tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {
             this._deletedNumOptsPerCell[cellM.cell.index].addAll(deletedNums);
