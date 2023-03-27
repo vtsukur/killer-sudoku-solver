@@ -6,9 +6,9 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 export class NumsReduction {
 
-    private _cellMs = new Set<CellModel>();
-    private _impactedCageMs = new Set<CageModel>();
-    private _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
+    private readonly _cellMs = new Set<CellModel>();
+    private readonly _impactedCageMs = new Set<CageModel>();
+    private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
     deleteNumOpt(cellM: CellModel, num: number) {
         cellM.deleteNumOpt(num);
