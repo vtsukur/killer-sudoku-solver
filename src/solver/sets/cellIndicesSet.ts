@@ -25,9 +25,7 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
     get bitStores(): ReadonlyArray<BitStore32>;
 
     /**
-     * Produces {@link Cell}s which are included in this set.
-     *
-     * @returns {Cell}s which are included in this set.
+     * {@link Cell}s which are included in this set.
      */
     get cells(): ReadonlyCells;
 
