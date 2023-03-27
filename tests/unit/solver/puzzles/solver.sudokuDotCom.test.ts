@@ -21,7 +21,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
             [ 6, 5, 8, 4, 7, 9, 2, 1, 3 ]
         ]);
 
-        console.log(CageModel.effectiveDeletions);
+        // console.log(CageModel.effectiveDeletions);
     });
 
     test('Find solution for Daily Challenge (2022-08-12) by Sudoku.com', () => {
