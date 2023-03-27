@@ -118,9 +118,7 @@ function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseMo
 
                     for (const perpendicularHouseIndex of entry.perpendicularHouseIndices) {
                         const cellM = getCellMFn(directHouseIndex, perpendicularHouseIndex);
-                        if (cellM.hasNumOpt(num)) {
-                            reduction.deleteNumOpt(cellM, num);
-                        }
+                        reduction.tryDeleteNumOpt(cellM, num);
                     }
                 });
             }
