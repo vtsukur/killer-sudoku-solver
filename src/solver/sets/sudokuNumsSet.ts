@@ -41,9 +41,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
     hasOnly(val: number): boolean;
 
     /**
-     * Produces numbers which are included in this set.
-     *
-     * @returns Numbers which are included in this set.
+     * Numbers which are included in this set.
      */
     get nums(): ReadonlyArray<number>;
 
