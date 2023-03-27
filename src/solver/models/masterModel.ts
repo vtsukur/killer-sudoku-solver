@@ -184,7 +184,8 @@ export class MasterModel {
         this.onCageRegisteredEvent(cageM);
     }
 
-    initialReduce(reduction: NumsReduction) {
+    initialReduce() {
+        const reduction = new NumsReduction();
         for (const cageM of this.cageModelsMap.values()) {
             cageM.initialReduce(reduction);
         }

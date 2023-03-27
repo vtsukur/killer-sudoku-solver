@@ -17,7 +17,7 @@ type ExpectedHouse = {
 
 describe('Tests for master model', () => {
     const model = new MasterModel(puzzleSamples.sudokuDotCom.dailyChallengeOf_2022_11_01);
-    model.initialReduce(new NumsReduction());
+    model.initialReduce();
 
     test('Initialization of CellModels (shallow coverage)', () => {
         const aCellModel = model.cellModelAt(2, 3);
@@ -328,7 +328,7 @@ describe('Tests for master model', () => {
         const reduction = new NumsReduction();
         const model = new MasterModel(puzzle);
         const ctx = new Context(model, reduction);
-        model.initialReduce(reduction);
+        model.initialReduce();
         new MasterStrategy(ctx).execute();
 
         expect(model.cellModelAt(2, 7).placedNum).toBe(8);
