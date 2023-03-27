@@ -290,7 +290,7 @@ export class CageModel {
             }
         }
 
-        for (const commonNum of commonComboNums.nums()) {
+        for (const commonNum of commonComboNums.nums) {
             if (!presentNums.has(commonNum)) {
                 throw new InvalidSolverStateError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
             }
@@ -322,7 +322,7 @@ export class CageModel {
 
         if (noLongerValidCombos.length > 0) {
             const numOptsToDelete = new Set<number>();
-            for (const num of noLongerValidComboNums.nums()) {
+            for (const num of noLongerValidComboNums.nums) {
                 if (!validComboNums.has(num) && presentNums.has(num)) {
                     numOptsToDelete.add(num);
                 }

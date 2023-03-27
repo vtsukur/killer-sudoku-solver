@@ -109,7 +109,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Producing included numbers', () => {
-        expect(SudokuNumsSet.of(1, 5, 9).nums()).toEqual([ 1, 5, 9 ]);
+        expect(SudokuNumsSet.of(1, 5, 9).nums).toEqual([ 1, 5, 9 ]);
     });
 
     test('Adding numbers one by one', () => {

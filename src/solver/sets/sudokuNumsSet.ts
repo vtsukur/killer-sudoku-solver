@@ -45,7 +45,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
      *
      * @returns Numbers which are included in this set.
      */
-    nums(): ReadonlyArray<number>;
+    get nums(): ReadonlyArray<number>;
 
     /**
      * Returns new set with Sudoku numbers which are *not* present in the current set.
@@ -210,7 +210,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     /**
      * @see ReadonlySudokuNumsSet.nums
      */
-    nums() {
+    get nums() {
         return this._nums;
     }
 

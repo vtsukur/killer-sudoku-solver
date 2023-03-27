@@ -12,11 +12,11 @@ describe('Performance tests for `SudokuNumsSet`', () => {
             ITERATIONS.forEach(() => {
                 const set = SudokuNumsSet.of(1, 6, 9);
                 set.addAll(SudokuNumsSet.of(2, 3, 4));
-                set.nums();
+                set.nums;
                 set.union(SudokuNumsSet.of(3, 4, 6, 7, 9));
-                set.nums();
+                set.nums;
                 set.deleteAll(SudokuNumsSet.of(2, 6, 9));
-                set.nums();
+                set.nums;
             });
         });
 

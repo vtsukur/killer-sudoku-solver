@@ -40,7 +40,7 @@ export class CellModel {
     }
 
     numOpts(): ReadonlyArray<number> {
-        return this._numOptsSet.nums();
+        return this._numOptsSet.nums;
     }
 
     numOptsSet(): ReadonlySudokuNumsSet {
