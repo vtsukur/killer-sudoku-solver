@@ -176,9 +176,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
 
         const cellM = model.cellModelAt(row, col);
         for (const num of combo) {
-            if (cellM.hasNumOpt(num)) {
-                reduction.deleteNumOpt(cellM, num);
-            }
+            reduction.tryDeleteNumOpt(cellM, num);
         }
     }
 };
