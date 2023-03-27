@@ -132,32 +132,6 @@ export class CageModel {
         }
     }
 
-    private reduceOptimalForSize2(reduction: NumsReduction) {
-        const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
-
-        for (const oneCellM of this.cellMs) {
-            const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
-            for (const oneNum of oneCellM.numOpts()) {
-                for (const combo of this.combosWithNum(oneNum)) {
-                    const anotherNum = combo.number0 === oneNum ? combo.number1 : combo.number0;
-                    if (!anotherCellM.hasNumOpt(anotherNum)) {
-                        reduction.deleteNumOpt(oneCellM, oneNum);
-                        combosToPotentiallyDeleteMap.addCombo(combo);
-                    }
-                }
-            }
-        }
-
-        for (const comboToPotentiallyDelete of combosToPotentiallyDeleteMap.combos) {
-            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number0) &&
-                    !this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number1) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number0) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number1)) {
-                this.deleteCombo(comboToPotentiallyDelete);
-            }
-        }
-    }
-
     private reduceOptimalForSize3(reduction: NumsReduction) {
         const PERMS_OF_3 = [
             [0, 1, 2],
