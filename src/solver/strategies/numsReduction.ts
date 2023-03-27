@@ -16,6 +16,12 @@ export class NumsReduction {
         this.add(cellM);
     }
 
+    tryDeleteNumOpt(cellM: CellModel, num: number) {
+        if (cellM.hasNumOpt(num)) {
+            cellM.deleteNumOpt(num);
+        }
+    }
+
     tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {

@@ -13,10 +13,7 @@ export class ReduceHousePermsBySolvedCellsStrategy extends Strategy {
                 for (const { row, col } of houseM.cells) {
                     if (row === cellM.cell.row && col === cellM.cell.col) continue;
 
-                    const aCellM = this._model.cellModelAt(row, col);
-                    if (aCellM.hasNumOpt(num)) {
-                        this._context.reduction.deleteNumOpt(aCellM, num);
-                    }
+                    this._context.reduction.tryDeleteNumOpt(this._model.cellModelAt(row, col), num);
                 }
             });
         });
