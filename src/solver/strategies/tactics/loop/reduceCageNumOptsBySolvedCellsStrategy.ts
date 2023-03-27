@@ -10,9 +10,7 @@ export class ReduceCageNumOptsBySolvedCellsStrategy extends Strategy {
                 for (const cellM of cageM.cellMs) {
                     if (!_.isUndefined(cellM.placedNum)) continue;
 
-                    if (cellM.hasNumOpt(num)) {
-                        this._context.reduction.deleteNumOpt(cellM, num);
-                    }
+                    this._context.reduction.tryDeleteNumOpt(cellM, num);
                 }
             }
         });

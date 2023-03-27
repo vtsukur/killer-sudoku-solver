@@ -18,7 +18,7 @@ export class NumsReduction {
 
     tryDeleteNumOpt(cellM: CellModel, num: number) {
         if (cellM.hasNumOpt(num)) {
-            cellM.deleteNumOpt(num);
+            this.deleteNumOpt(cellM, num);
         }
     }
 
