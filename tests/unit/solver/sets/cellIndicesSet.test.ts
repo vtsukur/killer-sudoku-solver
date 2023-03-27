@@ -111,6 +111,22 @@ describe('Unit tests for `CellIndicesSet`', () => {
         expect(CellIndicesSet.of(1, 75).equals(CellIndicesSet.of(1, 30))).toBeFalsy();
     });
 
+    test('Checking `isEmpty`', () => {
+        expect(CellIndicesSet.newEmpty().isEmpty).toBeTruthy();
+        expect(CellIndicesSet.of(1).isEmpty).toBeFalsy();
+        expect(CellIndicesSet.of(30).isEmpty).toBeFalsy();
+        expect(CellIndicesSet.of(75).isEmpty).toBeFalsy();
+        expect(CellIndicesSet.of(1, 30, 75).isEmpty).toBeFalsy();
+    });
+
+    test('Checking `isNotEmpty`', () => {
+        expect(CellIndicesSet.newEmpty().isNotEmpty).toBeFalsy();
+        expect(CellIndicesSet.of(1).isNotEmpty).toBeTruthy();
+        expect(CellIndicesSet.of(30).isNotEmpty).toBeTruthy();
+        expect(CellIndicesSet.of(75).isNotEmpty).toBeTruthy();
+        expect(CellIndicesSet.of(1, 30, 75).isNotEmpty).toBeTruthy();
+    });
+
     test('Cloning using `clone`', () => {
         const original = CellIndicesSet.of(1, 30, 75);
         const cloned = original.clone();
