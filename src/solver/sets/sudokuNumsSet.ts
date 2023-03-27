@@ -236,6 +236,18 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
     }
 
+    /**
+     * Acts just like {@link NumsSet.union}
+     * and returns the new {@link ReadonlySudokuNumsSet},
+     * which has all the numbers deleted as a part of the `union` operation.
+     *
+     * @param val - Another set to `AND` with this set.
+     *
+     * @returns {@link ReadonlySudokuNumsSet},
+     * which has all the numbers deleted as a part of the `union` operation.
+     *
+     * @see NumsSet.union
+     */
     unionWithDeleted(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
         const oldBitStore = this._bitStore;
 
