@@ -330,9 +330,7 @@ export class CageModel {
 
             for (const cellM of this.cellMs) {
                 for (const num of numOptsToDelete) {
-                    if (cellM.hasNumOpt(num)) {
-                        reduction.deleteNumOpt(cellM, num);
-                    }
+                    reduction.tryDeleteNumOpt(cellM, num);
                 }
             }
 
