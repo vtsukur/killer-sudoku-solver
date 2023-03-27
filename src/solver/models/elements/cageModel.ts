@@ -63,10 +63,16 @@ export class CageModel {
         return new CageModel(this.cage, [...this.cellMs], this._comboSet);
     }
 
-    initialReduce(reduction: NumsReduction) {
+    initialReduce(reduction?: NumsReduction) {
         const nums = this._comboSet.fill();
-        for (const cellM of this.cellMs) {
-            reduction.tryReduceNumOpts(cellM, nums);
+        if (reduction) {
+            for (const cellM of this.cellMs) {
+                reduction.tryReduceNumOpts(cellM, nums);
+            }
+        } else {
+            for (const cellM of this.cellMs) {
+                cellM.reduceNumOpts(nums);
+            }
         }
     }
 
