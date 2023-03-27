@@ -74,14 +74,13 @@ describe('Unit tests for `CageModel`', () => {
 
         cageM.initialReduce(reduction);
 
-        cellM1.deleteNumOpt(5);
-
         reduction = new NumsReduction();
+        reduction.deleteNumOpt(cellM1, 5);
 
         cageM.reduce(reduction);
         const impactedCellMs = reduction.impactedCellModels;
 
-        expect(impactedCellMs).toEqual(new Set([ cellM2 ]));
+        expect(impactedCellMs).toEqual(new Set([ cellM1, cellM2 ]));
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
@@ -100,8 +99,10 @@ describe('Unit tests for `CageModel`', () => {
 
         cageM.initialReduce(reduction);
 
-        cellM1.deleteNumOpt(5);
-        cellM2.deleteNumOpt(5);
+        reduction = new NumsReduction();
+
+        reduction.deleteNumOpt(cellM1, 5);
+        reduction.deleteNumOpt(cellM2, 5);
         cageM.reduce(reduction);
         const impactedCellMs = reduction.impactedCellModels;
 

@@ -36,6 +36,10 @@ export class NumsReduction {
         return this;
     }
 
+    deletedNumOptsOf(cellM: CellModel): ReadonlyArray<number> {
+        return this._deletedNumOptsPerCell[cellM.cell.index].nums;
+    }
+
     get isNotEmpty(): boolean {
         return this._impactedCageMs.size > 0;
     }

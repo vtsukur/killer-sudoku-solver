@@ -95,13 +95,40 @@ export class CageModel {
 
     reduce(reduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this.reduceOptimalForSize2(reduction);
+            this.reduceForSize2(reduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(reduction);
         } else if (this._cellCount === 4) {
             this.reduceSmallCage(reduction);
         } else {
             this.reduceLargeCage(reduction);
+        }
+    }
+
+    private reduceForSize2(reduction: NumsReduction) {
+        const deletedNumsForCell0 = reduction.deletedNumOptsOf(this.cellMs[0]);
+        const deletedNumsForCell1 = reduction.deletedNumOptsOf(this.cellMs[1]);
+
+        for (const num of deletedNumsForCell0) {
+            const complementNum = this.cage.sum - num;
+            reduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
+            if (!(this.cellMs[0].hasNumOpt(complementNum) && this.cellMs[1].hasNumOpt(num))) {
+                const comboWithNum = this.combosWithNum(num)[0];
+                if (comboWithNum) {
+                    this.deleteCombo(comboWithNum);
+                }
+            }
+        }
+
+        for (const num of deletedNumsForCell1) {
+            const complementNum = this.cage.sum - num;
+            reduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
+            if (!(this.cellMs[0].hasNumOpt(num) && this.cellMs[1].hasNumOpt(complementNum))) {
+                const comboWithNum = this.combosWithNum(num)[0];
+                if (comboWithNum) {
+                    this.deleteCombo(comboWithNum);
+                }
+            }
         }
     }
 
