@@ -101,7 +101,7 @@ export class CageModel {
 
     reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this.reduceOptimalForSize2(currentReduction, newReduction);
+            this.reduceForSize2(currentReduction, newReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
@@ -111,18 +111,18 @@ export class CageModel {
         }
     }
 
-    private reduceForSize2(reduction: NumsReduction) {
-        const deletedNumsForCell0 = reduction.deletedNumOptsOf(this.cellMs[0]);
-        const deletedNumsForCell1 = reduction.deletedNumOptsOf(this.cellMs[1]);
+    private reduceForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
+        const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
+        const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
 
-        // const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
+        const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
 
         for (const num of deletedNumsForCell0) {
             const complementNum = this.cage.sum - num;
-            // if (this.cellMs[1].hasNumOpt(complementNum)) {
-            //     effectiveDeletions.push(complementNum);
-            // }
-            reduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
+            if (this.cellMs[1].hasNumOpt(complementNum)) {
+                effectiveDeletions.push(complementNum);
+            }
+            newReduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
             if (!(this.cellMs[0].hasNumOpt(complementNum) && this.cellMs[1].hasNumOpt(num))) {
                 const comboWithNum = this.combosWithNum(num)[0];
                 if (comboWithNum) {
@@ -133,10 +133,10 @@ export class CageModel {
 
         for (const num of deletedNumsForCell1) {
             const complementNum = this.cage.sum - num;
-            // if (this.cellMs[0].hasNumOpt(complementNum)) {
-            //     effectiveDeletions.push(complementNum);
-            // }
-            reduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
+            if (this.cellMs[0].hasNumOpt(complementNum)) {
+                effectiveDeletions.push(complementNum);
+            }
+            newReduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
             if (!(this.cellMs[0].hasNumOpt(num) && this.cellMs[1].hasNumOpt(complementNum))) {
                 const comboWithNum = this.combosWithNum(num)[0];
                 if (comboWithNum) {
@@ -145,10 +145,10 @@ export class CageModel {
             }
         }
 
-        // CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
+        CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
     }
 
-    // static effectiveDeletions: Map<string, Array<number>> = new Map();
+    static effectiveDeletions: Map<string, Array<number>> = new Map();
 
     private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
         const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
@@ -161,9 +161,9 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         newReduction.deleteNumOpt(oneCellM, oneNum);
 
-                        // const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
-                        // effectiveDeletions.push(oneNum);
-                        // CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
+                        const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
+                        effectiveDeletions.push(oneNum);
+                        CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
 
                         combosToPotentiallyDeleteMap.addCombo(combo);
                     }
