@@ -15,7 +15,7 @@ export class NumsReduction {
 
     reduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
         const deletedNums = cellM.reduceNumOpts(nums);
-        if (deletedNums.bitStore !== 0) {
+        if (deletedNums.isNotEmpty) {
             this.add(cellM);
         }
     }
