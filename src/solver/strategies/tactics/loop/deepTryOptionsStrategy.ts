@@ -48,7 +48,7 @@ export class DeepTryOptionsStrategy extends Strategy {
 
             if (ctxCpy.model.isSolved) {
                 solution = ctxCpy.model.solution;
-                ctxCpy.reduction.reduceNumOpts(cellMTarget, SudokuNumsSet.ofSingle(tryNum));
+                this._context.reduction.reduceNumOpts(cellMTarget, SudokuNumsSet.ofSingle(tryNum));
                 break;
             } else if (ctxCpy.isSolutionFound) {
                 solution = ctxCpy.foundSolution;
