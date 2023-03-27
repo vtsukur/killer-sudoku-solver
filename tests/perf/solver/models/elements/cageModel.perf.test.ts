@@ -41,7 +41,7 @@ describe('Performance tests for `CageModel`', () => {
                 const cageM = new CageModel(cage_2_cells_of_sum_11, [ cellM1, cellM2 ]);
 
                 cageM.initialReduce(reduction);
-                cageM.reduce(reduction);
+                cageM.reduce(reduction, new NumsReduction());
             });
         });
 

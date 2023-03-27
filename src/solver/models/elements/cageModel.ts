@@ -99,15 +99,15 @@ export class CageModel {
         }
     }
 
-    reduce(reduction: NumsReduction) {
+    reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this.reduceOptimalForSize2(reduction);
+            this.reduceOptimalForSize2(currentReduction, newReduction);
         } else if (this._cellCount === 3) {
-            this.reduceOptimalForSize3(reduction);
+            this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
-            this.reduceSmallCage(reduction);
+            this.reduceSmallCage(currentReduction, newReduction);
         } else {
-            this.reduceLargeCage(reduction);
+            this.reduceLargeCage(currentReduction, newReduction);
         }
     }
 
@@ -150,7 +150,7 @@ export class CageModel {
 
     // static effectiveDeletions: Map<string, Array<number>> = new Map();
 
-    private reduceOptimalForSize2(reduction: NumsReduction) {
+    private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
         const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
 
         for (const oneCellM of this.cellMs) {
@@ -159,7 +159,7 @@ export class CageModel {
                 for (const combo of this.combosWithNum(oneNum)) {
                     const anotherNum = combo.number0 === oneNum ? combo.number1 : combo.number0;
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
-                        reduction.deleteNumOpt(oneCellM, oneNum);
+                        newReduction.deleteNumOpt(oneCellM, oneNum);
 
                         // const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
                         // effectiveDeletions.push(oneNum);
@@ -181,7 +181,7 @@ export class CageModel {
         }
     }
 
-    private reduceOptimalForSize3(reduction: NumsReduction) {
+    private reduceOptimalForSize3(currentReduction: NumsReduction, newReduction: NumsReduction) {
         const PERMS_OF_3 = [
             [0, 1, 2],
             [0, 2, 1],
@@ -215,7 +215,7 @@ export class CageModel {
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    reduction.deleteNumOpt(cellM0, num0);
+                    newReduction.deleteNumOpt(cellM0, num0);
                 }
             }
         }
@@ -243,7 +243,7 @@ export class CageModel {
         this._comboSet.deleteCombo(combo);
     }
 
-    private reduceSmallCage(reduction: NumsReduction) {
+    private reduceSmallCage(currentReduction: NumsReduction, newReduction: NumsReduction) {
         const context: Context = {
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
@@ -283,7 +283,7 @@ export class CageModel {
                 Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            reduction.deleteNumOpt(cellM, num);
+                            newReduction.deleteNumOpt(cellM, num);
                         }
                     });
                 });
@@ -323,7 +323,7 @@ export class CageModel {
         return has;
     }
 
-    private reduceLargeCage(reduction: NumsReduction) {
+    private reduceLargeCage(currentReduction: NumsReduction, newReduction: NumsReduction) {
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this.cellMs) {
             presentNums.addAll(cellM.numOptsSet());
@@ -380,7 +380,7 @@ export class CageModel {
 
             for (const cellM of this.cellMs) {
                 for (const num of numOptsToDelete) {
-                    reduction.tryDeleteNumOpt(cellM, num);
+                    newReduction.tryDeleteNumOpt(cellM, num);
                 }
             }
 
