@@ -169,6 +169,16 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.of(1, 9).equals(SudokuNumsSet.of(1, 4))).toBeFalsy();
     });
 
+    test('Checking `isEmpty`', () => {
+        expect(SudokuNumsSet.newEmpty().isEmpty).toBeTruthy();
+        expect(SudokuNumsSet.of(1, 9).isEmpty).toBeFalsy();
+    });
+
+    test('Checking `isNotEmpty`', () => {
+        expect(SudokuNumsSet.newEmpty().isNotEmpty).toBeFalsy();
+        expect(SudokuNumsSet.of(1, 9).isNotEmpty).toBeTruthy();
+    });
+
     test('Cloning', () => {
         const original = SudokuNumsSet.of(1, 9);
         const cloned = original.clone();
