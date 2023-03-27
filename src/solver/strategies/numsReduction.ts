@@ -38,8 +38,4 @@ export class NumsReduction {
         return this._impactedCageMs;
     }
 
-    static forOne(cellM: CellModel) {
-        return new NumsReduction().add(cellM);
-    }
-
 }
