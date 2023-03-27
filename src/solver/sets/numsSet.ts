@@ -58,6 +58,16 @@ export interface ReadonlyNumsSet<T extends ReadonlyNumsSet<T>> {
      */
     equals(val: T): boolean;
 
+    /**
+     * Whether this set is empty and has *no* stored values.
+     */
+    get isEmpty(): boolean;
+
+    /**
+     * Whether this set is *not* empty and has at least one value.
+     */
+    get isNotEmpty(): boolean;
+
 }
 
 /**

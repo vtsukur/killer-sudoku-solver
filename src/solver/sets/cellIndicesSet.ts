@@ -479,6 +479,28 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     }
 
     /**
+     * @see ReadonlyNumsSet.isEmpty
+     */
+    get isEmpty(): boolean {
+        return (
+            this._bitStores[0] === 0 &&
+            this._bitStores[1] === 0 &&
+            this._bitStores[2] === 0
+        );
+    }
+
+    /**
+     * @see ReadonlyNumsSet.isNotEmpty
+     */
+    get isNotEmpty(): boolean {
+        return (
+            this._bitStores[0] !== 0 ||
+            this._bitStores[1] !== 0 ||
+            this._bitStores[2] !== 0
+        );
+    }
+
+    /**
      * Clones this set by creating new instance based on the copy of the state of this set.
      *
      * @returns New set based on the copy of the state of this set.

@@ -287,4 +287,18 @@ export abstract class Bits32Set<
         return this._bitStore === val.bitStore;
     }
 
+    /**
+     * @see ReadonlyNumsSet.isEmpty
+     */
+    get isEmpty(): boolean {
+        return this._bitStore === 0;
+    }
+
+    /**
+     * @see ReadonlyNumsSet.isNotEmpty
+     */
+    get isNotEmpty(): boolean {
+        return this._bitStore !== 0;
+    }
+
 }
