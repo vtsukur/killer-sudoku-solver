@@ -29,7 +29,7 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
      *
      * @returns {Cell}s which are included in this set.
      */
-    cells(): ReadonlyCells;
+    get cells(): ReadonlyCells;
 
     /**
      * Creates new set which is the _difference_ between this set
@@ -283,7 +283,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     /**
      * @see ReadonlyCellIndicesSet.cells
      */
-    cells() {
+    get cells() {
         const val = new Array<Cell>();
         let bitStoreIndex = 0;
 

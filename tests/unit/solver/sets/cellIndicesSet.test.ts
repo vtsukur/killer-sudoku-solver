@@ -80,7 +80,7 @@ describe('Unit tests for `CellIndicesSet`', () => {
     });
 
     test('Producing included `Cell`s', () => {
-        expect(CellIndicesSet.of(0, 46, 80).cells()).toEqual([
+        expect(CellIndicesSet.of(0, 46, 80).cells).toEqual([
             Cell.at(0, 0), Cell.at(5, 1), Cell.at(8, 8)
         ]);
     });
