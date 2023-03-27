@@ -259,8 +259,6 @@ const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: 
     for (const { row, col } of houseM.cells) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;
-        if (cellM.hasNumOpt(num)) {
-            reduction.deleteNumOpt(cellM, num);
-        }
+        reduction.tryDeleteNumOpt(cellM, num);
     }
 };
