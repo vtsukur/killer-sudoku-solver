@@ -6,8 +6,7 @@ import { SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
-    // TODO rename to `combos` or `val`
-    values: Iterable<Combo>;
+    combos: Iterable<Combo>;
 
     size: number;
 
@@ -32,10 +31,6 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     protected onUpdate(): void {
         this._isDirtyCache = true;
-    }
-
-    get values() {
-        return this.combos;
     }
 
     get size() {

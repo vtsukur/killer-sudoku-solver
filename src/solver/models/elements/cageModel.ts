@@ -220,7 +220,7 @@ export class CageModel {
             }
         }
 
-        for (const combo of this._comboSet.values) {
+        for (const combo of this._comboSet.combos) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
                 const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
@@ -236,7 +236,7 @@ export class CageModel {
     }
 
     private combosWithNum(num: number) {
-        return this._comboSet.values.filter(combo => combo.has(num));
+        return this._comboSet.combos.filter(combo => combo.has(num));
     }
 
     private deleteCombo(combo: Combo) {
@@ -332,7 +332,7 @@ export class CageModel {
         const commonComboNums = SudokuNumsSet.newEmpty();
         for (const num of SudokuNumsSet.NUM_RANGE) {
             let hasNumInAllCombos = true;
-            for (const combo of this._comboSet.values) {
+            for (const combo of this._comboSet.combos) {
                 hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
             }
             if (hasNumInAllCombos) {
@@ -350,7 +350,7 @@ export class CageModel {
         const validComboNums = SudokuNumsSet.newEmpty();
         const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = SudokuNumsSet.newEmpty();
-        for (const combo of this._comboSet.values) {
+        for (const combo of this._comboSet.combos) {
             let validCombo = true;
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
@@ -429,7 +429,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this._comboSet.values) {
+                for (const combo of this._comboSet.combos) {
                     if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -437,7 +437,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (placement.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this._comboSet.values).every(combo => {
+                clue.presentInAllCombos = Array.from(this._comboSet.combos).every(combo => {
                     return combo.has(num);
                 });
                 clues.push(clue);
@@ -454,7 +454,7 @@ export class CageModel {
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
-        for (const combo of this._comboSet.values) {
+        for (const combo of this._comboSet.combos) {
             if (combo.numsSet.has(withNum)) {
                 newCombosMap.addCombo(combo);
                 newNumOptions.addAll(combo.numsSet);
@@ -480,7 +480,7 @@ export class CageModel {
     }
 
     get combos() {
-        return Array.from(this._comboSet.values);
+        return Array.from(this._comboSet.combos);
     }
 
     get comboCount() {
