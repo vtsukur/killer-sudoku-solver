@@ -253,6 +253,18 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
 
         this.union(val);
 
+        //
+        // Applying bitwise XOR on the bit store of the updated set
+        // and the before-update bit store to find the _difference_ between the two,
+        // which would determine the deleted numbers.
+        //
+        // Example:
+        // ```
+        //      oldBitStore                 = 0b0111111111
+        //      this.bitStore               = 0b0011010001
+        //      oldBitStore ^ this.bitStore = 0b0100101110
+        // ```
+        //
         return new SudokuNumsSet(oldBitStore ^ this.bitStore);
     }
 
