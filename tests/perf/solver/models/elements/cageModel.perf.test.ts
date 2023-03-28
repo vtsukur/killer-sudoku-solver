@@ -34,14 +34,15 @@ describe('Performance tests for `CageModel`', () => {
         });
 
         test(`Reduction of \`CageModel\` with 2 \`Cell\`s and 4 \`Combo\`s — without impact [${i}]`, () => {
-            const reduction = new NumsReduction();
+            const currentReduction = new NumsReduction();
+            const newReduction = new NumsReduction();
             ITERATIONS.forEach(() => {
                 const cellM1 = new CellModel(cell1);
                 const cellM2 = new CellModel(cell2);
                 const cageM = new CageModel(cage_2_cells_of_sum_11, [ cellM1, cellM2 ]);
 
-                cageM.initialReduce(reduction);
-                cageM.reduce(reduction, new NumsReduction());
+                cageM.initialReduce(currentReduction);
+                cageM.reduce(currentReduction, newReduction);
             });
         });
 
