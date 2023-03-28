@@ -32,16 +32,24 @@ export class CellContour {
         let topmostDotY = leftmostDotY;
 
         for (const dottedCageContourRect of this._dottedCageContourRects) {
-            leftmostDotX = Math.min(leftmostDotX, dottedCageContourRect.x);
-            topmostDotY = Math.min(topmostDotY, dottedCageContourRect.y);
+            if (dottedCageContourRect.x < leftmostDotX) {
+                leftmostDotX = dottedCageContourRect.x;
+            }
+            if (dottedCageContourRect.y < topmostDotY) {
+                topmostDotY = dottedCageContourRect.y;
+            }
         }
 
         for (const dottedCageContourRect of this._dottedCageContourRects) {
             if (_.inRange(dottedCageContourRect.x, leftmostDotX - DEVIATION, leftmostDotX + DEVIATION)) {
-                leftmostDotY = Math.min(leftmostDotY, dottedCageContourRect.y);
+                if (dottedCageContourRect.y < leftmostDotY) {
+                    leftmostDotY = dottedCageContourRect.y;
+                }
             }
             if (_.inRange(dottedCageContourRect.y, topmostDotY - DEVIATION, topmostDotY + DEVIATION)) {
-                topmostDotX = Math.min(topmostDotX, dottedCageContourRect.x);
+                if (dottedCageContourRect.x < topmostDotX) {
+                    topmostDotX = dottedCageContourRect.x;
+                }
             }
         }
 
