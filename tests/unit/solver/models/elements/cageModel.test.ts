@@ -72,15 +72,16 @@ describe('Unit tests for `CageModel`', () => {
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
-        cageM.initialReduce(reduction);
+        cageM.initialReduce();
+
+        reduction.deleteNumOpt(cellM1, 5);
 
         const newReduction = new NumsReduction();
-        newReduction.deleteNumOpt(cellM1, 5);
 
         cageM.reduce(reduction, newReduction);
         const impactedCellMs = newReduction.impactedCellModels;
 
-        expect(impactedCellMs).toEqual(new Set([ cellM1, cellM2 ]));
+        expect(impactedCellMs).toEqual(new Set([ cellM2 ]));
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
