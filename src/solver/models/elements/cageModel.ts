@@ -101,7 +101,7 @@ export class CageModel {
 
     reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this.reduceForSize2(currentReduction, newReduction);
+            this.reduceOptimalForSize2(currentReduction, newReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
@@ -111,47 +111,57 @@ export class CageModel {
         }
     }
 
-    private reduceForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
-        const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
-        const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
+    // private reduceForSize2_router(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    //     const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
+    //     const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
+    //     if (deletedNumsForCell0.length + deletedNumsForCell1.length < this.cellMs[0].numOpts().length + this.cellMs[1].numOpts().length) {
+    //         this.reduceForSize2(currentReduction, newReduction);
+    //     } else {
+    //         this.reduceOptimalForSize2(currentReduction, newReduction);
+    //     }
+    // }
 
-        const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
+    // private reduceForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    //     const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
+    //     const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
 
-        for (const num of deletedNumsForCell0) {
-            const complementNum = this.cage.sum - num;
-            if (this.cellMs[1].hasNumOpt(complementNum)) {
-                effectiveDeletions.push(complementNum);
-            }
-            newReduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
-            if (!(this.cellMs[0].hasNumOpt(complementNum) && this.cellMs[1].hasNumOpt(num))) {
-                const comboWithNum = this.combosWithNum(num)[0];
-                if (comboWithNum) {
-                    this.deleteCombo(comboWithNum);
-                }
-            }
-        }
+    //     // const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
 
-        for (const num of deletedNumsForCell1) {
-            const complementNum = this.cage.sum - num;
-            if (this.cellMs[0].hasNumOpt(complementNum)) {
-                effectiveDeletions.push(complementNum);
-            }
-            newReduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
-            if (!(this.cellMs[0].hasNumOpt(num) && this.cellMs[1].hasNumOpt(complementNum))) {
-                const comboWithNum = this.combosWithNum(num)[0];
-                if (comboWithNum) {
-                    this.deleteCombo(comboWithNum);
-                }
-            }
-        }
+    //     for (const num of deletedNumsForCell0) {
+    //         const complementNum = this.cage.sum - num;
+    //         // if (this.cellMs[1].hasNumOpt(complementNum)) {
+    //         //     effectiveDeletions.push(complementNum);
+    //         // }
+    //         newReduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
+    //         if (!(this.cellMs[0].hasNumOpt(complementNum) && this.cellMs[1].hasNumOpt(num))) {
+    //             const comboWithNum = this.combosWithNum(num)[0];
+    //             if (comboWithNum) {
+    //                 this.deleteCombo(comboWithNum);
+    //             }
+    //         }
+    //     }
 
-        CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
-    }
+    //     for (const num of deletedNumsForCell1) {
+    //         const complementNum = this.cage.sum - num;
+    //         // if (this.cellMs[0].hasNumOpt(complementNum)) {
+    //         //     effectiveDeletions.push(complementNum);
+    //         // }
+    //         newReduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
+    //         if (!(this.cellMs[0].hasNumOpt(num) && this.cellMs[1].hasNumOpt(complementNum))) {
+    //             const comboWithNum = this.combosWithNum(num)[0];
+    //             if (comboWithNum) {
+    //                 this.deleteCombo(comboWithNum);
+    //             }
+    //         }
+    //     }
 
-    static effectiveDeletions: Map<string, Array<number>> = new Map();
+    //     // CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
+    // }
+
+    // static effectiveDeletions: Map<string, Array<number>> = new Map();
 
     private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
-        const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
+        // const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
 
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
@@ -161,24 +171,28 @@ export class CageModel {
                     if (!anotherCellM.hasNumOpt(anotherNum)) {
                         newReduction.deleteNumOpt(oneCellM, oneNum);
 
-                        const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
-                        effectiveDeletions.push(oneNum);
-                        CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
+                        // const effectiveDeletions = CageModel.effectiveDeletions.has(this.cage.key) ? CageModel.effectiveDeletions.get(this.cage.key) as Array<number> : [];
+                        // effectiveDeletions.push(oneNum);
+                        // CageModel.effectiveDeletions.set(this.cage.key, effectiveDeletions);
 
-                        combosToPotentiallyDeleteMap.addCombo(combo);
+                        if (!oneCellM.hasNumOpt(anotherNum) && !anotherCellM.hasNumOpt(oneNum)) {
+                            this.deleteCombo(combo);
+                        }
+
+                        // combosToPotentiallyDeleteMap.addCombo(combo);
                     }
                 }
             }
         }
 
-        for (const comboToPotentiallyDelete of combosToPotentiallyDeleteMap.combos) {
-            if (!this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number0) &&
-                    !this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number1) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number0) &&
-                    !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number1)) {
-                this.deleteCombo(comboToPotentiallyDelete);
-            }
-        }
+        // for (const comboToPotentiallyDelete of combosToPotentiallyDeleteMap.combos) {
+        //     if (!this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number0) &&
+        //             !this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number1) &&
+        //             !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number0) &&
+        //             !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number1)) {
+        //         this.deleteCombo(comboToPotentiallyDelete);
+        //     }
+        // }
     }
 
     private reduceOptimalForSize3(currentReduction: NumsReduction, newReduction: NumsReduction) {
