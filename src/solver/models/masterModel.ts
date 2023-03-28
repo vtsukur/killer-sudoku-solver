@@ -177,7 +177,9 @@ export class MasterModel {
         cage.cells.forEach((cell: Cell) => {
             this.cellModelOf(cell).addWithinCageModel(cageM);
         });
-        cageM.initialReduce(reduction);
+        if (reduction) {
+            cageM.initialReduce(reduction);
+        }
         this.cageModelsMap.set(cage.key, cageM);
         this.onCageRegisteredEvent(cageM);
     }
