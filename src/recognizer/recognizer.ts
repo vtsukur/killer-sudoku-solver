@@ -344,8 +344,12 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour: CageC
 
             masterRectLeftX = Math.min(masterRectLeftX, topLeft.x);
             masterRectTopY = Math.min(masterRectTopY, topLeft.y);
-            masterRectRightX = Math.max(masterRectRightX, bottomRight.x);
-            masterRectBottomY = Math.max(masterRectBottomY, bottomRight.y);
+            if (bottomRight.x > masterRectRightX) {
+                masterRectRightX = bottomRight.x;
+            }
+            if (bottomRight.y > masterRectBottomY) {
+                masterRectBottomY = bottomRight.y;
+            }
         }
     }
     masterRectLeftX -= 2;
