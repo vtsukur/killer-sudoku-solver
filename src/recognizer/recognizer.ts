@@ -342,8 +342,12 @@ async function diligentOpenCVPostProcessingCageSumImageReader(cageContour: CageC
             const bottomRight = new cv.Point(potentialTextContourRect.x + potentialTextContourRect.width, potentialTextContourRect.y + potentialTextContourRect.height);
             cv.rectangle(textContoursMat, topLeft, bottomRight, TMP_CAGE_CONTOUR_COLOR, TMP_CONTOUR_THICKNESS);
 
-            masterRectLeftX = Math.min(masterRectLeftX, topLeft.x);
-            masterRectTopY = Math.min(masterRectTopY, topLeft.y);
+            if (topLeft.x < masterRectLeftX) {
+                masterRectLeftX = topLeft.x;
+            }
+            if (topLeft.y < masterRectTopY) {
+                masterRectTopY = topLeft.y;
+            }
             if (bottomRight.x > masterRectRightX) {
                 masterRectRightX = bottomRight.x;
             }
