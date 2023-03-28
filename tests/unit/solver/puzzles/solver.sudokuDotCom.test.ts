@@ -1,4 +1,3 @@
-import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { Solver } from '../../../../src/solver/solver';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
@@ -20,8 +19,6 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
             [ 7, 4, 3, 1, 6, 2, 8, 5, 9 ],
             [ 6, 5, 8, 4, 7, 9, 2, 1, 3 ]
         ]);
-
-        // console.log(CageModel.effectiveDeletions);
     });
 
     test('Find solution for Daily Challenge (2022-08-12) by Sudoku.com', () => {
