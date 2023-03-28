@@ -161,8 +161,6 @@ export class CageModel {
     // static effectiveDeletions: Map<string, Array<number>> = new Map();
 
     private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
-        // const combosToPotentiallyDeleteMap = this.newSumAddendsCombosSet();
-
         for (const oneCellM of this.cellMs) {
             const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
             for (const oneNum of oneCellM.numOpts()) {
@@ -178,21 +176,10 @@ export class CageModel {
                         if (!oneCellM.hasNumOpt(anotherNum) && !anotherCellM.hasNumOpt(oneNum)) {
                             this.deleteCombo(combo);
                         }
-
-                        // combosToPotentiallyDeleteMap.addCombo(combo);
                     }
                 }
             }
         }
-
-        // for (const comboToPotentiallyDelete of combosToPotentiallyDeleteMap.combos) {
-        //     if (!this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number0) &&
-        //             !this.cellMs[0].hasNumOpt(comboToPotentiallyDelete.number1) &&
-        //             !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number0) &&
-        //             !this.cellMs[1].hasNumOpt(comboToPotentiallyDelete.number1)) {
-        //         this.deleteCombo(comboToPotentiallyDelete);
-        //     }
-        // }
     }
 
     private reduceOptimalForSize3(currentReduction: NumsReduction, newReduction: NumsReduction) {
