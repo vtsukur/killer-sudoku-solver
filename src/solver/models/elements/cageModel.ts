@@ -138,6 +138,7 @@ export class CageModel {
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of this._comboSet.combos) {
+
             // Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
             const num1 = combo.number1;
