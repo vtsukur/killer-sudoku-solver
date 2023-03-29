@@ -5,7 +5,7 @@ import { CellModel } from '../../../models/elements/cellModel';
 import { ColumnModel } from '../../../models/elements/columnModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { RowModel } from '../../../models/elements/rowModel';
-import { NumsReduction } from '../../numsReduction';
+import { NumsReduction } from '../../reduction/numsReduction';
 import { Strategy } from '../../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {

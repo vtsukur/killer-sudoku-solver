@@ -1,4 +1,4 @@
-import { NumsReduction } from '../../numsReduction';
+import { NumsReduction } from '../../reduction/numsReduction';
 import { Strategy } from '../../strategy';
 
 export class ReducePermsForCagesStrategy extends Strategy {

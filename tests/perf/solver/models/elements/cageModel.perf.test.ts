@@ -3,7 +3,7 @@ import { Cage } from '../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { NumsReduction } from '../../../../../src/solver/strategies/numsReduction';
+import { NumsReduction } from '../../../../../src/solver/strategies/reduction/numsReduction';
 
 describe('Performance tests for `CageModel`', () => {
 

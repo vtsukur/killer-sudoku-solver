@@ -1,8 +1,8 @@
-import { Grid } from '../../puzzle/grid';
-import { Sets } from '../../util/sets';
-import { CageModel } from '../models/elements/cageModel';
-import { CellModel } from '../models/elements/cellModel';
-import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { Grid } from '../../../puzzle/grid';
+import { Sets } from '../../../util/sets';
+import { CageModel } from '../../models/elements/cageModel';
+import { CellModel } from '../../models/elements/cellModel';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 
 export class NumsReduction {
 

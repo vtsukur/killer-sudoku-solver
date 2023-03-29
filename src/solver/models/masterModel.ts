@@ -7,7 +7,7 @@ import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
 import { Row } from '../../puzzle/row';
-import { NumsReduction } from '../strategies/numsReduction';
+import { NumsReduction } from '../strategies/reduction/numsReduction';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';

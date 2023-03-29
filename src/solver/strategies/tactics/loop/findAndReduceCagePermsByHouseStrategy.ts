@@ -9,7 +9,7 @@ import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
-import { NumsReduction } from '../../numsReduction';
+import { NumsReduction } from '../../reduction/numsReduction';
 import { Strategy } from '../../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {

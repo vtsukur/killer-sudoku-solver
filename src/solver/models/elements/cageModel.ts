@@ -8,7 +8,7 @@ import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
-import { NumsReduction } from '../../strategies/numsReduction';
+import { NumsReduction } from '../../strategies/reduction/numsReduction';
 
 type Clue = {
     num: number;
