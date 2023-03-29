@@ -176,8 +176,7 @@ describe('Unit tests for `CageModel`', () => {
         test('After deleting all but the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
             // Given:
             reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 5);
-            reduction.deleteNumOpt(cellM2, 6);
+            reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
 
             // When:
             cageM.reduce(reduction, new NumsReduction());
@@ -194,8 +193,7 @@ describe('Unit tests for `CageModel`', () => {
 
         test('After deleting all but the 1-st number option of a particular `Combo` in the 2-nd `Cell`', () => {
             // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM1, 6);
+            reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
             reduction.deleteNumOpt(cellM2, 6);
 
             // When:
@@ -213,8 +211,7 @@ describe('Unit tests for `CageModel`', () => {
         test('After deleting all but the 2-nd number option of a particular `Combo` in the 1-st `Cell`', () => {
             // Given:
             reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM2, 5);
-            reduction.deleteNumOpt(cellM2, 6);
+            reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
 
             // When:
             cageM.reduce(reduction, new NumsReduction());
@@ -231,8 +228,7 @@ describe('Unit tests for `CageModel`', () => {
 
         test('After deleting all but the 2-nd number option of a particular `Combo` in the 2-nd `Cell`', () => {
             // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM1, 6);
+            reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
             reduction.deleteNumOpt(cellM2, 5);
 
             // When:
