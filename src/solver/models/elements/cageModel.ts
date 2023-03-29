@@ -165,7 +165,17 @@ export class CageModel {
             //
             // For example, for the `Combo` of numbers `[5, 6]`,
             // if both `CellModel`s have number options `5` and `6`,
-            // there is nothing to reduce.
+            // there is nothing to reduce:
+            //
+            // ```
+            // (before reduction)
+            // CellModel 1: [..., 5, 6, ...]
+            // CellModel 2: [..., 5, 6, ...]
+            //
+            // (after reduction: no changes)
+            // CellModel 1: [..., 5, 6, ...]
+            // CellModel 2: [..., 5, 6, ...]
+            // ```
             //
             if (cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1) continue;
 
@@ -179,8 +189,18 @@ export class CageModel {
                     // alongside the current `Combo`.
                     //
                     // For example, for the `Combo` of numbers `[5, 6]`,
-                    // if both `CellModel`s do *not* have number option `5`,
-                    // then the number option `6` is removed for both `CellModel`s.
+                    // if both `CellModel`s do *not* have the number option `5`,
+                    // then the number option `6` is removed for both `CellModel`s:
+                    //
+                    // ```
+                    // (before reduction)
+                    // CellModel 1: [..., 6, ...]
+                    // CellModel 2: [..., 6, ...]
+                    //
+                    // (after reduction)
+                    // CellModel 1: [... (no 6)]
+                    // CellModel 2: [... (no 6)]
+                    // ```
                     //
                     if (cell0HasNum1) reduction.deleteNumOpt(cellM0, num1);
                     if (cell1HasNum1) reduction.deleteNumOpt(cellM1, num1);
@@ -194,9 +214,19 @@ export class CageModel {
                     // and is thus subject to removal from the second `CellModel`.
                     //
                     // For example, for the `Combo` of numbers `[5, 6]`,
-                    // if the first `CellModel` does *not* have number option `5`,
-                    // and the second `CellModel` still has number option `6`,
+                    // if the first `CellModel` does *not* have the number option `5`,
+                    // and the second `CellModel` still has the number option `6`,
                     // then the number option `6` is removed for the second `CellModel`.
+                    //
+                    // ```
+                    // (before reduction)
+                    // CellModel 1: [..., 6, ...]
+                    // CellModel 2: [..., 5, 6, ...]
+                    //
+                    // (after reduction)
+                    // CellModel 1: [..., 6, ...]
+                    // CellModel 2: [..., 5, ... (no 6)]
+                    // ```
                     //
                     reduction.deleteNumOpt(cellM1, num1);
                 }
@@ -209,9 +239,19 @@ export class CageModel {
                 // and is thus subject to removal from the first `CellModel`.
                 //
                 // For example, for the `Combo` of numbers `[5, 6]`,
-                // if the first `CellModel` has number option `5`,
-                // and the second `CellModel` does *not* have number option `6`,
+                // if the first `CellModel` has the number option `5`,
+                // and the second `CellModel` does *not* have the number option `6`,
                 // then the number option `5` is removed for the first `CellModel`.
+                //
+                // ```
+                // (before reduction)
+                // CellModel 1: [..., 5, 6, ...]
+                // CellModel 2: [..., 5, ...]
+                //
+                // (after reduction)
+                // CellModel 1: [..., 6, ... (no 5)]
+                // CellModel 2: [..., 5, ...]
+                // ```
                 //
                 reduction.deleteNumOpt(cellM0, num0);
             }
@@ -226,8 +266,18 @@ export class CageModel {
                     // alongside the current `Combo`.
                     //
                     // For example, for the `Combo` of numbers `[5, 6]`,
-                    // if both `CellModel`s do *not* have number option `6`,
+                    // if both `CellModel`s do *not* have the number option `6`,
                     // then the number option `5` is removed for both `CellModel`s.
+                    //
+                    // ```
+                    // (before reduction)
+                    // CellModel 1: [..., 5, ...]
+                    // CellModel 2: [..., 5, ...]
+                    //
+                    // (after reduction)
+                    // CellModel 1: [... (no 5)]
+                    // CellModel 2: [... (no 5)]
+                    // ```
                     //
                     if (cell0HasNum0) reduction.deleteNumOpt(cellM0, num0);
                     if (cell1HasNum0) reduction.deleteNumOpt(cellM1, num0);
@@ -241,9 +291,19 @@ export class CageModel {
                     // and is thus subject to removal from the second `CellModel`.
                     //
                     // For example, for the `Combo` of numbers `[5, 6]`,
-                    // if the first `CellModel` does *not* have number option `6`,
-                    // and the second `CellModel` still has number option `5`,
+                    // if the first `CellModel` does *not* have the number option `6`,
+                    // and the second `CellModel` still has the number option `5`,
                     // then the number option `5` is removed for the second `CellModel`.
+                    //
+                    // ```
+                    // (before reduction)
+                    // CellModel 1: [..., 5, ...]
+                    // CellModel 2: [..., 5, 6, ...]
+                    //
+                    // (after reduction)
+                    // CellModel 1: [..., 5, ...]
+                    // CellModel 2: [..., 6, ... (no 5)]
+                    // ```
                     //
                     reduction.deleteNumOpt(cellM1, num0);
                 }
@@ -256,9 +316,19 @@ export class CageModel {
                 // and is thus subject to removal from the first `CellModel`.
                 //
                 // For example, for the `Combo` of numbers `[5, 6]`,
-                // if the first `CellModel` has number option `6`,
-                // and the second `CellModel` does *not* have number option `5`,
+                // if the first `CellModel` has the number option `6`,
+                // and the second `CellModel` does *not* have the number option `5`,
                 // then the number option `6` is removed for the first `CellModel`.
+                //
+                // ```
+                // (before reduction)
+                // CellModel 1: [..., 5, 6, ...]
+                // CellModel 2: [..., 6, ...]
+                //
+                // (after reduction)
+                // CellModel 1: [..., 5, ... (no 6)]
+                // CellModel 2: [..., 6, ...]
+                // ```
                 //
                 reduction.deleteNumOpt(cellM0, num1);
             }
