@@ -268,7 +268,7 @@ describe('Unit tests for `CageModel`', () => {
 
         test('After no deletions for a particular `Combo`', () => {
             // Given:
-            // ... initially reduced `CageModel` with extra deletions for its `CellModel`s.
+            // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
 
             // When:
             cageM.reduce(reduction, new NumsReduction());
@@ -318,7 +318,7 @@ describe('Unit tests for `CageModel`', () => {
 
         test('Does not reflect impact on `NumsReduction` if reduction did not happen', () => {
             // Given:
-            // ... initially reduced `CageModel` with extra deletions for its `CellModel`s.
+            // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
 
             // When:
             const newReduction = new NumsReduction();
