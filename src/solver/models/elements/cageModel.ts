@@ -111,42 +111,6 @@ export class CageModel {
         }
     }
 
-    // private reduceForSize2_router(currentReduction: NumsReduction, newReduction: NumsReduction) {
-    //     const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
-    //     const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
-    //     if (deletedNumsForCell0.length + deletedNumsForCell1.length < this.cellMs[0].numOpts().length + this.cellMs[1].numOpts().length) {
-    //         this.reduceForSize2(currentReduction, newReduction);
-    //     } else {
-    //         this.reduceOptimalForSize2(currentReduction, newReduction);
-    //     }
-    // }
-
-    // private reduceForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
-    //     const deletedNumsForCell0 = currentReduction.deletedNumOptsOf(this.cellMs[0]);
-    //     const deletedNumsForCell1 = currentReduction.deletedNumOptsOf(this.cellMs[1]);
-
-    //     for (const num of deletedNumsForCell0) {
-    //         newReduction.tryDeleteNumOpt(this.cellMs[1], complementNum);
-    //         if (!(this.cellMs[0].hasNumOpt(complementNum) && this.cellMs[1].hasNumOpt(num))) {
-    //             const comboWithNum = this.combosWithNum(num)[0];
-    //             if (comboWithNum) {
-    //                 this.deleteCombo(comboWithNum);
-    //             }
-    //         }
-    //     }
-
-    //     for (const num of deletedNumsForCell1) {
-    //         const complementNum = this.cage.sum - num;
-    //         newReduction.tryDeleteNumOpt(this.cellMs[0], complementNum);
-    //         if (!(this.cellMs[0].hasNumOpt(num) && this.cellMs[1].hasNumOpt(complementNum))) {
-    //             const comboWithNum = this.combosWithNum(num)[0];
-    //             if (comboWithNum) {
-    //                 this.deleteCombo(comboWithNum);
-    //             }
-    //         }
-    //     }
-    // }
-
     private reduceOptimalForSize2(reduction: NumsReduction) {
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
