@@ -160,27 +160,29 @@ export class CageModel {
             const cell1HasNum1 = cellM1.hasNumOpt(num1);
 
             if (!(cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1)) {
-                if (!cell0HasNum0 && !cell1HasNum0) {
-                    newReduction.tryDeleteNumOpt(cellM0, num1);
-                    newReduction.tryDeleteNumOpt(cellM1, num1);
-                    this.deleteCombo(combo);
-                } else if (!cell0HasNum1 && !cell1HasNum1) {
-                    newReduction.tryDeleteNumOpt(cellM0, num0);
-                    newReduction.tryDeleteNumOpt(cellM1, num0);
-                    this.deleteCombo(combo);
-                } else {
-                    if (cell0HasNum0 && !cell1HasNum1) {
-                        newReduction.deleteNumOpt(cellM0, num0);
+                if (!cell0HasNum0) {
+                    if (!cell1HasNum0) {
+                        newReduction.tryDeleteNumOpt(cellM0, num1);
+                        newReduction.tryDeleteNumOpt(cellM1, num1);
+                        this.deleteCombo(combo);
                     }
-                    if (!cell0HasNum0 && cell1HasNum1) {
+                    if (cell1HasNum1) {
                         newReduction.deleteNumOpt(cellM1, num1);
                     }
-                    if (cell0HasNum1 && !cell1HasNum0) {
-                        newReduction.deleteNumOpt(cellM0, num1);
-                    }
-                    if (!cell0HasNum1 && cell1HasNum0) {
+                } else if (!cell1HasNum1) {
+                    newReduction.deleteNumOpt(cellM0, num0);
+                }
+                if (!cell0HasNum1) {
+                    if (cell1HasNum0) {
                         newReduction.deleteNumOpt(cellM1, num0);
                     }
+                    if (!cell1HasNum1) {
+                        newReduction.tryDeleteNumOpt(cellM0, num0);
+                        newReduction.tryDeleteNumOpt(cellM1, num0);
+                        this.deleteCombo(combo);
+                    }
+                } else if (!cell1HasNum0) {
+                    newReduction.deleteNumOpt(cellM0, num1);
                 }
             }
         }
