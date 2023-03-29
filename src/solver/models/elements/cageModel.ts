@@ -153,11 +153,18 @@ export class CageModel {
                     // and the second `CellModel` still has the complementing counterpart
                     // (the second `Combo` number),
                     // it means the second `Combo` number is no longer relevant
-                    // and is thus subject to removal.
+                    // and is thus subject to removal from the second `CellModel`.
                     //
                     reduction.deleteNumOpt(cellM1, num1);
                 }
             } else if (!cell1HasNum1) {
+                //
+                // If the first `CellModel` still has the first `Combo` number
+                // and the second `CellModel` does *not* have the complementing counterpart
+                // (the second `Combo` number),
+                // it means the first `Combo` number is no longer relevant
+                // and is thus subject to removal from the first `CellModel`.
+                //
                 reduction.deleteNumOpt(cellM0, num0);
             }
 
