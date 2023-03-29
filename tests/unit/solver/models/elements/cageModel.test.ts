@@ -101,7 +101,7 @@ describe('Unit tests for `CageModel`', () => {
             ]);
         });
 
-        test('After deleting a few `Cell` number options', () => {
+        test('After deleting the same number options in 2 `Cell`s', () => {
             reduction.deleteNumOpt(cellM1, 5);
             reduction.deleteNumOpt(cellM2, 5);
 
