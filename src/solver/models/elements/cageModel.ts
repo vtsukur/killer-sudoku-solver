@@ -10,6 +10,7 @@ import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { NumsReduction } from '../../strategies/reduction/numsReduction';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 
 type Clue = {
     num: number;
@@ -42,6 +43,7 @@ export class CageModel {
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
     private _comboSet: CombosSet;
+    private _reducer?: CageModelReducer;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
@@ -53,6 +55,9 @@ export class CageModel {
             this._comboSet = comboSet.clone();
         } else {
             this._comboSet = this.newSumAddendsCombosSet();
+        }
+        if (this._cellCount === 2) {
+            this._reducer = new CageModelOfSize2Reducer(this.cellMs[0], this.cellMs[1]);
         }
     }
 
@@ -102,7 +107,7 @@ export class CageModel {
 
     reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            CageModelOfSize2Reducer.reduce(this.cellMs[0], this.cellMs[1], this._comboSet, newReduction);
+            this._reducer?.reduce(this._comboSet, newReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
