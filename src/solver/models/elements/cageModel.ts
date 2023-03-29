@@ -112,8 +112,10 @@ export class CageModel {
     }
 
     private reduce2CellsCage(reduction: NumsReduction) {
+        // [PERFORMANCE] Storing `CellModel`s to access the array once for each `CellModel`.
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
+
         for (const combo of this._comboSet.combos) {
             const num0 = combo.number0;
             const num1 = combo.number1;
