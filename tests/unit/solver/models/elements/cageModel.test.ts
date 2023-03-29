@@ -66,265 +66,32 @@ describe('Unit tests for `CageModel`', () => {
         ]);
     });
 
-    describe('Reduction of `CageModel` with 2 `Cell`s having several `Combo`s', () => {
-
+    test('Reduction of `CageModel` with 2 `Cell`s having several `Combo`s', () => {
+        // Given:
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
+        const cellM1 = new CellModel(cell1);
+        const cellM2 = new CellModel(cell2);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+        cellM1.addWithinCageModel(cageM);
+        cellM2.addWithinCageModel(cageM);
+        cageM.initialReduce();
 
-        let cellM1: CellModel;
-        let cellM2: CellModel;
-        let cageM: CageModel;
+        reduction.deleteNumOpt(cellM1, 5);
 
-        beforeEach(() => {
-            cellM1 = new CellModel(cell1);
-            cellM2 = new CellModel(cell2);
-            cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-            cellM1.addWithinCageModel(cageM);
-            cellM2.addWithinCageModel(cageM);
-            cageM.initialReduce();
-        });
+        // When:
+        const newReduction = new NumsReduction();
+        cageM.reduce(reduction, newReduction);
 
-        test('After deleting the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7),
-                Combo.of(5, 6)
-            ]);
-        });
-
-        test('After deleting the 1-st number option of a particular `Combo` in the 2-nd `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM2, 5);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7),
-                Combo.of(5, 6)
-            ]);
-        });
-
-        test('After deleting the 2-nd number option of a particular `Combo` in the 1-st `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7),
-                Combo.of(5, 6)
-            ]);
-        });
-
-        test('After deleting the 2-nd number option of a particular `Combo` in the 2-nd `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7),
-                Combo.of(5, 6)
-            ]);
-        });
-
-        test('After deleting the 1-st number option of a particular `Combo` in both `Cell`s', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM2, 5);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After deleting all but the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After deleting all but the 1-st number option of a particular `Combo` in the 2-nd `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After deleting all but the 2-nd number option of a particular `Combo` in the 1-st `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After deleting all but the 2-nd number option of a particular `Combo` in the 2-nd `Cell`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 5);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After deleting the 2-nd number option of a particular `Combo` in both `Cell`s', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('After no deletions for a particular `Combo`', () => {
-            // Given:
-            // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 5, 6, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 6, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7),
-                Combo.of(5, 6)
-            ]);
-        });
-
-        test('After deleting all number options for a particular `Combo`', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-            reduction.deleteNumOpt(cellM1, 6);
-            reduction.deleteNumOpt(cellM2, 5);
-            reduction.deleteNumOpt(cellM2, 6);
-
-            // When:
-            cageM.reduce(reduction, new NumsReduction());
-
-            // Then:
-            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-            expect(Array.from(cageM.combos)).toEqual([
-                Combo.of(2, 9),
-                Combo.of(3, 8),
-                Combo.of(4, 7)
-            ]);
-        });
-
-        test('Reflects impact on `NumsReduction` if reduction happened', () => {
-            // Given:
-            reduction.deleteNumOpt(cellM1, 5);
-
-            // When:
-            const newReduction = new NumsReduction();
-            cageM.reduce(reduction, newReduction);
-
-            // Then:
-            expect(newReduction.impactedCageModels).toEqual(new Set([ cageM ]));
-        });
-
-        test('Does not reflect impact on `NumsReduction` if reduction did not happen', () => {
-            // Given:
-            // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
-
-            // When:
-            const newReduction = new NumsReduction();
-            cageM.reduce(reduction, newReduction);
-            const impactedCageMs = newReduction.impactedCageModels;
-
-            // Then:
-            expect(impactedCageMs).toEqual(new Set());
-        });
-
+        // Then:
+        expect(newReduction.impactedCageModels).toEqual(new Set([ cageM ]));
+        expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
+        expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
+        expect(Array.from(cageM.combos)).toEqual([
+            Combo.of(2, 9),
+            Combo.of(3, 8),
+            Combo.of(4, 7),
+            Combo.of(5, 6)
+        ]);
     });
 
     test('Reduction for `CageModel` of size 7 and sum 31 with 2 `Combo`s after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
