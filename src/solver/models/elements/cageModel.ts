@@ -101,7 +101,7 @@ export class CageModel {
 
     reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this.reduceOptimalForSize2(newReduction);
+            this.reduce2CellsCage(newReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
@@ -111,7 +111,7 @@ export class CageModel {
         }
     }
 
-    private reduceOptimalForSize2(reduction: NumsReduction) {
+    private reduce2CellsCage(reduction: NumsReduction) {
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
         for (const combo of this._comboSet.combos) {
