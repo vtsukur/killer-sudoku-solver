@@ -68,20 +68,25 @@ describe('Unit tests for `CageModel`', () => {
 
     describe('Reduction of `CageModel` with 2 `Cell`s having several `Combo`s', () => {
 
-        test('After deleting one of the `Cell` number options', () => {
-            const cellM1 = new CellModel(cell1);
-            const cellM2 = new CellModel(cell2);
-            const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
-            const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
+
+        let cellM1: CellModel;
+        let cellM2: CellModel;
+        let cageM: CageModel;
+
+        beforeEach(() => {
+            cellM1 = new CellModel(cell1);
+            cellM2 = new CellModel(cell2);
+            cageM = new CageModel(cage, [ cellM1, cellM2 ]);
             cellM1.addWithinCageModel(cageM);
             cellM2.addWithinCageModel(cageM);
-
             cageM.initialReduce();
+        });
 
+        test('After deleting one of the `Cell` number options', () => {
             reduction.deleteNumOpt(cellM1, 5);
 
             const newReduction = new NumsReduction();
-
             cageM.reduce(reduction, newReduction);
             const impactedCageMs = newReduction.impactedCageModels;
 
@@ -97,19 +102,10 @@ describe('Unit tests for `CageModel`', () => {
         });
 
         test('After deleting a few `Cell` number options', () => {
-            const cellM1 = new CellModel(cell1);
-            const cellM2 = new CellModel(cell2);
-            const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
-            const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-            cellM1.addWithinCageModel(cageM);
-            cellM2.addWithinCageModel(cageM);
-
-            cageM.initialReduce(reduction);
-
-            const newReduction = new NumsReduction();
-
             reduction.deleteNumOpt(cellM1, 5);
             reduction.deleteNumOpt(cellM2, 5);
+
+            const newReduction = new NumsReduction();
             cageM.reduce(reduction, newReduction);
             const impactedCageMs = newReduction.impactedCageModels;
 
