@@ -127,6 +127,7 @@ export class CageModel {
             const cell1HasNum0 = cellM1.hasNumOpt(num0);
             const cell1HasNum1 = cellM1.hasNumOpt(num1);
 
+            // [PERFORMANCE] Proceeding to reduction only if at least one `Combo` number is absent in at least one `CellModel`.
             if (!(cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1)) {
                 if (!cell0HasNum0) {
                     if (!cell1HasNum0) {
