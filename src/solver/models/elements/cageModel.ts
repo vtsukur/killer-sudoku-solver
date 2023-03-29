@@ -153,7 +153,7 @@ export class CageModel {
             // at least one `Combo` number is absent in at least one `CellModel`.
             // Otherwise, there is nothing to reduce for the current `Combo`.
             //
-            if (cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1) return;
+            if (cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1) continue;
 
             // Checking the first `CellModel` for the presence of the first `Combo` number.
             if (!cell0HasNum0) {
