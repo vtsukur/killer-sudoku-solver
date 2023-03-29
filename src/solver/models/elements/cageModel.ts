@@ -135,7 +135,7 @@ export class CageModel {
             //
             if (cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1) return;
 
-            // Checking
+            // Checking first `CellModel` for the presence of the first `Combo` number.
             if (!cell0HasNum0) {
                 if (!cell1HasNum0) {
                     if (cell0HasNum1) reduction.deleteNumOpt(cellM0, num1);
