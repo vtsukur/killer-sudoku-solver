@@ -148,24 +148,6 @@ export class CageModel {
     // }
 
     private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
-        // for (const oneCellM of this.cellMs) {
-        //     const anotherCellM = this.cellMs[0] === oneCellM ? this.cellMs[1] : this.cellMs[0];
-        //     for (const oneNum of oneCellM.numOpts()) {
-        //         for (const combo of this._comboSet.combos) {
-        //             if (!combo.has(oneNum)) continue;
-
-        //             const anotherNum = combo.number0 === oneNum ? combo.number1 : combo.number0;
-        //             if (!anotherCellM.hasNumOpt(anotherNum)) {
-        //                 newReduction.deleteNumOpt(oneCellM, oneNum);
-
-        //                 if (!oneCellM.hasNumOpt(anotherNum) && !anotherCellM.hasNumOpt(oneNum)) {
-        //                     this.deleteCombo(combo);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
         for (const combo of this._comboSet.combos) {
             const cell0HasNum0 = this.cellMs[0].hasNumOpt(combo.number0);
             const cell0HasNum1 = this.cellMs[0].hasNumOpt(combo.number1);
