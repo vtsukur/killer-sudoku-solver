@@ -116,6 +116,7 @@ export class CageModel {
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
 
+        // Iterating over each registered `Combo` ...
         for (const combo of this._comboSet.combos) {
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
@@ -127,30 +128,36 @@ export class CageModel {
             const cell1HasNum0 = cellM1.hasNumOpt(num0);
             const cell1HasNum1 = cellM1.hasNumOpt(num1);
 
-            // [PERFORMANCE] Proceeding to reduction only if at least one `Combo` number is absent in at least one `CellModel`.
-            if (!(cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1)) {
-                if (!cell0HasNum0) {
-                    if (!cell1HasNum0) {
-                        if (cell0HasNum1) reduction.deleteNumOpt(cellM0, num1);
-                        if (cell1HasNum1) reduction.deleteNumOpt(cellM1, num1);
-                        this.deleteCombo(combo);
-                    } else if (cell1HasNum1) {
-                        reduction.deleteNumOpt(cellM1, num1);
-                    }
-                } else if (!cell1HasNum1) {
-                    reduction.deleteNumOpt(cellM0, num0);
+            //
+            // [PERFORMANCE] Proceeding to reduction if and only if
+            // at least one `Combo` number is absent in at least one `CellModel`.
+            // Otherwise, there is nothing to reduce for the current `Combo`.
+            //
+            if (cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1) return;
+
+            // Checking
+            if (!cell0HasNum0) {
+                if (!cell1HasNum0) {
+                    if (cell0HasNum1) reduction.deleteNumOpt(cellM0, num1);
+                    if (cell1HasNum1) reduction.deleteNumOpt(cellM1, num1);
+                    this.deleteCombo(combo);
+                } else if (cell1HasNum1) {
+                    reduction.deleteNumOpt(cellM1, num1);
                 }
-                if (!cell0HasNum1) {
-                    if (!cell1HasNum1) {
-                        if (cell0HasNum0) reduction.deleteNumOpt(cellM0, num0);
-                        if (cell1HasNum0) reduction.deleteNumOpt(cellM1, num0);
-                        this.deleteCombo(combo);
-                    } else if (cell1HasNum0) {
-                        reduction.deleteNumOpt(cellM1, num0);
-                    }
-                } else if (!cell1HasNum0) {
-                    reduction.deleteNumOpt(cellM0, num1);
+            } else if (!cell1HasNum1) {
+                reduction.deleteNumOpt(cellM0, num0);
+            }
+
+            if (!cell0HasNum1) {
+                if (!cell1HasNum1) {
+                    if (cell0HasNum0) reduction.deleteNumOpt(cellM0, num0);
+                    if (cell1HasNum0) reduction.deleteNumOpt(cellM1, num0);
+                    this.deleteCombo(combo);
+                } else if (cell1HasNum0) {
+                    reduction.deleteNumOpt(cellM1, num0);
                 }
+            } else if (!cell1HasNum0) {
+                reduction.deleteNumOpt(cellM0, num1);
             }
         }
     }
