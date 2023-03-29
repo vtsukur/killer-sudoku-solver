@@ -111,7 +111,14 @@ export class CageModel {
         }
     }
 
-    private reduce2CellsCage(reduction: NumsReduction) {
+    /**
+     * Reduces possible numbers for {@link CellModel}s
+     * for a {@link Cage} with 2 {@link Cell}s in a performant way
+     * by checking the validity of numbers' option given possible {@link Combo}s for {@link CageModel}.
+     *
+     * @param reduction - {@link NumsReduction} that tracks deleted number options.
+     */
+    private reduce2CellsCage(reduction: NumsReduction): void {
         //
         // [PERFORMANCE] This implementation uses the following techniques to do fast work:
         //
