@@ -83,7 +83,7 @@ describe('Unit tests for `CageModel`', () => {
             cageM.initialReduce();
         });
 
-        test('After deleting one of the `Cell` number options', () => {
+        test('After deleting one of the number options in the first `Cell`', () => {
             reduction.deleteNumOpt(cellM1, 5);
 
             const newReduction = new NumsReduction();
@@ -101,7 +101,7 @@ describe('Unit tests for `CageModel`', () => {
             ]);
         });
 
-        test('After deleting the same number options in 2 `Cell`s', () => {
+        test('After deleting the same number options in both `Cell`s', () => {
             reduction.deleteNumOpt(cellM1, 5);
             reduction.deleteNumOpt(cellM2, 5);
 
