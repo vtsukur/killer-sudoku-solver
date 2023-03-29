@@ -113,7 +113,7 @@ export class CageModel {
 
     /**
      * Reduces possible numbers for {@link CellModel}s
-     * for a {@link Cage} with 2 {@link Cell}s in a performant way
+     * within a {@link Cage} of 2 {@link Cell}s in a performant way
      * by checking the validity of numbers' option given possible {@link Combo}s for {@link CageModel}.
      *
      * @param reduction - {@link NumsReduction} that tracks deleted number options.
