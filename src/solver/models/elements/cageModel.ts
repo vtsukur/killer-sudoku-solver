@@ -117,9 +117,11 @@ export class CageModel {
         const cellM1 = this.cellMs[1];
 
         for (const combo of this._comboSet.combos) {
+            // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
             const num1 = combo.number1;
 
+            // [PERFORMANCE] Checking the presence of each `Combo` number for each `CellModel` just once.
             const cell0HasNum0 = cellM0.hasNumOpt(num0);
             const cell0HasNum1 = cellM0.hasNumOpt(num1);
             const cell1HasNum0 = cellM1.hasNumOpt(num0);
