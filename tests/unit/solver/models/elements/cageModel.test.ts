@@ -92,7 +92,7 @@ describe('Unit tests for `CageModel`', () => {
         ]);
     });
 
-    test('Reduction for `CageModel` of size 2 with several `Combo`s after deletin few `Cell` number options', () => {
+    test('Reduction for `CageModel` of size 2 with several `Combo`s after deleting a few `Cell` number options', () => {
         const cellM1 = new CellModel(cell1);
         const cellM2 = new CellModel(cell2);
         const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
