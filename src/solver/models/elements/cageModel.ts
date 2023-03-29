@@ -112,24 +112,34 @@ export class CageModel {
     }
 
     private reduce2CellsCage(reduction: NumsReduction) {
-        // [PERFORMANCE] Storing `CellModel`s to access the array once for each `CellModel`.
+        //
+        // [PERFORMANCE] This implementation uses the following techniques to do fast work:
+        //
+        //  - All underlying data structures use bit manipulation for efficiency.
+        //  - Access all relevant data just once:
+        //  CellModels, Combo numbers, check for the presence of numbers in CellModels, and others.
+        //  - Short-circuit in conditions if there is nothing to do.
+        //  - Hierarchical-dependent conditions eliminate the need for double-checks.
+        //
+
+        // Storing `CellModel`s to access the array once for each `CellModel`.
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
 
         // Iterating over each registered `Combo` ...
         for (const combo of this._comboSet.combos) {
-            // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
+            // Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
             const num1 = combo.number1;
 
-            // [PERFORMANCE] Checking the presence of each `Combo` number for each `CellModel` just once.
+            // Checking the presence of each `Combo` number for each `CellModel` just once.
             const cell0HasNum0 = cellM0.hasNumOpt(num0);
             const cell0HasNum1 = cellM0.hasNumOpt(num1);
             const cell1HasNum0 = cellM1.hasNumOpt(num0);
             const cell1HasNum1 = cellM1.hasNumOpt(num1);
 
             //
-            // [PERFORMANCE] Proceeding to reduction if and only if
+            // Proceeding to reduction if and only if
             // at least one `Combo` number is absent in at least one `CellModel`.
             // Otherwise, there is nothing to reduce for the current `Combo`.
             //
