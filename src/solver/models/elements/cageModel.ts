@@ -148,6 +148,13 @@ export class CageModel {
                     if (cell1HasNum1) reduction.deleteNumOpt(cellM1, num1);
                     this.deleteCombo(combo);
                 } else if (cell1HasNum1) {
+                    //
+                    // If the first `CellModel` does *not* have the first `Combo` number
+                    // and the second `CellModel` still has the complementing counterpart
+                    // (the second `Combo` number),
+                    // it means the second `Combo` number is no longer relevant
+                    // and is thus subject to removal.
+                    //
                     reduction.deleteNumOpt(cellM1, num1);
                 }
             } else if (!cell1HasNum1) {
