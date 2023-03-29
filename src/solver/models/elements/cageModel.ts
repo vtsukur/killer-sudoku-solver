@@ -117,16 +117,19 @@ export class CageModel {
         //
         //  - All underlying data structures use bit manipulation for efficiency.
         //  - Access all relevant data just once:
-        //  CellModels, Combo numbers, check for the presence of numbers in CellModels, and others.
+        //  `CellModel`s, `Combo` numbers, check for the presence of numbers in `CellModel`s, and others.
         //  - Short-circuit in conditions if there is nothing to do.
         //  - Hierarchical-dependent conditions eliminate the need for double-checks.
+        //
+        // The code could be more concise, and it has more lengthiness on purpose.
+        // Again, for performance reasons.
         //
 
         // Storing `CellModel`s to access the array once for each `CellModel`.
         const cellM0 = this.cellMs[0];
         const cellM1 = this.cellMs[1];
 
-        // Iterating over each registered `Combo` ...
+        // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of this._comboSet.combos) {
             // Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
