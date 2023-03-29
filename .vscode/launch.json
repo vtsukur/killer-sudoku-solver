@@ -672,6 +672,26 @@
         },
 
         {
+            "name": "npm run test [solver/strategies/reduction/cageModelOfSize2Reducer]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/reduction/cageModelOfSize2Reducer.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverStrategiesReduction"
+            }
+        },
+
+        {
             "name": "npm run test [recognizer]",
             "request": "launch",
             "runtimeArgs": [
