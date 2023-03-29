@@ -66,59 +66,63 @@ describe('Unit tests for `CageModel`', () => {
         ]);
     });
 
-    test('Reduction for `CageModel` of size 2 with several `Combo`s after deleting one of the `Cell` number options', () => {
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
+    describe('Reduction of `CageModel` with 2 `Cell`s having several `Combo`s', () => {
 
-        cageM.initialReduce();
+        test('After deleting one of the `Cell` number options', () => {
+            const cellM1 = new CellModel(cell1);
+            const cellM2 = new CellModel(cell2);
+            const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
+            const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+            cellM1.addWithinCageModel(cageM);
+            cellM2.addWithinCageModel(cageM);
 
-        reduction.deleteNumOpt(cellM1, 5);
+            cageM.initialReduce();
 
-        const newReduction = new NumsReduction();
+            reduction.deleteNumOpt(cellM1, 5);
 
-        cageM.reduce(reduction, newReduction);
-        const impactedCageMs = newReduction.impactedCageModels;
+            const newReduction = new NumsReduction();
 
-        expect(impactedCageMs).toEqual(new Set([ cageM ]));
-        expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
-        expect(Array.from(cageM.combos)).toEqual([
-            Combo.of(2, 9),
-            Combo.of(3, 8),
-            Combo.of(4, 7),
-            Combo.of(5, 6)
-        ]);
-    });
+            cageM.reduce(reduction, newReduction);
+            const impactedCageMs = newReduction.impactedCageModels;
 
-    test('Reduction for `CageModel` of size 2 with several `Combo`s after deleting a few `Cell` number options', () => {
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
+            expect(impactedCageMs).toEqual(new Set([ cageM ]));
+            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
+            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
+            expect(Array.from(cageM.combos)).toEqual([
+                Combo.of(2, 9),
+                Combo.of(3, 8),
+                Combo.of(4, 7),
+                Combo.of(5, 6)
+            ]);
+        });
 
-        cageM.initialReduce(reduction);
+        test('After deleting a few `Cell` number options', () => {
+            const cellM1 = new CellModel(cell1);
+            const cellM2 = new CellModel(cell2);
+            const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
+            const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+            cellM1.addWithinCageModel(cageM);
+            cellM2.addWithinCageModel(cageM);
 
-        const newReduction = new NumsReduction();
+            cageM.initialReduce(reduction);
 
-        reduction.deleteNumOpt(cellM1, 5);
-        reduction.deleteNumOpt(cellM2, 5);
-        cageM.reduce(reduction, newReduction);
-        const impactedCageMs = newReduction.impactedCageModels;
+            const newReduction = new NumsReduction();
 
-        expect(impactedCageMs).toEqual(new Set([ cageM ]));
-        expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-        expect(Array.from(cageM.combos)).toEqual([
-            Combo.of(2, 9),
-            Combo.of(3, 8),
-            Combo.of(4, 7)
-        ]);
+            reduction.deleteNumOpt(cellM1, 5);
+            reduction.deleteNumOpt(cellM2, 5);
+            cageM.reduce(reduction, newReduction);
+            const impactedCageMs = newReduction.impactedCageModels;
+
+            expect(impactedCageMs).toEqual(new Set([ cageM ]));
+            expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
+            expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
+            expect(Array.from(cageM.combos)).toEqual([
+                Combo.of(2, 9),
+                Combo.of(3, 8),
+                Combo.of(4, 7)
+            ]);
+        });
+
     });
 
     test('Reduction for `CageModel` of size 7 and sum 31 with 2 `Combo`s after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
