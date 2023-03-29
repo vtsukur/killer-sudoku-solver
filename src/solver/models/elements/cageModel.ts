@@ -148,33 +148,38 @@ export class CageModel {
     // }
 
     private reduceOptimalForSize2(currentReduction: NumsReduction, newReduction: NumsReduction) {
+        const cellM0 = this.cellMs[0];
+        const cellM1 = this.cellMs[1];
         for (const combo of this._comboSet.combos) {
-            const cell0HasNum0 = this.cellMs[0].hasNumOpt(combo.number0);
-            const cell0HasNum1 = this.cellMs[0].hasNumOpt(combo.number1);
-            const cell1HasNum0 = this.cellMs[1].hasNumOpt(combo.number0);
-            const cell1HasNum1 = this.cellMs[1].hasNumOpt(combo.number1);
+            const num0 = combo.number0;
+            const num1 = combo.number1;
+
+            const cell0HasNum0 = cellM0.hasNumOpt(num0);
+            const cell0HasNum1 = cellM0.hasNumOpt(num1);
+            const cell1HasNum0 = cellM1.hasNumOpt(num0);
+            const cell1HasNum1 = cellM1.hasNumOpt(num1);
 
             if (!(cell0HasNum0 && cell0HasNum1 && cell1HasNum0 && cell1HasNum1)) {
                 if (!cell0HasNum0 && !cell1HasNum0) {
-                    newReduction.tryDeleteNumOpt(this.cellMs[0], combo.number1);
-                    newReduction.tryDeleteNumOpt(this.cellMs[1], combo.number1);
+                    newReduction.tryDeleteNumOpt(cellM0, num1);
+                    newReduction.tryDeleteNumOpt(cellM1, num1);
                     this.deleteCombo(combo);
                 } else if (!cell0HasNum1 && !cell1HasNum1) {
-                    newReduction.tryDeleteNumOpt(this.cellMs[0], combo.number0);
-                    newReduction.tryDeleteNumOpt(this.cellMs[1], combo.number0);
+                    newReduction.tryDeleteNumOpt(cellM0, num0);
+                    newReduction.tryDeleteNumOpt(cellM1, num0);
                     this.deleteCombo(combo);
                 } else {
                     if (cell0HasNum0 && !cell1HasNum1) {
-                        newReduction.deleteNumOpt(this.cellMs[0], combo.number0);
+                        newReduction.deleteNumOpt(cellM0, num0);
                     }
                     if (!cell0HasNum0 && cell1HasNum1) {
-                        newReduction.deleteNumOpt(this.cellMs[1], combo.number1);
+                        newReduction.deleteNumOpt(cellM1, num1);
                     }
                     if (cell0HasNum1 && !cell1HasNum0) {
-                        newReduction.deleteNumOpt(this.cellMs[0], combo.number1);
+                        newReduction.deleteNumOpt(cellM0, num1);
                     }
                     if (!cell0HasNum1 && cell1HasNum0) {
-                        newReduction.deleteNumOpt(this.cellMs[1], combo.number0);
+                        newReduction.deleteNumOpt(cellM1, num0);
                     }
                 }
             }
