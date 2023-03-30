@@ -5,7 +5,7 @@ import { NumsReduction } from './numsReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s
- * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s in a performant way
+ * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s
  * by checking the validity of numbers' options given possible {@link Combo}s for {@link CageModel}.
  *
  * @public
@@ -24,7 +24,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
-     * within a {@link Cage} of 2 {@link Cell}s.
+     * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
      *
      * @param cellM0 — The first {@link CellModel} of a {@link CageModel}.
      * @param cellM1 — The second {@link CellModel} of a {@link CageModel}.
