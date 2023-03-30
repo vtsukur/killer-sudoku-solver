@@ -5,7 +5,7 @@ import { NumsReduction } from './numsReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s
- * within a {@link Cage} of 2 {@link Cell}s in a performant way
+ * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s in a performant way
  * by checking the validity of numbers' options given possible {@link Combo}s for {@link CageModel}.
  *
  * @public
