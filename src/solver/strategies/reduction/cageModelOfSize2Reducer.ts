@@ -29,11 +29,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
     }
 
     /**
-     * Reduces possible numbers for {@link CellModel}s
-     * within a {@link Cage} of 2 {@link Cell}s in a performant way
-     * by checking the validity of numbers' option given possible {@link Combo}s for {@link CageModel}.
-     *
-     * @param reduction - {@link NumsReduction} that tracks deleted number options.
+     * @see CageModelReducer.reduce
      */
     reduce(cageMCombos: CombosSet, reduction: NumsReduction): void {
         //
