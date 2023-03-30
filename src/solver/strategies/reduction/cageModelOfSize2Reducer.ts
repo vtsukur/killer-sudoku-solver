@@ -3,6 +3,13 @@ import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { NumsReduction } from './numsReduction';
 
+/**
+ * Reduces possible numbers for {@link CellModel}s
+ * within a {@link Cage} of 2 {@link Cell}s in a performant way
+ * by checking the validity of numbers' option given possible {@link Combo}s for {@link CageModel}.
+ *
+ * @public
+ */
 export class CageModelOfSize2Reducer implements CageModelReducer {
 
     private _cellM0: CellModel;
