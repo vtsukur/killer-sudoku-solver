@@ -16,6 +16,13 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
     private _cellM1: CellModel;
 
+    /**
+     * Constructs a new reducer of possible numbers for {@link CellModel}s
+     * within a {@link Cage} of 2 {@link Cell}s.
+     *
+     * @param cellM0 — The first {@link CellModel} of a {@link CageModel}.
+     * @param cellM1 — The second {@link CellModel} of a {@link CageModel}.
+     */
     constructor(cellM0: CellModel, cellM1: CellModel) {
         this._cellM0 = cellM0;
         this._cellM1 = cellM1;
