@@ -6,7 +6,7 @@ import { NumsReduction } from './numsReduction';
 /**
  * Reduces possible numbers for {@link CellModel}s
  * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s
- * by checking the validity of numbers' options given possible {@link Combo}s for {@link CageModel}.
+ * by checking the validity of numbers' options given possible {@link Combo}s for the {@link CageModel}.
  *
  * @public
  */
