@@ -12,8 +12,14 @@ import { NumsReduction } from './numsReduction';
  */
 export class CageModelOfSize2Reducer implements CageModelReducer {
 
+    /**
+     * The first {@link CellModel} of a {@link CageModel}.
+     */
     private _cellM0: CellModel;
 
+    /**
+     * The second {@link CellModel} of a {@link CageModel}.
+     */
     private _cellM1: CellModel;
 
     /**
