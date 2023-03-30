@@ -13,12 +13,12 @@ import { NumsReduction } from './numsReduction';
 export class CageModelOfSize2Reducer implements CageModelReducer {
 
     /**
-     * The first {@link CellModel} of a {@link CageModel}.
+     * The first {@link CellModel} of the {@link CageModel}.
      */
     private _cellM0: CellModel;
 
     /**
-     * The second {@link CellModel} of a {@link CageModel}.
+     * The second {@link CellModel} of the {@link CageModel}.
      */
     private _cellM1: CellModel;
 
@@ -26,8 +26,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
      *
-     * @param cellM0 — The first {@link CellModel} of a {@link CageModel}.
-     * @param cellM1 — The second {@link CellModel} of a {@link CageModel}.
+     * @param cellM0 — The first {@link CellModel} of the {@link CageModel}.
+     * @param cellM1 — The second {@link CellModel} of the {@link CageModel}.
      */
     constructor(cellM0: CellModel, cellM1: CellModel) {
         this._cellM0 = cellM0;
