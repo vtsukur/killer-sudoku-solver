@@ -20,12 +20,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
     /**
      * The first {@link CellModel} of the {@link CageModel}.
      */
-    private _cellM0: CellModel;
+    private readonly _cellM0: CellModel;
 
     /**
      * The second {@link CellModel} of the {@link CageModel}.
      */
-    private _cellM1: CellModel;
+    private readonly _cellM1: CellModel;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
