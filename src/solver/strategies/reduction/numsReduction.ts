@@ -9,19 +9,19 @@ export class NumsReduction {
     private readonly _cellMs = new Set<CellModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
-    deleteNumOpt(cellM: CellModel, num: number) {
+    deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
         this._deletedNumOptsPerCell[cellM.cell.index].add(num);
         this._cellMs.add(cellM);
     }
 
-    tryDeleteNumOpt(cellM: CellModel, num: number) {
+    tryDeleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         if (cellM.hasNumOpt(num)) {
-            this.deleteNumOpt(cellM, num);
+            this.deleteNumOpt(cellM, num, cageM);
         }
     }
 
-    tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
+    tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet, cageM?: CageModel) {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {
             this._deletedNumOptsPerCell[cellM.cell.index].addAll(deletedNums);

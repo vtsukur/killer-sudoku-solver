@@ -73,7 +73,7 @@ export class CageModel {
         const nums = this._comboSet.fill();
         if (reduction) {
             for (const cellM of this.cellMs) {
-                reduction.tryReduceNumOpts(cellM, nums);
+                reduction.tryReduceNumOpts(cellM, nums, this);
             }
         } else {
             for (const cellM of this.cellMs) {
@@ -101,7 +101,7 @@ export class CageModel {
     reduceCombos(combos: ReadonlyCombosSet, reduction: NumsReduction) {
         const nums = this._comboSet.reduce(combos);
         for (const cellM of this.cellMs) {
-            reduction.tryReduceNumOpts(cellM, nums);
+            reduction.tryReduceNumOpts(cellM, nums, this);
         }
     }
 
@@ -151,7 +151,7 @@ export class CageModel {
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    newReduction.deleteNumOpt(cellM0, num0);
+                    newReduction.deleteNumOpt(cellM0, num0, this);
                 }
             }
         }
@@ -219,7 +219,7 @@ export class CageModel {
                 Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            newReduction.deleteNumOpt(cellM, num);
+                            newReduction.deleteNumOpt(cellM, num, this);
                         }
                     });
                 });
@@ -316,7 +316,7 @@ export class CageModel {
 
             for (const cellM of this.cellMs) {
                 for (const num of numOptsToDelete) {
-                    newReduction.tryDeleteNumOpt(cellM, num);
+                    newReduction.tryDeleteNumOpt(cellM, num, this);
                 }
             }
 
@@ -402,7 +402,7 @@ export class CageModel {
         if (deleteCombos.length > 0) {
             this._comboSet = newCombosMap;
             this.cellMs.forEach(cellM => {
-                reduction.tryReduceNumOpts(cellM, newNumOptions);
+                reduction.tryReduceNumOpts(cellM, newNumOptions, this);
             });
         }
     }
