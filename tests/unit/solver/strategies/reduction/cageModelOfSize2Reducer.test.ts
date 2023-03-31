@@ -258,7 +258,7 @@ describe('CageModelOfSize2Reducer', () => {
         reducer.reduce(reduction);
 
         // Then:
-        expect(reduction.impactedCageModels).toEqual(new Set([ cageM ]));
+        expect(reduction.peek()).toEqual(cageM);
     });
 
     test('Does not reflect impact on `NumsReduction` if reduction did not happen', () => {
@@ -269,7 +269,7 @@ describe('CageModelOfSize2Reducer', () => {
         reducer.reduce(reduction);
 
         // Then:
-        expect(reduction.impactedCageModels).toEqual(new Set());
+        expect(reduction.peek()).toBeUndefined();
     });
 
 });

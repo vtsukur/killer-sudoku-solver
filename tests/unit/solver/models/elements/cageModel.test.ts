@@ -83,7 +83,7 @@ describe('Unit tests for `CageModel`', () => {
         cageM.reduce(reduction, newReduction);
 
         // Then:
-        expect(newReduction.impactedCageModels).toEqual(new Set());
+        expect(newReduction.peek()).toEqual(cageM);
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([

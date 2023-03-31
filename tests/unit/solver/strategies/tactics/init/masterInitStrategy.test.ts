@@ -48,7 +48,7 @@ describe('Unit tests for `MasterInitStrategy`', () => {
         // ... Accumulated results from several `Strategy`-ies reflecting non-empty reduction:
 
         expect(context.reduction.isNotEmpty).toBeTruthy();
-        expect(context.reduction.impactedCageModels.size).toBeGreaterThan(0);
+        expect(context.reduction.peek()).not.toBeUndefined();
     });
 
     const cageM = (sum: number, cells: ReadonlyArray<Cell>) => {

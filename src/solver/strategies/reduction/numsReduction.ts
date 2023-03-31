@@ -1,5 +1,5 @@
 import { Grid } from '../../../puzzle/grid';
-import { Sets } from '../../../util/sets';
+import { House } from '../../../puzzle/house';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
@@ -7,8 +7,10 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 export class NumsReduction {
 
     private readonly _cellMs = new Set<CellModel>();
-    private readonly _impactedCageMs = new Set<CageModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
+
+    private readonly _impactedCageMsArray = House.INDICES.map(() => new Set<CageModel>());
+    private _impactedCageMsCount = 0;
 
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
@@ -33,15 +35,24 @@ export class NumsReduction {
     }
 
     private updateImpactedCageMs(cellM: CellModel, cageM?: CageModel): void {
-        if (cageM) {
-            if (this._impactedCageMs.has(cageM)) {
-                Sets.U(this._impactedCageMs, cellM.withinCageModels);
-            } else {
-                Sets.U(this._impactedCageMs, cellM.withinCageModels);
-                this._impactedCageMs.delete(cageM);
+        // if (cageM) {
+        //     for (const aCageM of cellM.withinCageModels) {
+        //         if (cageM !== aCageM) {
+        //             this.updateImpactedCageM(aCageM);
+        //         }
+        //     }
+        // } else {
+            for (const cageM of cellM.withinCageModels) {
+                this.updateImpactedCageM(cageM);
             }
-        } else {
-            Sets.U(this._impactedCageMs, cellM.withinCageModels);
+        // }
+    }
+
+    private updateImpactedCageM(cageM: CageModel) {
+        const impactedCageMsSet = this._impactedCageMsArray[cageM.cellCount - 1];
+        if (!impactedCageMsSet.has(cageM)) {
+            impactedCageMsSet.add(cageM);
+            this._impactedCageMsCount++;
         }
     }
 
@@ -50,11 +61,20 @@ export class NumsReduction {
     }
 
     get isNotEmpty(): boolean {
-        return this._cellMs.size > 0;
+        return this._impactedCageMsCount > 0;
     }
 
-    get impactedCageModels(): ReadonlySet<CageModel> {
-        return this._impactedCageMs;
+    peek(): CageModel | undefined {
+        if (this._impactedCageMsCount === 0) return undefined;
+
+        for (const impactedCageMsSet of this._impactedCageMsArray) {
+            if (impactedCageMsSet.size > 0) {
+                const cageM = impactedCageMsSet.values().next().value;
+                impactedCageMsSet.delete(cageM);
+                --this._impactedCageMsCount;
+                return cageM;
+            }
+        }
     }
 
 }
