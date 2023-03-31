@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { House, HouseIndex } from '../../../../puzzle/house';
+import { InvalidPuzzleDefError } from '../../../../puzzle/invalidPuzzleDefError';
 import { logFactory } from '../../../../util/logFactory';
 import { InvalidSolverStateError } from '../../../invalidSolverStateError';
 import { CellModel } from '../../../models/elements/cellModel';
@@ -35,7 +36,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                     log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. SUCCEEDED`);
                 }
             } catch(e) {
-                if (e instanceof InvalidSolverStateError) {
+                if (e instanceof InvalidSolverStateError || e instanceof InvalidPuzzleDefError) {
                     if (ctxCpy.depth === 1) {
                         log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
                     }
