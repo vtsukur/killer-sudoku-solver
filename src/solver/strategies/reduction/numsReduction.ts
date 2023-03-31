@@ -7,12 +7,14 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 export class NumsReduction {
 
     private readonly _cellMs = new Set<CellModel>();
+    private readonly _impactedCageMs = new Set<CageModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
         this._deletedNumOptsPerCell[cellM.cell.index].add(num);
         this._cellMs.add(cellM);
+        this.updateImpactedCageMs(cellM, cageM);
     }
 
     tryDeleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
@@ -26,6 +28,20 @@ export class NumsReduction {
         if (deletedNums.isNotEmpty) {
             this._deletedNumOptsPerCell[cellM.cell.index].addAll(deletedNums);
             this._cellMs.add(cellM);
+            this.updateImpactedCageMs(cellM, cageM);
+        }
+    }
+
+    private updateImpactedCageMs(cellM: CellModel, cageM?: CageModel): void {
+        if (cageM) {
+            if (this._impactedCageMs.has(cageM)) {
+                Sets.U(this._impactedCageMs, cellM.withinCageModels);
+            } else {
+                Sets.U(this._impactedCageMs, cellM.withinCageModels);
+                this._impactedCageMs.delete(cageM);
+            }
+        } else {
+            Sets.U(this._impactedCageMs, cellM.withinCageModels);
         }
     }
 
