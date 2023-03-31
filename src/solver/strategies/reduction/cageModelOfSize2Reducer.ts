@@ -1,6 +1,5 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { NumsReduction } from './numsReduction';
 
@@ -43,7 +42,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
     /**
      * @see CageModelReducer.reduce
      */
-    reduce(cageMCombos: CombosSet, reduction: NumsReduction): void {
+    reduce(reduction: NumsReduction): void {
         //
         // [PERFORMANCE] This implementation uses the following techniques to do fast work:
         //
@@ -56,6 +55,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         // The code could be more concise, and it has more lengthiness on purpose.
         // Again, for performance reasons.
         //
+
+        const cageMCombos = this._cageM.comboSet;
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of cageMCombos.combos) {

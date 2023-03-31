@@ -1,4 +1,3 @@
-import { CombosSet } from '../../sets';
 import { NumsReduction } from './numsReduction';
 
 /**
@@ -13,9 +12,8 @@ export interface CageModelReducer {
      * Reduces possible numbers for {@link CellModel}s
      * by checking the validity of numbers' option given possible {@link Combo}s for the {@link CageModel}.
      *
-     * @param cageMCombos - Possible number {@link Combo}s for the {@link CageModel}.
      * @param reduction - {@link NumsReduction} that tracks deleted number options.
      */
-    reduce(cageMCombos: CombosSet, reduction: NumsReduction): void;
+    reduce(reduction: NumsReduction): void;
 
 }

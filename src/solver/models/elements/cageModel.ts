@@ -42,7 +42,7 @@ export class CageModel {
     private _firstCell;
     private _cellCount;
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
-    private _comboSet: CombosSet;
+    comboSet: CombosSet;
     private _reducer?: CageModelReducer;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
@@ -52,9 +52,9 @@ export class CageModel {
         this._cellCount = cage.cellCount;
         this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
         if (comboSet) {
-            this._comboSet = comboSet.clone();
+            this.comboSet = comboSet.clone();
         } else {
-            this._comboSet = this.newSumAddendsCombosSet();
+            this.comboSet = this.newSumAddendsCombosSet();
         }
         if (this._cellCount === 2) {
             this._reducer = new CageModelOfSize2Reducer(this);
@@ -66,11 +66,11 @@ export class CageModel {
     }
 
     deepCopyWithSameCellModels() {
-        return new CageModel(this.cage, [...this.cellMs], this._comboSet);
+        return new CageModel(this.cage, [...this.cellMs], this.comboSet);
     }
 
     initialReduce(reduction?: NumsReduction) {
-        const nums = this._comboSet.fill();
+        const nums = this.comboSet.fill();
         if (reduction) {
             for (const cellM of this.cellMs) {
                 reduction.tryReduceNumOpts(cellM, nums, this);
@@ -99,7 +99,7 @@ export class CageModel {
     }
 
     reduceCombos(combos: ReadonlyCombosSet, reduction: NumsReduction) {
-        const nums = this._comboSet.reduce(combos);
+        const nums = this.comboSet.reduce(combos);
         for (const cellM of this.cellMs) {
             reduction.tryReduceNumOpts(cellM, nums, this);
         }
@@ -107,7 +107,7 @@ export class CageModel {
 
     reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
         if (this._cellCount === 2) {
-            this._reducer?.reduce(this._comboSet, newReduction);
+            this._reducer?.reduce(newReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {
@@ -156,7 +156,7 @@ export class CageModel {
             }
         }
 
-        for (const combo of this._comboSet.combos) {
+        for (const combo of this.comboSet.combos) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
                 const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
@@ -172,11 +172,11 @@ export class CageModel {
     }
 
     private combosWithNum(num: number) {
-        return this._comboSet.combos.filter(combo => combo.has(num));
+        return this.comboSet.combos.filter(combo => combo.has(num));
     }
 
     private deleteCombo(combo: Combo) {
-        this._comboSet.deleteCombo(combo);
+        this.comboSet.deleteCombo(combo);
     }
 
     private reduceSmallCage(currentReduction: NumsReduction, newReduction: NumsReduction) {
@@ -212,7 +212,7 @@ export class CageModel {
             }
         };
 
-        this._comboSet = this.newSumAddendsCombosSet();
+        this.comboSet = this.newSumAddendsCombosSet();
 
         this.cellMs.forEach(cellM => {
             context.processCell(cellM, 0, () => {
@@ -242,7 +242,7 @@ export class CageModel {
                 sortedNums[this._cellCount - 1] = lastNum;
                 sortedNums.sort();
                 const combo = new Combo(sortedNums);
-                this._comboSet.addCombo(combo);
+                this.comboSet.addCombo(combo);
             }
         } else {
             this.cellMs.forEach(cellM => {
@@ -268,7 +268,7 @@ export class CageModel {
         const commonComboNums = SudokuNumsSet.newEmpty();
         for (const num of SudokuNumsSet.NUM_RANGE) {
             let hasNumInAllCombos = true;
-            for (const combo of this._comboSet.combos) {
+            for (const combo of this.comboSet.combos) {
                 hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
             }
             if (hasNumInAllCombos) {
@@ -286,7 +286,7 @@ export class CageModel {
         const validComboNums = SudokuNumsSet.newEmpty();
         const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = SudokuNumsSet.newEmpty();
-        for (const combo of this._comboSet.combos) {
+        for (const combo of this.comboSet.combos) {
             let validCombo = true;
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
@@ -321,7 +321,7 @@ export class CageModel {
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
-                this._comboSet.deleteCombo(noLongerValidCombo);
+                this.comboSet.deleteCombo(noLongerValidCombo);
             }
         }
     }
@@ -365,7 +365,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this._comboSet.combos) {
+                for (const combo of this.comboSet.combos) {
                     if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -373,7 +373,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (placement.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this._comboSet.combos).every(combo => {
+                clue.presentInAllCombos = Array.from(this.comboSet.combos).every(combo => {
                     return combo.has(num);
                 });
                 clues.push(clue);
@@ -384,13 +384,13 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number, reduction: NumsReduction) {
-        if (this.hasSingleCombination() || !this._comboSet.size) return new Set();
+        if (this.hasSingleCombination() || !this.comboSet.size) return new Set();
 
         const newCombosMap = this.newSumAddendsCombosSet();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
-        for (const combo of this._comboSet.combos) {
+        for (const combo of this.comboSet.combos) {
             if (combo.numsSet.has(withNum)) {
                 newCombosMap.addCombo(combo);
                 newNumOptions.addAll(combo.numsSet);
@@ -400,7 +400,7 @@ export class CageModel {
         }
 
         if (deleteCombos.length > 0) {
-            this._comboSet = newCombosMap;
+            this.comboSet = newCombosMap;
             this.cellMs.forEach(cellM => {
                 reduction.tryReduceNumOpts(cellM, newNumOptions, this);
             });
@@ -408,7 +408,7 @@ export class CageModel {
     }
 
     hasSingleCombination() {
-        return this._comboSet.size === 1;
+        return this.comboSet.size === 1;
     }
 
     get cellCount() {
@@ -416,11 +416,11 @@ export class CageModel {
     }
 
     get combos() {
-        return Array.from(this._comboSet.combos);
+        return Array.from(this.comboSet.combos);
     }
 
     get comboCount() {
-        return this._comboSet.size;
+        return this.comboSet.size;
     }
 
 }
