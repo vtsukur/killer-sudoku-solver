@@ -7,7 +7,10 @@ export class ReducePermsForCagesStrategy extends Strategy {
         do {
             const reduction = new NumsReduction();
 
-            for (const cageM of this._context.reduction.impactedCageModels) {
+            const cageMsSortedByCellCountAsc = Array.from(this._context.reduction.impactedCageModels);
+            cageMsSortedByCellCountAsc.sort((cageMA, cageMB) => cageMA.cellCount - cageMB.cellCount);
+
+            for (const cageM of cageMsSortedByCellCountAsc) {
                 cageM.reduce(this._context.reduction, reduction);
             }
 
