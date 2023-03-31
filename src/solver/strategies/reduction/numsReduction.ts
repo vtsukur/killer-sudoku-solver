@@ -54,11 +54,7 @@ export class NumsReduction {
     }
 
     get impactedCageModels(): ReadonlySet<CageModel> {
-        const val = new Set<CageModel>();
-        for (const cellM of this._cellMs) {
-            Sets.U(val, cellM.withinCageModels);
-        }
-        return val;
+        return this._impactedCageMs;
     }
 
 }
