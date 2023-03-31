@@ -57,7 +57,7 @@ export class CageModel {
             this._comboSet = this.newSumAddendsCombosSet();
         }
         if (this._cellCount === 2) {
-            this._reducer = new CageModelOfSize2Reducer(this.cellMs[0], this.cellMs[1]);
+            this._reducer = new CageModelOfSize2Reducer(this);
         }
     }
 

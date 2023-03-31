@@ -1,3 +1,4 @@
+import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
@@ -13,6 +14,11 @@ import { NumsReduction } from './numsReduction';
 export class CageModelOfSize2Reducer implements CageModelReducer {
 
     /**
+     * The {@link CageModel} to reduce.
+     */
+    private readonly _cageM: CageModel;
+
+    /**
      * The first {@link CellModel} of the {@link CageModel}.
      */
     private _cellM0: CellModel;
@@ -26,12 +32,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
      *
-     * @param cellM0 — The first {@link CellModel} of the {@link CageModel}.
-     * @param cellM1 — The second {@link CellModel} of the {@link CageModel}.
+     * @param cageM — The {@link CageModel} to reduce.
      */
-    constructor(cellM0: CellModel, cellM1: CellModel) {
-        this._cellM0 = cellM0;
-        this._cellM1 = cellM1;
+    constructor(cageM: CageModel) {
+        this._cageM = cageM;
+        this._cellM0 = cageM.cellMs[0];
+        this._cellM1 = cageM.cellMs[1];
     }
 
     /**
@@ -112,8 +118,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     // CellModel 2: [... (no 6)]
                     // ```
                     //
-                    if (cell0HasNum1) reduction.deleteNumOpt(this._cellM0, num1);
-                    if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1);
+                    if (cell0HasNum1) reduction.deleteNumOpt(this._cellM0, num1, this._cageM);
+                    if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
                     cageMCombos.deleteCombo(combo);
                 } else if (cell1HasNum1) {
                     //
@@ -138,7 +144,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     // CellModel 2: [..., 5, ... (no 6)]
                     // ```
                     //
-                    reduction.deleteNumOpt(this._cellM1, num1);
+                    reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
                 }
             } else if (!cell1HasNum1) {
                 //
@@ -163,7 +169,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                 // CellModel 2: [..., 5, ...]
                 // ```
                 //
-                reduction.deleteNumOpt(this._cellM0, num0);
+                reduction.deleteNumOpt(this._cellM0, num0, this._cageM);
             }
 
             // Checking the first `CellModel` for the presence of the second `Combo` number.
@@ -189,8 +195,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     // CellModel 2: [... (no 5)]
                     // ```
                     //
-                    if (cell0HasNum0) reduction.deleteNumOpt(this._cellM0, num0);
-                    if (cell1HasNum0) reduction.deleteNumOpt(this._cellM1, num0);
+                    if (cell0HasNum0) reduction.deleteNumOpt(this._cellM0, num0, this._cageM);
+                    if (cell1HasNum0) reduction.deleteNumOpt(this._cellM1, num0, this._cageM);
                     cageMCombos.deleteCombo(combo);
                 } else if (cell1HasNum0) {
                     //
@@ -215,7 +221,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     // CellModel 2: [..., 6, ... (no 5)]
                     // ```
                     //
-                    reduction.deleteNumOpt(this._cellM1, num0);
+                    reduction.deleteNumOpt(this._cellM1, num0, this._cageM);
                 }
             } else if (!cell1HasNum0) {
                 //
@@ -240,7 +246,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                 // CellModel 2: [..., 6, ...]
                 // ```
                 //
-                reduction.deleteNumOpt(this._cellM0, num1);
+                reduction.deleteNumOpt(this._cellM0, num1, this._cageM);
             }
         }
     }

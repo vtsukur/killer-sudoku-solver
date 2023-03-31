@@ -33,7 +33,7 @@ describe('CageModelOfSize2Reducer', () => {
 
         reduction = new NumsReduction();
 
-        reducer = new CageModelOfSize2Reducer(cellM1, cellM2);
+        reducer = new CageModelOfSize2Reducer(cageM);
     });
 
     test('Reduces after deleting the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
