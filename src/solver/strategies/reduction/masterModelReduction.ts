@@ -6,10 +6,9 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 
 export class MasterModelReduction {
 
-    private readonly _cellMs = new Set<CellModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
-    private readonly _impactedCageMsArray: Array<Set<CageModel>> = House.INDICES.map(() => new Set<CageModel>());
+    private readonly _impactedCageMsArray: Array<Array<CageModel>> = House.INDICES.map(() => []);
     private _minCageSizeIndex = this._impactedCageMsArray.length;
     private _impactedCageMsCount = 0;
 
@@ -34,7 +33,6 @@ export class MasterModelReduction {
     }
 
     markAsImpacted(cellM: CellModel, cageM?: CageModel): void {
-        this._cellMs.add(cellM);
         if (cageM) {
             for (const aCageM of cellM.withinCageModels) {
                 if (cageM !== aCageM) {
@@ -51,8 +49,8 @@ export class MasterModelReduction {
     private updateImpactedCageM(cageM: CageModel) {
         const index = cageM.cellCount - 1;
         const impactedCageMsSet = this._impactedCageMsArray[index];
-        if (!impactedCageMsSet.has(cageM)) {
-            impactedCageMsSet.add(cageM);
+        if (impactedCageMsSet.indexOf(cageM) === -1) {
+            impactedCageMsSet.push(cageM);
             if (index < this._minCageSizeIndex) {
                 this._minCageSizeIndex = index;
             }
@@ -72,14 +70,14 @@ export class MasterModelReduction {
         if (this._impactedCageMsCount === 0) return undefined;
 
         let index = this._minCageSizeIndex;
-        while (index < this._impactedCageMsArray.length && this._impactedCageMsArray[index].size === 0) {
+        while (index < this._impactedCageMsArray.length && this._impactedCageMsArray[index].length === 0) {
             ++index;
         }
         this._minCageSizeIndex = index;
         const impactedCageMsSet = this._impactedCageMsArray[this._minCageSizeIndex];
 
-        const cageM = impactedCageMsSet.values().next().value;
-        impactedCageMsSet.delete(cageM);
+        const cageM = impactedCageMsSet[0];
+        impactedCageMsSet.splice(0, 1);
         --this._impactedCageMsCount;
         return cageM;
     }
