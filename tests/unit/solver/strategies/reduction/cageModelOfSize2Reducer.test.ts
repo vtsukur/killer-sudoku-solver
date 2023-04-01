@@ -250,7 +250,7 @@ describe('CageModelOfSize2Reducer', () => {
         ]);
     });
 
-    test('Reflects impact on `NumsReduction` if reduction happened', () => {
+    test('Reflects impact on `MasterModelReduction` if reduction happened', () => {
         // Given:
         reduction.deleteNumOpt(cellM1, 5);
 
@@ -261,7 +261,7 @@ describe('CageModelOfSize2Reducer', () => {
         expect(reduction.peek()).toEqual(cageM);
     });
 
-    test('Does not reflect impact on `NumsReduction` if reduction did not happen', () => {
+    test('Does not reflect impact on `MasterModelReduction` if reduction did not happen', () => {
         // Given:
         // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
 
