@@ -16,8 +16,7 @@ export class MasterModelReduction {
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
         this._deletedNumOptsPerCell[cellM.cell.index].add(num);
-        this._cellMs.add(cellM);
-        this.updateImpactedCageMs(cellM, cageM);
+        this.markAsImpacted(cellM, cageM);
     }
 
     tryDeleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
@@ -30,12 +29,12 @@ export class MasterModelReduction {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {
             this._deletedNumOptsPerCell[cellM.cell.index].addAll(deletedNums);
-            this._cellMs.add(cellM);
-            this.updateImpactedCageMs(cellM, cageM);
+            this.markAsImpacted(cellM, cageM);
         }
     }
 
-    private updateImpactedCageMs(cellM: CellModel, cageM?: CageModel): void {
+    markAsImpacted(cellM: CellModel, cageM?: CageModel): void {
+        this._cellMs.add(cellM);
         if (cageM) {
             for (const aCageM of cellM.withinCageModels) {
                 if (cageM !== aCageM) {
