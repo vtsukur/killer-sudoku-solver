@@ -1,7 +1,7 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CageModelReducer } from './cageModelReducer';
-import { NumsReduction } from './numsReduction';
+import { NumsReduction } from './masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s

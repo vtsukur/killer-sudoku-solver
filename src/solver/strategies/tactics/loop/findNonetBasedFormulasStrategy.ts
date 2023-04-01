@@ -6,7 +6,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
-import { NumsReduction } from '../../reduction/numsReduction';
+import { NumsReduction } from '../../reduction/masterModelReduction';
 import { Strategy } from '../../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {

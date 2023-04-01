@@ -8,7 +8,7 @@ import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
-import { NumsReduction } from '../../strategies/reduction/numsReduction';
+import { NumsReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 

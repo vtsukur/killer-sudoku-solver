@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
-import { NumsReduction } from './reduction/numsReduction';
+import { NumsReduction } from './reduction/masterModelReduction';
 
 export class Context {
 

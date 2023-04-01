@@ -1,4 +1,4 @@
-import { NumsReduction } from './numsReduction';
+import { NumsReduction } from './masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s within a {@link CageModel}

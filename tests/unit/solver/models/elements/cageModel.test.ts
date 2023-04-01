@@ -3,7 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { NumsReduction } from '../../../../../src/solver/strategies/reduction/numsReduction';
+import { NumsReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);

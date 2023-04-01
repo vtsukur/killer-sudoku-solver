@@ -4,7 +4,7 @@ import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
-import { NumsReduction } from '../../../../../src/solver/strategies/reduction/numsReduction';
+import { NumsReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 
 describe('CageModelOfSize2Reducer', () => {
 
