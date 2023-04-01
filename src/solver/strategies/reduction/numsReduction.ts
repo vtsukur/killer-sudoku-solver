@@ -35,24 +35,24 @@ export class NumsReduction {
     }
 
     private updateImpactedCageMs(cellM: CellModel, cageM?: CageModel): void {
-        // if (cageM) {
-        //     for (const aCageM of cellM.withinCageModels) {
-        //         if (cageM !== aCageM) {
-        //             this.updateImpactedCageM(aCageM);
-        //         }
-        //     }
-        // } else {
-            for (const cageM of cellM.withinCageModels) {
-                this.updateImpactedCageM(cageM);
+        if (cageM) {
+            for (const aCageM of cellM.withinCageModels) {
+                if (cageM !== aCageM) {
+                    this.updateImpactedCageM(aCageM);
+                }
             }
-        // }
+        } else {
+            for (const aCageM of cellM.withinCageModels) {
+                this.updateImpactedCageM(aCageM);
+            }
+        }
     }
 
     private updateImpactedCageM(cageM: CageModel) {
         const impactedCageMsSet = this._impactedCageMsArray[cageM.cellCount - 1];
         if (!impactedCageMsSet.has(cageM)) {
             impactedCageMsSet.add(cageM);
-            this._impactedCageMsCount++;
+            ++this._impactedCageMsCount;
         }
     }
 
