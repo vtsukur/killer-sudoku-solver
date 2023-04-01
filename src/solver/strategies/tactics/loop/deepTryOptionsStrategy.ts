@@ -39,6 +39,7 @@ export class DeepTryOptionsStrategy extends Strategy {
                 if (e instanceof InvalidSolverStateError || e instanceof InvalidPuzzleDefError) {
                     if (ctxCpy.depth === 1) {
                         log.info(`Deep try for ${tryNum} at ${cellMTarget.cell.key}. Size: ${size}. Depth: ${ctxCpy.depth}. FAILED`);
+                        log.info(e.toString());
                     }
                     this._context.reduction.deleteNumOpt(cellMTarget, tryNum);
                     continue;
