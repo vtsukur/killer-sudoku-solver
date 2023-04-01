@@ -5,7 +5,7 @@ import { CellModel } from '../../../models/elements/cellModel';
 import { ColumnModel } from '../../../models/elements/columnModel';
 import { HouseModel } from '../../../models/elements/houseModel';
 import { RowModel } from '../../../models/elements/rowModel';
-import { NumsReduction } from '../../reduction/masterModelReduction';
+import { MasterModelReduction } from '../../reduction/masterModelReduction';
 import { Strategy } from '../../strategy';
 
 export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
@@ -91,7 +91,7 @@ export class FindSameNumberOptsInSameCellsStrategy extends Strategy {
 
 }
 
-function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reduction: NumsReduction) {
+function findSameNumberOptsInSameCellsAcrossRowsOrColumns(houseMs: Array<HouseModel>, numMap: Map<HouseModel, Array<Array<number>>>, getCellMFn: (directHouseIndex: number, perpendicularHouseIndex: number) => CellModel, reduction: MasterModelReduction) {
     _.range(0, House.CELL_COUNT).forEach(numIndex => {
         const num = numIndex + 1;
 

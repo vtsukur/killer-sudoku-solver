@@ -7,7 +7,7 @@ import { House, HouseIndex } from '../../puzzle/house';
 import { Nonet } from '../../puzzle/nonet';
 import { Puzzle } from '../../puzzle/puzzle';
 import { Row } from '../../puzzle/row';
-import { NumsReduction } from '../strategies/reduction/masterModelReduction';
+import { MasterModelReduction } from '../strategies/reduction/masterModelReduction';
 import { CageModel } from './elements/cageModel';
 import { CellModel } from './elements/cellModel';
 import { ColumnModel } from './elements/columnModel';
@@ -166,7 +166,7 @@ export class MasterModel {
         });
     }
 
-    registerCage(cage: Cage, reduction?: NumsReduction) {
+    registerCage(cage: Cage, reduction?: MasterModelReduction) {
         const cageM = new CageModel(cage, cage.cells.map(cell => this.cellModelOf(cell)));
         if (cageM.cage.placement.isWithinRow) {
             this.rowModels[cageM.anyRow()].addCageModel(cageM);

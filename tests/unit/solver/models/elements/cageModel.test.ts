@@ -3,7 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { NumsReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
+import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 
 const cell1 = Cell.at(0, 0);
 const cell2 = Cell.at(0, 1);
@@ -11,10 +11,10 @@ const cell3 = Cell.at(0, 2);
 
 describe('Unit tests for `CageModel`', () => {
 
-    let reduction: NumsReduction;
+    let reduction: MasterModelReduction;
 
     beforeEach(() => {
-        reduction = new NumsReduction();
+        reduction = new MasterModelReduction();
     });
 
     test('Initial reduction for `CageModel` of size 2 with a single `Combo`', () => {
@@ -79,7 +79,7 @@ describe('Unit tests for `CageModel`', () => {
         reduction.deleteNumOpt(cellM1, 5);
 
         // When:
-        const newReduction = new NumsReduction();
+        const newReduction = new MasterModelReduction();
         cageM.reduce(reduction, newReduction);
 
         // Then:
@@ -135,7 +135,7 @@ describe('Unit tests for `CageModel`', () => {
         cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
         cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
 
-        cageM.reduce(reduction, new NumsReduction());
+        cageM.reduce(reduction, new MasterModelReduction());
 
         const afterReductionCombos = Array.from(cageM.combos);
         expect(afterReductionCombos).toEqual([

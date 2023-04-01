@@ -1,7 +1,7 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CageModelReducer } from './cageModelReducer';
-import { NumsReduction } from './masterModelReduction';
+import { MasterModelReduction } from './masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s
@@ -42,7 +42,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
     /**
      * @see CageModelReducer.reduce
      */
-    reduce(reduction: NumsReduction): void {
+    reduce(reduction: MasterModelReduction): void {
         //
         // [PERFORMANCE] This implementation uses the following techniques to do fast work:
         //

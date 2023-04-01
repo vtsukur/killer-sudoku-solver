@@ -2,13 +2,13 @@ import * as _ from 'lodash';
 import { CellModel } from '../models/elements/cellModel';
 import { MasterModel } from '../models/masterModel';
 import { CageSlicer } from '../transform/cageSlicer';
-import { NumsReduction } from './reduction/masterModelReduction';
+import { MasterModelReduction } from './reduction/masterModelReduction';
 
 export class Context {
 
     readonly model;
     readonly cageSlicer;
-    reduction: NumsReduction;
+    reduction: MasterModelReduction;
     recentlySolvedCellModels: Array<CellModel>;
     depth;
     foundSolution?: Array<Array<number>>;
@@ -16,14 +16,14 @@ export class Context {
 
     constructor(model: MasterModel) {
         this.model = model;
-        this.reduction = new NumsReduction();
+        this.reduction = new MasterModelReduction();
         this.cageSlicer = new CageSlicer(this);
         this.recentlySolvedCellModels = [];
         this.depth = 0;
         this.foundSolution = undefined;
     }
 
-    resetReduction(reduction: NumsReduction) {
+    resetReduction(reduction: MasterModelReduction) {
         this.reduction = reduction;
     }
 

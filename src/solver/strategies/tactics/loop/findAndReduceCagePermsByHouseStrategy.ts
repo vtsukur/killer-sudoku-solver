@@ -9,7 +9,7 @@ import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSlicer } from '../../../transform/cageSlicer';
-import { NumsReduction } from '../../reduction/masterModelReduction';
+import { MasterModelReduction } from '../../reduction/masterModelReduction';
 import { Strategy } from '../../strategy';
 
 export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
@@ -170,7 +170,7 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
 }
 
-const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reduction: NumsReduction) => {
+const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel, combo: Combo, reduction: MasterModelReduction) => {
     for (const { row, col } of houseM.cells) {
         if (cageM.hasCellAt(row, col)) continue;
 
@@ -181,7 +181,7 @@ const reduceByHouse = (cageM: CageModel, houseM: HouseModel, model: MasterModel,
     }
 };
 
-const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reduction: NumsReduction) => {
+const checkAssumptionCage = (assumptionCage: Cage, combos: ReadonlyCombos, cell: Cell, num: number, model: MasterModel, reduction: MasterModelReduction) => {
     const placement = assumptionCage.placement;
     if (placement.isWithinHouse) {
         const reducedSingleCellForNumCombos = new Array<Combo>();
@@ -255,7 +255,7 @@ const checkIfHouseStaysValidWithLeftoverCage = (houseM: HouseModel, leftoverCage
     return valid;
 };
 
-const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reduction: NumsReduction) => {
+const reduceNonetBasedByRowOrColumn = (houseM: HouseModel, num: number, nonetM: NonetModel, model: MasterModel, reduction: MasterModelReduction) => {
     for (const { row, col } of houseM.cells) {
         const cellM = model.cellModelAt(row, col);
         if (cellM.cell.nonet === nonetM.index) continue;

@@ -6,7 +6,7 @@ import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
 import { NonetModel } from '../../../models/elements/nonetModel';
 import { MasterModel } from '../../../models/masterModel';
-import { NumsReduction } from '../../reduction/masterModelReduction';
+import { MasterModelReduction } from '../../reduction/masterModelReduction';
 import { Strategy } from '../../strategy';
 
 export class FindNonetBasedFormulasStrategy extends Strategy {
@@ -177,7 +177,7 @@ function findAreaWithSingleInnieOrOutieCell(nonetM: NonetModel, model: MasterMod
     return areaModel;
 }
 
-function reduceByFormula(formula: Formula, reduction: NumsReduction) {
+function reduceByFormula(formula: Formula, reduction: MasterModelReduction) {
     if (!_.inRange(formula.equalToCellMs.size, 1, 3)) return new Set();
 
     const numOpts = new Map();

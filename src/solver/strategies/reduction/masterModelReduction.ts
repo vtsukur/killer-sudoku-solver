@@ -4,7 +4,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 
-export class NumsReduction {
+export class MasterModelReduction {
 
     private readonly _cellMs = new Set<CellModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());

@@ -1,4 +1,4 @@
-import { NumsReduction } from './masterModelReduction';
+import { MasterModelReduction } from './masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s within a {@link CageModel}
@@ -12,8 +12,8 @@ export interface CageModelReducer {
      * Reduces possible numbers for {@link CellModel}s
      * by checking the validity of numbers' option given possible {@link Combo}s for the {@link CageModel}.
      *
-     * @param reduction - {@link NumsReduction} that tracks deleted number options.
+     * @param reduction - {@link MasterModelReduction} that tracks deleted number options.
      */
-    reduce(reduction: NumsReduction): void;
+    reduce(reduction: MasterModelReduction): void;
 
 }

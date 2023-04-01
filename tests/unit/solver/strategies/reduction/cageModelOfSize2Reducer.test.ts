@@ -4,7 +4,7 @@ import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
-import { NumsReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
+import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 
 describe('CageModelOfSize2Reducer', () => {
 
@@ -15,7 +15,7 @@ describe('CageModelOfSize2Reducer', () => {
     let cellM1: CellModel;
     let cellM2: CellModel;
     let cageM: CageModel;
-    let reduction: NumsReduction;
+    let reduction: MasterModelReduction;
     let reducer: CageModelOfSize2Reducer;
 
     beforeEach(() => {
@@ -28,7 +28,7 @@ describe('CageModelOfSize2Reducer', () => {
 
         cageM.initialReduce();
 
-        reduction = new NumsReduction();
+        reduction = new MasterModelReduction();
 
         reducer = new CageModelOfSize2Reducer(cageM);
     });

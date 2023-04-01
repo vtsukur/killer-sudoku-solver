@@ -8,7 +8,7 @@ import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
-import { NumsReduction } from '../../strategies/reduction/masterModelReduction';
+import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 
@@ -69,7 +69,7 @@ export class CageModel {
         return new CageModel(this.cage, [...this.cellMs], this.comboSet);
     }
 
-    initialReduce(reduction?: NumsReduction) {
+    initialReduce(reduction?: MasterModelReduction) {
         const nums = this.comboSet.fill();
         if (reduction) {
             for (const cellM of this.cellMs) {
@@ -98,14 +98,14 @@ export class CageModel {
         return this.cellMs.some(cellM => cellM.cell.row === row && cellM.cell.col === col);
     }
 
-    reduceCombos(combos: ReadonlyCombosSet, reduction: NumsReduction) {
+    reduceCombos(combos: ReadonlyCombosSet, reduction: MasterModelReduction) {
         const nums = this.comboSet.reduce(combos);
         for (const cellM of this.cellMs) {
             reduction.tryReduceNumOpts(cellM, nums, this);
         }
     }
 
-    reduce(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    reduce(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         if (this._cellCount === 2) {
             this._reducer?.reduce(newReduction);
         } else if (this._cellCount === 3) {
@@ -117,7 +117,7 @@ export class CageModel {
         }
     }
 
-    private reduceOptimalForSize3(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    private reduceOptimalForSize3(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         const PERMS_OF_3 = [
             [0, 1, 2],
             [0, 2, 1],
@@ -179,7 +179,7 @@ export class CageModel {
         this.comboSet.deleteCombo(combo);
     }
 
-    private reduceSmallCage(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    private reduceSmallCage(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         const context: Context = {
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
@@ -259,7 +259,7 @@ export class CageModel {
         return has;
     }
 
-    private reduceLargeCage(currentReduction: NumsReduction, newReduction: NumsReduction) {
+    private reduceLargeCage(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this.cellMs) {
             presentNums.addAll(cellM.numOptsSet());
@@ -383,7 +383,7 @@ export class CageModel {
         return clues;
     }
 
-    reduceToCombinationsContaining(withNum: number, reduction: NumsReduction) {
+    reduceToCombinationsContaining(withNum: number, reduction: MasterModelReduction) {
         if (this.hasSingleCombination() || !this.comboSet.size) return new Set();
 
         const newCombosMap = this.newSumAddendsCombosSet();
