@@ -112,6 +112,12 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.of(1, 5, 9).nums).toEqual([ 1, 5, 9 ]);
     });
 
+    test('Getting first number', () => {
+        expect(SudokuNumsSet.of(7).first).toEqual(7);
+        expect(SudokuNumsSet.of(2, 5, 9).first).toEqual(2);
+        expect(SudokuNumsSet.newEmpty().first).toBeUndefined();
+    });
+
     test('Adding numbers one by one', () => {
         const set = SudokuNumsSet.of(1, 6, 9);
 

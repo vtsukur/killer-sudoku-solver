@@ -212,6 +212,12 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         return this._nums;
     }
 
+    get first(): number | undefined {
+        if (this._bitStore !== 0) {
+            return this._nums[0];
+        }
+    }
+
     /**
      * @see ReadonlySudokuNumsSet.remaining
      */
