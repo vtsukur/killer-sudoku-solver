@@ -223,7 +223,7 @@ async function prepareCageSumImages(cageContours: Array<CageContour>, srcImage: 
 
     let index = 0;
     for (const cageContour of cageContours) {
-        index++;
+        ++index;
         log.info(`Image processing of text area for cage contour ${index}. Cells: ${cageContour.cells}`);
 
         await simplifiedCageSumImageReader(cageContour, index, srcImage, tempFilePaths);

@@ -159,8 +159,8 @@ class HouseAreaStats {
     }
 
     addFinding(cageCellCount: number) {
-        this._foundCagesByCellCount[cageCellCount]++;
-        this._totalCagesFound++;
+        ++this._foundCagesByCellCount[cageCellCount];
+        ++this._totalCagesFound;
     }
 
 }
@@ -185,7 +185,7 @@ class Stats {
 
     addFinding(n: number, cageCellCount: number) {
         this._data[n].addFinding(cageCellCount);
-        this._totalCagesFound++;
+        ++this._totalCagesFound;
     }
 
     clear() {
@@ -782,7 +782,7 @@ abstract class AdjacentHouseAreasProcessor extends HouseAreasProcessor {
                 this.findAndSlice(areaCageMs, areaCellsIndices, adjacentHouseCount);
             } while (++topOrLeftIndex <= maxTopOrLeftIndex);
 
-            adjacentHouseCount++;
+            ++adjacentHouseCount;
         }
     }
 

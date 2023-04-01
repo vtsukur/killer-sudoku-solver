@@ -287,7 +287,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
 
         while (bitStoreIndex < 3) {
             CellIndicesSet._LOOKUP_TABLE[bitStoreIndex].collect(this._bitStores[bitStoreIndex], val);
-            bitStoreIndex++;
+            ++bitStoreIndex;
         }
 
         return val;

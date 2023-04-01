@@ -218,7 +218,7 @@ export class MasterModel {
         cellM.placeNum(num);
 
         this._solution[cell.row][cell.col] = num;
-        this._placedNumCount++;
+        ++this._placedNumCount;
     }
 
     applySolution(solution: Array<Array<number>>) {
