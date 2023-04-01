@@ -14,6 +14,9 @@ import { ColumnModel } from './elements/columnModel';
 import { HouseModel } from './elements/houseModel';
 import { NonetModel } from './elements/nonetModel';
 import { RowModel } from './elements/rowModel';
+import { logFactory } from '../../util/logFactory';
+
+const log = logFactory.withLabel('MasterModel');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GenericEventHandler = (...args: any[]) => void;
@@ -225,6 +228,16 @@ export class MasterModel {
         _.range(House.CELL_COUNT).forEach(row => {
             _.range(House.CELL_COUNT).forEach(col => {
                 this.placeNum(Cell.at(row, col), solution[row][col]);
+            });
+        });
+    }
+
+    printCellModelNumOpts() {
+        log.info('-----');
+        _.range(9).forEach(row => {
+            _.range(9).forEach(col => {
+                const cellMdl = this.cellModelAt(row, col);
+                log.info(cellMdl.cell.key + ' ' + cellMdl.numOpts());
             });
         });
     }
