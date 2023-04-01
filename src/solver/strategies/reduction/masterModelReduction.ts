@@ -10,7 +10,7 @@ export class MasterModelReduction {
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
     private readonly _impactedCageMsArray = House.INDICES.map(() => new Set<CageModel>());
-    private readonly _cageSizesSet = SudokuNumsSet.newEmpty();
+    private _minCageSizeIndex = this._impactedCageMsArray.length;
     private _impactedCageMsCount = 0;
 
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
@@ -50,10 +50,13 @@ export class MasterModelReduction {
     }
 
     private updateImpactedCageM(cageM: CageModel) {
-        const impactedCageMsSet = this._impactedCageMsArray[cageM.cellCount - 1];
+        const index = cageM.cellCount - 1;
+        const impactedCageMsSet = this._impactedCageMsArray[index];
         if (!impactedCageMsSet.has(cageM)) {
             impactedCageMsSet.add(cageM);
-            this._cageSizesSet.add(cageM.cellCount);
+            if (index < this._minCageSizeIndex) {
+                this._minCageSizeIndex = index;
+            }
             ++this._impactedCageMsCount;
         }
     }
@@ -69,24 +72,17 @@ export class MasterModelReduction {
     peek(): CageModel | undefined {
         if (this._impactedCageMsCount === 0) return undefined;
 
-        const index = this._cageSizesSet.first as number - 1;
-        const impactedCageMsSet = this._impactedCageMsArray[index];
+        let index = this._minCageSizeIndex;
+        while (index < this._impactedCageMsArray.length && this._impactedCageMsArray[index].size === 0) {
+            ++index;
+        }
+        this._minCageSizeIndex = index;
+        const impactedCageMsSet = this._impactedCageMsArray[this._minCageSizeIndex];
+
         const cageM = impactedCageMsSet.values().next().value;
         impactedCageMsSet.delete(cageM);
-        if (impactedCageMsSet.size === 0) {
-            this._cageSizesSet.delete(cageM.cellCount);
-        }
         --this._impactedCageMsCount;
         return cageM;
-
-        // for (const impactedCageMsSet of this._impactedCageMsArray) {
-        //     if (impactedCageMsSet.size > 0) {
-        //         const cageM = impactedCageMsSet.values().next().value;
-        //         impactedCageMsSet.delete(cageM);
-        //         --this._impactedCageMsCount;
-        //         return cageM;
-        //     }
-        // }
     }
 
 }
