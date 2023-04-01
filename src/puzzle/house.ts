@@ -24,7 +24,7 @@ export class House {
     static readonly COUNT = 9;
 
     /**
-     * Readonly array of numbers in the range `[0, {@link House.COUNT}}]`
+     * Readonly array of numbers in the range `[0, {@link House.COUNT}})`
      * to represent iteration over {@link House}`s of one type
      * (`Row`s, `Column`s or `Nonet`s) within a `Grid`
      * or iteration over {@link Cell}s within the {@link House}.
