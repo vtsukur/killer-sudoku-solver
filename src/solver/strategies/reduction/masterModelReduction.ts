@@ -9,7 +9,7 @@ export class MasterModelReduction {
     private readonly _cellMs = new Set<CellModel>();
     private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
 
-    private readonly _impactedCageMsArray = House.INDICES.map(() => new Set<CageModel>());
+    private readonly _impactedCageMsArray: Array<Set<CageModel>> = House.INDICES.map(() => new Set<CageModel>());
     private _minCageSizeIndex = this._impactedCageMsArray.length;
     private _impactedCageMsCount = 0;
 
