@@ -79,11 +79,10 @@ describe('Unit tests for `CageModel`', () => {
         reduction.deleteNumOpt(cellM1, 5);
 
         // When:
-        const newReduction = new MasterModelReduction();
-        cageM.reduce(reduction, newReduction);
+        cageM.reduce(reduction);
 
         // Then:
-        expect(newReduction.peek()).toBeUndefined();
+        expect(reduction.peek()).toEqual(cageM);
         expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
         expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
@@ -135,7 +134,7 @@ describe('Unit tests for `CageModel`', () => {
         cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
         cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
 
-        cageM.reduce(reduction, new MasterModelReduction());
+        cageM.reduce(reduction);
 
         const afterReductionCombos = Array.from(cageM.combos);
         expect(afterReductionCombos).toEqual([

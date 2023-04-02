@@ -8,7 +8,7 @@ export class ReducePermsForCagesStrategy extends Strategy {
         let cageM = reduction.peek();
         while (cageM) {
             if (this._model.cageModelsMap.has(cageM.cage.key)) {
-                cageM.reduce(reduction, reduction);
+                cageM.reduce(reduction);
             }
             cageM = reduction.peek();
         }

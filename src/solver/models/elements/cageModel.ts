@@ -109,19 +109,19 @@ export class CageModel {
         }
     }
 
-    reduce(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
+    reduce(reduction: MasterModelReduction) {
         if (this._cellCount === 2) {
-            this._reducer?.reduce(currentReduction);
+            this._reducer?.reduce(reduction);
         } else if (this._cellCount === 3) {
-            this.reduceOptimalForSize3(currentReduction, newReduction);
+            this.reduceOptimalForSize3(reduction);
         } else if (this._cellCount === 4) {
-            this.reduceSmallCage(currentReduction, newReduction);
+            this.reduceSmallCage(reduction);
         } else {
-            this.reduceLargeCage(currentReduction, newReduction);
+            this.reduceLargeCage(reduction);
         }
     }
 
-    private reduceOptimalForSize3(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
+    private reduceOptimalForSize3(reduction: MasterModelReduction) {
         const PERMS_OF_3 = [
             [0, 1, 2],
             [0, 2, 1],
@@ -155,7 +155,7 @@ export class CageModel {
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    newReduction.deleteNumOpt(cellM0, num0, this);
+                    reduction.deleteNumOpt(cellM0, num0, this);
                 }
             }
         }
@@ -183,7 +183,7 @@ export class CageModel {
         this.comboSet.deleteCombo(combo);
     }
 
-    private reduceSmallCage(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
+    private reduceSmallCage(reduction: MasterModelReduction) {
         const context: Context = {
             processedCellMs: new Set(),
             remainingCellMs: new Set(this.cellMs),
@@ -223,7 +223,7 @@ export class CageModel {
                 Array.from(cellM.numOpts()).forEach(num => {
                     context.processNum(num, 0, () => {
                         if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            newReduction.deleteNumOpt(cellM, num, this);
+                            reduction.deleteNumOpt(cellM, num, this);
                         }
                     });
                 });
@@ -263,7 +263,7 @@ export class CageModel {
         return has;
     }
 
-    private reduceLargeCage(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
+    private reduceLargeCage(reduction: MasterModelReduction) {
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this.cellMs) {
             presentNums.addAll(cellM.numOptsSet());
@@ -320,7 +320,7 @@ export class CageModel {
 
             for (const cellM of this.cellMs) {
                 for (const num of numOptsToDelete) {
-                    newReduction.tryDeleteNumOpt(cellM, num, this);
+                    reduction.tryDeleteNumOpt(cellM, num, this);
                 }
             }
 
