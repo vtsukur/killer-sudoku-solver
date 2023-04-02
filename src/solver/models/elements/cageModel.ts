@@ -11,6 +11,7 @@ import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
+import { CageModelOfSize2DeletedNumsReducer } from '../../strategies/reduction/cageModelOfSize2DeletedNumsReducer';
 
 type Clue = {
     num: number;
@@ -44,7 +45,7 @@ export class CageModel {
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
     comboSet: CombosSet;
     private _reducer?: CageModelReducer;
-    // private _deletedNumsReducer?: CageModelReducer;
+    private _deletedNumsReducer?: CageModelReducer;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
@@ -63,7 +64,7 @@ export class CageModel {
     updateReducers() {
         if (this._cellCount === 2) {
             this._reducer = new CageModelOfSize2Reducer(this);
-            // this._deletedNumsReducer = new CageModelOfSize2DeletedNumsReducer(this);
+            this._deletedNumsReducer = new CageModelOfSize2DeletedNumsReducer(this);
         }
     }
 
