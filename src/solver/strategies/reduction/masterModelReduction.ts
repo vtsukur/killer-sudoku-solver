@@ -58,8 +58,8 @@ export class MasterModelReduction {
         }
     }
 
-    deletedNumOptsOf(cellM: CellModel): ReadonlyArray<number> {
-        return this._deletedNumsTracker[cellM.cell.index].nums;
+    deletedNumOptsOf(cellM: CellModel): ReadonlySudokuNumsSet {
+        return this._deletedNumsTracker[cellM.cell.index];
     }
 
     get isNotEmpty(): boolean {

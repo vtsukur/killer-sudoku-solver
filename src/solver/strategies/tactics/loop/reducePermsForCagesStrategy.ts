@@ -1,3 +1,4 @@
+import { MasterModelReduction } from '../../reduction/masterModelReduction';
 import { Strategy } from '../../strategy';
 
 export class ReducePermsForCagesStrategy extends Strategy {
@@ -11,6 +12,7 @@ export class ReducePermsForCagesStrategy extends Strategy {
             }
             cageM = reduction.peek();
         }
+        this._context.reduction = new MasterModelReduction();
     }
 
 }

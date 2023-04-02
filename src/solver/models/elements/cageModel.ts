@@ -114,7 +114,7 @@ export class CageModel {
 
     reduce(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         if (this._cellCount === 2) {
-            this._reducer?.reduce(newReduction);
+            this._reducer?.reduce(currentReduction);
             // this._deletedNumsReducer?.reduce(currentReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);

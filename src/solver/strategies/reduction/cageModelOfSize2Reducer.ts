@@ -57,6 +57,9 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         //
 
         const cageMCombos = this._cageM.comboSet;
+        if (reduction.deletedNumOptsOf(this._cellM0).isEmpty && reduction.deletedNumOptsOf(this._cellM1).isEmpty) {
+            return;
+        }
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of cageMCombos.combos) {
