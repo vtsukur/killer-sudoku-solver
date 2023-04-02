@@ -4,9 +4,20 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 
+type ReductionEntry = {
+    deletedNumsSet: SudokuNumsSet;
+    cellM?: CellModel;
+    cageMs: Array<CageModel>;
+}
+
 export class MasterModelReduction {
 
-    private readonly _deletedNumOptsPerCell = Grid.CELL_INDICES.map(() => SudokuNumsSet.newEmpty());
+    private readonly _tracker: Array<ReductionEntry> = Grid.CELL_INDICES.map(() => {
+        return {
+            deletedNumsSet: SudokuNumsSet.newEmpty(),
+            cageMs: []
+        };
+    });
 
     private readonly _impactedCageMsArray: Array<Array<CageModel>> = House.INDICES.map(() => []);
     private _minCageSizeIndex = this._impactedCageMsArray.length;
@@ -14,7 +25,7 @@ export class MasterModelReduction {
 
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
-        this._deletedNumOptsPerCell[cellM.cell.index].add(num);
+        this._tracker[cellM.cell.index].deletedNumsSet.add(num);
         this.markAsImpacted(cellM, cageM);
     }
 
@@ -27,20 +38,24 @@ export class MasterModelReduction {
     tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet, cageM?: CageModel) {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {
-            this._deletedNumOptsPerCell[cellM.cell.index].addAll(deletedNums);
+            this._tracker[cellM.cell.index].deletedNumsSet.addAll(deletedNums);
             this.markAsImpacted(cellM, cageM);
         }
     }
 
     markAsImpacted(cellM: CellModel, cageM?: CageModel): void {
+        const tracker = this._tracker[cellM.cell.index];
+        tracker.cellM = cellM;
         if (cageM) {
             for (const aCageM of cellM.withinCageModels) {
                 if (cageM !== aCageM) {
+                    tracker.cageMs.push(aCageM);
                     this.updateImpactedCageM(aCageM);
                 }
             }
         } else {
             for (const aCageM of cellM.withinCageModels) {
+                tracker.cageMs.push(aCageM);
                 this.updateImpactedCageM(aCageM);
             }
         }
@@ -59,7 +74,7 @@ export class MasterModelReduction {
     }
 
     deletedNumOptsOf(cellM: CellModel): ReadonlyArray<number> {
-        return this._deletedNumOptsPerCell[cellM.cell.index].nums;
+        return this._tracker[cellM.cell.index].deletedNumsSet.nums;
     }
 
     get isNotEmpty(): boolean {
