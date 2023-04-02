@@ -298,7 +298,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    union(val: ReadonlyCellIndicesSet): CellIndicesSet {
+    union(val: ReadonlyCellIndicesSet): this {
         //
         // Applying bitwise AND onto each bit store of this set and the `val` set
         // to produce `1`s on the positions where both sets have `1`s.
@@ -375,7 +375,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    add(val: number): CellIndicesSet {
+    add(val: number): this {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
@@ -399,7 +399,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    addAll(val: ReadonlyCellIndicesSet): CellIndicesSet {
+    addAll(val: ReadonlyCellIndicesSet): this {
         //
         // Applying bitwise OR assignment on the bit stores of this set
         // to merge `1`s from the bit stores of the `val` set.
@@ -423,7 +423,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    delete(val: number): CellIndicesSet {
+    delete(val: number): this {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
@@ -447,7 +447,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      *
      * @returns This set.
      */
-    deleteAll(val: ReadonlyCellIndicesSet): CellIndicesSet {
+    deleteAll(val: ReadonlyCellIndicesSet): this {
         //
         // Applying bitwise AND assignment on the bit stores of this set
         // to merge `1`s from the bit stores of the `val` set.

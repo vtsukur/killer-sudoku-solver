@@ -157,7 +157,7 @@ export abstract class Bits32Set<
      *
      * @returns This set.
      */
-    add(val: number) {
+    add(val: number): this {
         //
         // Applying bitwise OR with left-wise shift to set bit at position `val` to `1`.
         //
@@ -177,8 +177,10 @@ export abstract class Bits32Set<
 
     /**
      * @see NumsSet.addAll
+     *
+     * @returns This set.
      */
-    addAll(val: ROSET) {
+    addAll(val: ROSET): this {
         //
         // Applying bitwise OR assignment on the bit store of this set
         // to merge `1`s from the bit store of the `val` set.
@@ -199,8 +201,10 @@ export abstract class Bits32Set<
 
     /**
      * @see NumsSet.delete
+     *
+     * @returns This set.
      */
-    deleteAll(val: ROSET) {
+    deleteAll(val: ROSET): this {
         //
         // Applying bitwise AND assignment on the bit store of this set
         // to merge `1`s from the bit store of the `val` set.
@@ -229,7 +233,7 @@ export abstract class Bits32Set<
      *
      * @returns This set.
      */
-    delete(val: number) {
+    delete(val: number): this {
         if (this.has(val)) {
             //
             // Applying bitwise XOR assignment on the bit store of this set
@@ -253,8 +257,10 @@ export abstract class Bits32Set<
 
     /**
      * @see NumsSet.union
+     *
+     * @returns This set.
      */
-    union(val: ROSET) {
+    union(val: ROSET): this {
         //
         // Applying bitwise AND assignment on the bit store of this set
         // to `AND` `1`s from the bit store of the `val` set.

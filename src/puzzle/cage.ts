@@ -167,7 +167,7 @@ export class Cage {
          * @throws {@link InvalidPuzzleDefError} if the given `Cell` describes duplicate `Cell`
          * in respect to Builder's accumulated `Cell`s.
          */
-        withCell(val: Cell) {
+        withCell(val: Cell): this {
             if (this._cellKeys.has(val.key)) {
                 Cage.throwValidationError(`Found duplicate Cell: ${val.key}`);
             }
@@ -186,7 +186,7 @@ export class Cage {
          * @throws {@link InvalidPuzzleDefError} if at least one of given `Cell`s describe duplicate `Cell`
          * in respect to Builder's accumulated `Cell`s.
          */
-        withCells(val: ReadonlyCells) {
+        withCells(val: ReadonlyCells): this {
             for (const cell of val) {
                 this.withCell(cell);
             }
@@ -206,7 +206,7 @@ export class Cage {
          *
          * @returns this Builder.
          */
-        setIsInput(val: boolean) {
+        setIsInput(val: boolean): this {
             this._isInput = val;
             return this;
         }
