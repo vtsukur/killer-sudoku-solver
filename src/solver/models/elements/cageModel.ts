@@ -44,6 +44,7 @@ export class CageModel {
     private _sumAddendsCombinatorics: SumAddendsCombinatorics;
     comboSet: CombosSet;
     private _reducer?: CageModelReducer;
+    // private _deletedNumsReducer?: CageModelReducer;
 
     constructor(cage: Cage, cellMs: Array<CellModel>, comboSet?: CombosSet) {
         this.cage = cage;
@@ -56,8 +57,13 @@ export class CageModel {
         } else {
             this.comboSet = this.newSumAddendsCombosSet();
         }
+        this.updateReducers();
+    }
+
+    updateReducers() {
         if (this._cellCount === 2) {
             this._reducer = new CageModelOfSize2Reducer(this);
+            // this._deletedNumsReducer = new CageModelOfSize2DeletedNumsReducer(this);
         }
     }
 
@@ -108,6 +114,7 @@ export class CageModel {
     reduce(currentReduction: MasterModelReduction, newReduction: MasterModelReduction) {
         if (this._cellCount === 2) {
             this._reducer?.reduce(newReduction);
+            // this._deletedNumsReducer?.reduce(currentReduction);
         } else if (this._cellCount === 3) {
             this.reduceOptimalForSize3(currentReduction, newReduction);
         } else if (this._cellCount === 4) {

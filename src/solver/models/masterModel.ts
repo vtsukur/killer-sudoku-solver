@@ -131,6 +131,7 @@ export class MasterModel {
             cageM.cellMs.forEach((cellM, index) => {
                 cageM.cellMs[index] = this.cellModelAt(cellM.cell.row, cellM.cell.col);
             });
+            cageM.updateReducers();
         }
 
         // copy solution
