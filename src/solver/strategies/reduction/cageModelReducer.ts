@@ -1,3 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Combo } from '../../math';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CageModel } from '../../models/elements/cageModel';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CellModel } from '../../models/elements/cellModel';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
