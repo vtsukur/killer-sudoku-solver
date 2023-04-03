@@ -238,6 +238,31 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     // ```
                     //
                     reduction.deleteNumOpt(this._cellM1, num0, this._cageM);
+
+                    //
+                    // Also, if the prior conditional logic of this function deleted
+                    // the second `Combo` number from the second `CellModel`
+                    // and now the first `Combo` number is also deleted from the second `CellModel`,
+                    // the current `Combo` is no longer relevant and is thus subject to removal.
+                    //
+                    // For example, for the `Combo` of numbers `[5, 6]`,
+                    // if the first `CellModel` does *not* have `5` nor `6` as the number options,
+                    // and the second `CellModel` has both `5` and `6`,
+                    // then the `Combo` is removed for both `CellModel`s.
+                    //
+                    // ```
+                    // (before reduction)
+                    // CellModel 1: [... (no 5 and no 6)]
+                    // CellModel 2: [..., 5, 6 ...]
+                    //
+                    // (after reduction)
+                    // CellModel 1: [... (no 5 and no 6)]
+                    // CellModel 2: [... (no 5 and no 6)]
+                    // ```
+                    //
+                    if (!this._cellM1.hasNumOpt(num1)) {
+                        cageMCombos.deleteCombo(combo);
+                    }
                 }
             } else if (!cell1HasNum0) {
                 //
@@ -263,6 +288,31 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                 // ```
                 //
                 reduction.deleteNumOpt(this._cellM0, num1, this._cageM);
+
+                //
+                // Also, if the prior conditional logic of this function deleted
+                // the first `Combo` number from the first `CellModel`
+                // and now the second `Combo` number is also deleted from the first `CellModel`,
+                // the current `Combo` is no longer relevant and is thus subject to removal.
+                //
+                // For example, for the `Combo` of numbers `[5, 6]`,
+                // if the first `CellModel` has both `5` and `6`,
+                // and the second `CellModel` does *not* have `5` nor `6` as the number options,
+                // then the `Combo` is removed for both `CellModel`s.
+                //
+                // ```
+                // (before reduction)
+                // CellModel 1: [..., 5, 6 ...]
+                // CellModel 2: [... (no 5 and no 6)]
+                //
+                // (after reduction)
+                // CellModel 1: [... (no 5 and no 6)]
+                // CellModel 2: [... (no 5 and no 6)]
+                // ```
+                //
+                if (!this._cellM0.hasNumOpt(num0)) {
+                    cageMCombos.deleteCombo(combo);
+                }
             }
         }
     }
