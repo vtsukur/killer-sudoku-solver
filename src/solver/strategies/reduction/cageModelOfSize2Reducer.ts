@@ -39,6 +39,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         this._cellM1 = cageM.cellMs[1];
     }
 
+    // static STATS = new Array<[number, number, number]>();
+
+    // addStat(deletedNums1Count0: number, deletedNums1Count1: number) {
+    //     CageModelOfSize2Reducer.STATS.push([this._cellM0.numOpts().length + this._cellM1.numOpts().length, deletedNums1Count0 + deletedNums1Count1, this._cageM.comboSet.combos.length]);
+    // }
+
     /**
      * @see CageModelReducer.reduce
      */
@@ -56,6 +62,9 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         // Again, for performance reasons.
         //
 
+        const deletedNumOpts_cellM0 = reduction.deletedNumOptsOf(this._cellM0);
+        const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
+
         //
         // Skipping reduction if the deletion of numbers did *not* ever happen
         // for `CageModel`'s `CellModel`s within the current `MasterModelReduction` state.
@@ -64,11 +73,47 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         // as empirical tests found that such an approach is slower
         // than a combination-based analysis for a `Cage` with 2 `Cell`s.
         //
-        if (reduction.deletedNumOptsOf(this._cellM0).isEmpty && reduction.deletedNumOptsOf(this._cellM1).isEmpty) {
+        if (deletedNumOpts_cellM0.isEmpty && deletedNumOpts_cellM1.isEmpty) {
             return;
         }
 
         const cageMCombos = this._cageM.comboSet;
+
+        // this.addStat(
+        //     reduction.deletedNumOptsOf(this._cellM0).nums.length,
+        //     reduction.deletedNumOptsOf(this._cellM1).nums.length
+        // );
+
+        if (cageMCombos.combos.length > 2 && deletedNumOpts_cellM0.nums.length + deletedNumOpts_cellM1.nums.length <= 2) {
+
+            for (const num of deletedNumOpts_cellM0.nums) {
+                const complementNum = this._cageM.cage.sum - num;
+                reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                if (!(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
+                    for (const combo of cageMCombos.combos) {
+                        if (combo.numsSet.has(num)) {
+                            cageMCombos.deleteCombo(combo);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (const num of deletedNumOpts_cellM1.nums) {
+                const complementNum = this._cageM.cage.sum - num;
+                reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
+                if (!(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
+                    for (const combo of cageMCombos.combos) {
+                        if (combo.numsSet.has(num)) {
+                            cageMCombos.deleteCombo(combo);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return;
+        }
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of cageMCombos.combos) {
