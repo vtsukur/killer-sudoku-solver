@@ -18,6 +18,7 @@ export class Stat {
     numsAfterReductionCellM1?: ReadonlyArray<number>;
     combosCountAfterReduction?: number;
     isFullReduction = true;
+    duration = 0;
 
     constructor(
             readonly cageKey: string,
@@ -114,30 +115,30 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     static captureMeasures(): ReadonlyArray<Stat> {
         const val = performance.getEntries()
                 .filter(entry => entry.entryType === 'measure')
-                .map(entry => entry.detail as Stat);
+                .map(entry => {
+                    const stat = entry.detail as Stat;
+                    stat.duration = entry.duration;
+                    return stat;
+                });
         performance.clearMarks();
         performance.clearMeasures();
         return val;
     }
 
-    static printMeasures(isPrintDuration = true) {
-        const entries = performance.getEntries().filter(entry => entry.entryType === 'measure');
-        for (const entry of entries) {
-            const stat = entry.detail as Stat;
-            log.info(`{ cageKey: ${stat.cageKey}, ` +
-                    `presentNumsCellM0: ${stat.presentNumsCellM0}, ` +
-                    `presentNumsCellM1: ${stat.presentNumsCellM1}, ` +
-                    `presentNumsCount: ${stat.presentNumsCount}, ` +
-                    `deletedBeforeReductionNumsCellM0: ${stat.deletedBeforeReductionNumsCellM0}, ` +
-                    `deletedBeforeReductionNumsCellM1: ${stat.deletedBeforeReductionNumsCellM1}, ` +
-                    `deletedNumsCount: ${stat.deletedNumsCount}, ` +
-                    `combosCountBeforeReduction: ${stat.combosCountBeforeReduction}, ` +
-                    `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
-                    `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
-                    `combosCountAfterReduction: ${stat.combosCountAfterReduction}` +
-                    `isFullReduction: ${stat.isFullReduction}` +
-                    (isPrintDuration ? `: ${entry.duration} ms` : ''));
-        }
+    static printStat(stat: Stat, isPrintDuration = true) {
+        log.info(`{ cageKey: ${stat.cageKey}, ` +
+                `presentNumsCellM0: ${stat.presentNumsCellM0}, ` +
+                `presentNumsCellM1: ${stat.presentNumsCellM1}, ` +
+                `presentNumsCount: ${stat.presentNumsCount}, ` +
+                `deletedBeforeReductionNumsCellM0: ${stat.deletedBeforeReductionNumsCellM0}, ` +
+                `deletedBeforeReductionNumsCellM1: ${stat.deletedBeforeReductionNumsCellM1}, ` +
+                `deletedNumsCount: ${stat.deletedNumsCount}, ` +
+                `combosCountBeforeReduction: ${stat.combosCountBeforeReduction}, ` +
+                `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
+                `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
+                `combosCountAfterReduction: ${stat.combosCountAfterReduction}, ` +
+                `isFullReduction: ${stat.isFullReduction}` +
+                (isPrintDuration ? `: ${stat.duration} ms }` : ' }'));
     }
 
 }

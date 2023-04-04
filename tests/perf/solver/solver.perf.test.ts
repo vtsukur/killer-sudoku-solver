@@ -52,7 +52,6 @@ describe('Performance tests for `Solver`', () => {
         log.info('Testing full reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
         solveAllSudokuDotComPuzzles();
-        CageModelOfSize2ReducerRouter.printMeasures();
         const fullReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
 
         // Testing routing reduction for `CageModel`s of size 2.
@@ -66,11 +65,49 @@ describe('Performance tests for `Solver`', () => {
         log.info('Testing routing reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
         solveAllSudokuDotComPuzzles();
-        CageModelOfSize2ReducerRouter.printMeasures();
-        const partialReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
+        const routingReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
 
         // Comparing results
-        expect(fullReductionStats.length).toBe(partialReductionStats.length);
+        expect(fullReductionStats.length).toBe(routingReductionStats.length);
+
+        let fullReductionWins = 0;
+        let fullReductionWinsWithDeletedLte1 = 0;
+        let fullReductionWinsWithDeletedLte1SavedTime = 0;
+        let partialReductionWins = 0;
+        let partialReductionWinsWithDeletedLte1 = 0;
+        let partialReductionWinsWithDeletedLte1SavedTime = 0;
+        fullReductionStats.forEach((fullReductionStat, i) => {
+            const routingReductionStat = routingReductionStats[i];
+            if (fullReductionStat.isFullReduction && routingReductionStat.isFullReduction) return;
+
+            const durationDelta = Math.abs(routingReductionStat.duration - fullReductionStat.duration);
+            if (fullReductionStat.duration < routingReductionStat.duration) {
+                log.info('Full reduction wins:');
+                CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
+                CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
+                ++fullReductionWins;
+                if (fullReductionStat.deletedNumsCount === 1) {
+                    ++fullReductionWinsWithDeletedLte1;
+                    fullReductionWinsWithDeletedLte1SavedTime += durationDelta;
+                }
+            } else {
+                log.info('Partial reduction wins:');
+                CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
+                CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
+                ++partialReductionWins;
+                if (fullReductionStat.deletedNumsCount === 1) {
+                    ++partialReductionWinsWithDeletedLte1;
+                    partialReductionWinsWithDeletedLte1SavedTime += durationDelta;
+                }
+            }
+        });
+
+        log.info(`Full reduction total wins: ${fullReductionWins}`);
+        log.info(`Full reduction total wins (deleted === 1): ${fullReductionWinsWithDeletedLte1}`);
+        log.info(`Full reduction total wins (deleted === 1 / saved time): ${fullReductionWinsWithDeletedLte1SavedTime}`);
+        log.info(`Partial reduction total wins: ${partialReductionWins}`);
+        log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
+        log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
     });
 
     test.skip('Find solution for DailyKillerSudoku.com puzzles', () => {
