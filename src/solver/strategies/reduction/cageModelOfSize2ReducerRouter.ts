@@ -17,6 +17,7 @@ export class Stat {
     numsAfterReductionCellM0?: ReadonlyArray<number>;
     numsAfterReductionCellM1?: ReadonlyArray<number>;
     combosCountAfterReduction?: number;
+    isFullReduction = true;
 
     constructor(
             readonly cageKey: string,
@@ -47,6 +48,8 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _fullReducer: CageModelReducer;
     private readonly _partialReducer: CageModelReducer;
 
+    static isAlwaysApplyFullReduction = false;
+
     static collectPerfStats = true;
 
     constructor(cageM: CageModel, fullReducer: CageModelReducer, partialReducer: CageModelReducer) {
@@ -76,7 +79,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             );
 
             performance.mark('reduce-start');
-            this.doReduce(reduction);
+            stat.isFullReduction = this.doReduce(reduction);
             performance.mark('reduce-end');
 
             stat.numsAfterReductionCellM0 = this._cellM0.numOpts();
@@ -93,15 +96,31 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         }
     }
 
-    private doReduce(reduction: MasterModelReduction) {
-        if (this._cageM.isFirstReduction) {
+    private doReduce(reduction: MasterModelReduction): boolean {
+        if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction) {
             this._fullReducer.reduce(reduction);
+            return true;
         } else {
-            this._partialReducer.reduce(reduction);
+            if (this._cageM.isFirstReduction) {
+                this._fullReducer.reduce(reduction);
+                return true;
+            } else {
+                this._partialReducer.reduce(reduction);
+                return false;
+            }
         }
     }
 
-    static printMeasureEntries(isPrintDuration = true) {
+    static captureMeasures(): ReadonlyArray<Stat> {
+        const val = performance.getEntries()
+                .filter(entry => entry.entryType === 'measure')
+                .map(entry => entry.detail as Stat);
+        performance.clearMarks();
+        performance.clearMeasures();
+        return val;
+    }
+
+    static printMeasures(isPrintDuration = true) {
         const entries = performance.getEntries().filter(entry => entry.entryType === 'measure');
         for (const entry of entries) {
             const stat = entry.detail as Stat;
@@ -116,6 +135,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
                     `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
                     `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
                     `combosCountAfterReduction: ${stat.combosCountAfterReduction}` +
+                    `isFullReduction: ${stat.isFullReduction}` +
                     (isPrintDuration ? `: ${entry.duration} ms` : ''));
         }
     }

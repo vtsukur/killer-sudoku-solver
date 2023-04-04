@@ -3,6 +3,9 @@ import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
 import { CachedNumRanges } from '../../../src/util/cachedNumRanges';
 import { CageModelOfSize2ReducerRouter } from '../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
+import { logFactory } from '../../../src/util/logFactory';
+
+const log = logFactory.withLabel('solver.perf');
 
 describe('Performance tests for `Solver`', () => {
 
@@ -32,16 +35,42 @@ describe('Performance tests for `Solver`', () => {
     });
 
     test('Find solution for Sudoku.com puzzles (targeting `CageModel` of size 2 reduction)', () => {
-        // Warming up.
+        // General warm up.
         CageModelOfSize2ReducerRouter.collectPerfStats = false;
         CachedNumRanges.ZERO_TO_N_LTE_81[3].forEach(() => {
             solveAllSudokuDotComPuzzles();
         });
 
-        // Actual test.
+        // Testing full reduction for `CageModel`s of size 2.
+        CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction = true;
+
+        // ... Warm up
+        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        solveAllSudokuDotComPuzzles();
+
+        // ... Actual test
+        log.info('Testing full reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
         solveAllSudokuDotComPuzzles();
-        CageModelOfSize2ReducerRouter.printMeasureEntries();
+        CageModelOfSize2ReducerRouter.printMeasures();
+        const fullReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
+
+        // Testing routing reduction for `CageModel`s of size 2.
+        CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction = false;
+
+        // ... Warm up
+        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        solveAllSudokuDotComPuzzles();
+
+        // ... Actual test
+        log.info('Testing routing reduction');
+        CageModelOfSize2ReducerRouter.collectPerfStats = true;
+        solveAllSudokuDotComPuzzles();
+        CageModelOfSize2ReducerRouter.printMeasures();
+        const partialReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
+
+        // Comparing results
+        expect(fullReductionStats.length).toBe(partialReductionStats.length);
     });
 
     test.skip('Find solution for DailyKillerSudoku.com puzzles', () => {
