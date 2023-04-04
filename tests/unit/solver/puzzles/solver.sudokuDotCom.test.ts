@@ -1,19 +1,9 @@
 import { Solver } from '../../../../src/solver/solver';
-import { CageModelOfSize2ReducerRouter } from '../../../../src/solver/strategies/reduction/cageModelsOfSize2ReducerRouter';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
-
-    const isPrintStats = false;
-    const isPrintDuration = true;
-
-    afterAll(() => {
-        if (isPrintStats) {
-            CageModelOfSize2ReducerRouter.printMeasureEntries(isPrintDuration);
-        }
-    });
 
     test('Find solution for Daily Challenge (2022-04-06) by Sudoku.com', () => {
         const { numbers } = solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);

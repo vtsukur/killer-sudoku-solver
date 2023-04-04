@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
+import { CachedNumRanges } from '../../../src/util/cachedNumRanges';
+import { CageModelOfSize2ReducerRouter } from '../../../src/solver/strategies/reduction/cageModelsOfSize2ReducerRouter';
 
 describe('Performance tests for `Solver`', () => {
 
@@ -10,19 +12,36 @@ describe('Performance tests for `Solver`', () => {
 
     const ITERATIONS = _.range(10);
 
-    test('Find solution for Sudoku.com puzzles', () => {
+    const solveAllSudokuDotComPuzzles = () => {
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_18);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_19);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_22);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_25);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
+        solver.solve(sudokuDotCom.randomExpertLevelChallenge);
+    };
+
+    test.skip('Find solution for Sudoku.com puzzles', () => {
         ITERATIONS.forEach(() => {
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_18);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_19);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_22);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_25);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
-            solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
-            solver.solve(sudokuDotCom.randomExpertLevelChallenge);
+            solveAllSudokuDotComPuzzles();
         });
+    });
+
+    test('Find solution for Sudoku.com puzzles (targeting `CageModel` of size 2 reduction)', () => {
+        // Warming up.
+        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        CachedNumRanges.ZERO_TO_N_LTE_81[3].forEach(() => {
+            solveAllSudokuDotComPuzzles();
+        });
+
+        // Actual test.
+        CageModelOfSize2ReducerRouter.collectPerfStats = true;
+        solveAllSudokuDotComPuzzles();
+        CageModelOfSize2ReducerRouter.printMeasureEntries();
     });
 
     test.skip('Find solution for DailyKillerSudoku.com puzzles', () => {
