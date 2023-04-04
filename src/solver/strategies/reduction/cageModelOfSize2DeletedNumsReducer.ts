@@ -51,6 +51,8 @@ export class CageModelOfSize2DeletedNumsReducer implements CageModelReducer {
         for (const num of deletedNumOpts_cellM0.nums) {
             const complementNum = this._cageM.cage.sum - num;
             reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+            // if (!(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num)) ||
+            //         deletedNumOpts_cellM0.has(complementNum) || deletedNumOpts_cellM1.has(num)) {
             if (!(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
                 for (const combo of cageMCombos.combos) {
                     if (combo.numsSet.has(num)) {
@@ -64,6 +66,8 @@ export class CageModelOfSize2DeletedNumsReducer implements CageModelReducer {
         for (const num of deletedNumOpts_cellM1.nums) {
             const complementNum = this._cageM.cage.sum - num;
             reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
+            // if (!(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num)) ||
+            //         deletedNumOpts_cellM1.has(complementNum) || deletedNumOpts_cellM0.has(num)) {
             if (!(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
                 for (const combo of cageMCombos.combos) {
                     if (combo.numsSet.has(num)) {
