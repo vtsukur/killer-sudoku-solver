@@ -70,10 +70,10 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         );
 
         performance.mark('reduce-start');
-        if (this._cageM.cage.isInput) {
-            this._partialReducer.reduce(reduction);
-        } else {
+        if (this._cageM.isFirstReduction) {
             this._fullReducer.reduce(reduction);
+        } else {
+            this._partialReducer.reduce(reduction);
         }
         performance.mark('reduce-end');
 
