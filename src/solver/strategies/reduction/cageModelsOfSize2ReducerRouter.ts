@@ -1,8 +1,11 @@
+import { logFactory } from '../../../util/logFactory';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { performance, PerformanceObserver } from 'perf_hooks';
+
+const log = logFactory.withLabel('perf');
 
 const perfObserver = new PerformanceObserver(() => {
     // No-op.
@@ -95,6 +98,25 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             this._fullReducer.reduce(reduction);
         } else {
             this._partialReducer.reduce(reduction);
+        }
+    }
+
+    static printMeasureEntries(isPrintDuration = true) {
+        const entries = performance.getEntries().filter(entry => entry.entryType === 'measure');
+        for (const entry of entries) {
+            const stat = entry.detail as Stat;
+            log.info(`{ cageKey: ${stat.cageKey}, ` +
+                    `presentNumsCellM0: ${stat.presentNumsCellM0}, ` +
+                    `presentNumsCellM1: ${stat.presentNumsCellM1}, ` +
+                    `presentNumsCount: ${stat.presentNumsCount}, ` +
+                    `deletedBeforeReductionNumsCellM0: ${stat.deletedBeforeReductionNumsCellM0}, ` +
+                    `deletedBeforeReductionNumsCellM1: ${stat.deletedBeforeReductionNumsCellM1}, ` +
+                    `deletedNumsCount: ${stat.deletedNumsCount}, ` +
+                    `combosCountBeforeReduction: ${stat.combosCountBeforeReduction}, ` +
+                    `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
+                    `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
+                    `combosCountAfterReduction: ${stat.combosCountAfterReduction}` +
+                    (isPrintDuration ? `: ${entry.duration} ms` : ''));
         }
     }
 

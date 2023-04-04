@@ -1,36 +1,17 @@
-import { performance } from 'perf_hooks';
 import { Solver } from '../../../../src/solver/solver';
-import { Stat } from '../../../../src/solver/strategies/reduction/cageModelsOfSize2ReducerRouter';
+import { CageModelOfSize2ReducerRouter } from '../../../../src/solver/strategies/reduction/cageModelsOfSize2ReducerRouter';
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
-import { logFactory } from '../../../../src/util/logFactory';
-
-const log = logFactory.withLabel('perf');
 
 describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
     const isPrintStats = false;
-    const statsWithPerformance = true;
+    const isPrintDuration = true;
 
     afterAll(() => {
-        if (!isPrintStats) return;
-
-        const entries = performance.getEntries().filter(entry => entry.entryType === 'measure');
-        for (const entry of entries) {
-            const stat = entry.detail as Stat;
-            log.info(`{ cageKey: ${stat.cageKey}, ` +
-                    `presentNumsCellM0: ${stat.presentNumsCellM0}, ` +
-                    `presentNumsCellM1: ${stat.presentNumsCellM1}, ` +
-                    `presentNumsCount: ${stat.presentNumsCount}, ` +
-                    `deletedBeforeReductionNumsCellM0: ${stat.deletedBeforeReductionNumsCellM0}, ` +
-                    `deletedBeforeReductionNumsCellM1: ${stat.deletedBeforeReductionNumsCellM1}, ` +
-                    `deletedNumsCount: ${stat.deletedNumsCount}, ` +
-                    `combosCountBeforeReduction: ${stat.combosCountBeforeReduction}, ` +
-                    `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
-                    `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
-                    `combosCountAfterReduction: ${stat.combosCountAfterReduction}` +
-                    (statsWithPerformance ? `: ${entry.duration} ms` : ''));
+        if (isPrintStats) {
+            CageModelOfSize2ReducerRouter.printMeasureEntries(isPrintDuration);
         }
     });
 
