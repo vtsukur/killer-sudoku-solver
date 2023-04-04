@@ -12,7 +12,7 @@ import { MasterModelReduction } from '../../strategies/reduction/masterModelRedu
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelOfSize2ReducerRouter';
-import { CageModelOfSize2DeletedNumsReducer } from '../../strategies/reduction/cageModelOfSize2PartialReducer';
+import { CageModelOfSize2PartialReducer } from '../../strategies/reduction/cageModelOfSize2PartialReducer';
 
 type Clue = {
     num: number;
@@ -68,7 +68,7 @@ export class CageModel {
     updateReducers() {
         if (this._cellCount === 2) {
             this._fullReducer = new CageModelOfSize2Reducer(this);
-            this._partialReducer = new CageModelOfSize2DeletedNumsReducer(this);
+            this._partialReducer = new CageModelOfSize2PartialReducer(this);
             this._reducer = new CageModelOfSize2ReducerRouter(
                     this,
                     this._fullReducer,

@@ -6,7 +6,7 @@ import { Cage } from '../../../../../src/puzzle/cage';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { CageModelOfSize2DeletedNumsReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
+import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 
@@ -59,7 +59,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             cageM.reduceToCombinationsContaining(4, reduction);
 
             // When:
-            const reducer = new CageModelOfSize2DeletedNumsReducer(cageM);
+            const reducer = new CageModelOfSize2PartialReducer(cageM);
             reducer.reduce(reduction);
 
             // // Then:
