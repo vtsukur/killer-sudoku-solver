@@ -44,6 +44,8 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _fullReducer: CageModelReducer;
     private readonly _partialReducer: CageModelReducer;
 
+    static collectPerfStats = true;
+
     constructor(cageM: CageModel, fullReducer: CageModelReducer, partialReducer: CageModelReducer) {
         this._cageM = cageM;
         this._cellM0 = cageM.cellMs[0];
@@ -56,36 +58,44 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const deletedNumsCellM0 = reduction.deletedNumOptsOf(this._cellM0).nums;
-        const deletedNumsCellM1 = reduction.deletedNumOptsOf(this._cellM1).nums;
-        const stat = new Stat(
-            this._cageM.cage.key,
-            this._cellM0.numOpts(),
-            this._cellM1.numOpts(),
-            this._cellM0.numOpts().length + this._cellM1.numOpts().length,
-            deletedNumsCellM0,
-            deletedNumsCellM1,
-            deletedNumsCellM0.length + deletedNumsCellM1.length,
-            this._cageM.comboSet.size
-        );
+        if (CageModelOfSize2ReducerRouter.collectPerfStats) {
+            const deletedNumsCellM0 = reduction.deletedNumOptsOf(this._cellM0).nums;
+            const deletedNumsCellM1 = reduction.deletedNumOptsOf(this._cellM1).nums;
+            const stat = new Stat(
+                this._cageM.cage.key,
+                this._cellM0.numOpts(),
+                this._cellM1.numOpts(),
+                this._cellM0.numOpts().length + this._cellM1.numOpts().length,
+                deletedNumsCellM0,
+                deletedNumsCellM1,
+                deletedNumsCellM0.length + deletedNumsCellM1.length,
+                this._cageM.comboSet.size
+            );
 
-        performance.mark('reduce-start');
+            performance.mark('reduce-start');
+            this.doReduce(reduction);
+            performance.mark('reduce-end');
+
+            stat.numsAfterReductionCellM0 = this._cellM0.numOpts();
+            stat.numsAfterReductionCellM1 = this._cellM1.numOpts();
+            stat.combosCountAfterReduction = this._cageM.comboSet.size;
+
+            performance.measure('reduce', {
+                detail: stat,
+                start: 'reduce-start',
+                end: 'reduce-end'
+            });
+        } else {
+            this.doReduce(reduction);
+        }
+    }
+
+    private doReduce(reduction: MasterModelReduction) {
         if (this._cageM.isFirstReduction) {
             this._fullReducer.reduce(reduction);
         } else {
             this._partialReducer.reduce(reduction);
         }
-        performance.mark('reduce-end');
-
-        stat.numsAfterReductionCellM0 = this._cellM0.numOpts();
-        stat.numsAfterReductionCellM1 = this._cellM1.numOpts();
-        stat.combosCountAfterReduction = this._cageM.comboSet.size;
-
-        performance.measure('reduce', {
-            detail: stat,
-            start: 'reduce-start',
-            end: 'reduce-end'
-        });
     }
 
 }

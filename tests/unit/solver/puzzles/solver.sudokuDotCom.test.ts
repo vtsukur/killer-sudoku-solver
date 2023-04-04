@@ -10,7 +10,7 @@ describe('Tests for Solver applied to Sudoku.com puzzle samples', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
-    const isPrintStats = false;
+    const isPrintStats = true;
     const statsWithPerformance = true;
 
     afterAll(() => {
