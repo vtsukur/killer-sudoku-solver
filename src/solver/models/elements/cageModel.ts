@@ -11,7 +11,7 @@ import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
-import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelsOfSize2ReducerRouter';
+import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CageModelOfSize2DeletedNumsReducer } from '../../strategies/reduction/cageModelOfSize2DeletedNumsReducer';
 
 type Clue = {

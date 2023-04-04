@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Solver } from '../../../src/solver/solver';
 import { puzzleSamples } from '../../unit/puzzle/puzzleSamples';
 import { CachedNumRanges } from '../../../src/util/cachedNumRanges';
-import { CageModelOfSize2ReducerRouter } from '../../../src/solver/strategies/reduction/cageModelsOfSize2ReducerRouter';
+import { CageModelOfSize2ReducerRouter } from '../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
 
 describe('Performance tests for `Solver`', () => {
 
