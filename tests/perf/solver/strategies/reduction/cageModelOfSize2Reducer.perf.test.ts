@@ -6,7 +6,7 @@ import { Cage } from '../../../../../src/puzzle/cage';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { CageModelOfSize2DeletedNumsReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2DeletedNumsReducer';
+import { CageModelOfSize2DeletedNumsReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 

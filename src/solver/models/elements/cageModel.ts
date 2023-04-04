@@ -12,7 +12,7 @@ import { MasterModelReduction } from '../../strategies/reduction/masterModelRedu
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelOfSize2ReducerRouter';
-import { CageModelOfSize2DeletedNumsReducer } from '../../strategies/reduction/cageModelOfSize2DeletedNumsReducer';
+import { CageModelOfSize2DeletedNumsReducer } from '../../strategies/reduction/cageModelOfSize2PartialReducer';
 
 type Clue = {
     num: number;
