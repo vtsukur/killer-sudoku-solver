@@ -15,6 +15,7 @@ import { Combo } from '../../../../../src/solver/math';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { LockableCellModel } from './lockableCellModel';
 import { LockableMasterModelReduction } from './lockableMasterModelReduction';
+import { LockableCageModel } from './lockableCageModel';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
@@ -113,7 +114,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         const cellM1 = new LockableCellModel(cell1);
         const cellM2 = new LockableCellModel(cell2);
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = new LockableCageModel(cage, [ cellM1, cellM2 ]);
 
         cellM1.addWithinCageModel(cageM);
         cellM2.addWithinCageModel(cageM);
@@ -124,7 +125,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const runComparablePerformanceTest = (
-            referenceCageMProducerFn: () => CageModel,
+            referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
@@ -133,7 +134,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const doVerifyAndRunForFullReducer = (
-            referenceCageMProducerFn: () => CageModel,
+            referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
@@ -149,12 +150,12 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         const reduction = new LockableMasterModelReduction();
         prepReductionFn(cageM, reduction);
         reduction.lock();
-        lockCageM(cageM);
+        cageM.lock();
         doRunForReducer(cageM, reduction, new CageModelOfSize2Reducer(cageM), 'Full');
     };
 
     const doVerifyAndRunForPartialReducer = (
-            referenceCageMProducerFn: () => CageModel,
+            referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
@@ -170,14 +171,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         const reduction = new LockableMasterModelReduction();
         prepReductionFn(cageM, reduction);
         reduction.lock();
-        lockCageM(cageM);
+        cageM.lock();
         doRunForReducer(cageM, reduction, new CageModelOfSize2PartialReducer(cageM), 'Partial');
-    };
-
-    const lockCageM = (cageM: CageModel) => {
-        for (const cellM of cageM.cellMs) {
-            (cellM as LockableCellModel).lock();
-        }
     };
 
     const doRunForReducer = (
@@ -186,14 +181,12 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             reducer: CageModelReducer,
             type: string) => {
 
-        const cageMCombosRef = cageM.comboSet.clone();
         let i = 0;
 
         // Warming up.
         i = 0;
         while (i++ < 100_000) {
             reducer.reduce(reduction);
-            cageM.comboSet = cageMCombosRef;
         }
 
         // Actual performance test.
@@ -201,7 +194,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         i = 0;
         while (i++ < 1_000_000) {
             reducer.reduce(reduction);
-            cageM.comboSet = cageMCombosRef;
         }
 
         log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
