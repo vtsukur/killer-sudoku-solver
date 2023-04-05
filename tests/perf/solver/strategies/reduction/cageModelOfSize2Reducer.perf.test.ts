@@ -9,8 +9,38 @@ import { MasterModelReduction } from '../../../../../src/solver/strategies/reduc
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/sets';
+import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 
 const log = logFactory.withLabel('solver.perf');
+
+class LockableCellModel extends CellModel {
+
+    isLocked = false;
+
+    private static readonly _EMPTY_NUMS_SET = SudokuNumsSet.newEmpty();
+
+    constructor(cell: Cell) {
+        super(cell);
+    }
+
+    deleteNumOpt(val: number) {
+        if (!this.isLocked) {
+            return super.deleteNumOpt(val);
+        } else {
+            return LockableCellModel._EMPTY_NUMS_SET;
+        }
+    }
+
+    reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+        if (!this.isLocked) {
+            return super.reduceNumOpts(val);
+        } else {
+            return LockableCellModel._EMPTY_NUMS_SET;
+        }
+    }
+
+}
 
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
@@ -31,35 +61,38 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     test('Does not reduce if all number options for a particular `Combo` are deleted', () => {
+        // Given:
+        const cell1 = Cell.at(3, 7);
+        const cell2 = Cell.at(3, 8);
+        const cage = Cage.ofSum(9).withCell(cell1).withCell(cell2).new();
+
+        const cellM1 = new LockableCellModel(cell1);
+        const cellM2 = new LockableCellModel(cell2);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+
+        cellM1.addWithinCageModel(cageM);
+        cellM2.addWithinCageModel(cageM);
+
+        cageM.initialReduce();
+
+        cellM1.deleteNumOpt(1); cellM1.deleteNumOpt(3); cellM1.deleteNumOpt(6); cellM1.deleteNumOpt(8);
+        cellM1.deleteNumOpt(1); cellM2.deleteNumOpt(3); cellM2.deleteNumOpt(6); cellM1.deleteNumOpt(8);
+
+        const reduction = new MasterModelReduction();
+
+        reduction.deleteNumOpt(cellM1, 2); reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 7);
+        reduction.deleteNumOpt(cellM2, 2); reduction.deleteNumOpt(cellM2, 7);
+
+        cageM.reduceToCombinationsContaining(4, reduction);
+
+        cellM1.isLocked = true;
+        cellM2.isLocked = true;
+
+        const reducer = new CageModelOfSize2Reducer(cageM);
+
         let i = 0;
         while (i++ < 100_000) {
-            // Given:
-            const cell1 = Cell.at(3, 7);
-            const cell2 = Cell.at(3, 8);
-            const cage = Cage.ofSum(9).withCell(cell1).withCell(cell2).new();
-
-            const cellM1 = new CellModel(cell1);
-            const cellM2 = new CellModel(cell2);
-            const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-
-            cellM1.addWithinCageModel(cageM);
-            cellM2.addWithinCageModel(cageM);
-
-            cageM.initialReduce();
-
-            // 2, 7, 4, 5
-            cellM1.deleteNumOpt(1); cellM1.deleteNumOpt(3); cellM1.deleteNumOpt(6); cellM1.deleteNumOpt(8);
-            cellM1.deleteNumOpt(1); cellM2.deleteNumOpt(3); cellM2.deleteNumOpt(6); cellM1.deleteNumOpt(8);
-
-            const reduction = new MasterModelReduction();
-
-            reduction.deleteNumOpt(cellM1, 2); reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 7);
-            reduction.deleteNumOpt(cellM2, 2); reduction.deleteNumOpt(cellM2, 7);
-
-            cageM.reduceToCombinationsContaining(4, reduction);
-
             // When:
-            const reducer = new CageModelOfSize2PartialReducer(cageM);
             reducer.reduce(reduction);
 
             // // Then:
