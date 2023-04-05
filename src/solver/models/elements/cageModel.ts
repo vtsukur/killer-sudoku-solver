@@ -81,6 +81,21 @@ export class CageModel {
         return CombosSet.newEmpty(this._sumAddendsCombinatorics);
     }
 
+    deepCopy() {
+        const copy = this.deepCopyWithSameCellModels();
+
+        const cellM1Copy = this.cellMs[0].deepCopyWithoutCageModels();
+        const cellM2Copy = this.cellMs[1].deepCopyWithoutCageModels();
+
+        cellM1Copy.addWithinCageModel(copy);
+        cellM2Copy.addWithinCageModel(copy);
+
+        copy.cellMs[0] = cellM1Copy;
+        copy.cellMs[1] = cellM2Copy;
+
+        return copy;
+    }
+
     deepCopyWithSameCellModels() {
         return new CageModel(this.cage, [...this.cellMs], this.comboSet);
     }
