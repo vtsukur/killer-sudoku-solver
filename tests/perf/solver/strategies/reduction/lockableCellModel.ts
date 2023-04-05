@@ -1,8 +1,9 @@
 import { Cell } from '../../../../../src/puzzle/cell';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/sets';
+import { Lockable } from './lockable';
 
-export class LockableCellModel extends CellModel {
+export class LockableCellModel extends CellModel implements Lockable {
 
     private _isLocked = false;
 
