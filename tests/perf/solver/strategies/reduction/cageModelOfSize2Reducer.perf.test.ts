@@ -69,6 +69,80 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             });
     });
 
+    const run = (
+            sum: number,
+            beforeReductionFn: (cageM: CageModel) => void,
+            reductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectFn: (cageM: CageModel) => void) => {
+        const cell1 = Cell.at(3, 7);
+        const cell2 = Cell.at(3, 8);
+        const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
+
+        const cellM1 = new LockableCellModel(cell1);
+        const cellM2 = new LockableCellModel(cell2);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+
+        cellM1.addWithinCageModel(cageM);
+        cellM2.addWithinCageModel(cageM);
+
+        cageM.initialReduce();
+
+        beforeReductionFn(cageM);
+
+        const reduction = new MasterModelReduction();
+
+        reductionFn(cageM, reduction);
+
+        cellM1.isLocked = true;
+        cellM2.isLocked = true;
+
+        const cageMCopyForFullReducer = createCageMCopy(cageM);
+        new CageModelOfSize2Reducer(cageMCopyForFullReducer).reduce(reduction);
+        expectFn(cageMCopyForFullReducer);
+
+        const cageMCopyForPartialReducer = createCageMCopy(cageM);
+        new CageModelOfSize2PartialReducer(cageMCopyForPartialReducer).reduce(reduction);
+        expectFn(cageMCopyForPartialReducer);
+
+        runComparablePerformanceTest(cageM, reduction);
+    };
+
+    const createCageMCopy = (cageM: CageModel) => {
+        const cageMCopy = cageM.deepCopyWithSameCellModels();
+
+        const cellM1Copy = cageM.cellMs[0].deepCopyWithoutCageModels();
+        const cellM2Copy = cageM.cellMs[1].deepCopyWithoutCageModels();
+
+        cellM1Copy.addWithinCageModel(cageMCopy);
+        cellM2Copy.addWithinCageModel(cageMCopy);
+
+        cageMCopy.cellMs[0] = cellM1Copy;
+        cageMCopy.cellMs[1] = cellM2Copy;
+
+        return cageMCopy;
+    };
+
+    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
+        const fullReducer = new CageModelOfSize2Reducer(cageM);
+        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
+
+        let i, startTime: number;
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            partialReducer.reduce(reduction);
+        }
+        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            fullReducer.reduce(reduction);
+        }
+        log.info(`Full reducer: ${performance.now() - startTime} ms`);
+    };
+
     test.skip('Find solution for Sudoku.com puzzles', () => {
         // General warm up.
         CageModelOfSize2ReducerRouter.collectPerfStats = false;
@@ -144,80 +218,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
         log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
     });
-
-    const run = (
-            sum: number,
-            beforeReductionFn: (cageM: CageModel) => void,
-            reductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectFn: (cageM: CageModel) => void) => {
-        const cell1 = Cell.at(3, 7);
-        const cell2 = Cell.at(3, 8);
-        const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
-
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-
-        cageM.initialReduce();
-
-        beforeReductionFn(cageM);
-
-        const reduction = new MasterModelReduction();
-
-        reductionFn(cageM, reduction);
-
-        cellM1.isLocked = true;
-        cellM2.isLocked = true;
-
-        const cageMCopyForFullReducer = createCageMCopy(cageM);
-        new CageModelOfSize2Reducer(cageMCopyForFullReducer).reduce(reduction);
-        expectFn(cageMCopyForFullReducer);
-
-        const cageMCopyForPartialReducer = createCageMCopy(cageM);
-        new CageModelOfSize2PartialReducer(cageMCopyForPartialReducer).reduce(reduction);
-        expectFn(cageMCopyForPartialReducer);
-
-        runComparablePerformanceTest(cageM, reduction);
-    };
-
-    const createCageMCopy = (cageM: CageModel) => {
-        const cageMCopy = cageM.deepCopyWithSameCellModels();
-
-        const cellM1Copy = cageM.cellMs[0].deepCopyWithoutCageModels();
-        const cellM2Copy = cageM.cellMs[1].deepCopyWithoutCageModels();
-
-        cellM1Copy.addWithinCageModel(cageMCopy);
-        cellM2Copy.addWithinCageModel(cageMCopy);
-
-        cageMCopy.cellMs[0] = cellM1Copy;
-        cageMCopy.cellMs[1] = cellM2Copy;
-
-        return cageMCopy;
-    };
-
-    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
-        const fullReducer = new CageModelOfSize2Reducer(cageM);
-        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
-
-        let i, startTime: number;
-
-        startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            partialReducer.reduce(reduction);
-        }
-        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
-
-        startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            fullReducer.reduce(reduction);
-        }
-        log.info(`Full reducer: ${performance.now() - startTime} ms`);
-    };
 
     const solveAllSudokuDotComPuzzles = () => {
         solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
