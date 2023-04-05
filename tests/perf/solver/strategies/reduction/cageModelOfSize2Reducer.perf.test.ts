@@ -45,13 +45,38 @@ class LockableCellModel extends CellModel {
 
 }
 
+class LockableMasterModelReduction extends MasterModelReduction {
+
+    isLocked = false;
+
+    protected addDeletedNum(cellM: CellModel, num: number) {
+        if (!this.isLocked) {
+            super.addDeletedNum(cellM, num);
+        }
+    }
+
+    protected addDeletedNums(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
+        if (!this.isLocked) {
+            super.addDeletedNums(cellM, nums);
+        }
+    }
+
+    protected updateImpactedCageM(cageM: CageModel) {
+        if (!this.isLocked) {
+            super.updateImpactedCageM(cageM);
+        }
+    }
+
+}
+
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
-        runComparablePerformanceTest(createReferenceCageM(9),
+        runComparablePerformanceTest(
+            () => createReferenceCageM(9),
             (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
@@ -137,8 +162,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         const cell2 = Cell.at(0, 1);
         const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
 
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
+        const cellM1 = new LockableCellModel(cell1);
+        const cellM2 = new LockableCellModel(cell2);
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cellM1.addWithinCageModel(cageM);
@@ -150,19 +175,21 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const runComparablePerformanceTest = (
-            referenceCageM: CageModel,
+            referenceCageMProducerFn: () => CageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doVerifyAndRunForFullReducer(referenceCageM, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
-        doVerifyAndRunForPartialReducer(referenceCageM, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForFullReducer(referenceCageMProducerFn, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForPartialReducer(referenceCageMProducerFn, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
     };
 
     const doVerifyAndRunForFullReducer = (
-            cageM: CageModel,
+            referenceCageMProducerFn: () => CageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        const cageM = referenceCageMProducerFn();
+
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
         prepReductionFn(cageMCopy, reductionCopy);
@@ -170,14 +197,20 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         new CageModelOfSize2Reducer(cageMCopy).reduce(reductionCopy);
         expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
-        doRunForReducer(cageM, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), prepReductionFn, 'Full');
+        const reduction = new LockableMasterModelReduction();
+        prepReductionFn(cageM, reduction);
+        reduction.isLocked = true;
+        lockCageM(cageM);
+        doRunForReducer(cageM, reduction, new CageModelOfSize2Reducer(cageM), 'Full');
     };
 
     const doVerifyAndRunForPartialReducer = (
-            cageM: CageModel,
+            referenceCageMProducerFn: () => CageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        const cageM = referenceCageMProducerFn();
+
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
         prepReductionFn(cageMCopy, reductionCopy);
@@ -185,35 +218,41 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         new CageModelOfSize2PartialReducer(cageMCopy).reduce(reductionCopy);
         expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
-        doRunForReducer(cageM, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), prepReductionFn, 'Partial');
+        const reduction = new LockableMasterModelReduction();
+        prepReductionFn(cageM, reduction);
+        reduction.isLocked = true;
+        lockCageM(cageM);
+        doRunForReducer(cageM, reduction, new CageModelOfSize2PartialReducer(cageM), 'Partial');
+    };
+
+    const lockCageM = (cageM: CageModel) => {
+        for (const cellM of cageM.cellMs) {
+            (cellM as LockableCellModel).isLocked = true;
+        }
     };
 
     const doRunForReducer = (
-            referenceCageM: CageModel,
-            reducerProducerFn: (cageM: CageModel) => CageModelReducer,
-            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            cageM: CageModel,
+            reduction: LockableMasterModelReduction,
+            reducer: CageModelReducer,
             type: string) => {
+
+        const cageMCombosRef = cageM.comboSet.clone();
         let i = 0;
 
         // Warming up.
         i = 0;
-        while (i++ < 10_000) {
-            const cageM = referenceCageM.deepCopy();
-            const reducer = reducerProducerFn(cageM);
-            const reduction = new MasterModelReduction();
-            prepReductionFn(cageM, reduction);
+        while (i++ < 100_000) {
             reducer.reduce(reduction);
+            cageM.comboSet = cageMCombosRef;
         }
 
         // Actual performance test.
         const startTime = performance.now();
         i = 0;
-        while (i++ < 100_000) {
-            const cageM = referenceCageM.deepCopy();
-            const reducer = reducerProducerFn(cageM);
-            const reduction = new MasterModelReduction();
-            prepReductionFn(cageM, reduction);
+        while (i++ < 1_000_000) {
             reducer.reduce(reduction);
+            cageM.comboSet = cageMCombosRef;
         }
 
         log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);

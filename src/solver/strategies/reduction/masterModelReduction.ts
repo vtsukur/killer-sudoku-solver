@@ -14,7 +14,7 @@ export class MasterModelReduction {
 
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
-        this._deletedNumsTracker[cellM.cell.index].add(num);
+        this.addDeletedNum(cellM, num);
         this.markAsImpacted(cellM, cageM);
     }
 
@@ -27,9 +27,17 @@ export class MasterModelReduction {
     tryReduceNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet, cageM?: CageModel) {
         const deletedNums = cellM.reduceNumOpts(nums);
         if (deletedNums.isNotEmpty) {
-            this._deletedNumsTracker[cellM.cell.index].addAll(deletedNums);
+            this.addDeletedNums(cellM, deletedNums);
             this.markAsImpacted(cellM, cageM);
         }
+    }
+
+    protected addDeletedNum(cellM: CellModel, num: number) {
+        this._deletedNumsTracker[cellM.cell.index].add(num);
+    }
+
+    protected addDeletedNums(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
+        this._deletedNumsTracker[cellM.cell.index].addAll(nums);
     }
 
     markAsImpacted(cellM: CellModel, cageM?: CageModel): void {
@@ -46,7 +54,7 @@ export class MasterModelReduction {
         }
     }
 
-    private updateImpactedCageM(cageM: CageModel) {
+    protected updateImpactedCageM(cageM: CageModel) {
         const index = cageM.cellCount - 1;
         const impactedCageMsSet = this._impactedCageMsArray[index];
         if (impactedCageMsSet.indexOf(cageM) === -1) {
