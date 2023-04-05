@@ -49,16 +49,15 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
-    test('Does not reduce if all number options for a particular `Combo` are deleted', () => {
-        // Given:
+    test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
         run(9,
-            (cellM1, cellM2) => {
-                cellM1.reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
-                cellM2.reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
+            (cageM) => {
+                cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
+                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
             },
-            (reduction, cellM1, cellM2, cageM) => {
-                reduction.tryReduceNumOpts(cellM1, SudokuNumsSet.of(4));
-                reduction.tryReduceNumOpts(cellM2, SudokuNumsSet.of(4, 5));
+            (cageM, reduction) => {
+                reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
+                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5));
                 cageM.reduceToCombinationsContaining(4, reduction);
             },
             (cageM) => {
@@ -148,8 +147,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const run = (
             sum: number,
-            beforeReductionFn: (cellM1: CellModel, cellM2: CellModel, cageM: CageModel) => void,
-            reductionFn: (reduction: MasterModelReduction, cellM1: CellModel, cellM2: CellModel, cageM: CageModel) => void,
+            beforeReductionFn: (cageM: CageModel) => void,
+            reductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectFn: (cageM: CageModel) => void) => {
         const cell1 = Cell.at(3, 7);
         const cell2 = Cell.at(3, 8);
@@ -164,11 +163,11 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         cageM.initialReduce();
 
-        beforeReductionFn(cellM1, cellM2, cageM);
+        beforeReductionFn(cageM);
 
         const reduction = new MasterModelReduction();
 
-        reductionFn(reduction, cellM1, cellM2, cageM);
+        reductionFn(cageM, reduction);
 
         cellM1.isLocked = true;
         cellM2.isLocked = true;
