@@ -48,40 +48,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
-    const solveAllSudokuDotComPuzzles = () => {
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_18);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_19);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_22);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_25);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
-        solver.solve(sudokuDotCom.randomExpertLevelChallenge);
-    };
-
-    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
-        const fullReducer = new CageModelOfSize2Reducer(cageM);
-        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
-
-        let i, startTime: number;
-
-        startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            partialReducer.reduce(reduction);
-        }
-        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
-
-        startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            fullReducer.reduce(reduction);
-        }
-        log.info(`Full reducer: ${performance.now() - startTime} ms`);
-    };
-
     test('Does not reduce if all number options for a particular `Combo` are deleted', () => {
         // Given:
         const cell1 = Cell.at(3, 7);
@@ -195,5 +161,39 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
         log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
     });
+
+    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
+        const fullReducer = new CageModelOfSize2Reducer(cageM);
+        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
+
+        let i, startTime: number;
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            partialReducer.reduce(reduction);
+        }
+        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            fullReducer.reduce(reduction);
+        }
+        log.info(`Full reducer: ${performance.now() - startTime} ms`);
+    };
+
+    const solveAllSudokuDotComPuzzles = () => {
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_18);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_19);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_22);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_25);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
+        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
+        solver.solve(sudokuDotCom.randomExpertLevelChallenge);
+    };
 
 });
