@@ -46,11 +46,20 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     addCombo(combo: Combo) {
-        this.add(this._combinatorics.indexOf(combo));
+        this.add(this._combinatorics.optimisticIndexOf(combo));
     }
 
     deleteCombo(combo: Combo) {
-        this.delete(this._combinatorics.indexOf(combo));
+        this.delete(this._combinatorics.optimisticIndexOf(combo));
+    }
+
+    deleteComboFailSafe(combo?: Combo) {
+        if (combo) {
+            const index = this._combinatorics.indexOf(combo);
+            if (index !== undefined) {
+                this.delete(index);
+            }
+        }
     }
 
     get combos() {

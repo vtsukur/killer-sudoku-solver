@@ -90,7 +90,11 @@ export class SumAddendsCombinatorics {
         return this._bitStore32ToComboMap.get(numsSet.bitStore);
     }
 
-    indexOf(combo: Combo): number {
+    indexOf(combo: Combo): number | undefined {
+        return this._bitStore32ToIndex.get(combo.numsSet.bitStore);
+    }
+
+    optimisticIndexOf(combo: Combo): number {
         return this._bitStore32ToIndex.get(combo.numsSet.bitStore) as number;
     }
 
