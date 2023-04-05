@@ -11,6 +11,7 @@ import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strateg
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { performance } from 'perf_hooks';
 
 const log = logFactory.withLabel('solver.perf');
 
@@ -60,6 +61,27 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         solver.solve(sudokuDotCom.randomExpertLevelChallenge);
     };
 
+    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
+        const fullReducer = new CageModelOfSize2Reducer(cageM);
+        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
+
+        let i, startTime: number;
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            partialReducer.reduce(reduction);
+        }
+        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
+
+        startTime = performance.now();
+        i = 0;
+        while (i++ < 1_000_000) {
+            fullReducer.reduce(reduction);
+        }
+        log.info(`Full reducer: ${performance.now() - startTime} ms`);
+    };
+
     test('Does not reduce if all number options for a particular `Combo` are deleted', () => {
         // Given:
         const cell1 = Cell.at(3, 7);
@@ -88,20 +110,14 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         cellM1.isLocked = true;
         cellM2.isLocked = true;
 
-        const reducer = new CageModelOfSize2PartialReducer(cageM);
+        // // Then:
+        // expect(cellM1.numOpts()).toEqual([ 4 ]);
+        // expect(cellM2.numOpts()).toEqual([ 5 ]);
+        // expect(Array.from(cageM.comboSet.combos)).toEqual([
+        //     Combo.of(4, 5)
+        // ]);
 
-        let i = 0;
-        while (i++ < 1_000_000) {
-            // When:
-            reducer.reduce(reduction);
-
-            // // Then:
-            // expect(cellM1.numOpts()).toEqual([ 4 ]);
-            // expect(cellM2.numOpts()).toEqual([ 5 ]);
-            // expect(Array.from(cageM.comboSet.combos)).toEqual([
-            //     Combo.of(4, 5)
-            // ]);
-        }
+        runComparablePerformanceTest(cageM, reduction);
     });
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
