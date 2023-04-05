@@ -4,7 +4,7 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/
 
 export class LockableCellModel extends CellModel {
 
-    isLocked = false;
+    private _isLocked = false;
 
     private static readonly _EMPTY_NUMS_SET = SudokuNumsSet.newEmpty();
 
@@ -13,7 +13,7 @@ export class LockableCellModel extends CellModel {
     }
 
     deleteNumOpt(val: number) {
-        if (!this.isLocked) {
+        if (!this._isLocked) {
             return super.deleteNumOpt(val);
         } else {
             return LockableCellModel._EMPTY_NUMS_SET;
@@ -21,11 +21,19 @@ export class LockableCellModel extends CellModel {
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        if (!this.isLocked) {
+        if (!this._isLocked) {
             return super.reduceNumOpts(val);
         } else {
             return LockableCellModel._EMPTY_NUMS_SET;
         }
+    }
+
+    lock() {
+        this._isLocked = true;
+    }
+
+    unlock() {
+        this._isLocked = false;
     }
 
 }

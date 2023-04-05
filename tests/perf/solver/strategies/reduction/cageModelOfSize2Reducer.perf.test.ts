@@ -200,7 +200,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const lockCageM = (cageM: CageModel) => {
         for (const cellM of cageM.cellMs) {
-            (cellM as LockableCellModel).isLocked = true;
+            (cellM as LockableCellModel).lock();
         }
     };
 
