@@ -30,8 +30,4 @@ export class LockableMasterModelReduction extends MasterModelReduction implement
         this._isLocked = true;
     }
 
-    unlock() {
-        this._isLocked = false;
-    }
-
 }

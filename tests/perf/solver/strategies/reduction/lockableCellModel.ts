@@ -33,8 +33,4 @@ export class LockableCellModel extends CellModel implements Lockable {
         this._isLocked = true;
     }
 
-    unlock() {
-        this._isLocked = false;
-    }
-
 }
