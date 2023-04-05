@@ -77,6 +77,35 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             });
     });
 
+    test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
+        runComparablePerformanceTest(9,
+            () => {
+                // No prep.
+            },
+            (cageM, reduction) => {
+                reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4, 5));
+                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5, 8));
+                const allCombos = cageM.comboSet.combos;
+                cageM.comboSet.deleteCombo(allCombos.find(combo => combo.has(2)) as Combo);
+                cageM.comboSet.deleteCombo(allCombos.find(combo => combo.has(3)) as Combo);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5, 8 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 8),
+                    Combo.of(4, 5)
+                ]);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(4, 5)
+                ]);
+            });
+    });
+
     const runComparablePerformanceTest = (
             sum: number,
             beforePrepReductionFn: (cageM: CageModel) => void,
