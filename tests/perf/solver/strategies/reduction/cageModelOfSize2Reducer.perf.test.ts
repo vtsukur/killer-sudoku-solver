@@ -12,6 +12,7 @@ import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { performance } from 'perf_hooks';
+import { Combo } from '../../../../../src/solver/math';
 
 const log = logFactory.withLabel('solver.perf');
 
@@ -50,40 +51,23 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     test('Does not reduce if all number options for a particular `Combo` are deleted', () => {
         // Given:
-        const cell1 = Cell.at(3, 7);
-        const cell2 = Cell.at(3, 8);
-        const cage = Cage.ofSum(9).withCell(cell1).withCell(cell2).new();
-
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-
-        cageM.initialReduce();
-
-        cellM1.deleteNumOpt(1); cellM1.deleteNumOpt(3); cellM1.deleteNumOpt(6); cellM1.deleteNumOpt(8);
-        cellM1.deleteNumOpt(1); cellM2.deleteNumOpt(3); cellM2.deleteNumOpt(6); cellM1.deleteNumOpt(8);
-
-        const reduction = new MasterModelReduction();
-
-        reduction.deleteNumOpt(cellM1, 2); reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 7);
-        reduction.deleteNumOpt(cellM2, 2); reduction.deleteNumOpt(cellM2, 7);
-
-        cageM.reduceToCombinationsContaining(4, reduction);
-
-        cellM1.isLocked = true;
-        cellM2.isLocked = true;
-
-        // // Then:
-        // expect(cellM1.numOpts()).toEqual([ 4 ]);
-        // expect(cellM2.numOpts()).toEqual([ 5 ]);
-        // expect(Array.from(cageM.comboSet.combos)).toEqual([
-        //     Combo.of(4, 5)
-        // ]);
-
-        runComparablePerformanceTest(cageM, reduction);
+        run(9,
+            (cellM1, cellM2) => {
+                cellM1.reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
+                cellM2.reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
+            },
+            (reduction, cellM1, cellM2, cageM) => {
+                reduction.tryReduceNumOpts(cellM1, SudokuNumsSet.of(4));
+                reduction.tryReduceNumOpts(cellM2, SudokuNumsSet.of(4, 5));
+                cageM.reduceToCombinationsContaining(4, reduction);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 5 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(4, 5)
+                ]);
+            });
     });
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
@@ -161,6 +145,59 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
         log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
     });
+
+    const run = (
+            sum: number,
+            beforeReductionFn: (cellM1: CellModel, cellM2: CellModel, cageM: CageModel) => void,
+            reductionFn: (reduction: MasterModelReduction, cellM1: CellModel, cellM2: CellModel, cageM: CageModel) => void,
+            expectFn: (cageM: CageModel) => void) => {
+        const cell1 = Cell.at(3, 7);
+        const cell2 = Cell.at(3, 8);
+        const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
+
+        const cellM1 = new LockableCellModel(cell1);
+        const cellM2 = new LockableCellModel(cell2);
+        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+
+        cellM1.addWithinCageModel(cageM);
+        cellM2.addWithinCageModel(cageM);
+
+        cageM.initialReduce();
+
+        beforeReductionFn(cellM1, cellM2, cageM);
+
+        const reduction = new MasterModelReduction();
+
+        reductionFn(reduction, cellM1, cellM2, cageM);
+
+        cellM1.isLocked = true;
+        cellM2.isLocked = true;
+
+        const cageMCopyForFullReducer = createCageMCopy(cageM);
+        new CageModelOfSize2Reducer(cageMCopyForFullReducer).reduce(reduction);
+        expectFn(cageMCopyForFullReducer);
+
+        const cageMCopyForPartialReducer = createCageMCopy(cageM);
+        new CageModelOfSize2PartialReducer(cageMCopyForPartialReducer).reduce(reduction);
+        expectFn(cageMCopyForPartialReducer);
+
+        runComparablePerformanceTest(cageM, reduction);
+    };
+
+    const createCageMCopy = (cageM: CageModel) => {
+        const cageMCopy = cageM.deepCopyWithSameCellModels();
+
+        const cellM1Copy = cageM.cellMs[0].deepCopyWithoutCageModels();
+        const cellM2Copy = cageM.cellMs[1].deepCopyWithoutCageModels();
+
+        cellM1Copy.addWithinCageModel(cageMCopy);
+        cellM2Copy.addWithinCageModel(cageMCopy);
+
+        cageMCopy.cellMs[0] = cellM1Copy;
+        cageMCopy.cellMs[1] = cellM2Copy;
+
+        return cageMCopy;
+    };
 
     const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
         const fullReducer = new CageModelOfSize2Reducer(cageM);
