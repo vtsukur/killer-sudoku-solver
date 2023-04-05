@@ -82,7 +82,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             beforePrepReductionFn: (cageM: CageModel) => void,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel) => void,
-            expectAfterReductionFn: (cageM: CageModel) => void) => {
+            expectAfterTargetPerfReductionFn: (cageM: CageModel) => void) => {
         const cell1 = Cell.at(3, 7);
         const cell2 = Cell.at(3, 8);
         const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
@@ -107,8 +107,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         expectAfterPrepReductionFn(cageM);
 
-        doVerifyAndRunForFullReducer(cageM, reduction, expectAfterReductionFn);
-        doVerifyAndRunForPartialReducer(cageM, reduction, expectAfterReductionFn);
+        doVerifyAndRunForFullReducer(cageM, reduction, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForPartialReducer(cageM, reduction, expectAfterTargetPerfReductionFn);
     };
 
     const doVerifyAndRunForFullReducer = (
