@@ -22,7 +22,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     private _isDirtyCache = true;
 
-    private constructor(
+    protected constructor(
             val: BitStore32,
             combinatorics: SumAddendsCombinatorics) {
         super(val);
@@ -42,6 +42,10 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         this._bitStore &= combos.bitStore;
         this.onUpdate();
 
+        return this.presentNumsSet;
+    }
+
+    protected get presentNumsSet() {
         return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
     }
 
