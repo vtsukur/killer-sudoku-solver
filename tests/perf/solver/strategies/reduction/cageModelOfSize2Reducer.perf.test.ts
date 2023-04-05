@@ -15,32 +15,9 @@ import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { LockableCellModel } from './lockableCellModel';
+import { LockableMasterModelReduction } from './lockableMasterModelReduction';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
-
-class LockableMasterModelReduction extends MasterModelReduction {
-
-    isLocked = false;
-
-    protected addDeletedNum(cellM: CellModel, num: number) {
-        if (!this.isLocked) {
-            super.addDeletedNum(cellM, num);
-        }
-    }
-
-    protected addDeletedNums(cellM: CellModel, nums: ReadonlySudokuNumsSet) {
-        if (!this.isLocked) {
-            super.addDeletedNums(cellM, nums);
-        }
-    }
-
-    protected updateImpactedCageM(cageM: CageModel) {
-        if (!this.isLocked) {
-            super.updateImpactedCageM(cageM);
-        }
-    }
-
-}
 
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
@@ -172,7 +149,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         const reduction = new LockableMasterModelReduction();
         prepReductionFn(cageM, reduction);
-        reduction.isLocked = true;
+        reduction.lock();
         lockCageM(cageM);
         doRunForReducer(cageM, reduction, new CageModelOfSize2Reducer(cageM), 'Full');
     };
@@ -193,7 +170,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         const reduction = new LockableMasterModelReduction();
         prepReductionFn(cageM, reduction);
-        reduction.isLocked = true;
+        reduction.lock();
         lockCageM(cageM);
         doRunForReducer(cageM, reduction, new CageModelOfSize2PartialReducer(cageM), 'Partial');
     };
