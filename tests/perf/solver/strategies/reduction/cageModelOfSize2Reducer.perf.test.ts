@@ -63,6 +63,13 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             },
             (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(4, 5)
+                ]);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5 ]);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(4, 5)
@@ -72,9 +79,10 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const runComparablePerformanceTest = (
             sum: number,
-            beforeReductionFn: (cageM: CageModel) => void,
-            reductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectFn: (cageM: CageModel) => void) => {
+            beforePrepReductionFn: (cageM: CageModel) => void,
+            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterPrepReductionFn: (cageM: CageModel) => void,
+            expectAfterReductionFn: (cageM: CageModel) => void) => {
         const cell1 = Cell.at(3, 7);
         const cell2 = Cell.at(3, 8);
         const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
@@ -88,17 +96,19 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         cageM.initialReduce();
 
-        beforeReductionFn(cageM);
+        beforePrepReductionFn(cageM);
 
         const reduction = new MasterModelReduction();
 
-        reductionFn(cageM, reduction);
+        prepReductionFn(cageM, reduction);
 
         cellM1.isLocked = true;
         cellM2.isLocked = true;
 
-        doVerifyAndRunForFullReducer(cageM, reduction, expectFn);
-        doVerifyAndRunForPartialReducer(cageM, reduction, expectFn);
+        expectAfterPrepReductionFn(cageM);
+
+        doVerifyAndRunForFullReducer(cageM, reduction, expectAfterReductionFn);
+        doVerifyAndRunForPartialReducer(cageM, reduction, expectAfterReductionFn);
     };
 
     const doVerifyAndRunForFullReducer = (
