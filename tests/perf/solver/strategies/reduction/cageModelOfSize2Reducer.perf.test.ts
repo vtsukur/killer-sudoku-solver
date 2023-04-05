@@ -52,11 +52,10 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
         runComparablePerformanceTest(9,
-            (cageM) => {
+            (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
-            },
-            (cageM, reduction) => {
+
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
                 reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5));
                 cageM.reduceToCombinationsContaining(4, reduction);
@@ -79,9 +78,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
         runComparablePerformanceTest(9,
-            () => {
-                // No prep.
-            },
             (cageM, reduction) => {
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4, 5));
                 reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5, 8));
@@ -106,9 +102,32 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             });
     });
 
+    test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
+        runComparablePerformanceTest(14,
+            (cageM, reduction) => {
+                cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
+                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5, 6));
+                reduction.deleteNumOpt(cageM.cellMs[1], 5);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(5, 9),
+                    Combo.of(6, 8)
+                ]);
+            },
+            (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(6, 8)
+                ]);
+            });
+    });
+
     const runComparablePerformanceTest = (
             sum: number,
-            beforePrepReductionFn: (cageM: CageModel) => void,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterPrepReductionFn: (cageM: CageModel) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel) => void) => {
@@ -124,8 +143,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         cellM2.addWithinCageModel(cageM);
 
         cageM.initialReduce();
-
-        beforePrepReductionFn(cageM);
 
         const reduction = new MasterModelReduction();
 
