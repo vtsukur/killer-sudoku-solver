@@ -14,36 +14,9 @@ import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/re
 import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
+import { LockableCellModel } from './lockableCellModel';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
-
-class LockableCellModel extends CellModel {
-
-    isLocked = false;
-
-    private static readonly _EMPTY_NUMS_SET = SudokuNumsSet.newEmpty();
-
-    constructor(cell: Cell) {
-        super(cell);
-    }
-
-    deleteNumOpt(val: number) {
-        if (!this.isLocked) {
-            return super.deleteNumOpt(val);
-        } else {
-            return LockableCellModel._EMPTY_NUMS_SET;
-        }
-    }
-
-    reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        if (!this.isLocked) {
-            return super.reduceNumOpts(val);
-        } else {
-            return LockableCellModel._EMPTY_NUMS_SET;
-        }
-    }
-
-}
 
 class LockableMasterModelReduction extends MasterModelReduction {
 
