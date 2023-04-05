@@ -48,29 +48,33 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
 
         const cageMCombos = this._cageM.comboSet;
 
-        for (const num of deletedNumOpts_cellM0.nums) {
-            const complementNum = this._cageM.cage.sum - num;
-            if (complementNum > 9) continue;
-            reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
-            if (!(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
-                for (const combo of cageMCombos.combos) {
-                    if (combo.numsSet.has(num)) {
-                        cageMCombos.deleteCombo(combo);
-                        break;
+        if (deletedNumOpts_cellM0.isNotEmpty) {
+            for (const num of deletedNumOpts_cellM0.nums) {
+                const complementNum = this._cageM.cage.sum - num;
+                if (complementNum > 9) continue;
+                reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                if (!(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
+                    for (const combo of cageMCombos.combos) {
+                        if (combo.numsSet.has(num)) {
+                            cageMCombos.deleteCombo(combo);
+                            break;
+                        }
                     }
                 }
             }
         }
 
-        for (const num of deletedNumOpts_cellM1.nums) {
-            const complementNum = this._cageM.cage.sum - num;
-            if (complementNum > 9) continue;
-            reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
-            if (!(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
-                for (const combo of cageMCombos.combos) {
-                    if (combo.numsSet.has(num)) {
-                        cageMCombos.deleteCombo(combo);
-                        break;
+        if (deletedNumOpts_cellM1.isNotEmpty) {
+            for (const num of deletedNumOpts_cellM1.nums) {
+                const complementNum = this._cageM.cage.sum - num;
+                if (complementNum > 9) continue;
+                reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
+                if (!(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
+                    for (const combo of cageMCombos.combos) {
+                        if (combo.numsSet.has(num)) {
+                            cageMCombos.deleteCombo(combo);
+                            break;
+                        }
                     }
                 }
             }
