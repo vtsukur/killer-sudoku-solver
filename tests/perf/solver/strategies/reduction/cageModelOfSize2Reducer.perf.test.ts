@@ -15,7 +15,7 @@ import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 
-const log = logFactory.withLabel('solver.perf');
+const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
 class LockableCellModel extends CellModel {
 
