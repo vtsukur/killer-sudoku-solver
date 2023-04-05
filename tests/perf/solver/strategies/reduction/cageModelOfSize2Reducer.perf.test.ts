@@ -88,10 +88,10 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         cellM1.isLocked = true;
         cellM2.isLocked = true;
 
-        const reducer = new CageModelOfSize2Reducer(cageM);
+        const reducer = new CageModelOfSize2PartialReducer(cageM);
 
         let i = 0;
-        while (i++ < 100_000) {
+        while (i++ < 1_000_000) {
             // When:
             reducer.reduce(reduction);
 
