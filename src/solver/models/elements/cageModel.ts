@@ -43,7 +43,7 @@ export class CageModel {
 
     private _firstCell;
     private _cellCount;
-    private _sumAddendsCombinatorics: SumAddendsCombinatorics;
+    protected _sumAddendsCombinatorics: SumAddendsCombinatorics;
     comboSet: CombosSet;
     private _reducer?: CageModelReducer;
     private _fullReducer?: CageModelReducer;
@@ -77,7 +77,7 @@ export class CageModel {
         }
     }
 
-    private newSumAddendsCombosSet(): CombosSet {
+    protected newSumAddendsCombosSet(): CombosSet {
         return CombosSet.newEmpty(this._sumAddendsCombinatorics);
     }
 
@@ -416,7 +416,7 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number, reduction: MasterModelReduction) {
-        if (this.hasSingleCombination() || !this.comboSet.size) return new Set();
+        if (this.hasSingleCombination() || !this.comboSet.size) return;
 
         const newCombosMap = this.newSumAddendsCombosSet();
         const deleteCombos = [];
