@@ -13,6 +13,7 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../../src/solver/
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
+import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 
 const log = logFactory.withLabel('solver.perf');
 
@@ -50,7 +51,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
-        run(9,
+        runComparablePerformanceTest(9,
             (cageM) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
@@ -69,7 +70,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             });
     });
 
-    const run = (
+    const runComparablePerformanceTest = (
             sum: number,
             beforeReductionFn: (cageM: CageModel) => void,
             reductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
@@ -96,15 +97,30 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         cellM1.isLocked = true;
         cellM2.isLocked = true;
 
-        const cageMCopyForFullReducer = createCageMCopy(cageM);
-        new CageModelOfSize2Reducer(cageMCopyForFullReducer).reduce(reduction);
-        expectFn(cageMCopyForFullReducer);
+        doVerifyAndRunForFullReducer(cageM, reduction, expectFn);
+        doVerifyAndRunForPartialReducer(cageM, reduction, expectFn);
+    };
 
-        const cageMCopyForPartialReducer = createCageMCopy(cageM);
-        new CageModelOfSize2PartialReducer(cageMCopyForPartialReducer).reduce(reduction);
-        expectFn(cageMCopyForPartialReducer);
+    const doVerifyAndRunForFullReducer = (
+            cageM: CageModel,
+            reduction: MasterModelReduction,
+            expectFn: (cageM: CageModel) => void) => {
+        const cageMCopy = createCageMCopy(cageM);
+        new CageModelOfSize2Reducer(cageMCopy).reduce(reduction);
+        expectFn(cageMCopy);
 
-        runComparablePerformanceTest(cageM, reduction);
+        doRunForReducer(reduction, new CageModelOfSize2Reducer(cageM), 'Full');
+    };
+
+    const doVerifyAndRunForPartialReducer = (
+            cageM: CageModel,
+            reduction: MasterModelReduction,
+            expectFn: (cageM: CageModel) => void) => {
+        const cageMCopy = createCageMCopy(cageM);
+        new CageModelOfSize2PartialReducer(cageMCopy).reduce(reduction);
+        expectFn(cageMCopy);
+
+        doRunForReducer(reduction, new CageModelOfSize2PartialReducer(cageM), 'Partial');
     };
 
     const createCageMCopy = (cageM: CageModel) => {
@@ -122,25 +138,16 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         return cageMCopy;
     };
 
-    const runComparablePerformanceTest = (cageM: CageModel, reduction: MasterModelReduction) => {
-        const fullReducer = new CageModelOfSize2Reducer(cageM);
-        const partialReducer = new CageModelOfSize2PartialReducer(cageM);
-
-        let i, startTime: number;
-
-        startTime = performance.now();
-        i = 0;
+    const doRunForReducer = (
+            reduction: MasterModelReduction,
+            reducer: CageModelReducer,
+            type: string) => {
+        const startTime = performance.now();
+        let i = 0;
         while (i++ < 1_000_000) {
-            partialReducer.reduce(reduction);
+            reducer.reduce(reduction);
         }
-        log.info(`Partial reducer: ${performance.now() - startTime} ms`);
-
-        startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            fullReducer.reduce(reduction);
-        }
-        log.info(`Full reducer: ${performance.now() - startTime} ms`);
+        log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
