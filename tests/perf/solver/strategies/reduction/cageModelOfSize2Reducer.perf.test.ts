@@ -142,8 +142,17 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             reduction: MasterModelReduction,
             reducer: CageModelReducer,
             type: string) => {
-        const startTime = performance.now();
         let i = 0;
+
+        // Warming up.
+        i = 0;
+        while (i++ < 100_000) {
+            reducer.reduce(reduction);
+        }
+
+        // Actual performance test.
+        const startTime = performance.now();
+        i = 0;
         while (i++ < 1_000_000) {
             reducer.reduce(reduction);
         }
