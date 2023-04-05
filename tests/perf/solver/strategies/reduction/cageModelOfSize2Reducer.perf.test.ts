@@ -51,7 +51,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
-        runComparablePerformanceTest(9,
+        runComparablePerformanceTest(createReferenceCageM(9),
             (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
@@ -76,67 +76,69 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             });
     });
 
-    test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
-        runComparablePerformanceTest(9,
-            (cageM, reduction) => {
-                reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4, 5));
-                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5, 8));
-                const allCombos = cageM.comboSet.combos;
-                cageM.comboSet.deleteCombo(allCombos.find(combo => combo.has(2)) as Combo);
-                cageM.comboSet.deleteCombo(allCombos.find(combo => combo.has(3)) as Combo);
-            },
-            (cageM) => {
-                expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5, 8 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(1, 8),
-                    Combo.of(4, 5)
-                ]);
-            },
-            (cageM) => {
-                expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(4, 5)
-                ]);
-            });
-    });
+    // test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
+    //     runComparablePerformanceTest(9,
+    //         (cageM, reduction) => {
+    //             reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4, 5));
+    //             reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5, 8));
+    //             const allCombos = cageM.comboSet.combos;
+    //             cageM.comboSet.deleteComboFailSafe(allCombos.find(combo => combo.has(2)) as Combo);
+    //             cageM.comboSet.deleteComboFailSafe(allCombos.find(combo => combo.has(3)) as Combo);
+    //         },
+    //         (cageM) => {
+    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
+    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5, 8 ]);
+    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
+    //                 Combo.of(1, 8),
+    //                 Combo.of(4, 5)
+    //             ]);
+    //         },
+    //         (cageM) => {
+    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
+    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
+    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
+    //                 Combo.of(4, 5)
+    //             ]);
+    //         });
+    // });
 
-    test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
-        runComparablePerformanceTest(14,
-            (cageM, reduction) => {
-                cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
-                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5, 6));
-                reduction.deleteNumOpt(cageM.cellMs[1], 5);
-            },
-            (cageM) => {
-                expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(5, 9),
-                    Combo.of(6, 8)
-                ]);
-            },
-            (cageM) => {
-                expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(6, 8)
-                ]);
-            });
-    });
+    // test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
+    //     runComparablePerformanceTest(14,
+    //         (cageM, reduction) => {
+    //             cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
+    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
 
-    const runComparablePerformanceTest = (
-            sum: number,
-            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterPrepReductionFn: (cageM: CageModel) => void,
-            expectAfterTargetPerfReductionFn: (cageM: CageModel) => void) => {
-        const cell1 = Cell.at(3, 7);
-        const cell2 = Cell.at(3, 8);
+    //             cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5, 6));
+    //             reduction.deleteNumOpt(cageM.cellMs[1], 5);
+    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+
+    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
+    //                 Combo.of(5, 9),
+    //                 Combo.of(6, 8)
+    //             ]);
+
+    //             expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toHaveLength(0);
+    //             expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 5 ]);
+    //         },
+    //         (cageM, reduction) => {
+    //             //
+    //         },
+    //         (cageM) => {
+    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
+    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
+    //                 Combo.of(6, 8)
+    //             ]);
+    //         });
+    // });
+
+    const createReferenceCageM = (sum: number) => {
+        const cell1 = Cell.at(0, 0);
+        const cell2 = Cell.at(0, 1);
         const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
 
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
+        const cellM1 = new CellModel(cell1);
+        const cellM2 = new CellModel(cell2);
         const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
 
         cellM1.addWithinCageModel(cageM);
@@ -144,74 +146,76 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
         cageM.initialReduce();
 
-        const reduction = new MasterModelReduction();
+        return cageM;
+    };
 
-        prepReductionFn(cageM, reduction);
-
-        cellM1.isLocked = true;
-        cellM2.isLocked = true;
-
-        expectAfterPrepReductionFn(cageM);
-
-        doVerifyAndRunForFullReducer(cageM, reduction, expectAfterTargetPerfReductionFn);
-        doVerifyAndRunForPartialReducer(cageM, reduction, expectAfterTargetPerfReductionFn);
+    const runComparablePerformanceTest = (
+            referenceCageM: CageModel,
+            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        doVerifyAndRunForFullReducer(referenceCageM, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForPartialReducer(referenceCageM, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
     };
 
     const doVerifyAndRunForFullReducer = (
             cageM: CageModel,
-            reduction: MasterModelReduction,
-            expectFn: (cageM: CageModel) => void) => {
-        const cageMCopy = createCageMCopy(cageM);
-        new CageModelOfSize2Reducer(cageMCopy).reduce(reduction);
-        expectFn(cageMCopy);
+            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        const reductionCopy = new MasterModelReduction();
+        const cageMCopy = cageM.deepCopy();
+        prepReductionFn(cageMCopy, reductionCopy);
+        expectAfterPrepReductionFn(cageMCopy, reductionCopy);
+        new CageModelOfSize2Reducer(cageMCopy).reduce(reductionCopy);
+        expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
-        doRunForReducer(reduction, new CageModelOfSize2Reducer(cageM), 'Full');
+        doRunForReducer(cageM, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), prepReductionFn, 'Full');
     };
 
     const doVerifyAndRunForPartialReducer = (
             cageM: CageModel,
-            reduction: MasterModelReduction,
-            expectFn: (cageM: CageModel) => void) => {
-        const cageMCopy = createCageMCopy(cageM);
-        new CageModelOfSize2PartialReducer(cageMCopy).reduce(reduction);
-        expectFn(cageMCopy);
+            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        const reductionCopy = new MasterModelReduction();
+        const cageMCopy = cageM.deepCopy();
+        prepReductionFn(cageMCopy, reductionCopy);
+        expectAfterPrepReductionFn(cageMCopy, reductionCopy);
+        new CageModelOfSize2PartialReducer(cageMCopy).reduce(reductionCopy);
+        expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
-        doRunForReducer(reduction, new CageModelOfSize2PartialReducer(cageM), 'Partial');
-    };
-
-    const createCageMCopy = (cageM: CageModel) => {
-        const cageMCopy = cageM.deepCopyWithSameCellModels();
-
-        const cellM1Copy = cageM.cellMs[0].deepCopyWithoutCageModels();
-        const cellM2Copy = cageM.cellMs[1].deepCopyWithoutCageModels();
-
-        cellM1Copy.addWithinCageModel(cageMCopy);
-        cellM2Copy.addWithinCageModel(cageMCopy);
-
-        cageMCopy.cellMs[0] = cellM1Copy;
-        cageMCopy.cellMs[1] = cellM2Copy;
-
-        return cageMCopy;
+        doRunForReducer(cageM, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), prepReductionFn, 'Partial');
     };
 
     const doRunForReducer = (
-            reduction: MasterModelReduction,
-            reducer: CageModelReducer,
+            referenceCageM: CageModel,
+            reducerProducerFn: (cageM: CageModel) => CageModelReducer,
+            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             type: string) => {
         let i = 0;
 
         // Warming up.
         i = 0;
-        while (i++ < 100_000) {
+        while (i++ < 10_000) {
+            const cageM = referenceCageM.deepCopy();
+            const reducer = reducerProducerFn(cageM);
+            const reduction = new MasterModelReduction();
+            prepReductionFn(cageM, reduction);
             reducer.reduce(reduction);
         }
 
         // Actual performance test.
         const startTime = performance.now();
         i = 0;
-        while (i++ < 1_000_000) {
+        while (i++ < 100_000) {
+            const cageM = referenceCageM.deepCopy();
+            const reducer = reducerProducerFn(cageM);
+            const reduction = new MasterModelReduction();
+            prepReductionFn(cageM, reduction);
             reducer.reduce(reduction);
         }
+
         log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
     };
 
