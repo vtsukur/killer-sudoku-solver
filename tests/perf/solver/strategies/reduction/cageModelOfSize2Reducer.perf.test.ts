@@ -175,7 +175,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         let i = 0;
 
         //
-        // Checking that `CageModel` state stays intact
+        // Checking that the `CageModel` state stays intact
         // in between performance test iterations
         // to avoid impact on the reduction results that should be stable.
         //
