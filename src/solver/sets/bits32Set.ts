@@ -200,31 +200,6 @@ export abstract class Bits32Set<
     }
 
     /**
-     * @see NumsSet.delete
-     *
-     * @returns This set.
-     */
-    deleteAll(val: ROSET): this {
-        //
-        // Applying bitwise AND assignment on the bit store of this set
-        // to merge `1`s from the bit store of the `val` set.
-        //
-        // Example:
-        // ```
-        //      this._bitStore                  = 0b10011001
-        //      val.bitStore                    = 0b01001001
-        //      ~val.bitStore                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
-        //      this._bitStore &= ~val.bitStore = 0b10010000
-        // ```
-        //
-        this._bitStore &= ~val.bitStore;
-
-        this.onUpdate();
-
-        return this;
-    }
-
-    /**
      * Deletes given number from this set if it is present.
      *
      * This method changes this set.
@@ -251,6 +226,31 @@ export abstract class Bits32Set<
 
             this.onUpdate();
         }
+
+        return this;
+    }
+
+    /**
+     * @see NumsSet.delete
+     *
+     * @returns This set.
+     */
+    deleteAll(val: ROSET): this {
+        //
+        // Applying bitwise AND assignment on the bit store of this set
+        // to merge `1`s from the bit store of the `val` set.
+        //
+        // Example:
+        // ```
+        //      this._bitStore                  = 0b10011001
+        //      val.bitStore                    = 0b01001001
+        //      ~val.bitStore                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
+        //      this._bitStore &= ~val.bitStore = 0b10010000
+        // ```
+        //
+        this._bitStore &= ~val.bitStore;
+
+        this.onUpdate();
 
         return this;
     }
