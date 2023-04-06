@@ -105,35 +105,34 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         });
     });
 
-    // test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
-    //     runComparablePerformanceTest(14,
-    //         (cageM, reduction) => {
-    //             cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
-    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
+    test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
+        runComparablePerformanceTests({
+            createReferenceCageModel: () => createReferenceCageM(14),
+            prepareForReduction: (cageM, reduction) => {
+                cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
 
-    //             cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5, 6));
-    //             reduction.deleteNumOpt(cageM.cellMs[1], 5);
-    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5, 6));
+                reduction.deleteNumOpt(cageM.cellMs[1], 5);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
 
-    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
-    //                 Combo.of(5, 9),
-    //                 Combo.of(6, 8)
-    //             ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(5, 9),
+                    Combo.of(6, 8)
+                ]);
 
-    //             expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toHaveLength(0);
-    //             expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 5 ]);
-    //         },
-    //         (cageM, reduction) => {
-    //             //
-    //         },
-    //         (cageM) => {
-    //             expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
-    //             expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
-    //             expect(Array.from(cageM.comboSet.combos)).toEqual([
-    //                 Combo.of(6, 8)
-    //             ]);
-    //         });
-    // });
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toHaveLength(0);
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 5 ]);
+            },
+            expectAfterTargetReduction: (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(6, 8)
+                ]);
+            }
+        });
+    });
 
     const createReferenceCageM = (sum: number) => {
         const cell1 = Cell.at(0, 0);
