@@ -51,7 +51,7 @@ export class CellModel {
         return this._numOptsSet.has(val);
     }
 
-    deleteNumOpt(val: number) {
+    deleteNumOpt(val: number): ReadonlySudokuNumsSet {
         if (this._numOptsSet.hasOnly(val)) {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
