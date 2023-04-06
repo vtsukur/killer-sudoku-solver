@@ -43,7 +43,7 @@ export class CageModel {
 
     private _firstCell;
     private _cellCount;
-    protected _sumAddendsCombinatorics: SumAddendsCombinatorics;
+    sumAddendsCombinatorics: SumAddendsCombinatorics;
     comboSet: CombosSet;
     private _reducer?: CageModelReducer;
     private _fullReducer?: CageModelReducer;
@@ -56,7 +56,7 @@ export class CageModel {
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this._cellCount = cage.cellCount;
-        this._sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
+        this.sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
         if (comboSet) {
             this.comboSet = comboSet.clone();
         } else {
@@ -78,7 +78,7 @@ export class CageModel {
     }
 
     protected newSumAddendsCombosSet(): CombosSet {
-        return CombosSet.newEmpty(this._sumAddendsCombinatorics);
+        return CombosSet.newEmpty(this.sumAddendsCombinatorics);
     }
 
     deepCopy() {

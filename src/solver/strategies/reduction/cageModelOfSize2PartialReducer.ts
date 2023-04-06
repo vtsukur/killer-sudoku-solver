@@ -1,7 +1,6 @@
-import { Combo, SumAddendsCombinatorics } from '../../math';
+import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
@@ -29,7 +28,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
      */
     private readonly _cellM1: CellModel;
 
-    private readonly _combosByNum: Array<Combo>;
+    private readonly _combosByNum: ReadonlyArray<ReadonlyArray<Combo>>;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
@@ -41,11 +40,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
         this._cageM = cageM;
         this._cellM0 = cageM.cellMs[0];
         this._cellM1 = cageM.cellMs[1];
-        this._combosByNum = new Array(SudokuNumsSet.MAX_NUM + 1);
-        for (const combo of SumAddendsCombinatorics.enumerate(cageM.cage.sum, 2).combosSet.combos) {
-            this._combosByNum[combo.number0] = combo;
-            this._combosByNum[combo.number1] = combo;
-        }
+        this._combosByNum = cageM.sumAddendsCombinatorics.combosByNum;
     }
 
     /**
@@ -63,7 +58,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
                 if (complementNum < 1 || complementNum > 9) continue;
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
                 if (this._combosByNum[num] && !(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
-                    cageMCombos.deleteCombo(this._combosByNum[num]);
+                    cageMCombos.deleteCombo(this._combosByNum[num][0]);
                 }
             }
         }
@@ -74,7 +69,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
                 if (complementNum < 1 || complementNum > 9) continue;
                 reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
                 if (this._combosByNum[num] && !(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
-                    cageMCombos.deleteCombo(this._combosByNum[num]);
+                    cageMCombos.deleteCombo(this._combosByNum[num][0]);
                 }
             }
         }
