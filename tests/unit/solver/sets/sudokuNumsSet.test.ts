@@ -116,6 +116,12 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.of(1, 5, 9).nums).toEqual([ 1, 5, 9 ]);
     });
 
+    test('Getting size', () => {
+        expect(SudokuNumsSet.newEmpty().size).toBe(0);
+        expect(SudokuNumsSet.of(1, 5, 9).size).toBe(3);
+        expect(SudokuNumsSet.all().size).toBe(9);
+    });
+
     test('Getting first number', () => {
         expect(SudokuNumsSet.of(7).first).toEqual(7);
         expect(SudokuNumsSet.of(2, 5, 9).first).toEqual(2);

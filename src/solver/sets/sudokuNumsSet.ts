@@ -46,6 +46,11 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
     get nums(): ReadonlyArray<number>;
 
     /**
+     * Amount of numbers which are included in this set.
+     */
+    get size(): number;
+
+    /**
      * Returns new set with Sudoku numbers which are *not* present in the current set.
      *
      * For example, if a set has numbers [1, 2, 5, 9] then
@@ -215,6 +220,13 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      */
     get nums() {
         return this._nums;
+    }
+
+    /**
+     * @see ReadonlySudokuNumsSet.size
+     */
+    get size() {
+        return this._nums.length;
     }
 
     get first(): number | undefined {
