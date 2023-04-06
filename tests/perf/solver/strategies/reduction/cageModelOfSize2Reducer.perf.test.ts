@@ -165,7 +165,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             config: ComparablePerformanceTestConfig,
             reducerProducer: ReducerProducerFn,
             type: string) => {
-        // Checking that `CageModelReducer` works according to functional expectations.
+        // Checking that `CageModelReducer` works according to the functional expectations.
         runFunctionalTest(config, reducerProducer);
 
         const { reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
