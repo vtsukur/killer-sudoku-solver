@@ -66,6 +66,9 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(4, 5)
                 ]);
+
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 2, 5, 7 ]);
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 2, 7 ]);
             },
             expectAfterTargetReduction: (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
@@ -94,6 +97,9 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
                     Combo.of(1, 8),
                     Combo.of(4, 5)
                 ]);
+
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 1, 2, 3, 6, 7, 8 ]);
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 1, 2, 3, 6, 7 ]);
             },
             expectAfterTargetReduction: (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
