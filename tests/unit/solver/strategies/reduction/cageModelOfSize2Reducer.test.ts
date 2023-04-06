@@ -16,7 +16,7 @@ type ReducerConfig = {
 
 };
 
-describe('CageModelOfSize2Reducer', () => {
+describe('CageModelOfSize2Reducers', () => {
 
     const cell1 = Cell.at(0, 0);
     const cell2 = Cell.at(0, 1);
