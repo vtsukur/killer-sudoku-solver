@@ -124,11 +124,11 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const runComparablePerformanceTests = (
-            referenceCageMProducerFn: () => LockableCageModel,
-            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, createFullReducer, 'Full');
-        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, createPartialReducer, 'Partial');
+            referenceCageMProducer: () => LockableCageModel,
+            prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
+        doVerifyAndRunPerformanceTest(referenceCageMProducer, prepReduction, expectAfterTargetPerfReduction, createFullReducer, 'Full');
+        doVerifyAndRunPerformanceTest(referenceCageMProducer, prepReduction, expectAfterTargetPerfReduction, createPartialReducer, 'Partial');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -140,21 +140,21 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const doVerifyAndRunPerformanceTest = (
-            referenceCageMProducerFn: () => LockableCageModel,
-            prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            referenceCageMProducer: () => LockableCageModel,
+            prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
             reducerProducer: (cageM: CageModel) => CageModelReducer,
             type: string) => {
-        const cageM = referenceCageMProducerFn();
+        const cageM = referenceCageMProducer();
 
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
-        prepReductionFn(cageMCopy, reductionCopy);
+        prepReduction(cageMCopy, reductionCopy);
         reducerProducer(cageMCopy).reduce(reductionCopy);
-        expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
+        expectAfterTargetPerfReduction(cageMCopy, reductionCopy);
 
         const reduction = new LockableMasterModelReduction();
-        prepReductionFn(cageM, reduction);
+        prepReduction(cageM, reduction);
         reduction.lock();
         cageM.lock();
 
