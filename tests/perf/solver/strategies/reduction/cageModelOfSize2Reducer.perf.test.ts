@@ -34,8 +34,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
                 reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5));
                 cageM.reduceToCombinationsContaining(4, reduction);
-            },
-            (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
@@ -127,23 +125,20 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const runComparablePerformanceTest = (
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doVerifyAndRunForFullReducer(referenceCageMProducerFn, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
-        doVerifyAndRunForPartialReducer(referenceCageMProducerFn, prepReductionFn, expectAfterPrepReductionFn, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForFullReducer(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn);
+        doVerifyAndRunForPartialReducer(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn);
     };
 
     const doVerifyAndRunForFullReducer = (
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
         const cageM = referenceCageMProducerFn();
 
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
         prepReductionFn(cageMCopy, reductionCopy);
-        expectAfterPrepReductionFn(cageMCopy, reductionCopy);
         new CageModelOfSize2Reducer(cageMCopy).reduce(reductionCopy);
         expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
@@ -157,14 +152,12 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const doVerifyAndRunForPartialReducer = (
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterPrepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
         const cageM = referenceCageMProducerFn();
 
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
         prepReductionFn(cageMCopy, reductionCopy);
-        expectAfterPrepReductionFn(cageMCopy, reductionCopy);
         new CageModelOfSize2PartialReducer(cageMCopy).reduce(reductionCopy);
         expectAfterTargetPerfReductionFn(cageMCopy, reductionCopy);
 
