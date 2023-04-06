@@ -112,7 +112,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(set.doesNotHave(9)).toBeFalsy();
     });
 
-    test('Producing included numbers', () => {
+    test('Getting included numbers', () => {
         expect(SudokuNumsSet.of(1, 5, 9).nums).toEqual([ 1, 5, 9 ]);
     });
 
