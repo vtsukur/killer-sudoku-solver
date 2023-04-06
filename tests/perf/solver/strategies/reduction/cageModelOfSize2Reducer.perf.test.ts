@@ -21,11 +21,11 @@ const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
 type ComparablePerformanceTestConfig = {
 
-    referenceCageMProducer: () => LockableCageModel;
+    createReferenceCageModel: () => LockableCageModel;
 
-    prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+    prepareForReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
 
-    expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+    expectAfterTargetReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
 
 }
 
@@ -36,8 +36,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
         runComparablePerformanceTests({
-            referenceCageMProducer: () => createReferenceCageM(9),
-            prepReduction: (cageM, reduction) => {
+            createReferenceCageModel: () => createReferenceCageM(9),
+            prepareForReduction: (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
@@ -51,7 +51,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
                     Combo.of(4, 5)
                 ]);
             },
-            expectAfterTargetPerfReduction: (cageM) => {
+            expectAfterTargetReduction: (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5 ]);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
@@ -151,16 +151,16 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             config: ComparablePerformanceTestConfig,
             reducerProducer: (cageM: CageModel) => CageModelReducer,
             type: string) => {
-        const cageM = config.referenceCageMProducer();
+        const cageM = config.createReferenceCageModel();
 
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
-        config.prepReduction(cageMCopy, reductionCopy);
+        config.prepareForReduction(cageMCopy, reductionCopy);
         reducerProducer(cageMCopy).reduce(reductionCopy);
-        config.expectAfterTargetPerfReduction(cageMCopy, reductionCopy);
+        config.expectAfterTargetReduction(cageMCopy, reductionCopy);
 
         const reduction = new LockableMasterModelReduction();
-        config.prepReduction(cageM, reduction);
+        config.prepareForReduction(cageM, reduction);
         reduction.lock();
         cageM.lock();
 
