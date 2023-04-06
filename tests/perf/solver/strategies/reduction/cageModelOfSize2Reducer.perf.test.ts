@@ -19,15 +19,29 @@ import { LockableCageModel } from './lockableCageModel';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
+type CreateReferenceCageModelFn = () => LockableCageModel;
+
+type PrepareAndOrExpectReductionFn = (cageM: CageModel, reduction: MasterModelReduction) => void;
+
 type ComparablePerformanceTestConfig = {
 
-    createReferenceCageModel: () => LockableCageModel;
+    createReferenceCageModel: CreateReferenceCageModelFn;
 
-    prepareForReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+    prepareForReduction: PrepareAndOrExpectReductionFn;
 
-    expectAfterTargetReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+    expectAfterTargetReduction: PrepareAndOrExpectReductionFn;
 
 }
+
+type ReducerProducerFn = (cageM: CageModel) => CageModelReducer;
+
+type PerformanceTestPreparation = {
+
+    readonly reduction: MasterModelReduction;
+
+    readonly reducer: CageModelReducer;
+
+};
 
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
@@ -135,8 +149,8 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
-        doVerifyAndRunPerformanceTest(config, createFullReducer, 'Full');
-        doVerifyAndRunPerformanceTest(config, createPartialReducer, 'Partial');
+        doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
+        doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -147,24 +161,13 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         return new CageModelOfSize2PartialReducer(cageM);
     };
 
-    const doVerifyAndRunPerformanceTest = (
+    const doRunFunctionalAndPerformanceTests = (
             config: ComparablePerformanceTestConfig,
-            reducerProducer: (cageM: CageModel) => CageModelReducer,
+            reducerProducer: ReducerProducerFn,
             type: string) => {
-        const cageM = config.createReferenceCageModel();
+        runFunctionalTest(config, reducerProducer);
 
-        const reductionCopy = new MasterModelReduction();
-        const cageMCopy = cageM.deepCopy();
-        config.prepareForReduction(cageMCopy, reductionCopy);
-        reducerProducer(cageMCopy).reduce(reductionCopy);
-        config.expectAfterTargetReduction(cageMCopy, reductionCopy);
-
-        const reduction = new LockableMasterModelReduction();
-        config.prepareForReduction(cageM, reduction);
-        reduction.lock();
-        cageM.lock();
-
-        const reducer = reducerProducer(cageM);
+        const { reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
 
         let i = 0;
 
@@ -182,6 +185,27 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         }
 
         log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
+    };
+
+    const runFunctionalTest = (config: ComparablePerformanceTestConfig, reducerProducer: ReducerProducerFn) => {
+        const cageM = config.createReferenceCageModel();
+
+        const reduction = new MasterModelReduction();
+        config.prepareForReduction(cageM, reduction);
+        reducerProducer(cageM).reduce(reduction);
+        config.expectAfterTargetReduction(cageM, reduction);
+    };
+
+    const prepareForPerformanceTest = (config: ComparablePerformanceTestConfig, reducerProducer: ReducerProducerFn) => {
+        const cageM = config.createReferenceCageModel();
+        const reduction = new LockableMasterModelReduction();
+
+        config.prepareForReduction(cageM, reduction);
+
+        reduction.lock();
+        cageM.lock();
+
+        return { reducer: reducerProducer(cageM), reduction } as PerformanceTestPreparation;
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
