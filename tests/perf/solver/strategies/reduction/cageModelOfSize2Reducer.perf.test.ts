@@ -234,7 +234,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         return { cageM, reducer: reducerProducer(cageM), reduction } as PerformanceTestPreparation;
     };
 
-    test.skip('Find solution for Sudoku.com puzzles', () => {
+    test('Find solution for Sudoku.com puzzles', () => {
         // General warm up.
         CageModelOfSize2ReducerRouter.collectPerfStats = false;
         CachedNumRanges.ZERO_TO_N_LTE_81[3].forEach(() => {
@@ -251,7 +251,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         // ... Actual test
         log.info('Testing full reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
-        solveAllSudokuDotComPuzzles();
+        runAndMeasureAllSudokuDotComPuzzles('Full');
         const fullReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
 
         // Testing routing reduction for `CageModel`s of size 2.
@@ -264,7 +264,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         // ... Actual test
         log.info('Testing routing reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
-        solveAllSudokuDotComPuzzles();
+        runAndMeasureAllSudokuDotComPuzzles('Routing');
         const routingReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
 
         // Comparing results
@@ -282,18 +282,18 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
             const durationDelta = Math.abs(routingReductionStat.duration - fullReductionStat.duration);
             if (fullReductionStat.duration < routingReductionStat.duration) {
-                log.info('Full reduction wins:');
-                CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
-                CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
+                // log.info('Full reduction wins:');
+                // CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
+                // CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
                 ++fullReductionWins;
                 if (fullReductionStat.deletedNumsCount === 1) {
                     ++fullReductionWinsWithDeletedLte1;
                     fullReductionWinsWithDeletedLte1SavedTime += durationDelta;
                 }
             } else {
-                log.info('Partial reduction wins:');
-                CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
-                CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
+                // log.info('Partial reduction wins:');
+                // CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
+                // CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
                 ++partialReductionWins;
                 if (fullReductionStat.deletedNumsCount === 1) {
                     ++partialReductionWinsWithDeletedLte1;
@@ -309,6 +309,17 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
         log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
     });
+
+    const runAndMeasureAllSudokuDotComPuzzles = (type: string) => {
+        const startTime = performance.now();
+
+        let i = 0;
+        while (i++ < 10) {
+            solveAllSudokuDotComPuzzles();
+        }
+
+        log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
+    };
 
     const solveAllSudokuDotComPuzzles = () => {
         solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
