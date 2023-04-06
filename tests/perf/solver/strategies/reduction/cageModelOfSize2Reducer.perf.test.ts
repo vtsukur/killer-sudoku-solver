@@ -37,6 +37,8 @@ type ReducerProducerFn = (cageM: CageModel) => CageModelReducer;
 
 type PerformanceTestPreparation = {
 
+    readonly cageM: CageModel;
+
     readonly reduction: MasterModelReduction;
 
     readonly reducer: CageModelReducer;
@@ -168,9 +170,25 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         // Checking that `CageModelReducer` works according to the functional expectations.
         runFunctionalTest(config, reducerProducer);
 
-        const { reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
+        const { cageM, reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
 
         let i = 0;
+
+        //
+        // Checking that `CageModel` state stays intact
+        // in between performance test iterations
+        // to avoid impact on the reduction results that should be stable.
+        //
+        i = 0;
+        const cageMCombosValue = cageM.comboSet.bitStore;
+        const cellM1NumOptsValue = cageM.cellMs[0].numOptsSet().bitStore;
+        const cellM2NumOptsValue = cageM.cellMs[1].numOptsSet().bitStore;
+        while (i++ < 10) {
+            reducer.reduce(reduction);
+            expect(cageM.comboSet.bitStore).toBe(cageMCombosValue);
+            expect(cageM.cellMs[0].numOptsSet().bitStore).toBe(cellM1NumOptsValue);
+            expect(cageM.cellMs[1].numOptsSet().bitStore).toBe(cellM2NumOptsValue);
+        }
 
         // Warming up by running sample iterations.
         i = 0;
@@ -206,7 +224,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         reduction.lock();
         cageM.lock();
 
-        return { reducer: reducerProducer(cageM), reduction } as PerformanceTestPreparation;
+        return { cageM, reducer: reducerProducer(cageM), reduction } as PerformanceTestPreparation;
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
