@@ -25,11 +25,11 @@ type PrepareAndOrExpectReductionFn = (cageM: CageModel, reduction: MasterModelRe
 
 type ComparablePerformanceTestConfig = {
 
-    createReferenceCageModel: CreateReferenceCageModelFn;
+    readonly createReferenceCageModel: CreateReferenceCageModelFn;
 
-    prepareForReduction: PrepareAndOrExpectReductionFn;
+    readonly prepareForReduction: PrepareAndOrExpectReductionFn;
 
-    expectAfterTargetReduction: PrepareAndOrExpectReductionFn;
+    readonly expectAfterTargetReduction: PrepareAndOrExpectReductionFn;
 
 }
 
