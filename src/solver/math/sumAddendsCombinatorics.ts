@@ -4,6 +4,7 @@ import { House } from '../../puzzle/house';
 import { BitStore32, PowersOf2Lut, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 import { CombosSet, ReadonlyCombosSet, ReadonlyCombosSets } from '../sets/combosSet';
 import { Combo, ReadonlyCombos } from './combo';
+import { CachedNumRanges } from '../../util/cachedNumRanges';
 
 type PrecomputeComboKey = number;
 
@@ -47,6 +48,8 @@ export class SumAddendsCombinatorics {
     readonly combosLut: PowersOf2Lut<Combo>;
     readonly combosNumsSetLut: PowersOf2Lut<ReadonlySudokuNumsSet>;
 
+    readonly combosByNum: ReadonlyArray<ReadonlyArray<Combo>>;
+
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
     private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
 
@@ -75,6 +78,17 @@ export class SumAddendsCombinatorics {
             this.combosLut.set(index, combo);
             this.combosNumsSetLut.set(index, combo.numsSet);
         });
+        this.combosByNum = SumAddendsCombinatorics.newCombosByNum(val);
+    }
+
+    private static newCombosByNum(val: ReadonlyCombos) {
+        const combosByNum: Array<Array<Combo>> = CachedNumRanges.ZERO_TO_N_LTE_81[SudokuNumsSet.MAX_NUM + 1].map(() => []);
+        for (const combo of val) {
+            for (const num of combo.numsSet.nums) {
+                combosByNum[num].push(combo);
+            }
+        }
+        return combosByNum;
     }
 
     /**
