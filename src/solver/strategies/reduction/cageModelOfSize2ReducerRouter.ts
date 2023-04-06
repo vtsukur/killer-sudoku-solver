@@ -98,21 +98,15 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     }
 
     private doReduce(reduction: MasterModelReduction): boolean {
-        if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction) {
+        if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction ||
+                this._cageM.isFirstReduction ||
+                (this._cageM.comboSet.size <
+                    reduction.deletedNumOptsOf(this._cellM0).nums.length + reduction.deletedNumOptsOf(this._cellM1).nums.length)) {
             this._fullReducer.reduce(reduction);
             return true;
         } else {
-            if (this._cageM.isFirstReduction
-                    ||
-                    (this._cageM.comboSet.size <
-                    reduction.deletedNumOptsOf(this._cellM0).nums.length + reduction.deletedNumOptsOf(this._cellM1).nums.length)
-                    ) {
-                this._fullReducer.reduce(reduction);
-                return true;
-            } else {
-                this._partialReducer.reduce(reduction);
-                return false;
-            }
+            this._partialReducer.reduce(reduction);
+            return false;
         }
     }
 
