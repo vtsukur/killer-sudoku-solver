@@ -127,8 +127,16 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2Reducer(cageM), 'Full');
-        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), 'Partial');
+        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, createFullReducer, 'Full');
+        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, createPartialReducer, 'Partial');
+    };
+
+    const createFullReducer = (cageM: CageModel) => {
+        return new CageModelOfSize2Reducer(cageM);
+    };
+
+    const createPartialReducer = (cageM: CageModel) => {
+        return new CageModelOfSize2PartialReducer(cageM);
     };
 
     const doVerifyAndRunPerformanceTest = (
