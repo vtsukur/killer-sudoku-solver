@@ -1,4 +1,4 @@
-import { Combo } from '../../math';
+import { ReadonlyCombos } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CageModelReducer } from './cageModelReducer';
@@ -28,7 +28,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
      */
     private readonly _cellM1: CellModel;
 
-    private readonly _combosByNum: ReadonlyArray<ReadonlyArray<Combo>>;
+    private readonly _combosByNum: ReadonlyArray<ReadonlyCombos>;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s

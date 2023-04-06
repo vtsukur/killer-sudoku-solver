@@ -48,7 +48,7 @@ export class SumAddendsCombinatorics {
     readonly combosLut: PowersOf2Lut<Combo>;
     readonly combosNumsSetLut: PowersOf2Lut<ReadonlySudokuNumsSet>;
 
-    readonly combosByNum: ReadonlyArray<ReadonlyArray<Combo>>;
+    readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
 
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
     private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
