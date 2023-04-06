@@ -165,13 +165,14 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             config: ComparablePerformanceTestConfig,
             reducerProducer: ReducerProducerFn,
             type: string) => {
+        // Checking that `CageModelReducer` works according to functional expectations.
         runFunctionalTest(config, reducerProducer);
 
         const { reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
 
         let i = 0;
 
-        // Warming up.
+        // Warming up by running sample iterations.
         i = 0;
         while (i++ < 100_000) {
             reducer.reduce(reduction);
