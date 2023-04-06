@@ -44,6 +44,10 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(SudokuNumsSet.newEmpty(), []);
     });
 
+    test('Referencing empty `SudokuNumsSet` using static property', () => {
+        expectSetWithValues(SudokuNumsSet.EMPTY, []);
+    });
+
     test('Construction of `SudokuNumsSet` with all numbers using `all` static factory method', () => {
         expectSetWithValues(SudokuNumsSet.all(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
@@ -176,11 +180,13 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Checking `isEmpty`', () => {
+        expect(SudokuNumsSet.EMPTY.isEmpty).toBeTruthy();
         expect(SudokuNumsSet.newEmpty().isEmpty).toBeTruthy();
         expect(SudokuNumsSet.of(1, 9).isEmpty).toBeFalsy();
     });
 
     test('Checking `isNotEmpty`', () => {
+        expect(SudokuNumsSet.EMPTY.isNotEmpty).toBeFalsy();
         expect(SudokuNumsSet.newEmpty().isNotEmpty).toBeFalsy();
         expect(SudokuNumsSet.of(1, 9).isNotEmpty).toBeTruthy();
     });

@@ -7,8 +7,6 @@ export class LockableCellModel extends CellModel implements Lockable {
 
     private _isLocked = false;
 
-    private static readonly _EMPTY_NUMS_SET = SudokuNumsSet.newEmpty();
-
     constructor(cell: Cell) {
         super(cell);
     }
@@ -17,15 +15,15 @@ export class LockableCellModel extends CellModel implements Lockable {
         if (!this._isLocked) {
             return super.deleteNumOpt(val);
         } else {
-            return LockableCellModel._EMPTY_NUMS_SET;
+            return SudokuNumsSet.EMPTY;
         }
     }
 
-    reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+    reduceNumOpts(val: ReadonlySudokuNumsSet) {
         if (!this._isLocked) {
             return super.reduceNumOpts(val);
         } else {
-            return LockableCellModel._EMPTY_NUMS_SET;
+            return SudokuNumsSet.EMPTY;
         }
     }
 

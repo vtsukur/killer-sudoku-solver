@@ -130,6 +130,11 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
         _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
 
+    /**
+     * Empty readonly set.
+     */
+    static readonly EMPTY: ReadonlySudokuNumsSet = SudokuNumsSet.newEmpty();
+
     static accumulator(accumulator: SudokuNumsSet, current: ReadonlySudokuNumsSet) {
         accumulator.addAll(current);
     }
