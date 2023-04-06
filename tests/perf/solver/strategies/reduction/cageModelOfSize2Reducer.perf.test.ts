@@ -80,7 +80,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         });
     });
 
-    test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
+    test('Comparable test for 2 `Combo`s, 5 present numbers and 11 deleted numbers', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(9),
             prepareForReduction: (cageM, reduction) => {
@@ -111,7 +111,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         });
     });
 
-    test('Comparable test for 2 `Combo`, 3 present numbers and 1 deleted number', () => {
+    test('Comparable test for 2 `Combo`s, 3 present numbers and 1 deleted number', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(14),
             prepareForReduction: (cageM, reduction) => {
