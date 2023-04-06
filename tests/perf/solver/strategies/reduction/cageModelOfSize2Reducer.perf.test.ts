@@ -25,7 +25,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
-        runComparablePerformanceTest(
+        runComparablePerformanceTests(
             () => createReferenceCageM(9),
             (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
@@ -123,15 +123,15 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         return cageM;
     };
 
-    const runComparablePerformanceTest = (
+    const runComparablePerformanceTests = (
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doRunForReducer(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2Reducer(cageM), 'Full');
-        doRunForReducer(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), 'Partial');
+        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2Reducer(cageM), 'Full');
+        doVerifyAndRunPerformanceTest(referenceCageMProducerFn, prepReductionFn, expectAfterTargetPerfReductionFn, (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM), 'Partial');
     };
 
-    const doRunForReducer = (
+    const doVerifyAndRunPerformanceTest = (
             referenceCageMProducerFn: () => LockableCageModel,
             prepReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
             expectAfterTargetPerfReductionFn: (cageM: CageModel, reduction: MasterModelReduction) => void,
