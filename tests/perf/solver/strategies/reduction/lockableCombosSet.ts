@@ -1,12 +1,10 @@
 import { Combo, SumAddendsCombinatorics } from '../../../../../src/solver/math';
-import { BitStore32, CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
+import { BitStore32, CombosSet, ReadonlyCombosSet } from '../../../../../src/solver/sets';
 import { Lockable } from './lockable';
 
 export class LockableCombosSet extends CombosSet implements Lockable {
 
     private _isLocked = false;
-
-    private static readonly _EMPTY_NUMS_SET = SudokuNumsSet.newEmpty();
 
     protected constructor(
             val: BitStore32,
