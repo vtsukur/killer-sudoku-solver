@@ -9,7 +9,7 @@ import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
-import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize2FullReducer } from '../../strategies/reduction/cageModelOfSize2FullReducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CageModelOfSize2PartialReducer } from '../../strategies/reduction/cageModelOfSize2PartialReducer';
@@ -67,7 +67,7 @@ export class CageModel {
 
     updateReducers() {
         if (this._cellCount === 2) {
-            this._fullReducer = new CageModelOfSize2Reducer(this);
+            this._fullReducer = new CageModelOfSize2FullReducer(this);
             this._partialReducer = new CageModelOfSize2PartialReducer(this);
             this._reducer = new CageModelOfSize2ReducerRouter(
                     this,

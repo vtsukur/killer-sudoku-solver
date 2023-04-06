@@ -3,7 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2FullReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 
 describe('CageModelOfSize2Reducer', () => {
@@ -16,7 +16,7 @@ describe('CageModelOfSize2Reducer', () => {
     let cellM2: CellModel;
     let cageM: CageModel;
     let reduction: MasterModelReduction;
-    let reducer: CageModelOfSize2Reducer;
+    let reducer: CageModelOfSize2FullReducer;
 
     beforeEach(() => {
         cellM1 = new CellModel(cell1);
@@ -30,7 +30,7 @@ describe('CageModelOfSize2Reducer', () => {
 
         reduction = new MasterModelReduction();
 
-        reducer = new CageModelOfSize2Reducer(cageM);
+        reducer = new CageModelOfSize2FullReducer(cageM);
     });
 
     test('Reduces after deleting the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {

@@ -9,7 +9,7 @@ import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strate
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
-import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2FullReducer';
 import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
@@ -163,7 +163,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const createFullReducer = (cageM: CageModel) => {
-        return new CageModelOfSize2Reducer(cageM);
+        return new CageModelOfSize2FullReducer(cageM);
     };
 
     const createPartialReducer = (cageM: CageModel) => {
