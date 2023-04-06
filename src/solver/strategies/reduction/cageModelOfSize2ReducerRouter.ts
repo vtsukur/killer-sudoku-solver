@@ -101,7 +101,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction ||
                 this._cageM.isFirstReduction ||
                 (this._cageM.comboSet.size <
-                    reduction.deletedNumOptsOf(this._cellM0).nums.length + reduction.deletedNumOptsOf(this._cellM1).nums.length)) {
+                    reduction.deletedNumOptsOf(this._cellM0).size + reduction.deletedNumOptsOf(this._cellM1).size)) {
             this._fullReducer.reduce(reduction);
             return true;
         } else {
