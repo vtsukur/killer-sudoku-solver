@@ -64,12 +64,6 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
                 if (this._combosByNum[num] && !(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
                     cageMCombos.deleteCombo(this._combosByNum[num]);
-                    // for (const combo of cageMCombos.combos) {
-                    //     if (combo.numsSet.has(num)) {
-                    //         cageMCombos.deleteCombo(combo);
-                    //         break;
-                    //     }
-                    // }
                 }
             }
         }
@@ -81,12 +75,6 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
                 reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
                 if (this._combosByNum[num] && !(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
                     cageMCombos.deleteCombo(this._combosByNum[num]);
-                    // for (const combo of cageMCombos.combos) {
-                    //     if (combo.numsSet.has(num)) {
-                    //         cageMCombos.deleteCombo(combo);
-                    //         break;
-                    //     }
-                    // }
                 }
             }
         }
