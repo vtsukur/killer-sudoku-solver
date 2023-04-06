@@ -29,13 +29,14 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             () => createReferenceCageM(9),
             (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
-                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
-
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
-                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5));
-                cageM.reduceToCombinationsContaining(4, reduction);
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
+
+                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
+                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(4, 5));
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5 ]);
+
+                cageM.reduceToCombinationsContaining(4, reduction);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(4, 5)
                 ]);
