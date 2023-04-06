@@ -19,15 +19,25 @@ import { LockableCageModel } from './lockableCageModel';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
+type ComparablePerformanceTestConfig = {
+
+    referenceCageMProducer: () => LockableCageModel;
+
+    prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+
+    expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void;
+
+}
+
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
-        runComparablePerformanceTests(
-            () => createReferenceCageM(9),
-            (cageM, reduction) => {
+        runComparablePerformanceTests({
+            referenceCageMProducer: () => createReferenceCageM(9),
+            prepReduction: (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
@@ -41,13 +51,14 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
                     Combo.of(4, 5)
                 ]);
             },
-            (cageM) => {
+            expectAfterTargetPerfReduction: (cageM) => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5 ]);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(4, 5)
                 ]);
-            });
+            }
+        });
     });
 
     // test('Comparable test for 2 `Combo`, 5 present numbers and 11 deleted numbers', () => {
@@ -123,12 +134,9 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         return cageM;
     };
 
-    const runComparablePerformanceTests = (
-            referenceCageMProducer: () => LockableCageModel,
-            prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void) => {
-        doVerifyAndRunPerformanceTest(referenceCageMProducer, prepReduction, expectAfterTargetPerfReduction, createFullReducer, 'Full');
-        doVerifyAndRunPerformanceTest(referenceCageMProducer, prepReduction, expectAfterTargetPerfReduction, createPartialReducer, 'Partial');
+    const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
+        doVerifyAndRunPerformanceTest(config, createFullReducer, 'Full');
+        doVerifyAndRunPerformanceTest(config, createPartialReducer, 'Partial');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -140,21 +148,19 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const doVerifyAndRunPerformanceTest = (
-            referenceCageMProducer: () => LockableCageModel,
-            prepReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
-            expectAfterTargetPerfReduction: (cageM: CageModel, reduction: MasterModelReduction) => void,
+            config: ComparablePerformanceTestConfig,
             reducerProducer: (cageM: CageModel) => CageModelReducer,
             type: string) => {
-        const cageM = referenceCageMProducer();
+        const cageM = config.referenceCageMProducer();
 
         const reductionCopy = new MasterModelReduction();
         const cageMCopy = cageM.deepCopy();
-        prepReduction(cageMCopy, reductionCopy);
+        config.prepReduction(cageMCopy, reductionCopy);
         reducerProducer(cageMCopy).reduce(reductionCopy);
-        expectAfterTargetPerfReduction(cageMCopy, reductionCopy);
+        config.expectAfterTargetPerfReduction(cageMCopy, reductionCopy);
 
         const reduction = new LockableMasterModelReduction();
-        prepReduction(cageM, reduction);
+        config.prepReduction(cageM, reduction);
         reduction.lock();
         cageM.lock();
 
