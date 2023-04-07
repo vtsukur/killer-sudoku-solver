@@ -52,9 +52,10 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
 
         const cageMCombos = this._cageM.comboSet;
 
+        let combo;
+
         if (deletedNumOpts_cellM0.isNotEmpty) {
             for (const num of deletedNumOpts_cellM0.nums) {
-                let combo;
                 if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
@@ -68,7 +69,6 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
 
         if (deletedNumOpts_cellM1.isNotEmpty) {
             for (const num of deletedNumOpts_cellM1.nums) {
-                let combo;
                 if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
                 reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
