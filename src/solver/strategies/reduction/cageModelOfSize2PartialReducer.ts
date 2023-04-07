@@ -55,10 +55,13 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
         if (deletedNumOpts_cellM0.isNotEmpty) {
             for (const num of deletedNumOpts_cellM0.nums) {
                 const complementNum = this._cageM.cage.sum - num;
-                if (complementNum < 1 || complementNum > 9) continue;
+                let combo;
+                if (complementNum < 1 || complementNum > 9 || !cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
-                if (this._combosByNum[num] && !(this._cellM0.hasNumOpt(complementNum) && this._cellM1.hasNumOpt(num))) {
-                    cageMCombos.deleteCombo(this._combosByNum[num][0]);
+                if (cageMCombos.hasCombo(combo) && (!this._cellM0.hasNumOpt(complementNum) || !this._cellM1.hasNumOpt(num))) {
+                    reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
+                    reduction.tryDeleteNumOpt(this._cellM1, num, this._cageM);
+                    cageMCombos.deleteCombo(combo);
                 }
             }
         }
@@ -66,10 +69,13 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
         if (deletedNumOpts_cellM1.isNotEmpty) {
             for (const num of deletedNumOpts_cellM1.nums) {
                 const complementNum = this._cageM.cage.sum - num;
-                if (complementNum < 1 || complementNum > 9) continue;
+                let combo;
+                if (complementNum < 1 || complementNum > 9 || !cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
-                if (this._combosByNum[num] && !(this._cellM1.hasNumOpt(complementNum) && this._cellM0.hasNumOpt(num))) {
-                    cageMCombos.deleteCombo(this._combosByNum[num][0]);
+                if (cageMCombos.hasCombo(combo) && (!this._cellM1.hasNumOpt(complementNum) || !this._cellM0.hasNumOpt(num))) {
+                    reduction.tryDeleteNumOpt(this._cellM0, num, this._cageM);
+                    reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                    cageMCombos.deleteCombo(combo);
                 }
             }
         }
