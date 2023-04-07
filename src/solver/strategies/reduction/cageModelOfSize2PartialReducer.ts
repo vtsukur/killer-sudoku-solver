@@ -56,7 +56,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
             for (const num of deletedNumOpts_cellM0.nums) {
                 const complementNum = this._cageM.cage.sum - num;
                 let combo;
-                if (complementNum < 1 || complementNum > 9 || !cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
+                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
                 if (!this._cellM0.hasNumOpt(complementNum) || !this._cellM1.hasNumOpt(num)) {
                     reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
@@ -70,7 +70,7 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
             for (const num of deletedNumOpts_cellM1.nums) {
                 const complementNum = this._cageM.cage.sum - num;
                 let combo;
-                if (complementNum < 1 || complementNum > 9 || !cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
+                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
                 if (!this._cellM1.hasNumOpt(complementNum) || !this._cellM0.hasNumOpt(num)) {
                     reduction.tryDeleteNumOpt(this._cellM0, num, this._cageM);
