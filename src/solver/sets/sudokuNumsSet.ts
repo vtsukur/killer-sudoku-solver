@@ -143,7 +143,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     /**
      * Readonly set with all Sudoku numbers in the `[1, 9]` range.
      */
-    static readonly ALL: ReadonlySudokuNumsSet = SudokuNumsSet.all();
+    static readonly ALL: ReadonlySudokuNumsSet = SudokuNumsSet.newAll();
 
     static accumulator(accumulator: SudokuNumsSet, current: ReadonlySudokuNumsSet) {
         accumulator.addAll(current);
@@ -216,7 +216,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @returns New set with all unique Sudoku numbers
      * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX_NUM} (inclusive).
      */
-    static all() {
+    static newAll() {
         return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
     }
 

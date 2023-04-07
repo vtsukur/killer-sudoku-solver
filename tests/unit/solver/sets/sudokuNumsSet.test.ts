@@ -48,8 +48,8 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(SudokuNumsSet.EMPTY, []);
     });
 
-    test('Construction of `SudokuNumsSet` with all numbers using `all` static factory method', () => {
-        expectSetWithValues(SudokuNumsSet.all(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+    test('Construction of `SudokuNumsSet` with all numbers using `newAll` static factory method', () => {
+        expectSetWithValues(SudokuNumsSet.newAll(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
 
     test('Referencing `SudokuNumsSet` with all numbers using static property', () => {
@@ -123,7 +123,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     test('Getting size', () => {
         expect(SudokuNumsSet.newEmpty().size).toBe(0);
         expect(SudokuNumsSet.of(1, 5, 9).size).toBe(3);
-        expect(SudokuNumsSet.all().size).toBe(9);
+        expect(SudokuNumsSet.newAll().size).toBe(9);
     });
 
     test('Getting first number', () => {
