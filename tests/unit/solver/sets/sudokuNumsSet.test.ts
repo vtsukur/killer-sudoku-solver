@@ -52,6 +52,10 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(SudokuNumsSet.all(), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
 
+    test('Referencing `SudokuNumsSet` with all numbers using static property', () => {
+        expectSetWithValues(SudokuNumsSet.ALL, [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+    });
+
     test('Adding and deleting many numbers with `hasAll` and `doesNotHaveAny` checks', () => {
         const set = SudokuNumsSet.of(1, 6, 9);
         expect(set.hasAll(SudokuNumsSet.of(1, 6))).toBeTruthy();
