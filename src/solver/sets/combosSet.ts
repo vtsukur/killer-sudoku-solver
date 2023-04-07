@@ -49,6 +49,10 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
     }
 
+    hasCombo(combo?: Combo) {
+        return combo ? this.has(this._combinatorics.optimisticIndexOf(combo)) : false;
+    }
+
     addCombo(combo: Combo) {
         this.add(this._combinatorics.optimisticIndexOf(combo));
     }
