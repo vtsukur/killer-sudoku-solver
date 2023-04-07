@@ -56,21 +56,6 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
         // Again, for performance reasons.
         //
 
-        const deletedNumOpts_cellM0 = reduction.deletedNumOptsOf(this._cellM0);
-        const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
-
-        //
-        // Skipping reduction if the deletion of numbers did *not* ever happen
-        // for `CageModel`'s `CellModel`s within the current `MasterModelReduction` state.
-        //
-        // NOTE: The follow-up code does *not* use deleted numbers themselves,
-        // as empirical tests found that such an approach is slower
-        // than a combination-based analysis for a `Cage` with 2 `Cell`s.
-        //
-        if (deletedNumOpts_cellM0.isEmpty && deletedNumOpts_cellM1.isEmpty) {
-            return;
-        }
-
         const cageMCombos = this._cageM.comboSet;
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...

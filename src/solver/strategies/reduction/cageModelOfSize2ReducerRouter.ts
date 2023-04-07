@@ -17,7 +17,7 @@ export class Stat {
     numsAfterReductionCellM0?: ReadonlyArray<number>;
     numsAfterReductionCellM1?: ReadonlyArray<number>;
     combosCountAfterReduction?: number;
-    isFullReduction = true;
+    isFullReduction: boolean | undefined = true;
     duration = 0;
 
     constructor(
@@ -49,7 +49,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _fullReducer: CageModelReducer;
     private readonly _partialReducer: CageModelReducer;
 
-    static isAlwaysApplyFullReduction = false;
+    static isAlwaysApplyFullReduction = true;
 
     static collectPerfStats = true;
 
@@ -97,7 +97,18 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         }
     }
 
-    private doReduce(reduction: MasterModelReduction): boolean {
+    private doReduce(reduction: MasterModelReduction): boolean | undefined {
+        const deletedNumOpts_cellM0 = reduction.deletedNumOptsOf(this._cellM0);
+        const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
+
+        //
+        // Skipping reduction if the deletion of numbers did *not* ever happen
+        // for `CageModel`'s `CellModel`s within the current `MasterModelReduction` state.
+        //
+        if (deletedNumOpts_cellM0.isEmpty && deletedNumOpts_cellM1.isEmpty) {
+            return;
+        }
+
         if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction ||
                 this._cageM.isFirstReduction ||
                 (this._cageM.comboSet.size <
