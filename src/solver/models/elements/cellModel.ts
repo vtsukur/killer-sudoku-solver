@@ -15,7 +15,7 @@ export class CellModel {
         this.cell = cell;
         this._solved = false;
 
-        this._numOptsSet = SudokuNumsSet.all();
+        this._numOptsSet = SudokuNumsSet.newAll();
         this._withinCageMs = new Set();
     }
 
@@ -59,7 +59,7 @@ export class CellModel {
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        return this._numOptsSet.unionWithDeleted(val);
+        return val.bitStore == SudokuNumsSet.ALL.bitStore ? SudokuNumsSet.EMPTY : this._numOptsSet.unionWithDeleted(val);
     }
 
     get solved() {
