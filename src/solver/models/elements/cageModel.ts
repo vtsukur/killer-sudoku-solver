@@ -13,6 +13,7 @@ import { CageModelOfSize2FullReducer } from '../../strategies/reduction/cageMode
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModelOfSize2ReducerRouter } from '../../strategies/reduction/cageModelOfSize2ReducerRouter';
 import { CageModelOfSize2PartialReducer } from '../../strategies/reduction/cageModelOfSize2PartialReducer';
+import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 
 type Clue = {
     num: number;
@@ -46,8 +47,8 @@ export class CageModel {
     sumAddendsCombinatorics: SumAddendsCombinatorics;
     comboSet: CombosSet;
     private _reducer?: CageModelReducer;
-    private _fullReducer?: CageModelReducer;
-    private _partialReducer?: CageModelReducer;
+    private _fullReducer?: CageModelOfSize2Reducer;
+    private _partialReducer?: CageModelOfSize2Reducer;
 
     isFirstReduction = true;
 
