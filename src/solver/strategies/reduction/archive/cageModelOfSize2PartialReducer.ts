@@ -1,8 +1,8 @@
-import { ReadonlyCombos } from '../../math';
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
-import { CageModelReducer } from './cageModelReducer';
-import { MasterModelReduction } from './masterModelReduction';
+import { ReadonlyCombos } from '../../../math';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
+import { CageModelReducer } from '../cageModelReducer';
+import { MasterModelReduction } from '../masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s

@@ -1,8 +1,8 @@
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
-import { CageModelReducer } from './cageModelReducer';
-import { MasterModelReduction } from './masterModelReduction';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
+import { CombosSet, ReadonlySudokuNumsSet } from '../../../sets';
+import { CageModelReducer } from '../cageModelReducer';
+import { MasterModelReduction } from '../masterModelReduction';
 
 /**
  * Reduces possible numbers for {@link CellModel}s
