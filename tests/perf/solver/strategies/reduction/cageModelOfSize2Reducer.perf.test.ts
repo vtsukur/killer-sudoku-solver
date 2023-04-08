@@ -16,6 +16,7 @@ import { CageModelReducer } from '../../../../../src/solver/strategies/reduction
 import { LockableCellModel } from './lockableCellModel';
 import { LockableMasterModelReduction } from './lockableMasterModelReduction';
 import { LockableCageModel } from './lockableCageModel';
+import { CageModelOfSize2OptimalReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2OptimalReducer';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
 
@@ -160,6 +161,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
         doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
+        doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -168,6 +170,10 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const createPartialReducer = (cageM: CageModel) => {
         return new CageModelOfSize2PartialReducer(cageM);
+    };
+
+    const createOptimalReducer = (cageM: CageModel) => {
+        return new CageModelOfSize2OptimalReducer(cageM);
     };
 
     const doRunFunctionalAndPerformanceTests = (
@@ -241,21 +247,21 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
             solveAllSudokuDotComPuzzles();
         });
 
-        // Testing full reduction for `CageModel`s of size 2.
-        CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction = true;
+        // Testing optimal reduction for `CageModel`s of size 2.
+        CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction = true;
 
         // ... Warm up
         CageModelOfSize2ReducerRouter.collectPerfStats = false;
         solveAllSudokuDotComPuzzles();
 
         // ... Actual test
-        log.info('Testing full reduction');
+        log.info('Testing optimal reduction');
         CageModelOfSize2ReducerRouter.collectPerfStats = true;
-        runAndMeasureAllSudokuDotComPuzzles('Full');
+        runAndMeasureAllSudokuDotComPuzzles('Optimal');
         const fullReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
 
         // Testing routing reduction for `CageModel`s of size 2.
-        CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction = false;
+        CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction = false;
 
         // ... Warm up
         CageModelOfSize2ReducerRouter.collectPerfStats = false;

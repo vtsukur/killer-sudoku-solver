@@ -1,6 +1,7 @@
 import { logFactory } from '../../../util/logFactory';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
+import { CageModelOfSize2OptimalReducer } from './cageModelOfSize2OptimalReducer';
 import { CageModelOfSize2Reducer } from './cageModelOfSize2Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -47,10 +48,11 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _cageM: CageModel;
     private readonly _cellM0: CellModel;
     private readonly _cellM1: CellModel;
+    private readonly _optimalReducer: CageModelOfSize2OptimalReducer;
     private readonly _fullReducer: CageModelOfSize2Reducer;
     private readonly _partialReducer: CageModelOfSize2Reducer;
 
-    static isAlwaysApplyFullReduction = true;
+    static isAlwaysApplyOptimalReduction = true;
 
     static collectPerfStats = true;
 
@@ -58,6 +60,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         this._cageM = cageM;
         this._cellM0 = cageM.cellMs[0];
         this._cellM1 = cageM.cellMs[1];
+        this._optimalReducer = new CageModelOfSize2OptimalReducer(cageM);
         this._fullReducer = fullReducer;
         this._partialReducer = partialReducer;
     }
@@ -110,8 +113,10 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             return;
         }
 
-        if (CageModelOfSize2ReducerRouter.isAlwaysApplyFullReduction ||
-                this._cageM.isFirstReduction ||
+        if (CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction) {
+            this._optimalReducer.reduce(reduction);
+            return;
+        } else if (this._cageM.isFirstReduction ||
                 (this._cageM.comboSet.size < deletedNumOpts_cellM0.size + deletedNumOpts_cellM1.size)) {
             this._fullReducer.doReduce(this._cellM0, deletedNumOpts_cellM0, this._cellM1, deletedNumOpts_cellM1, this._cageM, this._cageM.comboSet, reduction);
             return true;
