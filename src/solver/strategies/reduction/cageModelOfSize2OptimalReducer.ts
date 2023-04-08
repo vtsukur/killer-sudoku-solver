@@ -3,6 +3,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelOfSize2Reducer } from './cageModelOfSize2Reducer';
+import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
 type TactialReducer = (
@@ -213,7 +214,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
  *
  * @public
  */
-export class CageModelOfSize2OptimalReducer implements CageModelOfSize2Reducer {
+export class CageModelOfSize2OptimalReducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.
@@ -264,17 +265,6 @@ export class CageModelOfSize2OptimalReducer implements CageModelOfSize2Reducer {
 
             tacticalReducers[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
         }
-    }
-
-    doReduce(
-            cellM0: CellModel,
-            _deletedNumOptsOfCellM0: ReadonlySudokuNumsSet,
-            cellM1: CellModel,
-            _deletedNumOptsOfCellM1: ReadonlySudokuNumsSet,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            reduction: MasterModelReduction): void {
-        // No-op.
     }
 
 }
