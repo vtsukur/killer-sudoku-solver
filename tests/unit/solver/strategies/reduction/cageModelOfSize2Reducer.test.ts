@@ -43,35 +43,6 @@ describe('CageModelOfSize2Reducers', () => {
         reduction = new MasterModelReduction();
     });
 
-    test('temporary bitwise optimization', () => {
-        const combo = Combo.of(1, 4);
-
-        const num0 = combo.number0;
-        const num1 = combo.number1;
-
-        let i = 0;
-        while (i < 16) {
-            const cellM0NumSet = SudokuNumsSet.newEmpty();
-            const cellM1NumSet = SudokuNumsSet.newEmpty();
-            if (i & 0b0001) cellM0NumSet.add(combo.number0);
-            if (i & 0b0010) cellM0NumSet.add(combo.number1);
-            if (i & 0b0100) cellM1NumSet.add(combo.number0);
-            if (i & 0b1000) cellM1NumSet.add(combo.number1);
-            const cellM0NumSetValue = cellM0NumSet.bitStore;
-            const cellM1NumSetValue = cellM1NumSet.bitStore;
-
-            const optionsCellM0 = ((cellM0NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1));
-            const optionsCellM1 = ((cellM1NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1));
-            const options = optionsCellM0 | optionsCellM1 << 2;
-
-            expect(options).toBe(i);
-
-            ++i;
-        }
-    });
-
     const CONFIGS: ReadonlyArray<ReducerConfig> = [
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2FullReducer(cageM),
