@@ -1,7 +1,7 @@
 import { logFactory } from '../../../util/logFactory';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CageModelOfSize2OptimalReducer } from './cageModelOfSize2OptimalReducer';
+import { CageModelOfSize2OptimalStage2Reducer } from './cageModelOfSize2OptimalStage2Reducer';
 import { CageModelOfSize2Reducer } from './cageModelOfSize2Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -48,7 +48,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _cageM: CageModel;
     private readonly _cellM0: CellModel;
     private readonly _cellM1: CellModel;
-    private readonly _optimalReducer: CageModelOfSize2OptimalReducer;
+    private readonly _optimalReducer: CageModelOfSize2OptimalStage2Reducer;
     private readonly _fullReducer: CageModelOfSize2Reducer;
     private readonly _partialReducer: CageModelOfSize2Reducer;
 
@@ -60,7 +60,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
         this._cageM = cageM;
         this._cellM0 = cageM.cellMs[0];
         this._cellM1 = cageM.cellMs[1];
-        this._optimalReducer = new CageModelOfSize2OptimalReducer(cageM);
+        this._optimalReducer = new CageModelOfSize2OptimalStage2Reducer(cageM);
         this._fullReducer = fullReducer;
         this._partialReducer = partialReducer;
     }
