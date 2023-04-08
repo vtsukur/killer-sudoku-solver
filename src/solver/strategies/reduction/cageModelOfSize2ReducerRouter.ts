@@ -2,7 +2,6 @@ import { logFactory } from '../../../util/logFactory';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CageModelOfSize2OptimalStage2Reducer } from './cageModelOfSize2OptimalStage2Reducer';
-import { CageModelOfSize2Reducer } from './cageModelOfSize2Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { performance, PerformanceObserver } from 'perf_hooks';
@@ -49,14 +48,14 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     private readonly _cellM0: CellModel;
     private readonly _cellM1: CellModel;
     private readonly _optimalReducer: CageModelOfSize2OptimalStage2Reducer;
-    private readonly _fullReducer: CageModelOfSize2Reducer;
-    private readonly _partialReducer: CageModelOfSize2Reducer;
+    private readonly _fullReducer: CageModelReducer;
+    private readonly _partialReducer: CageModelReducer;
 
     static isAlwaysApplyOptimalReduction = true;
 
     static collectPerfStats = true;
 
-    constructor(cageM: CageModel, fullReducer: CageModelOfSize2Reducer, partialReducer: CageModelOfSize2Reducer) {
+    constructor(cageM: CageModel, fullReducer: CageModelReducer, partialReducer: CageModelReducer) {
         this._cageM = cageM;
         this._cellM0 = cageM.cellMs[0];
         this._cellM1 = cageM.cellMs[1];
@@ -118,10 +117,10 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             return;
         } else if (this._cageM.isFirstReduction ||
                 (this._cageM.comboSet.size < deletedNumOpts_cellM0.size + deletedNumOpts_cellM1.size)) {
-            this._fullReducer.doReduce(this._cellM0, deletedNumOpts_cellM0, this._cellM1, deletedNumOpts_cellM1, this._cageM, this._cageM.comboSet, reduction);
+            this._fullReducer.reduce(reduction);
             return true;
         } else {
-            this._partialReducer.doReduce(this._cellM0, deletedNumOpts_cellM0, this._cellM1, deletedNumOpts_cellM1, this._cageM, this._cageM.comboSet, reduction);
+            this._partialReducer.reduce(reduction);
             return false;
         }
     }

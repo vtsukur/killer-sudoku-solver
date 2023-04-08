@@ -1,8 +1,6 @@
 import { ReadonlyCombos } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
-import { CageModelOfSize2Reducer } from './cageModelOfSize2Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
@@ -13,7 +11,7 @@ import { MasterModelReduction } from './masterModelReduction';
  *
  * @public
  */
-export class CageModelOfSize2PartialReducer implements CageModelReducer, CageModelOfSize2Reducer {
+export class CageModelOfSize2PartialReducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.
@@ -77,43 +75,6 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer, CageMod
                 if (!this._cellM1.hasNumOpt(complementNum) || !this._cellM0.hasNumOpt(num)) {
                     reduction.tryDeleteNumOpt(this._cellM0, num, this._cageM);
                     reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
-                    cageMCombos.deleteCombo(combo);
-                }
-            }
-        }
-    }
-
-    doReduce(
-            cellM0: CellModel,
-            deletedNumOptsOfCellM0: ReadonlySudokuNumsSet,
-            cellM1: CellModel,
-            deletedNumOptsOfCellM1: ReadonlySudokuNumsSet,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            reduction: MasterModelReduction): void {
-        let combo;
-
-        if (deletedNumOptsOfCellM0.isNotEmpty) {
-            for (const num of deletedNumOptsOfCellM0.nums) {
-                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
-                const complementNum = cageM.cage.sum - num;
-                reduction.tryDeleteNumOpt(cellM1, complementNum, cageM);
-                if (!cellM0.hasNumOpt(complementNum) || !cellM1.hasNumOpt(num)) {
-                    reduction.tryDeleteNumOpt(cellM0, complementNum, cageM);
-                    reduction.tryDeleteNumOpt(cellM1, num, cageM);
-                    cageMCombos.deleteCombo(combo);
-                }
-            }
-        }
-
-        if (deletedNumOptsOfCellM1.isNotEmpty) {
-            for (const num of deletedNumOptsOfCellM1.nums) {
-                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
-                const complementNum = cageM.cage.sum - num;
-                reduction.tryDeleteNumOpt(cellM0, complementNum, cageM);
-                if (!cellM1.hasNumOpt(complementNum) || !cellM0.hasNumOpt(num)) {
-                    reduction.tryDeleteNumOpt(cellM0, num, cageM);
-                    reduction.tryDeleteNumOpt(cellM1, complementNum, cageM);
                     cageMCombos.deleteCombo(combo);
                 }
             }
