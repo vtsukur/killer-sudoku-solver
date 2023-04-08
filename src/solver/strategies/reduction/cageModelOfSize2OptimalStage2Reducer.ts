@@ -247,8 +247,8 @@ export class CageModelOfSize2OptimalStage2Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cellM0NumSetValue = this._cellM0.numOptsSet().bitStore;
-        const cellM1NumSetValue = this._cellM1.numOptsSet().bitStore;
+        const cellM0NumSetValue = this._cellM0._numOptsSet.bitStore;
+        const cellM1NumSetValue = this._cellM1._numOptsSet.bitStore;
 
         const cageMCombos = this._cageM.comboSet;
 

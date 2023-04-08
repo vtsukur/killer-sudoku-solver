@@ -8,7 +8,7 @@ export class CellModel {
     readonly cell: Cell;
     placedNum?: number;
     private readonly _withinCageMs: Set<CageModel>;
-    private _numOptsSet: SudokuNumsSet;
+    _numOptsSet: SudokuNumsSet;
     private _solved: boolean;
 
     constructor(cell: Cell) {
