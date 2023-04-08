@@ -257,11 +257,10 @@ export class CageModelOfSize2OptimalStage2Reducer implements CageModelReducer {
             const num0 = combo.number0;
             const num1 = combo.number1;
 
-            const optionsCellM0 = ((cellM0NumSetValue & (1 << num0)) >> num0) |
-            ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1));
-            const optionsCellM1 = ((cellM1NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1));
-            const options = optionsCellM1 | optionsCellM0 << 2;
+            const options = (((cellM1NumSetValue & (1 << num0)) >> num0) |
+                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) |
+                    (((cellM0NumSetValue & (1 << num0)) >> num0) |
+                    ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
 
             tacticalReducers[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
         }
