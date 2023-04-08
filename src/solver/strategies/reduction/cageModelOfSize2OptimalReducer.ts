@@ -247,7 +247,7 @@ export class CageModelOfSize2OptimalReducer implements CageModelOfSize2Reducer {
      */
     reduce(reduction: MasterModelReduction): void {
         const cellM0NumSetValue = this._cellM0.numOptsSet().bitStore;
-        const cellM1NumSetValue = this._cellM0.numOptsSet().bitStore;
+        const cellM1NumSetValue = this._cellM1.numOptsSet().bitStore;
 
         const cageMCombos = this._cageM.comboSet;
 
@@ -260,7 +260,7 @@ export class CageModelOfSize2OptimalReducer implements CageModelOfSize2Reducer {
             ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1));
             const optionsCellM1 = ((cellM1NumSetValue & (1 << num0)) >> num0) |
                     ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1));
-            const options = optionsCellM0 | optionsCellM1 << 2;
+            const options = optionsCellM1 | optionsCellM0 << 2;
 
             tacticalReducers[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
         }
