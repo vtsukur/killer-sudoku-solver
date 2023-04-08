@@ -6,6 +6,7 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2FullReducer';
 import { CageModelOfSize2OptimalReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2OptimalReducer';
+import { CageModelOfSize2OptimalStage2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2OptimalStage2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -83,6 +84,10 @@ describe('CageModelOfSize2Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2OptimalReducer(cageM),
             type: 'CageModelOfSize2OptimalReducer'
+        },
+        {
+            newReducer: (cageM: CageModel) => new CageModelOfSize2OptimalStage2Reducer(cageM),
+            type: 'CageModelOfSize2OptimalStage2Reducer'
         }
     ];
 
