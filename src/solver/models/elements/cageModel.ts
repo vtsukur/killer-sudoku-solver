@@ -10,7 +10,7 @@ import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
-import { CageModelOfSize2OptimalStage2Reducer } from '../../strategies/reduction/cageModelOfSize2OptimalStage2Reducer';
+import { CageModelOfSize2OptimalStage2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 
 type Clue = {
     num: number;

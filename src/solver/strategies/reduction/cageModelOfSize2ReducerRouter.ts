@@ -1,7 +1,7 @@
 import { logFactory } from '../../../util/logFactory';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CageModelOfSize2OptimalStage2Reducer } from './cageModelOfSize2OptimalStage2Reducer';
+import { CageModelOfSize2OptimalStage2Reducer } from './cageModelOfSize2Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { performance, PerformanceObserver } from 'perf_hooks';
