@@ -4,7 +4,7 @@ import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2FullReducer';
-import { CageModelOfSize2OptimalStage2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2PartialReducer';
 import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -51,7 +51,7 @@ describe('CageModelOfSize2Reducers', () => {
             type: 'CageModelOfSize2PartialReducer'
         },
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize2OptimalStage2Reducer(cageM),
+            newReducer: (cageM: CageModel) => new CageModelOfSize2Reducer(cageM),
             type: 'CageModelOfSize2OptimalReducer'
         }
     ];

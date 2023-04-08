@@ -10,7 +10,7 @@ import { CellModel } from './cellModel';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
-import { CageModelOfSize2OptimalStage2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
 
 type Clue = {
     num: number;
@@ -63,7 +63,7 @@ export class CageModel {
 
     updateReducers() {
         if (this._cellCount === 2) {
-            this._reducer = new CageModelOfSize2OptimalStage2Reducer(this);
+            this._reducer = new CageModelOfSize2Reducer(this);
         }
     }
 

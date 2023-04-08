@@ -186,7 +186,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
  *
  * @public
  */
-export class CageModelOfSize2OptimalStage2Reducer implements CageModelReducer {
+export class CageModelOfSize2Reducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.
