@@ -16,7 +16,6 @@ import { CageModelReducer } from '../../../../../src/solver/strategies/reduction
 import { LockableCellModel } from './lockableCellModel';
 import { LockableMasterModelReduction } from './lockableMasterModelReduction';
 import { LockableCageModel } from './lockableCageModel';
-import { CageModelOfSize2OptimalReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2OptimalReducer';
 import { CageModelOfSize2OptimalStage2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2OptimalStage2Reducer';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
@@ -163,7 +162,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
         doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
-        doRunFunctionalAndPerformanceTests(config, createOptimalStage2Reducer, 'Optimal - Stage 2');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -175,10 +173,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const createOptimalReducer = (cageM: CageModel) => {
-        return new CageModelOfSize2OptimalReducer(cageM);
-    };
-
-    const createOptimalStage2Reducer = (cageM: CageModel) => {
         return new CageModelOfSize2OptimalStage2Reducer(cageM);
     };
 
