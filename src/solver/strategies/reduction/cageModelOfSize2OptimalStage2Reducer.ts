@@ -257,7 +257,8 @@ export class CageModelOfSize2OptimalStage2Reducer implements CageModelReducer {
             const num0 = combo.number0;
             const num1 = combo.number1;
 
-            const options = (((cellM1NumSetValue & (1 << num0)) >> num0) |
+            const options =
+                    (((cellM1NumSetValue & (1 << num0)) >> num0) |
                     ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) |
                     (((cellM0NumSetValue & (1 << num0)) >> num0) |
                     ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
