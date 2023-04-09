@@ -200,6 +200,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  * | 0b0001 =  1      | <none>                       | `num0`                       | <none>                   | delete `num0`            | yes             | <none>                       | <none>                       |
  * | 0b0010 =  2      | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
  * | 0b0011 =  3      | <none>                       | `num0`, `num1`               | <none>                   | delete `num0` and `num1` | yes             | <none>                       | <none>                       |
+ * | 0b0100 =  4      | `num0`                       | <none>                       | delete `num0`            | <none>                   | yes             | <none>                       | <none>                       |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
