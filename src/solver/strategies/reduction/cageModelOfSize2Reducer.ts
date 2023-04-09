@@ -311,6 +311,9 @@ const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer>
     NOTHING_TO_REDUCE, // 15
 ];
 
+/**
+ * Empty reducing function.
+ */
 function NOTHING_TO_REDUCE() {
     // No-op.
 }
