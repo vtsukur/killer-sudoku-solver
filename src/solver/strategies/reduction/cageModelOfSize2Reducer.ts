@@ -69,6 +69,26 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
         // Iterating over each possible `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of cageMCombos.combos) {
             //
+            // [PERFORMANCE]
+            //
+            // The following code achieves very high execution performance
+            // by running a particular pre-coded denormalized reduction function
+            // according to the presence of `Combo` numbers in the `CellModel`s.
+            //
+            // Overall, there are 16 distinct permutations of number presence states
+            // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s:
+            //
+            //  - Each number in each `Cell` can be either absent (`0`) or present (`1`);
+            //  - Overall, there are 2 numbers and 2 `Cell`s, which results in 4 state bits;
+            //  - So, the amount of permutations is `2 ^ 4 = 16`.
+            //
+            // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
+            // 16 pre-coded reduction functions absorb inherent `O(2 ^ N)` complexity.
+            //
+
+            //
+            // [PERFORMANCE]
+            //
             // Storing `Combo`'s unique numbers to access the object once for each number.
             //
             // Follow-up examples in the implementation comments assume `Combo` of numbers `[5, 6]`.
@@ -77,13 +97,11 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             const num1 = combo.number1;
 
             //
-            // Overall, there are 16 distinct denormalized reduction flows
-            // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s
-            // according to the possible permutations of 2 numbers in each `Cell`:
+            // [PERFORMANCE]
             //
-            //  - Each number in each `Cell` can be either absent (`0`) or present (`1`);
-            //  - Overall, there are 2 numbers and 2 `Cell`s, which results in 4 state bits;
-            //  - So, the amount of permutations is `2 ^ 4 = 16`.
+            // The following code forms the 4-bit state in the range `[0, 15]`
+            // out of the possible numbers in `CellModel`s
+            // by applying efficient bitwise AND and shift operators.
             //
             const flowIndex =
                     ((cellM0NumsBits & (1 << num0)) >> num0) |
