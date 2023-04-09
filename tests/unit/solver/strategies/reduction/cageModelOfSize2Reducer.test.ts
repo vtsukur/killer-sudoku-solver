@@ -349,6 +349,25 @@ describe('CageModelOfSize2Reducers', () => {
                 ]);
             });
 
+            test('Reduces after deleting number options from several `Combo`s', () => {
+                // Given:
+                reduction.deleteNumOpt(cellM1, 6);
+                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteNumOpt(cellM1, 9);
+                reduction.deleteNumOpt(cellM2, 2); reduction.deleteNumOpt(cellM2, 9);
+
+                // When:
+                newReducer(cageM).reduce(reduction);
+
+                // Then:
+                expect(cellM1.numOpts()).toEqual([ 3, 4, 7, 8 ]);
+                expect(cellM2.numOpts()).toEqual([ 3, 4, 7, 8 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(3, 8),
+                    Combo.of(4, 7)
+                ]);
+            });
+
             test('Reflects impact on `MasterModelReduction` if reduction happened', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 5);
