@@ -5,7 +5,7 @@ import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
-type TactialReducer = (
+type DenormalizedTactialReducer = (
         cellM0: CellModel,
         cellM1: CellModel,
         cageM: CageModel,
@@ -19,7 +19,7 @@ function NOTHING_TO_REDUCE() {
     // No-op.
 }
 
-const tacticalReducers: ReadonlyArray<TactialReducer> = [
+const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTactialReducer> = [
     ( // 0
             _cellM0: CellModel,
             _cellM1: CellModel,
@@ -231,7 +231,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                     (((cellM1NumSetValue & (1 << num0)) >> num0) |
                     ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
 
-            tacticalReducers[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
+            DENORMALIZED_TACTICAL_REDUCERS[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
         }
     }
 
