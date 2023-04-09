@@ -15,6 +15,10 @@ type TactialReducer = (
         num1: number,
         reduction: MasterModelReduction) => void;
 
+function NOTHING_TO_REDUCE() {
+    // No-op.
+}
+
 const tacticalReducers: ReadonlyArray<TactialReducer> = [
     ( // 0
             _cellM0: CellModel,
@@ -85,9 +89,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
         reduction.deleteNumOpt(cellM0, num0, cageM);
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
-    () => {  // 6
-        // No-op
-    },
+    NOTHING_TO_REDUCE, // 6
     ( // 7
             cellM0: CellModel,
             _cellM1: CellModel,
@@ -111,9 +113,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
         cageMCombos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    () => { // 9
-        // No-op
-    },
+    NOTHING_TO_REDUCE, // 9
     ( // 10
             cellM0: CellModel,
             cellM1: CellModel,
@@ -172,9 +172,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
             reduction: MasterModelReduction) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    () => { // 15
-        // No-op
-    }
+    NOTHING_TO_REDUCE, // 15
 ];
 
 /**
