@@ -56,10 +56,10 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
         // Again, for performance reasons.
         //
 
-        const cageMCombos = this._cageM.comboSet;
+        const combosSet = this._cageM.comboSet;
 
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
-        for (const combo of cageMCombos.combos) {
+        for (const combo of combosSet.combos) {
 
             //
             // Storing `Combo`'s unique numbers to access the object once for each number.
@@ -121,7 +121,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     //
                     if (cell1HasNum2) reduction.deleteNumOpt(this._cellM1, num2, this._cageM);
                     if (cell2HasNum2) reduction.deleteNumOpt(this._cellM2, num2, this._cageM);
-                    cageMCombos.deleteCombo(combo);
+                    combosSet.deleteCombo(combo);
                 } else if (cell2HasNum2) {
                     //
                     // If the first `CellModel` does *not* have the first `Combo` number
@@ -198,7 +198,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     //
                     if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
                     if (cell2HasNum1) reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
-                    cageMCombos.deleteCombo(combo);
+                    combosSet.deleteCombo(combo);
                 } else if (cell2HasNum1) {
                     //
                     // If the first `CellModel` does *not* have the second `Combo` number
@@ -246,7 +246,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // ```
                     //
                     if (!this._cellM2.hasNumOpt(num2)) {
-                        cageMCombos.deleteCombo(combo);
+                        combosSet.deleteCombo(combo);
                     }
                 }
             } else if (!cell2HasNum1) {
@@ -296,7 +296,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                 // ```
                 //
                 if (!this._cellM1.hasNumOpt(num1)) {
-                    cageMCombos.deleteCombo(combo);
+                    combosSet.deleteCombo(combo);
                 }
             }
         }
