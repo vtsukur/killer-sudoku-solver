@@ -50,32 +50,32 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
         const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
         const deletedNumOpts_cellM2 = reduction.deletedNumOptsOf(this._cellM2);
 
-        const cageMCombos = this._cageM.comboSet;
+        const combosSet = this._cageM.comboSet;
 
         let combo;
 
         if (deletedNumOpts_cellM1.isNotEmpty) {
             for (const num of deletedNumOpts_cellM1.nums) {
-                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
+                if (!combosSet.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
                 reduction.tryDeleteNumOpt(this._cellM2, complementNum, this._cageM);
                 if (!this._cellM1.hasNumOpt(complementNum) || !this._cellM2.hasNumOpt(num)) {
                     reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
                     reduction.tryDeleteNumOpt(this._cellM2, num, this._cageM);
-                    cageMCombos.deleteCombo(combo);
+                    combosSet.deleteCombo(combo);
                 }
             }
         }
 
         if (deletedNumOpts_cellM2.isNotEmpty) {
             for (const num of deletedNumOpts_cellM2.nums) {
-                if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
+                if (!combosSet.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
                 reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
                 if (!this._cellM2.hasNumOpt(complementNum) || !this._cellM1.hasNumOpt(num)) {
                     reduction.tryDeleteNumOpt(this._cellM1, num, this._cageM);
                     reduction.tryDeleteNumOpt(this._cellM2, complementNum, this._cageM);
-                    cageMCombos.deleteCombo(combo);
+                    combosSet.deleteCombo(combo);
                 }
             }
         }
