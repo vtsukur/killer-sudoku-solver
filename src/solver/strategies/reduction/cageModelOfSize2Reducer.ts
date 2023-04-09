@@ -98,7 +98,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // Determining the index of the pre-coded reducing function
             // by forming the 4-bit state in the range `[0, 15]`
             // out of the current `Combo` numbers in `CellModel`s
-            // by applying efficient bitwise AND and shift operators.
+            // by applying efficient bitwise AND and shift operators:
+            //
+            //  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
+            //  - The second bit is set if the second `Combo` number is possible in `CellModel` 1.
+            //  - The third bit is set if the first `Combo` number is possible in `CellModel` 2.
+            //  - The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
             //
             // *Example 1*
             //
@@ -172,6 +177,18 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
 }
 
+/**
+ * Readonly array of 16 pre-coded denormalized reducing functions
+ * with hardcoded actions relevant to certain `Combo` numbers in the `CellModel`s.
+ *
+ * Denormalized reducing functions are indexed by 4-bit compressed state
+ * representing the presence of `Combo` numbers within `CellModel`s:
+ *
+ *  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
+ *  - The second bit is set if the second `Combo` number is possible in `CellModel` 1.
+ *  - The third bit is set if the first `Combo` number is possible in `CellModel` 2.
+ *  - The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
+ */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
     // 0
     (_reduction: MasterModelReduction, _cageM: CageModel, cageMCombos: CombosSet, combo: Combo) => {
@@ -240,7 +257,7 @@ const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer>
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     // 15
-    NOTHING_TO_REDUCE,
+    NOTHING_TO_REDUCE
 ];
 
 /**
