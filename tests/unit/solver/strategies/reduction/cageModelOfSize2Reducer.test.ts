@@ -149,6 +149,24 @@ describe('CageModelOfSize2Reducers', () => {
                 ]);
             });
 
+            test('Case 5: Reduces after deleting the 2-nd number option of a particular `Combo` in both `Cell`s', () => {
+                // Given:
+                reduction.deleteNumOpt(cellM1, 6);
+                reduction.deleteNumOpt(cellM2, 6);
+
+                // When:
+                newReducer(cageM).reduce(reduction);
+
+                // Then:
+                expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
+                expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(2, 9),
+                    Combo.of(3, 8),
+                    Combo.of(4, 7)
+                ]);
+            });
+
             test('Reduces after deleting the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 5);
@@ -261,24 +279,6 @@ describe('CageModelOfSize2Reducers', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
                 reduction.deleteNumOpt(cellM2, 5);
-
-                // When:
-                newReducer(cageM).reduce(reduction);
-
-                // Then:
-                expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-                expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 7, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(2, 9),
-                    Combo.of(3, 8),
-                    Combo.of(4, 7)
-                ]);
-            });
-
-            test('Reduces after deleting the 2-nd number option of a particular `Combo` in both `Cell`s', () => {
-                // Given:
-                reduction.deleteNumOpt(cellM1, 6);
-                reduction.deleteNumOpt(cellM2, 6);
 
                 // When:
                 newReducer(cageM).reduce(reduction);
