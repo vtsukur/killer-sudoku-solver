@@ -52,7 +52,7 @@ describe('CageModelOfSize2Reducers', () => {
         },
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2Reducer(cageM),
-            type: 'CageModelOfSize2OptimalReducer'
+            type: 'CageModelOfSize2Reducer'
         }
     ];
 
