@@ -71,16 +71,16 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // The following code achieves high execution performance
-            // by running a particular pre-coded denormalized reducing function
-            // according to the presence of `Combo` numbers in the `CellModel`s.
+            // The following code achieves high performance
+            // by determining and running a particular pre-coded denormalized reducing function
+            // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
             // Overall, there are 16 distinct permutations of _numbers' presence_ states
-            // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s:
+            // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s.
             //
-            //  - Each number in each `Cell` can be either absent (`0`) or present (`1`);
-            //  - Overall, there are 2 numbers and 2 `Cell`s, which results in 4 state bits;
-            //  - So, the amount of permutations is `2 ^ 4 = 16`.
+            // Each number in each `Cell` can be either absent (`0`) or present (`1`).
+            // Overall, there are 2 numbers and 2 `Cell`s, which results in 4 state bits.
+            // So, the amount of permutations is `2 ^ 4 = 16`.
             //
             // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
             // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
