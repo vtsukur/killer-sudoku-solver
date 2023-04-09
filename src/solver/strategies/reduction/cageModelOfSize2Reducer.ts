@@ -179,9 +179,9 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
 /**
  * Readonly array of 16 pre-coded denormalized reducing functions
- * with hardcoded actions relevant to certain `Combo` numbers in the `CellModel`s.
+ * with hardcoded actions relevant to specific `Combo` numbers in the `CellModel`s.
  *
- * Denormalized reducing functions are indexed by 4-bit compressed state
+ * Denormalized reducing functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
  *
  *  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
