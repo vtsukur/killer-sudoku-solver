@@ -194,13 +194,14 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | Input                                                                          | Reducing Actions                                                      | Output                                                      |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | Compressed State | `CellModel` 1 - `Combo` Nums | `CellModel` 2 - `Combo` Nums | For `CellModel` 1        | For `CellModel` 2        | Delete `Combo`? | `CellModel` 1 - `Combo` Nums | `CellModel` 2 - `Combo` Nums |
+ * | Compressed State | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | 0b0000 =  0      | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
  * | 0b0001 =  1      | <none>                       | `num0`                       | <none>                   | delete `num0`            | yes             | <none>                       | <none>                       |
  * | 0b0010 =  2      | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
  * | 0b0011 =  3      | <none>                       | `num0`, `num1`               | <none>                   | delete `num0` and `num1` | yes             | <none>                       | <none>                       |
  * | 0b0100 =  4      | `num0`                       | <none>                       | delete `num0`            | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b0101 =  5      | `num0`                       | `num0`                       | delete `num0`            | delete `num0`            | yes             | <none>                       | <none>                       |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
