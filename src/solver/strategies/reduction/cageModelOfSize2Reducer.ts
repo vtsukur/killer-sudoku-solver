@@ -25,43 +25,6 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
         cageMCombos.deleteCombo(combo);
     },
     ( // 1
-            _cellM0: CellModel,
-            cellM1: CellModel,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            combo: Combo,
-            num0: number,
-            _num1: number,
-            reduction: MasterModelReduction) => {
-        cageMCombos.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num0, cageM);
-    },
-    ( // 2
-            _cellM0: CellModel,
-            cellM1: CellModel,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            combo: Combo,
-            _num0: number,
-            num1: number,
-            reduction: MasterModelReduction) => {
-        cageMCombos.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num1, cageM);
-    },
-    ( // 3
-            _cellM0: CellModel,
-            cellM1: CellModel,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            combo: Combo,
-            num0: number,
-            num1: number,
-            reduction: MasterModelReduction) => {
-        cageMCombos.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num0, cageM);
-        reduction.deleteNumOpt(cellM1, num1, cageM);
-    },
-    ( // 4
             cellM0: CellModel,
             _cellM1: CellModel,
             cageM: CageModel,
@@ -72,6 +35,43 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
             reduction: MasterModelReduction) => {
         cageMCombos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num0, cageM);
+    },
+    ( // 2
+            cellM0: CellModel,
+            _cellM1: CellModel,
+            cageM: CageModel,
+            cageMCombos: CombosSet,
+            combo: Combo,
+            _num0: number,
+            num1: number,
+            reduction: MasterModelReduction) => {
+        cageMCombos.deleteCombo(combo);
+        reduction.deleteNumOpt(cellM0, num1, cageM);
+    },
+    ( // 3
+            cellM0: CellModel,
+            _cellM1: CellModel,
+            cageM: CageModel,
+            cageMCombos: CombosSet,
+            combo: Combo,
+            num0: number,
+            num1: number,
+            reduction: MasterModelReduction) => {
+        cageMCombos.deleteCombo(combo);
+        reduction.deleteNumOpt(cellM0, num0, cageM);
+        reduction.deleteNumOpt(cellM0, num1, cageM);
+    },
+    ( // 4
+            _cellM0: CellModel,
+            cellM1: CellModel,
+            cageM: CageModel,
+            cageMCombos: CombosSet,
+            combo: Combo,
+            num0: number,
+            _num1: number,
+            reduction: MasterModelReduction) => {
+        cageMCombos.deleteCombo(combo);
+        reduction.deleteNumOpt(cellM1, num0, cageM);
     },
     ( // 5
             cellM0: CellModel,
@@ -90,19 +90,19 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
         // No-op
     },
     ( // 7
-            _cellM0: CellModel,
-            cellM1: CellModel,
+            cellM0: CellModel,
+            _cellM1: CellModel,
             cageM: CageModel,
             _cageMCombos: CombosSet,
             _combo: Combo,
             num0: number,
             _num1: number,
             reduction: MasterModelReduction) => {
-        reduction.deleteNumOpt(cellM1, num0, cageM);
+        reduction.deleteNumOpt(cellM0, num0, cageM);
     },
     ( // 8
-            cellM0: CellModel,
-            _cellM1: CellModel,
+            _cellM0: CellModel,
+            cellM1: CellModel,
             cageM: CageModel,
             cageMCombos: CombosSet,
             combo: Combo,
@@ -110,7 +110,7 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
             num1: number,
             reduction: MasterModelReduction) => {
         cageMCombos.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM0, num1, cageM);
+        reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     () => { // 9
         // No-op
@@ -129,6 +129,41 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     ( // 11
+            cellM0: CellModel,
+            _cellM1: CellModel,
+            cageM: CageModel,
+            _cageMCombos: CombosSet,
+            _combo: Combo,
+            _num0: number,
+            num1: number,
+            reduction: MasterModelReduction) => {
+        reduction.deleteNumOpt(cellM0, num1, cageM);
+    },
+    ( // 12
+            _cellM0: CellModel,
+            cellM1: CellModel,
+            cageM: CageModel,
+            cageMCombos: CombosSet,
+            combo: Combo,
+            num0: number,
+            num1: number,
+            reduction: MasterModelReduction) => {
+        cageMCombos.deleteCombo(combo);
+        reduction.deleteNumOpt(cellM1, num0, cageM);
+        reduction.deleteNumOpt(cellM1, num1, cageM);
+    },
+    ( // 13
+            _cellM0: CellModel,
+            cellM1: CellModel,
+            cageM: CageModel,
+            _cageMCombos: CombosSet,
+            _combo: Combo,
+            num0: number,
+            _num1: number,
+            reduction: MasterModelReduction) => {
+        reduction.deleteNumOpt(cellM1, num0, cageM);
+    },
+    ( // 14
             _cellM0: CellModel,
             cellM1: CellModel,
             cageM: CageModel,
@@ -138,41 +173,6 @@ const tacticalReducers: ReadonlyArray<TactialReducer> = [
             num1: number,
             reduction: MasterModelReduction) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
-    },
-    ( // 12
-            cellM0: CellModel,
-            _cellM1: CellModel,
-            cageM: CageModel,
-            cageMCombos: CombosSet,
-            combo: Combo,
-            num0: number,
-            num1: number,
-            reduction: MasterModelReduction) => {
-        cageMCombos.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM0, num0, cageM);
-        reduction.deleteNumOpt(cellM0, num1, cageM);
-    },
-    ( // 13
-            cellM0: CellModel,
-            _cellM1: CellModel,
-            cageM: CageModel,
-            _cageMCombos: CombosSet,
-            _combo: Combo,
-            num0: number,
-            _num1: number,
-            reduction: MasterModelReduction) => {
-        reduction.deleteNumOpt(cellM0, num0, cageM);
-    },
-    ( // 14
-            cellM0: CellModel,
-            _cellM1: CellModel,
-            cageM: CageModel,
-            _cageMCombos: CombosSet,
-            _combo: Combo,
-            _num0: number,
-            num1: number,
-            reduction: MasterModelReduction) => {
-        reduction.deleteNumOpt(cellM0, num1, cageM);
     },
     () => { // 15
         // No-op
@@ -230,10 +230,10 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             const num1 = combo.number1;
 
             const options =
-                    (((cellM1NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) |
                     (((cellM0NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
+                    ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1))) |
+                    (((cellM1NumSetValue & (1 << num0)) >> num0) |
+                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
 
             tacticalReducers[options](this._cellM0, this._cellM1, this._cageM, cageMCombos, combo, num0, num1, reduction);
         }
