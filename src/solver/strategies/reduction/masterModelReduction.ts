@@ -77,6 +77,10 @@ export class MasterModelReduction {
         return this._deletedNumsTracker[cellM.cell.index];
     }
 
+    hasNoDeletedNumOpts(cellM: CellModel): boolean {
+        return this._deletedNumsTracker[cellM.cell.index].isEmpty;
+    }
+
     get isNotEmpty(): boolean {
         return this._impactedCageMsCount > 0;
     }
