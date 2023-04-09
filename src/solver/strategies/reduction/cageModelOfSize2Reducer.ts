@@ -85,6 +85,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
             // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
             //
+            // See also `DENORMALIZED_TACTICAL_REDUCERS`.
+            //
 
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
@@ -142,6 +144,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // to form the joint 4-bit integer)
             // ```
             //
+            // See also `DENORMALIZED_TACTICAL_REDUCERS`.
+            //
             const compressedNumbersPresenceState =
                     ((cellM0NumsBits & (1 << num0)) >> num0) |
                     ((cellM0NumsBits & (1 << num1)) >> (num1 - 1)) |
@@ -155,6 +159,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // Running a determined pre-coded denormalized reducing function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
+            //
+            // See `DENORMALIZED_TACTICAL_REDUCERS`.
             //
             DENORMALIZED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
                     reduction, this._cageM, cageMCombos, combo,
