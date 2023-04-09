@@ -5,7 +5,7 @@ import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
-type DenormalizedTactialReducer = (
+type DenormalizedTacticalReducer = (
         cellM0: CellModel,
         cellM1: CellModel,
         cageM: CageModel,
@@ -77,7 +77,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
 }
 
-const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTactialReducer> = [
+const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
     ( // 0
             _cellM0: CellModel,
             _cellM1: CellModel,
