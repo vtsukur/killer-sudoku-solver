@@ -193,12 +193,12 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
         // to avoid impact on the reduction results that should be stable.
         //
         i = 0;
-        const cageMCombosValue = cageM.comboSet.bitStore;
+        const cageMCombosSetValue = cageM.comboSet.bitStore;
         const cellM1NumOptsValue = cageM.cellMs[0].numOptsSet().bitStore;
         const cellM2NumOptsValue = cageM.cellMs[1].numOptsSet().bitStore;
         while (i++ < 10) {
             reducer.reduce(reduction);
-            expect(cageM.comboSet.bitStore).toBe(cageMCombosValue);
+            expect(cageM.comboSet.bitStore).toBe(cageMCombosSetValue);
             expect(cageM.cellMs[0].numOptsSet().bitStore).toBe(cellM1NumOptsValue);
             expect(cageM.cellMs[1].numOptsSet().bitStore).toBe(cellM2NumOptsValue);
         }
