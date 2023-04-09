@@ -21,12 +21,12 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
     /**
      * The first {@link CellModel} of the {@link CageModel}.
      */
-    private readonly _cellM0: CellModel;
+    private readonly _cellM1: CellModel;
 
     /**
      * The second {@link CellModel} of the {@link CageModel}.
      */
-    private readonly _cellM1: CellModel;
+    private readonly _cellM2: CellModel;
 
     private readonly _combosByNum: ReadonlyArray<ReadonlyCombos>;
 
@@ -38,8 +38,8 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
-        this._cellM0 = cageM.cellMs[0];
-        this._cellM1 = cageM.cellMs[1];
+        this._cellM1 = cageM.cellMs[0];
+        this._cellM2 = cageM.cellMs[1];
         this._combosByNum = cageM.sumAddendsCombinatorics.combosByNum;
     }
 
@@ -47,34 +47,34 @@ export class CageModelOfSize2PartialReducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const deletedNumOpts_cellM0 = reduction.deletedNumOptsOf(this._cellM0);
         const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
+        const deletedNumOpts_cellM2 = reduction.deletedNumOptsOf(this._cellM2);
 
         const cageMCombos = this._cageM.comboSet;
 
         let combo;
 
-        if (deletedNumOpts_cellM0.isNotEmpty) {
-            for (const num of deletedNumOpts_cellM0.nums) {
+        if (deletedNumOpts_cellM1.isNotEmpty) {
+            for (const num of deletedNumOpts_cellM1.nums) {
                 if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
-                reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
-                if (!this._cellM0.hasNumOpt(complementNum) || !this._cellM1.hasNumOpt(num)) {
-                    reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
-                    reduction.tryDeleteNumOpt(this._cellM1, num, this._cageM);
+                reduction.tryDeleteNumOpt(this._cellM2, complementNum, this._cageM);
+                if (!this._cellM1.hasNumOpt(complementNum) || !this._cellM2.hasNumOpt(num)) {
+                    reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                    reduction.tryDeleteNumOpt(this._cellM2, num, this._cageM);
                     cageMCombos.deleteCombo(combo);
                 }
             }
         }
 
-        if (deletedNumOpts_cellM1.isNotEmpty) {
-            for (const num of deletedNumOpts_cellM1.nums) {
+        if (deletedNumOpts_cellM2.isNotEmpty) {
+            for (const num of deletedNumOpts_cellM2.nums) {
                 if (!cageMCombos.hasCombo(combo = this._combosByNum[num][0])) continue;
                 const complementNum = this._cageM.cage.sum - num;
-                reduction.tryDeleteNumOpt(this._cellM0, complementNum, this._cageM);
-                if (!this._cellM1.hasNumOpt(complementNum) || !this._cellM0.hasNumOpt(num)) {
-                    reduction.tryDeleteNumOpt(this._cellM0, num, this._cageM);
-                    reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                reduction.tryDeleteNumOpt(this._cellM1, complementNum, this._cageM);
+                if (!this._cellM2.hasNumOpt(complementNum) || !this._cellM1.hasNumOpt(num)) {
+                    reduction.tryDeleteNumOpt(this._cellM1, num, this._cageM);
+                    reduction.tryDeleteNumOpt(this._cellM2, complementNum, this._cageM);
                     cageMCombos.deleteCombo(combo);
                 }
             }
