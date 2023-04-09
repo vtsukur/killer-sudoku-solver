@@ -86,13 +86,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
             //
 
-            //
-            // [PERFORMANCE]
-            //
-            // Storing `Combo`'s unique numbers to access the object once for each number.
-            //
-            // Follow-up examples in the implementation comments assume `Combo` of numbers `[5, 6]`.
-            //
+            // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num0 = combo.number0;
             const num1 = combo.number1;
 
