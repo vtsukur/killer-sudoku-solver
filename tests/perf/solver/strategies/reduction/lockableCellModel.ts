@@ -13,17 +13,13 @@ export class LockableCellModel extends CellModel implements Lockable {
 
     deleteNumOpt(val: number) {
         if (!this._isLocked) {
-            return super.deleteNumOpt(val);
-        } else {
-            return SudokuNumsSet.EMPTY;
+            super.deleteNumOpt(val);
         }
     }
 
-    deleteNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+    deleteNumOpts(val: ReadonlySudokuNumsSet) {
         if (!this._isLocked) {
-            return super.deleteNumOpts(val);
-        } else {
-            return SudokuNumsSet.EMPTY;
+            super.deleteNumOpts(val);
         }
     }
 

@@ -52,18 +52,18 @@ export class CellModel {
         return this._numOptsSet.has(val);
     }
 
-    deleteNumOpt(val: number): ReadonlySudokuNumsSet {
+    deleteNumOpt(val: number): void {
         if (this._numOptsSet.hasOnly(val)) {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
-        return this._numOptsSet.delete(val);
+        this._numOptsSet.delete(val);
     }
 
-    deleteNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+    deleteNumOpts(val: ReadonlySudokuNumsSet): void {
         if (val.hasAll(this._numOptsSet)) {
             throw new InvalidSolverStateError(`Requested to delete last number options ${joinArray(val.nums)} for cell ${this.cell.key}`);
         }
-        return this._numOptsSet.deleteAll(val);
+        this._numOptsSet.deleteAll(val);
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
