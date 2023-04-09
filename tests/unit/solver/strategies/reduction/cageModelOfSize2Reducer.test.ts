@@ -62,10 +62,8 @@ describe('CageModelOfSize2Reducers', () => {
 
             test('Case 0: Does not reduce if all number options for a particular `Combo` are deleted -- but deletes `Combo`', () => {
                 // Given:
-                reduction.deleteNumOpt(cellM1, 5);
-                reduction.deleteNumOpt(cellM1, 6);
-                reduction.deleteNumOpt(cellM2, 5);
-                reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM1, Combo.of(5, 6));
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -78,12 +76,14 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 1: Reduces after deleting all but the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 6);
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -96,12 +96,14 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 2: Reduces after deleting all but the 2-nd number option of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 5);
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -114,11 +116,13 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 3: Reduces after deleting all number options of a particular `Combo` in the 2-nd `Cell`', () => {
                 // Given:
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -131,11 +135,13 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 4: Reduces after deleting all but the 1-st number option of a particular `Combo` in the 2-nd `Cell`', () => {
                 // Given:
-                reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
+                reduction.deleteComboNumOpts(cellM1, Combo.of(5, 6));
                 reduction.deleteNumOpt(cellM2, 6);
 
                 // When:
@@ -148,6 +154,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 5: Reduces after deleting the 2-nd number option of a particular `Combo` in both `Cell`s', () => {
@@ -166,6 +174,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 6: Does not reduce after deleting the 1-st number option of a particular `Combo` in the 1-st `Cell` and deleting the 2-nd number option in the 2-nd `Cell`', () => {
@@ -185,6 +195,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(4, 7),
                     Combo.of(5, 6)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 6 ]);
             });
 
             test('Case 7: Reduces after deleting the 2-nd number option of a particular `Combo` in the 2-nd `Cell`', () => {
@@ -203,11 +215,13 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(4, 7),
                     Combo.of(5, 6)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 6 ]);
             });
 
             test('Case 8: Reduces after deleting all but the 2-nd number option of a particular `Combo` in the 2-nd `Cell`', () => {
                 // Given:
-                reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
+                reduction.deleteComboNumOpts(cellM1, Combo.of(5, 6));
                 reduction.deleteNumOpt(cellM2, 5);
 
                 // When:
@@ -221,6 +235,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 9: Does not reduce after deleting the 2-nd number option of a particular `Combo` in the 1-st `Cell` and deleting the 1-st number option in the 2-nd `Cell`', () => {
@@ -240,6 +256,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(4, 7),
                     Combo.of(5, 6)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5 ]);
             });
 
             test('Case 10: Reduces after deleting the 1-st number option of a particular `Combo` in both `Cell`s', () => {
@@ -258,6 +276,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 11: Reduces after deleting the 1-st number option of a particular `Combo` in the 2-nd `Cell`', () => {
@@ -276,11 +296,13 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(4, 7),
                     Combo.of(5, 6)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5 ]);
             });
 
             test('Case 12: Reduces after deleting all number options of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
-                reduction.deleteNumOpt(cellM1, 5); reduction.deleteNumOpt(cellM1, 6);
+                reduction.deleteComboNumOpts(cellM1, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -293,12 +315,14 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 13: Reduces after deleting all but the 2-nd number option of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 5);
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -311,12 +335,14 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 14: Reduces after deleting all but the 1-st number option of a particular `Combo` in the 1-st `Cell`', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 6);
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(5, 6));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -329,6 +355,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 5, 6 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 5, 6 ]);
             });
 
             test('Case 15: Does not reduce if there are no deletions for a particular `Combo`', () => {
@@ -347,14 +375,16 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(4, 7),
                     Combo.of(5, 6)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toHaveLength(0);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toHaveLength(0);
             });
 
             test('Reduces after deleting number options from several `Combo`s', () => {
                 // Given:
                 reduction.deleteNumOpt(cellM1, 6);
-                reduction.deleteNumOpt(cellM2, 5); reduction.deleteNumOpt(cellM2, 6);
+                reduction.deleteComboNumOpts(cellM1, Combo.of(5, 6));
                 reduction.deleteNumOpt(cellM1, 9);
-                reduction.deleteNumOpt(cellM2, 2); reduction.deleteNumOpt(cellM2, 9);
+                reduction.deleteComboNumOpts(cellM2, Combo.of(2, 9));
 
                 // When:
                 newReducer(cageM).reduce(reduction);
@@ -366,6 +396,8 @@ describe('CageModelOfSize2Reducers', () => {
                     Combo.of(3, 8),
                     Combo.of(4, 7)
                 ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 2, 5, 6, 9 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 2, 5, 6, 9 ]);
             });
 
             test('Reflects impact on `MasterModelReduction` if reduction happened', () => {
