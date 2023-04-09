@@ -5,6 +5,10 @@ import { CombosSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
+/**
+ * Type alias for pre-coded denormalized reducing function
+ * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
+ */
 type DenormalizedTacticalReducer = (
         reduction: MasterModelReduction,
         cageM: CageModel,
@@ -179,7 +183,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
 /**
  * Readonly array of 16 pre-coded denormalized reducing functions
- * with hardcoded actions relevant to specific `Combo` numbers in the `CellModel`s.
+ * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  *
  * Denormalized reducing functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
