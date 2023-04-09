@@ -80,6 +80,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // Overall, there are 16 distinct denormalized reduction flows
             // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s
             // according to the possible permutations of 2 numbers in each `Cell`:
+            //
             //  - Each number in each `Cell` can be either absent (`0`) or present (`1`);
             //  - Overall, there are 2 numbers and 2 `Cell`s, which results in 4 state bits;
             //  - So, the amount of permutations is `2 ^ 4 = 16`.
