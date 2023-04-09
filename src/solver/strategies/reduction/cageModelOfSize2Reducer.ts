@@ -77,10 +77,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             const num1 = combo.number1;
 
             const flowIndex =
-                    (((cellM0NumsBits & (1 << num0)) >> num0) |
-                    ((cellM0NumsBits & (1 << num1)) >> (num1 - 1))) |
-                    (((cellM1NumsBits & (1 << num0)) >> num0) |
-                    ((cellM1NumsBits & (1 << num1)) >> (num1 - 1))) << 2;
+                    ((cellM0NumsBits & (1 << num0)) >> num0) |
+                    ((cellM0NumsBits & (1 << num1)) >> (num1 - 1)) |
+                    (
+                        ((cellM1NumsBits & (1 << num0)) >> num0) |
+                        ((cellM1NumsBits & (1 << num1)) >> (num1 - 1))
+                    ) << 2;
 
             DENORMALIZED_TACTICAL_REDUCERS[flowIndex](
                     reduction, this._cageM, cageMCombos, combo,
