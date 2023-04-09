@@ -15,19 +15,19 @@ perfObserver.observe({ entryTypes: [ 'measure' ], buffered: true });
 
 export class Stat {
 
-    numsAfterReductionCellM0?: ReadonlyArray<number>;
     numsAfterReductionCellM1?: ReadonlyArray<number>;
+    numsAfterReductionCellM2?: ReadonlyArray<number>;
     combosCountAfterReduction?: number;
     isFullReduction: boolean | undefined = true;
     duration = 0;
 
     constructor(
             readonly cageKey: string,
-            readonly presentNumsCellM0: ReadonlyArray<number>,
             readonly presentNumsCellM1: ReadonlyArray<number>,
+            readonly presentNumsCellM2: ReadonlyArray<number>,
             readonly presentNumsCount: number,
-            readonly deletedBeforeReductionNumsCellM0: ReadonlyArray<number>,
             readonly deletedBeforeReductionNumsCellM1: ReadonlyArray<number>,
+            readonly deletedBeforeReductionNumsCellM2: ReadonlyArray<number>,
             readonly deletedNumsCount: number,
             readonly combosCountBeforeReduction: number
     ) {
@@ -45,8 +45,8 @@ export class Stat {
 export class CageModelOfSize2ReducerRouter implements CageModelReducer {
 
     private readonly _cageM: CageModel;
-    private readonly _cellM0: CellModel;
     private readonly _cellM1: CellModel;
+    private readonly _cellM2: CellModel;
     private readonly _optimalReducer: CageModelOfSize2Reducer;
     private readonly _fullReducer: CageModelReducer;
     private readonly _partialReducer: CageModelReducer;
@@ -57,8 +57,8 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
 
     constructor(cageM: CageModel, fullReducer: CageModelReducer, partialReducer: CageModelReducer) {
         this._cageM = cageM;
-        this._cellM0 = cageM.cellMs[0];
-        this._cellM1 = cageM.cellMs[1];
+        this._cellM1 = cageM.cellMs[0];
+        this._cellM2 = cageM.cellMs[1];
         this._optimalReducer = new CageModelOfSize2Reducer(cageM);
         this._fullReducer = fullReducer;
         this._partialReducer = partialReducer;
@@ -69,16 +69,16 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
      */
     reduce(reduction: MasterModelReduction): void {
         if (CageModelOfSize2ReducerRouter.collectPerfStats) {
-            const deletedNumsCellM0 = reduction.deletedNumOptsOf(this._cellM0).nums;
             const deletedNumsCellM1 = reduction.deletedNumOptsOf(this._cellM1).nums;
+            const deletedNumsCellM2 = reduction.deletedNumOptsOf(this._cellM2).nums;
             const stat = new Stat(
                 this._cageM.cage.key,
-                this._cellM0.numOpts(),
                 this._cellM1.numOpts(),
-                this._cellM0.numOpts().length + this._cellM1.numOpts().length,
-                deletedNumsCellM0,
+                this._cellM2.numOpts(),
+                this._cellM1.numOpts().length + this._cellM2.numOpts().length,
                 deletedNumsCellM1,
-                deletedNumsCellM0.length + deletedNumsCellM1.length,
+                deletedNumsCellM2,
+                deletedNumsCellM1.length + deletedNumsCellM2.length,
                 this._cageM.comboSet.size
             );
 
@@ -86,8 +86,8 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             stat.isFullReduction = this.doReduce(reduction);
             performance.mark('reduce-end');
 
-            stat.numsAfterReductionCellM0 = this._cellM0.numOpts();
             stat.numsAfterReductionCellM1 = this._cellM1.numOpts();
+            stat.numsAfterReductionCellM2 = this._cellM2.numOpts();
             stat.combosCountAfterReduction = this._cageM.comboSet.size;
 
             performance.measure('reduce', {
@@ -101,14 +101,14 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
     }
 
     private doReduce(reduction: MasterModelReduction): boolean | undefined {
-        const deletedNumOpts_cellM0 = reduction.deletedNumOptsOf(this._cellM0);
         const deletedNumOpts_cellM1 = reduction.deletedNumOptsOf(this._cellM1);
+        const deletedNumOpts_cellM2 = reduction.deletedNumOptsOf(this._cellM2);
 
         //
         // Skipping reduction if the deletion of numbers did *not* ever happen
         // for `CageModel`'s `CellModel`s within the current `MasterModelReduction` state.
         //
-        if (deletedNumOpts_cellM0.isEmpty && deletedNumOpts_cellM1.isEmpty) {
+        if (deletedNumOpts_cellM1.isEmpty && deletedNumOpts_cellM2.isEmpty) {
             return;
         }
 
@@ -116,7 +116,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             this._optimalReducer.reduce(reduction);
             return;
         } else if (this._cageM.isFirstReduction ||
-                (this._cageM.comboSet.size < deletedNumOpts_cellM0.size + deletedNumOpts_cellM1.size)) {
+                (this._cageM.comboSet.size < deletedNumOpts_cellM1.size + deletedNumOpts_cellM2.size)) {
             this._fullReducer.reduce(reduction);
             return true;
         } else {
@@ -140,15 +140,15 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
 
     static printStat(stat: Stat, isPrintDuration = true) {
         log.info(`{ cageKey: ${stat.cageKey}, ` +
-                `presentNumsCellM0: ${stat.presentNumsCellM0}, ` +
                 `presentNumsCellM1: ${stat.presentNumsCellM1}, ` +
+                `presentNumsCellM2: ${stat.presentNumsCellM2}, ` +
                 `presentNumsCount: ${stat.presentNumsCount}, ` +
-                `deletedBeforeReductionNumsCellM0: ${stat.deletedBeforeReductionNumsCellM0}, ` +
                 `deletedBeforeReductionNumsCellM1: ${stat.deletedBeforeReductionNumsCellM1}, ` +
+                `deletedBeforeReductionNumsCellM2: ${stat.deletedBeforeReductionNumsCellM2}, ` +
                 `deletedNumsCount: ${stat.deletedNumsCount}, ` +
                 `combosCountBeforeReduction: ${stat.combosCountBeforeReduction}, ` +
-                `numsAfterReductionCellM0: ${stat.numsAfterReductionCellM0}, ` +
                 `numsAfterReductionCellM1: ${stat.numsAfterReductionCellM1}, ` +
+                `numsAfterReductionCellM2: ${stat.numsAfterReductionCellM2}, ` +
                 `combosCountAfterReduction: ${stat.combosCountAfterReduction}, ` +
                 `isFullReduction: ${stat.isFullReduction}` +
                 (isPrintDuration ? `: ${stat.duration} ms }` : ' }'));
