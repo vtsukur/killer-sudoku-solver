@@ -104,6 +104,26 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // out of the presence of `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators.
             //
+            // For example, for the `Combo` of numbers `[5, 6]`,
+            // if the first `CellModel` has the possible number option `5` but not `6`
+            // and the second `CellModel` has both number options `5` and `6`,
+            // the state will be as follows:
+            //
+            // ```
+            // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b01`
+            // (the present first number `5` sets the first bit,
+            // and the absent second number `6` clears the second bit)
+            //
+            // `CellModel` 2 numbers: `[..., 5, 6,     ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b11`
+            // (both present numbers `5` and `6` set both bits)
+            //
+            // Compound state: `0b1101`
+            // (shift to the right happens for the compressed state for `CellModel` 2
+            // to form the joint 4-bit integer)
+            // ```
+            //
             const flowIndex =
                     ((cellM0NumsBits & (1 << num0)) >> num0) |
                     ((cellM0NumsBits & (1 << num1)) >> (num1 - 1)) |
