@@ -95,10 +95,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // Determining the index of the pre-coded reducing function
             // by forming the 4-bit state in the range `[0, 15]`
-            // out of the presence of `Combo` numbers in `CellModel`s
+            // out of the current `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators.
             //
-            // For example, for the `Combo` of numbers `[5, 6]`,
+            // *Example 1*
+            //
+            // For the `Combo` of numbers `[5, 6]`,
             // if the first `CellModel` has the possible number option `5` but not `6`
             // and the second `CellModel` has both `5` and `6`,
             // the state will be as follows:
@@ -109,7 +111,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // (the present first number `5` sets the first bit,
             // and the absent second number `6` clears the second bit)
             //
-            // `CellModel` 2 numbers: `[..., 5, 6,     ...]`
+            // `CellModel` 2 numbers: `[..., 5, 6, ...]`
             // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b11`
             // (both present numbers `5` and `6` set both bits)
             //
@@ -118,22 +120,24 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // to form the joint 4-bit integer)
             // ```
             //
-            // In another example, for the `Combo` of numbers `[5, 6]`,
+            // *Example 2*
+            //
+            // For the `Combo` of numbers `[5, 6]`,
             // if the first `CellModel` has the possible number option `6`
-            // and the second `CellModel` does *not* both number options `5` and `6`,
+            // and the second `CellModel` does *not* have either `5` or `6`,
             // the state will be as follows:
             //
             // ```
-            // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b01`
-            // (the present first number `5` sets the first bit,
-            // and the absent second number `6` clears the second bit)
+            // `CellModel` 1 numbers: `[..., 6, (no 5) ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b10`
+            // (the absent first number `5` clears the first bit,
+            // and the present second number `6` sets the second bit)
             //
-            // `CellModel` 2 numbers: `[..., 5, 6,     ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b11`
-            // (both present numbers `5` and `6` set both bits)
+            // `CellModel` 2 numbers: `[..., (no 5, no 6), ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b00`
+            // (having both `5` and `6` absent clears both bits)
             //
-            // Compound state: `0b1101`
+            // Compound state: `0b0010`
             // (shift to the right happens for the compressed state for `CellModel` 2
             // to form the joint 4-bit integer)
             // ```
