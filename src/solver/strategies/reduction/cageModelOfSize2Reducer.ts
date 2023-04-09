@@ -150,6 +150,12 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
                         ((cellM1NumsBits & (1 << num1)) >> (num1 - 1))
                     ) << 2;
 
+            //
+            // [PERFORMANCE]
+            //
+            // Running a determined pre-coded denormalized reducing function
+            // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
+            //
             DENORMALIZED_TACTICAL_REDUCERS[flowIndex](
                     reduction, this._cageM, cageMCombos, combo,
                     this._cellM0, this._cellM1,
