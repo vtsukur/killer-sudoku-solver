@@ -63,6 +63,11 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
 
         // Iterating over each possible `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of cageMCombos.combos) {
+            //
+            // Storing `Combo`'s unique numbers to access the object once for each number.
+            //
+            // Follow-up examples in the implementation comments assume `Combo` of numbers `[5, 6]`.
+            //
             const num0 = combo.number0;
             const num1 = combo.number1;
 
