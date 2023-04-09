@@ -196,9 +196,9 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | Compressed State | `CellModel` 1 - `Combo` Nums | `CellModel` 2 - `Combo` Nums | For `CellModel` 1        | For `CellModel` 2        | Delete `Combo`? | `CellModel` 1 - `Combo` Nums | `CellModel` 2 - `Combo` Nums |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | 0b0000 =  0      | none                         | none                         | none                     | none                     | yes             | none                         | none                         |
- * | 0b0001 =  1      | none                         | `num0`                       | none                     | delete `num0`            | yes             | none                         | none                         |
- * | 0b0010 =  2      | none                         | `num1`                       | none                     | delete `num1`            | yes             | none                         | none                         |
+ * | 0b0000 =  0      | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b0001 =  1      | <none>                       | `num0`                       | <none>                   | delete `num0`            | yes             | <none>                       | <none>                       |
+ * | 0b0010 =  2      | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
