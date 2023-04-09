@@ -1,5 +1,6 @@
 import { Grid } from '../../../puzzle/grid';
 import { House } from '../../../puzzle/house';
+import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
@@ -15,6 +16,12 @@ export class MasterModelReduction {
     deleteNumOpt(cellM: CellModel, num: number, cageM?: CageModel) {
         cellM.deleteNumOpt(num);
         this.addDeletedNum(cellM, num);
+        this.markAsImpacted(cellM, cageM);
+    }
+
+    deleteComboNumOpts(cellM: CellModel, combo: Combo, cageM?: CageModel) {
+        cellM.deleteNumOpts(combo.numsSet);
+        this.addDeletedNums(cellM, combo.numsSet);
         this.markAsImpacted(cellM, cageM);
     }
 

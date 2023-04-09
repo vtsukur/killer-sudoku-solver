@@ -1,4 +1,5 @@
 import { Cell } from '../../../puzzle/cell';
+import { joinArray } from '../../../util/readableMessages';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModel } from './cageModel';
@@ -56,6 +57,13 @@ export class CellModel {
             throw new InvalidSolverStateError(`Requested to delete last number option ${val} for cell ${this.cell.key}`);
         }
         return this._numOptsSet.delete(val);
+    }
+
+    deleteNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
+        if (val.hasAll(this._numOptsSet)) {
+            throw new InvalidSolverStateError(`Requested to delete last number options ${joinArray(val.nums)} for cell ${this.cell.key}`);
+        }
+        return this._numOptsSet.deleteAll(val);
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
