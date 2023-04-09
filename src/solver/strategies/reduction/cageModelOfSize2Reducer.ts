@@ -83,7 +83,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //  - So, the amount of permutations is `2 ^ 4 = 16`.
             //
             // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
-            // 16 pre-coded reduction functions absorb inherent `O(2 ^ N)` complexity.
+            // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
             //
 
             //
@@ -99,7 +99,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // Determining the index of the pre-coded reduction function
+            // Determining the index of the pre-coded reducing function
             // by forming the 4-bit state in the range `[0, 15]`
             // out of the presence of `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators.
