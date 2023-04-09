@@ -99,8 +99,9 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // The following code forms the 4-bit state in the range `[0, 15]`
-            // out of the possible numbers in `CellModel`s
+            // Determining the index of the pre-coded reduction function
+            // by forming the 4-bit state in the range `[0, 15]`
+            // out of the presence of `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators.
             //
             const flowIndex =
