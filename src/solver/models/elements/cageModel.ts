@@ -11,6 +11,7 @@ import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModelOfSize2Reducer } from '../../strategies/reduction/cageModelOfSize2Reducer';
+import { CageModelOfSize3FullReducer } from '../../strategies/reduction/archive/cageModelOfSize3FullReducer';
 
 type Clue = {
     num: number;
@@ -64,6 +65,8 @@ export class CageModel {
     updateReducers() {
         if (this._cellCount === 2) {
             this._reducer = new CageModelOfSize2Reducer(this);
+        } else if (this._cellCount === 3) {
+            this._reducer = new CageModelOfSize3FullReducer(this);
         }
     }
 
@@ -127,78 +130,14 @@ export class CageModel {
     }
 
     reduce(reduction: MasterModelReduction) {
-        if (this._cellCount === 2) {
+        if (this._cellCount === 2 || this._cellCount == 3) {
             this._reducer?.reduce(reduction);
-        } else if (this._cellCount === 3) {
-            this.reduceOptimalForSize3(reduction);
         } else if (this._cellCount === 4) {
             this.reduceSmallCage(reduction);
         } else {
             this.reduceLargeCage(reduction);
         }
         this.isFirstReduction = false;
-    }
-
-    private reduceOptimalForSize3(reduction: MasterModelReduction) {
-        const PERMS_OF_3 = [
-            [0, 1, 2],
-            [0, 2, 1],
-            [1, 0, 2],
-            [1, 2, 0],
-            [2, 0, 1],
-            [2, 1, 0]
-        ];
-
-        const cellMs = this.cellMs;
-
-        for (const cellM1 of cellMs) {
-            const cellM1Index = cellMs.findIndex(c => c === cellM1);
-            const remainingCellMs = [...cellMs];
-            remainingCellMs.splice(cellM1Index, 1);
-            const cellM2 = remainingCellMs[0];
-            const cellM3 = remainingCellMs[1];
-
-            for (const num1 of cellM1.numOpts()) {
-                let numStands = false;
-                for (const combo of this.combosWithNum(num1)) {
-                    const reducedCombo = combo.reduce(num1);
-                    const num2 = reducedCombo.number1;
-                    const num3 = reducedCombo.number2;
-
-                    const hasFirstPerm = cellM2.hasNumOpt(num2) && cellM3.hasNumOpt(num3);
-                    const hasSecondPerm = cellM2.hasNumOpt(num3) && cellM3.hasNumOpt(num2);
-                    const hasAtLeastOnePerm = hasFirstPerm || hasSecondPerm;
-                    numStands = numStands || hasAtLeastOnePerm;
-
-                    if (hasAtLeastOnePerm) break;
-                }
-                if (!numStands) {
-                    reduction.deleteNumOpt(cellM1, num1, this);
-                }
-            }
-        }
-
-        for (const combo of this.comboSet.combos) {
-            let comboStands = false;
-            for (const perm of PERMS_OF_3) {
-                const cellM1HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
-                const cellM2HasIt = cellMs[1].hasNumOpt(combo.nthNumber(perm[1]));
-                const cellM3HasIt = cellMs[2].hasNumOpt(combo.nthNumber(perm[2]));
-                const someCellHasIt = cellM1HasIt && cellM2HasIt && cellM3HasIt;
-                comboStands = comboStands || someCellHasIt;
-            }
-            if (!comboStands) {
-                this.deleteCombo(combo);
-            }
-        }
-    }
-
-    private combosWithNum(num: number) {
-        return this.comboSet.combos.filter(combo => combo.has(num));
-    }
-
-    private deleteCombo(combo: Combo) {
-        this.comboSet.deleteCombo(combo);
     }
 
     private reduceSmallCage(reduction: MasterModelReduction) {
