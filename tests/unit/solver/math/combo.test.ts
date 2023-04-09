@@ -5,8 +5,8 @@ describe('Combo tests', () => {
     test('Construction of Combo from array of numbers', () => {
         const combo = new Combo([ 1, 6, 9 ]);
         expect(combo.key).toEqual('1, 6, 9');
-        expect(combo.number0).toBe(1);
-        expect(combo.number1).toBe(6);
+        expect(combo.number1).toBe(1);
+        expect(combo.number2).toBe(6);
         expect(combo.nthNumber(2)).toBe(9);
         expect(combo.numsSet.hasAll(SudokuNumsSet.of(1, 6, 9))).toBeTruthy();
         expect(combo.numsSet.doesNotHaveAny(SudokuNumsSet.of(2, 5))).toBeTruthy();
@@ -17,8 +17,8 @@ describe('Combo tests', () => {
     test('Construction of Combo using `of` static factory method', () => {
         const combo = Combo.of(1, 6, 9);
         expect(combo.key).toEqual('1, 6, 9');
-        expect(combo.number0).toBe(1);
-        expect(combo.number1).toBe(6);
+        expect(combo.number1).toBe(1);
+        expect(combo.number2).toBe(6);
         expect(combo.nthNumber(2)).toBe(9);
         expectComboWithValues(combo, [ 1, 6, 9 ]);
     });
@@ -26,7 +26,7 @@ describe('Combo tests', () => {
     test('Construction of empty Combo using constructor directly', () => {
         const combo = new Combo([]);
         expect(combo.key).toEqual('');
-        expect(() => combo.number0).toThrow(new RangeError('Number of index 0 cannot be accessed. Combo has 0 elements'));
+        expect(() => combo.number1).toThrow(new RangeError('Number of index 0 cannot be accessed. Combo has 0 elements'));
         expect(() => combo.nthNumber(1)).toThrow(new RangeError('Number of index 1 cannot be accessed. Combo has 0 elements'));
         expectComboWithValues(combo, []);
     });

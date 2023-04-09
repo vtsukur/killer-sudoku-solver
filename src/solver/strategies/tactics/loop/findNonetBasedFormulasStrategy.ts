@@ -203,15 +203,15 @@ function reduceByFormula(formula: Formula, reduction: MasterModelReduction) {
             const combos = SumAddendsCombinatorics.enumerate(targetSum, 2).val;
             let hasAtLeastOneCombo = false;
             for (const combo of combos) {
-                const hasDirect = otherCellM1.hasNumOpt(combo.number0) && otherCellM2.hasNumOpt(combo.number1);
-                const hasInverse = otherCellM1.hasNumOpt(combo.number1) && otherCellM2.hasNumOpt(combo.number0);
+                const hasDirect = otherCellM1.hasNumOpt(combo.number1) && otherCellM2.hasNumOpt(combo.number2);
+                const hasInverse = otherCellM1.hasNumOpt(combo.number2) && otherCellM2.hasNumOpt(combo.number1);
                 if (hasDirect) {
-                    numOpts.get(otherCellM1).add(combo.number0);
-                    numOpts.get(otherCellM2).add(combo.number1);
+                    numOpts.get(otherCellM1).add(combo.number1);
+                    numOpts.get(otherCellM2).add(combo.number2);
                 }
                 if (hasInverse) {
-                    numOpts.get(otherCellM1).add(combo.number1);
-                    numOpts.get(otherCellM2).add(combo.number0);
+                    numOpts.get(otherCellM1).add(combo.number2);
+                    numOpts.get(otherCellM2).add(combo.number1);
                 }
                 hasAtLeastOneCombo ||= hasDirect || hasInverse;
             }

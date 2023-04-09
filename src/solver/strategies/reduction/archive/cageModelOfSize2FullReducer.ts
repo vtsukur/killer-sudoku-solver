@@ -66,14 +66,14 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
             //
             // Follow-up examples in the implementation comments assume `Combo` of numbers `[5, 6]`.
             //
-            const num0 = combo.number0;
             const num1 = combo.number1;
+            const num2 = combo.number2;
 
             // Checking the presence of each `Combo` number for each `CellModel` just once.
-            const cell1HasNum0 = this._cellM1.hasNumOpt(num0);
             const cell1HasNum1 = this._cellM1.hasNumOpt(num1);
-            const cell2HasNum0 = this._cellM2.hasNumOpt(num0);
+            const cell1HasNum2 = this._cellM1.hasNumOpt(num2);
             const cell2HasNum1 = this._cellM2.hasNumOpt(num1);
+            const cell2HasNum2 = this._cellM2.hasNumOpt(num2);
 
             //
             // Proceeding to reduction if and only if
@@ -94,11 +94,11 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
             // CellModel 2: [..., 5, 6, ...]
             // ```
             //
-            if (cell1HasNum0 && cell1HasNum1 && cell2HasNum0 && cell2HasNum1) continue;
+            if (cell1HasNum1 && cell1HasNum2 && cell2HasNum1 && cell2HasNum2) continue;
 
             // Checking the first `CellModel` for the presence of the first `Combo` number.
-            if (!cell1HasNum0) {
-                if (!cell2HasNum0) {
+            if (!cell1HasNum1) {
+                if (!cell2HasNum1) {
                     //
                     // If both `CellModel`s do *not* have the first `Combo` number,
                     // then the complementing counterpart (second `Combo` number)
@@ -119,10 +119,10 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // CellModel 2: [... (no 6)]
                     // ```
                     //
-                    if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
-                    if (cell2HasNum1) reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
+                    if (cell1HasNum2) reduction.deleteNumOpt(this._cellM1, num2, this._cageM);
+                    if (cell2HasNum2) reduction.deleteNumOpt(this._cellM2, num2, this._cageM);
                     cageMCombos.deleteCombo(combo);
-                } else if (cell2HasNum1) {
+                } else if (cell2HasNum2) {
                     //
                     // If the first `CellModel` does *not* have the first `Combo` number
                     // and the second `CellModel` still has the complementing counterpart
@@ -145,9 +145,9 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // CellModel 2: [..., 5, ... (no 6)]
                     // ```
                     //
-                    reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
+                    reduction.deleteNumOpt(this._cellM2, num2, this._cageM);
                 }
-            } else if (!cell2HasNum1) {
+            } else if (!cell2HasNum2) {
                 //
                 // If the first `CellModel` still has the first `Combo` number
                 // and the second `CellModel` does *not* have the complementing counterpart
@@ -170,12 +170,12 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                 // CellModel 2: [..., 5, ...]
                 // ```
                 //
-                reduction.deleteNumOpt(this._cellM1, num0, this._cageM);
+                reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
             }
 
             // Checking the first `CellModel` for the presence of the second `Combo` number.
-            if (!cell1HasNum1) {
-                if (!cell2HasNum1) {
+            if (!cell1HasNum2) {
+                if (!cell2HasNum2) {
                     //
                     // If both `CellModel`s do *not* have the second `Combo` number,
                     // then the complementing counterpart (the first `Combo` number)
@@ -196,10 +196,10 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // CellModel 2: [... (no 5)]
                     // ```
                     //
-                    if (cell1HasNum0) reduction.deleteNumOpt(this._cellM1, num0, this._cageM);
-                    if (cell2HasNum0) reduction.deleteNumOpt(this._cellM2, num0, this._cageM);
+                    if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
+                    if (cell2HasNum1) reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
                     cageMCombos.deleteCombo(combo);
-                } else if (cell2HasNum0) {
+                } else if (cell2HasNum1) {
                     //
                     // If the first `CellModel` does *not* have the second `Combo` number
                     // and the second `CellModel` still has the complementing counterpart
@@ -222,7 +222,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // CellModel 2: [..., 6, ... (no 5)]
                     // ```
                     //
-                    reduction.deleteNumOpt(this._cellM2, num0, this._cageM);
+                    reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
 
                     //
                     // Also, if the prior conditional logic of this function deleted
@@ -245,11 +245,11 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                     // CellModel 2: [... (no 5 and no 6)]
                     // ```
                     //
-                    if (!this._cellM2.hasNumOpt(num1)) {
+                    if (!this._cellM2.hasNumOpt(num2)) {
                         cageMCombos.deleteCombo(combo);
                     }
                 }
-            } else if (!cell2HasNum0) {
+            } else if (!cell2HasNum1) {
                 //
                 // If the first `CellModel` still has the second `Combo` number
                 // and the second `CellModel` does *not* have the complementing counterpart
@@ -272,7 +272,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                 // CellModel 2: [..., 6, ...]
                 // ```
                 //
-                reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
+                reduction.deleteNumOpt(this._cellM1, num2, this._cageM);
 
                 //
                 // Also, if the prior conditional logic of this function deleted
@@ -295,7 +295,7 @@ export class CageModelOfSize2FullReducer implements CageModelReducer {
                 // CellModel 2: [... (no 5 and no 6)]
                 // ```
                 //
-                if (!this._cellM1.hasNumOpt(num0)) {
+                if (!this._cellM1.hasNumOpt(num1)) {
                     cageMCombos.deleteCombo(combo);
                 }
             }

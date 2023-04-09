@@ -57,7 +57,7 @@ export class Combo implements Iterable<number> {
      *
      * @throws {RangeError} if the combination is empty.
      */
-    get number0() {
+    get number1() {
         return this.nthNumber(0);
     }
 
@@ -66,7 +66,7 @@ export class Combo implements Iterable<number> {
      *
      * @throws {RangeError} if the combination doesn't have second element.
      */
-    get number1() {
+    get number2() {
         return this.nthNumber(1);
     }
 

@@ -158,22 +158,22 @@ export class CageModel {
             const cellM2 = remainingCellMs[0];
             const cellM3 = remainingCellMs[1];
 
-            for (const num0 of cellM1.numOpts()) {
+            for (const num1 of cellM1.numOpts()) {
                 let numStands = false;
-                for (const combo of this.combosWithNum(num0)) {
-                    const reducedCombo = combo.reduce(num0);
-                    const num1 = reducedCombo.number0;
+                for (const combo of this.combosWithNum(num1)) {
+                    const reducedCombo = combo.reduce(num1);
                     const num2 = reducedCombo.number1;
+                    const num3 = reducedCombo.number2;
 
-                    const hasFirstPerm = cellM2.hasNumOpt(num1) && cellM3.hasNumOpt(num2);
-                    const hasSecondPerm = cellM2.hasNumOpt(num2) && cellM3.hasNumOpt(num1);
+                    const hasFirstPerm = cellM2.hasNumOpt(num2) && cellM3.hasNumOpt(num3);
+                    const hasSecondPerm = cellM2.hasNumOpt(num3) && cellM3.hasNumOpt(num2);
                     const hasAtLeastOnePerm = hasFirstPerm || hasSecondPerm;
                     numStands = numStands || hasAtLeastOnePerm;
 
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    reduction.deleteNumOpt(cellM1, num0, this);
+                    reduction.deleteNumOpt(cellM1, num1, this);
                 }
             }
         }
