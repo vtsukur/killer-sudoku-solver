@@ -56,8 +56,8 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cellM0NumSetValue = this._cellM0._numOptsSet.bitStore;
-        const cellM1NumSetValue = this._cellM1._numOptsSet.bitStore;
+        const cellM0NumsBits = this._cellM0._numOptsSet.bitStore;
+        const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
 
         const cageMCombos = this._cageM.comboSet;
 
@@ -72,10 +72,10 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             const num1 = combo.number1;
 
             const options =
-                    (((cellM0NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM0NumSetValue & (1 << num1)) >> (num1 - 1))) |
-                    (((cellM1NumSetValue & (1 << num0)) >> num0) |
-                    ((cellM1NumSetValue & (1 << num1)) >> (num1 - 1))) << 2;
+                    (((cellM0NumsBits & (1 << num0)) >> num0) |
+                    ((cellM0NumsBits & (1 << num1)) >> (num1 - 1))) |
+                    (((cellM1NumsBits & (1 << num0)) >> num0) |
+                    ((cellM1NumsBits & (1 << num1)) >> (num1 - 1))) << 2;
 
             DENORMALIZED_TACTICAL_REDUCERS[options](reduction, this._cageM, cageMCombos, combo, this._cellM0, this._cellM1, num0, num1);
         }
