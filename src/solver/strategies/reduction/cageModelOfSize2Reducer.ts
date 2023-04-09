@@ -152,11 +152,11 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             // See also `DENORMALIZED_TACTICAL_REDUCERS`.
             //
             const compressedNumbersPresenceState =
-                    ((cellM0NumsBits & (1 << num0)) >> num0) |
-                    ((cellM0NumsBits & (1 << num1)) >> (num1 - 1)) |
+                    ((cellM0NumsBits & (1 << num0)) >> num0) |         // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
+                    ((cellM0NumsBits & (1 << num1)) >> (num1 - 1)) |   // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
                     (
-                        ((cellM1NumsBits & (1 << num0)) >> num0) |
-                        ((cellM1NumsBits & (1 << num1)) >> (num1 - 1))
+                        ((cellM1NumsBits & (1 << num0)) >> num0) |     // The third bit is set if the first `Combo` number is possible in `CellModel` 2.
+                        ((cellM1NumsBits & (1 << num1)) >> (num1 - 1)) // The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
                     ) << 2;
 
             //
