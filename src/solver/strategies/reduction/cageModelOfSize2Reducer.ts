@@ -215,73 +215,73 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
-    // 0
+    // `0b0000 =  0`
     (_reduction: MasterModelReduction, _cageM: CageModel, combos: CombosSet, combo: Combo) => {
         combos.deleteCombo(combo);
     },
-    // 1
+    // `0b0001 =  1`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num0, cageM);
     },
-    // 2
+    // `0b0010 =  2`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num1, cageM);
     },
-    // 3
+    // `0b0011 =  3`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel) => {
         combos.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM0, combo, cageM);
     },
-    // 4
+    // `0b0100 =  4`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
-    // 5
+    // `0b0101 =  5`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, num0: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num0, cageM);
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
-    // 6
+    // `0b0110 =  6`
     NOTHING_TO_REDUCE,
-    // 7
+    // `0b0111 =  7`
     (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
         reduction.deleteNumOpt(cellM0, num0, cageM);
     },
-    // 8
+    // `0b1000 =  8`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // 9
+    // `0b1001 =  9`
     NOTHING_TO_REDUCE,
-    // 10
+    // `0b1010 = 10`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
         combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num1, cageM);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // 11
+    // `0b1011 = 11`
     (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
         reduction.deleteNumOpt(cellM0, num1, cageM);
     },
-    // 12
+    // `0b1100 = 12`
     (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel) => {
         combos.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM1, combo, cageM);
     },
-    // 13
+    // `0b1101 = 13`
     (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
-    // 14
+    // `0b1110 = 14`
     (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // 15
+    // `0b1111 = 15`
     NOTHING_TO_REDUCE
 ];
 
