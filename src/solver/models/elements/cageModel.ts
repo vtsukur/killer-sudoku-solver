@@ -151,29 +151,29 @@ export class CageModel {
 
         const cellMs = this.cellMs;
 
-        for (const cellM0 of cellMs) {
-            const cellM0Index = cellMs.findIndex(c => c === cellM0);
+        for (const cellM1 of cellMs) {
+            const cellM1Index = cellMs.findIndex(c => c === cellM1);
             const remainingCellMs = [...cellMs];
-            remainingCellMs.splice(cellM0Index, 1);
-            const cellM1 = remainingCellMs[0];
-            const cellM2 = remainingCellMs[1];
+            remainingCellMs.splice(cellM1Index, 1);
+            const cellM2 = remainingCellMs[0];
+            const cellM3 = remainingCellMs[1];
 
-            for (const num0 of cellM0.numOpts()) {
+            for (const num0 of cellM1.numOpts()) {
                 let numStands = false;
                 for (const combo of this.combosWithNum(num0)) {
                     const reducedCombo = combo.reduce(num0);
                     const num1 = reducedCombo.number0;
                     const num2 = reducedCombo.number1;
 
-                    const hasFirstPerm = cellM1.hasNumOpt(num1) && cellM2.hasNumOpt(num2);
-                    const hasSecondPerm = cellM1.hasNumOpt(num2) && cellM2.hasNumOpt(num1);
+                    const hasFirstPerm = cellM2.hasNumOpt(num1) && cellM3.hasNumOpt(num2);
+                    const hasSecondPerm = cellM2.hasNumOpt(num2) && cellM3.hasNumOpt(num1);
                     const hasAtLeastOnePerm = hasFirstPerm || hasSecondPerm;
                     numStands = numStands || hasAtLeastOnePerm;
 
                     if (hasAtLeastOnePerm) break;
                 }
                 if (!numStands) {
-                    reduction.deleteNumOpt(cellM0, num0, this);
+                    reduction.deleteNumOpt(cellM1, num0, this);
                 }
             }
         }
@@ -181,10 +181,10 @@ export class CageModel {
         for (const combo of this.comboSet.combos) {
             let comboStands = false;
             for (const perm of PERMS_OF_3) {
-                const cellM0HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
-                const cellM1HasIt = cellMs[1].hasNumOpt(combo.nthNumber(perm[1]));
-                const cellM2HasIt = cellMs[2].hasNumOpt(combo.nthNumber(perm[2]));
-                const someCellHasIt = cellM0HasIt && cellM1HasIt && cellM2HasIt;
+                const cellM1HasIt = cellMs[0].hasNumOpt(combo.nthNumber(perm[0]));
+                const cellM2HasIt = cellMs[1].hasNumOpt(combo.nthNumber(perm[1]));
+                const cellM3HasIt = cellMs[2].hasNumOpt(combo.nthNumber(perm[2]));
+                const someCellHasIt = cellM1HasIt && cellM2HasIt && cellM3HasIt;
                 comboStands = comboStands || someCellHasIt;
             }
             if (!comboStands) {
