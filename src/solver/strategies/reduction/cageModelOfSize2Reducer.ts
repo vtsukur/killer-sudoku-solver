@@ -191,69 +191,69 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
     // 0
-    (_reduction: MasterModelReduction, _cageM: CageModel, cageMCombos: CombosSet, combo: Combo) => {
-        cageMCombos.deleteCombo(combo);
+    (_reduction: MasterModelReduction, _cageM: CageModel, combos: CombosSet, combo: Combo) => {
+        combos.deleteCombo(combo);
     },
     // 1
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num0, cageM);
     },
     // 2
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num1, cageM);
     },
     // 3
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, cellM0: CellModel) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel) => {
+        combos.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM0, combo, cageM);
     },
     // 4
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
     // 5
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, num0: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, num0: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num0, cageM);
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
     // 6
     NOTHING_TO_REDUCE,
     // 7
-    (reduction: MasterModelReduction, cageM: CageModel, _cageMCombos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
+    (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, num0: number) => {
         reduction.deleteNumOpt(cellM0, num0, cageM);
     },
     // 8
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     // 9
     NOTHING_TO_REDUCE,
     // 10
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
+        combos.deleteCombo(combo);
         reduction.deleteNumOpt(cellM0, num1, cageM);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     // 11
-    (reduction: MasterModelReduction, cageM: CageModel, _cageMCombos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
+    (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, cellM0: CellModel, _cellM1: CellModel, _num0: number, num1: number) => {
         reduction.deleteNumOpt(cellM0, num1, cageM);
     },
     // 12
-    (reduction: MasterModelReduction, cageM: CageModel, cageMCombos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel) => {
-        cageMCombos.deleteCombo(combo);
+    (reduction: MasterModelReduction, cageM: CageModel, combos: CombosSet, combo: Combo, _cellM0: CellModel, cellM1: CellModel) => {
+        combos.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM1, combo, cageM);
     },
     // 13
-    (reduction: MasterModelReduction, cageM: CageModel, _cageMCombos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
+    (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, num0: number) => {
         reduction.deleteNumOpt(cellM1, num0, cageM);
     },
     // 14
-    (reduction: MasterModelReduction, cageM: CageModel, _cageMCombos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
+    (reduction: MasterModelReduction, cageM: CageModel, _combos: CombosSet, _combo: Combo, _cellM0: CellModel, cellM1: CellModel, _num0: number, num1: number) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
     // 15
