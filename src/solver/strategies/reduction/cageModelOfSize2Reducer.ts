@@ -57,7 +57,7 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
      */
     reduce(reduction: MasterModelReduction): void {
         //
-        // Storing possible numbers for both `CellModel`s as bit masks
+        // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
         // for efficient number check and manipulation.
         //
         const cellM0NumsBits = this._cellM0._numOptsSet.bitStore;
@@ -106,7 +106,27 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
             //
             // For example, for the `Combo` of numbers `[5, 6]`,
             // if the first `CellModel` has the possible number option `5` but not `6`
-            // and the second `CellModel` has both number options `5` and `6`,
+            // and the second `CellModel` has both `5` and `6`,
+            // the state will be as follows:
+            //
+            // ```
+            // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b01`
+            // (the present first number `5` sets the first bit,
+            // and the absent second number `6` clears the second bit)
+            //
+            // `CellModel` 2 numbers: `[..., 5, 6,     ...]`
+            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b11`
+            // (both present numbers `5` and `6` set both bits)
+            //
+            // Compound state: `0b1101`
+            // (shift to the right happens for the compressed state for `CellModel` 2
+            // to form the joint 4-bit integer)
+            // ```
+            //
+            // In another example, for the `Combo` of numbers `[5, 6]`,
+            // if the first `CellModel` has the possible number option `6`
+            // and the second `CellModel` does *not* both number options `5` and `6`,
             // the state will be as follows:
             //
             // ```
