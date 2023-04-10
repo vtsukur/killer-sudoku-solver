@@ -7,7 +7,7 @@ import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategie
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { ReducerConfig } from './reducerConfig';
+import { ReducerConfig } from './cageModelReducerTestConfig';
 
 describe('CageModelOfSize2Reducers', () => {
 
