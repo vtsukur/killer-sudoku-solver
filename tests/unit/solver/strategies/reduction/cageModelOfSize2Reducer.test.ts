@@ -7,7 +7,7 @@ import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategie
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { ReducerConfig } from './cageModelReducerTestConfig';
+import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
 describe('CageModelOfSize2Reducers', () => {
 
@@ -33,7 +33,7 @@ describe('CageModelOfSize2Reducers', () => {
         reduction = new MasterModelReduction();
     });
 
-    const CONFIGS: ReadonlyArray<ReducerConfig> = [
+    const CONFIGS: ReadonlyArray<CageModelReducerTestConfig> = [
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2FullReducer(cageM),
             type: 'CageModelOfSize2FullReducer'
