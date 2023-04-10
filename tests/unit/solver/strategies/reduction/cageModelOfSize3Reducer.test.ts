@@ -5,9 +5,12 @@ import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
+import { logFactory } from '../../../../../src/util/logFactory';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
-describe('CageModelOfSize2Reducers', () => {
+const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
+
+describe('CageModelOfSize3Reducers', () => {
 
     const cell1 = Cell.at(0, 0);
     const cell2 = Cell.at(0, 1);
@@ -41,6 +44,51 @@ describe('CageModelOfSize2Reducers', () => {
             type: 'CageModelOfSize3FullReducer'
         }
     ];
+
+    test('Enumerate', () => {
+        const cell1 = Cell.at(0, 0);
+        const cell2 = Cell.at(0, 1);
+        const cell3 = Cell.at(0, 2);
+        const cage = Cage.ofSum(6).withCell(cell1).withCell(cell2).withCell(cell3).new();
+
+        let validPerms = 0;
+
+        let state = 0;
+        while (state < 512) {
+            const cellM1 = new CellModel(cell1);
+            const cellM2 = new CellModel(cell2);
+            const cellM3 = new CellModel(cell3);
+            const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
+            cellM1.addWithinCageModel(cageM);
+            cellM2.addWithinCageModel(cageM);
+            cellM3.addWithinCageModel(cageM);
+            cageM.initialReduce();
+
+            try {
+                if (!(state & (1 << 0))) cellM1.deleteNumOpt(1);
+                if (!(state & (1 << 1))) cellM1.deleteNumOpt(2);
+                if (!(state & (1 << 2))) cellM1.deleteNumOpt(3);
+
+                if (!(state & (1 << 3))) cellM2.deleteNumOpt(1);
+                if (!(state & (1 << 4))) cellM2.deleteNumOpt(2);
+                if (!(state & (1 << 5))) cellM2.deleteNumOpt(3);
+
+                if (!(state & (1 << 3))) cellM3.deleteNumOpt(1);
+                if (!(state & (1 << 4))) cellM3.deleteNumOpt(2);
+                if (!(state & (1 << 5))) cellM3.deleteNumOpt(3);
+
+                cageM.reduce(new MasterModelReduction());
+
+                ++validPerms;
+            } catch (e) {
+                // Can fail, that's OK.
+            }
+
+            ++state;
+        }
+
+        log.info(`Valid perms: ${validPerms} out of 512`);
+    });
 
     for (const { newReducer, type } of CONFIGS) {
 
