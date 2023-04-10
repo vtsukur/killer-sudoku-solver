@@ -6,16 +6,8 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2FullReducer';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
-import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-
-type ReducerConfig = {
-
-    readonly newReducer: (cageM: CageModel) => CageModelReducer;
-
-    readonly type: string;
-
-};
+import { ReducerConfig } from './reducerConfig';
 
 describe('CageModelOfSize2Reducers', () => {
 
