@@ -54,6 +54,7 @@ describe('CageModelOfSize3Reducers', () => {
         let validPerms = 0;
 
         let state = 0;
+        const combo = Combo.of(1, 2, 3);
         while (state < 512) {
             const cellM1 = new CellModel(cell1);
             const cellM2 = new CellModel(cell2);
@@ -65,19 +66,20 @@ describe('CageModelOfSize3Reducers', () => {
             cageM.initialReduce();
 
             try {
-                if (!(state & (1 << 0))) cellM1.deleteNumOpt(1);
-                if (!(state & (1 << 1))) cellM1.deleteNumOpt(2);
-                if (!(state & (1 << 2))) cellM1.deleteNumOpt(3);
+                if (!(state & (1 << 0))) cellM1.deleteNumOpt(combo.nthNumber(0));
+                if (!(state & (1 << 1))) cellM1.deleteNumOpt(combo.nthNumber(1));
+                if (!(state & (1 << 2))) cellM1.deleteNumOpt(combo.nthNumber(2));
 
-                if (!(state & (1 << 3))) cellM2.deleteNumOpt(1);
-                if (!(state & (1 << 4))) cellM2.deleteNumOpt(2);
-                if (!(state & (1 << 5))) cellM2.deleteNumOpt(3);
+                if (!(state & (1 << 3))) cellM2.deleteNumOpt(combo.nthNumber(0));
+                if (!(state & (1 << 4))) cellM2.deleteNumOpt(combo.nthNumber(1));
+                if (!(state & (1 << 5))) cellM2.deleteNumOpt(combo.nthNumber(2));
 
-                if (!(state & (1 << 6))) cellM3.deleteNumOpt(1);
-                if (!(state & (1 << 7))) cellM3.deleteNumOpt(2);
-                if (!(state & (1 << 8))) cellM3.deleteNumOpt(3);
+                if (!(state & (1 << 6))) cellM3.deleteNumOpt(combo.nthNumber(0));
+                if (!(state & (1 << 7))) cellM3.deleteNumOpt(combo.nthNumber(1));
+                if (!(state & (1 << 8))) cellM3.deleteNumOpt(combo.nthNumber(2));
 
-                cageM.reduce(new MasterModelReduction());
+                const reduction = new MasterModelReduction();
+                cageM.reduce(reduction);
 
                 ++validPerms;
             } catch (e) {
