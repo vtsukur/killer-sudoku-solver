@@ -73,9 +73,9 @@ describe('CageModelOfSize3Reducers', () => {
                 if (!(state & (1 << 4))) cellM2.deleteNumOpt(2);
                 if (!(state & (1 << 5))) cellM2.deleteNumOpt(3);
 
-                if (!(state & (1 << 3))) cellM3.deleteNumOpt(1);
-                if (!(state & (1 << 4))) cellM3.deleteNumOpt(2);
-                if (!(state & (1 << 5))) cellM3.deleteNumOpt(3);
+                if (!(state & (1 << 6))) cellM3.deleteNumOpt(1);
+                if (!(state & (1 << 7))) cellM3.deleteNumOpt(2);
+                if (!(state & (1 << 8))) cellM3.deleteNumOpt(3);
 
                 cageM.reduce(new MasterModelReduction());
 
