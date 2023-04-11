@@ -6,6 +6,7 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
+import { joinArray } from '../../../../../src/util/readableMessages';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
 const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
@@ -65,7 +66,10 @@ describe('CageModelOfSize3Reducers', () => {
             cellM3.addWithinCageModel(cageM);
             cageM.initialReduce();
 
+            let isPotentialReductionFailure;
+
             try {
+                isPotentialReductionFailure = false;
                 if (!(state & (1 << 0))) cellM1.deleteNumOpt(combo.nthNumber(0));
                 if (!(state & (1 << 1))) cellM1.deleteNumOpt(combo.nthNumber(1));
                 if (!(state & (1 << 2))) cellM1.deleteNumOpt(combo.nthNumber(2));
@@ -78,13 +82,20 @@ describe('CageModelOfSize3Reducers', () => {
                 if (!(state & (1 << 7))) cellM3.deleteNumOpt(combo.nthNumber(1));
                 if (!(state & (1 << 8))) cellM3.deleteNumOpt(combo.nthNumber(2));
 
+                log.info(`${state}: BEFORE ${joinArray(cellM1.numOpts())}, ${joinArray(cellM2.numOpts())}, ${joinArray(cellM3.numOpts())}`);
+
+                isPotentialReductionFailure = true;
                 const reduction = new MasterModelReduction();
                 cageM.reduce(reduction);
+
+                log.info(`${state}: AFTER SUCCESS ${joinArray(cellM1.numOpts())}, ${joinArray(cellM2.numOpts())}, ${joinArray(cellM3.numOpts())}`);
 
                 ++validPerms;
             } catch (e) {
                 // Can fail, that's OK.
+                log.info(`${state}: FAIL FOR ${state.toString(2)} (${isPotentialReductionFailure ? 'reduction' : 'num deletion'})`);
             }
+            log.info('');
 
             ++state;
         }
