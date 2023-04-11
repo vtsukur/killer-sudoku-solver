@@ -4,7 +4,6 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
-import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
@@ -12,39 +11,12 @@ import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2FullReducer';
 import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
-import { CageModelReducer } from '../../../../../src/solver/strategies/reduction/cageModelReducer';
 import { LockableCellModel } from './lockableCellModel';
-import { LockableMasterModelReduction } from './lockableMasterModelReduction';
 import { LockableCageModel } from './lockableCageModel';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 
 const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
-
-type CreateReferenceCageModelFn = () => LockableCageModel;
-
-type PrepareAndOrExpectReductionFn = (cageM: CageModel, reduction: MasterModelReduction) => void;
-
-type ComparablePerformanceTestConfig = {
-
-    readonly createReferenceCageModel: CreateReferenceCageModelFn;
-
-    readonly prepareForReduction: PrepareAndOrExpectReductionFn;
-
-    readonly expectAfterTargetReduction: PrepareAndOrExpectReductionFn;
-
-}
-
-type ReducerProducerFn = (cageM: CageModel) => CageModelReducer;
-
-type PerformanceTestPreparation = {
-
-    readonly cageM: CageModel;
-
-    readonly reduction: MasterModelReduction;
-
-    readonly reducer: CageModelReducer;
-
-};
 
 describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
@@ -174,70 +146,6 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     const createOptimalReducer = (cageM: CageModel) => {
         return new CageModelOfSize2Reducer(cageM);
-    };
-
-    const doRunFunctionalAndPerformanceTests = (
-            config: ComparablePerformanceTestConfig,
-            reducerProducer: ReducerProducerFn,
-            type: string) => {
-        // Checking that `CageModelReducer` works according to the functional expectations.
-        runFunctionalTest(config, reducerProducer);
-
-        const { cageM, reduction, reducer } = prepareForPerformanceTest(config, reducerProducer);
-
-        let i = 0;
-
-        //
-        // Checking that the `CageModel` state stays intact
-        // in between performance test iterations
-        // to avoid impact on the reduction results that should be stable.
-        //
-        i = 0;
-        const cageMCombosSetValue = cageM.comboSet.bitStore;
-        const cellM1NumOptsValue = cageM.cellMs[0].numOptsSet().bitStore;
-        const cellM2NumOptsValue = cageM.cellMs[1].numOptsSet().bitStore;
-        while (i++ < 10) {
-            reducer.reduce(reduction);
-            expect(cageM.comboSet.bitStore).toBe(cageMCombosSetValue);
-            expect(cageM.cellMs[0].numOptsSet().bitStore).toBe(cellM1NumOptsValue);
-            expect(cageM.cellMs[1].numOptsSet().bitStore).toBe(cellM2NumOptsValue);
-        }
-
-        // Warming up by running sample iterations.
-        i = 0;
-        while (i++ < 100_000) {
-            reducer.reduce(reduction);
-        }
-
-        // Actual performance test.
-        const startTime = performance.now();
-        i = 0;
-        while (i++ < 1_000_000) {
-            reducer.reduce(reduction);
-        }
-
-        log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
-    };
-
-    const runFunctionalTest = (config: ComparablePerformanceTestConfig, reducerProducer: ReducerProducerFn) => {
-        const cageM = config.createReferenceCageModel();
-
-        const reduction = new MasterModelReduction();
-        config.prepareForReduction(cageM, reduction);
-        reducerProducer(cageM).reduce(reduction);
-        config.expectAfterTargetReduction(cageM, reduction);
-    };
-
-    const prepareForPerformanceTest = (config: ComparablePerformanceTestConfig, reducerProducer: ReducerProducerFn) => {
-        const cageM = config.createReferenceCageModel();
-        const reduction = new LockableMasterModelReduction();
-
-        config.prepareForReduction(cageM, reduction);
-
-        reduction.lock();
-        cageM.lock();
-
-        return { cageM, reducer: reducerProducer(cageM), reduction } as PerformanceTestPreparation;
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
