@@ -219,73 +219,73 @@ export class CageModelOfSize2Reducer implements CageModelReducer {
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
-    // `0b0000 =  0`
-    (_reduction: MasterModelReduction, _cageM: CageModel, combosSet: CombosSet, combo: Combo) => {
+    // `0b00_00 = 0`
+    (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
     },
-    // `0b0001 =  1`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, cellM1: CellModel, _cellM2: CellModel, num1: number) => {
+    // `0b00_01 = 1`
+    (reduction, cageM, combosSet, combo, cellM1, _cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // `0b0010 =  2`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, cellM1: CellModel, _cellM2: CellModel, _num1: number, num2: number) => {
+    // `0b00_10 = 2`
+    (reduction, cageM, combosSet, combo, cellM1, _cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // `0b0011 =  3`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, cellM1: CellModel) => {
+    // `0b00_11 = 3`
+    (reduction, cageM, combosSet, combo, cellM1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM1, combo, cageM);
     },
-    // `0b0100 =  4`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, _cellM1: CellModel, cellM2: CellModel, num1: number) => {
+    // `0b01_00 = 4`
+    (reduction, cageM, combosSet, combo, _cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b0101 =  5`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, cellM1: CellModel, cellM2: CellModel, num1: number) => {
+    // `0b01_01 = 5`
+    (reduction, cageM, combosSet, combo, cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b0110 =  6`
+    // `0b01_10 = 6`
     NOTHING_TO_REDUCE,
-    // `0b0111 =  7`
-    (reduction: MasterModelReduction, cageM: CageModel, _combosSet: CombosSet, _combo: Combo, cellM1: CellModel, _cellM2: CellModel, num1: number) => {
+    // `0b01_11 = 7`
+    (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, num1) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // `0b1000 =  8`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, _cellM1: CellModel, cellM2: CellModel, _num1: number, num2: number) => {
+    // `0b10_00 = 8`
+    (reduction, cageM, combosSet, combo, _cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b1001 =  9`
+    // `0b10_01 = 9`
     NOTHING_TO_REDUCE,
-    // `0b1010 = 10`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, cellM1: CellModel, cellM2: CellModel, _num1: number, num2: number) => {
+    // `0b10_10 = 10`
+    (reduction, cageM, combosSet, combo, cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b1011 = 11`
-    (reduction: MasterModelReduction, cageM: CageModel, _combosSet: CombosSet, _combo: Combo, cellM1: CellModel, _cellM2: CellModel, _num1: number, num2: number) => {
+    // `0b10_11 = 11`
+    (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // `0b1100 = 12`
-    (reduction: MasterModelReduction, cageM: CageModel, combosSet: CombosSet, combo: Combo, _cellM1: CellModel, cellM2: CellModel) => {
+    // `0b11_00 = 12`
+    (reduction, cageM, combosSet, combo, _cellM1, cellM2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM2, combo, cageM);
     },
-    // `0b1101 = 13`
-    (reduction: MasterModelReduction, cageM: CageModel, _combosSet: CombosSet, _combo: Combo, _cellM1: CellModel, cellM2: CellModel, num1: number) => {
+    // `0b11_01 = 13`
+    (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, num1) => {
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b1110 = 14`
-    (reduction: MasterModelReduction, cageM: CageModel, _combosSet: CombosSet, _combo: Combo, _cellM1: CellModel, cellM2: CellModel, _num1: number, num2: number) => {
+    // `0b11_10 = 14`
+    (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b1111 = 15`
+    // `0b11_11 = 15`
     NOTHING_TO_REDUCE
 ];
 
