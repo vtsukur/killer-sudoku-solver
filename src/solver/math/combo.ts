@@ -71,6 +71,15 @@ export class Combo implements Iterable<number> {
     }
 
     /**
+     * Returns third number in the combination.
+     *
+     * @throws {RangeError} if the combination doesn't have second element.
+     */
+    get number3() {
+        return this.nthNumber(2);
+    }
+
+    /**
      * Returns number with the n-th `index` in the combination.
      *
      * @param index - Index of the number in the combination.
