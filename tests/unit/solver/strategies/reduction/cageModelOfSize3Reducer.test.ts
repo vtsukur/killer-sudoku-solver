@@ -6,7 +6,7 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
-import { joinArray } from '../../../../../src/util/readableMessages';
+import { joinSet } from '../../../../../src/util/readableMessages';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
 const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
@@ -53,6 +53,7 @@ describe('CageModelOfSize3Reducers', () => {
         const cage = Cage.ofSum(6).withCell(cell1).withCell(cell2).withCell(cell3).new();
 
         let validPerms = 0;
+        let reductionActionable = 0;
 
         let state = 0;
         const combo = Combo.of(1, 2, 3);
@@ -82,19 +83,36 @@ describe('CageModelOfSize3Reducers', () => {
                 if (!(state & (1 << 7))) cellM3.deleteNumOpt(combo.nthNumber(1));
                 if (!(state & (1 << 8))) cellM3.deleteNumOpt(combo.nthNumber(2));
 
-                const cellM3NumOptsBefore = cellM3.numOpts();
-                const cellM2NumOptsBefore = cellM2.numOpts();
-                const cellM1NumOptsBefore = cellM1.numOpts();
-                log.info(`${state}: BEFORE CellM3(${joinArray(cellM3NumOptsBefore)}), CellM2(${joinArray(cellM2NumOptsBefore)}), CellM1(${joinArray(cellM1NumOptsBefore)})`);
+                const cellM3NumOptsBefore = new Set(cellM3.numOpts());
+                const cellM2NumOptsBefore = new Set(cellM2.numOpts());
+                const cellM1NumOptsBefore = new Set(cellM1.numOpts());
+                log.info(`${state}: BEFORE CellM3(${joinSet(cellM3NumOptsBefore)}), CellM2(${joinSet(cellM2NumOptsBefore)}), CellM1(${joinSet(cellM1NumOptsBefore)})`);
 
                 isPotentialReductionFailure = true;
                 const reduction = new MasterModelReduction();
                 cageM.reduce(reduction);
 
-                const cellM3NumOptsAfter = cellM3.numOpts();
-                const cellM2NumOptsAfter = cellM2.numOpts();
-                const cellM1NumOptsAfter = cellM1.numOpts();
-                log.info(`${state}: AFTER SUCCESS CellM3(${joinArray(cellM3NumOptsAfter)}), CellM2(${joinArray(cellM2NumOptsAfter)}), CellM1(${joinArray(cellM1NumOptsAfter)})`);
+                const cellM3NumOptsAfter = new Set(cellM3.numOpts());
+                const cellM2NumOptsAfter = new Set(cellM2.numOpts());
+                const cellM1NumOptsAfter = new Set(cellM1.numOpts());
+                log.info(`${state}: AFTER SUCCESS CellM3(${joinSet(cellM3NumOptsAfter)}), CellM2(${joinSet(cellM2NumOptsAfter)}), CellM1(${joinSet(cellM1NumOptsAfter)})`);
+
+                let code = '';
+                for (const originalNum of cellM1NumOptsBefore) {
+                    if (!cellM1NumOptsAfter.has(originalNum)) code += `    reduction.deleteNumOpt(cellM1, ${originalNum}, cageM);\n`;
+                }
+                for (const originalNum of cellM2NumOptsBefore) {
+                    if (!cellM2NumOptsAfter.has(originalNum)) code += `    reduction.deleteNumOpt(cellM2, ${originalNum}, cageM);\n`;
+                }
+                for (const originalNum of cellM3NumOptsBefore) {
+                    if (!cellM3NumOptsAfter.has(originalNum)) code += `    reduction.deleteNumOpt(cellM3, ${originalNum}, cageM);\n`;
+                }
+                if (code.length) {
+                    log.info(`${state}: REDUCTION ACTIONS\n${code}`);
+                    ++reductionActionable;
+                } else {
+                    log.info(`${state}: NO REDUCTION ACTIONS`);
+                }
 
                 ++validPerms;
             } catch (e) {
@@ -107,6 +125,7 @@ describe('CageModelOfSize3Reducers', () => {
         }
 
         log.info(`Valid perms: ${validPerms} out of 512`);
+        log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
     });
 
     for (const { newReducer, type } of CONFIGS) {
