@@ -82,13 +82,13 @@ describe('CageModelOfSize3Reducers', () => {
                 if (!(state & (1 << 7))) cellM3.deleteNumOpt(combo.nthNumber(1));
                 if (!(state & (1 << 8))) cellM3.deleteNumOpt(combo.nthNumber(2));
 
-                log.info(`${state}: BEFORE ${joinArray(cellM1.numOpts())}, ${joinArray(cellM2.numOpts())}, ${joinArray(cellM3.numOpts())}`);
+                log.info(`${state}: BEFORE CellM3(${joinArray(cellM3.numOpts())}), CellM2(${joinArray(cellM2.numOpts())}), CellM1(${joinArray(cellM1.numOpts())})`);
 
                 isPotentialReductionFailure = true;
                 const reduction = new MasterModelReduction();
                 cageM.reduce(reduction);
 
-                log.info(`${state}: AFTER SUCCESS ${joinArray(cellM1.numOpts())}, ${joinArray(cellM2.numOpts())}, ${joinArray(cellM3.numOpts())}`);
+                log.info(`${state}: AFTER SUCCESS CellM3(${joinArray(cellM3.numOpts())}), CellM2(${joinArray(cellM2.numOpts())}), CellM1(${joinArray(cellM1.numOpts())})`);
 
                 ++validPerms;
             } catch (e) {
