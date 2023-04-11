@@ -17,7 +17,7 @@ type DenormalizedTacticalReducer = (
         cellM1: CellModel,
         cellM2: CellModel,
         num1: number,
-        num2: number,
+        num2: number
     ) => void;
 
 /**
