@@ -1012,6 +1012,25 @@
             }
         },
         {
+            "name": "npm run test [solver/strategies/../cageModelOfSize3Reducer.perf]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/perf/solver/strategies/reduction/cageModelOfSize3Reducer.perf.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "Xperf"
+            }
+        },
+        {
             "name": "npm run test [solver/strategies/../masterModelReduction.perf]",
             "request": "launch",
             "runtimeArgs": [
