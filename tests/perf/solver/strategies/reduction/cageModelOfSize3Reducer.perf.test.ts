@@ -12,7 +12,7 @@ import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/
 
 describe('Performance tests for `CageModelOfSize3Reducer`', () => {
 
-    test('Comparable test for `CageModel` of sum 6, `1 `Combo` and 6 present numbers', () => {
+    test('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(6),
             prepareForReduction: (cageM, reduction) => {
@@ -37,6 +37,36 @@ describe('Performance tests for `CageModelOfSize3Reducer`', () => {
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1 ]);
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(1, 2, 3)
+                ]);
+            }
+        });
+    });
+
+    test.skip('Comparable test for `CageModel` of sum 8, 2 `Combo`s and 8 present numbers', () => {
+        runComparablePerformanceTests({
+            createReferenceCageModel: () => createReferenceCageM(8),
+            prepareForReduction: (cageM, reduction) => {
+                reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(1, 2, 4, 5));
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 4, 5 ]);
+
+                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(1, 2));
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2 ]);
+
+                reduction.tryReduceNumOpts(cageM.cellMs[2], SudokuNumsSet.of(1, 3));
+                expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3 ]);
+
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 2, 5),
+                    Combo.of(1, 3, 4)
+                ]);
+            },
+            expectAfterTargetReduction: (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2 ]);
+                expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 2, 5),
+                    Combo.of(1, 3, 4)
                 ]);
             }
         });
