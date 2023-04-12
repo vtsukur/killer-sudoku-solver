@@ -82,41 +82,29 @@ const DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS: ReadonlyArray<DenormalizedTactic
     }
 ];
 
-const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6: ReadonlyArray<DenormalizedTacticalReducer> = db.sums[0].combos[0].entries.map(entry => {
-    if (entry.isValid) {
-        if (entry.actions) {
-            const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
-            const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
-            const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
-            const state =
-                     (cellM1DeletedNums?.bitStore ? 1 : 0) |
-                    ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
-                    ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
-            return DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
-        } else {
-            return NOTHING_TO_REDUCE;
-        }
-    } else {
-        return IMPOSSIBLE_TO_REDUCE;
-    }
+const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS: Array<Array<ReadonlyArray<DenormalizedTacticalReducer>>> = new Array(db.sums[db.sums.length - 1].sum + 1);
+db.sums.forEach(sumReductions => {
+    DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
+        return comboReductions.entries.map(entry => {
+            if (entry.isValid) {
+                if (entry.actions) {
+                    const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
+                    const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
+                    const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
+                    const state =
+                             (cellM1DeletedNums?.bitStore ? 1 : 0) |
+                            ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
+                            ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
+                    return DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
+                } else {
+                    return NOTHING_TO_REDUCE;
+                }
+            } else {
+                return IMPOSSIBLE_TO_REDUCE;
+            }
+        });
+    });
 });
-
-const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS: ReadonlyArray<ReadonlyArray<DenormalizedTacticalReducer> | undefined> = [
-    // Sum of 0 = no reducers.
-    undefined,
-    // Sum of 1 = no reducers.
-    undefined,
-    // Sum of 2 = no reducers.
-    undefined,
-    // Sum of 3 = no reducers.
-    undefined,
-    // Sum of 4 = no reducers.
-    undefined,
-    // Sum of 5 = no reducers.
-    undefined,
-    // Sum of 6 = reducers for `Combo` of [1, 2, 3].
-    DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6
-];
 
 /**
  * Empty reducing function.
@@ -181,8 +169,11 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const denormalizedReducers = DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS[this._cageM.cage.sum];
-        if (denormalizedReducers) {
+        const combos = this._cageM.comboSet.combos;
+
+        if (combos.length === 1) {
+            const denormalizedReducers = DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS[this._cageM.cage.sum];
+
             //
             // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
             // for efficient low-level number check and manipulation.
@@ -198,6 +189,7 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
             const num2 = combo.number2;
             const num3 = combo.number3;
 
+            const comboIndex = this._cageM.sumAddendsCombinatorics.optimisticIndexOf(combo);
             const compressedNumbersPresenceState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |
                     ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
@@ -213,7 +205,7 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            denormalizedReducers[compressedNumbersPresenceState](
+            denormalizedReducers[comboIndex][compressedNumbersPresenceState](
                 reduction, this._cageM, this._cellM1, this._cellM2, this._cellM3
             );
         } else {
