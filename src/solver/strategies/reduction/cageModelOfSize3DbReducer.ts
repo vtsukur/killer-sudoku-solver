@@ -79,7 +79,7 @@ const DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS: ReadonlyArray<DenormalizedTactic
             reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
             reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
         };
-    },
+    }
 ];
 
 const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6: ReadonlyArray<DenormalizedTacticalReducer> = db.sums[0].combos[0].entries.map(entry => {
