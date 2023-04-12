@@ -72,8 +72,9 @@ describe('CageModelOfSize3Reducers', () => {
         const padding = '    ';
         let tacticalReducersCode = '\n';
         const sums: Array<SumReductions> = [];
+        const cageSize = 3;
         const reductionsDb: CageSizeNReductionsDb = {
-            cageSize: 3,
+            cageSize,
             sums
         };
 
@@ -81,7 +82,7 @@ describe('CageModelOfSize3Reducers', () => {
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
-            for (const combo of SumAddendsCombinatorics.enumerate(sum, 3).val) {
+            for (const combo of SumAddendsCombinatorics.enumerate(sum, cageSize).val) {
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
                     combo: combo.numsSet.nums,
