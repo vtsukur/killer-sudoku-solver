@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { stringify } from 'yaml';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
@@ -11,7 +12,7 @@ import { MasterModelReduction } from '../../../../../src/solver/strategies/reduc
 import { logFactory } from '../../../../../src/util/logFactory';
 import { joinSet } from '../../../../../src/util/readableMessages';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
-import { stringify } from 'yaml';
+import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3DbReducer';
 
 const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
 
@@ -53,7 +54,7 @@ describe('CageModelOfSize3Reducers', () => {
             type: 'CageModelOfSize3Reducer'
         },
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize3Reducer(cageM),
+            newReducer: (cageM: CageModel) => new CageModelOfSize3DbReducer(cageM),
             type: 'CageModelOfSize3DbReducer'
         }
     ];
