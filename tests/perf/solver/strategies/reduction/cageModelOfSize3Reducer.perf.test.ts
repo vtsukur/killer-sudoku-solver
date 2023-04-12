@@ -8,6 +8,7 @@ import { LockableCageModel } from './lockableCageModel';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
 import { CageModelOfSize3Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3Reducer';
+import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3DbReducer';
 
 describe('Performance tests for `CageModelOfSize3Reducer`', () => {
 
@@ -64,6 +65,7 @@ describe('Performance tests for `CageModelOfSize3Reducer`', () => {
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
+        doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -72,6 +74,10 @@ describe('Performance tests for `CageModelOfSize3Reducer`', () => {
 
     const createOptimalReducer = (cageM: CageModel) => {
         return new CageModelOfSize3Reducer(cageM);
+    };
+
+    const createOptimalDbReducer = (cageM: CageModel) => {
+        return new CageModelOfSize3DbReducer(cageM);
     };
 
 });
