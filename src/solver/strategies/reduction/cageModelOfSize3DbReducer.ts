@@ -1,10 +1,9 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, SudokuNumsSet } from '../../sets';
+import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModelOfSize3FullReducer } from './archive/cageModelOfSize3FullReducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -17,8 +16,6 @@ import { CageSizeNReductionsDb } from './db/reductionDb';
 type DenormalizedTacticalReducer = (
     reduction: MasterModelReduction,
     cageM: CageModel,
-    combosSet: CombosSet,
-    combo: Combo,
     cellM1: CellModel,
     cellM2: CellModel,
     cellM3: CellModel
@@ -26,23 +23,76 @@ type DenormalizedTacticalReducer = (
 
 const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', 'utf-8');
 const db = parse(dbString) as CageSizeNReductionsDb;
+
+type DenormalizedTacticalReducerProducer = (
+        cellM1DeletedNums: ReadonlySudokuNumsSet,
+        cellM2DeletedNums: ReadonlySudokuNumsSet,
+        cellM3DeletedNums: ReadonlySudokuNumsSet
+) => DenormalizedTacticalReducer;
+
+const DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS: ReadonlyArray<DenormalizedTacticalReducerProducer> = [
+    // `0b000 = 0`
+    () => NOTHING_TO_REDUCE,
+    // `0b001 = 1`
+    (cellM1DeletedNums) => {
+        return (reduction, cageM, cellM1) => {
+            reduction.deleteNumOpts(cellM1, cellM1DeletedNums, cageM);
+        };
+    },
+    // `0b010 = 2`
+    (_cellM1DeletedNums, cellM2DeletedNums) => {
+        return (reduction, cageM, _cellM1, cellM2) => {
+            reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
+        };
+    },
+    // `0b011 = 3`
+    (cellM1DeletedNums, cellM2DeletedNums) => {
+        return (reduction, cageM, cellM1, cellM2) => {
+            reduction.deleteNumOpts(cellM1, cellM1DeletedNums, cageM);
+            reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
+        };
+    },
+    // `0b100 = 4`
+    (_cellM1DeletedNums, _cellM2DeletedNums, cellM3DeletedNums) => {
+        return (reduction, cageM, _cellM1, _cellM2, cellM3) => {
+            reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
+        };
+    },
+    // `0b101 = 5`
+    (cellM1DeletedNums, _cellM2DeletedNums, cellM3DeletedNums) => {
+        return (reduction, cageM, cellM1, _cellM2, cellM3) => {
+            reduction.deleteNumOpts(cellM1, cellM1DeletedNums, cageM);
+            reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
+        };
+    },
+    // `0b110 = 6`
+    (_cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums) => {
+        return (reduction, cageM, _cellM1, cellM2, cellM3) => {
+            reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
+            reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
+        };
+    },
+    // `0b111 = 7`
+    (cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums) => {
+        return (reduction, cageM, cellM1, cellM2, cellM3) => {
+            reduction.deleteNumOpts(cellM1, cellM1DeletedNums, cageM);
+            reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
+            reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
+        };
+    },
+];
+
 const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6: ReadonlyArray<DenormalizedTacticalReducer> = db.sums[0].combos[0].entries.map(entry => {
     if (entry.isValid) {
         if (entry.actions) {
-            const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : undefined;
-            const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : undefined;
-            const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : undefined;
-            return (reduction, cageM, _combosSet, _combo, cellM1, cellM2, cellM3) => {
-                if (cellM1DeletedNums) {
-                    reduction.deleteNumOpts(cellM1, cellM1DeletedNums, cageM);
-                }
-                if (cellM2DeletedNums) {
-                    reduction.deleteNumOpts(cellM2, cellM2DeletedNums, cageM);
-                }
-                if (cellM3DeletedNums) {
-                    reduction.deleteNumOpts(cellM3, cellM3DeletedNums, cageM);
-                }
-            };
+            const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
+            const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
+            const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
+            const state =
+                     (cellM1DeletedNums?.bitStore ? 1 : 0) |
+                    ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
+                    ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
+            return DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
         } else {
             return NOTHING_TO_REDUCE;
         }
@@ -110,8 +160,7 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
             const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
             const cellM3NumsBits = this._cellM3._numOptsSet.bitStore;
 
-            const combosSet = this._cageM.comboSet;
-            const combo = combosSet.combos[0];
+            const combo = this._cageM.comboSet.combos[0];
 
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num1 = combo.number1;
@@ -134,8 +183,7 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
                     ) << 6;
 
             denormalizedReducers[compressedNumbersPresenceState](
-                reduction, this._cageM, combosSet, combo,
-                this._cellM1, this._cellM2, this._cellM3
+                reduction, this._cageM, this._cellM1, this._cellM2, this._cellM3
             );
         } else {
             this._delegate.reduce(reduction);
