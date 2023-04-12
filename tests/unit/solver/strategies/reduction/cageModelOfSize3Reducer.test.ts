@@ -14,6 +14,7 @@ import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3DbReducer';
 import { SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { ComboReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
+import * as _ from 'lodash';
 
 const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
 
@@ -72,7 +73,7 @@ describe('CageModelOfSize3Reducers', () => {
             sums
         };
 
-        for (const sum of [ 6 ]) {
+        for (const sum of _.range(6, 25)) {
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
@@ -98,6 +99,10 @@ describe('CageModelOfSize3Reducers', () => {
                     cellM2.addWithinCageModel(cageM);
                     cellM3.addWithinCageModel(cageM);
                     cageM.initialReduce();
+                    const initialReductionMMR = new MasterModelReduction();
+                    cageM.reduceToCombinationsContaining(combo.number1, initialReductionMMR);
+                    cageM.reduceToCombinationsContaining(combo.number2, initialReductionMMR);
+                    cageM.reduceToCombinationsContaining(combo.number3, initialReductionMMR);
 
                     const stateRadix2 = state.toString(2);
                     const paddedStateRadix2 = stateRadix2.padStart(9, '0');
