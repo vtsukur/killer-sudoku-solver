@@ -101,6 +101,37 @@ const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6: ReadonlyArray<DenormalizedTac
     }
 });
 
+const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS: ReadonlyArray<ReadonlyArray<DenormalizedTacticalReducer> | undefined> = [
+    // Sum of 0 = no reducers.
+    undefined,
+    // Sum of 1 = no reducers.
+    undefined,
+    // Sum of 2 = no reducers.
+    undefined,
+    // Sum of 3 = no reducers.
+    undefined,
+    // Sum of 4 = no reducers.
+    undefined,
+    // Sum of 5 = no reducers.
+    undefined,
+    // Sum of 6 = reducers for `Combo` of [1, 2, 3].
+    DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6
+];
+
+/**
+ * Empty reducing function.
+ */
+function NOTHING_TO_REDUCE() {
+    // No-op.
+}
+
+/**
+ * Throwing reducing function which is executed if the combination of numbers is not possible.
+ */
+function IMPOSSIBLE_TO_REDUCE() {
+    throw new InvalidSolverStateError('Met compressed numbers state which should not be possible');
+}
+
 /**
  * Reduces possible numbers for {@link CellModel}s
  * within a {@link CageModel} of a {@link Cage} with 3 {@link Cell}s
@@ -190,35 +221,4 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
         }
     }
 
-}
-
-const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS: ReadonlyArray<ReadonlyArray<DenormalizedTacticalReducer> | undefined> = [
-    // Sum of 0 = no reducers.
-    undefined,
-    // Sum of 1 = no reducers.
-    undefined,
-    // Sum of 2 = no reducers.
-    undefined,
-    // Sum of 3 = no reducers.
-    undefined,
-    // Sum of 4 = no reducers.
-    undefined,
-    // Sum of 5 = no reducers.
-    undefined,
-    // Sum of 6 = reducers for `Combo` of [1, 2, 3].
-    DENORMALIZED_TACTICAL_REDUCERS_FOR_SUM_OF_6
-];
-
-/**
- * Empty reducing function.
- */
-function NOTHING_TO_REDUCE() {
-    // No-op.
-}
-
-/**
- * Throwing reducing function which is executed if the combination of numbers is not possible.
- */
-function IMPOSSIBLE_TO_REDUCE() {
-    throw new InvalidSolverStateError('Met compressed numbers state which should not be possible');
 }
