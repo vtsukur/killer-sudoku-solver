@@ -12,7 +12,7 @@ import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/
 
 describe('Performance tests for `CageModelOfSize3Reducer`', () => {
 
-    test('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
+    test.skip('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(6),
             prepareForReduction: (cageM, reduction) => {
@@ -42,7 +42,7 @@ describe('Performance tests for `CageModelOfSize3Reducer`', () => {
         });
     });
 
-    test.skip('Comparable test for `CageModel` of sum 8, 2 `Combo`s and 8 present numbers', () => {
+    test('Comparable test for `CageModel` of sum 8, 2 `Combo`s and 8 present numbers', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(8),
             prepareForReduction: (cageM, reduction) => {

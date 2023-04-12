@@ -213,4 +213,30 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
         }
     }
 
+    compressedNumbersPresenceState(comboIndex: number) {
+        const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
+        const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
+        const cellM3NumsBits = this._cellM3._numOptsSet.bitStore;
+
+        const combo = this._cageM.comboSet.combos[comboIndex];
+
+        const num1 = combo.number1;
+        const num2 = combo.number2;
+        const num3 = combo.number3;
+
+        return  ((cellM1NumsBits & (1 << num1)) >> num1) |
+                ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
+                ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
+                (
+                    ((cellM2NumsBits & (1 << num1)) >> num1) |
+                    ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    ((cellM2NumsBits & (1 << num3)) >> (num3 - 2))
+                ) << 3 |
+                (
+                    ((cellM3NumsBits & (1 << num1)) >> num1) |
+                    ((cellM3NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
+                ) << 6;
+    }
+
 }
