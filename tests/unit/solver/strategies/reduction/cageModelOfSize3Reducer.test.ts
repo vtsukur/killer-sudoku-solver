@@ -169,9 +169,9 @@ describe('CageModelOfSize3Reducers', () => {
                 if (cellM1Used || cellM2Used || cellM3Used) {
                     actions = {
                         isDeleteCombo: false,
-                        deleteNumsInCell1: cellM1DeletedNums,
-                        deleteNumsInCell2: cellM2DeletedNums,
-                        deleteNumsInCell3: cellM3DeletedNums
+                        deleteNumsInCell1: cellM1DeletedNums.length ? cellM1DeletedNums : undefined,
+                        deleteNumsInCell2: cellM2DeletedNums.length ? cellM2DeletedNums : undefined,
+                        deleteNumsInCell3: cellM3DeletedNums.length ? cellM3DeletedNums : undefined
                     };
                 }
 
