@@ -11,6 +11,7 @@ import { MasterModelReduction } from '../../../../../src/solver/strategies/reduc
 import { logFactory } from '../../../../../src/util/logFactory';
 import { joinSet } from '../../../../../src/util/readableMessages';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
+import { stringify } from 'yaml';
 
 const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
 
@@ -215,8 +216,8 @@ describe('CageModelOfSize3Reducers', () => {
         log.info(`Valid perms: ${validPerms} out of 512`);
         log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
         log.info(`${tacticalReducersCode}`);
-        const reductionDbData = JSON.stringify(reductionsDb, null, 2);
-        fs.writeFileSync('./src/solver/strategies/reduction/db/cage3_reductions.json', reductionDbData, 'utf8');
+        const reductionDbData = stringify(reductionsDb);
+        fs.writeFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', reductionDbData, 'utf8');
     });
 
     for (const { newReducer, type } of CONFIGS) {
