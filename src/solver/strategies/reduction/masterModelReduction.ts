@@ -20,8 +20,12 @@ export class MasterModelReduction {
     }
 
     deleteComboNumOpts(cellM: CellModel, combo: Combo, cageM?: CageModel) {
-        cellM.deleteNumOpts(combo.numsSet);
-        this.addDeletedNums(cellM, combo.numsSet);
+        this.deleteNumOpts(cellM, combo.numsSet, cageM);
+    }
+
+    deleteNumOpts(cellM: CellModel, nums: ReadonlySudokuNumsSet, cageM?: CageModel) {
+        cellM.deleteNumOpts(nums);
+        this.addDeletedNums(cellM, nums);
         this.markAsImpacted(cellM, cageM);
     }
 
