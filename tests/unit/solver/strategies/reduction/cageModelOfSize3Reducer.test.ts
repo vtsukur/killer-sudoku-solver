@@ -10,7 +10,6 @@ import { CageModelOfSize3Reducer } from '../../../../../src/solver/strategies/re
 import { CageSizeNReductionsDb, ReductionActions, ReductionEntry } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
-import { joinSet } from '../../../../../src/util/readableMessages';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3DbReducer';
 import { SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
@@ -66,11 +65,6 @@ describe('CageModelOfSize3Reducers', () => {
         const cell2 = Cell.at(0, 1);
         const cell3 = Cell.at(0, 2);
 
-        let validPerms = 0;
-        let reductionActionable = 0;
-
-        const padding = '    ';
-        let tacticalReducersCode = '\n';
         const sums: Array<SumReductions> = [];
         const cageSize = 3;
         const reductionsDb: CageSizeNReductionsDb = {
@@ -91,7 +85,9 @@ describe('CageModelOfSize3Reducers', () => {
 
                 const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).withCell(cell3).new();
 
-                const wrapCodeLine = (line: string) => `${padding}${line}\n`;
+                let validPerms = 0;
+                let reductionActionable = 0;
+
                 let state = 0;
                 while (state < 512) {
                     const cellM1 = new CellModel(cell1);
@@ -103,18 +99,14 @@ describe('CageModelOfSize3Reducers', () => {
                     cellM3.addWithinCageModel(cageM);
                     cageM.initialReduce();
 
-                    let isPotentialReductionFailure;
-
                     const stateRadix2 = state.toString(2);
                     const paddedStateRadix2 = stateRadix2.padStart(9, '0');
                     const stateRadix2_last3Bits = paddedStateRadix2.substring(0, 3);
                     const stateRadix2_middle3Bits = paddedStateRadix2.substring(3, 6);
                     const stateRadix2_first3Bits = paddedStateRadix2.substring(6);
-                    const commentCode = `// \`0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits} = ${state}\``;
-                    tacticalReducersCode += wrapCodeLine(commentCode);
+                    const stateRadix2String = `0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits}`;
 
                     try {
-                        isPotentialReductionFailure = false;
                         if (!(state & (1 << 0))) cellM1.deleteNumOpt(combo.nthNumber(0));
                         if (!(state & (1 << 1))) cellM1.deleteNumOpt(combo.nthNumber(1));
                         if (!(state & (1 << 2))) cellM1.deleteNumOpt(combo.nthNumber(2));
@@ -130,18 +122,14 @@ describe('CageModelOfSize3Reducers', () => {
                         const cellM3NumOptsBefore = new Set(cellM3.numOpts());
                         const cellM2NumOptsBefore = new Set(cellM2.numOpts());
                         const cellM1NumOptsBefore = new Set(cellM1.numOpts());
-                        log.info(`${state}: BEFORE CellM3(${joinSet(cellM3NumOptsBefore)}), CellM2(${joinSet(cellM2NumOptsBefore)}), CellM1(${joinSet(cellM1NumOptsBefore)})`);
 
-                        isPotentialReductionFailure = true;
                         const reduction = new MasterModelReduction();
                         cageM.reduce(reduction);
 
                         const cellM3NumOptsAfter = new Set(cellM3.numOpts());
                         const cellM2NumOptsAfter = new Set(cellM2.numOpts());
                         const cellM1NumOptsAfter = new Set(cellM1.numOpts());
-                        log.info(`${state}: AFTER SUCCESS CellM3(${joinSet(cellM3NumOptsAfter)}), CellM2(${joinSet(cellM2NumOptsAfter)}), CellM1(${joinSet(cellM1NumOptsAfter)})`);
 
-                        let singleTacticalReducerCode = '';
                         let cellM1Used = false;
                         let cellM2Used = false;
                         let cellM3Used = false;
@@ -150,21 +138,18 @@ describe('CageModelOfSize3Reducers', () => {
                         const cellM3DeletedNums = new Array<number>();
                         for (const originalNum of cellM1NumOptsBefore) {
                             if (!cellM1NumOptsAfter.has(originalNum)) {
-                                singleTacticalReducerCode += wrapCodeLine(`${padding}reduction.deleteNumOpt(cellM1, ${originalNum}, cageM);`);
                                 cellM1DeletedNums.push(originalNum);
                                 cellM1Used = true;
                             }
                         }
                         for (const originalNum of cellM2NumOptsBefore) {
                             if (!cellM2NumOptsAfter.has(originalNum)) {
-                                singleTacticalReducerCode += wrapCodeLine(`${padding}reduction.deleteNumOpt(cellM2, ${originalNum}, cageM);`);
                                 cellM2DeletedNums.push(originalNum);
                                 cellM2Used = true;
                             }
                         }
                         for (const originalNum of cellM3NumOptsBefore) {
                             if (!cellM3NumOptsAfter.has(originalNum)) {
-                                singleTacticalReducerCode += wrapCodeLine(`${padding}reduction.deleteNumOpt(cellM3, ${originalNum}, cageM);`);
                                 cellM3DeletedNums.push(originalNum);
                                 cellM3Used = true;
                             }
@@ -172,6 +157,7 @@ describe('CageModelOfSize3Reducers', () => {
 
                         let actions: ReductionActions | undefined;
                         if (cellM1Used || cellM2Used || cellM3Used) {
+                            ++reductionActionable;
                             actions = {
                                 isDeleteCombo: false,
                                 deleteNumsInCell1: cellM1DeletedNums.length ? cellM1DeletedNums : undefined,
@@ -180,23 +166,9 @@ describe('CageModelOfSize3Reducers', () => {
                             };
                         }
 
-                        if (singleTacticalReducerCode) {
-                            log.info(`${state}: REDUCTION ACTIONS\n${singleTacticalReducerCode}`);
-                            ++reductionActionable;
-                            const cellM1ParamDeclaration = cellM1Used ? 'cellM1' : '_cellM1';
-                            const cellM2ParamConditionalDeclaration = cellM2Used ? ', cellM2' : (cellM3Used ? ', _cellM2' : '');
-                            const cellM3ParamConditionalDeclaration = cellM3Used ? ', cellM3' : '';
-                            tacticalReducersCode += wrapCodeLine(`(reduction, cageM, _combosSet, _combo, ${cellM1ParamDeclaration}${cellM2ParamConditionalDeclaration}${cellM3ParamConditionalDeclaration}) => {`);
-                            tacticalReducersCode += singleTacticalReducerCode;
-                            tacticalReducersCode += wrapCodeLine('},');
-                        } else {
-                            log.info(`${state}: NO REDUCTION ACTIONS`);
-                            tacticalReducersCode += wrapCodeLine('NOTHING_TO_REDUCE,');
-                        }
-
                         entries.push({
                             state,
-                            stateRadix2String: `0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits}`,
+                            stateRadix2String,
                             isValid: true,
                             actions
                         });
@@ -204,19 +176,19 @@ describe('CageModelOfSize3Reducers', () => {
                         ++validPerms;
                     } catch (e) {
                         // Can fail, that's OK.
-                        log.info(`${state}: FAIL FOR ${state.toString(2)} (${isPotentialReductionFailure ? 'reduction' : 'num deletion'})`);
-                        tacticalReducersCode += wrapCodeLine('IMPOSSIBLE_TO_REDUCE,');
                         entries.push({
                             state,
-                            stateRadix2String: `0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits}`,
+                            stateRadix2String,
                             isValid: false,
                             actions: undefined
                         });
                     }
-                    log.info('');
 
                     ++state;
                 }
+
+                log.info(`Valid perms: ${validPerms} out of 512`);
+                log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
 
                 combos.push(comboReductions);
             }
@@ -224,9 +196,6 @@ describe('CageModelOfSize3Reducers', () => {
             sums.push(sumReductions);
         }
 
-        log.info(`Valid perms: ${validPerms} out of 512`);
-        log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
-        log.info(`${tacticalReducersCode}`);
         const reductionDbData = stringify(reductionsDb);
         fs.writeFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', reductionDbData, 'utf8');
     });
