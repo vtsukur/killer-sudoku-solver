@@ -21,6 +21,20 @@ type DenormalizedTacticalReducer = (
     cellM3: CellModel
 ) => void;
 
+type ReductionState = {
+    comboNumsSet: ReadonlySudokuNumsSet;
+    deleteNumsInCell1: ReadonlySudokuNumsSet;
+    deleteNumsInCell2: ReadonlySudokuNumsSet;
+    deleteNumsInCell3: ReadonlySudokuNumsSet;
+};
+
+const EMPTY_REDUCTION_STATE: ReductionState = {
+    comboNumsSet: SudokuNumsSet.EMPTY,
+    deleteNumsInCell1: SudokuNumsSet.EMPTY,
+    deleteNumsInCell2: SudokuNumsSet.EMPTY,
+    deleteNumsInCell3: SudokuNumsSet.EMPTY
+};
+
 const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', 'utf-8');
 const db = parse(dbString) as CageSizeNReductionsDb;
 
@@ -82,6 +96,7 @@ const DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS: ReadonlyArray<DenormalizedTactic
     }
 ];
 
+const ALL_REDUCTION_STATES: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db.sums[db.sums.length - 1].sum + 1);
 const DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS: Array<Array<ReadonlyArray<DenormalizedTacticalReducer>>> = new Array(db.sums[db.sums.length - 1].sum + 1);
 db.sums.forEach(sumReductions => {
     DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
@@ -101,6 +116,28 @@ db.sums.forEach(sumReductions => {
                 }
             } else {
                 return IMPOSSIBLE_TO_REDUCE;
+            }
+        });
+    });
+    ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
+        const comboNumsSet = SudokuNumsSet.of(...comboReductions.combo);
+        return comboReductions.entries.map(entry => {
+            if (entry.isValid) {
+                if (entry.actions) {
+                    const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
+                    const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
+                    const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
+                    return {
+                        comboNumsSet,
+                        deleteNumsInCell1: cellM1DeletedNums,
+                        deleteNumsInCell2: cellM2DeletedNums,
+                        deleteNumsInCell3: cellM3DeletedNums
+                    };
+                } else {
+                    return EMPTY_REDUCTION_STATE;
+                }
+            } else {
+                return EMPTY_REDUCTION_STATE;
             }
         });
     });
