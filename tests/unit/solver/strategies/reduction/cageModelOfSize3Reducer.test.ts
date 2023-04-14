@@ -11,7 +11,6 @@ import { CageSizeNReductionsDb, ReductionActions, ReductionEntry } from '../../.
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
-import { CageModelOfSize3DbReducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3DbReducer';
 import { SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { ComboReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import * as _ from 'lodash';
@@ -56,7 +55,7 @@ describe('CageModelOfSize3Reducers', () => {
             type: 'CageModelOfSize3Reducer'
         },
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize3DbReducer(cageM),
+            newReducer: (cageM: CageModel) => new CageModelOfSize3Reducer(cageM),
             type: 'CageModelOfSize3DbReducer'
         }
     ];
