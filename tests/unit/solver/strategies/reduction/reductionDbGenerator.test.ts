@@ -69,17 +69,14 @@ describe('ReductionDb', () => {
                     const stateRadix2String = `0b${stateRadix2_bitsStrings.join('_')}`;
 
                     try {
-                        if (!(state & (1 << 0))) cellMs[0].deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 1))) cellMs[0].deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 2))) cellMs[0].deleteNumOpt(combo.nthNumber(2));
+                        let i = 0;
+                        while (i < cageSizeXCageSize) {
+                            const cellMIndex = Math.trunc(i / cageSize);
+                            const comboNumIndex = i % cageSize;
+                            if (!(state & (1 << i))) cellMs[cellMIndex].deleteNumOpt(combo.nthNumber(comboNumIndex));
 
-                        if (!(state & (1 << 3))) cellMs[1].deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 4))) cellMs[1].deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 5))) cellMs[1].deleteNumOpt(combo.nthNumber(2));
-
-                        if (!(state & (1 << 6))) cellMs[2].deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 7))) cellMs[2].deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 8))) cellMs[2].deleteNumOpt(combo.nthNumber(2));
+                            ++i;
+                        }
 
                         const cellM3NumOptsBefore = new Set(cellMs[2].numOpts());
                         const cellM2NumOptsBefore = new Set(cellMs[1].numOpts());
