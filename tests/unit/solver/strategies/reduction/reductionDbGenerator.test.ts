@@ -16,7 +16,7 @@ const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test.skip('Gets generated', () => {
+    test('Gets generated', () => {
         generateForSizeN(3);
     });
 
@@ -48,13 +48,11 @@ describe('ReductionDb', () => {
                 let state = 0;
                 const maxStates = Math.pow(2, cageSize * cageSize);
                 while (state < maxStates) {
-                    const cellM1 = new CellModel(cells[0]);
-                    const cellM2 = new CellModel(cells[1]);
-                    const cellM3 = new CellModel(cells[2]);
-                    const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
-                    cellM1.addWithinCageModel(cageM);
-                    cellM2.addWithinCageModel(cageM);
-                    cellM3.addWithinCageModel(cageM);
+                    const cellMs = cells.map(cell => new CellModel(cell));
+                    const cageM = new CageModel(cage, cellMs);
+                    for (const cellM of cellMs) {
+                        cellM.addWithinCageModel(cageM);
+                    }
                     cageM.initialReduce();
                     const initialReductionMMR = new MasterModelReduction();
                     cageM.reduceToCombinationsContaining(combo.number1, initialReductionMMR);
@@ -69,29 +67,29 @@ describe('ReductionDb', () => {
                     const stateRadix2String = `0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits}`;
 
                     try {
-                        if (!(state & (1 << 0))) cellM1.deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 1))) cellM1.deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 2))) cellM1.deleteNumOpt(combo.nthNumber(2));
+                        if (!(state & (1 << 0))) cellMs[0].deleteNumOpt(combo.nthNumber(0));
+                        if (!(state & (1 << 1))) cellMs[0].deleteNumOpt(combo.nthNumber(1));
+                        if (!(state & (1 << 2))) cellMs[0].deleteNumOpt(combo.nthNumber(2));
 
-                        if (!(state & (1 << 3))) cellM2.deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 4))) cellM2.deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 5))) cellM2.deleteNumOpt(combo.nthNumber(2));
+                        if (!(state & (1 << 3))) cellMs[1].deleteNumOpt(combo.nthNumber(0));
+                        if (!(state & (1 << 4))) cellMs[1].deleteNumOpt(combo.nthNumber(1));
+                        if (!(state & (1 << 5))) cellMs[1].deleteNumOpt(combo.nthNumber(2));
 
-                        if (!(state & (1 << 6))) cellM3.deleteNumOpt(combo.nthNumber(0));
-                        if (!(state & (1 << 7))) cellM3.deleteNumOpt(combo.nthNumber(1));
-                        if (!(state & (1 << 8))) cellM3.deleteNumOpt(combo.nthNumber(2));
+                        if (!(state & (1 << 6))) cellMs[2].deleteNumOpt(combo.nthNumber(0));
+                        if (!(state & (1 << 7))) cellMs[2].deleteNumOpt(combo.nthNumber(1));
+                        if (!(state & (1 << 8))) cellMs[2].deleteNumOpt(combo.nthNumber(2));
 
-                        const cellM3NumOptsBefore = new Set(cellM3.numOpts());
-                        const cellM2NumOptsBefore = new Set(cellM2.numOpts());
-                        const cellM1NumOptsBefore = new Set(cellM1.numOpts());
+                        const cellM3NumOptsBefore = new Set(cellMs[2].numOpts());
+                        const cellM2NumOptsBefore = new Set(cellMs[1].numOpts());
+                        const cellM1NumOptsBefore = new Set(cellMs[0].numOpts());
 
                         const reduction = new MasterModelReduction();
                         const reducer = new CageModel3FullReducer(cageM);
                         reducer.reduce(reduction);
 
-                        const cellM3NumOptsAfter = new Set(cellM3.numOpts());
-                        const cellM2NumOptsAfter = new Set(cellM2.numOpts());
-                        const cellM1NumOptsAfter = new Set(cellM1.numOpts());
+                        const cellM3NumOptsAfter = new Set(cellMs[2].numOpts());
+                        const cellM2NumOptsAfter = new Set(cellMs[1].numOpts());
+                        const cellM1NumOptsAfter = new Set(cellMs[0].numOpts());
 
                         let cellM1Used = false;
                         let cellM2Used = false;
