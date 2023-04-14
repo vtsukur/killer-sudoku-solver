@@ -77,14 +77,15 @@ export class CageModel {
     deepCopy() {
         const copy = this.deepCopyWithSameCellModels();
 
-        const cellM1Copy = this.cellMs[0].deepCopyWithoutCageModels();
-        const cellM2Copy = this.cellMs[1].deepCopyWithoutCageModels();
+        const cellMsCpy = this.cellMs.map(cellM => cellM.deepCopyWithoutCageModels());
 
-        cellM1Copy.addWithinCageModel(copy);
-        cellM2Copy.addWithinCageModel(copy);
+        for (const cellM of cellMsCpy) {
+            cellM.addWithinCageModel(copy);
+        }
 
-        copy.cellMs[0] = cellM1Copy;
-        copy.cellMs[1] = cellM2Copy;
+        cellMsCpy.forEach((cellM, index) => {
+            copy.cellMs[index] = cellM;
+        });
 
         return copy;
     }
