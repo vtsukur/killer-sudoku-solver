@@ -217,8 +217,6 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cageM = this._cageM;
-
         const combos = this._cageM.comboSet.combos;
 
         if (combos.length === 1) {
