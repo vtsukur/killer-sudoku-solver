@@ -258,9 +258,9 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
             const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
             const cellM3NumsBits = this._cellM3._numOptsSet.bitStore;
 
-            const actualReductionCellM1 = SudokuNumsSet.newEmpty();
-            const actualReductionCellM2 = SudokuNumsSet.newEmpty();
-            const actualReductionCellM3 = SudokuNumsSet.newEmpty();
+            let actualReductionStateCellM1 = 0;
+            let actualReductionStateCellM2 = 0;
+            let actualReductionStateCellM3 = 0;
 
             for (const combo of combos) {
                 const num1 = combo.number1;
@@ -286,20 +286,17 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
                 const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
 
                 if (reductionState.isValid) {
-                    const cellM1NumBitsCpy = new SudokuNumsSet(cellM1NumsBits);
-                    const cellM2NumBitsCpy = new SudokuNumsSet(cellM2NumsBits);
-                    const cellM3NumBitsCpy = new SudokuNumsSet(cellM3NumsBits);
-                    actualReductionCellM1.addAll(cellM1NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell1));
-                    actualReductionCellM2.addAll(cellM2NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell2));
-                    actualReductionCellM3.addAll(cellM3NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell3));
+                    actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1.bitStore);
+                    actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2.bitStore);
+                    actualReductionStateCellM3 |= (cellM3NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell3.bitStore);
                 } else {
                     this._cageM.comboSet.deleteCombo(combo);
                 }
             }
 
-            reduction.tryReduceNumOpts(this._cellM1, actualReductionCellM1, this._cageM);
-            reduction.tryReduceNumOpts(this._cellM2, actualReductionCellM2, this._cageM);
-            reduction.tryReduceNumOpts(this._cellM3, actualReductionCellM3, this._cageM);
+            reduction.tryReduceNumOpts(this._cellM1, new SudokuNumsSet(actualReductionStateCellM1), this._cageM);
+            reduction.tryReduceNumOpts(this._cellM2, new SudokuNumsSet(actualReductionStateCellM2), this._cageM);
+            reduction.tryReduceNumOpts(this._cellM3, new SudokuNumsSet(actualReductionStateCellM3), this._cageM);
         }
     }
 
