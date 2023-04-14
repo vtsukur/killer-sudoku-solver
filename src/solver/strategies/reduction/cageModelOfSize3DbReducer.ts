@@ -259,11 +259,11 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
                 reduction, this._cageM, this._cellM1, this._cellM2, this._cellM3
             );
         } else {
-            const cageMCpy = this._cageM.deepCopy();
-            const fullReducer = new CageModelOfSize3FullReducer(cageMCpy);
-            cageMCpy.initialReduce();
-            const reductionCpy = new MasterModelReduction();
-            fullReducer.reduce(reductionCpy);
+            // const cageMCpy = this._cageM.deepCopy();
+            // const fullReducer = new CageModelOfSize3FullReducer(cageMCpy);
+            // cageMCpy.initialReduce();
+            // const reductionCpy = new MasterModelReduction();
+            // fullReducer.reduce(reductionCpy);
 
             const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
             const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
