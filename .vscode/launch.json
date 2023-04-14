@@ -672,6 +672,26 @@
         },
 
         {
+            "name": "npm run test [solver/strategies/reduction/reductionDbGenerator]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/reduction/reductionDbGenerator.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverStrategiesReduction_db"
+            }
+        },
+
+        {
             "name": "npm run test [solver/strategies/reduction/cageModel2Reducer]",
             "request": "launch",
             "runtimeArgs": [
@@ -687,7 +707,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverStrategiesReduction"
+                "group": "solverStrategiesReduction_main"
             }
         },
         {
@@ -706,7 +726,7 @@
             "console": "integratedTerminal",
             "type": "node",
             "presentation": {
-                "group": "solverStrategiesReduction"
+                "group": "solverStrategiesReduction_main"
             }
         },
 
