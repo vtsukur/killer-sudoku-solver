@@ -42,7 +42,7 @@ export class Stat {
  *
  * @public
  */
-export class CageModelOfSize2ReducerRouter implements CageModelReducer {
+export class CageModel2ReducerRouter implements CageModelReducer {
 
     private readonly _cageM: CageModel;
     private readonly _cellM1: CellModel;
@@ -68,7 +68,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        if (CageModelOfSize2ReducerRouter.collectPerfStats) {
+        if (CageModel2ReducerRouter.collectPerfStats) {
             const deletedNumsCellM1 = reduction.deletedNumOptsOf(this._cellM1).nums;
             const deletedNumsCellM2 = reduction.deletedNumOptsOf(this._cellM2).nums;
             const stat = new Stat(
@@ -112,7 +112,7 @@ export class CageModelOfSize2ReducerRouter implements CageModelReducer {
             return;
         }
 
-        if (CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction) {
+        if (CageModel2ReducerRouter.isAlwaysApplyOptimalReduction) {
             this._optimalReducer.reduce(reduction);
             return;
         } else if (this._cageM.isFirstReduction ||

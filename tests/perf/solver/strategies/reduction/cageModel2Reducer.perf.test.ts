@@ -5,7 +5,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
-import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2ReducerRouter';
+import { CageModel2ReducerRouter } from '../../../../../src/solver/strategies/reduction/archive/cageModel2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
@@ -150,36 +150,36 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
         // General warm up.
-        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        CageModel2ReducerRouter.collectPerfStats = false;
         CachedNumRanges.ZERO_TO_N_LTE_81[3].forEach(() => {
             solveAllSudokuDotComPuzzles();
         });
 
         // Testing optimal reduction for `CageModel`s of size 2.
-        CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction = true;
+        CageModel2ReducerRouter.isAlwaysApplyOptimalReduction = true;
 
         // ... Warm up
-        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        CageModel2ReducerRouter.collectPerfStats = false;
         solveAllSudokuDotComPuzzles();
 
         // ... Actual test
         log.info('Testing optimal reduction');
-        CageModelOfSize2ReducerRouter.collectPerfStats = true;
+        CageModel2ReducerRouter.collectPerfStats = true;
         runAndMeasureAllSudokuDotComPuzzles('Optimal');
-        const fullReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
+        const fullReductionStats = CageModel2ReducerRouter.captureMeasures();
 
         // Testing routing reduction for `CageModel`s of size 2.
-        CageModelOfSize2ReducerRouter.isAlwaysApplyOptimalReduction = false;
+        CageModel2ReducerRouter.isAlwaysApplyOptimalReduction = false;
 
         // ... Warm up
-        CageModelOfSize2ReducerRouter.collectPerfStats = false;
+        CageModel2ReducerRouter.collectPerfStats = false;
         solveAllSudokuDotComPuzzles();
 
         // ... Actual test
         log.info('Testing routing reduction');
-        CageModelOfSize2ReducerRouter.collectPerfStats = true;
+        CageModel2ReducerRouter.collectPerfStats = true;
         runAndMeasureAllSudokuDotComPuzzles('Routing');
-        const routingReductionStats = CageModelOfSize2ReducerRouter.captureMeasures();
+        const routingReductionStats = CageModel2ReducerRouter.captureMeasures();
 
         // Comparing results
         expect(fullReductionStats.length).toBe(routingReductionStats.length);
@@ -196,18 +196,12 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
 
             const durationDelta = Math.abs(routingReductionStat.duration - fullReductionStat.duration);
             if (fullReductionStat.duration < routingReductionStat.duration) {
-                // log.info('Full reduction wins:');
-                // CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
-                // CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
                 ++fullReductionWins;
                 if (fullReductionStat.deletedNumsCount === 1) {
                     ++fullReductionWinsWithDeletedLte1;
                     fullReductionWinsWithDeletedLte1SavedTime += durationDelta;
                 }
             } else {
-                // log.info('Partial reduction wins:');
-                // CageModelOfSize2ReducerRouter.printStat(routingReductionStat);
-                // CageModelOfSize2ReducerRouter.printStat(fullReductionStat);
                 ++partialReductionWins;
                 if (fullReductionStat.deletedNumsCount === 1) {
                     ++partialReductionWinsWithDeletedLte1;
