@@ -87,24 +87,22 @@ describe('ReductionDb', () => {
                         const cellMsNumOptsAfter = cellMs.map(cellM => new Set(cellM.numOpts()));
 
                         const cellMsUsed = new Array<boolean>(cageSize).fill(false);
-                        const cellM1DeletedNums = new Array<number>();
-                        const cellM2DeletedNums = new Array<number>();
-                        const cellM3DeletedNums = new Array<number>();
+                        const cellMsDeletedNums = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(() => new Array<number>());
                         for (const originalNum of cellMsNumOptsBefore[0]) {
                             if (!cellMsNumOptsAfter[0].has(originalNum)) {
-                                cellM1DeletedNums.push(originalNum);
+                                cellMsDeletedNums[0].push(originalNum);
                                 cellMsUsed[0] = true;
                             }
                         }
                         for (const originalNum of cellMsNumOptsBefore[1]) {
                             if (!cellMsNumOptsAfter[1].has(originalNum)) {
-                                cellM2DeletedNums.push(originalNum);
+                                cellMsDeletedNums[1].push(originalNum);
                                 cellMsUsed[1] = true;
                             }
                         }
                         for (const originalNum of cellMsNumOptsBefore[2]) {
                             if (!cellMsNumOptsAfter[2].has(originalNum)) {
-                                cellM3DeletedNums.push(originalNum);
+                                cellMsDeletedNums[2].push(originalNum);
                                 cellMsUsed[2] = true;
                             }
                         }
@@ -115,9 +113,9 @@ describe('ReductionDb', () => {
                             actions = {
                                 isDeleteCombo: false,
                                 deleteNums: [
-                                    cellM1DeletedNums,
-                                    cellM2DeletedNums,
-                                    cellM3DeletedNums
+                                    cellMsDeletedNums[0],
+                                    cellMsDeletedNums[1],
+                                    cellMsDeletedNums[2]
                                 ]
                             };
                         }
