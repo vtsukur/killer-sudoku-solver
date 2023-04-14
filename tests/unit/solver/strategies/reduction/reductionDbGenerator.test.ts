@@ -102,11 +102,7 @@ describe('ReductionDb', () => {
                             ++reductionActionable;
                             actions = {
                                 isDeleteCombo: false,
-                                deleteNums: [
-                                    cellMsDeletedNums[0],
-                                    cellMsDeletedNums[1],
-                                    cellMsDeletedNums[2]
-                                ]
+                                deleteNums: cellMsDeletedNums
                             };
                         }
 
