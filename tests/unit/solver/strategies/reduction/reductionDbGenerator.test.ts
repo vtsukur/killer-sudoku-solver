@@ -15,12 +15,15 @@ const log = logFactory.withLabel('reductionDbGenerator');
 describe('ReductionDb', () => {
 
     test.skip('Gets generated', () => {
+        generateForSizeN(3);
+    });
+
+    const generateForSizeN = (cageSize: number) => {
         const cell1 = Cell.at(0, 0);
         const cell2 = Cell.at(0, 1);
         const cell3 = Cell.at(0, 2);
 
         const sums: Array<SumReductions> = [];
-        const cageSize = 3;
         const reductionsDb: CageSizeNReductionsDb = {
             cageSize,
             sums
@@ -156,6 +159,6 @@ describe('ReductionDb', () => {
 
         const reductionDbData = stringify(reductionsDb);
         fs.writeFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', reductionDbData, 'utf8');
-    });
+    };
 
 });
