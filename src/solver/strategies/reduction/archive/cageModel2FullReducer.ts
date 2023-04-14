@@ -10,7 +10,7 @@ import { MasterModelReduction } from '../masterModelReduction';
  *
  * @public
  */
-export class CageModelOfSize2FullReducer implements CageModelReducer {
+export class CageModel2FullReducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.

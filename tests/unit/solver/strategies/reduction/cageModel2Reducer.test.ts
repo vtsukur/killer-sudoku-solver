@@ -3,7 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { CageModelOfSize2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2FullReducer';
+import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
 import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -35,8 +35,8 @@ describe('CageModelOfSize2Reducers', () => {
 
     const CONFIGS: ReadonlyArray<CageModelReducerTestConfig> = [
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize2FullReducer(cageM),
-            type: 'CageModelOfSize2FullReducer'
+            newReducer: (cageM: CageModel) => new CageModel2FullReducer(cageM),
+            type: 'CageModel2FullReducer'
         },
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM),
