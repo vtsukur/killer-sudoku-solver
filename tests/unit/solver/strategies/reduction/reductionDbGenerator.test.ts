@@ -9,19 +9,18 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageSizeNReductionsDb, ComboReductions, ReductionActions, ReductionEntry, SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
+import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test.skip('Gets generated', () => {
+    test('Gets generated', () => {
         generateForSizeN(3);
     });
 
     const generateForSizeN = (cageSize: number) => {
-        const cell1 = Cell.at(0, 0);
-        const cell2 = Cell.at(0, 1);
-        const cell3 = Cell.at(0, 2);
+        const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
         const sums: Array<SumReductions> = [];
         const reductionsDb: CageSizeNReductionsDb = {
@@ -40,16 +39,17 @@ describe('ReductionDb', () => {
                     entries
                 };
 
-                const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).withCell(cell3).new();
+                const cage = Cage.ofSum(sum).withCells(cells).new();
 
                 let validPerms = 0;
                 let reductionActionable = 0;
 
                 let state = 0;
-                while (state < 512) {
-                    const cellM1 = new CellModel(cell1);
-                    const cellM2 = new CellModel(cell2);
-                    const cellM3 = new CellModel(cell3);
+                const maxStates = Math.pow(2, cageSize * cageSize);
+                while (state < maxStates) {
+                    const cellM1 = new CellModel(cells[0]);
+                    const cellM2 = new CellModel(cells[1]);
+                    const cellM3 = new CellModel(cells[2]);
                     const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
                     cellM1.addWithinCageModel(cageM);
                     cellM2.addWithinCageModel(cageM);
@@ -148,7 +148,7 @@ describe('ReductionDb', () => {
                     ++state;
                 }
 
-                log.info(`Valid perms: ${validPerms} out of 512`);
+                log.info(`Valid perms: ${validPerms} out of ${maxStates}`);
                 log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
 
                 combos.push(comboReductions);
