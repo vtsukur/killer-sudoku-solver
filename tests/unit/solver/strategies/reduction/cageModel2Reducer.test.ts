@@ -5,7 +5,7 @@ import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
 import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
-import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
+import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
@@ -39,8 +39,8 @@ describe('CageModelOfSize2Reducers', () => {
             type: 'CageModel2FullReducer'
         },
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize2PartialReducer(cageM),
-            type: 'CageModelOfSize2PartialReducer'
+            newReducer: (cageM: CageModel) => new CageModel2PartialReducer(cageM),
+            type: 'CageModel2PartialReducer'
         },
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize2Reducer(cageM),

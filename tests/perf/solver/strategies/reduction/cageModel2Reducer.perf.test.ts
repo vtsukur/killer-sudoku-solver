@@ -4,7 +4,7 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
-import { CageModelOfSize2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2PartialReducer';
+import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
 import { CageModelOfSize2ReducerRouter } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize2ReducerRouter';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
@@ -141,7 +141,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const createPartialReducer = (cageM: CageModel) => {
-        return new CageModelOfSize2PartialReducer(cageM);
+        return new CageModel2PartialReducer(cageM);
     };
 
     const createOptimalReducer = (cageM: CageModel) => {
