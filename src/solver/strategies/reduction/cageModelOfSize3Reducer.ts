@@ -4,7 +4,6 @@ import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
-import { CageModelOfSize3FullReducer } from './archive/cageModelOfSize3FullReducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { CageSizeNReductionsDb } from './db/reductionDb';
@@ -197,8 +196,6 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
      */
     private readonly _cellM3: CellModel;
 
-    private readonly _delegate: CageModelReducer;
-
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 3 {@link Cell}s.
@@ -210,7 +207,6 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
         this._cellM3 = cageM.cellMs[2];
-        this._delegate = new CageModelOfSize3FullReducer(cageM);
     }
 
     /**
