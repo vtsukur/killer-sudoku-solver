@@ -5,7 +5,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo, SumAddendsCombinatorics } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
+import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 import { CageSizeNReductionsDb, ReductionActions, ReductionEntry } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -51,8 +51,8 @@ describe('CageModel3Reducers', () => {
 
     const CONFIGS: ReadonlyArray<CageModelReducerTestConfig> = [
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize3FullReducer(cageM),
-            type: 'CageModelOfSize3FullReducer'
+            newReducer: (cageM: CageModel) => new CageModel3FullReducer(cageM),
+            type: 'CageModel3FullReducer'
         },
         {
             newReducer: (cageM: CageModel) => new CageModel3Reducer(cageM),

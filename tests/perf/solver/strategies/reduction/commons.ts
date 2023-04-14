@@ -5,7 +5,7 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { LockableCageModel } from './lockableCageModel';
 import { LockableMasterModelReduction } from './lockableMasterModelReduction';
 
-const log = logFactory.withLabel('cageModelOfSizeNReducer.perf');
+const log = logFactory.withLabel('cageModelNReducer.perf');
 
 export type CreateReferenceCageModelFn = () => LockableCageModel;
 

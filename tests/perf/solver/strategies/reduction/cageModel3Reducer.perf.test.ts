@@ -6,7 +6,7 @@ import { Combo } from '../../../../../src/solver/math';
 import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
-import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
+import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 
 describe('Performance tests for `CageModel3Reducer`', () => {
@@ -97,7 +97,7 @@ describe('Performance tests for `CageModel3Reducer`', () => {
     };
 
     const createFullReducer = (cageM: CageModel) => {
-        return new CageModelOfSize3FullReducer(cageM);
+        return new CageModel3FullReducer(cageM);
     };
 
     const createOptimalReducer = (cageM: CageModel) => {
