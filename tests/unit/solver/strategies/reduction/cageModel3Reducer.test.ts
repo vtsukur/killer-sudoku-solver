@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as fs from 'node:fs';
 import { stringify } from 'yaml';
 import { Cage } from '../../../../../src/puzzle/cage';
@@ -5,16 +6,13 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo, SumAddendsCombinatorics } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
+import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
-import { CageSizeNReductionsDb, ReductionActions, ReductionEntry } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
+import { CageSizeNReductionsDb, ComboReductions, ReductionActions, ReductionEntry, SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
-import { SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
-import { ComboReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
-import * as _ from 'lodash';
-import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 
 const log = logFactory.withLabel('cageModel3Reducers.test');
 
