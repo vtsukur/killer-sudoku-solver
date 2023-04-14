@@ -55,9 +55,9 @@ describe('ReductionDb', () => {
                     }
                     cageM.initialReduce();
                     const initialReductionMMR = new MasterModelReduction();
-                    cageM.reduceToCombinationsContaining(combo.number1, initialReductionMMR);
-                    cageM.reduceToCombinationsContaining(combo.number2, initialReductionMMR);
-                    cageM.reduceToCombinationsContaining(combo.number3, initialReductionMMR);
+                    for (const comboNum of combo.numsSet.nums) {
+                        cageM.reduceToCombinationsContaining(comboNum, initialReductionMMR);
+                    }
 
                     const stateRadix2 = state.toString(2);
                     const paddedStateRadix2 = stateRadix2.padStart(9, '0');
