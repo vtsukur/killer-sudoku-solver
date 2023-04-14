@@ -257,12 +257,6 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
                 reduction, this._cageM, this._cellM1, this._cellM2, this._cellM3
             );
         } else {
-            // const cageMCpy = this._cageM.deepCopy();
-            // const fullReducer = new CageModelOfSize3FullReducer(cageMCpy);
-            // cageMCpy.initialReduce();
-            // const reductionCpy = new MasterModelReduction();
-            // fullReducer.reduce(reductionCpy);
-
             const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
             const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
             const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
@@ -310,42 +304,6 @@ export class CageModelOfSize3Reducer implements CageModelReducer {
             reduction.tryReduceNumOpts(this._cellM1, actualReductionCellM1, this._cageM);
             reduction.tryReduceNumOpts(this._cellM2, actualReductionCellM2, this._cageM);
             reduction.tryReduceNumOpts(this._cellM3, actualReductionCellM3, this._cageM);
-
-            // also check combos
-            // if (this._cellM1._numOptsSet.bitStore !== cageMCpy.cellMs[0]._numOptsSet.bitStore) {
-            //     throw 'fuck';
-            // }
-            // if (this._cellM2._numOptsSet.bitStore !== cageMCpy.cellMs[1]._numOptsSet.bitStore) {
-            //     throw 'fuck';
-            // }
-            // if (this._cellM3._numOptsSet.bitStore !== cageMCpy.cellMs[2]._numOptsSet.bitStore) {
-            //     throw 'fuck';
-            // }
-
-            // const PERMS_OF_3 = [
-            //     [0, 1, 2],
-            //     [0, 2, 1],
-            //     [1, 0, 2],
-            //     [1, 2, 0],
-            //     [2, 0, 1],
-            //     [2, 1, 0]
-            // ];
-
-            // for (const combo of combos) {
-            //     let comboStands = false;
-            //     for (const perm of PERMS_OF_3) {
-            //         const cellM1HasIt = this._cellM1.hasNumOpt(combo.nthNumber(perm[0]));
-            //         const cellM2HasIt = this._cellM2.hasNumOpt(combo.nthNumber(perm[1]));
-            //         const cellM3HasIt = this._cellM3.hasNumOpt(combo.nthNumber(perm[2]));
-            //         const someCellHasIt = cellM1HasIt && cellM2HasIt && cellM3HasIt;
-            //         comboStands = comboStands || someCellHasIt;
-            //     }
-            //     if (!comboStands) {
-            //         this._cageM.comboSet.deleteCombo(combo);
-            //     }
-            // }
-
-            // this._delegate.reduce(reduction);
         }
     }
 
