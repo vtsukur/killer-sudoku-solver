@@ -53,10 +53,6 @@ describe('CageModelOfSize3Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModelOfSize3Reducer(cageM),
             type: 'CageModelOfSize3Reducer'
-        },
-        {
-            newReducer: (cageM: CageModel) => new CageModelOfSize3Reducer(cageM),
-            type: 'CageModelOfSize3DbReducer'
         }
     ];
 
