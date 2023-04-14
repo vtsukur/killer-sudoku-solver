@@ -88,24 +88,14 @@ describe('ReductionDb', () => {
 
                         const cellMsUsed = new Array<boolean>(cageSize).fill(false);
                         const cellMsDeletedNums = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(() => new Array<number>());
-                        for (const originalNum of cellMsNumOptsBefore[0]) {
-                            if (!cellMsNumOptsAfter[0].has(originalNum)) {
-                                cellMsDeletedNums[0].push(originalNum);
-                                cellMsUsed[0] = true;
+                        cellMsNumOptsBefore.forEach((cellMNumOptsBefore, index) => {
+                            for (const originalNum of cellMNumOptsBefore) {
+                                if (!cellMsNumOptsAfter[index].has(originalNum)) {
+                                    cellMsDeletedNums[index].push(originalNum);
+                                    cellMsUsed[index] = true;
+                                }
                             }
-                        }
-                        for (const originalNum of cellMsNumOptsBefore[1]) {
-                            if (!cellMsNumOptsAfter[1].has(originalNum)) {
-                                cellMsDeletedNums[1].push(originalNum);
-                                cellMsUsed[1] = true;
-                            }
-                        }
-                        for (const originalNum of cellMsNumOptsBefore[2]) {
-                            if (!cellMsNumOptsAfter[2].has(originalNum)) {
-                                cellMsDeletedNums[2].push(originalNum);
-                                cellMsUsed[2] = true;
-                            }
-                        }
+                        });
 
                         let actions: ReductionActions | undefined;
                         if (cellMsUsed[0] || cellMsUsed[1] || cellMsUsed[2]) {
