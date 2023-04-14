@@ -137,7 +137,7 @@ describe('ReductionDb', () => {
         }
 
         const reductionDbData = stringify(reductionsDb);
-        fs.writeFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', reductionDbData, 'utf8');
+        fs.writeFileSync(`./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`, reductionDbData, 'utf8');
     };
 
 });
