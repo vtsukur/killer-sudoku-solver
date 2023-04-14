@@ -98,7 +98,7 @@ describe('ReductionDb', () => {
                         });
 
                         let actions: ReductionActions | undefined;
-                        if (cellMsUsed[0] || cellMsUsed[1] || cellMsUsed[2]) {
+                        if (cellMsUsed.some(used => used)) {
                             ++reductionActionable;
                             actions = {
                                 isDeleteCombo: false,
