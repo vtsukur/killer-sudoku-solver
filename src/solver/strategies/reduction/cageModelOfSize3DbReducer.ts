@@ -22,6 +22,7 @@ type DenormalizedTacticalReducer = (
 ) => void;
 
 type ReductionState = {
+    isValid: boolean;
     comboNumsSet: ReadonlySudokuNumsSet;
     deleteNumsInCell1: ReadonlySudokuNumsSet;
     deleteNumsInCell2: ReadonlySudokuNumsSet;
@@ -29,6 +30,15 @@ type ReductionState = {
 };
 
 const EMPTY_REDUCTION_STATE: ReductionState = {
+    isValid: true,
+    comboNumsSet: SudokuNumsSet.EMPTY,
+    deleteNumsInCell1: SudokuNumsSet.EMPTY,
+    deleteNumsInCell2: SudokuNumsSet.EMPTY,
+    deleteNumsInCell3: SudokuNumsSet.EMPTY
+};
+
+const INVALID_REDUCTION_STATE: ReductionState = {
+    isValid: false,
     comboNumsSet: SudokuNumsSet.EMPTY,
     deleteNumsInCell1: SudokuNumsSet.EMPTY,
     deleteNumsInCell2: SudokuNumsSet.EMPTY,
@@ -128,6 +138,7 @@ db.sums.forEach(sumReductions => {
                     const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
                     const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
                     return {
+                        isValid: true,
                         comboNumsSet,
                         deleteNumsInCell1: cellM1DeletedNums,
                         deleteNumsInCell2: cellM2DeletedNums,
@@ -137,7 +148,7 @@ db.sums.forEach(sumReductions => {
                     return EMPTY_REDUCTION_STATE;
                 }
             } else {
-                return EMPTY_REDUCTION_STATE;
+                return INVALID_REDUCTION_STATE;
             }
         });
     });
@@ -206,6 +217,8 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
+        const cageM = this._cageM;
+
         const combos = this._cageM.comboSet.combos;
 
         if (combos.length === 1) {
@@ -246,7 +259,95 @@ export class CageModelOfSize3DbReducer implements CageModelReducer {
                 reduction, this._cageM, this._cellM1, this._cellM2, this._cellM3
             );
         } else {
-            this._delegate.reduce(reduction);
+            const cageMCpy = this._cageM.deepCopy();
+            const fullReducer = new CageModelOfSize3FullReducer(cageMCpy);
+            cageMCpy.initialReduce();
+            const reductionCpy = new MasterModelReduction();
+            fullReducer.reduce(reductionCpy);
+
+            const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
+            const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
+            const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
+            const cellM3NumsBits = this._cellM3._numOptsSet.bitStore;
+
+            const actualReductionCellM1 = SudokuNumsSet.newEmpty();
+            const actualReductionCellM2 = SudokuNumsSet.newEmpty();
+            const actualReductionCellM3 = SudokuNumsSet.newEmpty();
+
+            for (const combo of combos) {
+                const num1 = combo.number1;
+                const num2 = combo.number2;
+                const num3 = combo.number3;
+
+                const comboIndex = this._cageM.sumAddendsCombinatorics.optimisticIndexOf(combo);
+                const compressedNumbersPresenceState =
+                        ((cellM1NumsBits & (1 << num1)) >> num1) |
+                        ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
+                        ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
+                        (
+                            ((cellM2NumsBits & (1 << num1)) >> num1) |
+                            ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) |
+                            ((cellM2NumsBits & (1 << num3)) >> (num3 - 2))
+                        ) << 3 |
+                        (
+                            ((cellM3NumsBits & (1 << num1)) >> num1) |
+                            ((cellM3NumsBits & (1 << num2)) >> (num2 - 1)) |
+                            ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
+                        ) << 6;
+
+                const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
+
+                if (reductionState.isValid) {
+                    const cellM1NumBitsCpy = new SudokuNumsSet(cellM1NumsBits);
+                    const cellM2NumBitsCpy = new SudokuNumsSet(cellM2NumsBits);
+                    const cellM3NumBitsCpy = new SudokuNumsSet(cellM3NumsBits);
+                    actualReductionCellM1.addAll(cellM1NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell1));
+                    actualReductionCellM2.addAll(cellM2NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell2));
+                    actualReductionCellM3.addAll(cellM3NumBitsCpy.union(combo.numsSet).deleteAll(reductionState.deleteNumsInCell3));
+                } else {
+                    this._cageM.comboSet.deleteCombo(combo);
+                }
+            }
+
+            reduction.tryReduceNumOpts(this._cellM1, actualReductionCellM1, this._cageM);
+            reduction.tryReduceNumOpts(this._cellM2, actualReductionCellM2, this._cageM);
+            reduction.tryReduceNumOpts(this._cellM3, actualReductionCellM3, this._cageM);
+
+            // also check combos
+            // if (this._cellM1._numOptsSet.bitStore !== cageMCpy.cellMs[0]._numOptsSet.bitStore) {
+            //     throw 'fuck';
+            // }
+            // if (this._cellM2._numOptsSet.bitStore !== cageMCpy.cellMs[1]._numOptsSet.bitStore) {
+            //     throw 'fuck';
+            // }
+            // if (this._cellM3._numOptsSet.bitStore !== cageMCpy.cellMs[2]._numOptsSet.bitStore) {
+            //     throw 'fuck';
+            // }
+
+            // const PERMS_OF_3 = [
+            //     [0, 1, 2],
+            //     [0, 2, 1],
+            //     [1, 0, 2],
+            //     [1, 2, 0],
+            //     [2, 0, 1],
+            //     [2, 1, 0]
+            // ];
+
+            // for (const combo of combos) {
+            //     let comboStands = false;
+            //     for (const perm of PERMS_OF_3) {
+            //         const cellM1HasIt = this._cellM1.hasNumOpt(combo.nthNumber(perm[0]));
+            //         const cellM2HasIt = this._cellM2.hasNumOpt(combo.nthNumber(perm[1]));
+            //         const cellM3HasIt = this._cellM3.hasNumOpt(combo.nthNumber(perm[2]));
+            //         const someCellHasIt = cellM1HasIt && cellM2HasIt && cellM3HasIt;
+            //         comboStands = comboStands || someCellHasIt;
+            //     }
+            //     if (!comboStands) {
+            //         this._cageM.comboSet.deleteCombo(combo);
+            //     }
+            // }
+
+            // this._delegate.reduce(reduction);
         }
     }
 
