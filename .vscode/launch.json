@@ -691,13 +691,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/reduction/cageModelOfSize3Reducer]",
+            "name": "npm run test [solver/strategies/reduction/cageModel3Reducer]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/unit/solver/strategies/reduction/cageModelOfSize3Reducer.test.ts"
+                "tests/unit/solver/strategies/reduction/cageModel3Reducer.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -1012,13 +1012,13 @@
             }
         },
         {
-            "name": "npm run test [solver/strategies/../cageModelOfSize3Reducer.perf]",
+            "name": "npm run test [solver/strategies/../cageModel3Reducer.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/strategies/reduction/cageModelOfSize3Reducer.perf.test.ts"
+                "tests/perf/solver/strategies/reduction/cageModel3Reducer.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

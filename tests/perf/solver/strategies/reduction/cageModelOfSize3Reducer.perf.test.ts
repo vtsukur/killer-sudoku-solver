@@ -7,9 +7,9 @@ import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
-import { CageModelOfSize3Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3Reducer';
+import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 
-describe('Performance tests for `CageModelOfSize3Reducer`', () => {
+describe('Performance tests for `CageModel3Reducer`', () => {
 
     test.skip('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
         runComparablePerformanceTests({
@@ -101,7 +101,7 @@ describe('Performance tests for `CageModelOfSize3Reducer`', () => {
     };
 
     const createOptimalReducer = (cageM: CageModel) => {
-        return new CageModelOfSize3Reducer(cageM);
+        return new CageModel3Reducer(cageM);
     };
 
 });

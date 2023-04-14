@@ -6,7 +6,7 @@ import { Combo, SumAddendsCombinatorics } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModelOfSize3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModelOfSize3FullReducer';
-import { CageModelOfSize3Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize3Reducer';
+import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 import { CageSizeNReductionsDb, ReductionActions, ReductionEntry } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
@@ -16,9 +16,9 @@ import { ComboReductions } from '../../../../../src/solver/strategies/reduction/
 import * as _ from 'lodash';
 import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 
-const log = logFactory.withLabel('cageModelOfSize3Reducers.test');
+const log = logFactory.withLabel('cageModel3Reducers.test');
 
-describe('CageModelOfSize3Reducers', () => {
+describe('CageModel3Reducers', () => {
 
     const cell1 = Cell.at(0, 0);
     const cell2 = Cell.at(0, 1);
@@ -55,8 +55,8 @@ describe('CageModelOfSize3Reducers', () => {
             type: 'CageModelOfSize3FullReducer'
         },
         {
-            newReducer: (cageM: CageModel) => new CageModelOfSize3Reducer(cageM),
-            type: 'CageModelOfSize3Reducer'
+            newReducer: (cageM: CageModel) => new CageModel3Reducer(cageM),
+            type: 'CageModel3Reducer'
         }
     ];
 

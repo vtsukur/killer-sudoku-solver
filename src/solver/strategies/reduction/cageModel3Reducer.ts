@@ -174,7 +174,7 @@ function IMPOSSIBLE_TO_REDUCE() {
  *
  * @public
  */
-export class CageModelOfSize3Reducer implements CageModelReducer {
+export class CageModel3Reducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.
