@@ -88,33 +88,31 @@ describe('ReductionDb', () => {
                         const cellM2NumOptsAfter = new Set(cellMs[1].numOpts());
                         const cellM1NumOptsAfter = new Set(cellMs[0].numOpts());
 
-                        let cellM1Used = false;
-                        let cellM2Used = false;
-                        let cellM3Used = false;
+                        const cellMsUsed = new Array<boolean>(cageSize).fill(false);
                         const cellM1DeletedNums = new Array<number>();
                         const cellM2DeletedNums = new Array<number>();
                         const cellM3DeletedNums = new Array<number>();
                         for (const originalNum of cellMsNumOptsBefore[0]) {
                             if (!cellM1NumOptsAfter.has(originalNum)) {
                                 cellM1DeletedNums.push(originalNum);
-                                cellM1Used = true;
+                                cellMsUsed[0] = true;
                             }
                         }
                         for (const originalNum of cellMsNumOptsBefore[1]) {
                             if (!cellM2NumOptsAfter.has(originalNum)) {
                                 cellM2DeletedNums.push(originalNum);
-                                cellM2Used = true;
+                                cellMsUsed[1] = true;
                             }
                         }
                         for (const originalNum of cellMsNumOptsBefore[2]) {
                             if (!cellM3NumOptsAfter.has(originalNum)) {
                                 cellM3DeletedNums.push(originalNum);
-                                cellM3Used = true;
+                                cellMsUsed[2] = true;
                             }
                         }
 
                         let actions: ReductionActions | undefined;
-                        if (cellM1Used || cellM2Used || cellM3Used) {
+                        if (cellMsUsed[0] || cellMsUsed[1] || cellMsUsed[2]) {
                             ++reductionActionable;
                             actions = {
                                 isDeleteCombo: false,
