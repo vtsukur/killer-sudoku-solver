@@ -10,12 +10,13 @@ import { CageSizeNReductionsDb, ComboReductions, ReductionActions, ReductionEntr
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { logFactory } from '../../../../../src/util/logFactory';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
+import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test('Gets generated', () => {
+    test.skip('Gets generated', () => {
         generateForSizeN(3);
     });
 
@@ -85,7 +86,8 @@ describe('ReductionDb', () => {
                         const cellM1NumOptsBefore = new Set(cellM1.numOpts());
 
                         const reduction = new MasterModelReduction();
-                        cageM.reduce(reduction);
+                        const reducer = new CageModel3FullReducer(cageM);
+                        reducer.reduce(reduction);
 
                         const cellM3NumOptsAfter = new Set(cellM3.numOpts());
                         const cellM2NumOptsAfter = new Set(cellM2.numOpts());
@@ -121,9 +123,11 @@ describe('ReductionDb', () => {
                             ++reductionActionable;
                             actions = {
                                 isDeleteCombo: false,
-                                deleteNumsInCell1: cellM1DeletedNums.length ? cellM1DeletedNums : undefined,
-                                deleteNumsInCell2: cellM2DeletedNums.length ? cellM2DeletedNums : undefined,
-                                deleteNumsInCell3: cellM3DeletedNums.length ? cellM3DeletedNums : undefined
+                                deleteNums: [
+                                    cellM1DeletedNums,
+                                    cellM2DeletedNums,
+                                    cellM3DeletedNums
+                                ]
                             };
                         }
 

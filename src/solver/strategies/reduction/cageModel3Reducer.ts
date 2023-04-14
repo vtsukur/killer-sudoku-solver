@@ -112,9 +112,9 @@ db.sums.forEach(sumReductions => {
         return comboReductions.entries.map(entry => {
             if (entry.isValid) {
                 if (entry.actions) {
-                    const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
-                    const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
-                    const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
+                    const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                    const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                    const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
                     const state =
                              (cellM1DeletedNums?.bitStore ? 1 : 0) |
                             ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
@@ -133,9 +133,9 @@ db.sums.forEach(sumReductions => {
         return comboReductions.entries.map(entry => {
             if (entry.isValid) {
                 if (entry.actions) {
-                    const cellM1DeletedNums = entry.actions.deleteNumsInCell1 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell1) : SudokuNumsSet.EMPTY;
-                    const cellM2DeletedNums = entry.actions.deleteNumsInCell2 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell2) : SudokuNumsSet.EMPTY;
-                    const cellM3DeletedNums = entry.actions.deleteNumsInCell3 ? SudokuNumsSet.of(...entry.actions.deleteNumsInCell3) : SudokuNumsSet.EMPTY;
+                    const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                    const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                    const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
                     return {
                         isValid: true,
                         comboNumsSet,

@@ -1,10 +1,6 @@
 export type ReductionActions = {
 
-    deleteNumsInCell1: Array<number> | undefined;
-
-    deleteNumsInCell2: Array<number> | undefined;
-
-    deleteNumsInCell3: Array<number> | undefined;
+    deleteNums: Array<Array<number>>;
 
     isDeleteCombo: boolean;
 
