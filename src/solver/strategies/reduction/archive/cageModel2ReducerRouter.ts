@@ -1,7 +1,7 @@
 import { logFactory } from '../../../../util/logFactory';
 import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
-import { CageModelOfSize2Reducer } from '../cageModelOfSize2Reducer';
+import { CageModel2Reducer } from '../cageModel2Reducer';
 import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 import { performance, PerformanceObserver } from 'perf_hooks';
@@ -47,7 +47,7 @@ export class CageModel2ReducerRouter implements CageModelReducer {
     private readonly _cageM: CageModel;
     private readonly _cellM1: CellModel;
     private readonly _cellM2: CellModel;
-    private readonly _optimalReducer: CageModelOfSize2Reducer;
+    private readonly _optimalReducer: CageModel2Reducer;
     private readonly _fullReducer: CageModelReducer;
     private readonly _partialReducer: CageModelReducer;
 
@@ -59,7 +59,7 @@ export class CageModel2ReducerRouter implements CageModelReducer {
         this._cageM = cageM;
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
-        this._optimalReducer = new CageModelOfSize2Reducer(cageM);
+        this._optimalReducer = new CageModel2Reducer(cageM);
         this._fullReducer = fullReducer;
         this._partialReducer = partialReducer;
     }

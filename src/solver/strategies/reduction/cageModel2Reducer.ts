@@ -27,7 +27,7 @@ type DenormalizedTacticalReducer = (
  *
  * @public
  */
-export class CageModelOfSize2Reducer implements CageModelReducer {
+export class CageModel2Reducer implements CageModelReducer {
 
     /**
      * The {@link CageModel} to reduce.

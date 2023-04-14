@@ -13,12 +13,12 @@ import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
-import { CageModelOfSize2Reducer } from '../../../../../src/solver/strategies/reduction/cageModelOfSize2Reducer';
+import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 
-const log = logFactory.withLabel('cageModelOfSize2Reducer.perf');
+const log = logFactory.withLabel('cageModel2Reducer.perf');
 
-describe('Performance tests for `CageModelOfSize2Reducer`', () => {
+describe('Performance tests for `CageModel2Reducer`', () => {
 
     const sudokuDotCom = puzzleSamples.sudokuDotCom;
     const solver = new Solver();
@@ -145,7 +145,7 @@ describe('Performance tests for `CageModelOfSize2Reducer`', () => {
     };
 
     const createOptimalReducer = (cageM: CageModel) => {
-        return new CageModelOfSize2Reducer(cageM);
+        return new CageModel2Reducer(cageM);
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
