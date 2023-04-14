@@ -12,9 +12,9 @@ import { logFactory } from '../../../../../src/util/logFactory';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
-describe('ReductionDb Generator', () => {
+describe('ReductionDb', () => {
 
-    test.skip('Enumerate', () => {
+    test.skip('Gets generated', () => {
         const cell1 = Cell.at(0, 0);
         const cell2 = Cell.at(0, 1);
         const cell3 = Cell.at(0, 2);
