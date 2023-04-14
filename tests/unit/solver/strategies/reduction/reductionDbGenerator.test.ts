@@ -46,7 +46,8 @@ describe('ReductionDb', () => {
                 let reductionActionable = 0;
 
                 let state = 0;
-                const maxStates = Math.pow(2, cageSize * cageSize);
+                const cageSizeXCageSize = cageSize * cageSize;
+                const maxStates = Math.pow(2, cageSizeXCageSize);
                 while (state < maxStates) {
                     const cellMs = cells.map(cell => new CellModel(cell));
                     const cageM = new CageModel(cage, cellMs);
@@ -60,11 +61,12 @@ describe('ReductionDb', () => {
                     }
 
                     const stateRadix2 = state.toString(2);
-                    const paddedStateRadix2 = stateRadix2.padStart(9, '0');
-                    const stateRadix2_last3Bits = paddedStateRadix2.substring(0, 3);
-                    const stateRadix2_middle3Bits = paddedStateRadix2.substring(3, 6);
-                    const stateRadix2_first3Bits = paddedStateRadix2.substring(6);
-                    const stateRadix2String = `0b${stateRadix2_last3Bits}_${stateRadix2_middle3Bits}_${stateRadix2_first3Bits}`;
+                    const paddedStateRadix2 = stateRadix2.padStart(cageSizeXCageSize, '0');
+                    const stateRadix2_bitsStrings = new Array<string>();
+                    for (const bucketIndex of CachedNumRanges.ZERO_TO_N_LTE_81[cageSize]) {
+                        stateRadix2_bitsStrings.push(paddedStateRadix2.substring(bucketIndex * cageSize, (bucketIndex + 1) * cageSize));
+                    }
+                    const stateRadix2String = `0b${stateRadix2_bitsStrings.join('_')}`;
 
                     try {
                         if (!(state & (1 << 0))) cellMs[0].deleteNumOpt(combo.nthNumber(0));
