@@ -11,6 +11,7 @@ import { MasterModelReduction } from '../../../../../src/solver/strategies/reduc
 import { logFactory } from '../../../../../src/util/logFactory';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
+import { House } from '../../../../../src/puzzle/house';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
@@ -29,11 +30,14 @@ describe('ReductionDb', () => {
             sums
         };
 
-        for (const sum of _.range(6, 25)) {
+        for (const sum of _.range(1, House.SUM + 1)) {
+            const combinatoricsCombos = SumAddendsCombinatorics.enumerate(sum, cageSize).val;
+            if (combinatoricsCombos.length === 0) continue;
+
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
-            for (const combo of SumAddendsCombinatorics.enumerate(sum, cageSize).val) {
+            for (const combo of combinatoricsCombos) {
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
                     combo: combo.numsSet.nums,
