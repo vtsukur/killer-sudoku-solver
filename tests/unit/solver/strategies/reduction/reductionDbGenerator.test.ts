@@ -78,9 +78,7 @@ describe('ReductionDb', () => {
                             ++i;
                         }
 
-                        const cellM3NumOptsBefore = new Set(cellMs[2].numOpts());
-                        const cellM2NumOptsBefore = new Set(cellMs[1].numOpts());
-                        const cellM1NumOptsBefore = new Set(cellMs[0].numOpts());
+                        const cellMsNumOptsBefore = cellMs.map(cellM => new Set(cellM.numOpts()));
 
                         const reduction = new MasterModelReduction();
                         const reducer = new CageModel3FullReducer(cageM);
@@ -96,19 +94,19 @@ describe('ReductionDb', () => {
                         const cellM1DeletedNums = new Array<number>();
                         const cellM2DeletedNums = new Array<number>();
                         const cellM3DeletedNums = new Array<number>();
-                        for (const originalNum of cellM1NumOptsBefore) {
+                        for (const originalNum of cellMsNumOptsBefore[0]) {
                             if (!cellM1NumOptsAfter.has(originalNum)) {
                                 cellM1DeletedNums.push(originalNum);
                                 cellM1Used = true;
                             }
                         }
-                        for (const originalNum of cellM2NumOptsBefore) {
+                        for (const originalNum of cellMsNumOptsBefore[1]) {
                             if (!cellM2NumOptsAfter.has(originalNum)) {
                                 cellM2DeletedNums.push(originalNum);
                                 cellM2Used = true;
                             }
                         }
-                        for (const originalNum of cellM3NumOptsBefore) {
+                        for (const originalNum of cellMsNumOptsBefore[2]) {
                             if (!cellM3NumOptsAfter.has(originalNum)) {
                                 cellM3DeletedNums.push(originalNum);
                                 cellM3Used = true;
