@@ -729,6 +729,25 @@
                 "group": "solverStrategiesReduction_main"
             }
         },
+        {
+            "name": "npm run test [solver/strategies/reduction/cageModel4Reducer]",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "test",
+                "--findRelatedTests",
+                "tests/unit/solver/strategies/reduction/cageModel4Reducer.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal",
+            "type": "node",
+            "presentation": {
+                "group": "solverStrategiesReduction_main"
+            }
+        },
 
         {
             "name": "npm run test [recognizer]",
