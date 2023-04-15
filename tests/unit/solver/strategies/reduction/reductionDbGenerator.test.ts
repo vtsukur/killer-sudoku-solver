@@ -12,6 +12,7 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { House } from '../../../../../src/puzzle/house';
+import { SudokuNumsSet } from '../../../../../src/solver/sets';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
@@ -23,13 +24,18 @@ describe('ReductionDb', () => {
     });
 
     const generateForSizeN = (cageSize: number) => {
-        const yamlPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
+        const yamlDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
         // fs.rmSync(yamlPath, {
         //     force: true
         // });
 
-        const compactTextPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.txt`;
-        fs.rmSync(compactTextPath, {
+        const compactCsvDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.txt`;
+        fs.rmSync(compactCsvDbPath, {
+            force: true
+        });
+
+        const compactBinaryPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.bin`;
+        fs.rmSync(compactBinaryPath, {
             force: true
         });
 
@@ -44,12 +50,17 @@ describe('ReductionDb', () => {
             if (combinatoricsCombos.length === 0) continue;
 
             let reductionDbCompactTextData = `s${sum}\n`;
+            let reductionDbCompactBinData = `s${sum}\n`;
+            const num16bitToChars = (num: number) => {
+                return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
+            };
 
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
                 reductionDbCompactTextData += `c${combo.numsSet.nums.join('')}\n`;
+                reductionDbCompactBinData += `c${combo.numsSet.nums.join('')}\n`;
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
                     combo: combo.numsSet.nums,
@@ -114,6 +125,7 @@ describe('ReductionDb', () => {
                         });
 
                         reductionDbCompactTextData += `${state}`;
+                        reductionDbCompactBinData += num16bitToChars(state);
 
                         let actions: ReductionActions | undefined;
                         if (cellMsUsed.some(used => used)) {
@@ -121,11 +133,16 @@ describe('ReductionDb', () => {
                             actions = {
                                 deleteNums: cellMsDeletedNums
                             };
-                            for (const deletedNums of cellMsDeletedNums) {
-                                reductionDbCompactTextData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
-                            }
+                            const lastTrueElementIndex = cellMsUsed.lastIndexOf(true);
+                            cellMsDeletedNums.forEach((deletedNums, index) => {
+                                if (index <= lastTrueElementIndex) {
+                                    reductionDbCompactTextData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
+                                    reductionDbCompactBinData += num16bitToChars(SudokuNumsSet.of(...deletedNums).bitStore);
+                                }
+                            });
                         }
                         reductionDbCompactTextData += '\n';
+                        reductionDbCompactBinData += '\n';
 
                         entries.push({
                             state,
@@ -149,7 +166,8 @@ describe('ReductionDb', () => {
 
             sums.push(sumReductions);
 
-            fs.writeFileSync(compactTextPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
+            fs.writeFileSync(compactCsvDbPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
+            fs.writeFileSync(compactBinaryPath, reductionDbCompactBinData, { flag: 'a+', encoding: 'utf8' });
 
             ++sumIndex;
 
@@ -157,7 +175,7 @@ describe('ReductionDb', () => {
         }
 
         const reductionDbData = stringify(sums);
-        fs.writeFileSync(yamlPath, reductionDbData, 'utf8');
+        fs.writeFileSync(yamlDbPath, reductionDbData, 'utf8');
     };
 
 });
