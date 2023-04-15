@@ -23,6 +23,8 @@ describe('ReductionDb', () => {
     });
 
     const generateForSizeN = (cageSize: number) => {
+        fs.rmSync(`./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`);
+
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
         const sums: Array<SumReductions> = [];
