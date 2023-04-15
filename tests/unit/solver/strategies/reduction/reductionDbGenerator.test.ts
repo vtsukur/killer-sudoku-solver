@@ -46,8 +46,8 @@ describe('ReductionDb', () => {
             const combinatoricsCombos = SumAddendsCombinatorics.enumerate(sum, cageSize).val;
             if (combinatoricsCombos.length === 0) continue;
 
-            let reductionDbCompactTextData = `s${sum}\n`;
-            // let reductionDbCompactBinData = `s${sum}\n`;
+            let reductionDbCompactTextData = `s,${sum}\n`;
+            // let reductionDbCompactBinData = `s,${sum}\n`;
             // const num16bitToChars = (num: number) => {
             //     return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
             // };
@@ -56,8 +56,8 @@ describe('ReductionDb', () => {
             // const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
-                reductionDbCompactTextData += `c${combo.numsSet.nums.join('')}\n`;
-                // reductionDbCompactBinData += `c${combo.numsSet.nums.join('')}\n`;
+                reductionDbCompactTextData += `c,${combo.numsSet.nums.join('')}\n`;
+                // reductionDbCompactBinData += `c,${combo.numsSet.nums.join('')}\n`;
                 // const entries: Array<ReductionEntry> = [];
                 // const comboReductions: ComboReductions = {
                 //     combo: combo.numsSet.nums,
