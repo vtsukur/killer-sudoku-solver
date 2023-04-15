@@ -34,8 +34,6 @@ export type SumReductions = {
 
 export type CageSizeNReductionsDb = {
 
-    cageSize: number;
-
     sums: Array<SumReductions>;
 
 }

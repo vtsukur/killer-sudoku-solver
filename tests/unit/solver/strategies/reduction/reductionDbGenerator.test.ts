@@ -29,7 +29,6 @@ describe('ReductionDb', () => {
 
         const sums: Array<SumReductions> = [];
         const reductionsDb: CageSizeNReductionsDb = {
-            cageSize,
             sums
         };
 
