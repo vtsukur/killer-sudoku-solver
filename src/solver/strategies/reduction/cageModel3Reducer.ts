@@ -124,24 +124,7 @@ db.sums.forEach(sumReductions => {
                 reducers[entry.state] = NOTHING_TO_REDUCE;
             }
         }
-        return comboReductions.entries.map(entry => {
-            if (entry.isValid) {
-                if (entry.actions) {
-                    const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                    const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                    const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                    const state =
-                             (cellM1DeletedNums?.bitStore ? 1 : 0) |
-                            ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
-                            ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
-                    return DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
-                } else {
-                    return NOTHING_TO_REDUCE;
-                }
-            } else {
-                return IMPOSSIBLE_TO_REDUCE;
-            }
-        });
+        return reducers;
     });
     ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
         const comboNumsSet = SudokuNumsSet.of(...comboReductions.combo);
