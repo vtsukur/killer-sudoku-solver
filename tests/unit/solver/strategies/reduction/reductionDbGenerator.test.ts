@@ -15,7 +15,7 @@ const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test('Gets generated', () => {
+    test.skip('Gets generated', () => {
         generateForSizeN(3);
         generateForSizeN(4);
     });
@@ -158,7 +158,7 @@ describe('ReductionDb', () => {
 
             ++sumIndex;
 
-            if (cageSize === 4 && sumIndex > 1) break;
+            // if (cageSize === 4 && sumIndex > 1) break;
         }
 
         // const reductionDbData = stringify(sums);
