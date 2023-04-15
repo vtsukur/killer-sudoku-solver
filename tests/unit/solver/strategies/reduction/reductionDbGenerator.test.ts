@@ -17,13 +17,21 @@ const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test.skip('Gets generated', () => {
+    test('Gets generated', () => {
         generateForSizeN(3);
         // generateForSizeN(4);
     });
 
     const generateForSizeN = (cageSize: number) => {
-        fs.rmSync(`./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`);
+        const yamlPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
+        // fs.rmSync(yamlPath, {
+        //     force: true
+        // });
+
+        const compactTextPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.txt`;
+        fs.rmSync(compactTextPath, {
+            force: true
+        });
 
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
@@ -35,10 +43,13 @@ describe('ReductionDb', () => {
             const combinatoricsCombos = SumAddendsCombinatorics.enumerate(sum, cageSize).val;
             if (combinatoricsCombos.length === 0) continue;
 
+            let reductionDbCompactTextData = `s${sum}\n`;
+
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
+                reductionDbCompactTextData += `c${combo.numsSet.nums.join('')}\n`;
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
                     combo: combo.numsSet.nums,
@@ -102,13 +113,19 @@ describe('ReductionDb', () => {
                             }
                         });
 
+                        reductionDbCompactTextData += `${state}`;
+
                         let actions: ReductionActions | undefined;
                         if (cellMsUsed.some(used => used)) {
                             ++reductionActionable;
                             actions = {
                                 deleteNums: cellMsDeletedNums
                             };
+                            for (const deletedNums of cellMsDeletedNums) {
+                                reductionDbCompactTextData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
+                            }
                         }
+                        reductionDbCompactTextData += '\n';
 
                         entries.push({
                             state,
@@ -132,11 +149,13 @@ describe('ReductionDb', () => {
 
             sums.push(sumReductions);
 
+            fs.writeFileSync(compactTextPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
+
             ++sumIndex;
         }
 
         const reductionDbData = stringify(sums);
-        fs.writeFileSync(`./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`, reductionDbData, 'utf8');
+        fs.writeFileSync(yamlPath, reductionDbData, 'utf8');
     };
 
 });
