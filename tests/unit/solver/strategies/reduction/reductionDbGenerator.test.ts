@@ -106,7 +106,6 @@ describe('ReductionDb', () => {
                         if (cellMsUsed.some(used => used)) {
                             ++reductionActionable;
                             actions = {
-                                isDeleteCombo: false,
                                 deleteNums: cellMsDeletedNums
                             };
                         }

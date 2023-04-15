@@ -2,8 +2,6 @@ export type ReductionActions = {
 
     deleteNums: Array<Array<number>>;
 
-    isDeleteCombo: boolean;
-
 }
 
 export type ReductionEntry = {
