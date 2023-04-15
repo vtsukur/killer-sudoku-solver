@@ -3,6 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
+import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel4FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel4FullReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
@@ -53,32 +54,37 @@ describe('CageModel4Reducers', () => {
 
         describe(type, () => {
 
-            // test('Reduces case from real production scenario #1', () => {
-            //     // Given:
-            //     createCageM(13);
-            //     cageM.comboSet = CombosSet.newEmpty(cageM.sumAddendsCombinatorics);
-            //     cageM.comboSet.addCombo(Combo.of(1, 3, 9));
-            //     cageM.comboSet.addCombo(Combo.of(1, 4, 8));
-            //     cageM.comboSet.addCombo(Combo.of(2, 4, 7));
-            //     cageM.comboSet.addCombo(Combo.of(3, 4, 6));
-            //     cellM1.reduceNumOpts(SudokuNumsSet.of(3, 6));
-            //     cellM2.reduceNumOpts(SudokuNumsSet.of(1, 7, 8, 9));
-            //     cellM3.reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 8, 9));
+            test('Reduces case from real production scenario #1', () => {
+                // Given:
+                createCageM(21);
+                cellM2.reduceNumOpts(SudokuNumsSet.of(1, 2, 4, 5, 7));
+                cellM3.deleteNumOpt(8);
+                cellM4.reduceNumOpts(SudokuNumsSet.of(1, 2, 4, 5, 7));
 
-            //     // When:
-            //     newReducer(cageM).reduce(reduction);
+                // When:
+                newReducer(cageM).reduce(reduction);
 
-            //     // Then:
-            //     expect(cellM1.numOpts()).toEqual([ 3 ]);
-            //     expect(cellM2.numOpts()).toEqual([ 1, 9 ]);
-            //     expect(cellM3.numOpts()).toEqual([ 1, 9 ]);
-            //     expect(Array.from(cageM.comboSet.combos)).toEqual([
-            //         Combo.of(1, 3, 9)
-            //     ]);
-            //     expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 6 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 7, 8 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM3).nums).toEqual([ 2, 3, 8 ]);
-            // });
+                // Then:
+                expect(cellM1.numOpts()).toEqual([ 1, 3, 4, 6, 7, 8, 9 ]);
+                expect(cellM2.numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
+                expect(cellM3.numOpts()).toEqual([ 1, 2, 3, 4, 5, 6, 7, 9 ]);
+                expect(cellM4.numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 4, 7, 9),
+                    Combo.of(1, 5, 6, 9),
+                    Combo.of(1, 5, 7, 8),
+                    Combo.of(2, 3, 7, 9),
+                    Combo.of(2, 4, 6, 9),
+                    Combo.of(2, 4, 7, 8),
+                    Combo.of(2, 5, 6, 8),
+                    Combo.of(3, 4, 5, 9),
+                    Combo.of(3, 5, 6, 7)
+                ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 2, 5 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toHaveLength(0);
+                expect(reduction.deletedNumOptsOf(cellM3).nums).toHaveLength(0);
+                expect(reduction.deletedNumOptsOf(cellM4).nums).toHaveLength(0);
+            });
 
             test('Does not reduce if there are no deletions for a particular `Combo`', () => {
                 // Given:
