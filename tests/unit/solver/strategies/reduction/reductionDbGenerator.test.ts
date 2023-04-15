@@ -19,7 +19,7 @@ describe('ReductionDb', () => {
 
     test('Gets generated', () => {
         generateForSizeN(3);
-        // generateForSizeN(4);
+        generateForSizeN(4);
     });
 
     const generateForSizeN = (cageSize: number) => {
@@ -152,6 +152,8 @@ describe('ReductionDb', () => {
             fs.writeFileSync(compactTextPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
 
             ++sumIndex;
+
+            if (cageSize === 4 && sumIndex > 1) break;
         }
 
         const reductionDbData = stringify(sums);
