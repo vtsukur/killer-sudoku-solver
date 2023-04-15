@@ -12,8 +12,6 @@ export type ReductionEntry = {
 
     stateRadix2String: string;
 
-    isValid: boolean;
-
     actions: ReductionActions | undefined;
 
 }

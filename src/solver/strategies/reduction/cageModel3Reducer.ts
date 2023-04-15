@@ -111,21 +111,17 @@ db.sums.forEach(sumReductions => {
     DENORMALIZED_TACTICAL_REDUCERS_FOR_SUMS[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
         const reducers = new Array<DenormalizedTacticalReducer>(512).fill(IMPOSSIBLE_TO_REDUCE);
         for (const entry of comboReductions.entries) {
-            if (entry.isValid) {
-                if (entry.actions) {
-                    const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                    const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                    const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                    const state =
-                             (cellM1DeletedNums?.bitStore ? 1 : 0) |
-                            ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
-                            ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
-                    reducers[entry.state] = DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
-                } else {
-                    reducers[entry.state] = NOTHING_TO_REDUCE;
-                }
+            if (entry.actions) {
+                const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
+                const state =
+                            (cellM1DeletedNums?.bitStore ? 1 : 0) |
+                        ((cellM2DeletedNums?.bitStore ? 1 : 0) << 1) |
+                        ((cellM3DeletedNums?.bitStore ? 1 : 0) << 2);
+                reducers[entry.state] = DENORMALIZED_TACTICAL_REDUCERS_PRODUCERS[state](cellM1DeletedNums, cellM2DeletedNums, cellM3DeletedNums);
             } else {
-                reducers[entry.state] = IMPOSSIBLE_TO_REDUCE;
+                reducers[entry.state] = NOTHING_TO_REDUCE;
             }
         }
         return reducers;
@@ -134,23 +130,19 @@ db.sums.forEach(sumReductions => {
         const comboNumsSet = SudokuNumsSet.of(...comboReductions.combo);
         const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
         for (const entry of comboReductions.entries) {
-            if (entry.isValid) {
-                if (entry.actions) {
-                    const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                    const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                    const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                    reductionStates[entry.state] = {
-                        isValid: true,
-                        comboNumsSet,
-                        deleteNumsInCell1: cellM1DeletedNums,
-                        deleteNumsInCell2: cellM2DeletedNums,
-                        deleteNumsInCell3: cellM3DeletedNums
-                    };
-                } else {
-                    reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
-                }
+            if (entry.actions) {
+                const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
+                reductionStates[entry.state] = {
+                    isValid: true,
+                    comboNumsSet,
+                    deleteNumsInCell1: cellM1DeletedNums,
+                    deleteNumsInCell2: cellM2DeletedNums,
+                    deleteNumsInCell3: cellM3DeletedNums
+                };
             } else {
-                reductionStates[entry.state] = INVALID_REDUCTION_STATE;
+                reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
             }
         }
         return reductionStates;

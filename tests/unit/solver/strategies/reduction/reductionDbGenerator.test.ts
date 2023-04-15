@@ -116,19 +116,12 @@ describe('ReductionDb', () => {
                         entries.push({
                             state,
                             stateRadix2String,
-                            isValid: true,
                             actions
                         });
 
                         ++validPerms;
                     } catch (e) {
                         // Can fail, that's OK.
-                        // entries.push({
-                        //     state,
-                        //     stateRadix2String,
-                        //     isValid: false,
-                        //     actions: undefined
-                        // });
                     }
 
                     ++state;
