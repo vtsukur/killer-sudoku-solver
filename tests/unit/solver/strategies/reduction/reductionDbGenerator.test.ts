@@ -17,7 +17,7 @@ const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test('Gets generated', () => {
+    test.skip('Gets generated', () => {
         generateForSizeN(3);
         // generateForSizeN(4);
     });
