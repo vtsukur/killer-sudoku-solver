@@ -86,6 +86,31 @@ describe('CageModel4Reducers', () => {
                 expect(reduction.deletedNumOptsOf(cellM4).nums).toHaveLength(0);
             });
 
+            test('Reduces case from real production scenario #2', () => {
+                // Given:
+                createCageM(18);
+                cellM1.reduceNumOpts(SudokuNumsSet.of(2, 5));
+                cellM2.reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 5, 9));
+                cellM3.reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 5, 9));
+                cellM4.reduceNumOpts(SudokuNumsSet.of(1, 9));
+
+                // When:
+                newReducer(cageM).reduce(reduction);
+
+                // Then:
+                expect(cellM1.numOpts()).toEqual([ 5 ]);
+                expect(cellM2.numOpts()).toEqual([ 1, 3, 9 ]);
+                expect(cellM3.numOpts()).toEqual([ 1, 3, 9 ]);
+                expect(cellM4.numOpts()).toEqual([ 1, 9 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 3, 5, 9)
+                ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 2 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 2, 5 ]);
+                expect(reduction.deletedNumOptsOf(cellM3).nums).toEqual([ 2, 5 ]);
+                expect(reduction.deletedNumOptsOf(cellM4).nums).toHaveLength(0);
+            });
+
             test('Does not reduce if there are no deletions for a particular `Combo`', () => {
                 // Given:
                 // ... initially reduced `CageModel` without extra deletions for its `CellModel`s.
