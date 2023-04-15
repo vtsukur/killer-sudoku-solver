@@ -8,8 +8,6 @@ export type ReductionEntry = {
 
     state: number;
 
-    stateRadix2String: string;
-
     actions: ReductionActions | undefined;
 
 }

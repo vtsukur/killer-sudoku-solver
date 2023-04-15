@@ -87,14 +87,6 @@ describe('ReductionDb', () => {
                         cageM.reduceToCombinationsContaining(comboNum, initialReductionMMR);
                     }
 
-                    const stateRadix2 = state.toString(2);
-                    const paddedStateRadix2 = stateRadix2.padStart(cageSizeXCageSize, '0');
-                    const stateRadix2_bitsStrings = new Array<string>();
-                    for (const bucketIndex of CachedNumRanges.ZERO_TO_N_LTE_81[cageSize]) {
-                        stateRadix2_bitsStrings.push(paddedStateRadix2.substring(bucketIndex * cageSize, (bucketIndex + 1) * cageSize));
-                    }
-                    const stateRadix2String = `0b${stateRadix2_bitsStrings.join('_')}`;
-
                     try {
                         let i = 0;
                         while (i < cageSizeXCageSize) {
@@ -146,7 +138,6 @@ describe('ReductionDb', () => {
 
                         entries.push({
                             state,
-                            stateRadix2String,
                             actions
                         });
 
