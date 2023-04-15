@@ -10,19 +10,21 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { House } from '../../../../../src/puzzle/house';
+import { CageSizeNReductionsDb, ComboReductions, ReductionActions, ReductionEntry, SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
+import { stringify } from 'yaml';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test.skip('Gets generated', () => {
+    test('Gets generated', () => {
         generateForSizeN(3);
-        generateForSizeN(4);
+        // generateForSizeN(4);
     });
 
     const generateForSizeN = (cageSize: number) => {
-        // const yamlDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
-        // fs.rmSync(yamlPath, {
+        const yamlDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
+        // fs.rmSync(yamlDbPath, {
         //     force: true
         // });
 
@@ -38,7 +40,7 @@ describe('ReductionDb', () => {
 
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
-        // const sums: CageSizeNReductionsDb = [];
+        const sums: CageSizeNReductionsDb = [];
 
         let sumIndex = 0;
 
@@ -52,17 +54,17 @@ describe('ReductionDb', () => {
             //     return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
             // };
 
-            // const combos: Array<ComboReductions> = [];
-            // const sumReductions: SumReductions = { sum, combos };
+            const combos: Array<ComboReductions> = [];
+            const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
                 reductionDbCompactTextData += `c,${combo.numsSet.nums.join('')}\n`;
                 // reductionDbCompactBinData += `c,${combo.numsSet.nums.join('')}\n`;
-                // const entries: Array<ReductionEntry> = [];
-                // const comboReductions: ComboReductions = {
-                //     combo: combo.numsSet.nums,
-                //     entries
-                // };
+                const entries: Array<ReductionEntry> = [];
+                const comboReductions: ComboReductions = {
+                    combo: combo.numsSet.nums,
+                    entries
+                };
 
                 const cage = Cage.ofSum(sum).withCells(cells).new();
 
@@ -116,12 +118,12 @@ describe('ReductionDb', () => {
                         reductionDbCompactTextData += `${state}`;
                         // reductionDbCompactBinData += num16bitToChars(state);
 
-                        // let actions: ReductionActions | undefined;
+                        let actions: ReductionActions | undefined;
                         if (cellMsUsed.some(used => used)) {
                             ++reductionActionable;
-                            // actions = {
-                            //     deleteNums: cellMsDeletedNums
-                            // };
+                            actions = {
+                                deleteNums: cellMsDeletedNums
+                            };
                             const lastTrueElementIndex = cellMsUsed.lastIndexOf(true);
                             cellMsDeletedNums.forEach((deletedNums, index) => {
                                 if (index <= lastTrueElementIndex) {
@@ -132,10 +134,10 @@ describe('ReductionDb', () => {
                         reductionDbCompactTextData += '\n';
                         // reductionDbCompactBinData += '\n';
 
-                        // entries.push({
-                        //     state,
-                        //     actions
-                        // });
+                        entries.push({
+                            state,
+                            actions
+                        });
 
                         ++validPerms;
                     } catch (e) {
@@ -148,21 +150,19 @@ describe('ReductionDb', () => {
                 log.info(`[${sumIndex}] Valid perms: ${validPerms} out of ${maxStates}`);
                 log.info(`[${sumIndex}] Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
 
-                // combos.push(comboReductions);
+                combos.push(comboReductions);
             }
 
-            // sums.push(sumReductions);
+            sums.push(sumReductions);
 
             fs.writeFileSync(compactCsvDbPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
             // fs.writeFileSync(compactBinaryPath, reductionDbCompactBinData, { flag: 'a+', encoding: 'utf8' });
 
             ++sumIndex;
-
-            // if (cageSize === 4 && sumIndex > 1) break;
         }
 
-        // const reductionDbData = stringify(sums);
-        // fs.writeFileSync(yamlDbPath, reductionDbData, 'utf8');
+        const reductionDbData = stringify(sums);
+        fs.writeFileSync(yamlDbPath, reductionDbData, 'utf8');
     };
 
 });
