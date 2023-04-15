@@ -10,7 +10,6 @@ import { logFactory } from '../../../../../src/util/logFactory';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { House } from '../../../../../src/puzzle/house';
-import { SudokuNumsSet } from '../../../../../src/solver/sets';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
@@ -32,10 +31,10 @@ describe('ReductionDb', () => {
             force: true
         });
 
-        const compactBinaryPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.bin`;
-        fs.rmSync(compactBinaryPath, {
-            force: true
-        });
+        // const compactBinaryPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.bin`;
+        // fs.rmSync(compactBinaryPath, {
+        //     force: true
+        // });
 
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
@@ -48,17 +47,17 @@ describe('ReductionDb', () => {
             if (combinatoricsCombos.length === 0) continue;
 
             let reductionDbCompactTextData = `s${sum}\n`;
-            let reductionDbCompactBinData = `s${sum}\n`;
-            const num16bitToChars = (num: number) => {
-                return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
-            };
+            // let reductionDbCompactBinData = `s${sum}\n`;
+            // const num16bitToChars = (num: number) => {
+            //     return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
+            // };
 
             // const combos: Array<ComboReductions> = [];
             // const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
                 reductionDbCompactTextData += `c${combo.numsSet.nums.join('')}\n`;
-                reductionDbCompactBinData += `c${combo.numsSet.nums.join('')}\n`;
+                // reductionDbCompactBinData += `c${combo.numsSet.nums.join('')}\n`;
                 // const entries: Array<ReductionEntry> = [];
                 // const comboReductions: ComboReductions = {
                 //     combo: combo.numsSet.nums,
@@ -115,7 +114,7 @@ describe('ReductionDb', () => {
                         });
 
                         reductionDbCompactTextData += `${state}`;
-                        reductionDbCompactBinData += num16bitToChars(state);
+                        // reductionDbCompactBinData += num16bitToChars(state);
 
                         // let actions: ReductionActions | undefined;
                         if (cellMsUsed.some(used => used)) {
@@ -127,12 +126,11 @@ describe('ReductionDb', () => {
                             cellMsDeletedNums.forEach((deletedNums, index) => {
                                 if (index <= lastTrueElementIndex) {
                                     reductionDbCompactTextData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
-                                    reductionDbCompactBinData += num16bitToChars(SudokuNumsSet.of(...deletedNums).bitStore);
                                 }
                             });
                         }
                         reductionDbCompactTextData += '\n';
-                        reductionDbCompactBinData += '\n';
+                        // reductionDbCompactBinData += '\n';
 
                         // entries.push({
                         //     state,
@@ -156,7 +154,7 @@ describe('ReductionDb', () => {
             // sums.push(sumReductions);
 
             fs.writeFileSync(compactCsvDbPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
-            fs.writeFileSync(compactBinaryPath, reductionDbCompactBinData, { flag: 'a+', encoding: 'utf8' });
+            // fs.writeFileSync(compactBinaryPath, reductionDbCompactBinData, { flag: 'a+', encoding: 'utf8' });
 
             ++sumIndex;
 
