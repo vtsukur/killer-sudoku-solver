@@ -19,6 +19,7 @@ describe('ReductionDb', () => {
 
     test('Gets generated', () => {
         generateForSizeN(3);
+        // generateForSizeN(4);
     });
 
     const generateForSizeN = (cageSize: number) => {
@@ -29,6 +30,8 @@ describe('ReductionDb', () => {
             cageSize,
             sums
         };
+
+        let sumIndex = 0;
 
         for (const sum of _.range(1, House.SUM + 1)) {
             const combinatoricsCombos = SumAddendsCombinatorics.enumerate(sum, cageSize).val;
@@ -85,7 +88,7 @@ describe('ReductionDb', () => {
                         const cellMsNumOptsBefore = cellMs.map(cellM => new Set(cellM.numOpts()));
 
                         const reduction = new MasterModelReduction();
-                        const reducer = new CageModel3FullReducer(cageM);
+                        const reducer = (cageSize === 3 ? new CageModel3FullReducer(cageM) : cageM);
                         reducer.reduce(reduction);
 
                         const cellMsNumOptsAfter = cellMs.map(cellM => new Set(cellM.numOpts()));
@@ -131,13 +134,15 @@ describe('ReductionDb', () => {
                     ++state;
                 }
 
-                log.info(`Valid perms: ${validPerms} out of ${maxStates}`);
-                log.info(`Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
+                log.info(`[${sumIndex}] Valid perms: ${validPerms} out of ${maxStates}`);
+                log.info(`[${sumIndex}] Reduction actionable: ${reductionActionable} out of ${validPerms} which are valid`);
 
                 combos.push(comboReductions);
             }
 
             sums.push(sumReductions);
+
+            ++sumIndex;
         }
 
         const reductionDbData = stringify(reductionsDb);
