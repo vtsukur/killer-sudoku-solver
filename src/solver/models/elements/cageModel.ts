@@ -12,6 +12,7 @@ import { MasterModelReduction } from '../../strategies/reduction/masterModelRedu
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
+import { CageModel4FullReducer } from '../../strategies/reduction/archive/cageModel4FullReducer';
 
 type Clue = {
     num: number;
@@ -22,18 +23,6 @@ type Clue = {
     singleCellForNumCombos?: ReadonlyCombos;
     presentInAllCombos?: boolean;
 }
-
-type Context = {
-    processedCellMs: Set<CellModel>;
-    remainingCellMs: Set<CellModel>,
-    processedNums: Set<number>,
-    numbersStack: Array<number>,
-    cellMsStack: Array<CellModel>,
-    processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
-    mayNotProceedWithNum: (num: number) => boolean;
-    processNum: (num: number, step: number, fn: () => boolean | void) => boolean | void;
-    remainingCellM: () => CellModel;
-};
 
 export class CageModel {
 
@@ -67,6 +56,8 @@ export class CageModel {
             this._reducer = new CageModel2Reducer(this);
         } else if (this._cellCount === 3) {
             this._reducer = new CageModel3Reducer(this);
+        } else if (this._cellCount === 4) {
+            this._reducer = new CageModel4FullReducer(this);
         }
     }
 
@@ -131,94 +122,12 @@ export class CageModel {
     }
 
     reduce(reduction: MasterModelReduction) {
-        if (this._cellCount === 2 || this._cellCount == 3) {
+        if (this._cellCount >= 2 && this._cellCount <= 4) {
             this._reducer?.reduce(reduction);
-        } else if (this._cellCount === 4) {
-            this.reduceSmallCage(reduction);
         } else {
             this.reduceLargeCage(reduction);
         }
         this.isFirstReduction = false;
-    }
-
-    private reduceSmallCage(reduction: MasterModelReduction) {
-        const context: Context = {
-            processedCellMs: new Set(),
-            remainingCellMs: new Set(this.cellMs),
-            processedNums: new Set(),
-            numbersStack: new Array(this._cellCount),
-            cellMsStack: new Array(this._cellCount),
-            processCell: function(cellM: CellModel, step: number, fn: () => boolean | void) {
-                if (this.processedCellMs.has(cellM)) return;
-                this.processedCellMs.add(cellM); this.remainingCellMs.delete(cellM);
-                this.cellMsStack[step] = cellM;
-                const retVal = fn();
-                // this.cellMsStack[step] = undefined;
-                this.processedCellMs.delete(cellM); this.remainingCellMs.add(cellM);
-                return retVal;
-            },
-            mayNotProceedWithNum: function(num: number) {
-                return this.processedNums.has(num);
-            },
-            processNum: function(num: number, step: number, fn: () => boolean | void) {
-                if (this.mayNotProceedWithNum(num)) return;
-                this.processedNums.add(num);
-                this.numbersStack[step] = num;
-                const retVal = fn();
-                // this.numbersStack[step] = undefined;
-                this.processedNums.delete(num);
-                return retVal;
-            },
-            remainingCellM: function() {
-                return context.remainingCellMs.values().next().value;
-            }
-        };
-
-        this.comboSet = this.newSumAddendsCombosSet();
-
-        this.cellMs.forEach(cellM => {
-            context.processCell(cellM, 0, () => {
-                Array.from(cellM.numOpts()).forEach(num => {
-                    context.processNum(num, 0, () => {
-                        if (!this.hasSumMatchingPermutationsRecursive(num, 1, context)) {
-                            reduction.deleteNumOpt(cellM, num, this);
-                        }
-                    });
-                });
-            });
-        });
-    }
-
-    private hasSumMatchingPermutationsRecursive(currentSum: number, step: number, context: Context) {
-        if (currentSum > this.cage.sum) { return false; }
-
-        let has = false;
-
-        if (step === (this._cellCount - 1)) {
-            const lastNum = this.cage.sum - currentSum;
-            if (context.mayNotProceedWithNum(lastNum)) return false;
-            const lastCellM = context.remainingCellM();
-            has = lastCellM.hasNumOpt(lastNum);
-            if (has) {
-                const sortedNums = [...context.numbersStack];
-                sortedNums[this._cellCount - 1] = lastNum;
-                sortedNums.sort();
-                const combo = new Combo(sortedNums);
-                this.comboSet.addCombo(combo);
-            }
-        } else {
-            this.cellMs.forEach(cellM => {
-                context.processCell(cellM, step, () => {
-                    Array.from(cellM.numOpts()).forEach(num => {
-                        context.processNum(num, step, () => {
-                            has = this.hasSumMatchingPermutationsRecursive(currentSum + num, step + 1, context) || has;
-                        });
-                    });
-                });
-            });
-        }
-
-        return has;
     }
 
     private reduceLargeCage(reduction: MasterModelReduction) {
