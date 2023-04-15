@@ -32,6 +32,7 @@
     "lodash": "^4.17.21",
     "node-tesseract-ocr": "^2.2.1",
     "open": "^8.4.0",
+    "papaparse": "^5.4.1",
     "puppeteer": "^19.6.3",
     "save-dev": "^0.0.1-security",
     "tesseract.js": "^4.0.2",
