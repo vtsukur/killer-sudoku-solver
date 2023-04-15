@@ -17,7 +17,7 @@ const log = logFactory.withLabel('reductionDbGenerator');
 
 describe('ReductionDb', () => {
 
-    test('Gets generated', () => {
+    test.skip('Gets generated', () => {
         generateForSizeN(3);
         // generateForSizeN(4);
     });
@@ -27,10 +27,7 @@ describe('ReductionDb', () => {
 
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
-        const sums: Array<SumReductions> = [];
-        const reductionsDb: CageSizeNReductionsDb = {
-            sums
-        };
+        const sums: CageSizeNReductionsDb = [];
 
         let sumIndex = 0;
 
@@ -139,7 +136,7 @@ describe('ReductionDb', () => {
             ++sumIndex;
         }
 
-        const reductionDbData = stringify(reductionsDb);
+        const reductionDbData = stringify(sums);
         fs.writeFileSync(`./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`, reductionDbData, 'utf8');
     };
 

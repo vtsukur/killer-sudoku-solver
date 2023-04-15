@@ -32,8 +32,4 @@ export type SumReductions = {
 
 }
 
-export type CageSizeNReductionsDb = {
-
-    sums: Array<SumReductions>;
-
-}
+export type CageSizeNReductionsDb = Array<SumReductions>;
