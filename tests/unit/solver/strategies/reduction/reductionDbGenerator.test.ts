@@ -24,19 +24,11 @@ describe('ReductionDb', () => {
 
     const generateForSizeN = (cageSize: number) => {
         const yamlDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
-        // fs.rmSync(yamlDbPath, {
-        //     force: true
-        // });
 
-        const compactCsvDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.txt`;
-        fs.rmSync(compactCsvDbPath, {
+        const csvDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.csv`;
+        fs.rmSync(csvDbPath, {
             force: true
         });
-
-        // const compactBinaryPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.compact.db.bin`;
-        // fs.rmSync(compactBinaryPath, {
-        //     force: true
-        // });
 
         const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cageSize].map(col => Cell.at(0, col));
 
@@ -48,18 +40,13 @@ describe('ReductionDb', () => {
             const combinatoricsCombos = SumAddendsCombinatorics.enumerate(sum, cageSize).val;
             if (combinatoricsCombos.length === 0) continue;
 
-            let reductionDbCompactTextData = `s,${sum}\n`;
-            // let reductionDbCompactBinData = `s,${sum}\n`;
-            // const num16bitToChars = (num: number) => {
-            //     return String.fromCharCode((num & 0b1111111100000000) >> 8) + String.fromCharCode(num & 0b11111111);
-            // };
+            let reductionCsvDbData = `s,${sum}\n`;
 
             const combos: Array<ComboReductions> = [];
             const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
-                reductionDbCompactTextData += `c,${combo.numsSet.nums.join('')}\n`;
-                // reductionDbCompactBinData += `c,${combo.numsSet.nums.join('')}\n`;
+                reductionCsvDbData += `c,${combo.numsSet.nums.join('')}\n`;
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
                     combo: combo.numsSet.nums,
@@ -115,8 +102,7 @@ describe('ReductionDb', () => {
                             }
                         });
 
-                        reductionDbCompactTextData += `${state}`;
-                        // reductionDbCompactBinData += num16bitToChars(state);
+                        reductionCsvDbData += `${state}`;
 
                         let actions: ReductionActions | undefined;
                         if (cellMsUsed.some(used => used)) {
@@ -127,12 +113,11 @@ describe('ReductionDb', () => {
                             const lastTrueElementIndex = cellMsUsed.lastIndexOf(true);
                             cellMsDeletedNums.forEach((deletedNums, index) => {
                                 if (index <= lastTrueElementIndex) {
-                                    reductionDbCompactTextData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
+                                    reductionCsvDbData += `,${deletedNums.length ? deletedNums.join('') : ''}`;
                                 }
                             });
                         }
-                        reductionDbCompactTextData += '\n';
-                        // reductionDbCompactBinData += '\n';
+                        reductionCsvDbData += '\n';
 
                         entries.push({
                             state,
@@ -155,8 +140,7 @@ describe('ReductionDb', () => {
 
             sums.push(sumReductions);
 
-            fs.writeFileSync(compactCsvDbPath, reductionDbCompactTextData, { flag: 'a+', encoding: 'utf8' });
-            // fs.writeFileSync(compactBinaryPath, reductionDbCompactBinData, { flag: 'a+', encoding: 'utf8' });
+            fs.writeFileSync(csvDbPath, reductionCsvDbData, { flag: 'a+', encoding: 'utf8' });
 
             ++sumIndex;
         }
