@@ -257,7 +257,6 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number, reduction: MasterModelReduction) {
         if (this.hasSingleCombination() || !this.comboSet.size) return;
 
-        // const newCombosMap = this.comboSet.clear();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
