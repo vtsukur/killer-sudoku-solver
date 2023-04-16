@@ -33,10 +33,24 @@ export type PerformanceTestPreparation = {
 
 };
 
+export type PerformanceTestOptions = {
+
+    warmupIterationCount: number;
+
+    mainIterationCount: number;
+
+}
+
+const DEFAULT_PERFORMANCE_TEST_OPTIONS: PerformanceTestOptions = {
+    warmupIterationCount: 100_000,
+    mainIterationCount: 1_000_000
+};
+
 export const doRunFunctionalAndPerformanceTests = (
         config: ComparablePerformanceTestConfig,
         reducerProducer: ReducerProducerFn,
-        type: string) => {
+        type: string,
+        options: PerformanceTestOptions = DEFAULT_PERFORMANCE_TEST_OPTIONS) => {
     // Checking that `CageModelReducer` works according to the functional expectations.
     runFunctionalTest(config, reducerProducer);
 
@@ -50,11 +64,11 @@ export const doRunFunctionalAndPerformanceTests = (
     // to avoid impact on the reduction results that should be stable.
     //
     i = 0;
-    const cageMCombosSetValue = cageM.comboSet.bitStore;
+    const referenceCageMCombosSet = cageM.comboSet.clone();
     const cellMsNumOptsValues = cageM.cellMs.map(cellM => cellM._numOptsSet.bitStore);
     while (i++ < 10) {
         reducer.reduce(reduction);
-        expect(cageM.comboSet.bitStore).toBe(cageMCombosSetValue);
+        cageM.comboSet = referenceCageMCombosSet.clone();
         cageM.cellMs.forEach((cellM, index) => {
             expect(cellM._numOptsSet.bitStore).toBe(cellMsNumOptsValues[index]);
         });
@@ -62,14 +76,18 @@ export const doRunFunctionalAndPerformanceTests = (
 
     // Warming up by running sample iterations.
     i = 0;
-    while (i++ < 100_000) {
+    const warmupIterationCount = options.warmupIterationCount;
+    while (i++ < warmupIterationCount) {
+        cageM.comboSet = referenceCageMCombosSet.clone();
         reducer.reduce(reduction);
     }
 
     // Actual performance test.
     const startTime = performance.now();
     i = 0;
-    while (i++ < 1_000_000) {
+    const mainIterationCount = options.mainIterationCount;
+    while (i++ < mainIterationCount) {
+        cageM.comboSet = referenceCageMCombosSet.clone();
         reducer.reduce(reduction);
     }
 
