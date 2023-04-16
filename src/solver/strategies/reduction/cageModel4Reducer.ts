@@ -87,9 +87,9 @@ export class CageModel4Reducer implements CageModelReducer {
                         cageModel3CellM3NumBits);
                 if (reductionState.isValid) {
                     const reducedComboNumBits = reducedCombo.numsSet.bitStore;
-                    cageModel3CellM1ActualNumBits |= (cageModel3CellM1NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell1.bitStore);
-                    cageModel3CellM2ActualNumBits |= (cageModel3CellM2NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell2.bitStore);
-                    cageModel3CellM3ActualNumBits |= (cageModel3CellM3NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell3.bitStore);
+                    cageModel3CellM1ActualNumBits |= (cageModel3CellM1NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell1Bits);
+                    cageModel3CellM2ActualNumBits |= (cageModel3CellM2NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell2Bits);
+                    cageModel3CellM3ActualNumBits |= (cageModel3CellM3NumBits & reducedComboNumBits & ~reductionState.deleteNumsInCell3Bits);
                     atLeastOneReducedComboValid = true;
                     updatedCombosSet.addCombo(combo);
                 }

@@ -23,26 +23,26 @@ type DenormalizedTacticalReducer = (
 
 type ReductionState = {
     isValid: boolean;
-    comboNumsSet: ReadonlySudokuNumsSet;
-    deleteNumsInCell1: ReadonlySudokuNumsSet;
-    deleteNumsInCell2: ReadonlySudokuNumsSet;
-    deleteNumsInCell3: ReadonlySudokuNumsSet;
+    comboNumsBits: number;
+    deleteNumsInCell1Bits: number;
+    deleteNumsInCell2Bits: number;
+    deleteNumsInCell3Bits: number;
 };
 
 const EMPTY_REDUCTION_STATE: ReductionState = {
     isValid: true,
-    comboNumsSet: SudokuNumsSet.EMPTY,
-    deleteNumsInCell1: SudokuNumsSet.EMPTY,
-    deleteNumsInCell2: SudokuNumsSet.EMPTY,
-    deleteNumsInCell3: SudokuNumsSet.EMPTY
+    comboNumsBits: 0,
+    deleteNumsInCell1Bits: 0,
+    deleteNumsInCell2Bits: 0,
+    deleteNumsInCell3Bits: 0
 };
 
 const INVALID_REDUCTION_STATE: ReductionState = {
     isValid: false,
-    comboNumsSet: SudokuNumsSet.EMPTY,
-    deleteNumsInCell1: SudokuNumsSet.EMPTY,
-    deleteNumsInCell2: SudokuNumsSet.EMPTY,
-    deleteNumsInCell3: SudokuNumsSet.EMPTY
+    comboNumsBits: 0,
+    deleteNumsInCell1Bits: 0,
+    deleteNumsInCell2Bits: 0,
+    deleteNumsInCell3Bits: 0
 };
 
 
@@ -138,10 +138,10 @@ db.forEach(sumReductions => {
                 const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
                 reductionStates[entry.state] = {
                     isValid: true,
-                    comboNumsSet,
-                    deleteNumsInCell1: cellM1DeletedNums,
-                    deleteNumsInCell2: cellM2DeletedNums,
-                    deleteNumsInCell3: cellM3DeletedNums
+                    comboNumsBits: comboNumsSet.bitStore,
+                    deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
+                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore,
+                    deleteNumsInCell3Bits: cellM3DeletedNums.bitStore
                 };
             } else {
                 reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
@@ -284,9 +284,9 @@ export class CageModel3Reducer implements CageModelReducer {
                 const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
 
                 if (reductionState.isValid) {
-                    actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1.bitStore);
-                    actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2.bitStore);
-                    actualReductionStateCellM3 |= (cellM3NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell3.bitStore);
+                    actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1Bits);
+                    actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2Bits);
+                    actualReductionStateCellM3 |= (cellM3NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell3Bits);
                 } else {
                     this._cageM.comboSet.deleteCombo(combo);
                 }
