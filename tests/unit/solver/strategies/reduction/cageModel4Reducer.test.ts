@@ -5,6 +5,7 @@ import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel4FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel4FullReducer';
+import { CageModel4Reducer } from '../../../../../src/solver/strategies/reduction/cageModel4Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
@@ -47,6 +48,10 @@ describe('CageModel4Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModel4FullReducer(cageM),
             type: 'CageModel4FullReducer'
+        },
+        {
+            newReducer: (cageM: CageModel) => new CageModel4Reducer(cageM),
+            type: 'CageModel4Reducer'
         }
     ];
 
