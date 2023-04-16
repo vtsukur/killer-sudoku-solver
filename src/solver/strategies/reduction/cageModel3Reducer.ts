@@ -7,6 +7,7 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { CageSizeNReductionsDb } from './db/reductionDb';
+import { Combo, SumAddendsCombinatorics } from '../../math';
 
 /**
  * Type alias for pre-coded denormalized reducing function
@@ -295,6 +296,30 @@ export class CageModel3Reducer implements CageModelReducer {
             reduction.tryReduceNumOpts(this._cellM2, new SudokuNumsSet(actualReductionStateCellM2), this._cageM);
             reduction.tryReduceNumOpts(this._cellM3, new SudokuNumsSet(actualReductionStateCellM3), this._cageM);
         }
+    }
+
+    static getReductionState(sum: number, combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
+        const num1 = combo.number1;
+        const num2 = combo.number2;
+        const num3 = combo.number3;
+
+        const comboIndex = SumAddendsCombinatorics.enumerate(sum, 3).optimisticIndexOf(combo);
+        const compressedNumbersPresenceState =
+                ((cellM1NumsBits & (1 << num1)) >> num1) |
+                ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
+                ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
+                (
+                    ((cellM2NumsBits & (1 << num1)) >> num1) |
+                    ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    ((cellM2NumsBits & (1 << num3)) >> (num3 - 2))
+                ) << 3 |
+                (
+                    ((cellM3NumsBits & (1 << num1)) >> num1) |
+                    ((cellM3NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
+                ) << 6;
+
+        return ALL_REDUCTION_STATES[sum][comboIndex][compressedNumbersPresenceState];
     }
 
 }
