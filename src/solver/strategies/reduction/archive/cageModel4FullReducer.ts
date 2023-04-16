@@ -82,7 +82,7 @@ export class CageModel4FullReducer implements CageModelReducer {
             }
         };
 
-        this._cageM.comboSet = CombosSet.newEmpty(this._cageM.sumAddendsCombinatorics);
+        this._cageM.comboSet = this._cageM.newSumAddendsCombosSet();
 
         this._cellMs.forEach(cellM => {
             context.processCell(cellM, 0, () => {
