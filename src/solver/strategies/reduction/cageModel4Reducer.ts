@@ -70,7 +70,7 @@ export class CageModel4Reducer implements CageModelReducer {
         let cageModel3CellM3ActualNumBits = 0;
 
         const combosBeforeReduction = this._cageM.comboSet.combos;
-        const updatedCombosSet = this._cageM.newSumAddendsCombosSet();
+        const updatedCombosSet = this._cageM.comboSet.clear();
 
         for (const num of minNumCountCellM.numOpts()) {
             const reducedSum = this._sum - num;

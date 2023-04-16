@@ -84,6 +84,12 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         return this._combinatorics.allNumsSet;
     }
 
+    clear() {
+        this._bitStore = 0;
+        this.onUpdate();
+        return this;
+    }
+
     clone() {
         return new CombosSet(this._bitStore, this._combinatorics);
     }

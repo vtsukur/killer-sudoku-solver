@@ -62,6 +62,14 @@ export class LockableCombosSet extends CombosSet implements Lockable {
         return !this._isLocked ? super.fill() : super.presentNumsSet;
     }
 
+    clear() {
+        if (!this._isLocked) {
+            return super.clear();
+        } else {
+            return this;
+        }
+    }
+
     lock() {
         this._isLocked = true;
     }

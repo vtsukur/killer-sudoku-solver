@@ -64,11 +64,11 @@ export const doRunFunctionalAndPerformanceTests = (
     // to avoid impact on the reduction results that should be stable.
     //
     i = 0;
-    const referenceCageMCombosSet = cageM.comboSet.clone();
+    const referenceCageMCombosSet = cageM.comboSet.bitStore;
     const cellMsNumOptsValues = cageM.cellMs.map(cellM => cellM._numOptsSet.bitStore);
     while (i++ < 10) {
         reducer.reduce(reduction);
-        cageM.comboSet = referenceCageMCombosSet.clone();
+        expect(cageM.comboSet.bitStore).toBe(referenceCageMCombosSet);
         cageM.cellMs.forEach((cellM, index) => {
             expect(cellM._numOptsSet.bitStore).toBe(cellMsNumOptsValues[index]);
         });
@@ -78,7 +78,6 @@ export const doRunFunctionalAndPerformanceTests = (
     i = 0;
     const warmupIterationCount = options.warmupIterationCount;
     while (i++ < warmupIterationCount) {
-        cageM.comboSet = referenceCageMCombosSet.clone();
         reducer.reduce(reduction);
     }
 
@@ -87,7 +86,6 @@ export const doRunFunctionalAndPerformanceTests = (
     i = 0;
     const mainIterationCount = options.mainIterationCount;
     while (i++ < mainIterationCount) {
-        cageM.comboSet = referenceCageMCombosSet.clone();
         reducer.reduce(reduction);
     }
 
