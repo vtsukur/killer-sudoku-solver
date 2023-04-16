@@ -1,7 +1,6 @@
 import { Combo } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
-import { CombosSet } from '../../../sets';
 import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 
