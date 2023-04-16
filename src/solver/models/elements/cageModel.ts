@@ -32,7 +32,7 @@ export class CageModel {
     private _firstCell;
     private _cellCount;
     sumAddendsCombinatorics: SumAddendsCombinatorics;
-    comboSet: CombosSet;
+    readonly comboSet: CombosSet;
     private _reducer?: CageModelReducer;
 
     isFirstReduction = true;
@@ -257,21 +257,20 @@ export class CageModel {
     reduceToCombinationsContaining(withNum: number, reduction: MasterModelReduction) {
         if (this.hasSingleCombination() || !this.comboSet.size) return;
 
-        const newCombosMap = this.newSumAddendsCombosSet();
+        // const newCombosMap = this.comboSet.clear();
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
         for (const combo of this.comboSet.combos) {
             if (combo.numsSet.has(withNum)) {
-                newCombosMap.addCombo(combo);
                 newNumOptions.addAll(combo.numsSet);
             } else {
+                this.comboSet.deleteCombo(combo);
                 deleteCombos.push(combo);
             }
         }
 
         if (deleteCombos.length > 0) {
-            this.comboSet = newCombosMap;
             this.cellMs.forEach(cellM => {
                 reduction.tryReduceNumOpts(cellM, newNumOptions);
             });

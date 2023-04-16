@@ -3,7 +3,7 @@ import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
+import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -58,7 +58,7 @@ describe('CageModel3Reducers', () => {
             test('Reduces case from real production scenario #1', () => {
                 // Given:
                 createCageM(13);
-                cageM.comboSet = CombosSet.newEmpty(cageM.sumAddendsCombinatorics);
+                cageM.comboSet.clear();
                 cageM.comboSet.addCombo(Combo.of(1, 3, 9));
                 cageM.comboSet.addCombo(Combo.of(1, 4, 8));
                 cageM.comboSet.addCombo(Combo.of(2, 4, 7));
