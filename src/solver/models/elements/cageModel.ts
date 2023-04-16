@@ -61,7 +61,7 @@ export class CageModel {
         }
     }
 
-    protected newSumAddendsCombosSet(): CombosSet {
+    newSumAddendsCombosSet(): CombosSet {
         return CombosSet.newEmpty(this.sumAddendsCombinatorics);
     }
 
