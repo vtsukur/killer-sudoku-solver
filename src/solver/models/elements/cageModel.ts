@@ -12,7 +12,7 @@ import { MasterModelReduction } from '../../strategies/reduction/masterModelRedu
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
-import { CageModel4FullReducer } from '../../strategies/reduction/archive/cageModel4FullReducer';
+import { CageModel4Reducer } from '../../strategies/reduction/cageModel4Reducer';
 
 type Clue = {
     num: number;
@@ -57,7 +57,7 @@ export class CageModel {
         } else if (this._cellCount === 3) {
             this._reducer = new CageModel3Reducer(this);
         } else if (this._cellCount === 4) {
-            this._reducer = new CageModel4FullReducer(this);
+            this._reducer = new CageModel4Reducer(this);
         }
     }
 
