@@ -78,6 +78,8 @@ export class CageModel2DbReducer implements CageModelReducer {
      */
     private readonly _cellM2: CellModel;
 
+    private readonly _referenceReductionStates: ReadonlyArray<ReadonlyArray<ReductionState>>;
+
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
@@ -88,6 +90,7 @@ export class CageModel2DbReducer implements CageModelReducer {
         this._cageM = cageM;
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
+        this._referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
     }
 
     /**
@@ -101,7 +104,6 @@ export class CageModel2DbReducer implements CageModelReducer {
         const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
         const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
 
-        const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
         let actualReductionStateCellM1 = 0;
         let actualReductionStateCellM2 = 0;
 
@@ -217,7 +219,7 @@ export class CageModel2DbReducer implements CageModelReducer {
             //         num1, num2
             // );
 
-            const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
+            const reductionState = this._referenceReductionStates[comboIndex][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
                 actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1Bits);
