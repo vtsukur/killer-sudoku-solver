@@ -1,6 +1,5 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -98,9 +97,9 @@ export class CageModel4Reducer implements CageModelReducer {
             }
         }
 
-        reduction.tryReduceNumOpts(cageModel3CellM1, new SudokuNumsSet(cageModel3CellM1ActualNumBits), this._cageM);
-        reduction.tryReduceNumOpts(cageModel3CellM2, new SudokuNumsSet(cageModel3CellM2ActualNumBits), this._cageM);
-        reduction.tryReduceNumOpts(cageModel3CellM3, new SudokuNumsSet(cageModel3CellM3ActualNumBits), this._cageM);
+        reduction.tryReduceNumOptsBits(cageModel3CellM1, cageModel3CellM1ActualNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(cageModel3CellM2, cageModel3CellM2ActualNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(cageModel3CellM3, cageModel3CellM3ActualNumBits, this._cageM);
     }
 
 }
