@@ -13,36 +13,6 @@ const IS_RUN_SLOWER_ALTERNATIVES = false;
 
 describe('Performance tests for `CageModel3Reducer`', () => {
 
-    test.skip('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
-        runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(6),
-            prepareForReduction: (cageM, reduction) => {
-                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(1, 2, 3));
-                reduction.deleteNumOpt(cageM.cellMs[1], 3);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2 ]);
-
-                cageM.cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 2, 3));
-                reduction.tryReduceNumOpts(cageM.cellMs[2], SudokuNumsSet.of(1));
-                expect(cageM.cellMs[2].numOpts()).toEqual([ 1 ]);
-
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(1, 2, 3)
-                ]);
-
-                expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 3 ]);
-                expect(reduction.deletedNumOptsOf(cageM.cellMs[2]).nums).toEqual([ 2, 3 ]);
-            },
-            expectAfterTargetReduction: (cageM) => {
-                expect(cageM.cellMs[0].numOpts()).toEqual([ 3 ]);
-                expect(cageM.cellMs[1].numOpts()).toEqual([ 2 ]);
-                expect(cageM.cellMs[2].numOpts()).toEqual([ 1 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
-                    Combo.of(1, 2, 3)
-                ]);
-            }
-        });
-    });
-
     test('Comparable test for `CageModel` of sum 8, 2 `Combo`s and 8 present numbers', () => {
         runComparablePerformanceTests({
             createReferenceCageModel: () => createReferenceCageM(8),
@@ -68,6 +38,29 @@ describe('Performance tests for `CageModel3Reducer`', () => {
                 expect(Array.from(cageM.comboSet.combos)).toEqual([
                     Combo.of(1, 2, 5),
                     Combo.of(1, 3, 4)
+                ]);
+            }
+        });
+    });
+
+    test('Comparable test from real production scenario #1', () => {
+        runComparablePerformanceTests({
+            createReferenceCageModel: () => createReferenceCageM(19),
+            prepareForReduction: (cageM) => {
+                cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 3, 4, 5, 8, 9));
+                cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(8));
+                cageM.cellMs[2].reduceNumOpts(SudokuNumsSet.of(4, 6, 7, 9));
+            },
+            expectAfterTargetReduction: (cageM) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 4, 5 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 8 ]);
+                expect(cageM.cellMs[2].numOpts()).toEqual([ 6, 7, 9 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(2, 8, 9),
+                    // Deleted: Combo.of(3, 7, 9),
+                    // Deleted: Combo.of(4, 6, 9),
+                    Combo.of(4, 7, 8),
+                    Combo.of(5, 6, 8)
                 ]);
             }
         });
