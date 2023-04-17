@@ -14,14 +14,9 @@ type ReductionState = {
     deleteNumsInCell1Bits: number;
     deleteNumsInCell2Bits: number;
     deleteNumsInCell3Bits: number;
-};
-
-const EMPTY_REDUCTION_STATE: ReductionState = {
-    isValid: true,
-    comboNumsBits: 0,
-    deleteNumsInCell1Bits: 0,
-    deleteNumsInCell2Bits: 0,
-    deleteNumsInCell3Bits: 0
+    keepNumsInCell1Bits: number;
+    keepNumsInCell2Bits: number;
+    keepNumsInCell3Bits: number;
 };
 
 const INVALID_REDUCTION_STATE: ReductionState = {
@@ -29,7 +24,10 @@ const INVALID_REDUCTION_STATE: ReductionState = {
     comboNumsBits: 0,
     deleteNumsInCell1Bits: 0,
     deleteNumsInCell2Bits: 0,
-    deleteNumsInCell3Bits: 0
+    deleteNumsInCell3Bits: 0,
+    keepNumsInCell1Bits: 0,
+    keepNumsInCell2Bits: 0,
+    keepNumsInCell3Bits: 0
 };
 
 const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', 'utf-8');
@@ -50,10 +48,22 @@ db.forEach(sumReductions => {
                     comboNumsBits: comboNumsSet.bitStore,
                     deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
                     deleteNumsInCell2Bits: cellM2DeletedNums.bitStore,
-                    deleteNumsInCell3Bits: cellM3DeletedNums.bitStore
+                    deleteNumsInCell3Bits: cellM3DeletedNums.bitStore,
+                    keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
+                    keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
+                    keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
                 };
             } else {
-                reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
+                reductionStates[entry.state] = {
+                    isValid: true,
+                    comboNumsBits: comboNumsSet.bitStore,
+                    deleteNumsInCell1Bits: 0,
+                    deleteNumsInCell2Bits: 0,
+                    deleteNumsInCell3Bits: 0,
+                    keepNumsInCell1Bits: comboNumsSet.bitStore,
+                    keepNumsInCell2Bits: comboNumsSet.bitStore,
+                    keepNumsInCell3Bits: comboNumsSet.bitStore
+                };
             }
         }
         return reductionStates;
@@ -112,6 +122,8 @@ export class CageModel3Reducer implements CageModelReducer {
      */
     private readonly _cellM3NumsSet: ReadonlySudokuNumsSet;
 
+    private readonly _sumReductionStates: ReadonlyArray<ReadonlyArray<ReductionState>>;
+
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 3 {@link Cell}s.
@@ -129,13 +141,13 @@ export class CageModel3Reducer implements CageModelReducer {
         this._cellM2NumsSet = this._cellM2._numOptsSet;
         this._cellM3 = cageM.cellMs[2];
         this._cellM3NumsSet = this._cellM3._numOptsSet;
+        this._sumReductionStates = ALL_REDUCTION_STATES[cageM.cage.sum];
     }
 
     /**
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
         const cellM1NumsBits = this._cellM1NumsSet.bitStore;
         const cellM2NumsBits = this._cellM2NumsSet.bitStore;
         const cellM3NumsBits = this._cellM3NumsSet.bitStore;
@@ -165,20 +177,20 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
+            const reductionState = this._sumReductionStates[comboIndex][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1Bits);
-                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2Bits);
-                actualReductionStateCellM3 |= (cellM3NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell3Bits);
+                actualReductionStateCellM1 |= (cellM1NumsBits & reductionState.keepNumsInCell1Bits);
+                actualReductionStateCellM2 |= (cellM2NumsBits & reductionState.keepNumsInCell2Bits);
+                actualReductionStateCellM3 |= (cellM3NumsBits & reductionState.keepNumsInCell3Bits);
             } else {
                 this._combosSet.deleteCombo(combo);
             }
         }
 
-        reduction.tryReduceNumOpts(this._cellM1, new SudokuNumsSet(actualReductionStateCellM1), this._cageM);
-        reduction.tryReduceNumOpts(this._cellM2, new SudokuNumsSet(actualReductionStateCellM2), this._cageM);
-        reduction.tryReduceNumOpts(this._cellM3, new SudokuNumsSet(actualReductionStateCellM3), this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM1, actualReductionStateCellM1, this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM2, actualReductionStateCellM2, this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM3, actualReductionStateCellM3, this._cageM);
     }
 
     static getReductionState(sum: number, combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
