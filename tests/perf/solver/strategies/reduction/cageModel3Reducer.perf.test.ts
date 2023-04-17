@@ -9,6 +9,8 @@ import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } f
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 
+const IS_RUN_SLOWER_ALTERNATIVES = false;
+
 describe('Performance tests for `CageModel3Reducer`', () => {
 
     test.skip('Comparable test for `CageModel` of sum 6, 1 `Combo` and 6 present numbers', () => {
@@ -92,7 +94,9 @@ describe('Performance tests for `CageModel3Reducer`', () => {
     };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
-        doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
+        if (IS_RUN_SLOWER_ALTERNATIVES) {
+            doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
+        }
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
 
