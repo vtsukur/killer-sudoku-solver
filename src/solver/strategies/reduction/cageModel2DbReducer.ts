@@ -1,24 +1,58 @@
-import { Combo } from '../../math';
+import * as fs from 'node:fs';
+import { parse } from 'yaml';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet } from '../../sets';
+import { SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
+import { CageSizeNReductionsDb } from './db/reductionDb';
 
-/**
- * Type alias for pre-coded denormalized reducing function
- * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
- */
-type DenormalizedTacticalReducer = (
-        reduction: MasterModelReduction,
-        cageM: CageModel,
-        combosSet: CombosSet,
-        combo: Combo,
-        cellM1: CellModel,
-        cellM2: CellModel,
-        num1: number,
-        num2: number
-    ) => void;
+type ReductionState = {
+    isValid: boolean;
+    comboNumsBits: number;
+    deleteNumsInCell1Bits: number;
+    deleteNumsInCell2Bits: number;
+};
+
+const EMPTY_REDUCTION_STATE: ReductionState = {
+    isValid: true,
+    comboNumsBits: 0,
+    deleteNumsInCell1Bits: 0,
+    deleteNumsInCell2Bits: 0
+};
+
+const INVALID_REDUCTION_STATE: ReductionState = {
+    isValid: false,
+    comboNumsBits: 0,
+    deleteNumsInCell1Bits: 0,
+    deleteNumsInCell2Bits: 0
+};
+
+const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage2_reductions.yaml', 'utf-8');
+const db = parse(dbString) as CageSizeNReductionsDb;
+
+const ALL_REDUCTION_STATES: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
+db.forEach(sumReductions => {
+    ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
+        const comboNumsSet = SudokuNumsSet.of(...comboReductions.combo);
+        const reductionStates = new Array<ReductionState>(16).fill(INVALID_REDUCTION_STATE);
+        for (const entry of comboReductions.entries) {
+            if (entry.actions) {
+                const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                reductionStates[entry.state] = {
+                    isValid: true,
+                    comboNumsBits: comboNumsSet.bitStore,
+                    deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
+                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore
+                };
+            } else {
+                reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
+            }
+        }
+        return reductionStates;
+    });
+});
 
 /**
  * Reduces possible numbers for {@link CellModel}s
@@ -67,6 +101,10 @@ export class CageModel2DbReducer implements CageModelReducer {
         const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
         const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
 
+        const referenceReductionStates = ALL_REDUCTION_STATES[this._cageM.cage.sum];
+        let actualReductionStateCellM1 = 0;
+        let actualReductionStateCellM2 = 0;
+
         // Storing `CageModel`'s `ComboSet` to reference the object once.
         const combosSet = this._cageM.comboSet;
 
@@ -95,6 +133,8 @@ export class CageModel2DbReducer implements CageModelReducer {
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num1 = combo.number1;
             const num2 = combo.number2;
+
+            const comboIndex = this._cageM.sumAddendsCombinatorics.optimisticIndexOf(combo);
 
             //
             // [PERFORMANCE]
@@ -171,127 +211,24 @@ export class CageModel2DbReducer implements CageModelReducer {
             //
             // See `DENORMALIZED_TACTICAL_REDUCERS`.
             //
-            DENORMALIZED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
-                    reduction, this._cageM, combosSet, combo,
-                    this._cellM1, this._cellM2,
-                    num1, num2
-            );
+            // DENORMALIZED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
+            //         reduction, this._cageM, combosSet, combo,
+            //         this._cellM1, this._cellM2,
+            //         num1, num2
+            // );
+
+            const reductionState = referenceReductionStates[comboIndex][compressedNumbersPresenceState];
+
+            if (reductionState.isValid) {
+                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1Bits);
+                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2Bits);
+            } else {
+                this._cageM.comboSet.deleteCombo(combo);
+            }
         }
+
+        reduction.tryReduceNumOpts(this._cellM1, new SudokuNumsSet(actualReductionStateCellM1), this._cageM);
+        reduction.tryReduceNumOpts(this._cellM2, new SudokuNumsSet(actualReductionStateCellM2), this._cageM);
     }
 
-}
-
-/**
- * Readonly array of 16 pre-coded denormalized reducing functions
- * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
- *
- * Denormalized reducing functions are indexed by a 4-bit compressed state
- * representing the presence of `Combo` numbers within `CellModel`s:
- *
- *  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
- *  - The second bit is set if the second `Combo` number is possible in `CellModel` 1.
- *  - The third bit is set if the first `Combo` number is possible in `CellModel` 2.
- *  - The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
- *
- * Full table of cases for the `Combo` of `[num1, num2]`:
- *
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | Input                                                                          | Reducing Actions                                                      | Output                                                      |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | Compressed State | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | 0b0000 =  0      | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b0001 =  1      | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
- * | 0b0010 =  2      | <none>                       | `num2`                       | <none>                   | delete `num2`            | yes             | <none>                       | <none>                       |
- * | 0b0011 =  3      | <none>                       | `num1`, `num2`               | <none>                   | delete `num1` and `num2` | yes             | <none>                       | <none>                       |
- * | 0b0100 =  4      | `num1`                       | <none>                       | delete `num1`            | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b0101 =  5      | `num1`                       | `num1`                       | delete `num1`            | delete `num1`            | yes             | <none>                       | <none>                       |
- * | 0b0110 =  6      | `num1`                       | `num2`                       | <none>                   | <none>                   | no              | `num1`                       | `num2`                       |
- * | 0b0111 =  7      | `num1`                       | `num1`, `num2`               | <none>                   | delete `num1`            | no              | `num1`                       | `num2`                       |
- * | 0b1000 =  8      | `num2`                       | <none>                       | delete `num2`            | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b1001 =  9      | `num2`                       | `num1`                       | <none>                   | <none>                   | no              | `num2`                       | `num1`                       |
- * | 0b1010 = 10      | `num2`                       | `num2`                       | delete `num2`            | delete `num2`            | yes             | <none>                       | <none>                       |
- * | 0b1011 = 11      | `num2`                       | `num1`, `num2`               | <none>                   | delete `num2`            | no              | `num2`                       | `num1`                       |
- * | 0b1100 = 12      | `num1`, `num2`               | <none>                       | delete `num1` and `num2` | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b1101 = 13      | `num1`, `num2`               | `num1`                       | delete `num1`            | <none>                   | no              | `num2`                       | `num1`                       |
- * | 0b1110 = 14      | `num1`, `num2`               | `num2`                       | delete `num2`            | <none>                   | no              | `num1`                       | `num2`                       |
- * | 0b1111 = 15      | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- */
-const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
-    // `0b00_00 = 0`
-    (_reduction, _cageM, combosSet, combo) => {
-        combosSet.deleteCombo(combo);
-    },
-    // `0b00_01 = 1`
-    (reduction, cageM, combosSet, combo, cellM1, _cellM2, num1) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num1, cageM);
-    },
-    // `0b00_10 = 2`
-    (reduction, cageM, combosSet, combo, cellM1, _cellM2, _num1, num2) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num2, cageM);
-    },
-    // `0b00_11 = 3`
-    (reduction, cageM, combosSet, combo, cellM1) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteComboNumOpts(cellM1, combo, cageM);
-    },
-    // `0b01_00 = 4`
-    (reduction, cageM, combosSet, combo, _cellM1, cellM2, num1) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM2, num1, cageM);
-    },
-    // `0b01_01 = 5`
-    (reduction, cageM, combosSet, combo, cellM1, cellM2, num1) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num1, cageM);
-        reduction.deleteNumOpt(cellM2, num1, cageM);
-    },
-    // `0b01_10 = 6`
-    NOTHING_TO_REDUCE,
-    // `0b01_11 = 7`
-    (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, num1) => {
-        reduction.deleteNumOpt(cellM1, num1, cageM);
-    },
-    // `0b10_00 = 8`
-    (reduction, cageM, combosSet, combo, _cellM1, cellM2, _num1, num2) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM2, num2, cageM);
-    },
-    // `0b10_01 = 9`
-    NOTHING_TO_REDUCE,
-    // `0b10_10 = 10`
-    (reduction, cageM, combosSet, combo, cellM1, cellM2, _num1, num2) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteNumOpt(cellM1, num2, cageM);
-        reduction.deleteNumOpt(cellM2, num2, cageM);
-    },
-    // `0b10_11 = 11`
-    (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, _num1, num2) => {
-        reduction.deleteNumOpt(cellM1, num2, cageM);
-    },
-    // `0b11_00 = 12`
-    (reduction, cageM, combosSet, combo, _cellM1, cellM2) => {
-        combosSet.deleteCombo(combo);
-        reduction.deleteComboNumOpts(cellM2, combo, cageM);
-    },
-    // `0b11_01 = 13`
-    (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, num1) => {
-        reduction.deleteNumOpt(cellM2, num1, cageM);
-    },
-    // `0b11_10 = 14`
-    (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, _num1, num2) => {
-        reduction.deleteNumOpt(cellM2, num2, cageM);
-    },
-    // `0b11_11 = 15`
-    NOTHING_TO_REDUCE
-];
-
-/**
- * Empty reducing function.
- */
-function NOTHING_TO_REDUCE() {
-    // No-op.
 }
