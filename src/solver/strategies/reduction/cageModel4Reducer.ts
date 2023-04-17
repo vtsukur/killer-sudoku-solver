@@ -1,5 +1,6 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
+import { SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -71,6 +72,7 @@ export class CageModel4Reducer implements CageModelReducer {
         const combosBeforeReduction = this._cageM.comboSet.combos;
         const updatedCombosSet = this._cageM.comboSet.clear();
 
+        const minCellMDeleteNums = SudokuNumsSet.newEmpty();
         for (const num of minNumCountCellM.numOpts()) {
             const reducedSum = this._sum - num;
             let atLeastOneReducedComboValid = false;
@@ -93,10 +95,13 @@ export class CageModel4Reducer implements CageModelReducer {
                 }
             }
             if (!atLeastOneReducedComboValid) {
-                reduction.deleteNumOpt(minNumCountCellM, num, this._cageM);
+                minCellMDeleteNums.add(num);
             }
         }
 
+        if (minCellMDeleteNums.isNotEmpty) {
+            reduction.deleteNumOpts(minNumCountCellM, minCellMDeleteNums, this._cageM);
+        }
         reduction.tryReduceNumOptsBits(cageModel3CellM1, cageModel3CellM1ActualNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageModel3CellM2, cageModel3CellM2ActualNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageModel3CellM3, cageModel3CellM3ActualNumBits, this._cageM);
