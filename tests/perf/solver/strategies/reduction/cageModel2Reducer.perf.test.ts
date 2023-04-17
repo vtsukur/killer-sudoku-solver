@@ -114,6 +114,28 @@ describe('Performance tests for `CageModel2Reducer`', () => {
         });
     });
 
+    test('Comparable test from real production scenario #1', () => {
+        runComparablePerformanceTests({
+            createReferenceCageModel: () => createReferenceCageM(10),
+            prepareForReduction: (cageM, reduction) => {
+                reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(1, 3, 4, 6, 7, 9));
+                reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(1, 2, 4, 7));
+            },
+            expectAfterTargetReduction: (cageM, reduction) => {
+                expect(cageM.cellMs[0].numOpts()).toEqual([ 3, 6, 9 ]);
+                expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 4, 7 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 9),
+                    // Deleted: Combo.of(2, 8),
+                    Combo.of(3, 7),
+                    Combo.of(4, 6)
+                ]);
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 1, 2, 4, 7, 8 ]);
+                expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 2, 3, 6, 8, 9 ]);
+            }
+        });
+    });
+
     const createReferenceCageM = (sum: number) => {
         const cell1 = Cell.at(0, 0);
         const cell2 = Cell.at(0, 1);
