@@ -2,6 +2,7 @@ import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
 import { Combo, HouseModelCagesCombinatorics, SumAddendsCombinatorics } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
+import { CellModel } from '../../../../src/solver/models/elements/cellModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
 import { CombosSet } from '../../../../src/solver/sets';
 
@@ -173,7 +174,7 @@ export const newHouseModel = (cages: ReadonlyCages) => {
             cellsMap.set(cell.key, cell);
         });
     });
-    const cageMs = cages.map(cage => new CageModel(cage, []));
+    const cageMs = cages.map(cage => new CageModel(cage, cage.cells.map(cell => new CellModel(cell))));
     const houseM = new HouseModel(0, Array.from(cellsMap.values()));
     for (const cageM of cageMs) {
         houseM.addCageModel(cageM);
