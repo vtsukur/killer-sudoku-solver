@@ -201,7 +201,6 @@ export class CageModel3Reducer implements CageModelReducer {
         const num2 = combo.number2;
         const num3 = combo.number3;
 
-        const comboIndex = SumAddendsCombinatorics.enumerate(sum, 3).optimisticIndexOf(combo);
         const compressedNumbersPresenceState =
                 ((cellM1NumsBits & (1 << num1)) >> num1) |
                 ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
@@ -217,7 +216,7 @@ export class CageModel3Reducer implements CageModelReducer {
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return ALL_REDUCTION_STATES[sum][comboIndex][compressedNumbersPresenceState];
+        return ALL_REDUCTION_STATES[sum][COMBO_INDICES[combo.numKey]][compressedNumbersPresenceState];
     }
 
 }
