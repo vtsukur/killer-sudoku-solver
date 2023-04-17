@@ -6,10 +6,10 @@ import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
- * Type alias for pre-coded denormalized reducing function
+ * Type alias for pre-coded _inlined reduction_ function
  * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  */
-type DenormalizedTacticalReducer = (
+type InlinedTacticalReducer = (
         reduction: MasterModelReduction,
         cageM: CageModel,
         combosSet: CombosSet,
@@ -95,7 +95,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // [PERFORMANCE]
             //
             // The following code achieves high performance
-            // by determining and running a particular pre-coded denormalized reducing function
+            // by determining and running a particular pre-coded _inlined reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
             // Overall, there are 16 distinct permutations of _numbers' presence_ states
@@ -108,7 +108,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
             // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
             //
-            // See also `DENORMALIZED_TACTICAL_REDUCERS`.
+            // See also `INLINED_TACTICAL_REDUCERS`.
             //
 
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
@@ -172,7 +172,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // to form the joint 4-bit integer)
             // ```
             //
-            // See also `DENORMALIZED_TACTICAL_REDUCERS`.
+            // See also `INLINED_TACTICAL_REDUCERS`.
             //
             const compressedNumbersPresenceState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |         // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
@@ -185,12 +185,12 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // Running a determined pre-coded denormalized reducing function
+            // Running a determined pre-coded _inlined reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            // See `DENORMALIZED_TACTICAL_REDUCERS`.
+            // See `INLINED_TACTICAL_REDUCERS`.
             //
-            DENORMALIZED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
+            INLINED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
                     reduction, this._cageM, this._combosSet, combo,
                     this._cellM1, this._cellM2,
                     num1, num2
@@ -201,10 +201,10 @@ export class CageModel2Reducer implements CageModelReducer {
 }
 
 /**
- * Readonly array of 16 pre-coded denormalized reducing functions
+ * Readonly array of 16 pre-coded _inlined reduction_ functions
  * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  *
- * Denormalized reducing functions are indexed by a 4-bit compressed state
+ * _Inlined reduction_ functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
  *
  *  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
@@ -237,7 +237,7 @@ export class CageModel2Reducer implements CageModelReducer {
  * | 0b1111 = 15      | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
-const DENORMALIZED_TACTICAL_REDUCERS: ReadonlyArray<DenormalizedTacticalReducer> = [
+const INLINED_TACTICAL_REDUCERS: ReadonlyArray<InlinedTacticalReducer> = [
     // `0b00_00 = 0`
     (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
