@@ -137,16 +137,16 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // ```
             // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b01`
+            // State of `Combo` numbers' presence within the first `CellModel`: `0b01`
             // (the present first number `5` sets the first bit,
             // and the absent second number `6` clears the second bit)
             //
             // `CellModel` 2 numbers: `[..., 5, 6, ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b11`
-            // (both present numbers `5` and `6` set both bits)
+            // State of `Combo` numbers' presence within the second `CellModel`: `0b11`
+            // (both present numbers `5` and `6` set both first and second bits)
             //
             // Compound state: `0b1101`
-            // (shift to the right happens for the compressed state for `CellModel` 2
+            // (shift to the right happens for the compressed state for the second `CellModel`
             // to form the joint 4-bit integer)
             // ```
             //
@@ -159,22 +159,22 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // ```
             // `CellModel` 1 numbers: `[..., 6, (no 5) ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 1: `0b10`
+            // State of `Combo` numbers' presence within the first `CellModel`: `0b10`
             // (the absent first number `5` clears the first bit,
             // and the present second number `6` sets the second bit)
             //
             // `CellModel` 2 numbers: `[..., (no 5, no 6), ...]`
-            // Compressed state for the presence of `Combo` numbers within `CellModel` 2: `0b00`
+            // State of `Combo` numbers' presence within the second `CellModel`: `0b00`
             // (having both `5` and `6` absent clears both bits)
             //
             // Compound state: `0b0010`
-            // (shift to the right happens for the compressed state for `CellModel` 2
+            // (shift to the right happens for the compressed state for the second `CellModel`
             // to form the joint 4-bit integer)
             // ```
             //
             // See also `INLINED_TACTICAL_REDUCERS`.
             //
-            const compressedNumbersPresenceState =
+            const numbersPresenceState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |         // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
                     ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |   // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
                     (
@@ -190,7 +190,7 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // See `INLINED_TACTICAL_REDUCERS`.
             //
-            INLINED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
+            INLINED_TACTICAL_REDUCERS[numbersPresenceState](
                     reduction, this._cageM, this._combosSet, combo,
                     this._cellM1, this._cellM2,
                     num1, num2
