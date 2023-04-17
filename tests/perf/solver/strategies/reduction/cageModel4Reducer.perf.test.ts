@@ -9,6 +9,8 @@ import { ComparablePerformanceTestConfig, PerformanceTestOptions, doRunFunctiona
 import { CageModel4FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel4FullReducer';
 import { CageModel4Reducer } from '../../../../../src/solver/strategies/reduction/cageModel4Reducer';
 
+const IS_RUN_SLOWER_ALTERNATIVES = false;
+
 describe('Performance tests for `CageModel4Reducer`', () => {
 
     test('Comparable test for `CageModel` of sum 18, 11 `Combo`s and 22 present numbers', () => {
@@ -74,7 +76,9 @@ describe('Performance tests for `CageModel4Reducer`', () => {
             warmupIterationCount: 1_000,
             mainIterationCount: 10_000
         };
-        doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full', options);
+        if (IS_RUN_SLOWER_ALTERNATIVES) {
+            doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full', options);
+        }
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal', options);
     };
 
