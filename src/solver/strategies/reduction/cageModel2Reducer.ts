@@ -1,7 +1,7 @@
 import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet } from '../../sets';
+import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
@@ -35,14 +35,31 @@ export class CageModel2Reducer implements CageModelReducer {
     private readonly _cageM: CageModel;
 
     /**
-     * The first {@link CellModel} of the {@link CageModel}.
+     * Cache for the {@link CageModel}'s {@link CombosSet}.
+     */
+    private readonly _combosSet: CombosSet;
+
+    /**
+     * Cache for the first {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM1: CellModel;
 
     /**
-     * The second {@link CellModel} of the {@link CageModel}.
+     * Cache for {@link SudokuNumsSet} of possible number's options
+     * for the first {@link CellModel} of the {@link CageModel}.
+     */
+    private readonly _cellM1NumsSet: ReadonlySudokuNumsSet;
+
+    /**
+     * Cache for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2: CellModel;
+
+    /**
+     * Cache for {@link SudokuNumsSet} of possible number's options
+     * for the second {@link CellModel} of the {@link CageModel}.
+     */
+    private readonly _cellM2NumsSet: ReadonlySudokuNumsSet;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
@@ -52,8 +69,11 @@ export class CageModel2Reducer implements CageModelReducer {
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
+        this._combosSet = cageM.comboSet;
         this._cellM1 = cageM.cellMs[0];
+        this._cellM1NumsSet = this._cellM1._numOptsSet;
         this._cellM2 = cageM.cellMs[1];
+        this._cellM2NumsSet = this._cellM2._numOptsSet;
     }
 
     /**
@@ -64,14 +84,11 @@ export class CageModel2Reducer implements CageModelReducer {
         // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
         // for efficient low-level number check and manipulation.
         //
-        const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
-        const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
-
-        // Storing `CageModel`'s `ComboSet` to reference the object once.
-        const combosSet = this._cageM.comboSet;
+        const cellM1NumsBits = this._cellM1NumsSet.bitStore;
+        const cellM2NumsBits = this._cellM2NumsSet.bitStore;
 
         // Iterating over each possible `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
-        for (const combo of combosSet.combos) {
+        for (const combo of this._combosSet.combos) {
             //
             // [PERFORMANCE]
             //
@@ -172,7 +189,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // See `DENORMALIZED_TACTICAL_REDUCERS`.
             //
             DENORMALIZED_TACTICAL_REDUCERS[compressedNumbersPresenceState](
-                    reduction, this._cageM, combosSet, combo,
+                    reduction, this._cageM, this._combosSet, combo,
                     this._cellM1, this._cellM2,
                     num1, num2
             );
