@@ -271,7 +271,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      *
      * @param val - Another set to `AND` with this set.
      *
-     * @returns {@link ReadonlySudokuNumsSet},
+     * @returns {ReadonlySudokuNumsSet},
      * which has all the numbers deleted as a part of the `union` operation.
      *
      * @see NumsSet.union
@@ -280,6 +280,39 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         const oldBitStore = this._bitStore;
 
         this.union(val);
+
+        //
+        // Applying bitwise XOR on the bit store of the updated set
+        // and the before-update bit store to find the _difference_ between the two,
+        // which would determine the deleted numbers.
+        //
+        // Example:
+        // ```
+        //      oldBitStore                 = 0b0111111111
+        //      this.bitStore               = 0b0011010001
+        //      oldBitStore ^ this.bitStore = 0b0100101110
+        // ```
+        //
+        return new SudokuNumsSet(oldBitStore ^ this.bitStore);
+    }
+
+    /**
+     * Acts just like {@link unionWithDeleted}
+     * accepting a bit store as an argument (instead of the {@link ReadonlySudokuNumsSet})
+     * and returns the new {@link ReadonlySudokuNumsSet},
+     * which has all the numbers deleted as a part of the `union` operation.
+     *
+     * @param val - Another set to `AND` with this set.
+     *
+     * @returns {ReadonlySudokuNumsSet},
+     * which has all the numbers deleted as a part of the `union` operation.
+     *
+     * @see NumsSet.union
+     */
+    unionBitsWithDeleted(val: BitStore32): ReadonlySudokuNumsSet {
+        const oldBitStore = this._bitStore;
+
+        this.unionBits(val);
 
         //
         // Applying bitwise XOR on the bit store of the updated set
