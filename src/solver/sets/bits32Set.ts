@@ -280,6 +280,33 @@ export abstract class Bits32Set<
     }
 
     /**
+     * Updates this set so that it has only the numbers
+     * present in this set `AND` the given `val` bit store.
+     *
+     * @param val - Another bit store to `AND` with this set.
+     *
+     * @returns This set.
+     */
+    unionBits(val: BitStore32): this {
+        //
+        // Applying bitwise AND assignment on the bit store of this set
+        // to `AND` `1`s from the bit store of the `val` set.
+        //
+        // Example:
+        // ```
+        //      this._bitStore        = 0b10011001
+        //      val                   = 0b01001001
+        //      this._bitStore &= val = 0b00001001 (only 2 bits at the same position are `1`s)
+        // ```
+        //
+        this._bitStore &= val;
+
+        this.onUpdate();
+
+        return this;
+    }
+
+    /**
      * Describes the reflection of each update to the bit store value.
      *
      * The most typical use case of this method is a manipulation of caches of the subclasses.
