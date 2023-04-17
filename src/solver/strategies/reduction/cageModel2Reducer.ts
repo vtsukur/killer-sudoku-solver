@@ -123,10 +123,10 @@ export class CageModel2Reducer implements CageModelReducer {
             // out of the current `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators:
             //
-            //  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
-            //  - The second bit is set if the second `Combo` number is possible in `CellModel` 1.
-            //  - The third bit is set if the first `Combo` number is possible in `CellModel` 2.
-            //  - The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
+            //  - The first bit is set if the first `Combo` number is possible in the first `CellModel`.
+            //  - The second bit is set if the second `Combo` number is possible in the first `CellModel`.
+            //  - The third bit is set if the first `Combo` number is possible in the second `CellModel`.
+            //  - The fourth bit is set if the second `Combo` number is possible in the second `CellModel`.
             //
             // *Example 1*
             //
@@ -207,10 +207,10 @@ export class CageModel2Reducer implements CageModelReducer {
  * _Inlined reduction_ functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
  *
- *  - The first bit is set if the first `Combo` number is possible in `CellModel` 1.
- *  - The second bit is set if the second `Combo` number is possible in `CellModel` 1.
- *  - The third bit is set if the first `Combo` number is possible in `CellModel` 2.
- *  - The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
+ *  - The first bit is set if the first `Combo` number is possible in the first CellModel`.
+ *  - The second bit is set if the second `Combo` number is possible in the first `CellModel`.
+ *  - The third bit is set if the first `Combo` number is possible in the second `CellModel`.
+ *  - The fourth bit is set if the second `Combo` number is possible in the second `CellModel`.
  *
  * Full table of cases for the `Combo` of `[num1, num2]`:
  *
