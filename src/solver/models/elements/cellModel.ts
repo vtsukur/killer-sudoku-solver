@@ -70,6 +70,10 @@ export class CellModel {
         return val.bitStore == SudokuNumsSet.ALL.bitStore ? SudokuNumsSet.EMPTY : this._numOptsSet.unionWithDeleted(val);
     }
 
+    reduceNumOptsBits(val: number): ReadonlySudokuNumsSet {
+        return val == SudokuNumsSet.ALL.bitStore ? SudokuNumsSet.EMPTY : this._numOptsSet.unionBitsWithDeleted(val);
+    }
+
     get solved() {
         return this._solved;
     }
