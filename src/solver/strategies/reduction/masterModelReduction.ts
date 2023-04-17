@@ -43,6 +43,14 @@ export class MasterModelReduction {
         }
     }
 
+    tryReduceNumOptsBits(cellM: CellModel, numsBits: number, cageM?: CageModel) {
+        const deletedNums = cellM.reduceNumOptsBits(numsBits);
+        if (deletedNums.isNotEmpty) {
+            this.addDeletedNums(cellM, deletedNums);
+            this.markAsImpacted(cellM, cageM);
+        }
+    }
+
     protected addDeletedNum(cellM: CellModel, num: number) {
         this._deletedNumsTracker[cellM.cell.index].add(num);
     }
