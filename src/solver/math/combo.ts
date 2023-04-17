@@ -128,14 +128,7 @@ export class Combo implements Iterable<number> {
      * this combination if the given number is not a part of this combination.
      */
     reduce(num: number): Combo {
-        const numIndex = this._nums.indexOf(num);
-        if (numIndex !== -1) {
-            const cpy = [...this._nums];
-            cpy.splice(numIndex, 1);
-            return new Combo(cpy);
-        } else {
-            return this;
-        }
+        return new Combo(this._nums.filter(aNum => aNum !== num));
     }
 
 }

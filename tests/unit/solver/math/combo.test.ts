@@ -72,7 +72,7 @@ describe('Combo tests', () => {
     test('Reduction of Combo without removal of the number', () => {
         const combo = Combo.of(1, 6, 9);
         const reducedCombo = combo.reduce(8);
-        expect(reducedCombo).toBe(combo);
+        expect(reducedCombo).toEqual(combo);
     });
 
     const expectComboWithValues = (combo: Combo, values: ReadonlyArray<number>) => {
