@@ -29,16 +29,28 @@ export class Combo implements Iterable<number> {
     private readonly _nums: ReadonlyArray<number>;
     private readonly _numSet: ReadonlySet<number>;
 
+    readonly number1: number;
+
+    readonly number2: number;
+
+    readonly number3: number;
+
     /**
      * Constructs new combination of the given numbers.
      *
      * @param val - Numbers to construct a combination from.
      */
     constructor(val: ReadonlyArray<number>) {
+        if (val.length === 0) {
+            throw new RangeError('Combo should have at least 1 number');
+        }
         this._nums = [...val];
         this._numSet = new Set(val);
         this.numsSet = new SudokuNumsSet(val);
         this.key = joinArray(val);
+        this.number1 = val[0];
+        this.number2 = (val.length > 1) ? val[1] : 0;
+        this.number3 = (val.length > 2) ? val[2] : 0;
     }
 
     /**
@@ -53,33 +65,6 @@ export class Combo implements Iterable<number> {
     }
 
     /**
-     * Returns first number in the combination.
-     *
-     * @throws {RangeError} if the combination is empty.
-     */
-    get number1() {
-        return this.nthNumber(0);
-    }
-
-    /**
-     * Returns second number in the combination.
-     *
-     * @throws {RangeError} if the combination doesn't have second element.
-     */
-    get number2() {
-        return this.nthNumber(1);
-    }
-
-    /**
-     * Returns third number in the combination.
-     *
-     * @throws {RangeError} if the combination doesn't have second element.
-     */
-    get number3() {
-        return this.nthNumber(2);
-    }
-
-    /**
      * Returns number with the n-th `index` in the combination.
      *
      * @param index - Index of the number in the combination.
@@ -90,7 +75,7 @@ export class Combo implements Iterable<number> {
      */
     nthNumber(index: number) {
         if (index < 0 || index > this._nums.length - 1) {
-            throw new RangeError(`Number of index ${index} cannot be accessed. Combo has ${this._nums.length} elements`);
+            throw new RangeError(`Number of index ${index} cannot be accessed. Combo has ${this._nums.length} element(s)`);
         } else {
             return this._nums[index];
         }
