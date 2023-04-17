@@ -156,8 +156,8 @@ describe('Performance tests for `CageModel2Reducer`', () => {
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
         doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
-        doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
         doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
+        doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
 
     const createFullReducer = (cageM: CageModel) => {
