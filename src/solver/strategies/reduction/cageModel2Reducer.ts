@@ -172,8 +172,6 @@ export class CageModel2Reducer implements CageModelReducer {
             // to form the joint 4-bit integer)
             // ```
             //
-            // See also `INLINED_TACTICAL_REDUCERS`.
-            //
             const numbersPresenceState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |         // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
                     ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |   // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
@@ -187,8 +185,6 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // Running a determined pre-coded _inlined reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
-            //
-            // See `INLINED_TACTICAL_REDUCERS`.
             //
             INLINED_TACTICAL_REDUCERS[numbersPresenceState](
                     reduction, this._cageM, this._combosSet, combo,
