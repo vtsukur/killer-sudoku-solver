@@ -18,6 +18,7 @@ import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } f
 import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
 
 const log = logFactory.withLabel('cageModel2Reducer.perf');
+const IS_RUN_SLOWER_ALTERNATIVES = false;
 
 describe('Performance tests for `CageModel2Reducer`', () => {
 
@@ -154,9 +155,11 @@ describe('Performance tests for `CageModel2Reducer`', () => {
     };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
-        doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
-        doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
-        doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
+        if (IS_RUN_SLOWER_ALTERNATIVES) {
+            doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
+            doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
+            doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
+        }
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
 
