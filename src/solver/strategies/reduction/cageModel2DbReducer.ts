@@ -12,20 +12,26 @@ type ReductionState = {
     comboNumsBits: number;
     deleteNumsInCell1Bits: number;
     deleteNumsInCell2Bits: number;
+    keepNumsInCell1Bits: number;
+    keepNumsInCell2Bits: number;
 };
 
 const EMPTY_REDUCTION_STATE: ReductionState = {
     isValid: true,
     comboNumsBits: 0,
     deleteNumsInCell1Bits: 0,
-    deleteNumsInCell2Bits: 0
+    deleteNumsInCell2Bits: 0,
+    keepNumsInCell1Bits: ~0,
+    keepNumsInCell2Bits: ~0
 };
 
 const INVALID_REDUCTION_STATE: ReductionState = {
     isValid: false,
     comboNumsBits: 0,
     deleteNumsInCell1Bits: 0,
-    deleteNumsInCell2Bits: 0
+    deleteNumsInCell2Bits: 0,
+    keepNumsInCell1Bits: 0,
+    keepNumsInCell2Bits: 0
 };
 
 const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage2_reductions.yaml', 'utf-8');
@@ -44,7 +50,9 @@ db.forEach(sumReductions => {
                     isValid: true,
                     comboNumsBits: comboNumsSet.bitStore,
                     deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
-                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore
+                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore,
+                    keepNumsInCell1Bits: ~cellM1DeletedNums.bitStore,
+                    keepNumsInCell2Bits: ~cellM2DeletedNums.bitStore
                 };
             } else {
                 reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
@@ -222,8 +230,8 @@ export class CageModel2DbReducer implements CageModelReducer {
             const reductionState = this._referenceReductionStates[comboIndex][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell1Bits);
-                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & ~reductionState.deleteNumsInCell2Bits);
+                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & reductionState.keepNumsInCell1Bits);
+                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & reductionState.keepNumsInCell2Bits);
             } else {
                 this._cageM.comboSet.deleteCombo(combo);
             }
