@@ -15,7 +15,7 @@ import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
-import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/cageModel2DbReducer';
+import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
 
 const log = logFactory.withLabel('cageModel2Reducer.perf');
 

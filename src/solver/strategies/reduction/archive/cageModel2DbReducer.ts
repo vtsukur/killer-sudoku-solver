@@ -1,11 +1,11 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
-import { CageModel } from '../../models/elements/cageModel';
-import { CellModel } from '../../models/elements/cellModel';
-import { SudokuNumsSet } from '../../sets';
-import { CageModelReducer } from './cageModelReducer';
-import { MasterModelReduction } from './masterModelReduction';
-import { CageSizeNReductionsDb } from './db/reductionDb';
+import { CageModel } from '../../../models/elements/cageModel';
+import { CellModel } from '../../../models/elements/cellModel';
+import { SudokuNumsSet } from '../../../sets';
+import { CageModelReducer } from '../cageModelReducer';
+import { MasterModelReduction } from '../masterModelReduction';
+import { CageSizeNReductionsDb } from '../db/reductionDb';
 
 type ReductionState = {
     isValid: boolean;
