@@ -8,6 +8,7 @@ import { CageModel2Reducer } from '../../../../../src/solver/strategies/reductio
 import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
+import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/cageModel2DbReducer';
 
 describe('CageModel2Reducers', () => {
 
@@ -45,6 +46,10 @@ describe('CageModel2Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModel2Reducer(cageM),
             type: 'CageModel2Reducer'
+        },
+        {
+            newReducer: (cageM: CageModel) => new CageModel2DbReducer(cageM),
+            type: 'CageModel2DbReducer'
         }
     ];
 

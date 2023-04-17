@@ -15,6 +15,7 @@ import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
+import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/cageModel2DbReducer';
 
 const log = logFactory.withLabel('cageModel2Reducer.perf');
 
@@ -134,6 +135,7 @@ describe('Performance tests for `CageModel2Reducer`', () => {
         doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
         doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
+        doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
     };
 
     const createFullReducer = (cageM: CageModel) => {
@@ -146,6 +148,10 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     const createOptimalReducer = (cageM: CageModel) => {
         return new CageModel2Reducer(cageM);
+    };
+
+    const createOptimalDbReducer = (cageM: CageModel) => {
+        return new CageModel2DbReducer(cageM);
     };
 
     test.skip('Find solution for Sudoku.com puzzles', () => {
