@@ -35,6 +35,8 @@ export class Combo implements Iterable<number> {
 
     readonly number3: number;
 
+    readonly numKey: number;
+
     /**
      * Constructs new combination of the given numbers.
      *
@@ -51,6 +53,7 @@ export class Combo implements Iterable<number> {
         this.number1 = val[0];
         this.number2 = (val.length > 1) ? val[1] : 0;
         this.number3 = (val.length > 2) ? val[2] : 0;
+        this.numKey = this.number1 * 100 + this.number2 * 10 + this.number3;
     }
 
     /**

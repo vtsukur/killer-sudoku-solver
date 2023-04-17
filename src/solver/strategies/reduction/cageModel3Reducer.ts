@@ -34,9 +34,12 @@ const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_red
 const db = parse(dbString) as CageSizeNReductionsDb;
 
 const ALL_REDUCTION_STATES: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
+const COMBO_INDICES = new Array<number>(1000);
 db.forEach(sumReductions => {
+    const combinatorics = SumAddendsCombinatorics.enumerate(sumReductions.sum, 3);
     ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-        const comboNumsSet = SudokuNumsSet.of(...comboReductions.combo);
+        const combo = Combo.of(...comboReductions.combo);
+        const comboNumsSet = combo.numsSet;
         const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
         for (const entry of comboReductions.entries) {
             if (entry.actions) {
@@ -66,6 +69,7 @@ db.forEach(sumReductions => {
                 };
             }
         }
+        COMBO_INDICES[combo.numKey] = combinatorics.optimisticIndexOf(combo);
         return reductionStates;
     });
 });
@@ -161,7 +165,6 @@ export class CageModel3Reducer implements CageModelReducer {
             const num2 = combo.number2;
             const num3 = combo.number3;
 
-            const comboIndex = this._cageM.sumAddendsCombinatorics.optimisticIndexOf(combo);
             const compressedNumbersPresenceState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |
                     ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
@@ -177,7 +180,7 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = this._sumReductionStates[comboIndex][compressedNumbersPresenceState];
+            const reductionState = this._sumReductionStates[COMBO_INDICES[combo.numKey]][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
                 actualReductionStateCellM1 |= (cellM1NumsBits & reductionState.keepNumsInCell1Bits);
