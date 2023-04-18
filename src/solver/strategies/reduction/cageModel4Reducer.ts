@@ -1,6 +1,6 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { SudokuNumsSet } from '../../sets';
+import { CombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -17,6 +17,8 @@ export class CageModel4Reducer implements CageModelReducer {
 
     private readonly _cageM: CageModel;
 
+    private readonly _combosSet: CombosSet;
+
     private readonly _cellMs: ReadonlyArray<CellModel>;
 
     private readonly _firstCellM: CellModel;
@@ -31,6 +33,7 @@ export class CageModel4Reducer implements CageModelReducer {
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
+        this._combosSet = cageM.comboSet;
         this._cellMs = cageM.cellMs;
         this._firstCellM = cageM.cellMs[0];
         this._sum = cageM.cage.sum;
@@ -74,8 +77,8 @@ export class CageModel4Reducer implements CageModelReducer {
         const cageModel3CellM3NumBits = cageModel3CellM3._numOptsSet.bitStore;
         let cageModel3CellM3ActualNumBits = 0;
 
-        const combosBeforeReduction = this._cageM.comboSet.combos;
-        const updatedCombosSet = this._cageM.comboSet.clear();
+        const combosBeforeReduction = this._combosSet.combos;
+        const updatedCombosSet = this._combosSet.clear();
 
         const minCellMDeleteNums = SudokuNumsSet.newEmpty();
         for (const num of minNumCountNums) {
