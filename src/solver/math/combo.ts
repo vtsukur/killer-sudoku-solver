@@ -45,8 +45,8 @@ export class Combo implements Iterable<number> {
         if (val.length === 0) {
             throw new RangeError('Combo should have at least 1 number');
         }
-        this._nums = [...val];
         this.numsSet = new SudokuNumsSet(val);
+        this._nums = this.numsSet.nums;
         this.key = joinArray(val);
         this.number1 = val[0];
         this.number2 = (val.length > 1) ? val[1] : 0;
