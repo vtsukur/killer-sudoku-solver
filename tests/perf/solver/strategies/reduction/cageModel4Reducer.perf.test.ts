@@ -5,7 +5,7 @@ import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { Combo } from '../../../../../src/solver/math';
 import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
-import { ComparablePerformanceTestConfig, PerformanceTestOptions, doRunFunctionalAndPerformanceTests } from './commons';
+import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModel4FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel4FullReducer';
 import { CageModel4Reducer } from '../../../../../src/solver/strategies/reduction/cageModel4Reducer';
 
@@ -72,14 +72,13 @@ describe('Performance tests for `CageModel4Reducer`', () => {
     };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
-        const options: PerformanceTestOptions = {
-            warmupIterationCount: 100_000,
-            mainIterationCount: 1_000_000
-        };
         if (IS_RUN_SLOWER_ALTERNATIVES) {
-            doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full', options);
+            doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full', {
+                warmupIterationCount: 10_000,
+                mainIterationCount: 100_000
+            });
         }
-        doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal', options);
+        doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
 
     const createFullReducer = (cageM: CageModel) => {
