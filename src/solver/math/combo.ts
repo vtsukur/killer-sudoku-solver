@@ -27,7 +27,6 @@ export class Combo implements Iterable<number> {
     readonly numsSet: ReadonlySudokuNumsSet;
 
     private readonly _nums: ReadonlyArray<number>;
-    private readonly _numSet: ReadonlySet<number>;
 
     readonly number1: number;
 
@@ -47,13 +46,16 @@ export class Combo implements Iterable<number> {
             throw new RangeError('Combo should have at least 1 number');
         }
         this._nums = [...val];
-        this._numSet = new Set(val);
         this.numsSet = new SudokuNumsSet(val);
         this.key = joinArray(val);
         this.number1 = val[0];
         this.number2 = (val.length > 1) ? val[1] : 0;
         this.number3 = (val.length > 2) ? val[2] : 0;
-        this.numKey = this.number1 * 100 + this.number2 * 10 + this.number3;
+        if (val.length === 4) {
+            this.numKey = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + val[3];
+        } else {
+            this.numKey = this.number1 * 100 + this.number2 * 10 + this.number3;
+        }
     }
 
     /**
@@ -104,7 +106,7 @@ export class Combo implements Iterable<number> {
      * @returns `true` if the given number is a part of this combination, otherwise `false`.
      */
     has(val: number) {
-        return this._numSet.has(val);
+        return this.numsSet.has(val);
     }
 
     /**
@@ -116,7 +118,7 @@ export class Combo implements Iterable<number> {
      * otherwise `false`.
      */
     hasSome(val: Set<number>) {
-        return Array.from(val).some(num => this._numSet.has(num));
+        return Array.from(val).some(num => this.numsSet.has(num));
     }
 
     /**

@@ -54,6 +54,12 @@ export class LockableCombosSet extends CombosSet implements Lockable {
         }
     }
 
+    setCombosBits(val: number): void {
+        if (!this._isLocked) {
+            super.setCombosBits(val);
+        }
+    }
+
     union(val: ReadonlyCombosSet): this {
         return !this._isLocked ? super.union(val) : this;
     }

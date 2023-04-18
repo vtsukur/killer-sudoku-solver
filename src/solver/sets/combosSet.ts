@@ -57,6 +57,11 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         this.add(this._combinatorics.optimisticIndexOf(combo));
     }
 
+    setCombosBits(val: BitStore32) {
+        this._bitStore = val;
+        this.onUpdate();
+    }
+
     deleteCombo(combo: Combo) {
         this.delete(this._combinatorics.optimisticIndexOf(combo));
     }

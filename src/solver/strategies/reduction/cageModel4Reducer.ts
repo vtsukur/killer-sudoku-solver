@@ -1,9 +1,11 @@
+import * as _ from 'lodash';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
+import { SumAddendsCombinatorics } from '../../math';
 
 const CAGE_SIZE = 4;
 const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
@@ -12,6 +14,14 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
     [ 0, 1, 3 ],
     [ 0, 1, 2 ]
 ];
+
+const COMBO_INDICES = new Array<number>(10000);
+for (const sum of _.range(10, 31)) {
+    const combinatorics = SumAddendsCombinatorics.enumerate(sum, 4);
+    for (const combo of combinatorics.val) {
+        COMBO_INDICES[combo.numKey] = combinatorics.optimisticIndexOf(combo);
+    }
+}
 
 export class CageModel4Reducer implements CageModelReducer {
 
@@ -81,6 +91,7 @@ export class CageModel4Reducer implements CageModelReducer {
         const updatedCombosSet = this._combosSet.clear();
 
         let minCellMDeleteNumsBits = 0;
+        let combosBits = 0;
         for (const num of minNumCountNums) {
             const reducedSum = this._sum - num;
             let atLeastOneReducedComboValid = false;
@@ -99,13 +110,14 @@ export class CageModel4Reducer implements CageModelReducer {
                     cageModel3CellM2ActualNumBits |= reductionState.keepNumsInCell2Bits;
                     cageModel3CellM3ActualNumBits |= reductionState.keepNumsInCell3Bits;
                     atLeastOneReducedComboValid = true;
-                    updatedCombosSet.addCombo(combo);
+                    combosBits |= 1 << COMBO_INDICES[combo.numKey];
                 }
             }
             if (!atLeastOneReducedComboValid) {
                 minCellMDeleteNumsBits |= 1 << num;
             }
         }
+        updatedCombosSet.setCombosBits(combosBits);
 
         if (minCellMDeleteNumsBits !== 0) {
             reduction.deleteNumOpts(minNumCountCellM, new SudokuNumsSet(minCellMDeleteNumsBits), this._cageM);
