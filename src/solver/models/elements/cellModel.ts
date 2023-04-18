@@ -80,7 +80,7 @@ export class CellModel {
 
     placeNum(val: number) {
         this.placedNum = val;
-        this._numOptsSet = SudokuNumsSet.ofSingle(val);
+        this._numOptsSet.setOne(val);
         this._solved = true;
     }
 
