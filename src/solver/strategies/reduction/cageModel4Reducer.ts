@@ -43,15 +43,15 @@ export class CageModel4Reducer implements CageModelReducer {
         // Finding `CellModel` with the minimal amount of number options.
         let minNumCountCellM = this._firstCellM;
         let minNumCountCellMIndex = 0;
-        let minNumCount = this._firstCellM.numOpts().length;
+        let minNumCountNums = this._firstCellM._numOptsSet.nums;
         let i = 1;
         while (i < CAGE_SIZE) {
             const currentCellM = this._cellMs[i];
-            const currentNumCount = currentCellM.numOpts().length;
-            if (currentNumCount < minNumCount) {
+            const currentNumCountNums = currentCellM._numOptsSet.nums;
+            if (currentNumCountNums.length < currentNumCountNums.length) {
                 minNumCountCellM = currentCellM;
                 minNumCountCellMIndex = i;
-                minNumCount = currentNumCount;
+                minNumCountNums = currentNumCountNums;
             }
 
             ++i;
@@ -76,7 +76,7 @@ export class CageModel4Reducer implements CageModelReducer {
         const updatedCombosSet = this._cageM.comboSet.clear();
 
         const minCellMDeleteNums = SudokuNumsSet.newEmpty();
-        for (const num of minNumCountCellM.numOpts()) {
+        for (const num of minNumCountNums) {
             const reducedSum = this._sum - num;
             let atLeastOneReducedComboValid = false;
             for (const combo of combosBeforeReduction) {
