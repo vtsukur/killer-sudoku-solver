@@ -11,6 +11,7 @@
     "test-e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=\\.\\/tests\\/e2e\\/",
     "test-perf-gridAreaModel": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/models/elements/gridAreaModel.perf.test.ts",
     "test-perf-masterInitStrategy": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/strategies/tactics/init/masterInitStrategy.perf.test.ts",
+    "test-perf-cageModel4Reducer": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/strategies/reduction/cageModel4Reducer.perf.test.ts",
     "lint": "eslint . --ext .ts",
     "profile": "ndb ."
   },
