@@ -23,6 +23,11 @@ for (const sum of _.range(10, 31)) {
     }
 }
 
+const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumAddendsCombinatorics>(25);
+for (const sum of _.range(6, 25)) {
+    SUM_ADDENDS_COMBINATORICS_3[sum] = SumAddendsCombinatorics.enumerate(sum, 3);
+}
+
 export class CageModel4Reducer implements CageModelReducer {
 
     private readonly _cageM: CageModel;
@@ -98,7 +103,7 @@ export class CageModel4Reducer implements CageModelReducer {
             for (const combo of combosBeforeReduction) {
                 if (!combo.has(num)) continue;
 
-                const reducedCombo = combo.reduce(num);
+                const reducedCombo = SUM_ADDENDS_COMBINATORICS_3[reducedSum].optimisticGetByBits(combo.numsSet.bitStore & ~(1 << num));
                 const reductionState = CageModel3Reducer.getReductionState(
                         reducedSum,
                         reducedCombo,

@@ -1,4 +1,4 @@
-import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 /**
  * Human-readable key describing combination of numbers.
@@ -38,18 +38,24 @@ export class Combo implements Iterable<number> {
      *
      * @param val - Numbers to construct a combination from.
      */
-    constructor(val: ReadonlyArray<number>) {
-        if (val.length === 0) {
-            throw new RangeError('Combo should have at least 1 number');
+    constructor(val: ReadonlyArray<number> | BitStore32) {
+        if (typeof(val) === 'number') {
+            if (val === 0) {
+                throw new RangeError('Combo should have at least 1 number');
+            }
+            this.numsSet = new SudokuNumsSet(val);
+        } else {
+            if (val.length === 0) {
+                throw new RangeError('Combo should have at least 1 number');
+            }
+            this.numsSet = new SudokuNumsSet(val);
         }
-        this.numsSet = new SudokuNumsSet(val);
         this._nums = this.numsSet.nums;
-        // this.key = joinArray(val);
-        this.number1 = val[0];
-        this.number2 = (val.length > 1) ? val[1] : 0;
-        this.number3 = (val.length > 2) ? val[2] : 0;
-        if (val.length === 4) {
-            this.key = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + val[3];
+        this.number1 = this._nums[0];
+        this.number2 = (this._nums.length > 1) ? this._nums[1] : 0;
+        this.number3 = (this._nums.length > 2) ? this._nums[2] : 0;
+        if (this._nums.length === 4) {
+            this.key = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + this._nums[3];
         } else {
             this.key = this.number1 * 100 + this.number2 * 10 + this.number3;
         }

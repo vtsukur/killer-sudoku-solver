@@ -73,8 +73,8 @@ describe('Performance tests for `CageModel4Reducer`', () => {
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         const options: PerformanceTestOptions = {
-            warmupIterationCount: 10_000,
-            mainIterationCount: 100_000
+            warmupIterationCount: 100_000,
+            mainIterationCount: 1_000_000
         };
         if (IS_RUN_SLOWER_ALTERNATIVES) {
             doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full', options);
