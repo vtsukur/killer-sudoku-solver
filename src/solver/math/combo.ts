@@ -1,10 +1,9 @@
-import { joinArray } from '../../util/readableMessages';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 /**
  * Human-readable key describing combination of numbers.
  */
-export type ComboKey = string;
+export type ComboKey = number;
 
 /**
  * Combination of numbers used mainly to represent addends of `Cage` sum.
@@ -34,8 +33,6 @@ export class Combo implements Iterable<number> {
 
     readonly number3: number;
 
-    readonly numKey: number;
-
     /**
      * Constructs new combination of the given numbers.
      *
@@ -47,14 +44,14 @@ export class Combo implements Iterable<number> {
         }
         this.numsSet = new SudokuNumsSet(val);
         this._nums = this.numsSet.nums;
-        this.key = joinArray(val);
+        // this.key = joinArray(val);
         this.number1 = val[0];
         this.number2 = (val.length > 1) ? val[1] : 0;
         this.number3 = (val.length > 2) ? val[2] : 0;
         if (val.length === 4) {
-            this.numKey = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + val[3];
+            this.key = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + val[3];
         } else {
-            this.numKey = this.number1 * 100 + this.number2 * 10 + this.number3;
+            this.key = this.number1 * 100 + this.number2 * 10 + this.number3;
         }
     }
 

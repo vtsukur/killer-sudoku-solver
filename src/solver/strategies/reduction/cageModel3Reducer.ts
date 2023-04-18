@@ -69,7 +69,7 @@ db.forEach(sumReductions => {
                 };
             }
         }
-        COMBO_INDICES[combo.numKey] = combinatorics.optimisticIndexOf(combo);
+        COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
         return reductionStates;
     });
 });
@@ -180,7 +180,7 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = this._sumReductionStates[COMBO_INDICES[combo.numKey]][compressedNumbersPresenceState];
+            const reductionState = this._sumReductionStates[COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
                 actualReductionStateCellM1 |= reductionState.keepNumsInCell1Bits;
@@ -216,7 +216,7 @@ export class CageModel3Reducer implements CageModelReducer {
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return ALL_REDUCTION_STATES[sum][COMBO_INDICES[combo.numKey]][compressedNumbersPresenceState];
+        return ALL_REDUCTION_STATES[sum][COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
     }
 
 }

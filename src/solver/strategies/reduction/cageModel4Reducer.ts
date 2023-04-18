@@ -19,7 +19,7 @@ const COMBO_INDICES = new Array<number>(10000);
 for (const sum of _.range(10, 31)) {
     const combinatorics = SumAddendsCombinatorics.enumerate(sum, 4);
     for (const combo of combinatorics.val) {
-        COMBO_INDICES[combo.numKey] = combinatorics.optimisticIndexOf(combo);
+        COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
     }
 }
 
@@ -110,7 +110,7 @@ export class CageModel4Reducer implements CageModelReducer {
                     cageModel3CellM2ActualNumBits |= reductionState.keepNumsInCell2Bits;
                     cageModel3CellM3ActualNumBits |= reductionState.keepNumsInCell3Bits;
                     atLeastOneReducedComboValid = true;
-                    combosBits |= 1 << COMBO_INDICES[combo.numKey];
+                    combosBits |= 1 << COMBO_INDICES[combo.key];
                 }
             }
             if (!atLeastOneReducedComboValid) {
