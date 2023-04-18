@@ -329,6 +329,11 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         return new SudokuNumsSet(oldBitStore ^ this.bitStore);
     }
 
+    setOne(val: number) {
+        this._bitStore = 1 << val;
+        this.onUpdate();
+    }
+
     /**
      * Clones this set by creating new instance based on the copy of the state of this set.
      *
