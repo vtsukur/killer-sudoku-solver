@@ -19,6 +19,8 @@ export class CageModel4Reducer implements CageModelReducer {
 
     private readonly _cellMs: ReadonlyArray<CellModel>;
 
+    private readonly _firstCellM: CellModel;
+
     private readonly _sum: number;
 
     /**
@@ -30,6 +32,7 @@ export class CageModel4Reducer implements CageModelReducer {
     constructor(cageM: CageModel) {
         this._cageM = cageM;
         this._cellMs = cageM.cellMs;
+        this._firstCellM = cageM.cellMs[0];
         this._sum = cageM.cage.sum;
     }
 
@@ -38,9 +41,9 @@ export class CageModel4Reducer implements CageModelReducer {
      */
     reduce(reduction: MasterModelReduction): void {
         // Finding `CellModel` with the minimal amount of number options.
-        let minNumCountCellM = this._cellMs[0];
+        let minNumCountCellM = this._firstCellM;
         let minNumCountCellMIndex = 0;
-        let minNumCount = this._cellMs[0].numOpts().length;
+        let minNumCount = this._firstCellM.numOpts().length;
         let i = 1;
         while (i < CAGE_SIZE) {
             const currentCellM = this._cellMs[i];
