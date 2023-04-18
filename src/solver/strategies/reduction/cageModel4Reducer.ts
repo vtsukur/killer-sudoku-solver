@@ -58,6 +58,7 @@ export class CageModel4Reducer implements CageModelReducer {
         }
 
         const indices = CAGE_3_CELL_M_INDICES[minNumCountCellMIndex];
+
         const cageModel3CellM1Index = indices[0];
         const cageModel3CellM1 = this._cellMs[cageModel3CellM1Index];
         const cageModel3CellM1NumBits = cageModel3CellM1._numOptsSet.bitStore;
