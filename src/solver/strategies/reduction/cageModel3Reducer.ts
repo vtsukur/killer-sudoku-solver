@@ -183,9 +183,9 @@ export class CageModel3Reducer implements CageModelReducer {
             const reductionState = this._sumReductionStates[COMBO_INDICES[combo.numKey]][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= (cellM1NumsBits & reductionState.keepNumsInCell1Bits);
-                actualReductionStateCellM2 |= (cellM2NumsBits & reductionState.keepNumsInCell2Bits);
-                actualReductionStateCellM3 |= (cellM3NumsBits & reductionState.keepNumsInCell3Bits);
+                actualReductionStateCellM1 |= reductionState.keepNumsInCell1Bits;
+                actualReductionStateCellM2 |= reductionState.keepNumsInCell2Bits;
+                actualReductionStateCellM3 |= reductionState.keepNumsInCell3Bits;
             } else {
                 this._combosSet.deleteCombo(combo);
             }
