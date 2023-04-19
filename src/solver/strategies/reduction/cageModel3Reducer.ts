@@ -4,7 +4,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
-import { CageModel3ReductionDb, ComboReductionState } from './db/cageModel3ReductionDb';
+import { CageModel3ReductionDb, ComboReductionStatesByComboByCNPS } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
 
 const COMBO_INDICES = new Array<number>(1000);
@@ -67,7 +67,7 @@ export class CageModel3Reducer implements CageModelReducer {
      */
     private readonly _cellM3NumsSet: ReadonlySudokuNumsSet;
 
-    private readonly _sumReductionStates: ReadonlyArray<ReadonlyArray<ComboReductionState>>;
+    private readonly _sumReductionStates: ComboReductionStatesByComboByCNPS;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s

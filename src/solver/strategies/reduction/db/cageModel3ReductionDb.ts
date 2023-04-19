@@ -11,6 +11,10 @@ export type ComboReductionState = {
     readonly cell3KeepNumsBits: number;
 };
 
+export type ComboReductionStatesByComboByCNPS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
+
+export type ComboReductionStatesBySumByComboByCNPS = ReadonlyArray<ComboReductionStatesByComboByCNPS>;
+
 const INVALID_REDUCTION_STATE: ComboReductionState = {
     isValid: false,
     cell1KeepNumsBits: 0,
@@ -31,9 +35,9 @@ export class CageModel3ReductionDb {
         throw new Error('Non-contructible');
     }
 
-    static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ComboReductionState>>> = this.readStates();
+    static readonly STATES: ComboReductionStatesBySumByComboByCNPS = this.readStates();
 
-    private static readStates(): ReadonlyArray<ReadonlyArray<ReadonlyArray<ComboReductionState>>> {
+    private static readStates(): ComboReductionStatesBySumByComboByCNPS {
         const sourceDb = this.readFromYamlSourceSync();
         return this.buildStatesFrom(sourceDb);
     }
@@ -43,7 +47,7 @@ export class CageModel3ReductionDb {
     }
 
     private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
-        const states = new Array<Array<ReadonlyArray<ComboReductionState>>>(SumAddendsCombinatorics.MAX_SUM_OF_CAGE_3 + 1);
+        const states = new Array<Array<Array<ComboReductionState>>>(SumAddendsCombinatorics.MAX_SUM_OF_CAGE_3 + 1);
 
         sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
