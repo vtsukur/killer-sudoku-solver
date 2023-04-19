@@ -1,62 +1,19 @@
-import * as fs from 'node:fs';
-import { parse } from 'yaml';
+import * as _ from 'lodash';
+import { Combo, SumAddendsCombinatorics } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
+import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
+import { CageModel3ReductionDb, ReductionState } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
-import { CageSizeNReductionsDb } from './db/reductionDb';
-import { Combo, SumAddendsCombinatorics } from '../../math';
 
-type ReductionState = {
-    isValid: boolean;
-    keepNumsInCell1Bits: number;
-    keepNumsInCell2Bits: number;
-    keepNumsInCell3Bits: number;
-};
-
-const INVALID_REDUCTION_STATE: ReductionState = {
-    isValid: false,
-    keepNumsInCell1Bits: 0,
-    keepNumsInCell2Bits: 0,
-    keepNumsInCell3Bits: 0
-};
-
-const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', 'utf-8');
-const db = parse(dbString) as CageSizeNReductionsDb;
-
-const ALL_REDUCTION_STATES: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
 const COMBO_INDICES = new Array<number>(1000);
-db.forEach(sumReductions => {
-    const combinatorics = SumAddendsCombinatorics.enumerate(sumReductions.sum, 3);
-    ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-        const combo = Combo.of(...comboReductions.combo);
-        const comboNumsSet = combo.numsSet;
-        const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
-        for (const entry of comboReductions.entries) {
-            if (entry.actions) {
-                const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                reductionStates[entry.state] = {
-                    isValid: true,
-                    keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
-                    keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
-                    keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
-                };
-            } else {
-                reductionStates[entry.state] = {
-                    isValid: true,
-                    keepNumsInCell1Bits: comboNumsSet.bitStore,
-                    keepNumsInCell2Bits: comboNumsSet.bitStore,
-                    keepNumsInCell3Bits: comboNumsSet.bitStore
-                };
-            }
-        }
+for (const sum of _.range(6, 25)) {
+    const combinatorics = SumAddendsCombinatorics.enumerate(sum, 3);
+    for (const combo of combinatorics.val) {
         COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
-        return reductionStates;
-    });
-});
+    }
+}
 
 /**
  * Reduces possible numbers for {@link CellModel}s
@@ -129,7 +86,7 @@ export class CageModel3Reducer implements CageModelReducer {
         this._cellM2NumsSet = this._cellM2._numOptsSet;
         this._cellM3 = cageM.cellMs[2];
         this._cellM3NumsSet = this._cellM3._numOptsSet;
-        this._sumReductionStates = ALL_REDUCTION_STATES[cageM.cage.sum];
+        this._sumReductionStates = CageModel3ReductionDb.STATES[cageM.cage.sum];
     }
 
     /**
@@ -200,7 +157,7 @@ export class CageModel3Reducer implements CageModelReducer {
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return ALL_REDUCTION_STATES[sum][COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
+        return CageModel3ReductionDb.STATES[sum][COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
     }
 
 }
