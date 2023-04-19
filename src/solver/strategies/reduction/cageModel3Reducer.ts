@@ -4,7 +4,7 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
-import { CageModel3ReductionDb, ReductionState } from './db/cageModel3ReductionDb';
+import { CageModel3ReductionDb, ComboReductionState } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
 
 const COMBO_INDICES = new Array<number>(1000);
@@ -67,7 +67,7 @@ export class CageModel3Reducer implements CageModelReducer {
      */
     private readonly _cellM3NumsSet: ReadonlySudokuNumsSet;
 
-    private readonly _sumReductionStates: ReadonlyArray<ReadonlyArray<ReductionState>>;
+    private readonly _sumReductionStates: ReadonlyArray<ReadonlyArray<ComboReductionState>>;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
@@ -124,9 +124,9 @@ export class CageModel3Reducer implements CageModelReducer {
             const reductionState = this._sumReductionStates[COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= reductionState.keepNumsInCell1Bits;
-                actualReductionStateCellM2 |= reductionState.keepNumsInCell2Bits;
-                actualReductionStateCellM3 |= reductionState.keepNumsInCell3Bits;
+                actualReductionStateCellM1 |= reductionState.cell1KeepNumsBits;
+                actualReductionStateCellM2 |= reductionState.cell2KeepNumsBits;
+                actualReductionStateCellM3 |= reductionState.cell3KeepNumsBits;
             } else {
                 this._combosSet.deleteCombo(combo);
             }

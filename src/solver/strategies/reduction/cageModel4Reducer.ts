@@ -111,9 +111,9 @@ export class CageModel4Reducer implements CageModelReducer {
                         cageModel3CellM2NumBits,
                         cageModel3CellM3NumBits);
                 if (reductionState.isValid) {
-                    cageModel3CellM1ActualNumBits |= reductionState.keepNumsInCell1Bits;
-                    cageModel3CellM2ActualNumBits |= reductionState.keepNumsInCell2Bits;
-                    cageModel3CellM3ActualNumBits |= reductionState.keepNumsInCell3Bits;
+                    cageModel3CellM1ActualNumBits |= reductionState.cell1KeepNumsBits;
+                    cageModel3CellM2ActualNumBits |= reductionState.cell2KeepNumsBits;
+                    cageModel3CellM3ActualNumBits |= reductionState.cell3KeepNumsBits;
                     atLeastOneReducedComboValid = true;
                     combosBits |= 1 << COMBO_INDICES[combo.key];
                 }
