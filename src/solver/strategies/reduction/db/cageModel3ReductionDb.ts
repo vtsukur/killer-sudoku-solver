@@ -43,33 +43,27 @@ export class CageModel3ReductionDb {
     }
 
     private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
-        const states: Array<Array<ReadonlyArray<ReductionState>>> = new Array(SumAddendsCombinatorics.MAX_SUM_OF_CAGE_3 + 1);
+        const states = new Array<Array<ReadonlyArray<ReductionState>>>(SumAddendsCombinatorics.MAX_SUM_OF_CAGE_3 + 1);
+
         sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-                const combo = Combo.of(...comboReductions.combo);
-                const comboNumsSet = combo.numsSet;
-                const reductionStates = new Array<ReductionState>(this.REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
+                const comboNumsBits = Combo.of(...comboReductions.combo).numsSet.bitStore;
+
+                const comboReductionStates = new Array<ReductionState>(this.REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
-                    if (entry.actions) {
-                        const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                        const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                        const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                        reductionStates[entry.state] = {
-                            isValid: true,
-                            keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
-                            keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
-                            keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
-                        };
-                    } else {
-                        reductionStates[entry.state] = {
-                            isValid: true,
-                            keepNumsInCell1Bits: comboNumsSet.bitStore,
-                            keepNumsInCell2Bits: comboNumsSet.bitStore,
-                            keepNumsInCell3Bits: comboNumsSet.bitStore
-                        };
-                    }
+                    comboReductionStates[entry.state] = (entry.actions) ? {
+                        isValid: true,
+                        keepNumsInCell1Bits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bitStore,
+                        keepNumsInCell2Bits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bitStore,
+                        keepNumsInCell3Bits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bitStore
+                    } : {
+                        isValid: true,
+                        keepNumsInCell1Bits: comboNumsBits,
+                        keepNumsInCell2Bits: comboNumsBits,
+                        keepNumsInCell3Bits: comboNumsBits
+                    };
                 }
-                return reductionStates;
+                return comboReductionStates;
             });
         });
 
