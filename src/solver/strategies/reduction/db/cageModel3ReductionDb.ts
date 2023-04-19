@@ -29,6 +29,8 @@ export class CageModel3ReductionDb {
 
     private static readonly YAML_SOURCE_ENCODING = 'utf-8';
 
+    private static readonly REDUCTIONS_PER_COMBO_COUNT = Math.pow(2, 3 * 3);
+
     static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> = this.readStates();
 
     private static readStates(): ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> {
@@ -46,7 +48,7 @@ export class CageModel3ReductionDb {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
                 const combo = Combo.of(...comboReductions.combo);
                 const comboNumsSet = combo.numsSet;
-                const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
+                const reductionStates = new Array<ReductionState>(this.REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
                     if (entry.actions) {
                         const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
