@@ -18,39 +18,6 @@ const INVALID_REDUCTION_STATE: ReductionState = {
     keepNumsInCell3Bits: 0
 };
 
-const dbString = fs.readFileSync('./src/solver/strategies/reduction/db/cage3_reductions.yaml', 'utf-8');
-const db = parse(dbString) as CageSizeNReductionsDb;
-
-const ALL_REDUCTION_STATES: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
-db.forEach(sumReductions => {
-    ALL_REDUCTION_STATES[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-        const combo = Combo.of(...comboReductions.combo);
-        const comboNumsSet = combo.numsSet;
-        const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
-        for (const entry of comboReductions.entries) {
-            if (entry.actions) {
-                const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
-                const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
-                const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
-                reductionStates[entry.state] = {
-                    isValid: true,
-                    keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
-                    keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
-                    keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
-                };
-            } else {
-                reductionStates[entry.state] = {
-                    isValid: true,
-                    keepNumsInCell1Bits: comboNumsSet.bitStore,
-                    keepNumsInCell2Bits: comboNumsSet.bitStore,
-                    keepNumsInCell3Bits: comboNumsSet.bitStore
-                };
-            }
-        }
-        return reductionStates;
-    });
-});
-
 export class CageModel3ReductionDb {
 
     /* istanbul ignore next */
@@ -58,6 +25,53 @@ export class CageModel3ReductionDb {
         throw new Error('Non-contructible');
     }
 
-    static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> = ALL_REDUCTION_STATES;
+    private static readonly YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
+
+    private static readonly YAML_SOURCE_ENCODING = 'utf-8';
+
+    static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> = this.readStates();
+
+    private static readStates(): ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> {
+        const db = this.readFromYamlSource();
+        return this.buildStatesFrom(db);
+    }
+
+    private static readFromYamlSource(): CageSizeNReductionsDb {
+        return parse(fs.readFileSync(this.YAML_SOURCE_PATH, this.YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
+    }
+
+    private static buildStatesFrom(db: CageSizeNReductionsDb) {
+        const states: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
+        db.forEach(sumReductions => {
+            states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
+                const combo = Combo.of(...comboReductions.combo);
+                const comboNumsSet = combo.numsSet;
+                const reductionStates = new Array<ReductionState>(512).fill(INVALID_REDUCTION_STATE);
+                for (const entry of comboReductions.entries) {
+                    if (entry.actions) {
+                        const cellM1DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[0]);
+                        const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
+                        const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
+                        reductionStates[entry.state] = {
+                            isValid: true,
+                            keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
+                            keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
+                            keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
+                        };
+                    } else {
+                        reductionStates[entry.state] = {
+                            isValid: true,
+                            keepNumsInCell1Bits: comboNumsSet.bitStore,
+                            keepNumsInCell2Bits: comboNumsSet.bitStore,
+                            keepNumsInCell3Bits: comboNumsSet.bitStore
+                        };
+                    }
+                }
+                return reductionStates;
+            });
+        });
+
+        return states;
+    }
 
 }
