@@ -5,10 +5,10 @@ import { SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 
 export type ReductionState = {
-    isValid: boolean;
-    keepNumsInCell1Bits: number;
-    keepNumsInCell2Bits: number;
-    keepNumsInCell3Bits: number;
+    readonly isValid: boolean;
+    readonly keepNumsInCell1Bits: number;
+    readonly keepNumsInCell2Bits: number;
+    readonly keepNumsInCell3Bits: number;
 };
 
 const INVALID_REDUCTION_STATE: ReductionState = {
