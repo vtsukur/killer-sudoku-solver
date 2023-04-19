@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
-import { Combo } from '../../../math';
+import { Combo, SumAddendsCombinatorics } from '../../../math';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 
@@ -34,17 +34,17 @@ export class CageModel3ReductionDb {
     static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> = this.readStates();
 
     private static readStates(): ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> {
-        const db = this.readFromYamlSourceSync();
-        return this.buildStatesFrom(db);
+        const sourceDb = this.readFromYamlSourceSync();
+        return this.buildStatesFrom(sourceDb);
     }
 
     private static readFromYamlSourceSync(): CageSizeNReductionsDb {
         return parse(fs.readFileSync(this.YAML_SOURCE_PATH, this.YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
     }
 
-    private static buildStatesFrom(db: CageSizeNReductionsDb) {
-        const states: Array<Array<ReadonlyArray<ReductionState>>> = new Array(db[db.length - 1].sum + 1);
-        db.forEach(sumReductions => {
+    private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
+        const states: Array<Array<ReadonlyArray<ReductionState>>> = new Array(SumAddendsCombinatorics.MAX_SUM_OF_CAGE_3 + 1);
+        sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
                 const combo = Combo.of(...comboReductions.combo);
                 const comboNumsSet = combo.numsSet;

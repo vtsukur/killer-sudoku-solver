@@ -141,6 +141,8 @@ export class SumAddendsCombinatorics {
         return PRECOMPUTED.get(key) as SumAddendsCombinatorics;
     }
 
+    static readonly MAX_SUM_OF_CAGE_3 = 24;
+
 }
 
 const precomputeKey = (sum: number, numCount: number) => {
