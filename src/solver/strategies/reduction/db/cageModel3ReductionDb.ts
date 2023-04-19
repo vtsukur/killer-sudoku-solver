@@ -18,18 +18,18 @@ const INVALID_REDUCTION_STATE: ComboReductionState = {
     cell3KeepNumsBits: 0
 };
 
+const YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
+
+const YAML_SOURCE_ENCODING = 'utf-8';
+
+const REDUCTIONS_PER_COMBO_COUNT = Math.pow(2, 3 * 3);
+
 export class CageModel3ReductionDb {
 
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
     }
-
-    private static readonly YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
-
-    private static readonly YAML_SOURCE_ENCODING = 'utf-8';
-
-    private static readonly REDUCTIONS_PER_COMBO_COUNT = Math.pow(2, 3 * 3);
 
     static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ComboReductionState>>> = this.readStates();
 
@@ -39,7 +39,7 @@ export class CageModel3ReductionDb {
     }
 
     private static readFromYamlSourceSync(): CageSizeNReductionsDb {
-        return parse(fs.readFileSync(this.YAML_SOURCE_PATH, this.YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
+        return parse(fs.readFileSync(YAML_SOURCE_PATH, YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
     }
 
     private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
@@ -49,7 +49,7 @@ export class CageModel3ReductionDb {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
                 const comboNumsBits = Combo.of(...comboReductions.combo).numsSet.bitStore;
 
-                const comboReductionStates = new Array<ComboReductionState>(this.REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
+                const comboReductionStates = new Array<ComboReductionState>(REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
                     comboReductionStates[entry.state] = (entry.actions) ? {
                         isValid: true,
