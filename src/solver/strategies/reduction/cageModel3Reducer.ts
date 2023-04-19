@@ -10,10 +10,6 @@ import { Combo, SumAddendsCombinatorics } from '../../math';
 
 type ReductionState = {
     isValid: boolean;
-    comboNumsBits: number;
-    deleteNumsInCell1Bits: number;
-    deleteNumsInCell2Bits: number;
-    deleteNumsInCell3Bits: number;
     keepNumsInCell1Bits: number;
     keepNumsInCell2Bits: number;
     keepNumsInCell3Bits: number;
@@ -21,10 +17,6 @@ type ReductionState = {
 
 const INVALID_REDUCTION_STATE: ReductionState = {
     isValid: false,
-    comboNumsBits: 0,
-    deleteNumsInCell1Bits: 0,
-    deleteNumsInCell2Bits: 0,
-    deleteNumsInCell3Bits: 0,
     keepNumsInCell1Bits: 0,
     keepNumsInCell2Bits: 0,
     keepNumsInCell3Bits: 0
@@ -48,10 +40,6 @@ db.forEach(sumReductions => {
                 const cellM3DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[2]);
                 reductionStates[entry.state] = {
                     isValid: true,
-                    comboNumsBits: comboNumsSet.bitStore,
-                    deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
-                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore,
-                    deleteNumsInCell3Bits: cellM3DeletedNums.bitStore,
                     keepNumsInCell1Bits: comboNumsSet.bitStore & ~cellM1DeletedNums.bitStore,
                     keepNumsInCell2Bits: comboNumsSet.bitStore & ~cellM2DeletedNums.bitStore,
                     keepNumsInCell3Bits: comboNumsSet.bitStore & ~cellM3DeletedNums.bitStore
@@ -59,10 +47,6 @@ db.forEach(sumReductions => {
             } else {
                 reductionStates[entry.state] = {
                     isValid: true,
-                    comboNumsBits: comboNumsSet.bitStore,
-                    deleteNumsInCell1Bits: 0,
-                    deleteNumsInCell2Bits: 0,
-                    deleteNumsInCell3Bits: 0,
                     keepNumsInCell1Bits: comboNumsSet.bitStore,
                     keepNumsInCell2Bits: comboNumsSet.bitStore,
                     keepNumsInCell3Bits: comboNumsSet.bitStore
