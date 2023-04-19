@@ -32,11 +32,11 @@ export class CageModel3ReductionDb {
     static readonly STATES: ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> = this.readStates();
 
     private static readStates(): ReadonlyArray<ReadonlyArray<ReadonlyArray<ReductionState>>> {
-        const db = this.readFromYamlSource();
+        const db = this.readFromYamlSourceSync();
         return this.buildStatesFrom(db);
     }
 
-    private static readFromYamlSource(): CageSizeNReductionsDb {
+    private static readFromYamlSourceSync(): CageSizeNReductionsDb {
         return parse(fs.readFileSync(this.YAML_SOURCE_PATH, this.YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
     }
 
