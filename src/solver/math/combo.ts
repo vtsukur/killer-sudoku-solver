@@ -185,55 +185,12 @@ export type ReadonlyCombos = ReadonlyArray<Combo>;
 
 type PrecomputeComboKey = number;
 
-export interface ISumAddendsCombinatorics {
-
-    /**
-     * Array of combinations of unique numbers to form a sum.
-     */
-    readonly val: ReadonlyCombos;
-
-    /**
-     * Permutations of combinations of nonrepeating numbers to form a sum.
-     *
-     * Each permutation as represented as a readonly array with single element of a {@link Combo}.
-     *
-     * Used mainly for performance reasons as a cache to avoid construction overhead
-     * in implementation of `Combinatorics` types.
-     */
-    readonly perms: ReadonlyArray<ReadonlyCombos>;
-
-    /**
-     * {@link val} wrapped in a single-element array
-     * so that it is easy to consume it when it needs to be a part of multiple combinations logic.
-     *
-     * Used mainly for performance reasons as a cache to avoid construction overhead
-     * in implementation of `Combinatorics` types.
-     */
-    readonly arrayedVal: ReadonlyArray<ReadonlyCombos>;
-
-    readonly combosSet: ReadonlyCombosSet;
-
-    readonly combosSets: ReadonlyCombosSets;
-
-    readonly allNumsSet: ReadonlySudokuNumsSet;
-
-    readonly combosLut: PowersOf2Lut<Combo>;
-    readonly combosNumsSetLut: PowersOf2Lut<ReadonlySudokuNumsSet>;
-
-    readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
-
-    indexOf(combo: Combo): number | undefined;
-
-    optimisticIndexOf(combo: Combo): number;
-
-}
-
 /**
  * Combinatorics of unique numbers (addends) to form a sum using precomputed values.
  *
  * @public
  */
-export class SumCombos implements ISumAddendsCombinatorics {
+export class SumCombos {
 
     /**
      * Array of combinations of unique numbers to form a sum.

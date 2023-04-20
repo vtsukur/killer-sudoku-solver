@@ -1,4 +1,4 @@
-import { Combo, ISumAddendsCombinatorics, ReadonlyCombos } from '../math/combo';
+import { Combo, ReadonlyCombos, SumCombos } from '../math/combo';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { SudokuNumsSet } from './sudokuNumsSet';
@@ -13,7 +13,7 @@ export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
 
 export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyCombosSet {
 
-    private readonly _combinatorics: ISumAddendsCombinatorics;
+    private readonly _combinatorics: SumCombos;
 
     private static _NO_COMBOS = [];
 
@@ -23,7 +23,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     protected constructor(
             val: BitStore32,
-            combinatorics: ISumAddendsCombinatorics) {
+            combinatorics: SumCombos) {
         super(val);
         this._combinatorics = combinatorics;
     }
@@ -98,17 +98,17 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         return new CombosSet(this._bitStore, this._combinatorics);
     }
 
-    static newEmpty(combinatorics: ISumAddendsCombinatorics) {
+    static newEmpty(combinatorics: SumCombos) {
         return new CombosSet(0, combinatorics);
     }
 
-    static newFilled(combinatorics: ISumAddendsCombinatorics) {
+    static newFilled(combinatorics: SumCombos) {
         const val = CombosSet.newEmpty(combinatorics);
         val.fill();
         return val;
     }
 
-    static from(combinatorics: ISumAddendsCombinatorics, combos: ReadonlyCombos) {
+    static from(combinatorics: SumCombos, combos: ReadonlyCombos) {
         const val = CombosSet.newEmpty(combinatorics);
         for (const combo of combos) {
             val.addCombo(combo);
