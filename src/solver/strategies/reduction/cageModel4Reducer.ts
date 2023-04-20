@@ -15,14 +15,6 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
     [ 0, 1, 2 ]
 ];
 
-const COMBO_INDICES = new Array<number>(10000);
-for (const sum of _.range(10, 31)) {
-    const combinatorics = SumCombos.enumerate(sum, 4);
-    for (const combo of combinatorics.val) {
-        COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
-    }
-}
-
 const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumCombos>(25);
 for (const sum of _.range(6, 25)) {
     SUM_ADDENDS_COMBINATORICS_3[sum] = SumCombos.enumerate(sum, 3);
@@ -112,7 +104,7 @@ export class CageModel4Reducer implements CageModelReducer {
                     cageModel3CellM2ActualNumBits |= reductionState.cell2KeepNumsBits;
                     cageModel3CellM3ActualNumBits |= reductionState.cell3KeepNumsBits;
                     atLeastOneReducedComboValid = true;
-                    combosBits |= 1 << COMBO_INDICES[combo.key];
+                    combosBits |= 1 << combo.index;
                 }
             }
             if (!atLeastOneReducedComboValid) {
