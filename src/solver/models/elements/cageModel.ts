@@ -6,7 +6,7 @@ import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos } from '../../math';
-import { SumCombos } from '../../math/combo';
+import { SumCombos } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';

@@ -1,4 +1,4 @@
-import { Combo, ReadonlyCombos, SumCombos } from '../math/combo';
+import { Combo, ReadonlyCombos, SumCombos } from '../math';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
 import { BitStore32 } from './numsSet';
 import { SudokuNumsSet } from './sudokuNumsSet';
