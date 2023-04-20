@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { SumCombos } from '../../../../src/solver/math';
 import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Performance tests for `SumAddendsCombosSet`', () => {
@@ -7,7 +7,7 @@ describe('Performance tests for `SumAddendsCombosSet`', () => {
     const TESTS_COUNT = 10;
     const ITERATIONS = _.range(100_000);
 
-    const combinatorics = SumAddendsCombinatorics.enumerate(25, 5);
+    const combinatorics = SumCombos.enumerate(25, 5);
 
     _.range(TESTS_COUNT).forEach(i => {
 

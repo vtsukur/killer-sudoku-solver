@@ -1,6 +1,6 @@
 import { Cage, ReadonlyCages } from '../../../../src/puzzle/cage';
 import { Cell, CellKey } from '../../../../src/puzzle/cell';
-import { Combo, HouseModelCagesCombinatorics, SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { Combo, HouseModelCagesCombinatorics, SumCombos } from '../../../../src/solver/math';
 import { CageModel } from '../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../src/solver/models/elements/cellModel';
 import { HouseModel } from '../../../../src/solver/models/elements/houseModel';
@@ -8,7 +8,7 @@ import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
 
-    const enumerateSumAddends = SumAddendsCombinatorics.enumerate;
+    const enumerateSumAddends = SumCombos.enumerate;
 
     test('Several combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
         const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([

@@ -1,12 +1,12 @@
 import { Cage } from '../../../../src/puzzle/cage';
-import { Combo, SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { Combo, SumCombos } from '../../../../src/solver/math';
 import { OverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/overlappingHouseCagesCombinatorics';
 import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
 
     const enumerate = OverlappingHouseCagesCombinatorics.enumerateCombos;
-    const enumerateSumAddends = SumAddendsCombinatorics.enumerate;
+    const enumerateSumAddends = SumCombos.enumerate;
 
     test('Enumerating single `Combo` for a single overlapping `Cage`', () => {
         expectOverlappingHouseCagesCombinatorics(enumerate([
