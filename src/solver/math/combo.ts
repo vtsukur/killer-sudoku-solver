@@ -214,7 +214,6 @@ export class SumCombos {
     readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
 
     private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
-    private readonly _bitStore32ToIndex: Map<BitStore32, number> = new Map();
 
     /**
      * Constucts new combinations of unique numbers to form a sum.
@@ -223,11 +222,9 @@ export class SumCombos {
      */
     constructor(val: ReadonlyCombos) {
         this.val = val;
-        let index = 0;
         const allNumsSet = SudokuNumsSet.newEmpty();
         for (const combo of val) {
             this._bitStore32ToComboMap.set(combo.numsSet.bitStore, combo);
-            this._bitStore32ToIndex.set(combo.numsSet.bitStore, index++);
             allNumsSet.addAll(combo.numsSet);
         }
         this.allNumsSet = allNumsSet;
@@ -269,14 +266,6 @@ export class SumCombos {
 
     optimisticGetByBits(val: BitStore32) {
         return this._bitStore32ToComboMap.get(val) as Combo;
-    }
-
-    indexOf(combo: Combo): number | undefined {
-        return this._bitStore32ToIndex.get(combo.numsSet.bitStore);
-    }
-
-    optimisticIndexOf(combo: Combo): number {
-        return this._bitStore32ToIndex.get(combo.numsSet.bitStore) as number;
     }
 
     /**
