@@ -5,7 +5,7 @@ import { CombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
-import { SumAddendsCombinatorics } from '../../math';
+import { SumCombos } from '../../math';
 
 const CAGE_SIZE = 4;
 const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
@@ -17,15 +17,15 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
 
 const COMBO_INDICES = new Array<number>(10000);
 for (const sum of _.range(10, 31)) {
-    const combinatorics = SumAddendsCombinatorics.enumerate(sum, 4);
+    const combinatorics = SumCombos.enumerate(sum, 4);
     for (const combo of combinatorics.val) {
         COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
     }
 }
 
-const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumAddendsCombinatorics>(25);
+const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumCombos>(25);
 for (const sum of _.range(6, 25)) {
-    SUM_ADDENDS_COMBINATORICS_3[sum] = SumAddendsCombinatorics.enumerate(sum, 3);
+    SUM_ADDENDS_COMBINATORICS_3[sum] = SumCombos.enumerate(sum, 3);
 }
 
 export class CageModel4Reducer implements CageModelReducer {

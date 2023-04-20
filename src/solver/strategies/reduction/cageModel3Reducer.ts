@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Combo, SumAddendsCombinatorics } from '../../math';
+import { Combo, SumCombos } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
@@ -9,7 +9,7 @@ import { MasterModelReduction } from './masterModelReduction';
 
 const COMBO_INDICES = new Array<number>(1000);
 for (const sum of _.range(6, 25)) {
-    const combinatorics = SumAddendsCombinatorics.enumerate(sum, 3);
+    const combinatorics = SumCombos.enumerate(sum, 3);
     for (const combo of combinatorics.val) {
         COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
     }
