@@ -1,13 +1,11 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
 import { Combo, ReadonlyCombos, SumCombos } from '../../../../src/solver/math';
-import { computeSumAddendsCombos } from '../../../../src/solver/math/sumAddendsCombinatorics';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Tests for `SumCombos`', () => {
     [
-        SumCombos.enumerate,
-        computeSumAddendsCombos
+        SumCombos.enumerate
     ].forEach(combosFn => {
         const combosFnVal = (sum: number, numCount: number) => {
             return combosFn(sum, numCount).val;
