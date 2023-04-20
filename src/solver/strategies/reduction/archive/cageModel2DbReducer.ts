@@ -144,7 +144,7 @@ export class CageModel2DbReducer implements CageModelReducer {
             const num1 = combo.number1;
             const num2 = combo.number2;
 
-            const comboIndex = this._cageM.sumAddendsCombinatorics.optimisticIndexOf(combo);
+            const comboIndex = this._cageM.sumCombos.optimisticIndexOf(combo);
 
             //
             // [PERFORMANCE]

@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { SumCombos } from '../../../../src/solver/math';
 import { CombosSet } from '../../../../src/solver/sets';
 
-describe('Performance tests for `SumAddendsCombosSet`', () => {
+describe('Performance tests for `CombosSet`', () => {
 
     const TESTS_COUNT = 10;
     const ITERATIONS = _.range(100_000);

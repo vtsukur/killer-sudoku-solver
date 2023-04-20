@@ -298,9 +298,9 @@ export class SumCombos {
      *
      * Sample usage:
      * ```ts
-     * const combosOf2NumbersToAddUpTo7 = SumAddendsCombinatorics.combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
-     * const combosOf7NumbersToAddUpTo30 = SumAddendsCombinatorics.combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
-     * const combosOf2NumbersToAddUpTo19 = SumAddendsCombinatorics.combosForSum(19, 2); // []
+     * const combosOf2NumbersToAddUpTo7 = SumCombos.combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
+     * const combosOf7NumbersToAddUpTo30 = SumCombos.combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
+     * const combosOf2NumbersToAddUpTo19 = SumCombos.combosForSum(19, 2); // []
      * ```
      *
      * @param sum - Sum to find addend combinations for. Should be within [1, 45] range.

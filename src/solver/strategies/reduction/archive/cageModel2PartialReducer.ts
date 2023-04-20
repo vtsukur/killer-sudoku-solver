@@ -40,7 +40,7 @@ export class CageModel2PartialReducer implements CageModelReducer {
         this._cageM = cageM;
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
-        this._combosByNum = cageM.sumAddendsCombinatorics.combosByNum;
+        this._combosByNum = cageM.sumCombos.combosByNum;
     }
 
     /**

@@ -17,8 +17,8 @@ export class LockableCageModel extends CageModel implements Lockable {
         this._lockableCellMs = cellMs;
     }
 
-    newSumAddendsCombosSet(): CombosSet {
-        return LockableCombosSet.newEmpty(this.sumAddendsCombinatorics);
+    newCombosSet(): CombosSet {
+        return LockableCombosSet.newEmpty(this.sumCombos);
     }
 
     initialReduce(reduction?: MasterModelReduction) {
