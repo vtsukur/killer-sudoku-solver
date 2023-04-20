@@ -51,12 +51,13 @@ export class Combo implements Iterable<number> {
             if (!map.has(sum)) {
                 map.set(sum, []);
             }
-            (map.get(sum) as Array<[number, ReadonlyArray<number>]>).unshift([i, nums]);
+            (map.get(sum) as Array<[number, ReadonlyArray<number>]>).push([i, nums]);
         }
         combosByCount.forEach((map, count) => {
             if (count === 0) return;
             for (const bitStoreAndNums of map.values()) {
                 let index = 0;
+                bitStoreAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
                 for (const [ bitStore, nums ] of bitStoreAndNums) {
                     val[bitStore] = new Combo(nums, index);
                     ++index;
