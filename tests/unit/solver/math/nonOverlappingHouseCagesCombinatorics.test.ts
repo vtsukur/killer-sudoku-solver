@@ -1,5 +1,5 @@
 import { Cage } from '../../../../src/puzzle/cage';
-import { Combo, SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { Combo, SumCombos } from '../../../../src/solver/math';
 import { NonOverlappingHouseCagesCombinatorics } from '../../../../src/solver/math/nonOverlappingHouseCagesCombinatorics';
 import { GridAreaModel } from '../../../../src/solver/models/elements/gridAreaModel';
 import { CombosSet } from '../../../../src/solver/sets';
@@ -7,7 +7,7 @@ import { CombosSet } from '../../../../src/solver/sets';
 describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
 
     const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
-    const enumerateSumAddends = SumAddendsCombinatorics.enumerate;
+    const enumerateSumAddends = SumCombos.enumerate;
 
     test('Enumerating several `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
         expectNonOverlappingHouseCagesCombinatorics(enumerate(GridAreaModel.from([

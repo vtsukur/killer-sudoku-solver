@@ -5,8 +5,7 @@ import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { SudokuNumsSet } from '../sets';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { Combo, ReadonlyCombos } from './combo';
-import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
+import { Combo, ReadonlyCombos, SumCombos } from './combo';
 import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
 import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -138,7 +137,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
  */
 const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
     const singleCage = model.cages[0];
-    const singleCageCombos = SumAddendsCombinatorics.enumerate(singleCage.sum, singleCage.cellCount);
+    const singleCageCombos = SumCombos.enumerate(singleCage.sum, singleCage.cellCount);
     return {
         combosSets: singleCageCombos.combosSets,
         perms: singleCageCombos.perms
@@ -212,7 +211,7 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
  *  - pick each {@link Combo} in the first {@link Cage};
  *  - let enumeration proceed with each {@link Combo} further;
  */
-const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumCombos, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
         _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
@@ -225,7 +224,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumAddendsCombinatorics: SumAd
  * This logic is *not* unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is *not* needed at all in the first step.
  */
-const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumAddendsCombinatorics: SumCombos, step: number) => {
     for (const combo of sumAddendsCombinatorics.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.numsSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
@@ -253,7 +252,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => {
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumAddendsCombinatorics: SumCombos, step: number) => {
     const lastCombo = sumAddendsCombinatorics.get(ctx.usedNums.remaining);
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
@@ -264,7 +263,7 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
 /**
  * Generic enumeration step function.
  */
-type EnumerationStepFunction = (ctx: Context, sumAddendsCombinatorics: SumAddendsCombinatorics, step: number) => void;
+type EnumerationStepFunction = (ctx: Context, sumAddendsCombinatorics: SumCombos, step: number) => void;
 
 /**
  * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.
@@ -279,7 +278,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly combosSets: Array<CombosSet>;
     readonly perms = new Array<ReadonlyCombos>();
 
-    readonly allCageCombos: Array<SumAddendsCombinatorics>;
+    readonly allCageCombos: Array<SumCombos>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
@@ -330,7 +329,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cageCount = cages.length;
 
         this.combosSets = new Array(cageCount);
-        this.allCageCombos = cages.map(cage => SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount));
+        this.allCageCombos = cages.map(cage => SumCombos.enumerate(cage.sum, cage.cellCount));
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
