@@ -110,7 +110,7 @@ export class CageModel4FullReducer implements CageModelReducer {
                 const sortedNums = [...context.numbersStack];
                 sortedNums[CELL_COUNT - 1] = lastNum;
                 sortedNums.sort();
-                const combo = new Combo(sortedNums);
+                const combo = Combo.of(...sortedNums);
                 this._cageM.comboSet.addCombo(combo);
             }
         } else {

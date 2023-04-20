@@ -2,18 +2,12 @@ import { Combo } from '../../../../src/solver/math';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Combo tests', () => {
-    test('Construction of Combo from array of numbers', () => {
-        const combo = new Combo([ 1, 6, 9 ]);
+    test('Construction of Combo using `of` static factory method', () => {
+        const combo = Combo.of(1, 6, 9);
         expect(combo.key).toEqual(169);
         expect(combo.numsSet.hasAll(SudokuNumsSet.of(1, 6, 9))).toBeTruthy();
         expect(combo.numsSet.doesNotHaveAny(SudokuNumsSet.of(2, 5))).toBeTruthy();
         expect(combo.numsSet.doesNotHaveAny(SudokuNumsSet.of(1, 5, 6))).toBeFalsy();
-        expectComboWithValues(combo, [ 1, 6, 9 ]);
-    });
-
-    test('Construction of Combo using `of` static factory method', () => {
-        const combo = Combo.of(1, 6, 9);
-        expect(combo.key).toEqual(169);
         expectComboWithValues(combo, [ 1, 6, 9 ]);
     });
 
@@ -49,7 +43,6 @@ describe('Combo tests', () => {
     });
 
     test('Construction of empty Combo is *not* allowed', () => {
-        expect(() => new Combo([])).toThrow(new RangeError('Combo should have at least 1 number'));
         expect(() => Combo.of()).toThrow(new RangeError('Combo should have at least 1 number'));
     });
 

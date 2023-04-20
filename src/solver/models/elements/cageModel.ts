@@ -1,18 +1,19 @@
 import * as _ from 'lodash';
 import { Cage } from '../../../puzzle/cage';
 import { Cell } from '../../../puzzle/cell';
+import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../math';
+import { Combo, ReadonlyCombos } from '../../math';
+import { SumCombos } from '../../math/combo';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
-import { CellModel } from './cellModel';
-import { CellsPlacement } from '../../../puzzle/cellsPlacement';
-import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
-import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
 import { CageModel4Reducer } from '../../strategies/reduction/cageModel4Reducer';
+import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
+import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
+import { CellModel } from './cellModel';
 
 type Clue = {
     num: number;
@@ -31,7 +32,7 @@ export class CageModel {
 
     private _firstCell;
     private _cellCount;
-    sumAddendsCombinatorics: SumAddendsCombinatorics;
+    sumAddendsCombinatorics: SumCombos;
     readonly comboSet: CombosSet;
     private _reducer?: CageModelReducer;
 
@@ -42,7 +43,7 @@ export class CageModel {
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this._cellCount = cage.cellCount;
-        this.sumAddendsCombinatorics = SumAddendsCombinatorics.enumerate(this.cage.sum, this.cage.cellCount);
+        this.sumAddendsCombinatorics = SumCombos.enumerate(this.cage.sum, this.cage.cellCount);
         if (comboSet) {
             this.comboSet = comboSet.clone();
         } else {
