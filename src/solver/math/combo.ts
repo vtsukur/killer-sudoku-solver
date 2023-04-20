@@ -37,7 +37,7 @@ export class Combo implements Iterable<number> {
 
     readonly number3: number;
 
-    readonly index: number | undefined;
+    readonly index: number;
 
     static readonly INSTANCES: ReadonlyArray<Combo> = (() => {
         const val = new Array<Combo>(1024); // compact by 2
