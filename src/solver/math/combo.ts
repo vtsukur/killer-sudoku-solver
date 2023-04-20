@@ -5,11 +5,6 @@ import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { BitStore32, CombosSet, PowersOf2Lut, ReadonlyCombosSet, ReadonlyCombosSets, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 /**
- * Human-readable key describing combination of numbers.
- */
-export type ComboKey = number;
-
-/**
  * Combination of numbers used mainly to represent addends of `Cage` sum.
  *
  * Combination allows duplication of numbers.
@@ -17,11 +12,6 @@ export type ComboKey = number;
  * @public
  */
 export class Combo implements Iterable<number> {
-
-    /**
-     * Human-readable key describing combination of numbers.
-     */
-    readonly key: ComboKey;
 
     /**
      * Set of unique Sudoku numbers between 1 and 9 present in this {@link Combo}
@@ -87,11 +77,6 @@ export class Combo implements Iterable<number> {
         this.number1 = this._nums[0];
         this.number2 = (this._nums.length > 1) ? this._nums[1] : 0;
         this.number3 = (this._nums.length > 2) ? this._nums[2] : 0;
-        if (this._nums.length === 4) {
-            this.key = this.number1 * 1000 + this.number2 * 100 + this.number3 * 10 + this._nums[3];
-        } else {
-            this.key = this.number1 * 100 + this.number2 * 10 + this.number3;
-        }
         this.index = index;
     }
 
