@@ -1,19 +1,10 @@
-import * as _ from 'lodash';
-import { Combo, SumCombos } from '../../math';
+import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { CageModel3ReductionDb, ComboReductionStatesByComboByCNPS } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
-
-const COMBO_INDICES = new Array<number>(1000);
-for (const sum of _.range(6, 25)) {
-    const combinatorics = SumCombos.enumerate(sum, 3);
-    for (const combo of combinatorics.val) {
-        COMBO_INDICES[combo.key] = combinatorics.optimisticIndexOf(combo);
-    }
-}
 
 /**
  * Reduces possible numbers for {@link CellModel}s
@@ -121,7 +112,7 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = this._sumReductionStates[COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
+            const reductionState = this._sumReductionStates[combo.index][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
                 actualReductionStateCellM1 |= reductionState.cell1KeepNumsBits;
@@ -157,7 +148,7 @@ export class CageModel3Reducer implements CageModelReducer {
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return CageModel3ReductionDb.STATES[sum][COMBO_INDICES[combo.key]][compressedNumbersPresenceState];
+        return CageModel3ReductionDb.STATES[sum][combo.index][compressedNumbersPresenceState];
     }
 
 }
