@@ -5,8 +5,8 @@ import { Cell } from '../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
 import { CombosSet } from '../sets';
+import { SumCombos } from './combo';
 import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
-import { SumAddendsCombinatorics } from './sumAddendsCombinatorics';
 
 /**
  * Combinatorics of possible _overlapping_ {@link Cage}s' numbers within the same {@link House}.
@@ -63,7 +63,7 @@ export class OverlappingHouseCagesCombinatorics {
     static enumerateCombos(overlappingCages: ReadonlyCages): OverlappingHouseCagesCombinatorics {
         return {
             combosSets: overlappingCages.map(cage => {
-                const combinatorics = SumAddendsCombinatorics.enumerate(cage.sum, cage.cellCount);
+                const combinatorics = SumCombos.enumerate(cage.sum, cage.cellCount);
                 return CombosSet.newFilled(combinatorics);
             })
         };
