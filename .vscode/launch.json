@@ -371,12 +371,12 @@
             }
         },
         {
-            "name": "npm run test [solver/math/sumAddendsCombinatorics]",
+            "name": "npm run test [solver/math/sumCombos]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
-                "sumAddendsCombinatorics"
+                "sumCombos"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -918,13 +918,13 @@
             }
         },
         {
-            "name": "npm run test [solver/math/sumAddendsCombinatorics.perf]",
+            "name": "npm run test [solver/math/sumCombos.perf]",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "test",
                 "--findRelatedTests",
-                "tests/perf/solver/math/sumAddendsCombinatorics.perf.test.ts"
+                "tests/perf/solver/math/sumCombos.perf.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
-import { Combo, ReadonlyCombos, SumAddendsCombinatorics } from '../../../../src/solver/math';
+import { Combo, ReadonlyCombos, SumCombos } from '../../../../src/solver/math';
 import { computeSumAddendsCombos } from '../../../../src/solver/math/sumAddendsCombinatorics';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
-describe('Tests for `SumAddendsCombinatorics`', () => {
+describe('Tests for `SumCombos`', () => {
     [
-        SumAddendsCombinatorics.enumerate,
+        SumCombos.enumerate,
         computeSumAddendsCombos
     ].forEach(combosFn => {
         const combosFnVal = (sum: number, numCount: number) => {
