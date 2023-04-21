@@ -19,7 +19,7 @@ export class Combo implements Iterable<number> {
      */
     readonly numsSet: ReadonlySudokuNumsSet;
 
-    private readonly _nums: ReadonlyArray<number>;
+    readonly nums: ReadonlyArray<number>;
 
     readonly number1: number;
 
@@ -67,10 +67,10 @@ export class Combo implements Iterable<number> {
             throw new RangeError('Combo should have at least 1 number');
         }
         this.numsSet = numsSet;
-        this._nums = this.numsSet.nums;
-        this.number1 = this._nums[0];
-        this.number2 = (this._nums.length > 1) ? this._nums[1] : 0;
-        this.number3 = (this._nums.length > 2) ? this._nums[2] : 0;
+        this.nums = this.numsSet.nums;
+        this.number1 = this.nums[0];
+        this.number2 = (this.nums.length > 1) ? this.nums[1] : 0;
+        this.number3 = (this.nums.length > 2) ? this.nums[2] : 0;
         this.index = index;
     }
 
@@ -126,10 +126,10 @@ export class Combo implements Iterable<number> {
      * @throws {RangeError} if the given index is outside of combination numbers range.
      */
     nthNumber(index: number) {
-        if (index < 0 || index > this._nums.length - 1) {
-            throw new RangeError(`Number of index ${index} cannot be accessed. Combo has ${this._nums.length} element(s)`);
+        if (index < 0 || index > this.nums.length - 1) {
+            throw new RangeError(`Number of index ${index} cannot be accessed. Combo has ${this.nums.length} element(s)`);
         } else {
-            return this._nums[index];
+            return this.nums[index];
         }
     }
 
@@ -142,7 +142,7 @@ export class Combo implements Iterable<number> {
      * @returns iterator over numbers in this combination.
      */
     [Symbol.iterator](): Iterator<number> {
-        return this._nums.values();
+        return this.nums.values();
     }
 
     /**
@@ -154,18 +154,6 @@ export class Combo implements Iterable<number> {
      */
     has(val: number) {
         return this.numsSet.has(val);
-    }
-
-    /**
-     * Checks if at least one number in the given `Set` is a part of this combination.
-     *
-     * @param val - `Set` of numbers to check against this combination.
-     *
-     * @returns `true` if at least one number in the given `Set` is a part of this combination;
-     * otherwise `false`.
-     */
-    hasSome(val: Set<number>) {
-        return Array.from(val).some(num => this.numsSet.has(num));
     }
 
     /**
