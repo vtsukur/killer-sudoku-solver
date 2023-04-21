@@ -99,7 +99,7 @@ export class Combo implements Iterable<number> {
     }
 
     static ofOne(val: number) {
-        // check number to be withing the range.
+        // check number to be within the range.
         return Combo.INSTANCES[1 << val];
     }
 
@@ -108,8 +108,18 @@ export class Combo implements Iterable<number> {
             throw new RangeError('Combo should have at least 1 number');
         }
 
-        // check bittore to be withing the range?
+        // check bitstore to be withing the range?
         return Combo.INSTANCES[val.bitStore];
+    }
+
+    static fromBits(val: BitStore32) {
+        // check number to be within the range.
+        if (val === 0) {
+            throw new RangeError('Combo should have at least 1 number');
+        }
+
+        // check bittore to be withing the range?
+        return Combo.INSTANCES[val];
     }
 
     /**
@@ -173,7 +183,7 @@ export class Combo implements Iterable<number> {
      * this combination if the given number is not a part of this combination.
      */
     reduce(num: number): Combo {
-        return Combo.of(...this._nums.filter(aNum => aNum !== num));
+        return Combo.INSTANCES[this.numsSet.bitStore & ~(1 << num)];
     }
 
 }
@@ -326,8 +336,7 @@ const storePrecomputed = (source: string, numCount: number) => {
             for (const char of combosStr.trim()) {
                 comboNumbers.push(parseInt(char));
             }
-            const combo = Combo.of(...comboNumbers);
-            // ALL_COMBOS[new SudokuNumsSet(comboNumbers).bitStore] = combo;
+            const combo = Combo.fromNumsSet(new SudokuNumsSet(comboNumbers));
             combos.push(combo);
         }
         PRECOMPUTED.set(precomputeKey(sum, numCount), new SumCombos(combos));
