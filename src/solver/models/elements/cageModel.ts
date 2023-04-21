@@ -43,7 +43,7 @@ export class CageModel {
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this._cellCount = cage.cellCount;
-        this.sumCombos = SumCombos.enumerate(this.cage.sum, this.cage.cellCount);
+        this.sumCombos = SumCombos.BY_COUNT_BY_SUM[this.cage.cellCount][this.cage.sum];
         if (comboSet) {
             this.comboSet = comboSet.clone();
         } else {
