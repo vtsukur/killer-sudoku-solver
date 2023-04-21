@@ -294,39 +294,6 @@ export class SumCombos {
         return this._bitStore32ToComboMap.get(val) as Combo;
     }
 
-    /**
-     * Determines combinations of unique numbers (addends) to form a sum using precomputed values.
-     *
-     * Sample usage:
-     * ```ts
-     * const combosOf2NumbersToAddUpTo7 = SumCombos.combosForSum(7, 2); // [ Combo.of(1, 6), Combo.of(2, 5), Combo.of(3, 4) ]
-     * const combosOf7NumbersToAddUpTo30 = SumCombos.combosForSum(30, 7); // [ Combo.of(1, 2, 3, 4, 5, 6, 9), Combo.of(1, 2, 3, 4, 5, 7, 8) ]
-     * const combosOf2NumbersToAddUpTo19 = SumCombos.combosForSum(19, 2); // []
-     * ```
-     *
-     * @param sum - Sum to find addend combinations for. Should be within [1, 45] range.
-     * @param addendCount - Amount of unique numbers to form a sum. Should be within [1, 9] range.
-     *
-     * @returns Readonly array of distinct combinations of unique numbers (addends) to form a sum.
-     * If there are no combinations found, empty array is returned.
-     *
-     * @throws {RangeError} if the sum or the amount of unique numbers to form a sum is out of range.
-     */
-    static enumerate(sum: number, addendCount: number): SumCombos {
-        validate(sum, addendCount);
-
-        return SumCombos.BY_COUNT_BY_SUM[addendCount][sum];
-    }
-
     static readonly MAX_SUM_OF_CAGE_3 = 24;
 
 }
-
-const validate = (sum: number, numCount: number) => {
-    if (sum < SudokuNumsSet.MIN_NUM || sum > House.SUM) {
-        throw new RangeError(`Invalid sum. Value outside of range. Expected to be within [1, 45]. Actual: ${sum}`);
-    }
-    if (numCount < 1 || numCount > House.CELL_COUNT) {
-        throw new RangeError(`Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`);
-    }
-};
