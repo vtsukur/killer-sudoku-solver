@@ -49,7 +49,7 @@ export class Combo implements Iterable<number> {
                 let index = 0;
                 bitStoreAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
                 for (const [ bitStore, nums ] of bitStoreAndNums) {
-                    val[bitStore] = new Combo(nums, index);
+                    val[bitStore] = new Combo(new SudokuNumsSet(nums), index);
                     ++index;
                 }
             }
@@ -62,17 +62,11 @@ export class Combo implements Iterable<number> {
      *
      * @param val - Numbers to construct a combination from.
      */
-    private constructor(val: ReadonlyArray<number> | BitStore32, index: number) {
-        if (typeof(val) === 'number') {
-            if (val === 0) {
-                throw new RangeError('Combo should have at least 1 number');
-            }
-        } else {
-            if (val.length === 0) {
-                throw new RangeError('Combo should have at least 1 number');
-            }
+    private constructor(numsSet: ReadonlySudokuNumsSet, index: number) {
+        if (numsSet.bitStore === 0) {
+            throw new RangeError('Combo should have at least 1 number');
         }
-        this.numsSet = new SudokuNumsSet(val);
+        this.numsSet = numsSet;
         this._nums = this.numsSet.nums;
         this.number1 = this._nums[0];
         this.number2 = (this._nums.length > 1) ? this._nums[1] : 0;
