@@ -46,10 +46,10 @@ describe('ReductionDb', () => {
             const sumReductions: SumReductions = { sum, combos };
 
             for (const combo of combinatoricsCombos) {
-                reductionCsvDbData += `c,${combo.numsSet.nums.join('')}\n`;
+                reductionCsvDbData += `c,${combo.nums.join('')}\n`;
                 const entries: Array<ReductionEntry> = [];
                 const comboReductions: ComboReductions = {
-                    combo: combo.numsSet.nums,
+                    combo: combo.nums,
                     entries
                 };
 

@@ -230,8 +230,8 @@ export class CageModel2DbReducer implements CageModelReducer {
             const reductionState = this._referenceReductionStates[comboIndex][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsSet.bitStore & reductionState.keepNumsInCell1Bits);
-                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsSet.bitStore & reductionState.keepNumsInCell2Bits);
+                actualReductionStateCellM1 |= (cellM1NumsBits & combo.numsBits & reductionState.keepNumsInCell1Bits);
+                actualReductionStateCellM2 |= (cellM2NumsBits & combo.numsBits & reductionState.keepNumsInCell2Bits);
             } else {
                 this._cageM.comboSet.deleteCombo(combo);
             }

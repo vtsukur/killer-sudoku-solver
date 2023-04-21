@@ -19,6 +19,8 @@ export class Combo implements Iterable<number> {
      */
     readonly numsSet: ReadonlySudokuNumsSet;
 
+    readonly numsBits: BitStore32;
+
     readonly nums: ReadonlyArray<number>;
 
     readonly number1: number;
@@ -67,7 +69,8 @@ export class Combo implements Iterable<number> {
             throw new RangeError('Combo should have at least 1 number');
         }
         this.numsSet = numsSet;
-        this.nums = this.numsSet.nums;
+        this.numsBits = numsSet.bitStore;
+        this.nums = numsSet.nums;
         this.number1 = this.nums[0];
         this.number2 = (this.nums.length > 1) ? this.nums[1] : 0;
         this.number3 = (this.nums.length > 2) ? this.nums[2] : 0;
@@ -165,7 +168,7 @@ export class Combo implements Iterable<number> {
      * this combination if the given number is not a part of this combination.
      */
     reduce(num: number): Combo {
-        return Combo.INSTANCES[this.numsSet.bitStore & ~(1 << num)];
+        return Combo.INSTANCES[this.numsBits & ~(1 << num)];
     }
 
 }
@@ -230,7 +233,7 @@ export class SumCombos {
         this.val = val;
         const allNumsSet = SudokuNumsSet.newEmpty();
         for (const combo of val) {
-            this._bitStore32ToComboMap.set(combo.numsSet.bitStore, combo);
+            this._bitStore32ToComboMap.set(combo.numsBits, combo);
             allNumsSet.addAll(combo.numsSet);
         }
         this.allNumsSet = allNumsSet;
@@ -250,7 +253,7 @@ export class SumCombos {
     private static newCombosByNum(val: ReadonlyCombos) {
         const combosByNum: Array<Array<Combo>> = CachedNumRanges.ZERO_TO_N_LTE_81[SudokuNumsSet.MAX_NUM + 1].map(() => []);
         for (const combo of val) {
-            for (const num of combo.numsSet.nums) {
+            for (const num of combo.nums) {
                 combosByNum[num].push(combo);
             }
         }

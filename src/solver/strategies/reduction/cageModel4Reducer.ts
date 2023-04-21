@@ -92,7 +92,7 @@ export class CageModel4Reducer implements CageModelReducer {
             for (const combo of combosBeforeReduction) {
                 if (!combo.has(num)) continue;
 
-                const reducedCombo = SUM_ADDENDS_COMBINATORICS_3[reducedSum].optimisticGetByBits(combo.numsSet.bitStore & ~(1 << num));
+                const reducedCombo = SUM_ADDENDS_COMBINATORICS_3[reducedSum].optimisticGetByBits(combo.numsBits & ~(1 << num));
                 const reductionState = CageModel3Reducer.getReductionState(
                         reducedSum,
                         reducedCombo,

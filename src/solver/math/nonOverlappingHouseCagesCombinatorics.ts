@@ -241,7 +241,7 @@ const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCo
 const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) => {
     ctx.perms.push([...ctx.usedCombos]);
     for (const i of ctx.cageIndicesRange) {
-        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numsSet.bitStore);
+        ctx.usedCombosHashes[i].add(ctx.usedCombos[i].numsBits);
     };
 };
 
@@ -356,7 +356,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
 
             this.combosSets[cageIndex] = CombosSet.newEmpty(sumCombos);
             for (const combo of sumCombos.val) {
-                if (actualSumCombosSet.has(combo.numsSet.bitStore)) {
+                if (actualSumCombosSet.has(combo.numsBits)) {
                     this.combosSets[cageIndex].addCombo(combo);
                 }
             }

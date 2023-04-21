@@ -59,7 +59,7 @@ export class CageModelTestPrintingReducerWrapper implements CageModelReducer {
                 if (!combosAfterReduction.hasCombo(combo)) {
                     testCode += '// Deleted: ';
                 }
-                testCode += `Combo.of(${combo.numsSet.nums.join(', ')})${index < combosBeforeReduction.combos.length - 1 ? ',' : ''}\n`;
+                testCode += `Combo.of(${combo.nums.join(', ')})${index < combosBeforeReduction.combos.length - 1 ? ',' : ''}\n`;
             });
             testCode += '    ]);\n';
             this._cageM.cellMs.forEach((_cellM, index) => {
