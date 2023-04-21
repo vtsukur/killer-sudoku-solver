@@ -7,7 +7,7 @@ describe('Performance tests for `CombosSet`', () => {
     const TESTS_COUNT = 10;
     const ITERATIONS = _.range(100_000);
 
-    const combinatorics = SumCombos.enumerate(25, 5);
+    const combinatorics = SumCombos.BY_COUNT_BY_SUM[5][25];
 
     _.range(TESTS_COUNT).forEach(i => {
 
