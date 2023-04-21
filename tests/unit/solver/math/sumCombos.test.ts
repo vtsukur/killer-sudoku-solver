@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
 import { House } from '../../../../src/puzzle/house';
-import { Combo, ReadonlyCombos, SumCombos } from '../../../../src/solver/math';
+import { Combo, ReadonlyCombos, SumCombinatorics } from '../../../../src/solver/math';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
 describe('Tests for `SumCombos`', () => {
 
     const combos = (sum: number, numCount: number) => {
-        return SumCombos.BY_COUNT_BY_SUM[numCount][sum].val;
+        return SumCombinatorics.BY_COUNT_BY_SUM[numCount][sum].val;
     };
 
     test('Number combinations to form a sum out of 1 number', () => {

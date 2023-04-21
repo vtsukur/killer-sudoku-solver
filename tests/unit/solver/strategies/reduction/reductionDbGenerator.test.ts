@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as fs from 'node:fs';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../src/puzzle/cell';
-import { SumCombos } from '../../../../../src/solver/math';
+import { SumCombinatorics } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
@@ -37,7 +37,7 @@ describe('ReductionDb', () => {
         let sumIndex = 0;
 
         for (const sum of _.range(1, House.SUM + 1)) {
-            const combinatoricsCombos = SumCombos.BY_COUNT_BY_SUM[cageSize][sum].val;
+            const combinatoricsCombos = SumCombinatorics.BY_COUNT_BY_SUM[cageSize][sum].val;
             if (combinatoricsCombos.length === 0) continue;
 
             let reductionCsvDbData = `s,${sum}\n`;

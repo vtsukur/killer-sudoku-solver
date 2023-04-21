@@ -1,6 +1,6 @@
 import { Combo, ReadonlyCombos } from './combo';
 import { HouseModelCagesCombinatorics } from './houseModelCagesCombinatorics';
-import { SumCombos } from './sumCombinatorics';
+import { SumCombinatorics } from './sumCombinatorics';
 
 export {
     Combo,
@@ -8,5 +8,5 @@ export {
 
     HouseModelCagesCombinatorics,
 
-    SumCombos
+    SumCombinatorics
 };

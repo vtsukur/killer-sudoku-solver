@@ -1,5 +1,5 @@
 import { Combo } from '../../../../../src/solver/math';
-import { SumCombos } from '../../../../../src/solver/math';
+import { SumCombinatorics } from '../../../../../src/solver/math';
 import { BitStore32, CombosSet, ReadonlyCombosSet } from '../../../../../src/solver/sets';
 import { Lockable } from './lockable';
 
@@ -9,11 +9,11 @@ export class LockableCombosSet extends CombosSet implements Lockable {
 
     protected constructor(
             val: BitStore32,
-            combinatorics: SumCombos) {
+            combinatorics: SumCombinatorics) {
         super(val, combinatorics);
     }
 
-    static newEmpty(combinatorics: SumCombos) {
+    static newEmpty(combinatorics: SumCombinatorics) {
         return new LockableCombosSet(0, combinatorics);
     }
 

@@ -6,7 +6,7 @@ import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
 import { Combo, ReadonlyCombos } from '../../math';
-import { SumCombos } from '../../math';
+import { SumCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
@@ -32,7 +32,7 @@ export class CageModel {
 
     private _firstCell;
     private _cellCount;
-    sumCombos: SumCombos;
+    sumCombos: SumCombinatorics;
     readonly comboSet: CombosSet;
     private _reducer?: CageModelReducer;
 
@@ -43,7 +43,7 @@ export class CageModel {
         this._firstCell = cage.firstCell;
         this.cellMs = cellMs;
         this._cellCount = cage.cellCount;
-        this.sumCombos = SumCombos.BY_COUNT_BY_SUM[this.cage.cellCount][this.cage.sum];
+        this.sumCombos = SumCombinatorics.BY_COUNT_BY_SUM[this.cage.cellCount][this.cage.sum];
         if (comboSet) {
             this.comboSet = comboSet.clone();
         } else {

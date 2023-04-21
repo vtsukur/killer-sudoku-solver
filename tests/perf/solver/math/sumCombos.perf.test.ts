@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { SumCombos } from '../../../../src/solver/math';
+import { SumCombinatorics } from '../../../../src/solver/math';
 
 describe('Performance tests for `SumCombos`', () => {
 
@@ -10,7 +10,7 @@ describe('Performance tests for `SumCombos`', () => {
 
         test(`Number combinations to form a sum out of 5 unique numbers [${i}]`, () => {
             ITERATIONS.forEach(() => {
-                SumCombos.BY_COUNT_BY_SUM[5][25];
+                SumCombinatorics.BY_COUNT_BY_SUM[5][25];
             });
         });
 

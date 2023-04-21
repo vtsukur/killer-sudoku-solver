@@ -11,7 +11,7 @@ import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { CombosSet } from '../sets';
-import { SumCombos } from '.';
+import { SumCombinatorics } from '.';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s
@@ -138,7 +138,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
  */
 const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
     const singleCage = model.cages[0];
-    const singleCageCombos = SumCombos.BY_COUNT_BY_SUM[singleCage.cellCount][singleCage.sum];
+    const singleCageCombos = SumCombinatorics.BY_COUNT_BY_SUM[singleCage.cellCount][singleCage.sum];
     return {
         combosSets: singleCageCombos.combosSets,
         perms: singleCageCombos.perms
@@ -212,7 +212,7 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
  *  - pick each {@link Combo} in the first {@link Cage};
  *  - let enumeration proceed with each {@link Combo} further;
  */
-const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
     for (const combo of sumCombos.val) {
         _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
@@ -225,7 +225,7 @@ const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombos, step: nu
  * This logic is *not* unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is *not* needed at all in the first step.
  */
-const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
     for (const combo of sumCombos.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.numsSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
@@ -253,7 +253,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombos, step: number) => {
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
     const lastCombo = Combo.INSTANCES[ctx.usedNums.remaining.bitStore];
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
@@ -264,7 +264,7 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
 /**
  * Generic enumeration step function.
  */
-type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombos, step: number) => void;
+type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombinatorics, step: number) => void;
 
 /**
  * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.
@@ -279,7 +279,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly combosSets: Array<CombosSet>;
     readonly perms = new Array<ReadonlyCombos>();
 
-    readonly allCageCombos: Array<SumCombos>;
+    readonly allCageCombos: Array<SumCombinatorics>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
@@ -330,7 +330,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cageCount = cages.length;
 
         this.combosSets = new Array(cageCount);
-        this.allCageCombos = cages.map(cage => SumCombos.BY_COUNT_BY_SUM[cage.cellCount][cage.sum]);
+        this.allCageCombos = cages.map(cage => SumCombinatorics.BY_COUNT_BY_SUM[cage.cellCount][cage.sum]);
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 

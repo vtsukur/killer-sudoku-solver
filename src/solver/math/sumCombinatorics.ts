@@ -8,7 +8,7 @@ import { Combo, ReadonlyCombos } from './combo';
  *
  * @public
  */
-export class SumCombos {
+export class SumCombinatorics {
 
     /**
      * Array of combinations of unique numbers to form a sum.
@@ -45,7 +45,7 @@ export class SumCombos {
 
     readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
 
-    static readonly BY_COUNT_BY_SUM: ReadonlyArray<ReadonlyArray<SumCombos>> = (() => {
+    static readonly BY_COUNT_BY_SUM: ReadonlyArray<ReadonlyArray<SumCombinatorics>> = (() => {
         const combosMap = new Array<Array<Array<Combo>>>(10);
         for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM + 1]) {
             combosMap[count] = CachedNumRanges.ZERO_TO_N_LTE_81[House.SUM + 1].map(() => []);
@@ -58,9 +58,9 @@ export class SumCombos {
             combosMap[count][sum].push(combo);
         }
 
-        const val = new Array<Array<SumCombos>>(10);
+        const val = new Array<Array<SumCombinatorics>>(10);
         for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM + 1]) {
-            val[count] = combosMap[count].map(combosPerSum => new SumCombos(combosPerSum.sort((a, b) => a.index - b.index)));
+            val[count] = combosMap[count].map(combosPerSum => new SumCombinatorics(combosPerSum.sort((a, b) => a.index - b.index)));
         }
 
         return val;
@@ -88,7 +88,7 @@ export class SumCombos {
             this.combosLut.set(index, combo);
             this.combosNumsSetLut.set(index, combo.numsSet);
         });
-        this.combosByNum = SumCombos.newCombosByNum(val);
+        this.combosByNum = SumCombinatorics.newCombosByNum(val);
     }
 
     private static newCombosByNum(val: ReadonlyCombos) {

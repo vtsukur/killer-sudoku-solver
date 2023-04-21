@@ -6,7 +6,7 @@ import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { CombosSet } from '../sets';
 import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
-import { SumCombos } from './sumCombinatorics';
+import { SumCombinatorics } from './sumCombinatorics';
 
 /**
  * Combinatorics of possible _overlapping_ {@link Cage}s' numbers within the same {@link House}.
@@ -63,7 +63,7 @@ export class OverlappingHouseCagesCombinatorics {
     static enumerateCombos(overlappingCages: ReadonlyCages): OverlappingHouseCagesCombinatorics {
         return {
             combosSets: overlappingCages.map(cage => {
-                const combinatorics = SumCombos.BY_COUNT_BY_SUM[cage.cellCount][cage.sum];
+                const combinatorics = SumCombinatorics.BY_COUNT_BY_SUM[cage.cellCount][cage.sum];
                 return CombosSet.newFilled(combinatorics);
             })
         };
