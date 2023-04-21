@@ -6,14 +6,13 @@ import { CombosSet } from '../../../../src/solver/sets';
 describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
 
     const enumerate = OverlappingHouseCagesCombinatorics.enumerateCombos;
-    const enumerateSumCombos = SumCombos.enumerate;
 
     test('Enumerating single `Combo` for a single overlapping `Cage`', () => {
         expectOverlappingHouseCagesCombinatorics(enumerate([
             Cage.ofSum(4).at(1, 5).at(2, 5).new()
         ]), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(4, 2), [ Combo.of(1, 3) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ])
             ]
         });
     });
@@ -25,9 +24,9 @@ describe('Unit tests for `OverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(9).at(1, 3).at(1, 4).new()
         ]), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ]),
-                CombosSet.from(enumerateSumCombos(14, 2), [ Combo.of(5, 9), Combo.of(6, 8) ]),
-                CombosSet.from(enumerateSumCombos(9, 2), [ Combo.of(1, 8), Combo.of(2, 7), Combo.of(3, 6), Combo.of(4, 5) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][5], [ Combo.of(1, 4), Combo.of(2, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][14], [ Combo.of(5, 9), Combo.of(6, 8) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][9], [ Combo.of(1, 8), Combo.of(2, 7), Combo.of(3, 6), Combo.of(4, 5) ])
             ]
         });
     });
