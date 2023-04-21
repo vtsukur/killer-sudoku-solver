@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
-import { Combo, SumCombos } from '../../../math';
+import { SumCombos } from '../../../math';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 
@@ -51,7 +51,7 @@ export class CageModel3ReductionDb {
 
         sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-                const comboNumsBits = Combo.of(...comboReductions.combo).numsSet.bitStore;
+                const comboNumsBits = new SudokuNumsSet(comboReductions.combo).bitStore;
 
                 const comboReductionStates = new Array<ComboReductionState>(REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {

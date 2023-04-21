@@ -74,13 +74,13 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
 
             for (const numPlacementClue of cageM.findNumPlacementClues()) {
                 if (!_.isUndefined(numPlacementClue.row)) {
-                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 } else if (!_.isUndefined(numPlacementClue.col)) {
-                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 }
 
                 if (!_.isUndefined(numPlacementClue.nonet)) {
-                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 }
             }
         }
@@ -93,13 +93,13 @@ export class FindAndReduceCagePermsByHouseStrategy extends Strategy {
                 if (!numPlacementClue.presentInAllCombos) continue;
 
                 if (!_.isUndefined(numPlacementClue.row)) {
-                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.rowModels[numPlacementClue.row], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 } else if (!_.isUndefined(numPlacementClue.col)) {
-                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.columnModels[numPlacementClue.col], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 }
 
                 if (!_.isUndefined(numPlacementClue.nonet)) {
-                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.of(numPlacementClue.num), reduction);
+                    reduceByHouse(cageM, this._model.nonetModels[numPlacementClue.nonet], this._model, Combo.ofOne(numPlacementClue.num), reduction);
                 }
             }
         }

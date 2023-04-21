@@ -98,6 +98,20 @@ export class Combo implements Iterable<number> {
         return Combo.INSTANCES[bitStore];
     }
 
+    static ofOne(val: number) {
+        // check number to be withing the range.
+        return Combo.INSTANCES[1 << val];
+    }
+
+    static fromNumsSet(val: ReadonlySudokuNumsSet) {
+        if (val.bitStore === 0) {
+            throw new RangeError('Combo should have at least 1 number');
+        }
+
+        // check bittore to be withing the range?
+        return Combo.INSTANCES[val.bitStore];
+    }
+
     /**
      * Returns number with the n-th `index` in the combination.
      *
