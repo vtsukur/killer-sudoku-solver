@@ -1,4 +1,6 @@
 import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { BaseReadonlySudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<T>> {
 
