@@ -7,7 +7,6 @@ import { CombosSet } from '../../../../src/solver/sets';
 describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
 
     const enumerate = NonOverlappingHouseCagesCombinatorics.enumerateCombosAndPerms;
-    const enumerateSumCombos = SumCombos.enumerate;
 
     test('Enumerating several `Combo`s and `Perm`s forming a complete `HouseModel`', () => {
         expectNonOverlappingHouseCagesCombinatorics(enumerate(GridAreaModel.from([
@@ -17,10 +16,10 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(13).at(3, 1).at(3, 2).at(3, 3).new()
         ]).nonOverlappingCagesAreaModel), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(15, 2), [ Combo.of(6, 9), Combo.of(7, 8) ]),
-                CombosSet.from(enumerateSumCombos(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(enumerateSumCombos(7, 2), [ Combo.of(2, 5), Combo.of(3, 4) ]),
-                CombosSet.from(enumerateSumCombos(13, 3), [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][15], [ Combo.of(6, 9), Combo.of(7, 8) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5), Combo.of(3, 4) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][13], [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ])
             ],
             perms: [
                 [ Combo.of(6, 9), Combo.of(2, 8), Combo.of(3, 4), Combo.of(1, 5, 7) ],
@@ -40,10 +39,10 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(11).at(1, 0).at(1, 1).new()
         ]).nonOverlappingCagesAreaModel), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(14, 3), [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ]),
-                CombosSet.from(enumerateSumCombos(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(enumerateSumCombos(10, 2), [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(enumerateSumCombos(11, 2), [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][14], [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][11], [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ])
             ],
             perms: [
                 [ Combo.of(1, 4, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(5, 6) ],
@@ -70,10 +69,10 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(4).at(1, 8).new()
         ]).nonOverlappingCagesAreaModel), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(4, 2), [ Combo.of(1, 3) ]),
-                CombosSet.from(enumerateSumCombos(24, 3), [ Combo.of(7, 8, 9) ]),
-                CombosSet.from(enumerateSumCombos(7, 2), [ Combo.of(2, 5) ]),
-                CombosSet.from(enumerateSumCombos(4, 1), [ Combo.ofOne(4) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][24], [ Combo.of(7, 8, 9) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[1][4], [ Combo.ofOne(4) ])
             ],
             perms: [
                 [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.ofOne(4) ]
@@ -87,8 +86,8 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(7).at(0, 2).at(1, 2).new()
         ]).nonOverlappingCagesAreaModel), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ]),
-                CombosSet.from(enumerateSumCombos(7, 2), [ Combo.of(1, 6), Combo.of(2, 5) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][5], [ Combo.of(1, 4), Combo.of(2, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(1, 6), Combo.of(2, 5) ])
             ],
             perms: [
                 [ Combo.of(1, 4), Combo.of(2, 5) ],
@@ -102,7 +101,7 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
             Cage.ofSum(5).at(1, 1).at(1, 2).new()
         ]).nonOverlappingCagesAreaModel), {
             combosSets: [
-                CombosSet.from(enumerateSumCombos(5, 2), [ Combo.of(1, 4), Combo.of(2, 3) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][5], [ Combo.of(1, 4), Combo.of(2, 3) ])
             ],
             perms: [
                 [ Combo.of(1, 4) ],
