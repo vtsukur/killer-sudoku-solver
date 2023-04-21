@@ -187,7 +187,7 @@ const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombin
  * Entry point to a particular step of recursive enumeration which leverages cached enumeration pipeline.
  */
 const enumerateRecursively_next = (ctx: Context, step: number) => {
-    ctx.enumerationPipeline[step](ctx, ctx.allCageCombos[step], step);
+    ctx.enumerationPipeline[step](ctx, ctx.allCagesSumCombinatorics[step], step);
 };
 
 /**
@@ -279,7 +279,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
     readonly combosSets: Array<CombosSet>;
     readonly perms = new Array<ReadonlyCombos>();
 
-    readonly allCageCombos: Array<SumCombinatorics>;
+    readonly allCagesSumCombinatorics: Array<SumCombinatorics>;
     readonly cageIndicesRange: ReadonlyArray<number>;
     readonly usedCombosHashes: Array<Set<BitStore32>>;
     readonly enumerationPipeline: EnumerationPipeline;
@@ -330,7 +330,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cageCount = cages.length;
 
         this.combosSets = new Array(cageCount);
-        this.allCageCombos = cages.map(cage => SumCombinatorics.BY_COUNT_BY_SUM[cage.cellCount][cage.sum]);
+        this.allCagesSumCombinatorics = cages.map(cage => SumCombinatorics.BY_COUNT_BY_SUM[cage.cellCount][cage.sum]);
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
@@ -352,11 +352,11 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
      */
     collectUsedCombos() {
         for (const cageIndex of this.cageIndicesRange) {
-            const sumCombos = this.allCageCombos[cageIndex];
+            const sumCombinatorics = this.allCagesSumCombinatorics[cageIndex];
             const actualSumCombosSet = this.usedCombosHashes[cageIndex];
 
-            this.combosSets[cageIndex] = CombosSet.newEmpty(sumCombos);
-            for (const combo of sumCombos.val) {
+            this.combosSets[cageIndex] = CombosSet.newEmpty(sumCombinatorics);
+            for (const combo of sumCombinatorics.val) {
                 if (actualSumCombosSet.has(combo.numsBits)) {
                     this.combosSets[cageIndex].addCombo(combo);
                 }
