@@ -37,7 +37,7 @@ describe('ReductionDb', () => {
         let sumIndex = 0;
 
         for (const sum of _.range(1, House.SUM + 1)) {
-            const combinatoricsCombos = SumCombos.enumerate(sum, cageSize).val;
+            const combinatoricsCombos = SumCombos.BY_COUNT_BY_SUM[cageSize][sum].val;
             if (combinatoricsCombos.length === 0) continue;
 
             let reductionCsvDbData = `s,${sum}\n`;
