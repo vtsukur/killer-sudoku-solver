@@ -246,7 +246,7 @@ export class SumCombos {
      *
      * @param val - Array of combinations of unique numbers to form a sum.
      */
-    constructor(val: ReadonlyCombos) {
+    private constructor(val: ReadonlyCombos) {
         this.val = val;
         const allNumsSet = SudokuNumsSet.newEmpty();
         for (const combo of val) {
