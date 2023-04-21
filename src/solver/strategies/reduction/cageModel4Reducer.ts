@@ -17,7 +17,7 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
 
 const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumCombos>(25);
 for (const sum of _.range(6, 25)) {
-    SUM_ADDENDS_COMBINATORICS_3[sum] = SumCombos.enumerate(sum, 3);
+    SUM_ADDENDS_COMBINATORICS_3[sum] = SumCombos.BY_COUNT_BY_SUM[3][sum];
 }
 
 export class CageModel4Reducer implements CageModelReducer {
