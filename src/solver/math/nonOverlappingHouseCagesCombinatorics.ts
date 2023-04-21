@@ -5,12 +5,13 @@ import { Cell } from '../../puzzle/cell';
 import { House } from '../../puzzle/house';
 import { SudokuNumsSet } from '../sets';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { Combo, ReadonlyCombos, SumCombos } from './combo';
+import { Combo, ReadonlyCombos } from './combo';
 import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
 import { BitStore32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { CombosSet } from '../sets';
+import { SumCombos } from '.';
 
 /**
  * Single permutation of possible numbers in {@link House} {@link Cage}s

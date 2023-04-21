@@ -5,8 +5,8 @@ import { Cell } from '../../puzzle/cell';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { House } from '../../puzzle/house';
 import { CombosSet } from '../sets';
-import { SumCombos } from './combo';
 import { HouseCagesCombinatorics } from './houseCagesCombinatorics';
+import { SumCombos } from './sumCombinatorics';
 
 /**
  * Combinatorics of possible _overlapping_ {@link Cage}s' numbers within the same {@link House}.

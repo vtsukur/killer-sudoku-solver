@@ -1,10 +1,12 @@
-import { Combo, ReadonlyCombos, SumCombos } from './combo';
+import { Combo, ReadonlyCombos } from './combo';
 import { HouseModelCagesCombinatorics } from './houseModelCagesCombinatorics';
+import { SumCombos } from './sumCombinatorics';
 
 export {
     Combo,
     ReadonlyCombos,
-    SumCombos,
 
-    HouseModelCagesCombinatorics
+    HouseModelCagesCombinatorics,
+
+    SumCombos
 };
