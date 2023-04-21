@@ -8,8 +8,6 @@ import { CombosSet } from '../../../../src/solver/sets';
 
 describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
 
-    const BY_COUNT_BY_SUM = SumCombos.BY_COUNT_BY_SUM;
-
     test('Several combinations and permutations forming a complete HouseModel with non-overlapping Cages', () => {
         const combosAndPerms = HouseModelCagesCombinatorics.for(newHouseModel([
             Cage.ofSum(15).at(1, 1).at(1, 2).new(),
@@ -33,10 +31,10 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 [ Combo.of(7, 8), Combo.of(4, 6), Combo.of(2, 5), Combo.of(1, 3, 9) ]
             ],
             actualSumCombosOfAllCages: [
-                CombosSet.from(BY_COUNT_BY_SUM[2][15], [ Combo.of(6, 9), Combo.of(7, 8) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5), Combo.of(3, 4) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[3][13], [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][15], [ Combo.of(6, 9), Combo.of(7, 8) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5), Combo.of(3, 4) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][13], [ Combo.of(1, 3, 9), Combo.of(1, 4, 8), Combo.of(1, 5, 7), Combo.of(2, 5, 6), Combo.of(3, 4, 6) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -71,10 +69,10 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 [ Combo.of(3, 5, 6), Combo.of(2, 8), Combo.of(1, 9), Combo.of(4, 7) ]
             ],
             actualSumCombosOfAllCages: [
-                CombosSet.from(BY_COUNT_BY_SUM[3][14], [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][11], [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][14], [ Combo.of(1, 4, 9), Combo.of(1, 5, 8), Combo.of(2, 4, 8), Combo.of(2, 5, 7), Combo.of(3, 4, 7), Combo.of(3, 5, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][10], [ Combo.of(1, 9), Combo.of(2, 8), Combo.of(3, 7), Combo.of(4, 6) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][11], [ Combo.of(2, 9), Combo.of(3, 8), Combo.of(4, 7), Combo.of(5, 6) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -95,8 +93,8 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 [ Combo.of(2, 3), Combo.of(1, 6) ]
             ],
             actualSumCombosOfAllCages: [
-                CombosSet.from(BY_COUNT_BY_SUM[2][5], [ Combo.of(1, 4), Combo.of(2, 3) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][7], [ Combo.of(1, 6), Combo.of(2, 5) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][5], [ Combo.of(1, 4), Combo.of(2, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(1, 6), Combo.of(2, 5) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -120,10 +118,10 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.ofOne(4) ]
             ],
             actualSumCombosOfAllCages: [
-                CombosSet.from(BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[3][24], [ Combo.of(7, 8, 9) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[1][4], [ Combo.ofOne(4) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[3][24], [ Combo.of(7, 8, 9) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[1][4], [ Combo.ofOne(4) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -148,10 +146,10 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 [ Combo.of(3, 5), Combo.of(8), Combo.of(1, 2, 4, 6, 7, 9) ]
             ],
             actualSumCombosOfAllCages: [
-                CombosSet.from(BY_COUNT_BY_SUM[2][8], [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[1][8], [ Combo.ofOne(8) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
-                CombosSet.from(BY_COUNT_BY_SUM[6][29], [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ])
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][8], [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[1][8], [ Combo.ofOne(8) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
+                CombosSet.from(SumCombos.BY_COUNT_BY_SUM[6][29], [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
