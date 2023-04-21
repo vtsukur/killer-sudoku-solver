@@ -503,15 +503,3 @@ const validate = (sum: number, numCount: number) => {
         throw new RangeError(`Invalid number count. Value outside of range. Expected to be within [1, 9]. Actual: ${numCount}`);
     }
 };
-
-const MIN_SUMS_PER_NUM_COUNT = new Array(House.CELL_COUNT);
-const MAX_SUMS_PER_NUM_COUNT = new Array(House.CELL_COUNT);
-_.range(House.CELL_COUNT).forEach((count: number) => {
-    if (count == 0) {
-        MIN_SUMS_PER_NUM_COUNT[count] = 1;
-        MAX_SUMS_PER_NUM_COUNT[count] = House.CELL_COUNT;
-    } else {
-        MIN_SUMS_PER_NUM_COUNT[count] = MIN_SUMS_PER_NUM_COUNT[count - 1] + (count + 1);
-        MAX_SUMS_PER_NUM_COUNT[count] = MAX_SUMS_PER_NUM_COUNT[count - 1] + (House.CELL_COUNT - count);
-    }
-});
