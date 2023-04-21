@@ -187,7 +187,7 @@ const enumerateRecursively_main = (ctx: Context): NonOverlappingHouseCagesCombin
  * Entry point to a particular step of recursive enumeration which leverages cached enumeration pipeline.
  */
 const enumerateRecursively_next = (ctx: Context, step: number) => {
-    ctx.enumerationPipeline[step](ctx, ctx.allCagesSumCombinatorics[step], step);
+    ctx.enumerationPipeline[step](ctx, step, ctx.allCagesSumCombinatorics[step]);
 };
 
 /**
@@ -207,12 +207,17 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
 };
 
 /**
+ * Generic enumeration step function.
+ */
+type EnumerationStepFunction = (ctx: Context, step: number, combinatorics: SumCombinatorics) => void;
+
+/**
  * In case enumeration is in the first step, the algorithm is trivial:
  *
  *  - pick each {@link Combo} in the first {@link Cage};
  *  - let enumeration proceed with each {@link Combo} further;
  */
-const enumerateRecursively_step0 = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
+const enumerateRecursively_step0 = (ctx: Context, step: number, combinatorics: SumCombinatorics) => {
     for (const combo of combinatorics.val) {
         _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
@@ -225,7 +230,7 @@ const enumerateRecursively_step0 = (ctx: Context, combinatorics: SumCombinatoric
  * This logic is *not* unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is *not* needed at all in the first step.
  */
-const enumerateRecursively_step1PlusButNotLast = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, step: number, combinatorics: SumCombinatorics) => {
     for (const combo of combinatorics.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.numsSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
@@ -253,18 +258,13 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, step: number) => {
     const lastCombo = Combo.INSTANCES[ctx.usedNums.remaining.bitStore];
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
         enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);
     }
 };
-
-/**
- * Generic enumeration step function.
- */
-type EnumerationStepFunction = (ctx: Context, combinatorics: SumCombinatorics, step: number) => void;
 
 /**
  * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.
