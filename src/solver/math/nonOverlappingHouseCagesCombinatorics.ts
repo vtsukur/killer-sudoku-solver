@@ -137,7 +137,7 @@ const shortCircuitForNoCages: ComputeStrategyFn = () => {
  */
 const shortCircuitFor1Cage: ComputeStrategyFn = (model) => {
     const singleCage = model.cages[0];
-    const singleCageCombos = SumCombos.enumerate(singleCage.sum, singleCage.cellCount);
+    const singleCageCombos = SumCombos.BY_COUNT_BY_SUM[singleCage.cellCount][singleCage.sum];
     return {
         combosSets: singleCageCombos.combosSets,
         perms: singleCageCombos.perms
@@ -329,7 +329,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
         const cageCount = cages.length;
 
         this.combosSets = new Array(cageCount);
-        this.allCageCombos = cages.map(cage => SumCombos.enumerate(cage.sum, cage.cellCount));
+        this.allCageCombos = cages.map(cage => SumCombos.BY_COUNT_BY_SUM[cage.cellCount][cage.sum]);
         this.cageIndicesRange = CachedNumRanges.ZERO_TO_N_LTE_81[cageCount];
         this.usedCombosHashes = this.cageIndicesRange.map(() => new Set());
 
