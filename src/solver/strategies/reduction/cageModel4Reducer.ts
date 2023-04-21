@@ -1,11 +1,10 @@
-import * as _ from 'lodash';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
-import { SumCombos } from '../../math';
+import { Combo } from '../../math';
 
 const CAGE_SIZE = 4;
 const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
@@ -14,11 +13,6 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
     [ 0, 1, 3 ],
     [ 0, 1, 2 ]
 ];
-
-const SUM_ADDENDS_COMBINATORICS_3 = new Array<SumCombos>(25);
-for (const sum of _.range(6, 25)) {
-    SUM_ADDENDS_COMBINATORICS_3[sum] = SumCombos.BY_COUNT_BY_SUM[3][sum];
-}
 
 export class CageModel4Reducer implements CageModelReducer {
 
@@ -92,7 +86,7 @@ export class CageModel4Reducer implements CageModelReducer {
             for (const combo of combosBeforeReduction) {
                 if (!combo.has(num)) continue;
 
-                const reducedCombo = SUM_ADDENDS_COMBINATORICS_3[reducedSum].optimisticGetByBits(combo.numsBits & ~(1 << num));
+                const reducedCombo = Combo.INSTANCES[combo.numsBits & ~(1 << num)];
                 const reductionState = CageModel3Reducer.getReductionState(
                         reducedSum,
                         reducedCombo,
