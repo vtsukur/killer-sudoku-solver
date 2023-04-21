@@ -218,8 +218,6 @@ export class SumCombos {
 
     readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
 
-    private readonly _bitStore32ToComboMap: Map<BitStore32, Combo> = new Map();
-
     static readonly BY_COUNT_BY_SUM: ReadonlyArray<ReadonlyArray<SumCombos>> = (() => {
         const combosMap = new Array<Array<Array<Combo>>>(10);
         for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM + 1]) {
@@ -250,7 +248,6 @@ export class SumCombos {
         this.val = val;
         const allNumsSet = SudokuNumsSet.newEmpty();
         for (const combo of val) {
-            this._bitStore32ToComboMap.set(combo.numsBits, combo);
             allNumsSet.addAll(combo.numsSet);
         }
         this.allNumsSet = allNumsSet;
@@ -275,23 +272,6 @@ export class SumCombos {
             }
         }
         return combosByNum;
-    }
-
-    /**
-     * Returns specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
-     * if it is present amongst registered combinations.
-     *
-     * @param numsSet - Set of unique Sudoku numbers between 1 and 9 to look up {@link Combo} by.
-     *
-     * @returns Specific combination of unique numbers to form a sum by {@link ReadonlySudokuNumsSet}
-     * if it is present amongst registered combinations; otherwise returns `undefined`.
-     */
-    get(numsSet: ReadonlySudokuNumsSet) {
-        return this._bitStore32ToComboMap.get(numsSet.bitStore);
-    }
-
-    optimisticGetByBits(val: BitStore32) {
-        return this._bitStore32ToComboMap.get(val) as Combo;
     }
 
     static readonly MAX_SUM_OF_CAGE_3 = 24;
