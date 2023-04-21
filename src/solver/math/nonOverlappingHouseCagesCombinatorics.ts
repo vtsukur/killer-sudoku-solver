@@ -212,8 +212,8 @@ const _pushAndAdvanceEnumerationAndPop = (ctx: Context, combo: Combo, step: numb
  *  - pick each {@link Combo} in the first {@link Cage};
  *  - let enumeration proceed with each {@link Combo} further;
  */
-const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
-    for (const combo of sumCombos.val) {
+const enumerateRecursively_step0 = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
+    for (const combo of combinatorics.val) {
         _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
     }
 };
@@ -225,8 +225,8 @@ const enumerateRecursively_step0 = (ctx: Context, sumCombos: SumCombinatorics, s
  * This logic is *not* unified with the first step on purpose for performance reasons:
  * checking overlap with currently used numbers is *not* needed at all in the first step.
  */
-const enumerateRecursively_step1PlusButNotLast = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
-    for (const combo of sumCombos.val) {
+const enumerateRecursively_step1PlusButNotLast = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
+    for (const combo of combinatorics.val) {
         if (ctx.usedNums.doesNotHaveAny(combo.numsSet)) {
             _pushAndAdvanceEnumerationAndPop(ctx, combo, step);
         }
@@ -253,7 +253,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  *
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
-const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, sumCombos: SumCombinatorics, step: number) => {
+const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, combinatorics: SumCombinatorics, step: number) => {
     const lastCombo = Combo.INSTANCES[ctx.usedNums.remaining.bitStore];
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
@@ -264,7 +264,7 @@ const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context
 /**
  * Generic enumeration step function.
  */
-type EnumerationStepFunction = (ctx: Context, sumCombos: SumCombinatorics, step: number) => void;
+type EnumerationStepFunction = (ctx: Context, combinatorics: SumCombinatorics, step: number) => void;
 
 /**
  * Pipeline of enumeration functions that are sorted according to the steps to be executed in recursion.

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { SumCombinatorics } from '../../../../src/solver/math';
 
-describe('Performance tests for `SumCombos`', () => {
+describe('Performance tests for `SumCombinatorics`', () => {
 
     const TESTS_COUNT = 10;
     const ITERATIONS = _.range(1_000_000);

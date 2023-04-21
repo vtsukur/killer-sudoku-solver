@@ -3,7 +3,7 @@ import { House } from '../../../../src/puzzle/house';
 import { Combo, ReadonlyCombos, SumCombinatorics } from '../../../../src/solver/math';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
-describe('Tests for `SumCombos`', () => {
+describe('Tests for `SumCombinatorics`', () => {
 
     const combos = (sum: number, numCount: number) => {
         return SumCombinatorics.BY_COUNT_BY_SUM[numCount][sum].val;
