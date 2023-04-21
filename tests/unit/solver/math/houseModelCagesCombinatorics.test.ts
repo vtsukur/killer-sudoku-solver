@@ -117,13 +117,13 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
                 Cage.ofSum(4).at(1, 8).new()
             ],
             sumPermsOfNonOverlappingCages: [
-                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.of(4) ]
+                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.ofOne(4) ]
             ],
             actualSumCombosOfAllCages: [
                 CombosSet.from(enumerateSumCombos(4, 2), [ Combo.of(1, 3) ]),
                 CombosSet.from(enumerateSumCombos(24, 3), [ Combo.of(7, 8, 9) ]),
                 CombosSet.from(enumerateSumCombos(7, 2), [ Combo.of(2, 5) ]),
-                CombosSet.from(enumerateSumCombos(4, 1), [ Combo.of(4) ])
+                CombosSet.from(enumerateSumCombos(4, 1), [ Combo.ofOne(4) ])
             ]
         } as HouseModelCagesCombinatorics);
     });
@@ -149,7 +149,7 @@ describe('Unit tests for `HouseModelCagesCombinatorics`', () => {
             ],
             actualSumCombosOfAllCages: [
                 CombosSet.from(enumerateSumCombos(8, 2), [ Combo.of(1, 7), Combo.of(2, 6), Combo.of(3, 5) ]),
-                CombosSet.from(enumerateSumCombos(8, 1), [ Combo.of(8) ]),
+                CombosSet.from(enumerateSumCombos(8, 1), [ Combo.ofOne(8) ]),
                 CombosSet.from(enumerateSumCombos(4, 2), [ Combo.of(1, 3) ]),
                 CombosSet.from(enumerateSumCombos(29, 6), [ Combo.of(1, 2, 4, 6, 7, 9), Combo.of(1, 3, 4, 5, 7, 9), Combo.of(2, 3, 4, 5, 6, 9) ])
             ]
