@@ -1,6 +1,4 @@
 import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ReadonlySudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<T>> {
 
@@ -12,7 +10,7 @@ export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<
 }
 
 /**
- * Extends {@link ReadonlySudokuNumsSet} with fast manipulation operations.
+ * Extends {@link ReadonlyBits32Set} with fast manipulation operations.
  *
  * Both memory and speed are of O(1) complexity due to the use of bitwise arithmetic on numbers.
  *
@@ -32,14 +30,14 @@ export abstract class Bits32Set<
 
     /**
      * Constructs new set from the unique numbers in the given array
-     * or from another {@link ReadonlySudokuNumsSet} or from the {@link BitStore32}.
+     * or from another {@link ReadonlyBits32Set} or from the {@link BitStore32}.
      *
      * In case array is specified, only unique numbers are added to the set.
      * Number duplicates are silently ignored.
      *
      * Set is constructed as empty if no numbers are given.
      *
-     * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsSet}
+     * @param val - Readonly array of numbers or {@link ReadonlyBits32Set}
      * or {@link BitStore32} to construct this set from.
      */
     constructor(val: ReadonlyArray<number> | ROSET | BitStore32) {
