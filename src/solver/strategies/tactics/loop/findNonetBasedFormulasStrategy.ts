@@ -200,7 +200,7 @@ function reduceByFormula(formula: Formula, reduction: MasterModelReduction) {
             const cellMArr = Array.from(formula.equalToCellMs);
             const otherCellM1 = cellMArr[0];
             const otherCellM2 = cellMArr[1];
-            const combos = SumCombos.enumerate(targetSum, 2).val;
+            const combos = SumCombos.BY_COUNT_BY_SUM[2][targetSum].val;
             let hasAtLeastOneCombo = false;
             for (const combo of combos) {
                 const hasDirect = otherCellM1.hasNumOpt(combo.number1) && otherCellM2.hasNumOpt(combo.number2);
