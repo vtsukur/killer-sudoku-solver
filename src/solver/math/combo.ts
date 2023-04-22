@@ -4,6 +4,7 @@ import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 type ComboNumsBitsAndNums = [ BitStore32, ReadonlyArray<number> ];
 type CombosNumsBitsAndNums = Array<ComboNumsBitsAndNums>;
+type Sum = number;
 
 /**
  * Combination of numbers used mainly to represent addends of `Cage` sum.
@@ -59,7 +60,7 @@ export class Combo implements Iterable<number> {
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
         let numsBits = 0;
-        const combosByCountBySum: Array<Map<number, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
+        const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
         while (++numsBits < PERMUTATIONS_COUNT) {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (numsBits & 1) continue;
