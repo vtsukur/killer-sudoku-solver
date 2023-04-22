@@ -1,7 +1,35 @@
 import { Combo } from '../../../../src/solver/math';
 import { SudokuNumsSet } from '../../../../src/solver/sets';
 
-describe('Combo tests', () => {
+describe('`Combo` tests', () => {
+
+    test('Referencing `Combo`s by number\'s bits', () => {
+        const TOTAL_INDICES_COUNT = 1024;
+
+        expect(Combo.BY_NUMS_BITS.length).toBe(TOTAL_INDICES_COUNT);
+
+        let i = 0;
+        while (i < TOTAL_INDICES_COUNT) {
+            const combo = Combo.BY_NUMS_BITS[i];
+
+            if (i === 0 || i & 1) {
+                expect(combo).toBe(undefined);
+            } else {
+                const expectedNums = new Array<number>();
+                for (const num of SudokuNumsSet.NUM_RANGE) {
+                    if (i & (1 << num)) {
+                        expectedNums.push(num);
+                    }
+                }
+
+                expect(combo.nums).toEqual(expectedNums);
+                expect(combo.numsBits).toBe(i);
+            }
+
+            ++i;
+        }
+    });
+
     test('Construction of Combo using `of` static factory method', () => {
         const combo = Combo.of(1, 6, 9);
         expect(combo.numsSet.hasAll(SudokuNumsSet.of(1, 6, 9))).toBeTruthy();
