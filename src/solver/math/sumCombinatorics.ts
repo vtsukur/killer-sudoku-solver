@@ -49,7 +49,7 @@ export class SumCombinatorics {
             combosMap[count] = CachedNumRanges.ZERO_TO_N_LTE_81[House.SUM_PLUS_1].map(() => []);
         }
 
-        for (const combo of Combo.INSTANCES) {
+        for (const combo of Combo.BY_NUMS_BITS) {
             if (combo === undefined) continue;
             const count = combo.nums.length;
             const sum = combo.nums.reduce((prev, current) => prev + current, 0);

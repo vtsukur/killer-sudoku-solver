@@ -33,7 +33,9 @@ export class Combo implements Iterable<number> {
 
     readonly index: number;
 
-    static readonly INSTANCES: ReadonlyArray<Combo> = (() => {
+    static readonly BY_NUMS_BITS: ReadonlyArray<Combo> = this.createAllPossibleInstancesSortedByNumsBits();
+
+    private static createAllPossibleInstancesSortedByNumsBits() {
         //
         // Defining possible `Combo` permutations count
         // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024`.
@@ -100,7 +102,7 @@ export class Combo implements Iterable<number> {
         });
 
         return val;
-    })();
+    }
 
     /**
      * Constructs new combination of the given numbers.
@@ -135,12 +137,12 @@ export class Combo implements Iterable<number> {
         for (const num of val) {
             bitStore |= 1 << num;
         }
-        return Combo.INSTANCES[bitStore];
+        return Combo.BY_NUMS_BITS[bitStore];
     }
 
     static ofOne(val: number) {
         // check number to be within the range.
-        return Combo.INSTANCES[1 << val];
+        return Combo.BY_NUMS_BITS[1 << val];
     }
 
     static fromNumsSet(val: ReadonlySudokuNumsSet) {
@@ -149,7 +151,7 @@ export class Combo implements Iterable<number> {
         }
 
         // check bitstore to be withing the range?
-        return Combo.INSTANCES[val.bitStore];
+        return Combo.BY_NUMS_BITS[val.bitStore];
     }
 
     static fromBits(val: BitStore32) {
@@ -159,7 +161,7 @@ export class Combo implements Iterable<number> {
         }
 
         // check bittore to be withing the range?
-        return Combo.INSTANCES[val];
+        return Combo.BY_NUMS_BITS[val];
     }
 
     /**
@@ -211,7 +213,7 @@ export class Combo implements Iterable<number> {
      * this combination if the given number is not a part of this combination.
      */
     reduce(num: number): Combo {
-        return Combo.INSTANCES[this.numsBits & ~(1 << num)];
+        return Combo.BY_NUMS_BITS[this.numsBits & ~(1 << num)];
     }
 
 }
