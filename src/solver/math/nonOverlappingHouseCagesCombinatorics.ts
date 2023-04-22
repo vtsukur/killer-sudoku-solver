@@ -288,7 +288,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
 
     // caching enumeration pipelines improves performance by around 5-10%
     private static _CACHED_ENUMERATION_PIPELINES_FOR_COMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
-        Context.newEnumerationPipelines(House.CELL_COUNT + 1, Context.newEnumerationPipelineForCompleteHouse);
+        Context.newEnumerationPipelines(House.CELL_COUNT_PLUS_1, Context.newEnumerationPipelineForCompleteHouse);
     private static _CACHED_ENUMERATION_PIPELINES_FOR_INCOMPLETE_HOUSE: ReadonlyArray<EnumerationPipeline> =
         Context.newEnumerationPipelines(House.CELL_COUNT, Context.newEnumerationPipelineForIncompleteHouse);
 
