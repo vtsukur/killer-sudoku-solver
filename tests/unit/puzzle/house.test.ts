@@ -18,4 +18,8 @@ describe('Unit tests for `House`', () => {
         expect(House.SUM).toEqual(45);
     });
 
+    test('Integer next the sum of `Cell`s in a `House` is `46`', () => {
+        expect(House.SUM_PLUS_1).toEqual(46);
+    });
+
 });
