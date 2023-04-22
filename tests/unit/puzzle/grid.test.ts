@@ -23,6 +23,10 @@ describe('Unit tests for `Grid`', () => {
         expect(Grid.SUM).toEqual(405);
     });
 
+    test('Integer next to the sum of all `Cell`s in the `Grid` is `406`', () => {
+        expect(Grid.SUM_PLUS_1).toEqual(406);
+    });
+
     test('Creation of `GridMatrix`', () => {
         const matrix = Grid.newMatrix();
 
