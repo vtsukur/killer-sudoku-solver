@@ -54,7 +54,9 @@ export class Combo implements Iterable<number> {
         //
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
+        // Resulting array of all `Combo` instances.
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
+
         let i = 0;
         const combosByCount: Array<Map<number, Array<[number, ReadonlyArray<number>]>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map<number, Array<[number, ReadonlyArray<number>]>>());
         while (++i < val.length) {
@@ -78,6 +80,7 @@ export class Combo implements Iterable<number> {
                 }
             }
         });
+
         return val;
     })();
 
