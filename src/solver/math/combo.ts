@@ -127,11 +127,11 @@ export class Combo implements Iterable<number> {
         //
         // Step 2.
         //
-        // Sorting numbers' sets for each count and sum in ascending order
+        // Sorting `Combo` numbers for each _count and sum_ bucket in ascending order
         // for the ease of perception of `Combo` sequence
         // and assigning logical index to `Combo`s.
         //
-        // Filling resulting array of all possible `Combo`s of Sudoku numbers.
+        // Filling the resulting array of all possible `Combo`s of Sudoku numbers.
         //
 
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
@@ -140,9 +140,15 @@ export class Combo implements Iterable<number> {
             // `Combo` should have at least one number.
             if (count === 0) return;
 
+            // Iterating over a particular _count and sum_ bucket ...
             for (const combosNumsBitsAndNums of combosByCountMap.values()) {
+                // Sorting `Combo` numbers' arrays in ascending order.
                 combosNumsBitsAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
 
+                //
+                // Assigning a logical index of `Combo` within the _count and sum_ bucket
+                // and filling up the resulting array with `Combo`s.
+                //
                 let index = 0;
                 for (const [ numsBits, nums ] of combosNumsBitsAndNums) {
                     val[numsBits] = new Combo(new SudokuNumsSet(nums), index);
