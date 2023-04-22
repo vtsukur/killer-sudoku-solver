@@ -74,12 +74,14 @@ export class Combo implements Iterable<number> {
             // Determining the sum of the numbers in the `Combo`.
             const sum = _.sum(nums);
 
-            //
+            const numsBitsAndNums: ComboNumsBitsAndNums = [ numsBits, nums ];
             const combosByCountMap = combosByCountBySum[count];
-            if (!combosByCountMap.has(sum)) {
-                combosByCountMap.set(sum, []);
+            const sumCombosNumsAndBits = combosByCountMap.get(sum);
+            if (sumCombosNumsAndBits) {
+                sumCombosNumsAndBits.push(numsBitsAndNums);
+            } else {
+                combosByCountMap.set(sum, [ numsBitsAndNums ]);
             }
-            (combosByCountMap.get(sum) as CombosNumsBitsAndNums).push([numsBits, nums]);
         }
 
         // Resulting array of all `Combo` instances.
