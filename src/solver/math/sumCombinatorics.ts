@@ -43,8 +43,6 @@ export class SumCombinatorics {
     readonly combosLut: PowersOf2Lut<Combo>;
     readonly combosNumsSetLut: PowersOf2Lut<ReadonlySudokuNumsSet>;
 
-    readonly combosByNum: ReadonlyArray<ReadonlyCombos>;
-
     static readonly BY_COUNT_BY_SUM: ReadonlyArray<ReadonlyArray<SumCombinatorics>> = (() => {
         const combosMap = new Array<Array<Array<Combo>>>(10);
         for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM + 1]) {
@@ -88,17 +86,6 @@ export class SumCombinatorics {
             this.combosLut.set(index, combo);
             this.combosNumsSetLut.set(index, combo.numsSet);
         });
-        this.combosByNum = SumCombinatorics.newCombosByNum(val);
-    }
-
-    private static newCombosByNum(val: ReadonlyCombos) {
-        const combosByNum: Array<Array<Combo>> = CachedNumRanges.ZERO_TO_N_LTE_81[SudokuNumsSet.MAX_NUM + 1].map(() => []);
-        for (const combo of val) {
-            for (const num of combo.nums) {
-                combosByNum[num].push(combo);
-            }
-        }
-        return combosByNum;
     }
 
     static readonly MAX_SUM_OF_CAGE_3 = 24;
