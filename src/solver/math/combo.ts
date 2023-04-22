@@ -64,8 +64,12 @@ export class Combo implements Iterable<number> {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (i & 1) continue;
 
+            // Constructing the array of Sudoku numbers from the bits.
             const nums = new SudokuNumsSet(i).nums;
+
+            // Determining the sum of all numbers.
             const sum = _.sum(nums);
+
             const map = combosByCount[nums.length];
             if (!map.has(sum)) {
                 map.set(sum, []);
