@@ -58,14 +58,14 @@ export class Combo implements Iterable<number> {
         //
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
-        let i = 0;
+        let numsBits = 0;
         const combosByCountBySum: Array<Map<number, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
-        while (++i < PERMUTATIONS_COUNT) {
+        while (++numsBits < PERMUTATIONS_COUNT) {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
-            if (i & 1) continue;
+            if (numsBits & 1) continue;
 
             // Determining the array of Sudoku numbers from the `NumsSet` bits.
-            const nums = new SudokuNumsSet(i).nums;
+            const nums = new SudokuNumsSet(numsBits).nums;
 
             // Determining the amount of numbers in the `Combo`.
             const count = nums.length;
@@ -78,7 +78,7 @@ export class Combo implements Iterable<number> {
             if (!combosByCountMap.has(sum)) {
                 combosByCountMap.set(sum, []);
             }
-            (combosByCountMap.get(sum) as CombosNumsBitsAndNums).push([i, nums]);
+            (combosByCountMap.get(sum) as CombosNumsBitsAndNums).push([numsBits, nums]);
         }
 
         // Resulting array of all `Combo` instances.
