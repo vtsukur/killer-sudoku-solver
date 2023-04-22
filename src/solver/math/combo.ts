@@ -85,8 +85,10 @@ export class Combo implements Iterable<number> {
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
         //
-        // Collecting all valid `Combo`s into an array of `Map`s
-        // by iterating over index permutations.
+        // Step 1.
+        //
+        // Collecting data for all valid `Combo`s
+        // into an array of `Map`s by iterating over index permutations.
         //
         // The amount of `Combo` numbers indexes elements in the array.
         //
@@ -122,12 +124,23 @@ export class Combo implements Iterable<number> {
             }
         }
 
-        // Resulting array of all `Combo` instances.
+        //
+        // Step 2.
+        //
+        // Sorting numbers' sets for each count and sum in ascending order
+        // for the ease of perception of `Combo` sequence
+        // and logical indexing of `Combo`s.
+        //
+        // Filling resulting array of all possible `Combo`s of Sudoku numbers.
+        //
+
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
 
-        combosByCountBySum.forEach((map, count) => {
+        combosByCountBySum.forEach((combosByCountMap, count) => {
+            // `Combo` should have at least one number.
             if (count === 0) return;
-            for (const bitStoreAndNums of map.values()) {
+
+            for (const bitStoreAndNums of combosByCountMap.values()) {
                 let index = 0;
                 bitStoreAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
                 for (const [ bitStore, nums ] of bitStoreAndNums) {
