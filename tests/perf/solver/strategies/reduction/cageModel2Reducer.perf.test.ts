@@ -1,15 +1,8 @@
-import { Solver } from '../../../../../src/solver/solver';
-import { puzzleSamples } from '../../../../unit/puzzle/puzzleSamples';
-import { logFactory } from '../../../../../src/util/logFactory';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
-import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
-import { CageModel2ReducerRouter } from '../../../../../src/solver/strategies/reduction/archive/cageModel2ReducerRouter';
-import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
-import { performance } from 'perf_hooks';
 import { Combo } from '../../../../../src/solver/math';
 import { LockableCellModel } from './lockableCellModel';
 import { LockableCageModel } from './lockableCageModel';
@@ -17,13 +10,9 @@ import { CageModel2Reducer } from '../../../../../src/solver/strategies/reductio
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
 
-const log = logFactory.withLabel('cageModel2Reducer.perf');
 const IS_RUN_SLOWER_ALTERNATIVES = false;
 
 describe('Performance tests for `CageModel2Reducer`', () => {
-
-    const sudokuDotCom = puzzleSamples.sudokuDotCom;
-    const solver = new Solver();
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
         runComparablePerformanceTests({
@@ -157,7 +146,6 @@ describe('Performance tests for `CageModel2Reducer`', () => {
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         if (IS_RUN_SLOWER_ALTERNATIVES) {
             doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
-            doRunFunctionalAndPerformanceTests(config, createPartialReducer, 'Partial');
             doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
         }
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
@@ -167,110 +155,12 @@ describe('Performance tests for `CageModel2Reducer`', () => {
         return new CageModel2FullReducer(cageM);
     };
 
-    const createPartialReducer = (cageM: CageModel) => {
-        return new CageModel2PartialReducer(cageM);
-    };
-
     const createOptimalReducer = (cageM: CageModel) => {
         return new CageModel2Reducer(cageM);
     };
 
     const createOptimalDbReducer = (cageM: CageModel) => {
         return new CageModel2DbReducer(cageM);
-    };
-
-    test.skip('Find solution for Sudoku.com puzzles', () => {
-        // General warm up.
-        CageModel2ReducerRouter.collectPerfStats = false;
-        CachedNumRanges.ZERO_TO_N_LTE_81[3].forEach(() => {
-            solveAllSudokuDotComPuzzles();
-        });
-
-        // Testing optimal reduction for `CageModel`s of size 2.
-        CageModel2ReducerRouter.isAlwaysApplyOptimalReduction = true;
-
-        // ... Warm up
-        CageModel2ReducerRouter.collectPerfStats = false;
-        solveAllSudokuDotComPuzzles();
-
-        // ... Actual test
-        log.info('Testing optimal reduction');
-        CageModel2ReducerRouter.collectPerfStats = true;
-        runAndMeasureAllSudokuDotComPuzzles('Optimal');
-        const fullReductionStats = CageModel2ReducerRouter.captureMeasures();
-
-        // Testing routing reduction for `CageModel`s of size 2.
-        CageModel2ReducerRouter.isAlwaysApplyOptimalReduction = false;
-
-        // ... Warm up
-        CageModel2ReducerRouter.collectPerfStats = false;
-        solveAllSudokuDotComPuzzles();
-
-        // ... Actual test
-        log.info('Testing routing reduction');
-        CageModel2ReducerRouter.collectPerfStats = true;
-        runAndMeasureAllSudokuDotComPuzzles('Routing');
-        const routingReductionStats = CageModel2ReducerRouter.captureMeasures();
-
-        // Comparing results
-        expect(fullReductionStats.length).toBe(routingReductionStats.length);
-
-        let fullReductionWins = 0;
-        let fullReductionWinsWithDeletedLte1 = 0;
-        let fullReductionWinsWithDeletedLte1SavedTime = 0;
-        let partialReductionWins = 0;
-        let partialReductionWinsWithDeletedLte1 = 0;
-        let partialReductionWinsWithDeletedLte1SavedTime = 0;
-        fullReductionStats.forEach((fullReductionStat, i) => {
-            const routingReductionStat = routingReductionStats[i];
-            if (fullReductionStat.isFullReduction && routingReductionStat.isFullReduction) return;
-
-            const durationDelta = Math.abs(routingReductionStat.duration - fullReductionStat.duration);
-            if (fullReductionStat.duration < routingReductionStat.duration) {
-                ++fullReductionWins;
-                if (fullReductionStat.deletedNumsCount === 1) {
-                    ++fullReductionWinsWithDeletedLte1;
-                    fullReductionWinsWithDeletedLte1SavedTime += durationDelta;
-                }
-            } else {
-                ++partialReductionWins;
-                if (fullReductionStat.deletedNumsCount === 1) {
-                    ++partialReductionWinsWithDeletedLte1;
-                    partialReductionWinsWithDeletedLte1SavedTime += durationDelta;
-                }
-            }
-        });
-
-        log.info(`Full reduction total wins: ${fullReductionWins}`);
-        log.info(`Full reduction total wins (deleted === 1): ${fullReductionWinsWithDeletedLte1}`);
-        log.info(`Full reduction total wins (deleted === 1 / saved time): ${fullReductionWinsWithDeletedLte1SavedTime}`);
-        log.info(`Partial reduction total wins: ${partialReductionWins}`);
-        log.info(`Partial reduction total wins (deleted === 1): ${partialReductionWinsWithDeletedLte1}`);
-        log.info(`Partial reduction total wins (deleted === 1 / saved time): ${partialReductionWinsWithDeletedLte1SavedTime}`);
-    });
-
-    const runAndMeasureAllSudokuDotComPuzzles = (type: string) => {
-        const startTime = performance.now();
-
-        let i = 0;
-        while (i++ < 10) {
-            solveAllSudokuDotComPuzzles();
-        }
-
-        log.info(`${type} reducer: ${Math.trunc(performance.now() - startTime)} ms`);
-    };
-
-    const solveAllSudokuDotComPuzzles = () => {
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_04_06);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_12);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_08_30);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_18);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_19);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_22);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_10_25);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_01);
-        solver.solve(sudokuDotCom.dailyChallengeOf_2022_11_10);
-        solver.solve(sudokuDotCom.randomExpertLevelChallenge);
     };
 
 });

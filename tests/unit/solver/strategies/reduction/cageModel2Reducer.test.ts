@@ -5,7 +5,6 @@ import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
-import { CageModel2PartialReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2PartialReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
@@ -38,10 +37,6 @@ describe('CageModel2Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModel2FullReducer(cageM),
             type: 'CageModel2FullReducer'
-        },
-        {
-            newReducer: (cageM: CageModel) => new CageModel2PartialReducer(cageM),
-            type: 'CageModel2PartialReducer'
         },
         {
             newReducer: (cageM: CageModel) => new CageModel2Reducer(cageM),
