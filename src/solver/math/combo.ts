@@ -41,9 +41,9 @@ export class Combo implements Iterable<number> {
      *  - `1` if the number is a part of the `Combo`;
      *  - `0` if the number is **not** a part of the `Combo`.
      *
-     * The total amount of distinct `Combo`s for Sudoku numbers is `511` (`2 ^ 9 - 1`).
+     * The total amount of distinct `Combo`s for Sudoku numbers is `2 ^ 9 - 1 = 511`.
      *
-     * **The total amount of elements in this array, though, is `1024` (`2 ^ 10`)
+     * **The total amount of elements in this array, though, is `2 ^ 10 = 1024`
      * for the compatibility with {@link SudokuNumsSet},
      * whose bit store reserves bit at position `0` to represent number `0`,
      * increasing the set of representable numbers in the bit store
@@ -65,7 +65,7 @@ export class Combo implements Iterable<number> {
     private static createAllPossibleInstancesSortedByNumsBits() {
         //
         // Defining possible `Combo` permutations count
-        // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024`.
+        // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024` instead of _real_ `2 ^ 9 - 1 = 511`.
         //
         // While bringing a minor hit to performance, this approach dramatically simplifies code
         // by keeping compatibility with existing data structures.
