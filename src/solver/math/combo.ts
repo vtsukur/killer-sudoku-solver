@@ -129,7 +129,7 @@ export class Combo implements Iterable<number> {
         //
         // Sorting `Combo` numbers for each _count and sum_ bucket in ascending order
         // for the ease of perception of `Combo` sequence
-        // and assigning logical index to `Combo`s.
+        // and assigning a logical index to `Combo`s.
         //
         // Filling the resulting array of all possible `Combo`s of Sudoku numbers.
         //
