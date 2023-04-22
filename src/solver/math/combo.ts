@@ -85,12 +85,12 @@ export class Combo implements Iterable<number> {
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
         //
-        // Collecting all valid `Combo`s into an array of maps
+        // Collecting all valid `Combo`s into an array of `Map`s
         // by iterating over index permutations.
         //
         // The amount of `Combo` numbers indexes elements in the array.
         //
-        // Maps have sums as keys and `CombosNumsBitsAndNums` as values.
+        // `Map`s have sums as keys and `CombosNumsBitsAndNums` as values.
         //
 
         const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT_PLUS_1].map(() => new Map());
