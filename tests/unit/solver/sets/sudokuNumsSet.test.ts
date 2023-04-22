@@ -10,7 +10,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.MAX_NUM).toEqual(9);
     });
 
-    test('Integer right next to the maximum Sudoku number is 10', () => {
+    test('Integer next to the maximum Sudoku number is 10', () => {
         expect(SudokuNumsSet.MAX_NUM_PLUS_1).toEqual(10);
     });
 
