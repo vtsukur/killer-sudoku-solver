@@ -61,7 +61,7 @@ export class Combo implements Iterable<number> {
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
 
         let i = 0;
-        const combosByCountBySum: Array<Map<number, Array<NumsBitsAndNums>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map<number, Array<NumsBitsAndNums>>());
+        const combosByCountBySum: Array<Map<number, Array<NumsBitsAndNums>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
         while (++i < val.length) {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (i & 1) continue;
