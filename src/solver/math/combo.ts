@@ -199,16 +199,6 @@ export class Combo implements Iterable<number> {
         return Combo.BY_NUMS_BITS[1 << val];
     }
 
-    static fromBits(val: BitStore32) {
-        // check number to be within the range.
-        if (val === 0) {
-            throw new RangeError('Combo should have at least 1 number');
-        }
-
-        // check bittore to be withing the range?
-        return Combo.BY_NUMS_BITS[val];
-    }
-
     /**
      * Returns number with the n-th `index` in the combination.
      *
