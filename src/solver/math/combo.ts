@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { House } from '../../puzzle/house';
 
 type ComboNumsBitsAndNums = [ BitStore32, ReadonlyArray<number> ];
 type CombosNumsBitsAndNums = Array<ComboNumsBitsAndNums>;
@@ -92,7 +93,7 @@ export class Combo implements Iterable<number> {
         // Maps have sums as keys and `CombosNumsBitsAndNums` as values.
         //
 
-        const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
+        const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[House.CELL_COUNT_PLUS_1].map(() => new Map());
 
         let numsBits = 0;
         while (++numsBits < PERMUTATIONS_COUNT) {
