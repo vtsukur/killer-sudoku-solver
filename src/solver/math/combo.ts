@@ -29,10 +29,35 @@ export class Combo implements Iterable<number> {
     readonly index: number;
 
     static readonly INSTANCES: ReadonlyArray<Combo> = (() => {
-        const val = new Array<Combo>(1024); // compact by 2
+        //
+        // Defining possible `Combo` permutations count
+        // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024`.
+        //
+        // The number of possible `Combo`s for Sudoku numbers is `512` (`2 ^ 9`),
+        // while here, the amount of assumed permutations is twice as much (`1024`).
+        //
+        // The reason for such an increase is the compatibility with `NumsSet`-based bit arithmetic,
+        // which treats `0` as a possible number hence increasing the set of possible numbers
+        // from `1..9` (9 total) to `0..9` (10 total).
+        //
+        // While bringing a minor hit to performance, this approach dramatically simplifies code
+        // by keeping compatibility with existing data structures.
+        // Otherwise, there would be a need to perform bitwise shifts for `NumsSet` bits
+        // (more complex and error-prone) or
+        // create an alternative version of `NumsSet` that optimizes storage to ignore `0`s
+        // (still tricky and error-prone as it remains incompatible with existing `NumsSet`s).
+        //
+        // This inefficiency has the CPU hit on initialization
+        // (needs to skip permutations with `0`s),
+        // while memory-wise, the cost is preserved throughout the execution
+        // (as it reserves the place for `512` `undefined` `Combo`s in the array).
+        //
+        const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
+
+        const val = new Array<Combo>(PERMUTATIONS_COUNT);
         let i = 0;
         const combosByCount: Array<Map<number, Array<[number, ReadonlyArray<number>]>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map<number, Array<[number, ReadonlyArray<number>]>>());
-        while (++i < 1024) {
+        while (++i < val.length) {
             if (i & 1) continue;
             const nums = new SudokuNumsSet(i).nums;
             const sum = nums.reduce((prev, current) => prev + current, 0);
