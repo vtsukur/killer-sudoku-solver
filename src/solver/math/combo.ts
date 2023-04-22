@@ -35,13 +35,14 @@ export class Combo implements Iterable<number> {
 
     /**
      * Readonly array of all possible `Combo`s of Sudoku numbers
-     * with each `Combo` indexed by its numeric representation,
+     * with `Combo`s indexed by their numeric representation,
      * where bit at position `x` is:
      *
      *  - `1` if the number is a part of the `Combo`;
      *  - `0` if the number is **not** a part of the `Combo`.
      *
      * The total amount of distinct `Combo`s for Sudoku numbers is `2 ^ 9 - 1 = 511`.
+     * (Not `512` since a `Combo` should have at least one number.)
      *
      * **The total amount of elements in this array, though, is `2 ^ 10 = 1024`
      * for the compatibility with {@link SudokuNumsSet},
@@ -63,6 +64,7 @@ export class Combo implements Iterable<number> {
     static readonly BY_NUMS_BITS: ReadonlyCombos = this.createAllPossibleInstancesSortedByNumsBits();
 
     private static createAllPossibleInstancesSortedByNumsBits() {
+
         //
         // Defining possible `Combo` permutations count
         // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024` instead of _real_ `2 ^ 9 - 1 = 511`.
@@ -81,8 +83,18 @@ export class Combo implements Iterable<number> {
         //
         const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
 
-        let numsBits = 0;
+        //
+        // Collecting all valid `Combo`s into an array of maps
+        // by iterating over index permutations.
+        //
+        // The amount of `Combo` numbers indexes elements in the array.
+        //
+        // Maps have sums as keys and `CombosNumsBitsAndNums` as values.
+        //
+
         const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
+
+        let numsBits = 0;
         while (++numsBits < PERMUTATIONS_COUNT) {
             // Skipping permutations with `1` bit at position `0` since a `Combo` *cannot* have the number `0`.
             if (numsBits & 1) continue;
@@ -96,7 +108,10 @@ export class Combo implements Iterable<number> {
             // Determining the sum of the numbers in the `Combo`.
             const sum = _.sum(nums);
 
+            // Constructing tuple of numbers' bits and numbers themselves.
             const numsBitsAndNums: ComboNumsBitsAndNums = [ numsBits, nums ];
+
+            // Adding tuple to the map.
             const combosByCountMap = combosByCountBySum[count];
             const sumCombosNumsAndBits = combosByCountMap.get(sum);
             if (sumCombosNumsAndBits) {
