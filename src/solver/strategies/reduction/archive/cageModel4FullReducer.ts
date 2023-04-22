@@ -109,7 +109,7 @@ export class CageModel4FullReducer implements CageModelReducer {
             has = lastCellM.hasNumOpt(lastNum);
             if (has) {
                 context.numbersStack[CELL_COUNT - 1] = lastNum;
-                const combo = Combo.fromNumsSet(new SudokuNumsSet(context.numbersStack));
+                const combo = Combo.BY_NUMS_BITS[new SudokuNumsSet(context.numbersStack).bitStore];
                 this._cageM.comboSet.addCombo(combo);
             }
         } else {

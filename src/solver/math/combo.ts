@@ -199,15 +199,6 @@ export class Combo implements Iterable<number> {
         return Combo.BY_NUMS_BITS[1 << val];
     }
 
-    static fromNumsSet(val: ReadonlySudokuNumsSet) {
-        if (val.bitStore === 0) {
-            throw new RangeError('Combo should have at least 1 number');
-        }
-
-        // check bitstore to be withing the range?
-        return Combo.BY_NUMS_BITS[val.bitStore];
-    }
-
     static fromBits(val: BitStore32) {
         // check number to be within the range.
         if (val === 0) {
