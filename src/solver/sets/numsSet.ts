@@ -2,8 +2,8 @@
  * Bit storage used for efficient checking/manipulation of the sets of sizes up to 32.
  *
  * Represented as built-in `number`, where each bit at position `x` is:
- *  - `0` if the number is included in the set;
- *  - `1` if the number is excluded from the set.
+ *  - `1` if the number is included in the set;
+ *  - `0` if the number is excluded from the set.
  *
  * @public
  */
