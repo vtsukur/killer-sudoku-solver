@@ -3,6 +3,7 @@ import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
 type ComboNumsBitsAndNums = [ BitStore32, ReadonlyArray<number> ];
+type CombosNumsBitsAndNums = Array<ComboNumsBitsAndNums>;
 
 /**
  * Combination of numbers used mainly to represent addends of `Cage` sum.
@@ -61,7 +62,7 @@ export class Combo implements Iterable<number> {
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
 
         let i = 0;
-        const combosByCountBySum: Array<Map<number, Array<ComboNumsBitsAndNums>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
+        const combosByCountBySum: Array<Map<number, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
         while (++i < val.length) {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (i & 1) continue;
@@ -80,7 +81,7 @@ export class Combo implements Iterable<number> {
             if (!combosByCountMap.has(sum)) {
                 combosByCountMap.set(sum, []);
             }
-            (combosByCountMap.get(sum) as Array<ComboNumsBitsAndNums>).push([i, nums]);
+            (combosByCountMap.get(sum) as CombosNumsBitsAndNums).push([i, nums]);
         }
         combosByCountBySum.forEach((map, count) => {
             if (count === 0) return;
