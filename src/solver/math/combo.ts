@@ -50,7 +50,7 @@ export class Combo implements Iterable<number> {
      * from `1..9` (9 total) to `0..9` (10 total).**
      *
      * This way, an element is `undefined` if its index has `1` bit at position `0`
-     * since a `Combo` of Sudoku numbers cannot have the number `0`.
+     * since a `Combo` of Sudoku numbers **cannot** have the number `0`.
      *
      * Example usage:
      *
@@ -84,7 +84,7 @@ export class Combo implements Iterable<number> {
         let numsBits = 0;
         const combosByCountBySum: Array<Map<Sum, CombosNumsBitsAndNums>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map());
         while (++numsBits < PERMUTATIONS_COUNT) {
-            // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
+            // Skipping permutations with `1` bit at position `0` since a `Combo` *cannot* have the number `0`.
             if (numsBits & 1) continue;
 
             // Determining the array of Sudoku numbers from the `NumsSet` bits.
