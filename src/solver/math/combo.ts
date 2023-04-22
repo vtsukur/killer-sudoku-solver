@@ -64,7 +64,7 @@ export class Combo implements Iterable<number> {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (i & 1) continue;
 
-            // Constructing the array of Sudoku numbers from the bits.
+            // Determining the array of Sudoku numbers from the `NumsSet` bits.
             const nums = new SudokuNumsSet(i).nums;
 
             // Determining the amount of numbers in the `Combo`.
