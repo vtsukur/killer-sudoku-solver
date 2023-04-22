@@ -161,9 +161,10 @@ export class Combo implements Iterable<number> {
     }
 
     /**
-     * Constructs new combination of the given numbers.
+     * Constructs new `Combo` of the given numbers.
      *
-     * @param val - Numbers to construct a combination from.
+     * @param numsSet - {@link ReadonlySudokuNumsSet} to construct a `Combo` from.
+     * @param index - Index of the `Combo` within the _count and sum_ bucket.
      */
     private constructor(numsSet: ReadonlySudokuNumsSet, index: number) {
         this.numsSet = numsSet;
