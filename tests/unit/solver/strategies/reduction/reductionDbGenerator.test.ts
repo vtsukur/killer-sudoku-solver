@@ -36,7 +36,7 @@ describe('ReductionDb', () => {
 
         let sumIndex = 0;
 
-        for (const sum of _.range(1, House.SUM + 1)) {
+        for (const sum of _.range(1, House.SUM_PLUS_1)) {
             const combinatoricsCombos = SumCombinatorics.BY_COUNT_BY_SUM[cageSize][sum].val;
             if (combinatoricsCombos.length === 0) continue;
 
