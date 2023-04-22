@@ -73,11 +73,11 @@ export class Combo implements Iterable<number> {
             // Determining the sum of the numbers in the `Combo`.
             const sum = _.sum(nums);
 
-            const map = combosByCount[count];
-            if (!map.has(sum)) {
-                map.set(sum, []);
+            const combos = combosByCount[count];
+            if (!combos.has(sum)) {
+                combos.set(sum, []);
             }
-            (map.get(sum) as Array<[number, ReadonlyArray<number>]>).push([i, nums]);
+            (combos.get(sum) as Array<[number, ReadonlyArray<number>]>).push([i, nums]);
         }
         combosByCount.forEach((map, count) => {
             if (count === 0) return;
