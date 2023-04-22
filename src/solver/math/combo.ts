@@ -116,9 +116,9 @@ export class Combo implements Iterable<number> {
 
             // Adding tuple to the map.
             const combosByCountMap = combosByCountBySum[count];
-            const sumCombosNumsAndBits = combosByCountMap.get(sum);
-            if (sumCombosNumsAndBits) {
-                sumCombosNumsAndBits.push(numsBitsAndNums);
+            const sumCombosNumsBitsAndNums = combosByCountMap.get(sum);
+            if (sumCombosNumsBitsAndNums) {
+                sumCombosNumsBitsAndNums.push(numsBitsAndNums);
             } else {
                 combosByCountMap.set(sum, [ numsBitsAndNums ]);
             }
@@ -140,11 +140,12 @@ export class Combo implements Iterable<number> {
             // `Combo` should have at least one number.
             if (count === 0) return;
 
-            for (const bitStoreAndNums of combosByCountMap.values()) {
+            for (const combosNumsBitsAndNums of combosByCountMap.values()) {
+                combosNumsBitsAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
+
                 let index = 0;
-                bitStoreAndNums.sort((a, b) => parseInt(a[1].join('')) - parseInt(b[1].join('')));
-                for (const [ bitStore, nums ] of bitStoreAndNums) {
-                    val[bitStore] = new Combo(new SudokuNumsSet(nums), index);
+                for (const [ numsBits, nums ] of combosNumsBitsAndNums) {
+                    val[numsBits] = new Combo(new SudokuNumsSet(nums), index);
                     ++index;
                 }
             }
