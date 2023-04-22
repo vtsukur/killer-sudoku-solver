@@ -166,9 +166,6 @@ export class Combo implements Iterable<number> {
      * @param val - Numbers to construct a combination from.
      */
     private constructor(numsSet: ReadonlySudokuNumsSet, index: number) {
-        if (numsSet.bitStore === 0) {
-            throw new RangeError('Combo should have at least 1 number');
-        }
         this.numsSet = numsSet;
         this.numsBits = numsSet.bitStore;
         this.nums = numsSet.nums;
