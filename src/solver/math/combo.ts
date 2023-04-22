@@ -33,19 +33,39 @@ export class Combo implements Iterable<number> {
 
     readonly index: number;
 
-    static readonly BY_NUMS_BITS: ReadonlyArray<Combo> = this.createAllPossibleInstancesSortedByNumsBits();
+    /**
+     * Readonly array of all possible `Combo`s of Sudoku numbers
+     * with each `Combo` indexed by its numeric representation,
+     * where bit at position `x` is:
+     *
+     *  - `1` if the number is a part of the `Combo`;
+     *  - `0` if the number is **not** a part of the `Combo`.
+     *
+     * The total amount of distinct `Combo`s for Sudoku numbers is `511` (`2 ^ 9 - 1`).
+     *
+     * **The total amount of elements in this array, though, is `1024` (`2 ^ 10`)
+     * for the compatibility with {@link SudokuNumsSet},
+     * whose bit store reserves bit at position `0` to represent number `0`,
+     * increasing the set of representable numbers in the bit store
+     * from `1..9` (9 total) to `0..9` (10 total).**
+     *
+     * This way, an element is `undefined` if its index has `1` bit at position `0`
+     * since a `Combo` of Sudoku numbers cannot have the number `0`.
+     *
+     * Example usage:
+     *
+     * ```ts
+     * Combo.BY_NUMS_BITS[0b100000] // references the `Combo` of a single number `[5]` since the index specified has `1` bit only at position `5`.
+     * Combo.BY_NUMS_BITS[0b010110] // references the `Combo` of numbers `[1, 2, 4]` since the index specified has `1` bits at positions `1`, `2`, and `4`.
+     * Combo.BY_NUMS_BITS[0b000111] // returns `undefined` since a `Combo` of Sudoku numbers cannot have the number `0` (bit at position `0` is set to `1`).
+     * ```
+     */
+    static readonly BY_NUMS_BITS: ReadonlyCombos = this.createAllPossibleInstancesSortedByNumsBits();
 
     private static createAllPossibleInstancesSortedByNumsBits() {
         //
         // Defining possible `Combo` permutations count
         // for `NumsSet`-based bit arithmetic as `2 ^ 10 = 1024`.
-        //
-        // The number of possible `Combo`s for Sudoku numbers is `512` (`2 ^ 9`),
-        // while here, the amount of assumed permutations is twice as much (`1024`).
-        //
-        // The reason for such an increase is the compatibility with `NumsSet`-based bit arithmetic,
-        // which treats `0` as a possible number hence increasing the set of possible numbers
-        // from `1..9` (9 total) to `0..9` (10 total).
         //
         // While bringing a minor hit to performance, this approach dramatically simplifies code
         // by keeping compatibility with existing data structures.
