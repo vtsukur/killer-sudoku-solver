@@ -85,6 +85,12 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     static readonly MAX_NUM = 9;
 
     /**
+     * Integer next to the maximum Sudoku number (`9`),
+     * which is convenient for use in the ranges as the exclusive upper bound.
+     */
+    static readonly MAX_NUM_PLUS_1 = this.MAX_NUM + 1;
+
+    /**
      * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
      * in the form of readonly array.
      */
