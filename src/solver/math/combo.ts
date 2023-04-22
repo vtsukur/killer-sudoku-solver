@@ -67,10 +67,13 @@ export class Combo implements Iterable<number> {
             // Constructing the array of Sudoku numbers from the bits.
             const nums = new SudokuNumsSet(i).nums;
 
-            // Determining the sum of all numbers.
+            // Determining the amount of numbers in the `Combo`.
+            const count = nums.length;
+
+            // Determining the sum of the numbers in the `Combo`.
             const sum = _.sum(nums);
 
-            const map = combosByCount[nums.length];
+            const map = combosByCount[count];
             if (!map.has(sum)) {
                 map.set(sum, []);
             }
