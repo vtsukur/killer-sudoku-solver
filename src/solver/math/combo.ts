@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 
@@ -64,7 +65,7 @@ export class Combo implements Iterable<number> {
             if (i & 1) continue;
 
             const nums = new SudokuNumsSet(i).nums;
-            const sum = nums.reduce((prev, current) => prev + current, 0);
+            const sum = _.sum(nums);
             const map = combosByCount[nums.length];
             if (!map.has(sum)) {
                 map.set(sum, []);
