@@ -38,6 +38,12 @@ export class Grid {
      */
     static readonly SUM = Math.imul(this.SIDE_CELL_COUNT, House.SUM);
 
+    /**
+     * Integer next to the sum of all numbers in a {@link Grid},
+     * which is convenient for use in the ranges as the exclusive upper bound.
+     */
+    static readonly SUM_PLUS_1 = this.SUM + 1;
+
     /* istanbul ignore next */
     private constructor() {
         throw new Error('Non-contructible');
