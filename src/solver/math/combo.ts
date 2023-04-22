@@ -59,7 +59,7 @@ export class Combo implements Iterable<number> {
         const val = new Array<Combo>(PERMUTATIONS_COUNT);
 
         let i = 0;
-        const combosByCount: Array<Map<number, Array<[number, ReadonlyArray<number>]>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map<number, Array<[number, ReadonlyArray<number>]>>());
+        const combosByCountBySum: Array<Map<number, Array<[number, ReadonlyArray<number>]>>> = CachedNumRanges.ZERO_TO_N_LTE_81[10].map(() => new Map<number, Array<[number, ReadonlyArray<number>]>>());
         while (++i < val.length) {
             // Skipping permutations with `0`s as `Combo` *cannot* have `0` as a number.
             if (i & 1) continue;
@@ -73,13 +73,14 @@ export class Combo implements Iterable<number> {
             // Determining the sum of the numbers in the `Combo`.
             const sum = _.sum(nums);
 
-            const combos = combosByCount[count];
-            if (!combos.has(sum)) {
-                combos.set(sum, []);
+            //
+            const combosByCountMap = combosByCountBySum[count];
+            if (!combosByCountMap.has(sum)) {
+                combosByCountMap.set(sum, []);
             }
-            (combos.get(sum) as Array<[number, ReadonlyArray<number>]>).push([i, nums]);
+            (combosByCountMap.get(sum) as Array<[number, ReadonlyArray<number>]>).push([i, nums]);
         }
-        combosByCount.forEach((map, count) => {
+        combosByCountBySum.forEach((map, count) => {
             if (count === 0) return;
             for (const bitStoreAndNums of map.values()) {
                 let index = 0;
