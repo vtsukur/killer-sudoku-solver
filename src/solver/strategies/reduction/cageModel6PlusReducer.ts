@@ -32,9 +32,9 @@ export class CageModel6PlusReducer implements CageModelReducer {
     reduce(reduction: MasterModelReduction): void {
         if (this._combosSet.size === 1) return;
 
-        const presentNums = SudokuNumsSet.newEmpty();
+        let presentNums = 0;
         for (const cellM of this._cellMs) {
-            presentNums.addAll(cellM._numOptsSet);
+            presentNums |= cellM._numOptsSet.bitStore;
         }
 
         let commonComboNumsBits = 0;
@@ -44,7 +44,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
         const commonComboNums = new SudokuNumsSet(commonComboNumsBits);
 
         for (const commonNum of commonComboNums.nums) {
-            if (!presentNums.has(commonNum)) {
+            if ((presentNums & (1 << commonNum)) === 0) {
                 throw new InvalidSolverStateError(`Common combo num ${commonNum} not found in CellModels for Cage ${this._cageM.cage.key}`);
             }
         }
@@ -58,7 +58,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
             for (const num of combo) {
                 if (commonComboNums.has(num)) continue;
 
-                if (!presentNums.has(num)) {
+                if ((presentNums & (1 << num)) === 0) {
                     validCombo = false;
                     break;
                 }
@@ -76,7 +76,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
         if (noLongerValidCombos.length > 0) {
             const numOptsToDelete = new Set<number>();
             for (const num of noLongerValidComboNums.nums) {
-                if (!validComboNums.has(num) && presentNums.has(num)) {
+                if (!validComboNums.has(num) && (presentNums & (1 << num)) !== 0) {
                     numOptsToDelete.add(num);
                 }
             }
