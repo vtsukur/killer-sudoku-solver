@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cage } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../../puzzle/cell';
 import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
