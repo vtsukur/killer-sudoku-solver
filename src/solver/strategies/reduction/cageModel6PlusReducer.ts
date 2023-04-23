@@ -12,7 +12,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
 
     private readonly _combosSet: CombosSet;
 
-    private readonly _cellMs: Array<CellModel>;
+    private readonly _cellMs: ReadonlyArray<CellModel>;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
