@@ -34,7 +34,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
 
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this._cellMs) {
-            presentNums.addAll(cellM.numOptsSet());
+            presentNums.addAll(cellM._numOptsSet);
         }
 
         const commonComboNums = SudokuNumsSet.newEmpty();
