@@ -12,9 +12,7 @@ export class CageModel5Reducer implements CageModelReducer {
 
     private readonly _combosSet: CombosSet;
 
-    private readonly _cellMs: ReadonlyArray<CellModel>;
-
-    private readonly _firstCellM: CellModel;
+    private readonly _cellMs: Array<CellModel>;
 
     private readonly _sum: number;
 
@@ -27,8 +25,7 @@ export class CageModel5Reducer implements CageModelReducer {
     constructor(cageM: CageModel) {
         this._cageM = cageM;
         this._combosSet = cageM.comboSet;
-        this._cellMs = cageM.cellMs;
-        this._firstCellM = cageM.cellMs[0];
+        this._cellMs = [...cageM.cellMs];
         this._sum = cageM.cage.sum;
     }
 
@@ -36,10 +33,12 @@ export class CageModel5Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cellMsSortedByNumsCount = [...this._cellMs].sort((a, b) => a._numOptsSet.nums.length - b._numOptsSet.nums.length);
+        const cellMsSortedByNumsCount = this._cellMs.sort((a, b) => a._numOptsSet.nums.length - b._numOptsSet.nums.length);
         const minNumCountCellM1 = cellMsSortedByNumsCount[0];
+        const minNumCountCellM1Nums = minNumCountCellM1._numOptsSet.nums;
         let minNumCountCellM1NumBits = 0;
         const minNumCountCellM2 = cellMsSortedByNumsCount[1];
+        const minNumCountCellM2Nums = minNumCountCellM2._numOptsSet.nums;
         let minNumCountCellM2NumBits = 0;
 
         const cageModel3CellM1 = cellMsSortedByNumsCount[2];
@@ -58,8 +57,8 @@ export class CageModel5Reducer implements CageModelReducer {
         const updatedCombosSet = this._combosSet.clear();
 
         let combosBits = 0;
-        for (const num1 of minNumCountCellM1._numOptsSet.nums) {
-            for (const num2 of minNumCountCellM2._numOptsSet.nums) {
+        for (const num1 of minNumCountCellM1Nums) {
+            for (const num2 of minNumCountCellM2Nums) {
                 if (num1 === num2) continue;
 
                 const reducedSum = this._sum - num1 - num2;
