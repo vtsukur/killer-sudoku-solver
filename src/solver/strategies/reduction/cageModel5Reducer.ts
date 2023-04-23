@@ -51,7 +51,7 @@ export class CageModel5Reducer implements CageModelReducer {
 
     private readonly _combosSet: CombosSet;
 
-    private readonly _cellMs: Array<CellModel>;
+    private readonly _cellMs: ReadonlyArray<CellModel>;
 
     private readonly _firstCellM: CellModel;
 
@@ -68,7 +68,7 @@ export class CageModel5Reducer implements CageModelReducer {
     constructor(cageM: CageModel) {
         this._cageM = cageM;
         this._combosSet = cageM.comboSet;
-        this._cellMs = [...cageM.cellMs];
+        this._cellMs = cageM.cellMs;
         this._firstCellM = cageM.cellMs[0];
         this._secondCellM = cageM.cellMs[1];
         this._sum = cageM.cage.sum;
