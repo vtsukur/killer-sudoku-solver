@@ -84,7 +84,7 @@ export class CageModel4Reducer implements CageModelReducer {
             const reducedSum = this._sum - num;
             let atLeastOneReducedComboValid = false;
             for (const combo of combosBeforeReduction) {
-                if (!combo.has(num)) continue;
+                if ((combo.numsBits & (1 << num)) === 0) continue;
 
                 const reducedCombo = Combo.BY_NUMS_BITS[combo.numsBits & ~(1 << num)];
                 const reductionState = CageModel3Reducer.getReductionState(
