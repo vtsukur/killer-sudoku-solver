@@ -5,12 +5,12 @@ import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
 import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo, ReadonlyCombos } from '../../math';
-import { SumCombinatorics } from '../../math';
+import { Combo, ReadonlyCombos, SumCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
 import { CageModel4Reducer } from '../../strategies/reduction/cageModel4Reducer';
+import { CageModel5Reducer } from '../../strategies/reduction/cageModel5Reducer';
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CellModel } from './cellModel';
@@ -59,6 +59,8 @@ export class CageModel {
             this._reducer = new CageModel3Reducer(this);
         } else if (this._cellCount === 4) {
             this._reducer = new CageModel4Reducer(this);
+        } else if (this._cellCount === 5) {
+            this._reducer = new CageModel5Reducer(this);
         }
     }
 
@@ -123,7 +125,7 @@ export class CageModel {
     }
 
     reduce(reduction: MasterModelReduction) {
-        if (this._cellCount >= 2 && this._cellCount <= 4) {
+        if (this._cellCount >= 2 && this._cellCount <= 5) {
             this._reducer?.reduce(reduction);
         } else {
             this.reduceLargeCage(reduction);
