@@ -1,6 +1,6 @@
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, SudokuNumsSet } from '../../sets';
+import { CombosSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
@@ -61,6 +61,8 @@ export class CageModel4Reducer implements CageModelReducer {
             ++i;
         }
 
+        let minNumCountCellMNumBits = 0;
+
         const indices = CAGE_3_CELL_M_INDICES[minNumCountCellMIndex];
 
         const cageModel3CellM1 = this._cellMs[indices[0]];
@@ -78,11 +80,9 @@ export class CageModel4Reducer implements CageModelReducer {
         const combosBeforeReduction = this._combosSet.combos;
         const updatedCombosSet = this._combosSet.clear();
 
-        let minCellMDeleteNumsBits = 0;
         let combosBits = 0;
         for (const num of minNumCountNums) {
             const reducedSum = this._sum - num;
-            let atLeastOneReducedComboValid = false;
             for (const combo of combosBeforeReduction) {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
 
@@ -97,19 +97,14 @@ export class CageModel4Reducer implements CageModelReducer {
                     cageModel3CellM1ActualNumBits |= reductionState.cell1KeepNumsBits;
                     cageModel3CellM2ActualNumBits |= reductionState.cell2KeepNumsBits;
                     cageModel3CellM3ActualNumBits |= reductionState.cell3KeepNumsBits;
-                    atLeastOneReducedComboValid = true;
                     combosBits |= 1 << combo.index;
+                    minNumCountCellMNumBits |= 1 << num;
                 }
-            }
-            if (!atLeastOneReducedComboValid) {
-                minCellMDeleteNumsBits |= 1 << num;
             }
         }
         updatedCombosSet.setCombosBits(combosBits);
 
-        if (minCellMDeleteNumsBits !== 0) {
-            reduction.deleteNumOpts(minNumCountCellM, new SudokuNumsSet(minCellMDeleteNumsBits), this._cageM);
-        }
+        reduction.tryReduceNumOptsBits(minNumCountCellM, minNumCountCellMNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageModel3CellM1, cageModel3CellM1ActualNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageModel3CellM2, cageModel3CellM2ActualNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageModel3CellM3, cageModel3CellM3ActualNumBits, this._cageM);
