@@ -52,7 +52,7 @@ export class CageModel4Reducer implements CageModelReducer {
         while (i < CAGE_SIZE) {
             const currentCellM = this._cellMs[i];
             const currentNumCountNums = currentCellM._numOptsSet.nums;
-            if (currentNumCountNums.length < currentNumCountNums.length) {
+            if (currentNumCountNums.length < minNumCountNums.length) {
                 minNumCountCellM = currentCellM;
                 minNumCountCellMIndex = i;
                 minNumCountNums = currentNumCountNums;

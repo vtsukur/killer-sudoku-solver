@@ -6,6 +6,45 @@ import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 import { Combo } from '../../math';
 
+const CAGE_SIZE = 5;
+const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<ReadonlyArray<number>>> = [
+    [
+        [],          // 00
+        [ 2, 3, 4 ], // 01
+        [ 1, 3, 4 ], // 02
+        [ 1, 2, 4 ], // 03
+        [ 1, 2, 3 ]  // 04
+    ],
+    [
+        [ 2, 3, 4 ], // 10
+        [],          // 11
+        [ 0, 3, 4 ], // 12
+        [ 0, 2, 4 ], // 13
+        [ 0, 2, 3 ]  // 14
+    ],
+    [
+        [ 1, 3, 4 ], // 20
+        [ 0, 3, 4 ], // 21
+        [],          // 22
+        [ 0, 1, 4 ], // 23
+        [ 0, 1, 3 ]  // 24
+    ],
+    [
+        [ 1, 2, 4 ], // 30
+        [ 0, 2, 4 ], // 31
+        [ 0, 1, 4 ], // 32
+        [],          // 33
+        [ 0, 1, 2 ]  // 34
+    ],
+    [
+        [ 1, 2, 3 ], // 40
+        [ 0, 2, 3 ], // 41
+        [ 0, 1, 3 ], // 42
+        [ 0, 1, 2 ], // 43
+        []           // 44
+    ]
+];
+
 export class CageModel5Reducer implements CageModelReducer {
 
     private readonly _cageM: CageModel;
@@ -13,6 +52,10 @@ export class CageModel5Reducer implements CageModelReducer {
     private readonly _combosSet: CombosSet;
 
     private readonly _cellMs: Array<CellModel>;
+
+    private readonly _firstCellM: CellModel;
+
+    private readonly _secondCellM: CellModel;
 
     private readonly _sum: number;
 
@@ -26,6 +69,8 @@ export class CageModel5Reducer implements CageModelReducer {
         this._cageM = cageM;
         this._combosSet = cageM.comboSet;
         this._cellMs = [...cageM.cellMs];
+        this._firstCellM = cageM.cellMs[0];
+        this._secondCellM = cageM.cellMs[1];
         this._sum = cageM.cage.sum;
     }
 
@@ -33,23 +78,58 @@ export class CageModel5Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cellMsSortedByNumsCount = this._cellMs.sort((a, b) => a._numOptsSet.nums.length - b._numOptsSet.nums.length);
-        const minNumCountCellM1 = cellMsSortedByNumsCount[0];
-        const minNumCountCellM1Nums = minNumCountCellM1._numOptsSet.nums;
+        // Finding `CellModel` with the minimal amount of number options.
+        let minNumCountCellM1;
+        let minNumCountCellM1Index;
+        let minNumCountCellM2;
+        let minNumCountCellM2Index;
+        if (this._firstCellM._numOptsSet.nums.length <= this._secondCellM._numOptsSet.nums.length) {
+            minNumCountCellM1 = this._firstCellM;
+            minNumCountCellM1Index = 0;
+            minNumCountCellM2 = this._secondCellM;
+            minNumCountCellM2Index = 1;
+        } else {
+            minNumCountCellM1 = this._secondCellM;
+            minNumCountCellM1Index = 1;
+            minNumCountCellM2 = this._firstCellM;
+            minNumCountCellM2Index = 0;
+        }
+        let minNumCountCellM1Nums = minNumCountCellM1._numOptsSet.nums;
+        let minNumCountCellM2Nums = minNumCountCellM2._numOptsSet.nums;
+        let i = 2;
+        while (i < CAGE_SIZE) {
+            const currentCellM = this._cellMs[i];
+            const currentNumCountNums = currentCellM._numOptsSet.nums;
+            if (currentNumCountNums.length < minNumCountCellM1Nums.length) {
+                minNumCountCellM2 = minNumCountCellM1;
+                minNumCountCellM2Index = minNumCountCellM1Index;
+                minNumCountCellM2Nums = minNumCountCellM1Nums;
+
+                minNumCountCellM1 = currentCellM;
+                minNumCountCellM1Index = i;
+                minNumCountCellM1Nums = currentNumCountNums;
+            } else if (currentNumCountNums.length < minNumCountCellM2Nums.length) {
+                minNumCountCellM2 = currentCellM;
+                minNumCountCellM2Index = i;
+                minNumCountCellM2Nums = currentNumCountNums;
+            }
+
+            ++i;
+        }
+
         let minNumCountCellM1NumBits = 0;
-        const minNumCountCellM2 = cellMsSortedByNumsCount[1];
-        const minNumCountCellM2Nums = minNumCountCellM2._numOptsSet.nums;
         let minNumCountCellM2NumBits = 0;
 
-        const cageModel3CellM1 = cellMsSortedByNumsCount[2];
+        const indices = CAGE_3_CELL_M_INDICES[minNumCountCellM1Index][minNumCountCellM2Index];
+        const cageModel3CellM1 = this._cellMs[indices[0]];
         const cageModel3CellM1NumBits = cageModel3CellM1._numOptsSet.bitStore;
         let cageModel3CellM1ActualNumBits = 0;
 
-        const cageModel3CellM2 = cellMsSortedByNumsCount[3];
+        const cageModel3CellM2 = this._cellMs[indices[1]];
         const cageModel3CellM2NumBits = cageModel3CellM2._numOptsSet.bitStore;
         let cageModel3CellM2ActualNumBits = 0;
 
-        const cageModel3CellM3 = cellMsSortedByNumsCount[4];
+        const cageModel3CellM3 = this._cellMs[indices[2]];
         const cageModel3CellM3NumBits = cageModel3CellM3._numOptsSet.bitStore;
         let cageModel3CellM3ActualNumBits = 0;
 
