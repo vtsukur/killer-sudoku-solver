@@ -4,8 +4,7 @@ import { Cell } from '../../../puzzle/cell';
 import { CellsPlacement } from '../../../puzzle/cellsPlacement';
 import { HouseIndex } from '../../../puzzle/house';
 import { Sets } from '../../../util/sets';
-import { InvalidSolverStateError } from '../../invalidSolverStateError';
-import { Combo, ReadonlyCombos, SumCombinatorics } from '../../math';
+import { ReadonlyCombos, SumCombinatorics } from '../../math';
 import { CombosSet, ReadonlyCombosSet, SudokuNumsSet } from '../../sets';
 import { CageModel2Reducer } from '../../strategies/reduction/cageModel2Reducer';
 import { CageModel3Reducer } from '../../strategies/reduction/cageModel3Reducer';
@@ -14,6 +13,7 @@ import { CageModel5Reducer } from '../../strategies/reduction/cageModel5Reducer'
 import { CageModelReducer } from '../../strategies/reduction/cageModelReducer';
 import { MasterModelReduction } from '../../strategies/reduction/masterModelReduction';
 import { CellModel } from './cellModel';
+import { CageModel6PlusReducer } from '../../strategies/reduction/cageModel6PlusReducer';
 
 type Clue = {
     num: number;
@@ -61,6 +61,8 @@ export class CageModel {
             this._reducer = new CageModel4Reducer(this);
         } else if (this._cellCount === 5) {
             this._reducer = new CageModel5Reducer(this);
+        } else {
+            this._reducer = new CageModel6PlusReducer(this);
         }
     }
 
@@ -125,81 +127,8 @@ export class CageModel {
     }
 
     reduce(reduction: MasterModelReduction) {
-        if (this._cellCount >= 2 && this._cellCount <= 5) {
-            this._reducer?.reduce(reduction);
-        } else {
-            this.reduceLargeCage(reduction);
-        }
+        this._reducer?.reduce(reduction);
         this.isFirstReduction = false;
-    }
-
-    private reduceLargeCage(reduction: MasterModelReduction) {
-        if (this.comboCount === 1) return;
-
-        const presentNums = SudokuNumsSet.newEmpty();
-        for (const cellM of this.cellMs) {
-            presentNums.addAll(cellM.numOptsSet());
-        }
-
-        const commonComboNums = SudokuNumsSet.newEmpty();
-        for (const num of SudokuNumsSet.NUM_RANGE) {
-            let hasNumInAllCombos = true;
-            for (const combo of this.comboSet.combos) {
-                hasNumInAllCombos = hasNumInAllCombos && combo.has(num);
-            }
-            if (hasNumInAllCombos) {
-                commonComboNums.add(num);
-            }
-        }
-
-        for (const commonNum of commonComboNums.nums) {
-            if (!presentNums.has(commonNum)) {
-                throw new InvalidSolverStateError(`Common combo num ${commonNum} not found in CellModels for Cage ${this.cage.key}`);
-            }
-        }
-
-        const validCombos = [];
-        const validComboNums = SudokuNumsSet.newEmpty();
-        const noLongerValidCombos = new Array<Combo>();
-        const noLongerValidComboNums = SudokuNumsSet.newEmpty();
-        for (const combo of this.comboSet.combos) {
-            let validCombo = true;
-            for (const num of combo) {
-                if (commonComboNums.has(num)) continue;
-
-                if (!presentNums.has(num)) {
-                    validCombo = false;
-                    break;
-                }
-            }
-
-            if (validCombo) {
-                validCombos.push(combo);
-                validComboNums.addAll(combo.numsSet);
-            } else {
-                noLongerValidCombos.push(combo);
-                noLongerValidComboNums.addAll(combo.numsSet);
-            }
-        }
-
-        if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new Set<number>();
-            for (const num of noLongerValidComboNums.nums) {
-                if (!validComboNums.has(num) && presentNums.has(num)) {
-                    numOptsToDelete.add(num);
-                }
-            }
-
-            for (const cellM of this.cellMs) {
-                for (const num of numOptsToDelete) {
-                    reduction.tryDeleteNumOpt(cellM, num, this);
-                }
-            }
-
-            for (const noLongerValidCombo of noLongerValidCombos) {
-                this.comboSet.deleteCombo(noLongerValidCombo);
-            }
-        }
     }
 
     findNumPlacementClues(forNum?: number) {
