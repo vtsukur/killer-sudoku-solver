@@ -132,6 +132,8 @@ export class CageModel {
     }
 
     private reduceLargeCage(reduction: MasterModelReduction) {
+        if (this.comboCount === 1) return;
+
         const presentNums = SudokuNumsSet.newEmpty();
         for (const cellM of this.cellMs) {
             presentNums.addAll(cellM.numOptsSet());
