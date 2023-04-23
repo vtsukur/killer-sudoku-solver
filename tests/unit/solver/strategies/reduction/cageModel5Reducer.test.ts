@@ -94,38 +94,39 @@ describe('CageModel5Reducer', () => {
                 expect(reduction.deletedNumOptsOf(cellM5).nums).toHaveLength(0);
             });
 
-            // test('Reduces case from real production scenario #2', () => {
-            //     // Given:
-            //     createCageM(24);
-            //     cellM1.reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
-            //     cellM2.reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
-            //     cellM3.reduceNumOpts(SudokuNumsSet.of(2, 3));
-            //     cellM4.reduceNumOpts(SudokuNumsSet.of(6, 7, 9));
-            //     cellM5.reduceNumOpts(SudokuNumsSet.of(1, 3, 4));
+            test('Reduces case from real production scenario #2', () => {
+                // Given:
+                createCageM(24);
+                cageM.comboSet.deleteCombo(Combo.of(1, 3, 4, 7, 9));
+                cellM1.reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
+                cellM2.reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
+                cellM3.reduceNumOpts(SudokuNumsSet.of(2, 3));
+                cellM4.reduceNumOpts(SudokuNumsSet.of(6, 7, 9));
+                cellM5.reduceNumOpts(SudokuNumsSet.of(1, 3, 4));
 
-            //     // When:
-            //     newReducer(cageM).reduce(reduction);
+                // When:
+                newReducer(cageM).reduce(reduction);
 
-            //     // Then:
-            //     expect(cellM1.numOpts()).toEqual([ 5, 7 ]);
-            //     expect(cellM2.numOpts()).toEqual([ 5, 7 ]);
-            //     expect(cellM3.numOpts()).toEqual([ 2 ]);
-            //     expect(cellM4.numOpts()).toEqual([ 6, 9 ]);
-            //     expect(cellM5.numOpts()).toEqual([ 1, 4 ]);
-            //     expect(Array.from(cageM.comboSet.combos)).toEqual([
-            //         Combo.of(1, 2, 5, 7, 9),
-            //         // Deleted: Combo.of(1, 3, 5, 6, 9),
-            //         // Deleted: Combo.of(1, 3, 5, 7, 8),
-            //         // Deleted: Combo.of(1, 4, 5, 6, 8),
-            //         // Deleted: Combo.of(2, 3, 5, 6, 8),
-            //         Combo.of(2, 4, 5, 6, 7)
-            //     ]);
-            //     expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 4 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 4 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM3).nums).toEqual([ 3 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM4).nums).toEqual([ 7 ]);
-            //     expect(reduction.deletedNumOptsOf(cellM5).nums).toEqual([ 3 ]);
-            // });
+                // Then:
+                expect(cellM1.numOpts()).toEqual([ 5, 7 ]);
+                expect(cellM2.numOpts()).toEqual([ 5, 7 ]);
+                expect(cellM3.numOpts()).toEqual([ 2 ]);
+                expect(cellM4.numOpts()).toEqual([ 6, 9 ]);
+                expect(cellM5.numOpts()).toEqual([ 1, 4 ]);
+                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                    Combo.of(1, 2, 5, 7, 9),
+                    // Deleted: Combo.of(1, 3, 5, 6, 9),
+                    // Deleted: Combo.of(1, 3, 5, 7, 8),
+                    // Deleted: Combo.of(1, 4, 5, 6, 8),
+                    // Deleted: Combo.of(2, 3, 5, 6, 8),
+                    Combo.of(2, 4, 5, 6, 7)
+                ]);
+                expect(reduction.deletedNumOptsOf(cellM1).nums).toEqual([ 4 ]);
+                expect(reduction.deletedNumOptsOf(cellM2).nums).toEqual([ 4 ]);
+                expect(reduction.deletedNumOptsOf(cellM3).nums).toEqual([ 3 ]);
+                expect(reduction.deletedNumOptsOf(cellM4).nums).toEqual([ 7 ]);
+                expect(reduction.deletedNumOptsOf(cellM5).nums).toEqual([ 3 ]);
+            });
 
             // test('Reduces case from real production scenario #3', () => {
             //     // Given:
