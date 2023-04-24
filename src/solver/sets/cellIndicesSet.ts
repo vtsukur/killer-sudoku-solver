@@ -20,9 +20,9 @@ import { PowersOf2Lut } from './powersOf2Lut';
 export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndicesSet> {
 
     /**
-     * Returns readonly array of the bit storages used for efficient checking for this set.
+     * Returns readonly array of the bit stores used for efficient checking for this set.
      */
-    get bitStores(): ReadonlyArray<BitStore32>;
+    get bits(): ReadonlyArray<BitStore32>;
 
     /**
      * {@link Cell}s which are included in this set.
@@ -51,8 +51,8 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
 
 }
 
-type CellIndexToBitStoreLocator = {
-    bitStoreIndex: number;
+type CellIndexToBitsLocator = {
+    bitsIndex: number;
     bitPosition: number;
 }
 
@@ -72,20 +72,20 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     // It is enough to have 3 bit stores of size 32 bits each
     // as the amount of required indices is up to 81:
     //
-    //  - `this._bitStores[0]` represents numbers in the range of [0, 31]
-    //  - `this._bitStores[1]` represents numbers in the range of [32, 63]
-    //  - `this._bitStores[2]` represents numbers in the range of [64, 80] (not all bits are utilized in the last bit store)
+    //  - `this._bits[0]` represents numbers in the range of [0, 31]
+    //  - `this._bits[1]` represents numbers in the range of [32, 63]
+    //  - `this._bits[2]` represents numbers in the range of [64, 80] (not all bits are utilized in the last bit store)
     //
-    private readonly _bitStores: Array<BitStore32> = [ 0, 0, 0 ];
+    private readonly _bits: Array<BitStore32> = [ 0, 0, 0 ];
 
     // As the built-in `number` is used as a bit storage, it can hold up to 32 bits.
     private static readonly _BITS_PER_BIT_STORE = 32;
 
     // Caching data about bit store index and bit position within the bit store to enable fast access.
-    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitStoreLocator> = Grid.CELL_INDICES.map(cellIndex => {
-        const bitStoreIndex = ~~(cellIndex / CellIndicesSet._BITS_PER_BIT_STORE);
-        const bitPosition = cellIndex - Math.imul(bitStoreIndex, CellIndicesSet._BITS_PER_BIT_STORE);
-        return { bitStoreIndex, bitPosition };
+    private static readonly _CELL_INDEX_TO_BIT_STORE_LOCATORS: ReadonlyArray<CellIndexToBitsLocator> = Grid.CELL_INDICES.map(cellIndex => {
+        const bitsIndex = ~~(cellIndex / CellIndicesSet._BITS_PER_BIT_STORE);
+        const bitPosition = cellIndex - Math.imul(bitsIndex, CellIndicesSet._BITS_PER_BIT_STORE);
+        return { bitsIndex, bitPosition };
     });
 
     /**
@@ -111,7 +111,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
             //
             // Same as `Math.trunc(index / this._BITS_PER_BIT_STORE)` but `~~` is faster.
             //
-            const bitStoreIndex = ~~(index / this._BITS_PER_BIT_STORE);
+            const bitsIndex = ~~(index / this._BITS_PER_BIT_STORE);
 
             //
             // Calculating index of the `Cell` `Row` from absolute `Cell` index on the `Grid`.
@@ -127,7 +127,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
             const cell = Cell.at(row, col);
 
             // Storing `Cell` value in the lookup table.
-            val[bitStoreIndex].set(index % this._BITS_PER_BIT_STORE, cell);
+            val[bitsIndex].set(index % this._BITS_PER_BIT_STORE, cell);
         }
 
         return val;
@@ -151,9 +151,9 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
             }
         } else {
             const anotherSet = val as ReadonlyCellIndicesSet;
-            this._bitStores[0] = anotherSet.bitStores[0];
-            this._bitStores[1] = anotherSet.bitStores[1];
-            this._bitStores[2] = anotherSet.bitStores[2];
+            this._bits[0] = anotherSet.bits[0];
+            this._bits[1] = anotherSet.bits[1];
+            this._bits[2] = anotherSet.bits[2];
         }
     }
 
@@ -187,10 +187,10 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     }
 
     /**
-     * @see ReadonlyCellIndicesSet.bitStores
+     * @see ReadonlyCellIndicesSet.bits
      */
-    get bitStores() {
-        return this._bitStores;
+    get bits() {
+        return this._bits;
     }
 
     /**
@@ -204,32 +204,32 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         // Example for `hasAll` returning `true`
         // (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b10000100
-        //      this._bitStores[x] & val.bitStores[x] = 0b10000100
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b10000100
+        //      this._bits[x] & val.bits[x] = 0b10000100
         //
         //      0b10000100 === 0b10000100
-        //      (this._bitStores[x] & val.bitStores[x]) === val.bitStores[x]
+        //      (this._bits[x] & val.bits[x]) === val.bits[x]
         //
         // ```
         //
         // Example for `hasAll` returning `false`
         // (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b00001100
-        //      this._bitStores[x] & val.bitStores[x] = 0b00000100
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b00001100
+        //      this._bits[x] & val.bits[x] = 0b00000100
         //
         //      0b00001100 !== 0b00000100
-        //      (this._bitStores[x] & val.bitStores[x]) !== val.bitStores[x]
+        //      (this._bits[x] & val.bits[x]) !== val.bits[x]
         // ```
         //
         return (
-            (this._bitStores[0] & val.bitStores[0]) === val.bitStores[0] // numbers in the range of [0, 31]
+            (this._bits[0] & val.bits[0]) === val.bits[0] // numbers in the range of [0, 31]
             &&
-            (this._bitStores[1] & val.bitStores[1]) === val.bitStores[1] // numbers in the range of [32, 63]
+            (this._bits[1] & val.bits[1]) === val.bits[1] // numbers in the range of [32, 63]
             &&
-            (this._bitStores[2] & val.bitStores[2]) === val.bitStores[2] // numbers in the range of [64, 80]
+            (this._bits[2] & val.bits[2]) === val.bits[2] // numbers in the range of [64, 80]
         );
     }
 
@@ -238,7 +238,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      */
     doesNotHave(val: number) {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
-        return (this._bitStores[entry.bitStoreIndex] & (1 << entry.bitPosition)) === 0;
+        return (this._bits[entry.bitsIndex] & (1 << entry.bitPosition)) === 0;
     }
 
     /**
@@ -252,29 +252,29 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         // Example for `doesNotHaveAny` returning `true`
         // (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b01101000
-        //      this._bitStores[x] & val.bitStores[x] = 0b00000000 (no overlaps on the same bit positions)
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b01101000
+        //      this._bits[x] & val.bits[x] = 0b00000000 (no overlaps on the same bit positions)
         //
-        //      (this._bitStores[x] & val.bitStores[x]) === 0
+        //      (this._bits[x] & val.bits[x]) === 0
         // ```
         //
         // Example for `doesNotHaveAny` returning `false`
         // (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b00001100
-        //      this._bitStores[x] & val.bitStores[x] = 0b00000100 (one overlap on the bit position 3)
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b00001100
+        //      this._bits[x] & val.bits[x] = 0b00000100 (one overlap on the bit position 3)
         //
-        //      (this._bitStores[x] & val.bitStores[x]) !== 0
+        //      (this._bits[x] & val.bits[x]) !== 0
         // ```
         //
         return (
-            (this._bitStores[0] & val.bitStores[0]) === 0 // numbers in the range of [0, 31]
+            (this._bits[0] & val.bits[0]) === 0 // numbers in the range of [0, 31]
             &&
-            (this._bitStores[1] & val.bitStores[1]) === 0 // numbers in the range of [32, 63]
+            (this._bits[1] & val.bits[1]) === 0 // numbers in the range of [32, 63]
             &&
-            (this._bitStores[2] & val.bitStores[2]) === 0 // numbers in the range of [64, 80]
+            (this._bits[2] & val.bits[2]) === 0 // numbers in the range of [64, 80]
         );
     }
 
@@ -283,11 +283,11 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      */
     get cells() {
         const val = new Array<Cell>();
-        let bitStoreIndex = 0;
+        let bitsIndex = 0;
 
-        while (bitStoreIndex < 3) {
-            CellIndicesSet._LOOKUP_TABLE[bitStoreIndex].collect(this._bitStores[bitStoreIndex], val);
-            ++bitStoreIndex;
+        while (bitsIndex < 3) {
+            CellIndicesSet._LOOKUP_TABLE[bitsIndex].collect(this._bits[bitsIndex], val);
+            ++bitsIndex;
         }
 
         return val;
@@ -305,14 +305,14 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b01111100
-        //      this._bitStores[x] & val.bitStores[x] = 0b00010100 (`1` on positions 3 and 5)
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b01111100
+        //      this._bits[x] & val.bits[x] = 0b00010100 (`1` on positions 3 and 5)
         // ```
         //
-        this._bitStores[0] = this._bitStores[0] & val.bitStores[0];
-        this._bitStores[1] = this._bitStores[1] & val.bitStores[1];
-        this._bitStores[2] = this._bitStores[2] & val.bitStores[2];
+        this._bits[0] = this._bits[0] & val.bits[0];
+        this._bits[1] = this._bits[1] & val.bits[1];
+        this._bits[2] = this._bits[2] & val.bits[2];
 
         return this;
     }
@@ -329,14 +329,14 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                    = 0b10010101
-        //      val.bitStores[x]                      = 0b01111100
-        //      this._bitStores[x] & val.bitStores[x] = 0b10000001 (`1` on positions 3 and 5 are set to `0`)
+        //      this._bits[x]               = 0b10010101
+        //      val.bits[x]                 = 0b01111100
+        //      this._bits[x] & val.bits[x] = 0b10000001 (`1` on positions 3 and 5 are set to `0`)
         // ```
         //
-        and._bitStores[0] = this._bitStores[0] ^ val.bitStores[0];
-        and._bitStores[1] = this._bitStores[1] ^ val.bitStores[1];
-        and._bitStores[2] = this._bitStores[2] ^ val.bitStores[2];
+        and._bits[0] = this._bits[0] ^ val.bits[0];
+        and._bits[1] = this._bits[1] ^ val.bits[1];
+        and._bits[2] = this._bits[2] ^ val.bits[2];
 
         return and;
     }
@@ -353,19 +353,19 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]   = 0b10010101
-        //       ~this._bitStores[x] = 0b01101010
+        //       this._bits[x] = 0b10010101
+        //      ~this._bits[x] = 0b01101010
         // ```
         //
-        not._bitStores[0] = ~this._bitStores[0];
-        not._bitStores[1] = ~this._bitStores[1];
+        not._bits[0] = ~this._bits[0];
+        not._bits[1] = ~this._bits[1];
 
         //
         // Additional bitwise AND is applied to the last bit store
         // to erase `1`s for `Cell` indices which are out of range
         // so that irrelevant `Cell`s will *not* be mapped as _included_ in the set.
         //
-        not._bitStores[2] = (~this._bitStores[2] & 0b11111111111111111);
+        not._bits[2] = (~this._bits[2] & 0b11111111111111111);
 
         return not;
     }
@@ -379,17 +379,17 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
-        // Applying bitwise OR with left-wise shift to set bit at position `entry.bitStoreIndex` to `1`.
+        // Applying bitwise OR with left-wise shift to set bit at position `entry.bitsndex` to `1`.
         //
         // Examples:
-        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - for `entry.bitsIndex = 0`, `bits` will be bitwise OR-ed with `0b00000001`;
+        //  - for `entry.bitsIndex = 1`, `bits` will be bitwise OR-ed with `0b00000010`;
+        //  - for `entry.bitsIndex = 2`, `bits` will be bitwise OR-ed with `0b00000100`;
         //  - ...
-        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
-        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
+        //  - for `entry.bitsIndex = 8`, `bits` will be bitwise OR-ed with `0b10000000`;
+        //  - and so on, up to `entry.bitsIndex` value of 27 per one bit store.
         //
-        this._bitStores[entry.bitStoreIndex] |= 1 << entry.bitPosition;
+        this._bits[entry.bitsIndex] |= 1 << entry.bitPosition;
 
         return this;
     }
@@ -406,14 +406,14 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                     = 0b10010001
-        //      val.bitStores[x]                       = 0b01001000
-        //      this._bitStorse[x] |= val.bitStores[x] = 0b11011001
+        //      this._bits[x]                = 0b10010001
+        //      val.bits[x]                  = 0b01001000
+        //      this._bits[x] |= val.bits[x] = 0b11011001
         // ```
         //
-        this._bitStores[0] |= val.bitStores[0]; // for numbers in the range of [0, 31]
-        this._bitStores[1] |= val.bitStores[1]; // for numbers in the range of [32, 63]
-        this._bitStores[2] |= val.bitStores[2]; // for numbers in the range of [64, 80]
+        this._bits[0] |= val.bits[0]; // for numbers in the range of [0, 31]
+        this._bits[1] |= val.bits[1]; // for numbers in the range of [32, 63]
+        this._bits[2] |= val.bits[2]; // for numbers in the range of [64, 80]
 
         return this;
     }
@@ -427,17 +427,17 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         const entry = CellIndicesSet._CELL_INDEX_TO_BIT_STORE_LOCATORS[val];
 
         //
-        // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitStoreIndex` to `0`.
+        // Applying bitwise AND and bitwise NOT to set bit at position `entry.bitsIndex` to `0`.
         //
         // Examples:
-        //  - for `entry.bitStoreIndex = 0`, `bitStore` will be bitwise AND-ed with `0b11111110`;
-        //  - for `entry.bitStoreIndex = 1`, `bitStore` will be bitwise AND-ed with `0b11111101`;
-        //  - for `entry.bitStoreIndex = 2`, `bitStore` will be bitwise AND-ed with `0b11111011`;
+        //  - for `entry.bitsIndex = 0`, `bits` will be bitwise AND-ed with `0b11111110`;
+        //  - for `entry.bitsIndex = 1`, `bits` will be bitwise AND-ed with `0b11111101`;
+        //  - for `entry.bitsIndex = 2`, `bits` will be bitwise AND-ed with `0b11111011`;
         //  - ...
-        //  - for `entry.bitStoreIndex = 8`, `bitStore` will be bitwise AND-ed with `0b01111111`;
-        //  - and so on, up to `entry.bitStoreIndex` value of 27 per one bit store.
+        //  - for `entry.bitsIndex = 8`, `bits` will be bitwise AND-ed with `0b01111111`;
+        //  - and so on, up to `entry.bitsIndex` value of 27 per one bit store.
         //
-        this._bitStores[entry.bitStoreIndex] &= ~(1 << entry.bitPosition);
+        this._bits[entry.bitsIndex] &= ~(1 << entry.bitPosition);
 
         return this;
     }
@@ -454,15 +454,15 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
         //
         // Example (applied to a single bit store of index `x` for simplicity):
         // ```
-        //      this._bitStores[x]                      = 0b10011001
-        //      val.bitStores[x]                        = 0b01001001
-        //      ~val.bitStores[x]                       = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
-        //      this._bitStores[x] &= ~val.bitStores[x] = 0b10010000
+        //      this._bits[x]                  = 0b10011001
+        //      val.bits[x]                    = 0b01001001
+        //      ~val.bits[x]                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
+        //      this._bits[x] &= ~val._bits[x] = 0b10010000
         // ```
         //
-        this._bitStores[0] &= ~val.bitStores[0]; // for numbers in the range of [0, 31]
-        this._bitStores[1] &= ~val.bitStores[1]; // for numbers in the range of [32, 63]
-        this._bitStores[2] &= ~val.bitStores[2]; // for numbers in the range of [64, 80]
+        this._bits[0] &= ~val.bits[0]; // for numbers in the range of [0, 31]
+        this._bits[1] &= ~val.bits[1]; // for numbers in the range of [32, 63]
+        this._bits[2] &= ~val.bits[2]; // for numbers in the range of [64, 80]
 
         return this;
     }
@@ -472,9 +472,9 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      */
     equals(val: ReadonlyCellIndicesSet) {
         return (
-            this._bitStores[0] === val.bitStores[0] &&
-            this._bitStores[1] === val.bitStores[1] &&
-            this._bitStores[2] === val.bitStores[2]
+            this._bits[0] === val.bits[0] &&
+            this._bits[1] === val.bits[1] &&
+            this._bits[2] === val.bits[2]
         );
     }
 
@@ -483,9 +483,9 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      */
     get isEmpty(): boolean {
         return (
-            this._bitStores[0] === 0 &&
-            this._bitStores[1] === 0 &&
-            this._bitStores[2] === 0
+            this._bits[0] === 0 &&
+            this._bits[1] === 0 &&
+            this._bits[2] === 0
         );
     }
 
@@ -494,9 +494,9 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
      */
     get isNotEmpty(): boolean {
         return (
-            this._bitStores[0] !== 0 ||
-            this._bitStores[1] !== 0 ||
-            this._bitStores[2] !== 0
+            this._bits[0] !== 0 ||
+            this._bits[1] !== 0 ||
+            this._bits[2] !== 0
         );
     }
 
