@@ -40,7 +40,7 @@ export class House {
      * Integer next to the amount of {@link Cell}s in a `House`,
      * which is convenient for use in the ranges as the exclusive upper bound.
      */
-    static readonly CELL_COUNT_PLUS_1 = this.CELL_COUNT + 1;
+    static readonly CELL_COUNT_RANGE_INCSLUSIVE_UPPER_BOUND = this.CELL_COUNT + 1;
 
     /**
      * Sum of all numbers in a `House`.

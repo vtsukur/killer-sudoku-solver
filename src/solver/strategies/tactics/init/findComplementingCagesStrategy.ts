@@ -143,7 +143,7 @@ class HouseAreaStats {
 
     constructor(n: number) {
         this._adjacentHouseCount = n;
-        this._foundCagesByCellCount = new Array(House.CELL_COUNT_PLUS_1).fill(0);
+        this._foundCagesByCellCount = new Array(House.CELL_COUNT_RANGE_INCSLUSIVE_UPPER_BOUND).fill(0);
     }
 
     get adjacentHouseCount() {

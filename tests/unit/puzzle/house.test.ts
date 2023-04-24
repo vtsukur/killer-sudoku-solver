@@ -15,7 +15,7 @@ describe('Unit tests for `House`', () => {
     });
 
     test('Integer next the amount of `Cell`s in a `House` is `10`', () => {
-        expect(House.CELL_COUNT_PLUS_1).toEqual(10);
+        expect(House.CELL_COUNT_RANGE_INCSLUSIVE_UPPER_BOUND).toEqual(10);
     });
 
     test('Sum of `Cell`s in a `House` is `45`', () => {
