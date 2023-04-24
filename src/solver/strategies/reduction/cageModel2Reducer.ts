@@ -86,8 +86,8 @@ export class CageModel2Reducer implements CageModelReducer {
         // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
         // for efficient low-level check and manipulation of numbers' options.
         //
-        const cellM1NumsBits = this._cellM1NumsSet.bitStore;
-        const cellM2NumsBits = this._cellM2NumsSet.bitStore;
+        const cellM1NumsBits = this._cellM1NumsSet.bits;
+        const cellM2NumsBits = this._cellM2NumsSet.bits;
 
         // Iterating over each possible `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of this._combosSet.combos) {

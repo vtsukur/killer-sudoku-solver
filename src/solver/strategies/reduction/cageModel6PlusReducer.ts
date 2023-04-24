@@ -34,7 +34,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
 
         let presentNumsBits = 0;
         for (const cellM of this._cellMs) {
-            presentNumsBits |= cellM._numOptsSet.bitStore;
+            presentNumsBits |= cellM._numOptsSet.bits;
         }
 
         let commonComboNumsBits = 0;

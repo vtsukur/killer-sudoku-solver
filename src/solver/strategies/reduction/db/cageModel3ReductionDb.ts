@@ -51,15 +51,15 @@ export class CageModel3ReductionDb {
 
         sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-                const comboNumsBits = new SudokuNumsSet(comboReductions.combo).bitStore;
+                const comboNumsBits = new SudokuNumsSet(comboReductions.combo).bits;
 
                 const comboReductionStates = new Array<ComboReductionState>(REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
                     comboReductionStates[entry.state] = (entry.actions) ? {
                         isValid: true,
-                        cell1KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bitStore,
-                        cell2KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bitStore,
-                        cell3KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bitStore
+                        cell1KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bits,
+                        cell2KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bits,
+                        cell3KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bits
                     } : {
                         isValid: true,
                         cell1KeepNumsBits: comboNumsBits,

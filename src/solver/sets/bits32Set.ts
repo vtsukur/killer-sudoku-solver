@@ -66,7 +66,7 @@ export abstract class Bits32Set<
     /**
      * @see ReadonlySudokuNumsSet.bitStore
      */
-    get bitStore() {
+    get bits() {
         return this._bits;
     }
 

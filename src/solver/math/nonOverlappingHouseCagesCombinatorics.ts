@@ -259,7 +259,7 @@ const enumerateRecursively_stepLastWithPermCaptureAndComboMark = (ctx: Context) 
  * If the check passes, {@link enumerateRecursively_stepLastWithPermCaptureAndComboMark} is run.
  */
 const enumerateRecursively_stepLastWithShortCircuitedPermCapture = (ctx: Context, step: number) => {
-    const lastCombo = Combo.BY_NUMS_BITS[ctx.usedNums.remaining.bitStore];
+    const lastCombo = Combo.BY_NUMS_BITS[ctx.usedNums.remaining.bits];
     if (lastCombo !== undefined) {
         ctx.usedCombos[step] = lastCombo;
         enumerateRecursively_stepLastWithPermCaptureAndComboMark(ctx);

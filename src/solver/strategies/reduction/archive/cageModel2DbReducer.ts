@@ -48,11 +48,11 @@ db.forEach(sumReductions => {
                 const cellM2DeletedNums = SudokuNumsSet.of(...entry.actions.deleteNums[1]);
                 reductionStates[entry.state] = {
                     isValid: true,
-                    comboNumsBits: comboNumsSet.bitStore,
-                    deleteNumsInCell1Bits: cellM1DeletedNums.bitStore,
-                    deleteNumsInCell2Bits: cellM2DeletedNums.bitStore,
-                    keepNumsInCell1Bits: ~cellM1DeletedNums.bitStore,
-                    keepNumsInCell2Bits: ~cellM2DeletedNums.bitStore
+                    comboNumsBits: comboNumsSet.bits,
+                    deleteNumsInCell1Bits: cellM1DeletedNums.bits,
+                    deleteNumsInCell2Bits: cellM2DeletedNums.bits,
+                    keepNumsInCell1Bits: ~cellM1DeletedNums.bits,
+                    keepNumsInCell2Bits: ~cellM2DeletedNums.bits
                 };
             } else {
                 reductionStates[entry.state] = EMPTY_REDUCTION_STATE;
@@ -109,8 +109,8 @@ export class CageModel2DbReducer implements CageModelReducer {
         // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
         // for efficient low-level number check and manipulation.
         //
-        const cellM1NumsBits = this._cellM1._numOptsSet.bitStore;
-        const cellM2NumsBits = this._cellM2._numOptsSet.bitStore;
+        const cellM1NumsBits = this._cellM1._numOptsSet.bits;
+        const cellM2NumsBits = this._cellM2._numOptsSet.bits;
 
         let actualReductionStateCellM1 = 0;
         let actualReductionStateCellM2 = 0;

@@ -20,7 +20,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
     /**
      * Returns copy of the bit storage used for efficient checking for this set.
      */
-    get bitStore(): BitStore32;
+    get bits(): BitStore32;
 
     /**
      * Checks if this set has the given number.
@@ -265,7 +265,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
         // ```
         //
-        return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+        return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bits);
     }
 
     protected onUpdate() {
@@ -301,7 +301,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //      oldBitStore ^ this.bitStore = 0b0100101110
         // ```
         //
-        return new SudokuNumsSet(oldBitStore ^ this.bitStore);
+        return new SudokuNumsSet(oldBitStore ^ this.bits);
     }
 
     /**
@@ -334,7 +334,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //      oldBitStore ^ this.bitStore = 0b0100101110
         // ```
         //
-        return new SudokuNumsSet(oldBitStore ^ this.bitStore);
+        return new SudokuNumsSet(oldBitStore ^ this.bits);
     }
 
     setOne(val: number) {

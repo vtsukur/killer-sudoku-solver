@@ -88,9 +88,9 @@ export class CageModel3Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        const cellM1NumsBits = this._cellM1NumsSet.bitStore;
-        const cellM2NumsBits = this._cellM2NumsSet.bitStore;
-        const cellM3NumsBits = this._cellM3NumsSet.bitStore;
+        const cellM1NumsBits = this._cellM1NumsSet.bits;
+        const cellM2NumsBits = this._cellM2NumsSet.bits;
+        const cellM3NumsBits = this._cellM3NumsSet.bits;
 
         let actualReductionStateCellM1 = 0;
         let actualReductionStateCellM2 = 0;

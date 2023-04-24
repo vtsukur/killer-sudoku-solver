@@ -122,15 +122,15 @@ export class CageModel5Reducer implements CageModelReducer {
 
         const indices = CAGE_3_CELL_M_INDICES[minNumCountCellM1Index][minNumCountCellM2Index];
         const cageModel3CellM1 = this._cellMs[indices[0]];
-        const cageModel3CellM1NumBits = cageModel3CellM1._numOptsSet.bitStore;
+        const cageModel3CellM1NumBits = cageModel3CellM1._numOptsSet.bits;
         let cageModel3CellM1ActualNumBits = 0;
 
         const cageModel3CellM2 = this._cellMs[indices[1]];
-        const cageModel3CellM2NumBits = cageModel3CellM2._numOptsSet.bitStore;
+        const cageModel3CellM2NumBits = cageModel3CellM2._numOptsSet.bits;
         let cageModel3CellM2ActualNumBits = 0;
 
         const cageModel3CellM3 = this._cellMs[indices[2]];
-        const cageModel3CellM3NumBits = cageModel3CellM3._numOptsSet.bitStore;
+        const cageModel3CellM3NumBits = cageModel3CellM3._numOptsSet.bits;
         let cageModel3CellM3ActualNumBits = 0;
 
         const combosBeforeReduction = this._combosSet.combos;

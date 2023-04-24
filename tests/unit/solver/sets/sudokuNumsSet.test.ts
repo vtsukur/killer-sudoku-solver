@@ -177,14 +177,14 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('Instance of `SudokuNumsSet` with remaining numbers', () => {
-        expect(SudokuNumsSet.newEmpty().remaining.bitStore).toBe(
-            SudokuNumsSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bitStore
+        expect(SudokuNumsSet.newEmpty().remaining.bits).toBe(
+            SudokuNumsSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).bits
         );
-        expect(SudokuNumsSet.of(1, 2, 3).remaining.bitStore).toBe(
-            SudokuNumsSet.of(4, 5, 6, 7, 8, 9).bitStore
+        expect(SudokuNumsSet.of(1, 2, 3).remaining.bits).toBe(
+            SudokuNumsSet.of(4, 5, 6, 7, 8, 9).bits
         );
-        expect(SudokuNumsSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining.bitStore).toBe(
-            SudokuNumsSet.newEmpty().bitStore
+        expect(SudokuNumsSet.of(1, 2, 3, 4, 5, 6, 7, 8, 9).remaining.bits).toBe(
+            SudokuNumsSet.newEmpty().bits
         );
     });
 
@@ -237,7 +237,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
 
     test('Cloning using constructor', () => {
         const original = SudokuNumsSet.of(1, 9);
-        const cloned = new SudokuNumsSet(original.bitStore);
+        const cloned = new SudokuNumsSet(original.bits);
 
         expect(cloned).not.toBe(original);
 

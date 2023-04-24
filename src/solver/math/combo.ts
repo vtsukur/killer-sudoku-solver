@@ -168,7 +168,7 @@ export class Combo implements Iterable<number> {
      */
     private constructor(numsSet: ReadonlySudokuNumsSet, index: number) {
         this.numsSet = numsSet;
-        this.numsBits = numsSet.bitStore;
+        this.numsBits = numsSet.bits;
         this.nums = numsSet.nums;
         this.number1 = this.nums[0];
         this.number2 = (this.nums.length > 1) ? this.nums[1] : 0;

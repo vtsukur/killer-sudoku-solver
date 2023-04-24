@@ -67,11 +67,11 @@ export class CellModel {
     }
 
     reduceNumOpts(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        return val.bitStore == SudokuNumsSet.ALL.bitStore ? SudokuNumsSet.EMPTY : this._numOptsSet.unionWithDeleted(val);
+        return val.bits == SudokuNumsSet.ALL.bits ? SudokuNumsSet.EMPTY : this._numOptsSet.unionWithDeleted(val);
     }
 
     reduceNumOptsBits(val: number): ReadonlySudokuNumsSet {
-        return val == SudokuNumsSet.ALL.bitStore ? SudokuNumsSet.EMPTY : this._numOptsSet.unionBitsWithDeleted(val);
+        return val == SudokuNumsSet.ALL.bits ? SudokuNumsSet.EMPTY : this._numOptsSet.unionBitsWithDeleted(val);
     }
 
     get solved() {
