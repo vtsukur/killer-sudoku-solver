@@ -46,33 +46,26 @@ export class CageModel6PlusReducer implements CageModelReducer {
             throw new InvalidSolverStateError(`Common combo nums bits ${commonComboNumsBits} not found in CellModels for Cage ${this._cageM.cage.key}`);
         }
 
-        const validComboNums = SudokuNumsSet.newEmpty();
+        let validComboNumsBits = 0;
         const noLongerValidCombos = new Array<Combo>();
-        const noLongerValidComboNums = SudokuNumsSet.newEmpty();
+        let noLongerValidComboNumsBits = 0;
         for (const combo of this._combosSet.combos) {
             const nonCommonComboNumsBits = combo.numsBits & ~commonComboNumsBits;
             const validCombo = (presentNumsBits & nonCommonComboNumsBits) === nonCommonComboNumsBits;
 
             if (validCombo) {
-                validComboNums.addAll(combo.numsSet);
+                validComboNumsBits |= combo.numsBits;
             } else {
                 noLongerValidCombos.push(combo);
-                noLongerValidComboNums.addAll(combo.numsSet);
+                noLongerValidComboNumsBits |= combo.numsBits;
             }
         }
 
         if (noLongerValidCombos.length > 0) {
-            const numOptsToDelete = new Set<number>();
-            for (const num of noLongerValidComboNums.nums) {
-                if (!validComboNums.has(num) && (presentNumsBits & (1 << num)) !== 0) {
-                    numOptsToDelete.add(num);
-                }
-            }
+            const deleteNumsBits = new SudokuNumsSet(noLongerValidComboNumsBits & ~validComboNumsBits).remaining.bitStore;
 
             for (const cellM of this._cellMs) {
-                for (const num of numOptsToDelete) {
-                    reduction.tryDeleteNumOpt(cellM, num, this._cageM);
-                }
+                reduction.tryReduceNumOptsBits(cellM, deleteNumsBits, this._cageM);
             }
 
             for (const noLongerValidCombo of noLongerValidCombos) {
