@@ -260,9 +260,9 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //
         // Example:
         // ```
-        //      ALL_SUDOKU_NUMS_BIT_STORE                 = 0b0111111111
-        //      this.bitStore                             = 0b0011010001
-        //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
+        //      ALL_SUDOKU_NUMS_BIT_STORE             = 0b0111111111
+        //      this.bits                             = 0b0011010001
+        //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bits = 0b0100101110 (inversed `this.bits`)
         // ```
         //
         return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bits);
@@ -285,7 +285,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @see NumsSet.union
      */
     unionWithDeleted(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        const oldBitStore = this._bits;
+        const oldBits = this._bits;
 
         this.union(val);
 
@@ -296,12 +296,12 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //
         // Example:
         // ```
-        //      oldBitStore                 = 0b0111111111
-        //      this.bitStore               = 0b0011010001
-        //      oldBitStore ^ this.bitStore = 0b0100101110
+        //      oldBits             = 0b0111111111
+        //      this.bits           = 0b0011010001
+        //      oldBits ^ this.bits = 0b0100101110
         // ```
         //
-        return new SudokuNumsSet(oldBitStore ^ this.bits);
+        return new SudokuNumsSet(oldBits ^ this.bits);
     }
 
     /**
@@ -318,7 +318,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @see NumsSet.union
      */
     unionBitsWithDeleted(val: BitStore32): ReadonlySudokuNumsSet {
-        const oldBitStore = this._bits;
+        const oldBits = this._bits;
 
         this.unionBits(val);
 
@@ -329,12 +329,12 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //
         // Example:
         // ```
-        //      oldBitStore                 = 0b0111111111
-        //      this.bitStore               = 0b0011010001
-        //      oldBitStore ^ this.bitStore = 0b0100101110
+        //      oldBits             = 0b0111111111
+        //      this.bits           = 0b0011010001
+        //      oldBits ^ this.bits = 0b0100101110
         // ```
         //
-        return new SudokuNumsSet(oldBitStore ^ this.bits);
+        return new SudokuNumsSet(oldBits ^ this.bits);
     }
 
     setOne(val: number) {

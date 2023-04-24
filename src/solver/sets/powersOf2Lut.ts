@@ -103,9 +103,9 @@ export class PowersOf2Lut<T> {
         return this._vals[lutIndex];
     }
 
-    collect(bitStore: number, to: Array<T> = new Array<T>): ReadonlyArray<T> {
+    collect(bits: number, to: Array<T> = new Array<T>): ReadonlyArray<T> {
         // Capturing bit store value.
-        let i = bitStore;
+        let i = bits;
 
         // For fast iteration consider `1` bits ONLY -- as these bits represent included numbers.
         while (i !== 0) {
@@ -129,9 +129,9 @@ export class PowersOf2Lut<T> {
         return to;
     }
 
-    reduce<V extends T>(bitStore: number, accumulator: V, fn: (accumulator: V, current: T) => void): T {
+    reduce<V extends T>(bits: number, accumulator: V, fn: (accumulator: V, current: T) => void): T {
         // Capturing bit store value.
-        let i = bitStore;
+        let i = bits;
 
         // For fast iteration consider `1` bits ONLY -- as these bits represent included numbers.
         while (i !== 0) {

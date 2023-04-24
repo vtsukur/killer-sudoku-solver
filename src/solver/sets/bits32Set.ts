@@ -49,12 +49,12 @@ export abstract class Bits32Set<
                 // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
                 //
                 // Examples:
-                //  - for `num = 1`, `bitStore` will be bitwise OR-ed with `0b000000010`;
-                //  - for `num = 2`, `bitStore` will be bitwise OR-ed with `0b000000100`;
+                //  - for `num = 1`, `bits` will be bitwise OR-ed with `0b000000010`;
+                //  - for `num = 2`, `bits` will be bitwise OR-ed with `0b000000100`;
                 //  - ...
-                //  - for `num = 9`, `bitStore` will be bitwise OR-ed with `0b100000000`;
+                //  - for `num = 9`, `bits` will be bitwise OR-ed with `0b100000000`;
                 //
-                // For `num = 1` and `num = 4` `bitStore` will be `0b000010010`.
+                // For `num = 1` and `num = 4` `bits` will be `0b000010010`.
                 //
                 this._bits |= 1 << num;
             }
@@ -64,7 +64,7 @@ export abstract class Bits32Set<
     }
 
     /**
-     * @see ReadonlySudokuNumsSet.bitStore
+     * @see ReadonlySudokuNumsSet.bits
      */
     get bits() {
         return this._bits;
@@ -94,23 +94,23 @@ export abstract class Bits32Set<
         //
         // Example for `hasAll` returning `true`:
         // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b010000100
-        //      this._bitStore & val.bitStore = 0b010000100
+        //      this._bits            = 0b010010101
+        //      val.bits              = 0b010000100
+        //      this._bits & val.bits = 0b010000100
         //
         //      0b010000100 === 0b010000100
-        //      (this._bitStore & val.bitStore) === val.bitStore
+        //      (this._bits & val.bits) === val.bits
         //
         // ```
         //
         // Example for `hasAll` returning `false`:
         // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b000001100
-        //      this._bitStore & val.bitStore = 0b000000100
+        //      this._bits            = 0b010010101
+        //      val.bits              = 0b000001100
+        //      this._bits & val.bits = 0b000000100
         //
         //      0b000001100 !== 0b000000100
-        //      (this._bitStore & val.bitStore) !== val.bitStore
+        //      (this._bits & val.bits) !== val.bits
         // ```
         //
         return (this._bits & val.bits) === val.bits;
@@ -133,20 +133,20 @@ export abstract class Bits32Set<
         //
         // Example for `doesNotHaveAny` returning `true`:
         // ```
-        //      this._bitStore                = 0b010010101
-        //      val.bitStore                  = 0b001101000
-        //      this._bitStore & val.bitStore = 0b000000000 (no overlaps on the same bit positions)
+        //      this._bits            = 0b010010101
+        //      val.bits              = 0b001101000
+        //      this._bits & val.bits = 0b000000000 (no overlaps on the same bit positions)
         //
-        //      (this._bitStore & val.bitStore) === 0
+        //      (this._bits & val.bits) === 0
         // ```
         //
         // Example for `doesNotHaveAny` returning `false`:
         // ```
-        //      this._bitStore                = 0b10010101
-        //      val.bitStore                  = 0b00001100
-        //      this._bitStore & val.bitStore = 0b00000100 (one overlap on the bit position 3)
+        //      this._bits            = 0b10010101
+        //      val.bits              = 0b00001100
+        //      this._bits & val.bits = 0b00000100 (one overlap on the bit position 3)
         //
-        //      (this._bitStore & val.bitStore) !== 0
+        //      (this._bits & val.bits) !== 0
         // ```
         //
         return (this._bits & val.bits) === 0;
@@ -162,11 +162,11 @@ export abstract class Bits32Set<
         // Applying bitwise OR with left-wise shift to set bit at position `val` to `1`.
         //
         // Examples:
-        //  - for `val = 0`, `bitStore` will be bitwise OR-ed with `0b00000001`;
-        //  - for `val = 1`, `bitStore` will be bitwise OR-ed with `0b00000010`;
-        //  - for `val = 2`, `bitStore` will be bitwise OR-ed with `0b00000100`;
+        //  - for `val = 0`, `bits` will be bitwise OR-ed with `0b00000001`;
+        //  - for `val = 1`, `bits` will be bitwise OR-ed with `0b00000010`;
+        //  - for `val = 2`, `bits` will be bitwise OR-ed with `0b00000100`;
         //  - ...
-        //  - for `val = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
+        //  - for `val = 8`, `bits` will be bitwise OR-ed with `0b10000000`;
         //
         this._bits |= 1 << val;
 
@@ -187,9 +187,9 @@ export abstract class Bits32Set<
         //
         // Example:
         // ```
-        //      this._bitStore                 = 0b010010001
-        //      val.bitStore                   = 0b001001000
-        //      this._bitStors |= val.bitStore = 0b011011001
+        //      this._bits             = 0b010010001
+        //      val.bits               = 0b001001000
+        //      this._bits |= val.bits = 0b011011001
         // ```
         //
         this._bits |= val.bits;
@@ -216,10 +216,10 @@ export abstract class Bits32Set<
             //
             // Example:
             // ```
-            //      this._bitStore             = 0b10011001
-            //      val                        = 4
-            //      1 << val                   = 0b00001000 (4)
-            //      this._bitStore ^= 1 << val = 0b10010001 (bit at position `4` is reset to `0`)
+            //      this._bits             = 0b10011001
+            //      val                    = 4
+            //      1 << val               = 0b00001000 (4)
+            //      this._bits ^= 1 << val = 0b10010001 (bit at position `4` is reset to `0`)
             // ```
             //
             this._bits ^= 1 << val;
@@ -242,10 +242,10 @@ export abstract class Bits32Set<
         //
         // Example:
         // ```
-        //      this._bitStore                  = 0b10011001
-        //      val.bitStore                    = 0b01001001
-        //      ~val.bitStore                   = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
-        //      this._bitStore &= ~val.bitStore = 0b10010000
+        //      this._bits              = 0b10011001
+        //      val.bits                = 0b01001001
+        //      ~val.bits               = 0b10110110 (bit inversion gives us value that can be `&`-ed on)
+        //      this._bits &= ~val.bits = 0b10010000
         // ```
         //
         this._bits &= ~val.bits;
@@ -267,9 +267,9 @@ export abstract class Bits32Set<
         //
         // Example:
         // ```
-        //      this._bitStore                 = 0b10011001
-        //      val.bitStore                   = 0b01001001
-        //      this._bitStore &= val.bitStore = 0b00001001 (only 2 bits at the same position are `1`s)
+        //      this._bits             = 0b10011001
+        //      val.bits               = 0b01001001
+        //      this._bits &= val.bits = 0b00001001 (only 2 bits at the same position are `1`s)
         // ```
         //
         this._bits &= val.bits;
@@ -294,9 +294,9 @@ export abstract class Bits32Set<
         //
         // Example:
         // ```
-        //      this._bitStore        = 0b10011001
-        //      val                   = 0b01001001
-        //      this._bitStore &= val = 0b00001001 (only 2 bits at the same position are `1`s)
+        //      this._bits        = 0b10011001
+        //      val               = 0b01001001
+        //      this._bits &= val = 0b00001001 (only 2 bits at the same position are `1`s)
         // ```
         //
         this._bits &= val;

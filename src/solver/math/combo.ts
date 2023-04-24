@@ -187,11 +187,11 @@ export class Combo implements Iterable<number> {
         if (val.length === 0) {
             throw new RangeError('Combo should have at least 1 number');
         }
-        let bitStore = 0;
+        let bits = 0;
         for (const num of val) {
-            bitStore |= 1 << num;
+            bits |= 1 << num;
         }
-        return Combo.BY_NUMS_BITS[bitStore];
+        return Combo.BY_NUMS_BITS[bits];
     }
 
     static ofOne(val: number) {
