@@ -38,14 +38,14 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     reduce(combos: ReadonlyCombosSet) {
-        this._bitStore &= combos.bitStore;
+        this._bits &= combos.bitStore;
         this.onUpdate();
 
         return this.presentNumsSet;
     }
 
     protected get presentNumsSet() {
-        return this._combinatorics.combosNumsSetLut.reduce(this._bitStore, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
+        return this._combinatorics.combosNumsSetLut.reduce(this._bits, SudokuNumsSet.newEmpty(), SudokuNumsSet.accumulator);
     }
 
     hasCombo(combo?: Combo) {
@@ -57,7 +57,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     setCombosBits(val: BitStore32) {
-        this._bitStore = val;
+        this._bits = val;
         this.onUpdate();
     }
 
@@ -73,26 +73,26 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
 
     get combos() {
         if (this._isDirtyCache) {
-            this._combos = this._combinatorics.combosLut.collect(this._bitStore);
+            this._combos = this._combinatorics.combosLut.collect(this._bits);
             this._isDirtyCache = false;
         }
         return this._combos;
     }
 
     fill() {
-        this._bitStore = this._combinatorics.combosSet.bitStore;
+        this._bits = this._combinatorics.combosSet.bitStore;
         this.onUpdate();
         return this._combinatorics.allNumsSet;
     }
 
     clear() {
-        this._bitStore = 0;
+        this._bits = 0;
         this.onUpdate();
         return this;
     }
 
     clone() {
-        return new CombosSet(this._bitStore, this._combinatorics);
+        return new CombosSet(this._bits, this._combinatorics);
     }
 
     static newEmpty(combinatorics: SumCombinatorics) {

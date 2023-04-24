@@ -26,7 +26,7 @@ export abstract class Bits32Set<
     // One bit store in the form of a built-in `number` can store up to 32 bits,
     // which is more than enough to represents numbers in the range of [1, 9].
     //
-    protected _bitStore = 0;
+    protected _bits = 0;
 
     /**
      * Constructs new set from the unique numbers in the given array
@@ -42,7 +42,7 @@ export abstract class Bits32Set<
      */
     constructor(val: ReadonlyArray<number> | ROSET | BitStore32) {
         if (typeof val === 'number') {
-            this._bitStore = val;
+            this._bits = val;
         } else if (Array.isArray(val)) {
             for (const num of val) {
                 //
@@ -56,10 +56,10 @@ export abstract class Bits32Set<
                 //
                 // For `num = 1` and `num = 4` `bitStore` will be `0b000010010`.
                 //
-                this._bitStore |= 1 << num;
+                this._bits |= 1 << num;
             }
         } else {
-            this._bitStore = (val as ROSET).bitStore;
+            this._bits = (val as ROSET).bitStore;
         }
     }
 
@@ -67,21 +67,21 @@ export abstract class Bits32Set<
      * @see ReadonlySudokuNumsSet.bitStore
      */
     get bitStore() {
-        return this._bitStore;
+        return this._bits;
     }
 
     /**
      * @see ReadonlySudokuNumsSet.has
      */
     has(val: number) {
-        return (this._bitStore & (1 << val)) !== 0;
+        return (this._bits & (1 << val)) !== 0;
     }
 
     /**
      * @see ReadonlySudokuNumsSet.hasOnly
      */
     hasOnly(val: number) {
-        return this.has(val) && (this._bitStore & (this._bitStore - 1)) === 0;
+        return this.has(val) && (this._bits & (this._bits - 1)) === 0;
     }
 
     /**
@@ -113,14 +113,14 @@ export abstract class Bits32Set<
         //      (this._bitStore & val.bitStore) !== val.bitStore
         // ```
         //
-        return (this._bitStore & val.bitStore) === val.bitStore;
+        return (this._bits & val.bitStore) === val.bitStore;
     }
 
     /**
      * @see ReadonlyNumsSet.doesNotHave
      */
     doesNotHave(val: number) {
-        return (this._bitStore & (1 << val)) === 0;
+        return (this._bits & (1 << val)) === 0;
     }
 
     /**
@@ -149,7 +149,7 @@ export abstract class Bits32Set<
         //      (this._bitStore & val.bitStore) !== 0
         // ```
         //
-        return (this._bitStore & val.bitStore) === 0;
+        return (this._bits & val.bitStore) === 0;
     }
 
     /**
@@ -168,7 +168,7 @@ export abstract class Bits32Set<
         //  - ...
         //  - for `val = 8`, `bitStore` will be bitwise OR-ed with `0b10000000`;
         //
-        this._bitStore |= 1 << val;
+        this._bits |= 1 << val;
 
         this.onUpdate();
 
@@ -192,7 +192,7 @@ export abstract class Bits32Set<
         //      this._bitStors |= val.bitStore = 0b011011001
         // ```
         //
-        this._bitStore |= val.bitStore;
+        this._bits |= val.bitStore;
 
         this.onUpdate();
 
@@ -222,7 +222,7 @@ export abstract class Bits32Set<
             //      this._bitStore ^= 1 << val = 0b10010001 (bit at position `4` is reset to `0`)
             // ```
             //
-            this._bitStore ^= 1 << val;
+            this._bits ^= 1 << val;
 
             this.onUpdate();
         }
@@ -248,7 +248,7 @@ export abstract class Bits32Set<
         //      this._bitStore &= ~val.bitStore = 0b10010000
         // ```
         //
-        this._bitStore &= ~val.bitStore;
+        this._bits &= ~val.bitStore;
 
         this.onUpdate();
 
@@ -272,7 +272,7 @@ export abstract class Bits32Set<
         //      this._bitStore &= val.bitStore = 0b00001001 (only 2 bits at the same position are `1`s)
         // ```
         //
-        this._bitStore &= val.bitStore;
+        this._bits &= val.bitStore;
 
         this.onUpdate();
 
@@ -299,7 +299,7 @@ export abstract class Bits32Set<
         //      this._bitStore &= val = 0b00001001 (only 2 bits at the same position are `1`s)
         // ```
         //
-        this._bitStore &= val;
+        this._bits &= val;
 
         this.onUpdate();
 
@@ -317,21 +317,21 @@ export abstract class Bits32Set<
      * @see ReadonlyNumsSet.equals
      */
     equals(val: ROSET) {
-        return this._bitStore === val.bitStore;
+        return this._bits === val.bitStore;
     }
 
     /**
      * @see ReadonlyNumsSet.isEmpty
      */
     get isEmpty(): boolean {
-        return this._bitStore === 0;
+        return this._bits === 0;
     }
 
     /**
      * @see ReadonlyNumsSet.isNotEmpty
      */
     get isNotEmpty(): boolean {
-        return this._bitStore !== 0;
+        return this._bits !== 0;
     }
 
 }

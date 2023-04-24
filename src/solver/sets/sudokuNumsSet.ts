@@ -175,7 +175,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | BitStore32) {
         super(val);
 
-        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bits];
     }
 
     /**
@@ -243,7 +243,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     }
 
     get first(): number | undefined {
-        if (this._bitStore !== 0) {
+        if (this._bits !== 0) {
             return this._nums[0];
         }
     }
@@ -269,7 +269,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     }
 
     protected onUpdate() {
-        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bitStore];
+        this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bits];
     }
 
     /**
@@ -285,7 +285,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @see NumsSet.union
      */
     unionWithDeleted(val: ReadonlySudokuNumsSet): ReadonlySudokuNumsSet {
-        const oldBitStore = this._bitStore;
+        const oldBitStore = this._bits;
 
         this.union(val);
 
@@ -318,7 +318,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @see NumsSet.union
      */
     unionBitsWithDeleted(val: BitStore32): ReadonlySudokuNumsSet {
-        const oldBitStore = this._bitStore;
+        const oldBitStore = this._bits;
 
         this.unionBits(val);
 
@@ -338,7 +338,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     }
 
     setOne(val: number) {
-        this._bitStore = 1 << val;
+        this._bits = 1 << val;
         this.onUpdate();
     }
 
@@ -348,7 +348,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * @returns New set based on the copy of the state of this set.
      */
     clone() {
-        return new SudokuNumsSet(this._bitStore);
+        return new SudokuNumsSet(this._bits);
     }
 
 }
