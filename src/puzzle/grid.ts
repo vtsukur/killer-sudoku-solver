@@ -42,7 +42,7 @@ export class Grid {
      * Integer next to the sum of all numbers in a {@link Grid},
      * which is convenient for use in the ranges as the exclusive upper bound.
      */
-    static readonly SUM_PLUS_1 = this.SUM + 1;
+    static readonly SUM_RANGE_INCSLUSIVE_UPPER_BOUND = this.SUM + 1;
 
     /* istanbul ignore next */
     private constructor() {

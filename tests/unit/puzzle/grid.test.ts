@@ -24,7 +24,7 @@ describe('Unit tests for `Grid`', () => {
     });
 
     test('Integer next to the sum of all `Cell`s in the `Grid` is `406`', () => {
-        expect(Grid.SUM_PLUS_1).toEqual(406);
+        expect(Grid.SUM_RANGE_INCSLUSIVE_UPPER_BOUND).toEqual(406);
     });
 
     test('Creation of `GridMatrix`', () => {

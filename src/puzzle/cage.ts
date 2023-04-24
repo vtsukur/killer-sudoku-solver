@@ -79,8 +79,8 @@ export class Cage {
     }
 
     private static validateSum(val: number) {
-        if (!_.inRange(val, 1, Grid.SUM_PLUS_1)) {
-            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Grid.SUM_PLUS_1}). Actual: ${val}`);
+        if (!_.inRange(val, 1, Grid.SUM_RANGE_INCSLUSIVE_UPPER_BOUND)) {
+            Cage.throwValidationError(`Sum outside of range. Expected to be within [1, ${Grid.SUM_RANGE_INCSLUSIVE_UPPER_BOUND}). Actual: ${val}`);
         }
     }
 
