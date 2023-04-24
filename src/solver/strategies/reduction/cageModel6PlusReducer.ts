@@ -47,6 +47,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
         }
 
         let validComboNumsBits = 0;
+        let validCombosBits = 0;
         const noLongerValidCombos = new Array<Combo>();
         let noLongerValidComboNumsBits = 0;
         for (const combo of this._combosSet.combos) {
@@ -55,6 +56,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
 
             if (validCombo) {
                 validComboNumsBits |= combo.numsBits;
+                validCombosBits |= 1 << combo.index;
             } else {
                 noLongerValidCombos.push(combo);
                 noLongerValidComboNumsBits |= combo.numsBits;
@@ -68,9 +70,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
                 reduction.tryReduceNumOptsBits(cellM, deleteNumsBits, this._cageM);
             }
 
-            for (const noLongerValidCombo of noLongerValidCombos) {
-                this._combosSet.deleteCombo(noLongerValidCombo);
-            }
+            this._combosSet.setCombosBits(validCombosBits);
         }
     }
 
