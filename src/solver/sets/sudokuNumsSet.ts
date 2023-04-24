@@ -96,8 +96,10 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      */
     static readonly NUM_RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND];
 
-    // Numbers from 1 to 9 are marked as `1` bits on respective positions.
-    private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.NUM_RANGE.reduce(
+    /**
+     * Numbers from 1 to 9 are marked as `1` bits on respective positions.
+     */
+    static readonly ALL_SUDOKU_NUMS_BIT_STORE = this.NUM_RANGE.reduce(
         (prev, current) => prev | 1 << current, 0
     );
 
@@ -139,7 +141,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * ```
      */
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
-        _.range(this._ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
+        _.range(this.ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
 
     /**
      * Empty readonly set without any Sudoku numbers.
@@ -223,7 +225,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX_NUM} (inclusive).
      */
     static newAll() {
-        return new SudokuNumsSet(this._ALL_SUDOKU_NUMS_BIT_STORE);
+        return new SudokuNumsSet(this.ALL_SUDOKU_NUMS_BIT_STORE);
     }
 
     /**
@@ -263,7 +265,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore = 0b0100101110 (inversed `this.bitStore`)
         // ```
         //
-        return new SudokuNumsSet(SudokuNumsSet._ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
+        return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bitStore);
     }
 
     protected onUpdate() {
