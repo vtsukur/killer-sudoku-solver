@@ -46,7 +46,6 @@ export class CageModel6PlusReducer implements CageModelReducer {
             throw new InvalidSolverStateError(`Common combo nums bits ${commonComboNumsBits} not found in CellModels for Cage ${this._cageM.cage.key}`);
         }
 
-        const validCombos = [];
         const validComboNums = SudokuNumsSet.newEmpty();
         const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = SudokuNumsSet.newEmpty();
@@ -62,7 +61,6 @@ export class CageModel6PlusReducer implements CageModelReducer {
             }
 
             if (validCombo) {
-                validCombos.push(combo);
                 validComboNums.addAll(combo.numsSet);
             } else {
                 noLongerValidCombos.push(combo);
