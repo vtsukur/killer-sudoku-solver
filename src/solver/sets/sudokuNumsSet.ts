@@ -88,13 +88,13 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * Integer next to the maximum Sudoku number (`9`),
      * which is convenient for use in the ranges as the exclusive upper bound.
      */
-    static readonly MAX_NUM_PLUS_1 = this.MAX_NUM + 1;
+    static readonly MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND = this.MAX_NUM + 1;
 
     /**
      * Range of all possible Sudoku numbers (`[1, 9]`) which can be placed in a {@link Cell}
      * in the form of readonly array.
      */
-    static readonly NUM_RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM_PLUS_1];
+    static readonly NUM_RANGE = CachedNumRanges.ONE_TO_N_LTE_10[this.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND];
 
     // Numbers from 1 to 9 are marked as `1` bits on respective positions.
     private static readonly _ALL_SUDOKU_NUMS_BIT_STORE = this.NUM_RANGE.reduce(

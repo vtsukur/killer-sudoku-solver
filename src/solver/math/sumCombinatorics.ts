@@ -45,7 +45,7 @@ export class SumCombinatorics {
 
     static readonly BY_COUNT_BY_SUM: ReadonlyArray<ReadonlyArray<SumCombinatorics>> = (() => {
         const combosMap = new Array<Array<Array<Combo>>>(10);
-        for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM_PLUS_1]) {
+        for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND]) {
             combosMap[count] = CachedNumRanges.ZERO_TO_N_LTE_81[House.SUM_RANGE_INCSLUSIVE_UPPER_BOUND].map(() => []);
         }
 
@@ -57,7 +57,7 @@ export class SumCombinatorics {
         }
 
         const val = new Array<Array<SumCombinatorics>>(10);
-        for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM_PLUS_1]) {
+        for (const count of CachedNumRanges.ONE_TO_N_LTE_10[SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND]) {
             val[count] = combosMap[count].map(combosPerSum => new SumCombinatorics(combosPerSum.sort((a, b) => a.index - b.index)));
         }
 

@@ -82,7 +82,7 @@ export class Combo implements Iterable<number> {
         // while memory-wise, the cost is preserved throughout the execution
         // (as it reserves the place for `512` `undefined` `Combo`s in the array).
         //
-        const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_PLUS_1);
+        const PERMUTATIONS_COUNT = Math.pow(2, SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND);
 
         //
         // Step 1.

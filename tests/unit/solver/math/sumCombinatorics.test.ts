@@ -13,7 +13,7 @@ describe('Tests for `SumCombinatorics`', () => {
         rangeFromMinSumToX(SudokuNumsSet.MAX_NUM).forEach(sum => {
             expect(combos(sum, 1)).toEqual([ Combo.ofOne(sum) ]);
         });
-        rangeFromXToMaxSum(SudokuNumsSet.MAX_NUM_PLUS_1).forEach(sum => {
+        rangeFromXToMaxSum(SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND).forEach(sum => {
             expect(combos(sum, 1)).toEqual(NO_COMBOS);
         });
     });
