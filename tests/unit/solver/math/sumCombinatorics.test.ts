@@ -594,7 +594,7 @@ describe('Tests for `SumCombinatorics`', () => {
     };
 
     const rangeFromXToMaxSum = (x: number) => {
-        return _.range(x, House.SUM_PLUS_1);
+        return _.range(x, House.SUM_RANGE_INCSLUSIVE_UPPER_BOUND);
     };
 
     const NO_COMBOS: ReadonlyCombos = [];

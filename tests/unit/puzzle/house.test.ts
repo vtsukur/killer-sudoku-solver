@@ -23,7 +23,7 @@ describe('Unit tests for `House`', () => {
     });
 
     test('Integer next the sum of `Cell`s in a `House` is `46`', () => {
-        expect(House.SUM_PLUS_1).toEqual(46);
+        expect(House.SUM_RANGE_INCSLUSIVE_UPPER_BOUND).toEqual(46);
     });
 
 });
