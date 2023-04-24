@@ -1,6 +1,6 @@
 import { Cell, ReadonlyCells } from '../../puzzle/cell';
 import { Grid } from '../../puzzle/grid';
-import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
+import { Bits32, NumsSet, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -22,7 +22,7 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
     /**
      * Returns readonly array of the bit stores used for efficient checking for this set.
      */
-    get bits(): ReadonlyArray<BitStore32>;
+    get bits(): ReadonlyArray<Bits32>;
 
     /**
      * {@link Cell}s which are included in this set.
@@ -76,7 +76,7 @@ export class CellIndicesSet implements NumsSet<ReadonlyCellIndicesSet> {
     //  - `this._bits[1]` represents numbers in the range of [32, 63]
     //  - `this._bits[2]` represents numbers in the range of [64, 80] (not all bits are utilized in the last bit store)
     //
-    private readonly _bits: Array<BitStore32> = [ 0, 0, 0 ];
+    private readonly _bits: Array<Bits32> = [ 0, 0, 0 ];
 
     // As the built-in `number` is used as a bit storage, it can hold up to 32 bits.
     private static readonly _BITS_PER_BIT_STORE = 32;

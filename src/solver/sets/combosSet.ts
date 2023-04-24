@@ -1,6 +1,6 @@
 import { Combo, ReadonlyCombos, SumCombinatorics } from '../math';
 import { Bits32Set, ReadonlyBits32Set } from './bits32Set';
-import { BitStore32 } from './numsSet';
+import { Bits32 } from './numsSet';
 import { SudokuNumsSet } from './sudokuNumsSet';
 
 export interface ReadonlyCombosSet extends ReadonlyBits32Set<CombosSet> {
@@ -22,7 +22,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     private _isDirtyCache = true;
 
     protected constructor(
-            val: BitStore32,
+            val: Bits32,
             combinatorics: SumCombinatorics) {
         super(val);
         this._combinatorics = combinatorics;
@@ -56,7 +56,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
         this.add(combo.index);
     }
 
-    setCombosBits(val: BitStore32) {
+    setCombosBits(val: Bits32) {
         this._bits = val;
         this.onUpdate();
     }

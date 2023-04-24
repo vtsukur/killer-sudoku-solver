@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { Bits32Set } from './bits32Set';
-import { BitStore32, ReadonlyNumsSet } from './numsSet';
+import { Bits32, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 
 /**
@@ -20,7 +20,7 @@ export interface ReadonlySudokuNumsSet extends ReadonlyNumsSet<ReadonlySudokuNum
     /**
      * Returns copy of the bit storage used for efficient checking for this set.
      */
-    get bits(): BitStore32;
+    get bits(): Bits32;
 
     /**
      * Checks if this set has the given number.
@@ -162,7 +162,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
 
     /**
      * Constructs new set from the unique numbers in the given array
-     * or from another {@link ReadonlySudokuNumsSet} or from the {@link BitStore32}.
+     * or from another {@link ReadonlySudokuNumsSet} or from the {@link Bits32}.
      *
      * In case array is specified, only unique numbers are added to the set.
      * Number duplicates are silently ignored.
@@ -170,9 +170,9 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * Set is constructed as empty if no numbers are given.
      *
      * @param val - Readonly array of numbers or {@link ReadonlySudokuNumsSet}
-     * or {@link BitStore32} to construct this set from.
+     * or {@link Bits32} to construct this set from.
      */
-    constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | BitStore32) {
+    constructor(val: ReadonlyArray<number> | ReadonlySudokuNumsSet | Bits32) {
         super(val);
 
         this._nums = SudokuNumsSet._NUMS_ALL_PERMS_CACHE[this._bits];
@@ -317,7 +317,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      *
      * @see NumsSet.union
      */
-    unionBitsWithDeleted(val: BitStore32): ReadonlySudokuNumsSet {
+    unionBitsWithDeleted(val: Bits32): ReadonlySudokuNumsSet {
         const oldBits = this._bits;
 
         this.unionBits(val);

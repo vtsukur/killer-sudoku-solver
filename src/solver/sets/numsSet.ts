@@ -7,7 +7,7 @@
  *
  * @public
  */
-export type BitStore32 = number;
+export type Bits32 = number;
 
 /**
  * Numbers set with efficient storage & fast checking operations.

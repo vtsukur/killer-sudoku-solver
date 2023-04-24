@@ -1,6 +1,6 @@
 import { CellIndicesSet, ReadonlyCellIndicesSet } from './cellIndicesSet';
 import { CombosSet, ReadonlyCombosSet, ReadonlyCombosSets } from './combosSet';
-import { BitStore32, ReadonlyNumsSet } from './numsSet';
+import { Bits32, ReadonlyNumsSet } from './numsSet';
 import { PowersOf2Lut } from './powersOf2Lut';
 import { ReadonlySudokuNumsSet, SudokuNumsSet } from './sudokuNumsSet';
 
@@ -12,7 +12,7 @@ export {
     ReadonlyCombosSet,
     ReadonlyCombosSets,
 
-    BitStore32,
+    Bits32 as BitStore32,
     ReadonlyNumsSet,
 
     PowersOf2Lut,

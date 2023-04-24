@@ -1,11 +1,11 @@
-import { BitStore32, NumsSet, ReadonlyNumsSet } from './numsSet';
+import { Bits32, NumsSet, ReadonlyNumsSet } from './numsSet';
 
 export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<T>> {
 
     /**
      * Returns copy of the bit storage used for efficient checking for this set.
      */
-    get bits(): BitStore32;
+    get bits(): Bits32;
 
 }
 
@@ -30,7 +30,7 @@ export abstract class Bits32Set<
 
     /**
      * Constructs new set from the unique numbers in the given array
-     * or from another {@link ReadonlyBits32Set} or from the {@link BitStore32}.
+     * or from another {@link ReadonlyBits32Set} or from the {@link Bits32}.
      *
      * In case array is specified, only unique numbers are added to the set.
      * Number duplicates are silently ignored.
@@ -38,9 +38,9 @@ export abstract class Bits32Set<
      * Set is constructed as empty if no numbers are given.
      *
      * @param val - Readonly array of numbers or {@link ReadonlyBits32Set}
-     * or {@link BitStore32} to construct this set from.
+     * or {@link Bits32} to construct this set from.
      */
-    constructor(val: ReadonlyArray<number> | ROSET | BitStore32) {
+    constructor(val: ReadonlyArray<number> | ROSET | Bits32) {
         if (typeof val === 'number') {
             this._bits = val;
         } else if (Array.isArray(val)) {
@@ -287,7 +287,7 @@ export abstract class Bits32Set<
      *
      * @returns This set.
      */
-    unionBits(val: BitStore32): this {
+    unionBits(val: Bits32): this {
         //
         // Applying bitwise AND assignment on the bit store of this set
         // to `AND` `1`s from the bit store of the `val` set.
