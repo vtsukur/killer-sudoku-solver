@@ -50,15 +50,8 @@ export class CageModel6PlusReducer implements CageModelReducer {
         const noLongerValidCombos = new Array<Combo>();
         const noLongerValidComboNums = SudokuNumsSet.newEmpty();
         for (const combo of this._combosSet.combos) {
-            let validCombo = true;
-            for (const num of combo) {
-                if (commonComboNumsBits & (1 << num)) continue;
-
-                if ((presentNumsBits & (1 << num)) === 0) {
-                    validCombo = false;
-                    break;
-                }
-            }
+            const nonCommonComboNumsBits = combo.numsBits & ~commonComboNumsBits;
+            const validCombo = (presentNumsBits & nonCommonComboNumsBits) === nonCommonComboNumsBits;
 
             if (validCombo) {
                 validComboNums.addAll(combo.numsSet);
