@@ -5,7 +5,7 @@ export interface ReadonlyBits32Set<T> extends ReadonlyNumsSet<ReadonlyBits32Set<
     /**
      * Returns copy of the bit storage used for efficient checking for this set.
      */
-    get bitStore(): BitStore32;
+    get bits(): BitStore32;
 
 }
 
@@ -59,7 +59,7 @@ export abstract class Bits32Set<
                 this._bits |= 1 << num;
             }
         } else {
-            this._bits = (val as ROSET).bitStore;
+            this._bits = (val as ROSET).bits;
         }
     }
 
@@ -113,7 +113,7 @@ export abstract class Bits32Set<
         //      (this._bitStore & val.bitStore) !== val.bitStore
         // ```
         //
-        return (this._bits & val.bitStore) === val.bitStore;
+        return (this._bits & val.bits) === val.bits;
     }
 
     /**
@@ -149,7 +149,7 @@ export abstract class Bits32Set<
         //      (this._bitStore & val.bitStore) !== 0
         // ```
         //
-        return (this._bits & val.bitStore) === 0;
+        return (this._bits & val.bits) === 0;
     }
 
     /**
@@ -192,7 +192,7 @@ export abstract class Bits32Set<
         //      this._bitStors |= val.bitStore = 0b011011001
         // ```
         //
-        this._bits |= val.bitStore;
+        this._bits |= val.bits;
 
         this.onUpdate();
 
@@ -248,7 +248,7 @@ export abstract class Bits32Set<
         //      this._bitStore &= ~val.bitStore = 0b10010000
         // ```
         //
-        this._bits &= ~val.bitStore;
+        this._bits &= ~val.bits;
 
         this.onUpdate();
 
@@ -272,7 +272,7 @@ export abstract class Bits32Set<
         //      this._bitStore &= val.bitStore = 0b00001001 (only 2 bits at the same position are `1`s)
         // ```
         //
-        this._bits &= val.bitStore;
+        this._bits &= val.bits;
 
         this.onUpdate();
 
@@ -317,7 +317,7 @@ export abstract class Bits32Set<
      * @see ReadonlyNumsSet.equals
      */
     equals(val: ROSET) {
-        return this._bits === val.bitStore;
+        return this._bits === val.bits;
     }
 
     /**

@@ -38,7 +38,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     reduce(combos: ReadonlyCombosSet) {
-        this._bits &= combos.bitStore;
+        this._bits &= combos.bits;
         this.onUpdate();
 
         return this.presentNumsSet;
@@ -80,7 +80,7 @@ export class CombosSet extends Bits32Set<ReadonlyCombosSet> implements ReadonlyC
     }
 
     fill() {
-        this._bits = this._combinatorics.combosSet.bitStore;
+        this._bits = this._combinatorics.combosSet.bits;
         this.onUpdate();
         return this._combinatorics.allNumsSet;
     }
