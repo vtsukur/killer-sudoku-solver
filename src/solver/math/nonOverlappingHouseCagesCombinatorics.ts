@@ -7,7 +7,7 @@ import { SudokuNumsSet } from '../sets';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
 import { Combo, ReadonlyCombos } from './combo';
 import { NonOverlappingCagesAreaModel } from '../models/elements/nonOverlappingCagesAreaModel';
-import { BitStore32 } from '../sets';
+import { Bits32 } from '../sets';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HouseCagesCombinatorics, HouseCagesCombos } from './houseCagesCombinatorics';
 import { CombosSet } from '../sets';
@@ -281,7 +281,7 @@ class Context implements NonOverlappingHouseCagesCombinatorics {
 
     readonly allCagesSumCombinatorics: Array<SumCombinatorics>;
     readonly cageIndicesRange: ReadonlyArray<number>;
-    readonly usedCombosHashes: Array<Set<BitStore32>>;
+    readonly usedCombosHashes: Array<Set<Bits32>>;
     readonly enumerationPipeline: EnumerationPipeline;
     readonly usedCombos: Array<Combo>;
     readonly usedNums = SudokuNumsSet.newEmpty();

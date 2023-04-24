@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import { CachedNumRanges } from '../../util/cachedNumRanges';
-import { BitStore32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
+import { Bits32, ReadonlySudokuNumsSet, SudokuNumsSet } from '../sets';
 import { House } from '../../puzzle/house';
 
-type ComboNumsBitsAndNums = [ BitStore32, ReadonlyArray<number> ];
+type ComboNumsBitsAndNums = [ Bits32, ReadonlyArray<number> ];
 type CombosNumsBitsAndNums = Array<ComboNumsBitsAndNums>;
 type Sum = number;
 
@@ -22,7 +22,7 @@ export class Combo implements Iterable<number> {
      */
     readonly numsSet: ReadonlySudokuNumsSet;
 
-    readonly numsBits: BitStore32;
+    readonly numsBits: Bits32;
 
     readonly nums: ReadonlyArray<number>;
 

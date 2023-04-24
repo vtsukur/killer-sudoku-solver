@@ -12,7 +12,7 @@ export {
     ReadonlyCombosSet,
     ReadonlyCombosSets,
 
-    Bits32 as BitStore32,
+    Bits32,
     ReadonlyNumsSet,
 
     PowersOf2Lut,

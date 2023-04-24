@@ -28,7 +28,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(new SudokuNumsSet(new SudokuNumsSet([ 1, 6, 9 ])), [ 1, 6, 9 ]);
     });
 
-    test('Construction of `SudokuNumsSet` from `BitStore32`', () => {
+    test('Construction of `SudokuNumsSet` from `Bits32`', () => {
         expectSetWithValues(new SudokuNumsSet(1 << 1 | 1 << 6 | 1 << 9), [ 1, 6, 9 ]);
     });
 
