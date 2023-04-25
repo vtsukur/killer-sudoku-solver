@@ -14,6 +14,10 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expect(SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND).toEqual(10);
     });
 
+    test('All Sudoku numbers bits is 0b1111111110', () => {
+        expect(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE).toEqual(0b1111111110);
+    });
+
     test('Range of possibe Sudoku numbers [1, 9]', () => {
         expect(SudokuNumsSet.NUM_RANGE).toEqual([
             1, 2, 3, 4, 5, 6, 7, 8, 9
