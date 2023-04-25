@@ -64,7 +64,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
         }
 
         if (noLongerValidCombos.length > 0) {
-            const deleteNumsBits = SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ (noLongerValidComboNumsBits & ~validComboNumsBits);
+            const deleteNumsBits = SudokuNumsSet.ALL_SUDOKU_NUMS_BITS ^ (noLongerValidComboNumsBits & ~validComboNumsBits);
 
             for (const cellM of this._cellMs) {
                 reduction.tryReduceNumOptsBits(cellM, deleteNumsBits, this._cageM);

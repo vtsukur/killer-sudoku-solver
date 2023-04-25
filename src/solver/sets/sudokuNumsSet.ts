@@ -99,7 +99,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
     /**
      * Numbers from 1 to 9 are marked as `1` bits on respective positions.
      */
-    static readonly ALL_SUDOKU_NUMS_BIT_STORE = this.NUM_RANGE.reduce(
+    static readonly ALL_SUDOKU_NUMS_BITS = this.NUM_RANGE.reduce(
         (prev, current) => prev | 1 << current, 0
     );
 
@@ -141,7 +141,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * ```
      */
     private static readonly _NUMS_ALL_PERMS_CACHE: ReadonlyArray<ReadonlyArray<number>> =
-        _.range(this.ALL_SUDOKU_NUMS_BIT_STORE + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
+        _.range(this.ALL_SUDOKU_NUMS_BITS + 1).map(i => SudokuNumsSet._LOOKUP_TABLE.collect(i));
 
     /**
      * Empty readonly set without any Sudoku numbers.
@@ -225,7 +225,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      * in the range from {@link SudokuNumsSet.MIN_NUM} to {@link SudokuNumsSet.MAX_NUM} (inclusive).
      */
     static newAll() {
-        return new SudokuNumsSet(this.ALL_SUDOKU_NUMS_BIT_STORE);
+        return new SudokuNumsSet(this.ALL_SUDOKU_NUMS_BITS);
     }
 
     /**
@@ -260,12 +260,12 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
         //
         // Example:
         // ```
-        //      ALL_SUDOKU_NUMS_BIT_STORE             = 0b0111111111
-        //      this.bits                             = 0b0011010001
-        //      ALL_SUDOKU_NUMS_BIT_STORE ^ this.bits = 0b0100101110 (inversed `this.bits`)
+        //      ALL_SUDOKU_NUMS_BITS             = 0b0111111111
+        //      this.bits                        = 0b0011010001
+        //      ALL_SUDOKU_NUMS_BITS ^ this.bits = 0b0100101110 (inversed `this.bits`)
         // ```
         //
-        return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE ^ this.bits);
+        return new SudokuNumsSet(SudokuNumsSet.ALL_SUDOKU_NUMS_BITS ^ this.bits);
     }
 
     protected onUpdate() {

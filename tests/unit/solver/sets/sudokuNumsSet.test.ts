@@ -15,7 +15,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
     });
 
     test('All Sudoku numbers bits is 0b1111111110', () => {
-        expect(SudokuNumsSet.ALL_SUDOKU_NUMS_BIT_STORE).toEqual(0b1111111110);
+        expect(SudokuNumsSet.ALL_SUDOKU_NUMS_BITS).toEqual(0b1111111110);
     });
 
     test('Range of possibe Sudoku numbers [1, 9]', () => {
