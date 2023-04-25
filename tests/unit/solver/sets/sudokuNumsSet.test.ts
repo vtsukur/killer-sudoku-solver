@@ -2,23 +2,23 @@ import { ReadonlySudokuNumsSet, SudokuNumsSet } from '../../../../src/solver/set
 
 describe('Unit tests for `SudokuNumsSet`', () => {
 
-    test('Minimum Sudoku number is 1', () => {
+    test('Minimum Sudoku number is `1`', () => {
         expect(SudokuNumsSet.MIN_NUM).toEqual(1);
     });
 
-    test('Maximum Sudoku number is 9', () => {
+    test('Maximum Sudoku number is `9`', () => {
         expect(SudokuNumsSet.MAX_NUM).toEqual(9);
     });
 
-    test('Integer next to the maximum Sudoku number is 10', () => {
+    test('Integer next to the maximum Sudoku number is `10`', () => {
         expect(SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND).toEqual(10);
     });
 
-    test('All Sudoku numbers bits is 0b1111111110', () => {
+    test('All Sudoku numbers bits is `0b1111111110`', () => {
         expect(SudokuNumsSet.ALL_SUDOKU_NUMS_BITS).toEqual(0b1111111110);
     });
 
-    test('Range of possibe Sudoku numbers [1, 9]', () => {
+    test('Range of possibe Sudoku numbers is `[1, 9]`', () => {
         expect(SudokuNumsSet.NUM_RANGE).toEqual([
             1, 2, 3, 4, 5, 6, 7, 8, 9
         ]);
