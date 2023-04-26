@@ -310,7 +310,7 @@ const INLINE_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
 ];
 
 /**
- * Empty reducing function.
+ * Empty reduction function.
  */
 function NOTHING_TO_REDUCE() {
     // No-op.
