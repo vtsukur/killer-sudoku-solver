@@ -5,7 +5,7 @@ import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel3FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel3FullReducer';
 import { CageModel3Reducer } from '../../../../../src/solver/strategies/reduction/cageModel3Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { createAndInitCageM } from '../../../../perf/solver/models/elements/cageModelBuilders';
+import { createAndInitCageM } from '../../models/elements/cageModelBuilders';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
 describe('CageModel3Reducers', () => {
