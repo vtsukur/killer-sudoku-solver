@@ -215,97 +215,97 @@ export class CageModel2Reducer implements CageModelReducer {
  *
  * Full table of cases for the `Combo` of `[num1, num2]`:
  *
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | Input                                                                          | Reducing Actions                                                      | Output                                                      |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | Compressed State | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | 0b0000 =  0      | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b0001 =  1      | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
- * | 0b0010 =  2      | <none>                       | `num2`                       | <none>                   | delete `num2`            | yes             | <none>                       | <none>                       |
- * | 0b0011 =  3      | <none>                       | `num1`, `num2`               | <none>                   | delete `num1` and `num2` | yes             | <none>                       | <none>                       |
- * | 0b0100 =  4      | `num1`                       | <none>                       | delete `num1`            | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b0101 =  5      | `num1`                       | `num1`                       | delete `num1`            | delete `num1`            | yes             | <none>                       | <none>                       |
- * | 0b0110 =  6      | `num1`                       | `num2`                       | <none>                   | <none>                   | no              | `num1`                       | `num2`                       |
- * | 0b0111 =  7      | `num1`                       | `num1`, `num2`               | <none>                   | delete `num1`            | no              | `num1`                       | `num2`                       |
- * | 0b1000 =  8      | `num2`                       | <none>                       | delete `num2`            | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b1001 =  9      | `num2`                       | `num1`                       | <none>                   | <none>                   | no              | `num2`                       | `num1`                       |
- * | 0b1010 = 10      | `num2`                       | `num2`                       | delete `num2`            | delete `num2`            | yes             | <none>                       | <none>                       |
- * | 0b1011 = 11      | `num2`                       | `num1`, `num2`               | <none>                   | delete `num2`            | no              | `num2`                       | `num1`                       |
- * | 0b1100 = 12      | `num1`, `num2`               | <none>                       | delete `num1` and `num2` | <none>                   | yes             | <none>                       | <none>                       |
- * | 0b1101 = 13      | `num1`, `num2`               | `num1`                       | delete `num1`            | <none>                   | no              | `num2`                       | `num1`                       |
- * | 0b1110 = 14      | `num1`, `num2`               | `num2`                       | delete `num2`            | <none>                   | no              | `num1`                       | `num2`                       |
- * | 0b1111 = 15      | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
- * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | Input                                                                                 | Reducing Actions                                                      | Output                                                      |
+ * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | _Present Numbers_ State | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
+ * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | 0b0000 =  0             | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b0001 =  1             | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
+ * | 0b0010 =  2             | <none>                       | `num2`                       | <none>                   | delete `num2`            | yes             | <none>                       | <none>                       |
+ * | 0b0011 =  3             | <none>                       | `num1`, `num2`               | <none>                   | delete `num1` and `num2` | yes             | <none>                       | <none>                       |
+ * | 0b0100 =  4             | `num1`                       | <none>                       | delete `num1`            | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b0101 =  5             | `num1`                       | `num1`                       | delete `num1`            | delete `num1`            | yes             | <none>                       | <none>                       |
+ * | 0b0110 =  6             | `num1`                       | `num2`                       | <none>                   | <none>                   | no              | `num1`                       | `num2`                       |
+ * | 0b0111 =  7             | `num1`                       | `num1`, `num2`               | <none>                   | delete `num1`            | no              | `num1`                       | `num2`                       |
+ * | 0b1000 =  8             | `num2`                       | <none>                       | delete `num2`            | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b1001 =  9             | `num2`                       | `num1`                       | <none>                   | <none>                   | no              | `num2`                       | `num1`                       |
+ * | 0b1010 = 10             | `num2`                       | `num2`                       | delete `num2`            | delete `num2`            | yes             | <none>                       | <none>                       |
+ * | 0b1011 = 11             | `num2`                       | `num1`, `num2`               | <none>                   | delete `num2`            | no              | `num2`                       | `num1`                       |
+ * | 0b1100 = 12             | `num1`, `num2`               | <none>                       | delete `num1` and `num2` | <none>                   | yes             | <none>                       | <none>                       |
+ * | 0b1101 = 13             | `num1`, `num2`               | `num1`                       | delete `num1`            | <none>                   | no              | `num2`                       | `num1`                       |
+ * | 0b1110 = 14             | `num1`, `num2`               | `num2`                       | delete `num2`            | <none>                   | no              | `num1`                       | `num2`                       |
+ * | 0b1111 = 15             | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
+ * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const INLINE_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
-    // `0b00_00 = 0`
+    // Element index is the _present numbers_ state: `0b00_00 = 0`
     (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
     },
-    // `0b00_01 = 1`
+    // Element index is the _present numbers_ state: `0b00_01 = 1`
     (reduction, cageM, combosSet, combo, cellM1, _cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // `0b00_10 = 2`
+    // Element index is the _present numbers_ state: `0b00_10 = 2`
     (reduction, cageM, combosSet, combo, cellM1, _cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // `0b00_11 = 3`
+    // Element index is the _present numbers_ state: `0b00_11 = 3`
     (reduction, cageM, combosSet, combo, cellM1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM1, combo, cageM);
     },
-    // `0b01_00 = 4`
+    // Element index is the _present numbers_ state: `0b01_00 = 4`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b01_01 = 5`
+    // Element index is the _present numbers_ state: `0b01_01 = 5`
     (reduction, cageM, combosSet, combo, cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b01_10 = 6`
+    // Element index is the _present numbers_ state: `0b01_10 = 6`
     NOTHING_TO_REDUCE,
-    // `0b01_11 = 7`
+    // Element index is the _present numbers_ state: `0b01_11 = 7`
     (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, num1) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // `0b10_00 = 8`
+    // Element index is the _present numbers_ state: `0b10_00 = 8`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b10_01 = 9`
+    // Element index is the _present numbers_ state: `0b10_01 = 9`
     NOTHING_TO_REDUCE,
-    // `0b10_10 = 10`
+    // Element index is the _present numbers_ state: `0b10_10 = 10`
     (reduction, cageM, combosSet, combo, cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b10_11 = 11`
+    // Element index is the _present numbers_ state: `0b10_11 = 11`
     (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // `0b11_00 = 12`
+    // Element index is the _present numbers_ state: `0b11_00 = 12`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM2, combo, cageM);
     },
-    // `0b11_01 = 13`
+    // Element index is the _present numbers_ state: `0b11_01 = 13`
     (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, num1) => {
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // `0b11_10 = 14`
+    // Element index is the _present numbers_ state: `0b11_10 = 14`
     (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // `0b11_11 = 15`
+    // Element index is the _present numbers_ state: `0b11_11 = 15`
     NOTHING_TO_REDUCE
 ];
 
