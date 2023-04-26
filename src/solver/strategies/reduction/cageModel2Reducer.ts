@@ -30,33 +30,33 @@ type InlineTacticalReducer = (
 export class CageModel2Reducer implements CageModelReducer {
 
     /**
-     * The {@link CageModel} to reduce.
+     * {@link CageModel} to reduce.
      */
     private readonly _cageM: CageModel;
 
     /**
-     * Cache for the {@link CageModel}'s {@link CombosSet}.
+     * Cached reference for the {@link CageModel}'s {@link CombosSet}.
      */
     private readonly _combosSet: CombosSet;
 
     /**
-     * Cache for the first {@link CellModel} of the {@link CageModel}.
+     * Cached reference for the first {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM1: CellModel;
 
     /**
-     * Cache for {@link SudokuNumsSet} of possible number's options
+     * Cached reference for the {@link SudokuNumsSet} of possible numbers
      * for the first {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM1NumsSet: ReadonlySudokuNumsSet;
 
     /**
-     * Cache for the second {@link CellModel} of the {@link CageModel}.
+     * Cached reference for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2: CellModel;
 
     /**
-     * Cache for {@link SudokuNumsSet} of possible number's options
+     * Cached reference for the {@link SudokuNumsSet} of possible numbers
      * for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2NumsSet: ReadonlySudokuNumsSet;
