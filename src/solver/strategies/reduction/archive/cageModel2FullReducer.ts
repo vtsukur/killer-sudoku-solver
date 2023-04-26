@@ -1,5 +1,6 @@
 import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
+import { CombosSet } from '../../../sets';
 import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 
@@ -16,6 +17,11 @@ export class CageModel2FullReducer implements CageModelReducer {
      * {@link CageModel} to reduce.
      */
     private readonly _cageM: CageModel;
+
+    /**
+     * Cached reference for the {@link CageModel}'s {@link CombosSet}.
+     */
+    private readonly _combosSet: CombosSet;
 
     /**
      * Cached reference for the first {@link CellModel} of the {@link CageModel}.
@@ -42,6 +48,7 @@ export class CageModel2FullReducer implements CageModelReducer {
         // Caching references for faster access in the `reduce` method.
         // These references do *not* change across the `CageModel`s lifetime.
         //
+        this._combosSet = cageM.comboSet;
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
     }
@@ -54,7 +61,7 @@ export class CageModel2FullReducer implements CageModelReducer {
         // [PERFORMANCE] This implementation uses the following techniques to do fast work:
         //
         //  - All underlying data structures use bit manipulation for efficiency.
-        //  - Access all relevant data just once:
+        //  - Accessing all relevant data just once:
         //  `CellModel`s, `Combo` numbers, check for the presence of numbers in `CellModel`s, and others.
         //  - Short-circuit in conditions if there is nothing to do.
         //  - Hierarchical-dependent conditions eliminate the need for double-checks.
@@ -63,10 +70,8 @@ export class CageModel2FullReducer implements CageModelReducer {
         // Again, for performance reasons.
         //
 
-        const combosSet = this._cageM.comboSet;
-
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
-        for (const combo of combosSet.combos) {
+        for (const combo of this._combosSet.combos) {
 
             //
             // Storing `Combo`'s unique numbers to access the object once for each number.
@@ -128,7 +133,7 @@ export class CageModel2FullReducer implements CageModelReducer {
                     //
                     if (cell1HasNum2) reduction.deleteNumOpt(this._cellM1, num2, this._cageM);
                     if (cell2HasNum2) reduction.deleteNumOpt(this._cellM2, num2, this._cageM);
-                    combosSet.deleteCombo(combo);
+                    this._combosSet.deleteCombo(combo);
                 } else if (cell2HasNum2) {
                     //
                     // If the first `CellModel` does *not* have the first `Combo` number
@@ -205,7 +210,7 @@ export class CageModel2FullReducer implements CageModelReducer {
                     //
                     if (cell1HasNum1) reduction.deleteNumOpt(this._cellM1, num1, this._cageM);
                     if (cell2HasNum1) reduction.deleteNumOpt(this._cellM2, num1, this._cageM);
-                    combosSet.deleteCombo(combo);
+                    this._combosSet.deleteCombo(combo);
                 } else if (cell2HasNum1) {
                     //
                     // If the first `CellModel` does *not* have the second `Combo` number
@@ -253,7 +258,7 @@ export class CageModel2FullReducer implements CageModelReducer {
                     // ```
                     //
                     if (!this._cellM2.hasNumOpt(num2)) {
-                        combosSet.deleteCombo(combo);
+                        this._combosSet.deleteCombo(combo);
                     }
                 }
             } else if (!cell2HasNum1) {
@@ -303,7 +308,7 @@ export class CageModel2FullReducer implements CageModelReducer {
                 // ```
                 //
                 if (!this._cellM1.hasNumOpt(num1)) {
-                    combosSet.deleteCombo(combo);
+                    this._combosSet.deleteCombo(combo);
                 }
             }
         }
