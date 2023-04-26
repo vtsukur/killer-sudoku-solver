@@ -9,7 +9,7 @@ import { MasterModelReduction } from './masterModelReduction';
  * Type alias for pre-coded _inline reduction_ function
  * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  */
-type InlinedTacticalReducer = (
+type InlineTacticalReducer = (
         reduction: MasterModelReduction,
         cageM: CageModel,
         combosSet: CombosSet,
@@ -233,7 +233,7 @@ export class CageModel2Reducer implements CageModelReducer {
  * | 0b1111 = 15      | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
-const INLINED_TACTICAL_REDUCERS: ReadonlyArray<InlinedTacticalReducer> = [
+const INLINED_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
     // `0b00_00 = 0`
     (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
