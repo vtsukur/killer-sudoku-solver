@@ -13,17 +13,17 @@ import { MasterModelReduction } from '../masterModelReduction';
 export class CageModel2FullReducer implements CageModelReducer {
 
     /**
-     * The {@link CageModel} to reduce.
+     * {@link CageModel} to reduce.
      */
     private readonly _cageM: CageModel;
 
     /**
-     * The first {@link CellModel} of the {@link CageModel}.
+     * Cached reference for the first {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM1: CellModel;
 
     /**
-     * The second {@link CellModel} of the {@link CageModel}.
+     * Cached reference for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2: CellModel;
 
@@ -35,6 +35,13 @@ export class CageModel2FullReducer implements CageModelReducer {
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
+
+        //
+        // [PERFORMANCE]
+        //
+        // Caching references for faster access in the `reduce` method.
+        // These references do *not* change across the `CageModel`s lifetime.
+        //
         this._cellM1 = cageM.cellMs[0];
         this._cellM2 = cageM.cellMs[1];
     }
