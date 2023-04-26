@@ -151,7 +151,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // (both present numbers `5` and `6` set both first and second bits)
             //
             // Compound state: `0b1101`
-            // (shift to the right happens for the compressed state for the second `CellModel`
+            // (shift to the right happens for the present numbers state for the second `CellModel`
             // to form the joint 4-bit integer)
             // ```
             //
@@ -173,7 +173,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // (having both `5` and `6` absent clears both bits)
             //
             // Compound state: `0b0010`
-            // (shift to the right happens for the compressed state for the second `CellModel`
+            // (shift to the right happens for the present numbers state for the second `CellModel`
             // to form the joint 4-bit integer)
             // ```
             //
@@ -205,7 +205,7 @@ export class CageModel2Reducer implements CageModelReducer {
  * Readonly array of 16 pre-coded _inline reduction_ functions
  * with hardcoded actions relevant to the presence of specific `Combo` numbers in the `CellModel`s.
  *
- * _Inline reduction_ functions are indexed by a 4-bit compressed state
+ * _Inline reduction_ functions are indexed by a 4-bit state
  * representing the presence of `Combo` numbers within `CellModel`s:
  *
  *  - The first bit is set if the first `Combo` number is possible in the first CellModel`.
