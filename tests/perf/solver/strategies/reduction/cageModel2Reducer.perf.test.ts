@@ -1,14 +1,11 @@
-import { Cell } from '../../../../../src/puzzle/cell';
-import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel2FullReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2FullReducer';
 import { Combo } from '../../../../../src/solver/math';
-import { LockableCellModel } from './lockableCellModel';
-import { LockableCageModel } from './lockableCageModel';
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
+import { createAndInitPerfCageM } from '../../models/elements/cageModelBuilder.perf';
 
 const IS_RUN_SLOWER_ALTERNATIVES = false;
 
@@ -16,7 +13,7 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     test('Comparable test for 1 `Combo`, 3 present numbers and 5 deleted numbers', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(9),
+            createReferenceCageModel: () => createAndInitPerfCageM(2, 9),
             prepareForReduction: (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 4, 5, 7));
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4));
@@ -46,7 +43,7 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     test('Comparable test for 2 `Combo`s, 5 present numbers and 11 deleted numbers', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(9),
+            createReferenceCageModel: () => createAndInitPerfCageM(2, 9),
             prepareForReduction: (cageM, reduction) => {
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(4, 5));
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
@@ -77,7 +74,7 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     test('Comparable test for 2 `Combo`s, 3 present numbers and 1 deleted number', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(14),
+            createReferenceCageModel: () => createAndInitPerfCageM(2, 14),
             prepareForReduction: (cageM, reduction) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8, 9));
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
@@ -106,7 +103,7 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     test('Comparable test from real production scenario #1', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(10),
+            createReferenceCageModel: () => createAndInitPerfCageM(2, 10),
             prepareForReduction: (cageM, reduction) => {
                 reduction.tryReduceNumOpts(cageM.cellMs[0], SudokuNumsSet.of(1, 3, 4, 6, 7, 9));
                 reduction.tryReduceNumOpts(cageM.cellMs[1], SudokuNumsSet.of(1, 2, 4, 7));
@@ -125,23 +122,6 @@ describe('Performance tests for `CageModel2Reducer`', () => {
             }
         });
     });
-
-    const createReferenceCageM = (sum: number) => {
-        const cell1 = Cell.at(0, 0);
-        const cell2 = Cell.at(0, 1);
-        const cage = Cage.ofSum(sum).withCell(cell1).withCell(cell2).new();
-
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
-        const cageM = new LockableCageModel(cage, [ cellM1, cellM2 ]);
-
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-
-        cageM.initialReduce();
-
-        return cageM;
-    };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         if (IS_RUN_SLOWER_ALTERNATIVES) {
