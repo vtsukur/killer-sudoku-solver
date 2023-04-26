@@ -6,7 +6,7 @@ import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
- * Type alias for pre-coded _inlined reduction_ function
+ * Type alias for pre-coded _inline reduction_ function
  * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  */
 type InlinedTacticalReducer = (
@@ -95,7 +95,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // [PERFORMANCE]
             //
             // The following code achieves high performance
-            // by determining and running a particular pre-coded _inlined reduction_ function
+            // by determining and running a particular pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
             // Overall, there are 16 distinct permutations of _numbers' presence_ states
@@ -183,7 +183,7 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // Running a determined pre-coded _inlined reduction_ function
+            // Running a determined pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
             INLINED_TACTICAL_REDUCERS[numbersPresenceState](
@@ -197,10 +197,10 @@ export class CageModel2Reducer implements CageModelReducer {
 }
 
 /**
- * Readonly array of 16 pre-coded _inlined reduction_ functions
+ * Readonly array of 16 pre-coded _inline reduction_ functions
  * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
  *
- * _Inlined reduction_ functions are indexed by a 4-bit compressed state
+ * _Inline reduction_ functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
  *
  *  - The first bit is set if the first `Combo` number is possible in the first CellModel`.
