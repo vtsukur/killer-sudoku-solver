@@ -7,7 +7,7 @@ import { MasterModelReduction } from './masterModelReduction';
 
 /**
  * Type alias for pre-coded _inline reduction_ function
- * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
+ * with hardcoded actions relevant to the presence of specific `Combo` numbers in the `CellModel`s.
  */
 type InlineTacticalReducer = (
         reduction: MasterModelReduction,
@@ -203,7 +203,7 @@ export class CageModel2Reducer implements CageModelReducer {
 
 /**
  * Readonly array of 16 pre-coded _inline reduction_ functions
- * with hardcoded actions relevant to the specific `Combo` numbers in the `CellModel`s.
+ * with hardcoded actions relevant to the presence of specific `Combo` numbers in the `CellModel`s.
  *
  * _Inline reduction_ functions are indexed by a 4-bit compressed state
  * representing the presence of `Combo` numbers within `CellModel`s:
