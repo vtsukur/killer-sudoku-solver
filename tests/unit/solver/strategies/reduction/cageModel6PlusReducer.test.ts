@@ -1,19 +1,21 @@
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { SudokuNumsSet } from '../../../../../src/solver/sets';
+import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel6PlusReducer } from '../../../../../src/solver/strategies/reduction/cageModel6PlusReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { createAndInitCageM } from '../../../../perf/solver/models/elements/cageModelBuilders';
 
 describe('CageModel6PlusReducer', () => {
 
-    let cellMs: Array<CellModel>;
     let cageM: CageModel;
+    let cageMCombosSet: CombosSet;
+    let cellMs: Array<CellModel>;
     let reduction: MasterModelReduction;
 
     const createAndInitiCageMAndMasterModelReduction = (count: number, sum: number) => {
         cageM = createAndInitCageM(count, sum);
+        cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
 
         reduction = new MasterModelReduction();
@@ -41,7 +43,7 @@ describe('CageModel6PlusReducer', () => {
         expect(cellMs[3].numOpts()).toEqual([ 1, 2, 7, 8 ]);
         expect(cellMs[4].numOpts()).toEqual([ 1, 2, 7, 8 ]);
         expect(cellMs[5].numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 3, 4, 8, 9),
             // Deleted: Combo.of(1, 2, 3, 5, 7, 9),
             Combo.of(1, 2, 4, 5, 7, 8)
@@ -76,7 +78,7 @@ describe('CageModel6PlusReducer', () => {
         expect(cellMs[4].numOpts()).toEqual([ 3 ]);
         expect(cellMs[5].numOpts()).toEqual([ 1, 6 ]);
         expect(cellMs[6].numOpts()).toEqual([ 4, 7 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 3, 4, 5, 8, 9),
             Combo.of(1, 2, 3, 4, 6, 7, 9),
             // Deleted: Combo.of(1, 2, 3, 5, 6, 7, 8)
