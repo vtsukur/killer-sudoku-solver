@@ -13,7 +13,7 @@ describe('CageModel5Reducer', () => {
     let cellMs: ReadonlyArray<CellModel>;
     let reduction: MasterModelReduction;
 
-    const createAndInitCageMAndMasterModelReduction = (sum: number) => {
+    const createAndInitCageMAndReduction = (sum: number) => {
         cageM = createAndInitCageM(5, sum);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
@@ -25,7 +25,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #1', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(22);
+        createAndInitCageMAndReduction(22);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(3, 4, 5, 7, 8, 9));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 3, 4, 5, 6, 7));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(4, 7));
@@ -61,7 +61,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #2', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(24);
+        createAndInitCageMAndReduction(24);
         cageMCombosSet.deleteCombo(Combo.of(1, 3, 4, 7, 9));
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
@@ -95,7 +95,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #3', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(24);
+        createAndInitCageMAndReduction(24);
         cageMCombosSet.deleteCombo(Combo.of(1, 4, 5, 6, 8));
         cageMCombosSet.deleteCombo(Combo.of(2, 3, 4, 7, 8));
         cageMCombosSet.deleteCombo(Combo.of(2, 4, 5, 6, 7));
@@ -128,7 +128,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #4', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(23);
+        createAndInitCageMAndReduction(23);
         cageMCombosSet.deleteCombo(Combo.of(1, 2, 4, 7, 9));
         cageMCombosSet.deleteCombo(Combo.of(1, 3, 4, 7, 8));
         cageMCombosSet.deleteCombo(Combo.of(1, 3, 5, 6, 8));
@@ -166,7 +166,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #5', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(20);
+        createAndInitCageMAndReduction(20);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 5));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(1, 3, 4));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 3, 4));
@@ -195,7 +195,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #6', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(25);
+        createAndInitCageMAndReduction(25);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(1, 9));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(5));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 3, 9));
@@ -234,7 +234,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #7', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(24);
+        createAndInitCageMAndReduction(24);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 7));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(3));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 9));
@@ -272,7 +272,7 @@ describe('CageModel5Reducer', () => {
 
     test('Reduces case from real production scenario #8', () => {
         // Given:
-        createAndInitCageMAndMasterModelReduction(20);
+        createAndInitCageMAndReduction(20);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(2, 7));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(4));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1));
