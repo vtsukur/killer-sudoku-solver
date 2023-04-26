@@ -13,8 +13,8 @@ describe('CageModel6PlusReducer', () => {
     let cellMs: Array<CellModel>;
     let reduction: MasterModelReduction;
 
-    const createAndInitCageMAndReduction = (count: number, sum: number) => {
-        cageM = createAndInitCageM(count, sum);
+    const createAndInitCageMAndReduction = (cellCount: number, sum: number) => {
+        cageM = createAndInitCageM(cellCount, sum);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
 
