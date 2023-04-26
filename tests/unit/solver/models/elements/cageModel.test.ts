@@ -1,4 +1,5 @@
 import { Combo } from '../../../../../src/solver/math';
+import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { createAndInitCageM } from './cageModelBuilder';
 
@@ -73,13 +74,13 @@ describe('Unit tests for `CageModel`', () => {
             Combo.of(1, 2, 3, 4, 6, 7, 8)
         ]);
 
-        cageM.cellMs[0].deleteNumOpt(3); cageM.cellMs[0].deleteNumOpt(9);
-        cageM.cellMs[1].deleteNumOpt(3); cageM.cellMs[1].deleteNumOpt(9);
-        cageM.cellMs[2].deleteNumOpt(3); cageM.cellMs[2].deleteNumOpt(9);
-        cageM.cellMs[3].deleteNumOpt(4); cageM.cellMs[3].deleteNumOpt(8); cageM.cellMs[3].deleteNumOpt(9);
-        cageM.cellMs[4].deleteNumOpt(4); cageM.cellMs[4].deleteNumOpt(8); cageM.cellMs[4].deleteNumOpt(9);
-        cageM.cellMs[5].deleteNumOpt(4); cageM.cellMs[5].deleteNumOpt(8); cageM.cellMs[5].deleteNumOpt(9);
-        cageM.cellMs[6].deleteNumOpt(4); cageM.cellMs[6].deleteNumOpt(7); cageM.cellMs[6].deleteNumOpt(8); cageM.cellMs[6].deleteNumOpt(9);
+        cageM.cellMs[0].deleteNumOpts(SudokuNumsSet.of(3, 9));
+        cageM.cellMs[1].deleteNumOpts(SudokuNumsSet.of(3, 9));
+        cageM.cellMs[2].deleteNumOpts(SudokuNumsSet.of(3, 9));
+        cageM.cellMs[3].deleteNumOpts(SudokuNumsSet.of(4, 8, 9));
+        cageM.cellMs[4].deleteNumOpts(SudokuNumsSet.of(4, 8, 9));
+        cageM.cellMs[5].deleteNumOpts(SudokuNumsSet.of(4, 8, 9));
+        cageM.cellMs[6].deleteNumOpts(SudokuNumsSet.of(4, 7, 8, 9));
 
         cageM.reduce(reduction);
 
