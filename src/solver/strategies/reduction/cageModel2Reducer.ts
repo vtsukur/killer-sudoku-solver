@@ -21,9 +21,11 @@ type InlineTacticalReducer = (
     ) => void;
 
 /**
- * Reduces possible numbers for {@link CellModel}s
- * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s
- * by checking the validity of numbers given possible {@link Combo}s for the {@link CageModel}.
+ * High-performance implementation of reducer of possible numbers for {@link CellModel}s
+ * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
+ *
+ * Checks the validity of numbers given possible {@link Combo}s for the {@link CageModel}
+ * and executes fast _inline reduction_ function according to the _present numbers_ state.
  *
  * @public
  */
