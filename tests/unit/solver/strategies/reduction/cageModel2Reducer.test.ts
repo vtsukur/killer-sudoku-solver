@@ -6,7 +6,7 @@ import { CageModel2Reducer } from '../../../../../src/solver/strategies/reductio
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
-import { createAndInitCageM } from '../../models/elements/cageModelBuilders';
+import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 import { CombosSet } from '../../../../../src/solver/sets';
 
 describe('CageModel2Reducers', () => {

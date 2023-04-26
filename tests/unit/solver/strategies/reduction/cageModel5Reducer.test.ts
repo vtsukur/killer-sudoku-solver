@@ -4,7 +4,7 @@ import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel5Reducer } from '../../../../../src/solver/strategies/reduction/cageModel5Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { createAndInitCageM } from '../../models/elements/cageModelBuilders';
+import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 
 describe('CageModel5Reducer', () => {
 
