@@ -1,6 +1,6 @@
 import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
-import { CombosSet } from '../../../sets';
+import { CombosSet, ReadonlySudokuNumsSet } from '../../../sets';
 import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 
@@ -29,9 +29,21 @@ export class CageModel2FullReducer implements CageModelReducer {
     private readonly _cellM1: CellModel;
 
     /**
+     * Cached reference for the {@link SudokuNumsSet} of possible numbers
+     * for the first {@link CellModel} of the {@link CageModel}.
+     */
+    private readonly _cellM1NumsSet: ReadonlySudokuNumsSet;
+
+    /**
      * Cached reference for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2: CellModel;
+
+    /**
+     * Cached reference for the {@link SudokuNumsSet} of possible numbers
+     * for the second {@link CellModel} of the {@link CageModel}.
+     */
+    private readonly _cellM2NumsSet: ReadonlySudokuNumsSet;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
@@ -50,7 +62,9 @@ export class CageModel2FullReducer implements CageModelReducer {
         //
         this._combosSet = cageM.comboSet;
         this._cellM1 = cageM.cellMs[0];
+        this._cellM1NumsSet = this._cellM1._numOptsSet;
         this._cellM2 = cageM.cellMs[1];
+        this._cellM2NumsSet = this._cellM2._numOptsSet;
     }
 
     /**
@@ -70,6 +84,13 @@ export class CageModel2FullReducer implements CageModelReducer {
         // Again, for performance reasons.
         //
 
+        //
+        // [PERFORMANCE] Storing possible numbers for both `CellModel`s as bit masks
+        // for efficient low-level check and manipulation of possible numbers.
+        //
+        const cellM1NumsBits = this._cellM1NumsSet.bits;
+        const cellM2NumsBits = this._cellM2NumsSet.bits;
+
         // Iterating over each registered `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
 
@@ -82,10 +103,10 @@ export class CageModel2FullReducer implements CageModelReducer {
             const num2 = combo.number2;
 
             // Checking the presence of each `Combo` number for each `CellModel` just once.
-            const cell1HasNum1 = this._cellM1.hasNumOpt(num1);
-            const cell1HasNum2 = this._cellM1.hasNumOpt(num2);
-            const cell2HasNum1 = this._cellM2.hasNumOpt(num1);
-            const cell2HasNum2 = this._cellM2.hasNumOpt(num2);
+            const cell1HasNum1 = cellM1NumsBits & (1 << num1);
+            const cell1HasNum2 = cellM1NumsBits & (1 << num2);
+            const cell2HasNum1 = cellM2NumsBits & (1 << num1);
+            const cell2HasNum2 = cellM2NumsBits & (1 << num2);
 
             //
             // Proceeding to reduction if and only if
