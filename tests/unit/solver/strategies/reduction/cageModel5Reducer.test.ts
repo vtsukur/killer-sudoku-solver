@@ -1,7 +1,7 @@
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
-import { SudokuNumsSet } from '../../../../../src/solver/sets';
+import { CombosSet, SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel5Reducer } from '../../../../../src/solver/strategies/reduction/cageModel5Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { createAndInitCageM } from '../../../../perf/solver/models/elements/cageModelBuilders';
@@ -9,11 +9,13 @@ import { createAndInitCageM } from '../../../../perf/solver/models/elements/cage
 describe('CageModel5Reducer', () => {
 
     let cageM: CageModel;
+    let cageMCombosSet: CombosSet;
     let cellMs: ReadonlyArray<CellModel>;
     let reduction: MasterModelReduction;
 
     const createAndInitCageMAndMasterModelReduction = (sum: number) => {
         cageM = createAndInitCageM(5, sum);
+        cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
 
         reduction = new MasterModelReduction();
@@ -39,7 +41,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 4, 7 ]);
         expect(cellMs[3].numOpts()).toEqual([ 5, 8 ]);
         expect(cellMs[4].numOpts()).toEqual([ 1, 2 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 3, 7, 9),
             // Deleted: Combo.of(1, 2, 4, 6, 9),
             Combo.of(1, 2, 4, 7, 8),
@@ -60,7 +62,7 @@ describe('CageModel5Reducer', () => {
     test('Reduces case from real production scenario #2', () => {
         // Given:
         createAndInitCageMAndMasterModelReduction(24);
-        cageM.comboSet.deleteCombo(Combo.of(1, 3, 4, 7, 9));
+        cageMCombosSet.deleteCombo(Combo.of(1, 3, 4, 7, 9));
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(4, 5, 7));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(2, 3));
@@ -76,7 +78,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 2 ]);
         expect(cellMs[3].numOpts()).toEqual([ 6, 9 ]);
         expect(cellMs[4].numOpts()).toEqual([ 1, 4 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             Combo.of(1, 2, 5, 7, 9),
             // Deleted: Combo.of(1, 3, 5, 6, 9),
             // Deleted: Combo.of(1, 3, 5, 7, 8),
@@ -94,9 +96,9 @@ describe('CageModel5Reducer', () => {
     test('Reduces case from real production scenario #3', () => {
         // Given:
         createAndInitCageMAndMasterModelReduction(24);
-        cageM.comboSet.deleteCombo(Combo.of(1, 4, 5, 6, 8));
-        cageM.comboSet.deleteCombo(Combo.of(2, 3, 4, 7, 8));
-        cageM.comboSet.deleteCombo(Combo.of(2, 4, 5, 6, 7));
+        cageMCombosSet.deleteCombo(Combo.of(1, 4, 5, 6, 8));
+        cageMCombosSet.deleteCombo(Combo.of(2, 3, 4, 7, 8));
+        cageMCombosSet.deleteCombo(Combo.of(2, 4, 5, 6, 7));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 4, 5, 7, 8, 9));
         cellMs[3].reduceNumOpts(SudokuNumsSet.of(3, 5, 7, 8, 9));
         cellMs[4].reduceNumOpts(SudokuNumsSet.of(4));
@@ -110,7 +112,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 1, 2, 3, 7, 8, 9 ]);
         expect(cellMs[3].numOpts()).toEqual([ 3, 7, 8, 9 ]);
         expect(cellMs[4].numOpts()).toEqual([ 4 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             Combo.of(1, 2, 4, 8, 9),
             Combo.of(1, 3, 4, 7, 9),
             // Deleted: Combo.of(1, 3, 5, 7, 8),
@@ -127,10 +129,10 @@ describe('CageModel5Reducer', () => {
     test('Reduces case from real production scenario #4', () => {
         // Given:
         createAndInitCageMAndMasterModelReduction(23);
-        cageM.comboSet.deleteCombo(Combo.of(1, 2, 4, 7, 9));
-        cageM.comboSet.deleteCombo(Combo.of(1, 3, 4, 7, 8));
-        cageM.comboSet.deleteCombo(Combo.of(1, 3, 5, 6, 8));
-        cageM.comboSet.deleteCombo(Combo.of(2, 3, 4, 5, 9));
+        cageMCombosSet.deleteCombo(Combo.of(1, 2, 4, 7, 9));
+        cageMCombosSet.deleteCombo(Combo.of(1, 3, 4, 7, 8));
+        cageMCombosSet.deleteCombo(Combo.of(1, 3, 5, 6, 8));
+        cageMCombosSet.deleteCombo(Combo.of(2, 3, 4, 5, 9));
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(1, 3, 4));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 3, 6, 7, 8));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 4));
@@ -146,7 +148,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 1, 4 ]);
         expect(cellMs[3].numOpts()).toEqual([ 1, 2, 3, 5, 6 ]);
         expect(cellMs[4].numOpts()).toEqual([ 6, 7, 8, 9 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             Combo.of(1, 2, 3, 8, 9),
             // Deleted: Combo.of(1, 2, 5, 6, 9),
             // Deleted: Combo.of(1, 2, 5, 7, 8),
@@ -180,7 +182,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 1, 3 ]);
         expect(cellMs[3].numOpts()).toEqual([ 2 ]);
         expect(cellMs[4].numOpts()).toEqual([ 9 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             Combo.of(1, 2, 3, 5, 9),
             // Deleted: Combo.of(1, 2, 4, 5, 8)
         ]);
@@ -209,7 +211,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 3 ]);
         expect(cellMs[3].numOpts()).toEqual([ 7 ]);
         expect(cellMs[4].numOpts()).toEqual([ 9 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 5, 8, 9),
             // Deleted: Combo.of(1, 2, 6, 7, 9),
             // Deleted: Combo.of(1, 3, 4, 8, 9),
@@ -248,7 +250,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 9 ]);
         expect(cellMs[3].numOpts()).toEqual([ 1, 6 ]);
         expect(cellMs[4].numOpts()).toEqual([ 4 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 4, 8, 9),
             // Deleted: Combo.of(1, 2, 5, 7, 9),
             // Deleted: Combo.of(1, 2, 6, 7, 8),
@@ -286,7 +288,7 @@ describe('CageModel5Reducer', () => {
         expect(cellMs[2].numOpts()).toEqual([ 1 ]);
         expect(cellMs[3].numOpts()).toEqual([ 6 ]);
         expect(cellMs[4].numOpts()).toEqual([ 7 ]);
-        expect(Array.from(cageM.comboSet.combos)).toEqual([
+        expect(Array.from(cageMCombosSet.combos)).toEqual([
             // Deleted: Combo.of(1, 2, 3, 5, 9),
             // Deleted: Combo.of(1, 2, 3, 6, 8),
             // Deleted: Combo.of(1, 2, 4, 5, 8),
