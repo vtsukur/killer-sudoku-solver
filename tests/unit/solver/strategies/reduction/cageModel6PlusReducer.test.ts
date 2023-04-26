@@ -13,7 +13,7 @@ describe('CageModel6PlusReducer', () => {
     let cellMs: Array<CellModel>;
     let reduction: MasterModelReduction;
 
-    const createAndInitiCageMAndMasterModelReduction = (count: number, sum: number) => {
+    const createAndInitCageMAndReduction = (count: number, sum: number) => {
         cageM = createAndInitCageM(count, sum);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
@@ -25,7 +25,7 @@ describe('CageModel6PlusReducer', () => {
 
     test('Reduces case from real production scenario #1', () => {
         // Given:
-        createAndInitiCageMAndMasterModelReduction(6, 27);
+        createAndInitCageMAndReduction(6, 27);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(8));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(1));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(5, 7));
@@ -58,7 +58,7 @@ describe('CageModel6PlusReducer', () => {
 
     test('Reduces case from real production scenario #2', () => {
         // Given:
-        createAndInitiCageMAndMasterModelReduction(7, 32);
+        createAndInitCageMAndReduction(7, 32);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(9));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 7));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(3, 4));
