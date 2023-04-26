@@ -1,18 +1,15 @@
-import { Cell } from '../../../../../src/puzzle/cell';
-import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { Combo } from '../../../../../src/solver/math';
-import { LockableCellModel } from './lockableCellModel';
-import { LockableCageModel } from './lockableCageModel';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModel5Reducer } from '../../../../../src/solver/strategies/reduction/cageModel5Reducer';
+import { createAndInitPerfCageM } from '../../models/elements/cageModelBuilder.perf';
 
 describe('Performance tests for `CageModel5Reducer`', () => {
 
     test('Comparable test for real production scenario #1', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(22),
+            createReferenceCageModel: () => createAndInitPerfCageM(5, 22),
             prepareForReduction: (cageM) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(3, 4, 5, 7, 8, 9));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 3, 4, 5, 6, 7));
@@ -50,7 +47,7 @@ describe('Performance tests for `CageModel5Reducer`', () => {
 
     test('Comparable test for real production scenario #3', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(24),
+            createReferenceCageModel: () => createAndInitPerfCageM(5, 24),
             prepareForReduction: (cageM) => {
                 cageM.comboSet.deleteCombo(Combo.of(1, 4, 5, 6, 8));
                 cageM.comboSet.deleteCombo(Combo.of(2, 3, 4, 7, 8));
@@ -86,7 +83,7 @@ describe('Performance tests for `CageModel5Reducer`', () => {
 
     test('Comparable test for real production scenario #6', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(25),
+            createReferenceCageModel: () => createAndInitPerfCageM(5, 25),
             prepareForReduction: (cageM) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(1, 9));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(5));
@@ -124,32 +121,6 @@ describe('Performance tests for `CageModel5Reducer`', () => {
             }
         });
     });
-
-    const createReferenceCageM = (sum: number) => {
-        const cell1 = Cell.at(0, 0);
-        const cell2 = Cell.at(0, 1);
-        const cell3 = Cell.at(0, 2);
-        const cell4 = Cell.at(0, 3);
-        const cell5 = Cell.at(0, 4);
-        const cage = Cage.ofSum(sum).withCells([ cell1, cell2, cell3, cell4, cell5 ]).new();
-
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
-        const cellM3 = new LockableCellModel(cell3);
-        const cellM4 = new LockableCellModel(cell4);
-        const cellM5 = new LockableCellModel(cell5);
-        const cageM = new LockableCageModel(cage, [ cellM1, cellM2, cellM3, cellM4, cellM5 ]);
-
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-        cellM3.addWithinCageModel(cageM);
-        cellM4.addWithinCageModel(cageM);
-        cellM5.addWithinCageModel(cageM);
-
-        cageM.initialReduce();
-
-        return cageM;
-    };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
