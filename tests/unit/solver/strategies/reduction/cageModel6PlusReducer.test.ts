@@ -1,12 +1,10 @@
-import { Cage } from '../../../../../src/puzzle/cage';
-import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { CageModel6PlusReducer } from '../../../../../src/solver/strategies/reduction/cageModel6PlusReducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
+import { createAndInitCageM } from '../../../../perf/solver/models/elements/cageModelBuilders';
 
 describe('CageModel6PlusReducer', () => {
 
@@ -14,19 +12,9 @@ describe('CageModel6PlusReducer', () => {
     let cageM: CageModel;
     let reduction: MasterModelReduction;
 
-    const createCageM = (count: number, sum: number) => {
-        const countRange = CachedNumRanges.ZERO_TO_N_LTE_81[count];
-        const cells = countRange.map(i => Cell.at(0, i));
-        const cage = Cage.ofSum(sum).withCells(cells).new();
-
-        cellMs = cells.map(cell => new CellModel(cell));
-        cageM = new CageModel(cage, cellMs);
-
-        for (const cellM of cellMs) {
-            cellM.addWithinCageModel(cageM);
-        }
-
-        cageM.initialReduce();
+    const createAndInitiCageMAndMasterModelReduction = (count: number, sum: number) => {
+        cageM = createAndInitCageM(count, sum);
+        cellMs = cageM.cellMs;
 
         reduction = new MasterModelReduction();
 
@@ -35,7 +23,7 @@ describe('CageModel6PlusReducer', () => {
 
     test('Reduces case from real production scenario #1', () => {
         // Given:
-        createCageM(6, 27);
+        createAndInitiCageMAndMasterModelReduction(6, 27);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(8));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(1));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(5, 7));
@@ -68,7 +56,7 @@ describe('CageModel6PlusReducer', () => {
 
     test('Reduces case from real production scenario #2', () => {
         // Given:
-        createCageM(7, 32);
+        createAndInitiCageMAndMasterModelReduction(7, 32);
         cellMs[0].reduceNumOpts(SudokuNumsSet.of(9));
         cellMs[1].reduceNumOpts(SudokuNumsSet.of(2, 7));
         cellMs[2].reduceNumOpts(SudokuNumsSet.of(3, 4));
