@@ -103,7 +103,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // by determining and running a particular pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            // Overall, there are 16 distinct permutations of _numbers presence_ states
+            // Overall, there are 16 distinct permutations of _present numbers_ states
             // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s.
             //
             // Each number in each `Cell` can be either absent (`0`) or present (`1`).
@@ -123,7 +123,7 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // [PERFORMANCE]
             //
-            // Determining the index of the pre-coded reducing function
+            // Determining the index of the pre-coded _inline reduction_ function
             // by forming the 4-bit state in the range `[0, 15]`
             // out of the current `Combo` numbers in `CellModel`s
             // by applying efficient bitwise AND and shift operators:
@@ -142,12 +142,12 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // ```
             // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
-            // State of `Combo` numbers' presence within the first `CellModel`: `0b01`
+            // State of `Combo` present numbers within the first `CellModel`: `0b01`
             // (the present first number `5` sets the first bit,
             // and the absent second number `6` clears the second bit)
             //
             // `CellModel` 2 numbers: `[..., 5, 6, ...]`
-            // State of `Combo` numbers' presence within the second `CellModel`: `0b11`
+            // State of `Combo` present numbers within the second `CellModel`: `0b11`
             // (both present numbers `5` and `6` set both first and second bits)
             //
             // Compound state: `0b1101`
@@ -164,12 +164,12 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             // ```
             // `CellModel` 1 numbers: `[..., 6, (no 5) ...]`
-            // State of `Combo` numbers' presence within the first `CellModel`: `0b10`
+            // State of `Combo` present numbers within the first `CellModel`: `0b10`
             // (the absent first number `5` clears the first bit,
             // and the present second number `6` sets the second bit)
             //
             // `CellModel` 2 numbers: `[..., (no 5, no 6), ...]`
-            // State of `Combo` numbers' presence within the second `CellModel`: `0b00`
+            // State of `Combo` present numbers within the second `CellModel`: `0b00`
             // (having both `5` and `6` absent clears both bits)
             //
             // Compound state: `0b0010`
