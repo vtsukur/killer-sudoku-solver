@@ -9,6 +9,7 @@
     "test-unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=\\.\\/tests\\/unit\\/",
     "test-single-puzzle": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/unit/solver/puzzles/solver.sudokuDotCom.test.ts -t '2022-04-06'",
     "test-e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=\\.\\/tests\\/e2e\\/",
+    "test-perf-solver": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/solver.perf.test.ts",
     "test-perf-gridAreaModel": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/models/elements/gridAreaModel.perf.test.ts",
     "test-perf-masterInitStrategy": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/strategies/tactics/init/masterInitStrategy.perf.test.ts",
     "test-perf-cageModel4Reducer": "node --experimental-vm-modules node_modules/jest/bin/jest.js -i tests/perf/solver/strategies/reduction/cageModel4Reducer.perf.test.ts",
