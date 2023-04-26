@@ -2,9 +2,10 @@ import { Cage } from '../../../../../src/puzzle/cage';
 import { Cell } from '../../../../../src/puzzle/cell';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
+import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CachedNumRanges } from '../../../../../src/util/cachedNumRanges';
 
-export const createAndInitCageM = (cellCount: number, sum: number) => {
+export const createAndInitCageM = (cellCount: number, sum: number, reduction?: MasterModelReduction) => {
     const cells = CachedNumRanges.ZERO_TO_N_LTE_81[cellCount].map(index => Cell.at(0, index));
     const cellMs = cells.map(cell => new CellModel(cell));
 
@@ -15,7 +16,7 @@ export const createAndInitCageM = (cellCount: number, sum: number) => {
         cellM.addWithinCageModel(cageM);
     }
 
-    cageM.initialReduce();
+    cageM.initialReduce(reduction);
 
     return cageM;
 };

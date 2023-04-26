@@ -1,13 +1,6 @@
-import { Cage } from '../../../../../src/puzzle/cage';
-import { Cell } from '../../../../../src/puzzle/cell';
 import { Combo } from '../../../../../src/solver/math';
-import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
-import { CellModel } from '../../../../../src/solver/models/elements/cellModel';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
-
-const cell1 = Cell.at(0, 0);
-const cell2 = Cell.at(0, 1);
-const cell3 = Cell.at(0, 2);
+import { createAndInitCageM } from './cageModelBuilder';
 
 describe('Unit tests for `CageModel`', () => {
 
@@ -18,30 +11,20 @@ describe('Unit tests for `CageModel`', () => {
     });
 
     test('Initial reduction for `CageModel` of size 2 with a single `Combo`', () => {
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(17).withCell(cell1).withCell(cell2).new();
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = createAndInitCageM(2, 17, reduction);
 
-        cageM.initialReduce(reduction);
-
-        expect(cellM1.numOpts()).toEqual([ 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 8, 9 ]);
+        expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
+        expect(cageM.cellMs[1].numOpts()).toEqual([ 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(8, 9)
         ]);
     });
 
     test('Initial reduction for `CageModel` of size 2 with several `Combo`s', () => {
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cage = Cage.ofSum(13).withCell(cell1).withCell(cell2).new();
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
+        const cageM = createAndInitCageM(2, 13, reduction);
 
-        cageM.initialReduce(reduction);
-
-        expect(cellM1.numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
+        expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
+        expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5, 6, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(4, 9),
             Combo.of(5, 8),
@@ -50,17 +33,11 @@ describe('Unit tests for `CageModel`', () => {
     });
 
     test('Initial reduction for `CageModel` of size 3 with a single `Combo`', () => {
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cellM3 = new CellModel(cell3);
-        const cage = Cage.ofSum(24).withCell(cell1).withCell(cell2).withCell(cell3).new();
-        const cageM = new CageModel(cage, [ cellM1, cellM2, cellM3 ]);
+        const cageM = createAndInitCageM(3, 24, reduction);
 
-        cageM.initialReduce(reduction);
-
-        expect(cellM1.numOpts()).toEqual([ 7, 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 7, 8, 9 ]);
-        expect(cellM3.numOpts()).toEqual([ 7, 8, 9 ]);
+        expect(cageM.cellMs[0].numOpts()).toEqual([ 7, 8, 9 ]);
+        expect(cageM.cellMs[1].numOpts()).toEqual([ 7, 8, 9 ]);
+        expect(cageM.cellMs[2].numOpts()).toEqual([ 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(7, 8, 9)
         ]);
@@ -68,23 +45,17 @@ describe('Unit tests for `CageModel`', () => {
 
     test('Reduction of `CageModel` with 2 `Cell`s having several `Combo`s', () => {
         // Given:
-        const cage = Cage.ofSum(11).withCell(cell1).withCell(cell2).new();
-        const cellM1 = new CellModel(cell1);
-        const cellM2 = new CellModel(cell2);
-        const cageM = new CageModel(cage, [ cellM1, cellM2 ]);
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-        cageM.initialReduce();
+        const cageM = createAndInitCageM(2, 11);
 
-        reduction.deleteNumOpt(cellM1, 5);
+        reduction.deleteNumOpt(cageM.cellMs[0], 5);
 
         // When:
         cageM.reduce(reduction);
 
         // Then:
         expect(reduction.peek()).toEqual(cageM);
-        expect(cellM1.numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
-        expect(cellM2.numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
+        expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 3, 4, 6, 7, 8, 9 ]);
+        expect(cageM.cellMs[1].numOpts()).toEqual([ 2, 3, 4, 5, 7, 8, 9 ]);
         expect(Array.from(cageM.combos)).toEqual([
             Combo.of(2, 9),
             Combo.of(3, 8),
@@ -94,31 +65,7 @@ describe('Unit tests for `CageModel`', () => {
     });
 
     test('Reduction for `CageModel` of size 7 and sum 31 with 2 `Combo`s after partial reduce (real case from `dailyKillerSudokuDotCom_puzzle24789_difficulty10`)', () => {
-        const cell_04 = Cell.at(0, 4);
-        const cell_05 = Cell.at(0, 5);
-        const cell_06 = Cell.at(0, 6);
-        const cell_13 = Cell.at(1, 3);
-        const cell_14 = Cell.at(1, 4);
-        const cell_15 = Cell.at(1, 5);
-        const cell_16 = Cell.at(1, 6);
-
-        const cellM_04 = new CellModel(cell_04);
-        const cellM_05 = new CellModel(cell_05);
-        const cellM_06 = new CellModel(cell_06);
-        const cellM_13 = new CellModel(cell_13);
-        const cellM_14 = new CellModel(cell_14);
-        const cellM_15 = new CellModel(cell_15);
-        const cellM_16 = new CellModel(cell_16);
-        const cellMs = [ cellM_04, cellM_05, cellM_06,
-            cellM_13, cellM_14, cellM_15, cellM_16 ];
-
-        const cage = Cage.ofSum(31)
-            .withCell(cell_04).withCell(cell_05).withCell(cell_06)
-            .withCell(cell_13).withCell(cell_14).withCell(cell_15).withCell(cell_16)
-            .new();
-        const cageM = new CageModel(cage, cellMs);
-
-        cageM.initialReduce(reduction);
+        const cageM = createAndInitCageM(7, 31, reduction);
 
         const initialCombos = Array.from(cageM.combos);
         expect(initialCombos).toEqual([
@@ -126,18 +73,17 @@ describe('Unit tests for `CageModel`', () => {
             Combo.of(1, 2, 3, 4, 6, 7, 8)
         ]);
 
-        cellM_04.deleteNumOpt(3); cellM_04.deleteNumOpt(9);
-        cellM_05.deleteNumOpt(3); cellM_05.deleteNumOpt(9);
-        cellM_06.deleteNumOpt(3); cellM_06.deleteNumOpt(9);
-        cellM_13.deleteNumOpt(4); cellM_13.deleteNumOpt(8); cellM_13.deleteNumOpt(9);
-        cellM_14.deleteNumOpt(4); cellM_14.deleteNumOpt(8); cellM_14.deleteNumOpt(9);
-        cellM_15.deleteNumOpt(4); cellM_15.deleteNumOpt(8); cellM_15.deleteNumOpt(9);
-        cellM_16.deleteNumOpt(4); cellM_16.deleteNumOpt(7); cellM_16.deleteNumOpt(8); cellM_16.deleteNumOpt(9);
+        cageM.cellMs[0].deleteNumOpt(3); cageM.cellMs[0].deleteNumOpt(9);
+        cageM.cellMs[1].deleteNumOpt(3); cageM.cellMs[1].deleteNumOpt(9);
+        cageM.cellMs[2].deleteNumOpt(3); cageM.cellMs[2].deleteNumOpt(9);
+        cageM.cellMs[3].deleteNumOpt(4); cageM.cellMs[3].deleteNumOpt(8); cageM.cellMs[3].deleteNumOpt(9);
+        cageM.cellMs[4].deleteNumOpt(4); cageM.cellMs[4].deleteNumOpt(8); cageM.cellMs[4].deleteNumOpt(9);
+        cageM.cellMs[5].deleteNumOpt(4); cageM.cellMs[5].deleteNumOpt(8); cageM.cellMs[5].deleteNumOpt(9);
+        cageM.cellMs[6].deleteNumOpt(4); cageM.cellMs[6].deleteNumOpt(7); cageM.cellMs[6].deleteNumOpt(8); cageM.cellMs[6].deleteNumOpt(9);
 
         cageM.reduce(reduction);
 
-        const afterReductionCombos = Array.from(cageM.combos);
-        expect(afterReductionCombos).toEqual([
+        expect(cageM.combos).toEqual([
             Combo.of(1, 2, 3, 4, 6, 7, 8)
         ]);
     });
