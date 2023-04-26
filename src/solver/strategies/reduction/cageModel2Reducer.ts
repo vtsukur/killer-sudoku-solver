@@ -103,7 +103,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // by determining and running a particular pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            // Overall, there are 16 distinct permutations of _numbers' presence_ states
+            // Overall, there are 16 distinct permutations of _numbers presence_ states
             // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s.
             //
             // Each number in each `Cell` can be either absent (`0`) or present (`1`).
@@ -113,7 +113,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // CPU-wise, performance is `O(1)` as it does *not* depend on the permutation count.
             // 16 pre-coded reducing functions absorb inherent `O(2 ^ N)` complexity.
             //
-            // See also `INLINED_TACTICAL_REDUCERS`.
+            // See also `INLINE_TACTICAL_REDUCERS`.
             //
 
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
@@ -191,7 +191,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // Running a determined pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            INLINED_TACTICAL_REDUCERS[numbersPresenceState](
+            INLINE_TACTICAL_REDUCERS[numbersPresenceState](
                     reduction, this._cageM, this._combosSet, combo,
                     this._cellM1, this._cellM2,
                     num1, num2
@@ -238,7 +238,7 @@ export class CageModel2Reducer implements CageModelReducer {
  * | 0b1111 = 15      | `num1`, `num2`               | `num1`, `num2`               | <none>                   | <none>                   | no              | `num1`, `num2`               | `num1`, `num2`               |
  * | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
-const INLINED_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
+const INLINE_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
     // `0b00_00 = 0`
     (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
