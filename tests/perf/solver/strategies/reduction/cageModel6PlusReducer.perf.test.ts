@@ -1,18 +1,15 @@
-import { Cell } from '../../../../../src/puzzle/cell';
-import { Cage } from '../../../../../src/puzzle/cage';
 import { CageModel } from '../../../../../src/solver/models/elements/cageModel';
 import { SudokuNumsSet } from '../../../../../src/solver/sets';
 import { Combo } from '../../../../../src/solver/math';
-import { LockableCellModel } from './lockableCellModel';
-import { LockableCageModel } from './lockableCageModel';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
 import { CageModel6PlusReducer } from '../../../../../src/solver/strategies/reduction/cageModel6PlusReducer';
+import { createAndInitPerfCageM } from '../../models/elements/cageModelBuilder.perf';
 
 describe('Performance tests for `CageModel6PlusReducer`', () => {
 
     test('Comparable test for real production scenario #1', () => {
         runComparablePerformanceTests({
-            createReferenceCageModel: () => createReferenceCageM(27),
+            createReferenceCageModel: () => createAndInitPerfCageM(6, 27),
             prepareForReduction: (cageM) => {
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(8));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(1));
@@ -44,35 +41,6 @@ describe('Performance tests for `CageModel6PlusReducer`', () => {
             }
         });
     });
-
-    const createReferenceCageM = (sum: number) => {
-        const cell1 = Cell.at(0, 0);
-        const cell2 = Cell.at(0, 1);
-        const cell3 = Cell.at(0, 2);
-        const cell4 = Cell.at(0, 3);
-        const cell5 = Cell.at(0, 4);
-        const cell6 = Cell.at(0, 5);
-        const cage = Cage.ofSum(sum).withCells([ cell1, cell2, cell3, cell4, cell5, cell6 ]).new();
-
-        const cellM1 = new LockableCellModel(cell1);
-        const cellM2 = new LockableCellModel(cell2);
-        const cellM3 = new LockableCellModel(cell3);
-        const cellM4 = new LockableCellModel(cell4);
-        const cellM5 = new LockableCellModel(cell5);
-        const cellM6 = new LockableCellModel(cell6);
-        const cageM = new LockableCageModel(cage, [ cellM1, cellM2, cellM3, cellM4, cellM5, cellM6 ]);
-
-        cellM1.addWithinCageModel(cageM);
-        cellM2.addWithinCageModel(cageM);
-        cellM3.addWithinCageModel(cageM);
-        cellM4.addWithinCageModel(cageM);
-        cellM5.addWithinCageModel(cageM);
-        cellM6.addWithinCageModel(cageM);
-
-        cageM.initialReduce();
-
-        return cageM;
-    };
 
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         doRunFunctionalAndPerformanceTests(config, createReducer, 'Optimal');
