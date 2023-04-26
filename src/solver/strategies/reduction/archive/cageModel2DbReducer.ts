@@ -127,7 +127,7 @@ export class CageModel2DbReducer implements CageModelReducer {
             // by determining and running a particular pre-coded denormalized reducing function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            // Overall, there are 16 distinct permutations of _numbers' presence_ states
+            // Overall, there are 16 distinct permutations of _present numbers_ states
             // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s.
             //
             // Each number in each `Cell` can be either absent (`0`) or present (`1`).
