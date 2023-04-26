@@ -5,7 +5,6 @@ import { CageModel2FullReducer } from '../../../../../src/solver/strategies/redu
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
-import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
 import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 import { CombosSet } from '../../../../../src/solver/sets';
 
@@ -32,10 +31,6 @@ describe('CageModel2Reducers', () => {
         {
             newReducer: (cageM: CageModel) => new CageModel2Reducer(cageM),
             type: 'CageModel2Reducer'
-        },
-        {
-            newReducer: (cageM: CageModel) => new CageModel2DbReducer(cageM),
-            type: 'CageModel2DbReducer'
         }
     ];
 

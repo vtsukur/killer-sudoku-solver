@@ -4,7 +4,6 @@ import { CageModel2FullReducer } from '../../../../../src/solver/strategies/redu
 import { Combo } from '../../../../../src/solver/math';
 import { CageModel2Reducer } from '../../../../../src/solver/strategies/reduction/cageModel2Reducer';
 import { ComparablePerformanceTestConfig, doRunFunctionalAndPerformanceTests } from './commons';
-import { CageModel2DbReducer } from '../../../../../src/solver/strategies/reduction/archive/cageModel2DbReducer';
 import { createAndInitPerfCageM } from '../../models/elements/cageModelBuilder.perf';
 
 const IS_RUN_SLOWER_ALTERNATIVES = false;
@@ -126,7 +125,6 @@ describe('Performance tests for `CageModel2Reducer`', () => {
     const runComparablePerformanceTests = (config: ComparablePerformanceTestConfig) => {
         if (IS_RUN_SLOWER_ALTERNATIVES) {
             doRunFunctionalAndPerformanceTests(config, createFullReducer, 'Full');
-            doRunFunctionalAndPerformanceTests(config, createOptimalDbReducer, 'Optimal (DB)');
         }
         doRunFunctionalAndPerformanceTests(config, createOptimalReducer, 'Optimal');
     };
@@ -137,10 +135,6 @@ describe('Performance tests for `CageModel2Reducer`', () => {
 
     const createOptimalReducer = (cageM: CageModel) => {
         return new CageModel2Reducer(cageM);
-    };
-
-    const createOptimalDbReducer = (cageM: CageModel) => {
-        return new CageModel2DbReducer(cageM);
     };
 
 });
