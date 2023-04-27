@@ -18,7 +18,7 @@ export interface CageModelReducer {
      * Reduces possible numbers for {@link CellModel}s
      * by checking the validity of numbers given possible {@link Combo}s for the {@link CageModel}.
      *
-     * @param reduction - {@link MasterModelReduction} that tracks deleted number options.
+     * @param reduction - {@link MasterModelReduction} that tracks reduction state.
      */
     reduce(reduction: MasterModelReduction): void;
 
