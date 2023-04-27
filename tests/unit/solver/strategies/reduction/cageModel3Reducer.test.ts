@@ -8,7 +8,7 @@ import { MasterModelReduction } from '../../../../../src/solver/strategies/reduc
 import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 
-describe('CageModel3Reducers', () => {
+describe('`CageModel3Reducer`s', () => {
 
     let cageM: CageModel;
     let cageMCombosSet: CombosSet;
