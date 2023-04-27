@@ -8,7 +8,7 @@ import { CageModelReducerTestConfig } from './cageModelReducerTestConfig';
 import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 import { CombosSet } from '../../../../../src/solver/sets';
 
-describe('CageModel2Reducers', () => {
+describe('`CageModel2Reducer`s', () => {
 
     let cageM: CageModel;
     let cageMCombosSet: CombosSet;
@@ -19,7 +19,6 @@ describe('CageModel2Reducers', () => {
         cageM = createAndInitCageM(2, 11);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
-
         reduction = new MasterModelReduction();
     });
 
