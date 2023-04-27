@@ -30,8 +30,8 @@ const XPATH_SOLVED_TEXT = '//*[text()="Solved!"]';
 const STATIC_WAIT_FOR_SOLVED_ANIMATION_TIMEOUT = 1000;
 
 type KeyboardCommand = {
-    selector: string;
-    press: KeyInput;
+    readonly selector: string;
+    readonly press: KeyInput;
 }
 
 export class DailyKillerSudokuDotComPuzzlePage {

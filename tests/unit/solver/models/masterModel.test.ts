@@ -9,9 +9,9 @@ import { MasterStrategy } from '../../../../src/solver/strategies/masterStrategy
 import { puzzleSamples } from '../../puzzle/puzzleSamples';
 
 type ExpectedHouse = {
-    index: number;
-    cells: Cells;
-    cages: Cages;
+    readonly index: number;
+    readonly cells: Cells;
+    readonly cages: Cages;
 };
 
 describe('Tests for master model', () => {

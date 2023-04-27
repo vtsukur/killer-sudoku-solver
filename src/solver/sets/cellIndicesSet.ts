@@ -52,8 +52,8 @@ export interface ReadonlyCellIndicesSet extends ReadonlyNumsSet<ReadonlyCellIndi
 }
 
 type CellIndexToBitsLocator = {
-    bitsIndex: number;
-    bitPosition: number;
+    readonly bitsIndex: number;
+    readonly bitPosition: number;
 }
 
 /**

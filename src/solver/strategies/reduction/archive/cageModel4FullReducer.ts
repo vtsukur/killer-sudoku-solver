@@ -6,15 +6,15 @@ import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 
 type Context = {
-    processedCellMs: Set<CellModel>;
-    remainingCellMs: Set<CellModel>,
-    processedNums: Set<number>,
-    numbersStack: Array<number>,
-    cellMsStack: Array<CellModel>,
-    processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
-    mayNotProceedWithNum: (num: number) => boolean;
-    processNum: (num: number, step: number, fn: () => boolean | void) => boolean | void;
-    remainingCellM: () => CellModel;
+    readonly processedCellMs: Set<CellModel>;
+    readonly remainingCellMs: Set<CellModel>,
+    readonly processedNums: Set<number>,
+    readonly numbersStack: Array<number>,
+    readonly cellMsStack: Array<CellModel>,
+    readonly processCell: (cellM: CellModel, step: number, fn: () => boolean | void) => boolean | void;
+    readonly mayNotProceedWithNum: (num: number) => boolean;
+    readonly processNum: (num: number, step: number, fn: () => boolean | void) => boolean | void;
+    readonly remainingCellM: () => CellModel;
 };
 
 const CELL_COUNT = 4;

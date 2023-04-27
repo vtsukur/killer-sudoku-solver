@@ -1,30 +1,30 @@
 export type ReductionActions = {
 
-    deleteNums: Array<Array<number>>;
+    readonly deleteNums: Array<Array<number>>;
 
 }
 
 export type ReductionEntry = {
 
-    state: number;
+    readonly state: number;
 
-    actions: ReductionActions | undefined;
+    readonly actions: ReductionActions | undefined;
 
 }
 
 export type ComboReductions = {
 
-    combo: ReadonlyArray<number>;
+    readonly combo: ReadonlyArray<number>;
 
-    entries: Array<ReductionEntry>;
+    readonly entries: Array<ReductionEntry>;
 
 }
 
 export type SumReductions = {
 
-    sum: number;
+    readonly sum: number;
 
-    combos: Array<ComboReductions>;
+    readonly combos: Array<ComboReductions>;
 
 }
 

@@ -35,9 +35,9 @@ export type PerformanceTestPreparation = {
 
 export type PerformanceTestOptions = {
 
-    warmupIterationCount: number;
+    readonly warmupIterationCount: number;
 
-    mainIterationCount: number;
+    readonly mainIterationCount: number;
 
 }
 
