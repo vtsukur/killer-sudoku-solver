@@ -32,6 +32,8 @@ export class Combo implements Iterable<number> {
 
     readonly number3: number;
 
+    readonly sum: number;
+
     readonly index: number;
 
     /**
@@ -173,6 +175,7 @@ export class Combo implements Iterable<number> {
         this.number1 = this.nums[0];
         this.number2 = (this.nums.length > 1) ? this.nums[1] : 0;
         this.number3 = (this.nums.length > 2) ? this.nums[2] : 0;
+        this.sum = _.sum(this.nums);
         this.index = index;
     }
 

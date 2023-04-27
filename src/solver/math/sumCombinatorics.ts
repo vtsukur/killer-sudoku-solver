@@ -52,8 +52,7 @@ export class SumCombinatorics {
         for (const combo of Combo.BY_NUMS_BITS) {
             if (combo === undefined) continue;
             const count = combo.nums.length;
-            const sum = combo.nums.reduce((prev, current) => prev + current, 0);
-            combosMap[count][sum].push(combo);
+            combosMap[count][combo.sum].push(combo);
         }
 
         const val = new Array<Array<SumCombinatorics>>(10);
