@@ -299,6 +299,11 @@ describe('`CageModel3Reducer`s', () => {
             test('Reduces case from real production scenario #11', () => {
                 // Given:
                 createAndInitCageMAndReduction(13);
+                cageMCombosSet.clear();
+                cageMCombosSet.addCombo(Combo.of(1, 3, 9));
+                cageMCombosSet.addCombo(Combo.of(1, 4, 8));
+                cageMCombosSet.addCombo(Combo.of(2, 4, 7));
+                cageMCombosSet.addCombo(Combo.of(3, 4, 6));
                 cageM.cellMs[0].reduceNumOpts(SudokuNumsSet.of(3, 6));
                 cageM.cellMs[1].reduceNumOpts(SudokuNumsSet.of(1, 7, 8, 9));
                 cageM.cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 8, 9));
@@ -939,33 +944,6 @@ describe('`CageModel3Reducer`s', () => {
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 9 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[1]).nums).toEqual([ 9 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[2]).nums).toHaveLength(0);
-            });
-
-            test('Reduces case from real production scenario #38', () => {
-                // Given:
-                createAndInitCageMAndReduction(13);
-                cageMCombosSet.clear();
-                cageMCombosSet.addCombo(Combo.of(1, 3, 9));
-                cageMCombosSet.addCombo(Combo.of(1, 4, 8));
-                cageMCombosSet.addCombo(Combo.of(2, 4, 7));
-                cageMCombosSet.addCombo(Combo.of(3, 4, 6));
-                cellMs[0].reduceNumOpts(SudokuNumsSet.of(3, 6));
-                cellMs[1].reduceNumOpts(SudokuNumsSet.of(1, 7, 8, 9));
-                cellMs[2].reduceNumOpts(SudokuNumsSet.of(1, 2, 3, 8, 9));
-
-                // When:
-                newReducer(cageM).reduce(reduction);
-
-                // Then:
-                expect(cellMs[0].numOpts()).toEqual([ 3 ]);
-                expect(cellMs[1].numOpts()).toEqual([ 1, 9 ]);
-                expect(cellMs[2].numOpts()).toEqual([ 1, 9 ]);
-                expect(Array.from(cageMCombosSet.combos)).toEqual([
-                    Combo.of(1, 3, 9)
-                ]);
-                expect(reduction.deletedNumOptsOf(cellMs[0]).nums).toEqual([ 6 ]);
-                expect(reduction.deletedNumOptsOf(cellMs[1]).nums).toEqual([ 7, 8 ]);
-                expect(reduction.deletedNumOptsOf(cellMs[2]).nums).toEqual([ 2, 3, 8 ]);
             });
 
             test('Does not reduce if there are no deletions for a particular `Combo`', () => {
