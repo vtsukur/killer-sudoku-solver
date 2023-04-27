@@ -19,7 +19,7 @@ const SOLVED_SCREENSHOT_EXTENSION = {
     y: 100
 };
 
-const SELECTOR_BANNER = '.cc_banner-wrapper';
+const SELECTOR_BANNER = '#ez-accept-all';
 const SELECTOR_PUZZLE_CANVAS = '.puzzle-canvas';
 const SELECTOR_NTH_CELL = (n: number) => {
     return `.cell:nth-of-type(${n})`;
@@ -59,15 +59,8 @@ export class DailyKillerSudokuDotComPuzzlePage {
     }
 
     private async removeCookieBanner() {
-        log.info('Removing cookie banner so that it doesn\'t overlap with puzzle canvas to enable proper puzzle detection');
-        await this.waitForSelectorAndRemove(SELECTOR_BANNER);
-    }
-
-    private async waitForSelectorAndRemove(selector: string) {
-        await this.browserPage().waitForSelector(selector);
-        await this.browserPage().evaluate(/* istanbul ignore next */ ($) => {
-            document.querySelector($)?.remove();
-        }, selector);
+        log.info('Clicking on the cookie banner to close it so that it doesn\'t overlap with puzzle canvas to enable proper puzzle detection');
+        await this.browserPage().click(SELECTOR_BANNER);
     }
 
     private puzzleUrl(puzzleId: number) {
