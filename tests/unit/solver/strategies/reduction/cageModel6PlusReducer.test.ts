@@ -6,7 +6,7 @@ import { CageModel6PlusReducer } from '../../../../../src/solver/strategies/redu
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 
-describe('CageModel6PlusReducer', () => {
+describe('`CageModel6PlusReducer`', () => {
 
     let cageM: CageModel;
     let cageMCombosSet: CombosSet;
