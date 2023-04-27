@@ -19,9 +19,7 @@ describe('CageModel3Reducers', () => {
         cageM = createAndInitCageM(3, sum);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
-
         reduction = new MasterModelReduction();
-
         return cageM;
     };
 
