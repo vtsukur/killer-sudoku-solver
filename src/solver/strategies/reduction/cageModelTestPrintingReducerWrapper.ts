@@ -1,7 +1,17 @@
+import * as fs from 'node:fs';
+import { compile } from 'ejs';
 import { CageModel } from '../../models/elements/cageModel';
 import { SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
+
+const UNIT_TEST_EJS_TEMPLATE_PATH = './src/solver/strategies/reduction/cageModelUnitTest.ejs';
+
+const UNIT_TEST_EJS_TEMPLATE_ENCODING = 'utf-8';
+
+const template = compile(fs.readFileSync(UNIT_TEST_EJS_TEMPLATE_PATH, UNIT_TEST_EJS_TEMPLATE_ENCODING));
+
+let instance = 1;
 
 export class CageModelTestPrintingReducerWrapper implements CageModelReducer {
 
@@ -37,39 +47,14 @@ export class CageModelTestPrintingReducerWrapper implements CageModelReducer {
         });
         const combosAfterReduction = this._cageM.comboSet;
         if (numsDeletedByReduction.some(numsSet => numsSet.isNotEmpty)) {
-            let testCode = 'test(\'Reduces case from real production scenario #\', () => {\n';
-            testCode += '    // Given:\n';
-            testCode += `    createCageM(${this._cageM.cage.sum});\n`;
-            numsPresentBeforeReduction.forEach((numsSet, index) => {
-                if (numsSet.length !== 9) {
-                    testCode += `    cellM${index + 1}.reduceNumOpts(SudokuNumsSet.of(${numsSet.join(', ')}));\n`;
-                }
+            const testCode = template({
+                instance: instance++,
+                cageM: this._cageM,
+                numsPresentBeforeReduction,
+                combosBeforeReduction,
+                combosAfterReduction,
+                numsDeletedByReduction
             });
-            testCode += '\n';
-            testCode += '    // When:\n';
-            testCode += '    newReducer(cageM).reduce(reduction);\n';
-            testCode += '\n';
-            testCode += '    // Then:\n';
-            this._cageM.cellMs.forEach((cellM, index) => {
-                testCode += `    expect(cellM${index + 1}.numOpts()).toEqual([ ${cellM.numOpts().join(', ')} ]);\n`;
-            });
-            testCode += '    expect(Array.from(cageM.comboSet.combos)).toEqual([\n';
-            combosBeforeReduction.combos.forEach((combo, index) => {
-                testCode += '        ';
-                if (!combosAfterReduction.hasCombo(combo)) {
-                    testCode += '// Deleted: ';
-                }
-                testCode += `Combo.of(${combo.nums.join(', ')})${index < combosBeforeReduction.combos.length - 1 ? ',' : ''}\n`;
-            });
-            testCode += '    ]);\n';
-            this._cageM.cellMs.forEach((_cellM, index) => {
-                if (numsDeletedByReduction[index].isEmpty) {
-                    testCode += `    expect(reduction.deletedNumOptsOf(cellM${index + 1}).nums).toHaveLength(0);\n`;
-                } else {
-                    testCode += `    expect(reduction.deletedNumOptsOf(cellM${index + 1}).nums).toEqual([ ${numsDeletedByReduction[index].nums.join(', ')} ]);\n`;
-                }
-            });
-            testCode += '});';
 
             console.log(testCode);
         }

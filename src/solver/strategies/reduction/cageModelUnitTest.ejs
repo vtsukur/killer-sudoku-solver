@@ -1,0 +1,16 @@
+test('Reduces case from real production scenario #<%= instance %>', () => {
+    // Given:
+    createAndInitCageMAndReduction(<%= cageM.cage.sum %>);<% numsPresentBeforeReduction.forEach((numsSet, index) => { %><% if (numsSet.length !== 9) { %>
+    cageM.cellMs[<%= index %>].reduceNumOpts(SudokuNumsSet.of(<%= numsSet.join(', ') %>));<% } %><% }); %>
+
+    // When:
+    newReducer(cageM).reduce(reduction);
+
+    // Then:<% cageM.cellMs.forEach((cellM, index) => { %>
+    expect(cageM.cellMs[<%= index %>].numOpts()).toEqual([ <%= cellM.numOpts().join(', ') %> ]);<% }); %>
+    expect(Array.from(cageM.comboSet.combos)).toEqual([<% combosBeforeReduction.combos.forEach((combo, index) => { %>
+        <% if (!combosAfterReduction.hasCombo(combo)) { %>// Deleted: <% } %>Combo.of(<%= combo.nums.join(', ')%>)<% if (index < combosBeforeReduction.combos.length - 1) {%>,<% } %><% }); %>
+    ]);<% cageM.cellMs.forEach((_cellM, index) => { %><% if (numsDeletedByReduction[index].isEmpty) { %>
+    expect(reduction.deletedNumOptsOf(cageM.cellMs[<%= index %>]).nums).toHaveLength(0);<% } else { %>
+    expect(reduction.deletedNumOptsOf(cageM.cellMs[<%= index %>]).nums).toEqual([ <%= numsDeletedByReduction[index].nums.join(', ') %> ]);<% } %><% }); %>
+});
