@@ -6,7 +6,7 @@ import { CageModel5Reducer } from '../../../../../src/solver/strategies/reductio
 import { MasterModelReduction } from '../../../../../src/solver/strategies/reduction/masterModelReduction';
 import { createAndInitCageM } from '../../models/elements/cageModelBuilder';
 
-describe('CageModel5Reducer', () => {
+describe('`CageModel5Reducer`', () => {
 
     let cageM: CageModel;
     let cageMCombosSet: CombosSet;
@@ -17,9 +17,7 @@ describe('CageModel5Reducer', () => {
         cageM = createAndInitCageM(5, sum);
         cageMCombosSet = cageM.comboSet;
         cellMs = cageM.cellMs;
-
         reduction = new MasterModelReduction();
-
         return cageM;
     };
 
