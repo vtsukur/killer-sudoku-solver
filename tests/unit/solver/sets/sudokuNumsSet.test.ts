@@ -40,7 +40,7 @@ describe('Unit tests for `SudokuNumsSet`', () => {
         expectSetWithValues(SudokuNumsSet.of(2, 4, 5), [ 2, 4, 5 ]);
     });
 
-    test('Construction of `SudokuNumsSet` with a single number using `ofSingle` static factory method', () => {
+    test('Construction of `SudokuNumsSet` with a single number using `ofNum` static factory method', () => {
         expectSetWithValues(SudokuNumsSet.of(3), [ 3 ]);
     });
 

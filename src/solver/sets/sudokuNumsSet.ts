@@ -200,7 +200,7 @@ export class SudokuNumsSet extends Bits32Set<ReadonlySudokuNumsSet> {
      *
      * @returns new set from the given single number.
      */
-    static ofSingle(val: number) {
+    static ofNum(val: number) {
         return new SudokuNumsSet(1 << val);
     }
 

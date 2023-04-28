@@ -22,7 +22,7 @@ describe('Performance tests for `SudokuNumsSet`', () => {
 
         test.skip(`Creation of single num set [${i}]`, () => {
             ITERATIONS.forEach(() => {
-                SudokuNumsSet.ofSingle(5);
+                SudokuNumsSet.ofNum(5);
             });
         });
 
