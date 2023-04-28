@@ -79,7 +79,12 @@ export class CageModel3Reducer implements CageModelReducer {
     constructor(cageM: CageModel) {
         this._cageM = cageM;
 
-        // [PERFORMANCE] Caching references for faster access in the `reduce` method.
+        //
+        // [PERFORMANCE]
+        //
+        // Caching references for faster access in the `reduce` method.
+        // These references do *not* change across the `CageModel`'s lifetime.
+        //
         this._combosSet = cageM.comboSet;
         this._cellM1 = cageM.cellMs[0];
         this._cellM1NumsSet = this._cellM1._numOptsSet;
