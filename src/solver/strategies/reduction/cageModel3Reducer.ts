@@ -109,9 +109,10 @@ export class CageModel3Reducer implements CageModelReducer {
         const cellM2NumsBits = this._cellM2NumsSet.bits;
         const cellM3NumsBits = this._cellM3NumsSet.bits;
 
-        let actualReductionStateCellM1 = 0;
-        let actualReductionStateCellM2 = 0;
-        let actualReductionStateCellM3 = 0;
+        // Bit masks for updated / post-reduction numbers for the `CellModel`s.
+        let updatedCellM1NumsBits = 0;
+        let updatedCellM2NumsBits = 0;
+        let updatedCellM3NumsBits = 0;
 
         for (const combo of this._combosSet.combos) {
             const num1 = combo.number1;
@@ -136,17 +137,17 @@ export class CageModel3Reducer implements CageModelReducer {
             const reductionState = this._combosReductionStates[combo.index][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
-                actualReductionStateCellM1 |= reductionState.cell1KeepNumsBits;
-                actualReductionStateCellM2 |= reductionState.cell2KeepNumsBits;
-                actualReductionStateCellM3 |= reductionState.cell3KeepNumsBits;
+                updatedCellM1NumsBits |= reductionState.cell1KeepNumsBits;
+                updatedCellM2NumsBits |= reductionState.cell2KeepNumsBits;
+                updatedCellM3NumsBits |= reductionState.cell3KeepNumsBits;
             } else {
                 this._combosSet.deleteCombo(combo);
             }
         }
 
-        reduction.tryReduceNumOptsBits(this._cellM1, actualReductionStateCellM1, this._cageM);
-        reduction.tryReduceNumOptsBits(this._cellM2, actualReductionStateCellM2, this._cageM);
-        reduction.tryReduceNumOptsBits(this._cellM3, actualReductionStateCellM3, this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM1, updatedCellM1NumsBits, this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM2, updatedCellM2NumsBits, this._cageM);
+        reduction.tryReduceNumOptsBits(this._cellM3, updatedCellM3NumsBits, this._cageM);
     }
 
     static getReductionState(sum: number, combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
