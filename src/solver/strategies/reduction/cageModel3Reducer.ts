@@ -116,11 +116,12 @@ export class CageModel3Reducer implements CageModelReducer {
 
         // Iterating over each possible `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
+            // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
             const num1 = combo.number1;
             const num2 = combo.number2;
             const num3 = combo.number3;
 
-            const compressedNumbersPresenceState =
+            const presentNumbersState =
                     ((cellM1NumsBits & (1 << num1)) >> num1) |
                     ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
                     ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
@@ -135,7 +136,7 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = this._combosReductionStates[combo.index][compressedNumbersPresenceState];
+            const reductionState = this._combosReductionStates[combo.index][presentNumbersState];
 
             if (reductionState.isValid) {
                 updatedCellM1NumsBits |= reductionState.cell1KeepNumsBits;
