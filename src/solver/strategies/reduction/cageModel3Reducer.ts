@@ -193,6 +193,12 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
+            //
+            // [PERFORMANCE]
+            //
+            // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
+            // through the `CageModel3ReductionDb` cache.
+            //
             const reductionState = this._combosReductionStates[combo.index][presentNumbersState];
 
             if (reductionState.isValid) {

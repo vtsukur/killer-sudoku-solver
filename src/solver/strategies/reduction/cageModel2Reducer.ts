@@ -201,7 +201,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // [PERFORMANCE]
             //
             // Running a determined pre-coded _inline reduction_ function
-            // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
+            // with hardcoded actions relevant to the `Combo` numbers present in the `CellModel`s.
             //
             INLINE_TACTICAL_REDUCERS[presentNumbersState](
                     reduction, this._cageM, this._combosSet, combo,
