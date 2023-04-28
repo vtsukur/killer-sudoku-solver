@@ -82,13 +82,11 @@ export class CageModel4Reducer implements CageModelReducer {
 
         let combosBits = 0;
         for (const num of minNumCountNums) {
-            const reducedSum = this._sum - num;
             for (const combo of combosBeforeReduction) {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
 
                 const reducedCombo = Combo.BY_NUMS_BITS[combo.numsBits & ~(1 << num)];
                 const reductionState = CageModel3Reducer.getReductionState(
-                        reducedSum,
                         reducedCombo,
                         cageModel3CellM1NumBits,
                         cageModel3CellM2NumBits,

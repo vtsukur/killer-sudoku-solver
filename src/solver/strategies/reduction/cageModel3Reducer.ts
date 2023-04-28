@@ -224,7 +224,7 @@ export class CageModel3Reducer implements CageModelReducer {
         reduction.tryReduceNumOptsBits(this._cellM3, updatedCellM3NumsBits, this._cageM);
     }
 
-    static getReductionState(sum: number, combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
+    static getReductionState(combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
         const num1 = combo.number1;
         const num2 = combo.number2;
         const num3 = combo.number3;
@@ -244,7 +244,7 @@ export class CageModel3Reducer implements CageModelReducer {
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return CageModel3ReductionDb.STATES[sum][combo.index][compressedNumbersPresenceState];
+        return CageModel3ReductionDb.STATES[combo.sum][combo.index][compressedNumbersPresenceState];
     }
 
 }
