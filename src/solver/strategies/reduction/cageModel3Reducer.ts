@@ -151,8 +151,8 @@ export class CageModel3Reducer implements CageModelReducer {
             // `CellModel` 1 numbers: `[..., 5, (no 6), 7 ...]`
             // State of `Combo` present numbers within the first `CellModel`: `0b101`
             // (the present first number `5` sets the first bit,
-            // the absent second number `6` clears the second bit,
-            // the present third number `7` sets the third bit).
+            // the missing second number `6` clears the second bit,
+            // and the present third number `7` sets the third bit).
             //
             // `CellModel` 2 numbers: `[..., 5, 6, 7, ...]`
             // State of `Combo` present numbers within the second `CellModel`: `0b111`
@@ -160,9 +160,9 @@ export class CageModel3Reducer implements CageModelReducer {
             //
             // `CellModel` 3 numbers: `[..., (no 5), 6, (no 7) ...]`
             // State of `Combo` present numbers within the first `CellModel`: `0b010`
-            // (the absent first number `5` clears the first bit,
+            // (the missing first number `5` clears the first bit,
             // the present second number `6` sets the second bit,
-            // the absent third number `7` clears the third bit).
+            // the missing third number `7` clears the third bit).
             //
             // Compound state: `0b010111101`
             // (shift to the right happens for the present numbers state for the second and third `CellModel`s

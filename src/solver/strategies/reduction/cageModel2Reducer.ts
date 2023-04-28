@@ -173,12 +173,12 @@ export class CageModel2Reducer implements CageModelReducer {
             // ```
             // `CellModel` 1 numbers: `[..., 6, (no 5) ...]`
             // State of `Combo` present numbers within the first `CellModel`: `0b10`
-            // (the absent first number `5` clears the first bit,
+            // (the missing first number `5` clears the first bit,
             // and the present second number `6` sets the second bit)
             //
             // `CellModel` 2 numbers: `[..., (no 5, no 6), ...]`
             // State of `Combo` present numbers within the second `CellModel`: `0b00`
-            // (having both `5` and `6` absent clears both bits)
+            // (having both `5` and `6` missing clears both bits)
             //
             // Compound state: `0b0010`
             // (shift to the right happens for the present numbers state for the second `CellModel`
