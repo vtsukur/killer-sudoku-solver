@@ -99,6 +99,10 @@ export class CageModel3Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
+        //
+        // [PERFORMANCE] Storing possible numbers for `CellModel`s as bit masks
+        // for efficient low-level check and manipulation of possible numbers.
+        //
         const cellM1NumsBits = this._cellM1NumsSet.bits;
         const cellM2NumsBits = this._cellM2NumsSet.bits;
         const cellM3NumsBits = this._cellM3NumsSet.bits;
