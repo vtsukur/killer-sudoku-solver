@@ -7,7 +7,8 @@ import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
-import { CageModel3ReductionDb, ComboReductionStatesByComboByCNPS } from './db/cageModel3ReductionDb';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CageModel3ReductionDb, ComboReductionState, ComboReductionStatesByComboByCNPS } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
@@ -22,7 +23,7 @@ import { MasterModelReduction } from './masterModelReduction';
 export class CageModel3Reducer implements CageModelReducer {
 
     /**
-     * The {@link CageModel} to reduce.
+     * {@link CageModel} to reduce.
      */
     private readonly _cageM: CageModel;
 
@@ -37,7 +38,7 @@ export class CageModel3Reducer implements CageModelReducer {
     private readonly _cellM1: CellModel;
 
     /**
-     * Cache for {@link SudokuNumsSet} of possible number's options
+     * Cache for {@link SudokuNumsSet} of possible numbers
      * for the first {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM1NumsSet: ReadonlySudokuNumsSet;
@@ -48,7 +49,7 @@ export class CageModel3Reducer implements CageModelReducer {
     private readonly _cellM2: CellModel;
 
     /**
-     * Cache for {@link SudokuNumsSet} of possible number's options
+     * Cache for {@link SudokuNumsSet} of possible numbers
      * for the second {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM2NumsSet: ReadonlySudokuNumsSet;
@@ -59,11 +60,14 @@ export class CageModel3Reducer implements CageModelReducer {
     private readonly _cellM3: CellModel;
 
     /**
-     * Cache for {@link SudokuNumsSet} of possible number's options
+     * Cache for {@link SudokuNumsSet} of possible numbers
      * for the third {@link CellModel} of the {@link CageModel}.
      */
     private readonly _cellM3NumsSet: ReadonlySudokuNumsSet;
 
+    /**
+     * Cache for {@link ComboReductionState}s of the {@link CageModel}'s {@link Cage} sum.
+     */
     private readonly _sumReductionStates: ComboReductionStatesByComboByCNPS;
 
     /**
