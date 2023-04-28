@@ -11,9 +11,9 @@ export type ComboReductionState = {
     readonly cell3KeepNumsBits: number;
 };
 
-export type ComboReductionStatesByComboByCNPS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
+export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
 
-export type ComboReductionStatesBySumByComboByCNPS = ReadonlyArray<ComboReductionStatesByComboByCNPS>;
+export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
 const INVALID_REDUCTION_STATE: ComboReductionState = {
     isValid: false,
@@ -35,9 +35,9 @@ export class CageModel3ReductionDb {
         throw new Error('Non-contructible');
     }
 
-    static readonly STATES: ComboReductionStatesBySumByComboByCNPS = this.readStates();
+    static readonly STATES: ComboReductionStatesBySumByComboByPNS = this.readStates();
 
-    private static readStates(): ComboReductionStatesBySumByComboByCNPS {
+    private static readStates(): ComboReductionStatesBySumByComboByPNS {
         const sourceDb = this.readFromYamlSourceSync();
         return this.buildStatesFrom(sourceDb);
     }

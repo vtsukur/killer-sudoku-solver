@@ -8,7 +8,7 @@ import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CageModel3ReductionDb, ComboReductionState, ComboReductionStatesByComboByCNPS } from './db/cageModel3ReductionDb';
+import { CageModel3ReductionDb, ComboReductionState, ComboReductionStatesByComboByPNS } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
@@ -68,7 +68,7 @@ export class CageModel3Reducer implements CageModelReducer {
     /**
      * Cache for {@link ComboReductionState}s of the {@link CageModel}'s {@link Cage} sum.
      */
-    private readonly _combosReductionStates: ComboReductionStatesByComboByCNPS;
+    private readonly _combosReductionStates: ComboReductionStatesByComboByPNS;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
