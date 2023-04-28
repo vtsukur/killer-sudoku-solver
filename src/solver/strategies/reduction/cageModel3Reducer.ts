@@ -11,9 +11,11 @@ import { CageModel3ReductionDb, ComboReductionStatesByComboByCNPS } from './db/c
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
- * Reduces possible numbers for {@link CellModel}s
- * within a {@link CageModel} of a {@link Cage} with 3 {@link Cell}s
- * by checking the validity of numbers' options given possible {@link Combo}s for the {@link CageModel}.
+ * High-performance implementation of reducer of possible numbers for {@link CellModel}s
+ * within a {@link CageModel} of a {@link Cage} with 3 {@link Cell}s.
+ *
+ * Checks the validity of numbers given possible {@link Combo}s for the {@link CageModel}
+ * using pre-computed {@link CageModel3ReductionDb}.
  *
  * @public
  */
