@@ -68,7 +68,7 @@ export class CageModel3Reducer implements CageModelReducer {
     /**
      * Cache for {@link ComboReductionState}s of the {@link CageModel}'s {@link Cage} sum.
      */
-    private readonly _sumReductionStates: ComboReductionStatesByComboByCNPS;
+    private readonly _combosReductionStates: ComboReductionStatesByComboByCNPS;
 
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
@@ -87,7 +87,7 @@ export class CageModel3Reducer implements CageModelReducer {
         this._cellM2NumsSet = this._cellM2._numOptsSet;
         this._cellM3 = cageM.cellMs[2];
         this._cellM3NumsSet = this._cellM3._numOptsSet;
-        this._sumReductionStates = CageModel3ReductionDb.STATES[cageM.cage.sum];
+        this._combosReductionStates = CageModel3ReductionDb.STATES[cageM.cage.sum];
     }
 
     /**
@@ -122,7 +122,7 @@ export class CageModel3Reducer implements CageModelReducer {
                         ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                     ) << 6;
 
-            const reductionState = this._sumReductionStates[combo.index][compressedNumbersPresenceState];
+            const reductionState = this._combosReductionStates[combo.index][compressedNumbersPresenceState];
 
             if (reductionState.isValid) {
                 actualReductionStateCellM1 |= reductionState.cell1KeepNumsBits;
