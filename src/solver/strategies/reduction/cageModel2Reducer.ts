@@ -144,7 +144,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // *Example 1*
             //
             // For the `Combo` of numbers `[5, 6]`,
-            // if the first `CellModel` has the possible number option `5` but not `6`
+            // if the first `CellModel` has the possible number `5` but not `6`
             // and the second `CellModel` has both `5` and `6`,
             // the state will be as follows:
             //
@@ -152,21 +152,21 @@ export class CageModel2Reducer implements CageModelReducer {
             // `CellModel` 1 numbers: `[..., 5, (no 6) ...]`
             // State of `Combo` present numbers within the first `CellModel`: `0b01`
             // (the present first number `5` sets the first bit,
-            // and the absent second number `6` clears the second bit)
+            // and the absent second number `6` clears the second bit).
             //
             // `CellModel` 2 numbers: `[..., 5, 6, ...]`
             // State of `Combo` present numbers within the second `CellModel`: `0b11`
-            // (both present numbers `5` and `6` set both first and second bits)
+            // (both present numbers `5` and `6` set both first and second bits).
             //
             // Compound state: `0b1101`
             // (shift to the right happens for the present numbers state for the second `CellModel`
-            // to form the joint 4-bit integer)
+            // to form the joint 4-bit integer).
             // ```
             //
             // *Example 2*
             //
             // For the `Combo` of numbers `[5, 6]`,
-            // if the first `CellModel` has the possible number option `6`
+            // if the first `CellModel` has the possible number `6`
             // and the second `CellModel` does *not* have either `5` or `6`,
             // the state will be as follows:
             //
@@ -186,11 +186,15 @@ export class CageModel2Reducer implements CageModelReducer {
             // ```
             //
             const presentNumbersState =
-                    ((cellM1NumsBits & (1 << num1)) >> num1) |         // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
-                    ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |   // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
+                    // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
+                    ((cellM1NumsBits & (1 << num1)) >> num1) |
+                    // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
+                    ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
                     (
-                        ((cellM2NumsBits & (1 << num1)) >> num1) |     // The third bit is set if the first `Combo` number is possible in `CellModel` 2.
-                        ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) // The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
+                        // The third bit is set if the first `Combo` number is possible in `CellModel` 2.
+                        ((cellM2NumsBits & (1 << num1)) >> num1) |
+                        // The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
+                        ((cellM2NumsBits & (1 << num2)) >> (num2 - 1))
                     ) << 2;
 
             //
