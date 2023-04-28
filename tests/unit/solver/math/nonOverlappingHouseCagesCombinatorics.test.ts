@@ -72,10 +72,10 @@ describe('Unit tests for `NonOverlappingHouseCagesCombinatorics`', () => {
                 CombosSet.from(SumCombinatorics.BY_COUNT_BY_SUM[2][4], [ Combo.of(1, 3) ]),
                 CombosSet.from(SumCombinatorics.BY_COUNT_BY_SUM[3][24], [ Combo.of(7, 8, 9) ]),
                 CombosSet.from(SumCombinatorics.BY_COUNT_BY_SUM[2][7], [ Combo.of(2, 5) ]),
-                CombosSet.from(SumCombinatorics.BY_COUNT_BY_SUM[1][4], [ Combo.ofOne(4) ])
+                CombosSet.from(SumCombinatorics.BY_COUNT_BY_SUM[1][4], [ Combo.ofNum(4) ])
             ],
             perms: [
-                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.ofOne(4) ]
+                [ Combo.of(1, 3), Combo.of(7, 8, 9), Combo.of(2, 5), Combo.ofNum(4) ]
             ]
         });
     });

@@ -42,10 +42,10 @@ describe('Unit tests for `FindCombosForHouseCagesStrategy`', () => {
         expect(row2_cageM3.combos).toEqual([ Combo.of(3, 9), Combo.of(5, 7) ]);
 
         const row2_cageM4 = cageM(8, [ Cell.at(2, 7) ]);
-        expect(row2_cageM4.combos).toEqual([ Combo.ofOne(8) ]);
+        expect(row2_cageM4.combos).toEqual([ Combo.ofNum(8) ]);
 
         const row2_cageM5 = cageM(1, [ Cell.at(2, 8) ]);
-        expect(row2_cageM5.combos).toEqual([ Combo.ofOne(1) ]);
+        expect(row2_cageM5.combos).toEqual([ Combo.ofNum(1) ]);
 
         // Checking `Column 8`:
 
@@ -57,7 +57,7 @@ describe('Unit tests for `FindCombosForHouseCagesStrategy`', () => {
         ]);
 
         const column8_cageM2 = cageM(1, [ Cell.at(2, 8) ]);
-        expect(column8_cageM2.combos).toEqual([ Combo.ofOne(1) ]);
+        expect(column8_cageM2.combos).toEqual([ Combo.ofNum(1) ]);
 
         const column8_cageM3 = cageM(19, [ Cell.at(3, 8), Cell.at(4, 8), Cell.at(5, 8) ]);
         expect(column8_cageM3.combos).toEqual([
@@ -80,7 +80,7 @@ describe('Unit tests for `FindCombosForHouseCagesStrategy`', () => {
         expect(nonet3_cageM1.combos).toEqual([ Combo.of(1, 3) ]);
 
         const nonet3_cageM2 = cageM(2, [ Cell.at(3, 2) ]);
-        expect(nonet3_cageM2.combos).toEqual([ Combo.ofOne(2) ]);
+        expect(nonet3_cageM2.combos).toEqual([ Combo.ofNum(2) ]);
 
         const nonet3_cageM3 = cageM(27, [ Cell.at(4, 0), Cell.at(4, 1), Cell.at(5, 0), Cell.at(5, 1) ]);
         expect(nonet3_cageM3.combos).toEqual([ Combo.of(4, 6, 8, 9), Combo.of(5, 6, 7, 9) ]);

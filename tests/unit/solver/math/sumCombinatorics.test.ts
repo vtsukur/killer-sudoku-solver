@@ -11,7 +11,7 @@ describe('Tests for `SumCombinatorics`', () => {
 
     test('Number combinations to form a sum out of 1 number', () => {
         rangeFromMinSumToX(SudokuNumsSet.MAX_NUM).forEach(sum => {
-            expect(combos(sum, 1)).toEqual([ Combo.ofOne(sum) ]);
+            expect(combos(sum, 1)).toEqual([ Combo.ofNum(sum) ]);
         });
         rangeFromXToMaxSum(SudokuNumsSet.MAX_NUM_RANGE_INCSLUSIVE_UPPER_BOUND).forEach(sum => {
             expect(combos(sum, 1)).toEqual(NO_COMBOS);

@@ -39,7 +39,7 @@ describe('`Combo` tests', () => {
     });
 
     test('Accessing number fields for Combo with 1 element', () => {
-        const combo = Combo.ofOne(1);
+        const combo = Combo.ofNum(1);
         expect(combo.number1).toBe(1);
         expect(combo.nthNumber(0)).toBe(1);
         expect(combo.number2).toBe(0);

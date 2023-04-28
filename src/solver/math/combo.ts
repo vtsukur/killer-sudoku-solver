@@ -197,7 +197,7 @@ export class Combo implements Iterable<number> {
         return Combo.BY_NUMS_BITS[bits];
     }
 
-    static ofOne(val: number) {
+    static ofNum(val: number) {
         // check number to be within the range.
         return Combo.BY_NUMS_BITS[1 << val];
     }
