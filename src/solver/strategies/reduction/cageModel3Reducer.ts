@@ -197,10 +197,12 @@ export class CageModel3Reducer implements CageModelReducer {
             // [PERFORMANCE]
             //
             // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
-            // through the `CageModel3ReductionDb` cache.
+            // through the `CageModel3ReductionDb` cache using only two array access operations.
             //
             const reductionState = this._combosReductionStates[combo.index][presentNumbersState];
 
+            //
+            // [PERFORMANCE]
             //
             // If the `ComboReductionState` is valid,
             // then `Combo` is still relevant, and updated numbers for `CellModel`s
