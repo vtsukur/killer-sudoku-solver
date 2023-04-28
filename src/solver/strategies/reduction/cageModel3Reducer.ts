@@ -201,6 +201,12 @@ export class CageModel3Reducer implements CageModelReducer {
             //
             const reductionState = this._combosReductionStates[combo.index][presentNumbersState];
 
+            //
+            // If the `ComboReductionState` is valid,
+            // then `Combo` is still relevant, and updated numbers for `CellModel`s
+            // should include the numbers kept post-reduction for this `ComboReductionState`.
+            // Otherwise, delete the `Combo`.
+            //
             if (reductionState.isValid) {
                 updatedCellM1NumsBits |= reductionState.cell1KeepNumsBits;
                 updatedCellM2NumsBits |= reductionState.cell2KeepNumsBits;
