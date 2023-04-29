@@ -99,33 +99,26 @@ export class CageModel3Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        //
-        // [PERFORMANCE]
-        //
-        // Storing possible numbers for `CellModel`s as bit masks
-        // for efficient low-level check and manipulation of possible numbers.
-        //
+        // Storing current (pre-reduction) `CellModel`s' numbers as bit masks.
         const cellM1NumsBits = this._cellM1NumsSet.bits;
         const cellM2NumsBits = this._cellM2NumsSet.bits;
         const cellM3NumsBits = this._cellM3NumsSet.bits;
 
-        // Bit masks for updated / post-reduction numbers for the `CellModel`s.
+        // Initializing bit masks for the updated (post-reduction) `CellModel`s' numbers.
         let updatedCellM1NumsBits = 0;
         let updatedCellM2NumsBits = 0;
         let updatedCellM3NumsBits = 0;
 
         // Iterating over each possible `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
+
             //
-            // [PERFORMANCE]
-            //
-            // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
-            // through the `CageModel3ReductionDb` cache using only two array access operations.
+            // Determining `ComboReductionState` relevant for the `Combo` numbers present in the `CellModel`s
+            // through the `CageModel3ReductionDb` cache using bitwise arithmetic and just a few array access operations.
+            // The output is showing if
             //
             const reductionState = CageModel3Reducer.getReductionState(combo, cellM1NumsBits, cellM2NumsBits, cellM3NumsBits);
 
-            //
-            // [PERFORMANCE]
             //
             // If the `ComboReductionState` is valid,
             // then `Combo` is still relevant, and updated numbers for `CellModel`s
