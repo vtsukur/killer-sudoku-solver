@@ -116,90 +116,13 @@ export class CageModel3Reducer implements CageModelReducer {
 
         // Iterating over each possible `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
-            // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
-            const num1 = combo.number1;
-            const num2 = combo.number2;
-            const num3 = combo.number3;
-
-            //
-            // [PERFORMANCE]
-            //
-            // Determining the _present numbers state_ (or PNS)
-            // by forming the 9-bit state in the range `[0, 511]`
-            // out of the current `Combo` numbers in `CellModel`s
-            // by applying efficient bitwise AND and shift operators:
-            //
-            //  - The first bit is set if the first `Combo` number is possible in the first `CellModel`.
-            //  - The second bit is set if the second `Combo` number is possible in the first `CellModel`.
-            //  - The third bit is set if the third `Combo` number is possible in the first `CellModel`.
-            //  - The fourth bit is set if the first `Combo` number is possible in the second `CellModel`.
-            //  - The fifth bit is set if the second `Combo` number is possible in the second `CellModel`.
-            //  - The sixth bit is set if the third `Combo` number is possible in the second `CellModel`.
-            //  - The seventh bit is set if the first `Combo` number is possible in the third `CellModel`.
-            //  - The eighth bit is set if the second `Combo` number is possible in the third `CellModel`.
-            //  - The ninth bit is set if the third `Combo` number is possible in the third `CellModel`.
-            //
-            // *Example*
-            //
-            // For the `Combo` of numbers `[5, 6, 7]`,
-            // if the first `CellModel` has the possible numbers `5` and `7` but not `6`,
-            // the second `CellModel` has all numbers (`5`, `6`, and `7`),
-            // and the third `CellModel` has only `6`,
-            // the state will be as follows:
-            //
-            // ```
-            // `CellModel` 1 numbers: `[..., 5, (no 6), 7 ...]`
-            // State of `Combo` present numbers within the first `CellModel`: `0b101`
-            // (the present first number `5` sets the first bit,
-            // the missing second number `6` clears the second bit,
-            // and the present third number `7` sets the third bit).
-            //
-            // `CellModel` 2 numbers: `[..., 5, 6, 7, ...]`
-            // State of `Combo` present numbers within the second `CellModel`: `0b111`
-            // (present numbers `5`, `6`, and `7` set first, second, and third bits).
-            //
-            // `CellModel` 3 numbers: `[..., (no 5), 6, (no 7) ...]`
-            // State of `Combo` present numbers within the first `CellModel`: `0b010`
-            // (the missing first number `5` clears the first bit,
-            // the present second number `6` sets the second bit,
-            // the missing third number `7` clears the third bit).
-            //
-            // Compound state: `0b010111101`
-            // (shift to the right happens for the present numbers state for the second and third `CellModel`s
-            // to form the joint 9-bit integer).
-            // ```
-            //
-            const presentNumbersState =
-                    // The first bit is set if the first `Combo` number is possible in the first `CellModel`.
-                    ((cellM1NumsBits & (1 << num1)) >> num1) |
-                    // The second bit is set if the second `Combo` number is possible in the first `CellModel`.
-                    ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
-                    // The third bit is set if the third `Combo` number is possible in the first `CellModel`.
-                    ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
-                    (
-                        // The fourth bit is set if the first `Combo` number is possible in the second `CellModel`.
-                        ((cellM2NumsBits & (1 << num1)) >> num1) |
-                        // The fifth bit is set if the second `Combo` number is possible in the second `CellModel`.
-                        ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) |
-                        // The sixth bit is set if the third `Combo` number is possible in the second `CellModel`.
-                        ((cellM2NumsBits & (1 << num3)) >> (num3 - 2))
-                    ) << 3 |
-                    (
-                        // The seventh bit is set if the first `Combo` number is possible in the third `CellModel`.
-                        ((cellM3NumsBits & (1 << num1)) >> num1) |
-                        // The eighth bit is set if the second `Combo` number is possible in the third `CellModel`.
-                        ((cellM3NumsBits & (1 << num2)) >> (num2 - 1)) |
-                        // The ninth bit is set if the third `Combo` number is possible in the third `CellModel`.
-                        ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
-                    ) << 6;
-
             //
             // [PERFORMANCE]
             //
             // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
             // through the `CageModel3ReductionDb` cache using only two array access operations.
             //
-            const reductionState = this._combosReductionStates[combo.index][presentNumbersState];
+            const reductionState = CageModel3Reducer.getReductionState(combo, cellM1NumsBits, cellM2NumsBits, cellM3NumsBits);
 
             //
             // [PERFORMANCE]
@@ -225,26 +148,90 @@ export class CageModel3Reducer implements CageModelReducer {
     }
 
     static getReductionState(combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
+        // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
         const num1 = combo.number1;
         const num2 = combo.number2;
         const num3 = combo.number3;
 
-        const compressedNumbersPresenceState =
+        //
+        // [PERFORMANCE]
+        //
+        // Determining the _present numbers state_ (or PNS)
+        // by forming the 9-bit state in the range `[0, 511]`
+        // out of the current `Combo` numbers in `CellModel`s
+        // by applying efficient bitwise AND and shift operators:
+        //
+        //  - The first bit is set if the first `Combo` number is possible in the first `CellModel`.
+        //  - The second bit is set if the second `Combo` number is possible in the first `CellModel`.
+        //  - The third bit is set if the third `Combo` number is possible in the first `CellModel`.
+        //  - The fourth bit is set if the first `Combo` number is possible in the second `CellModel`.
+        //  - The fifth bit is set if the second `Combo` number is possible in the second `CellModel`.
+        //  - The sixth bit is set if the third `Combo` number is possible in the second `CellModel`.
+        //  - The seventh bit is set if the first `Combo` number is possible in the third `CellModel`.
+        //  - The eighth bit is set if the second `Combo` number is possible in the third `CellModel`.
+        //  - The ninth bit is set if the third `Combo` number is possible in the third `CellModel`.
+        //
+        // *Example*
+        //
+        // For the `Combo` of numbers `[5, 6, 7]`,
+        // if the first `CellModel` has the possible numbers `5` and `7` but not `6`,
+        // the second `CellModel` has all numbers (`5`, `6`, and `7`),
+        // and the third `CellModel` has only `6`,
+        // the state will be as follows:
+        //
+        // ```
+        // `CellModel` 1 numbers: `[..., 5, (no 6), 7 ...]`
+        // State of `Combo` present numbers within the first `CellModel`: `0b101`
+        // (the present first number `5` sets the first bit,
+        // the missing second number `6` clears the second bit,
+        // and the present third number `7` sets the third bit).
+        //
+        // `CellModel` 2 numbers: `[..., 5, 6, 7, ...]`
+        // State of `Combo` present numbers within the second `CellModel`: `0b111`
+        // (present numbers `5`, `6`, and `7` set first, second, and third bits).
+        //
+        // `CellModel` 3 numbers: `[..., (no 5), 6, (no 7) ...]`
+        // State of `Combo` present numbers within the first `CellModel`: `0b010`
+        // (the missing first number `5` clears the first bit,
+        // the present second number `6` sets the second bit,
+        // the missing third number `7` clears the third bit).
+        //
+        // Compound state: `0b010111101`
+        // (shift to the right happens for the present numbers state for the second and third `CellModel`s
+        // to form the joint 9-bit integer).
+        // ```
+        //
+        const presentNumbersState =
+                // The first bit is set if the first `Combo` number is possible in the first `CellModel`.
                 ((cellM1NumsBits & (1 << num1)) >> num1) |
+                // The second bit is set if the second `Combo` number is possible in the first `CellModel`.
                 ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
+                // The third bit is set if the third `Combo` number is possible in the first `CellModel`.
                 ((cellM1NumsBits & (1 << num3)) >> (num3 - 2)) |
                 (
+                    // The fourth bit is set if the first `Combo` number is possible in the second `CellModel`.
                     ((cellM2NumsBits & (1 << num1)) >> num1) |
+                    // The fifth bit is set if the second `Combo` number is possible in the second `CellModel`.
                     ((cellM2NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    // The sixth bit is set if the third `Combo` number is possible in the second `CellModel`.
                     ((cellM2NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 3 |
                 (
+                    // The seventh bit is set if the first `Combo` number is possible in the third `CellModel`.
                     ((cellM3NumsBits & (1 << num1)) >> num1) |
+                    // The eighth bit is set if the second `Combo` number is possible in the third `CellModel`.
                     ((cellM3NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    // The ninth bit is set if the third `Combo` number is possible in the third `CellModel`.
                     ((cellM3NumsBits & (1 << num3)) >> (num3 - 2))
                 ) << 6;
 
-        return CageModel3ReductionDb.STATES[combo.sum][combo.index][compressedNumbersPresenceState];
+        //
+        // [PERFORMANCE]
+        //
+        // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
+        // through the `CageModel3ReductionDb` cache using only two array access operations.
+        //
+        return CageModel3ReductionDb.STATES[combo.sum][combo.index][presentNumbersState];
     }
 
 }
