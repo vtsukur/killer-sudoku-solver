@@ -44,7 +44,6 @@ export class CageModel4Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
-        // Finding `CellModel` with the minimal amount of number options.
         let minNumCountCellM = this._firstCellM;
         let minNumCountCellMIndex = 0;
         let minNumCountNums = this._firstCellM._numOptsSet.nums;
