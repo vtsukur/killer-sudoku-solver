@@ -109,8 +109,8 @@ export class CageModel3Reducer implements CageModelReducer {
         //      (next steps of the algorithm will update it with the numbers which are still possible for each `CellModel`)
         //  - For each `Combo` the `CageModel` considers as _currently possible_:
         //    - The logic checks whether `CellModel`s can accomodate such a `Combo` according to the _currently possible numbers_:
-        //      - If not, then such a `Combo` is deleted from the list of currently possible `Combo`s.
-        //      - If yes, then such a `Combo` is kept in the list of currently possible `Combo`s
+        //      - If not, such a `Combo` is deleted from the list of currently possible `Combo`s.
+        //      - If yes, such a `Combo` is kept in the list of currently possible `Combo`s
         //          and the _future possible_ numbers for each `CellModel` are extended to include the relevant `Combo` numbers according to the currently present ones.
         //
 
