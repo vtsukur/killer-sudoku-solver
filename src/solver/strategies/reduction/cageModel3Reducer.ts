@@ -99,6 +99,21 @@ export class CageModel3Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
+        //
+        // [PERFORMANCE]
+        //
+        // The reduction works as follows:
+        //
+        //  - All _currently possible_ `CellModel`s' numbers set the immutable pre-reduction state.
+        //  - All _future possible_ `CellModel`s' numbers set the mutable post-reduction state initially holding _no_ numbers for all `CellModel`s
+        //      (next steps of the algorithm will update it with the numbers which are still possible for each `CellModel`)
+        //  - For each `Combo` the `CageModel` considers as _currently possible_:
+        //    - The logic checks whether `CellModel`s can accomodate such a `Combo` according to the _currently possible numbers_:
+        //      - If not, then such a `Combo` is deleted from the list of currently possible `Combo`s.
+        //      - If yes, then such a `Combo` is kept in the list of currently possible `Combo`s
+        //          and the _future possible_ numbers for each `CellModel` are extended to include the relevant `Combo` numbers according to the currently present ones.
+        //
+
         // Storing current (pre-reduction) `CellModel`s' numbers as bit masks.
         const cellM1NumsBits = this._cellM1NumsSet.bits;
         const cellM2NumsBits = this._cellM2NumsSet.bits;
