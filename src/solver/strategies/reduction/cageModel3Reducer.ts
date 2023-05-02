@@ -100,8 +100,6 @@ export class CageModel3Reducer implements CageModelReducer {
      */
     reduce(reduction: MasterModelReduction): void {
         //
-        // [PERFORMANCE]
-        //
         // The reduction works as follows:
         //
         //  - All _currently possible_ `CellModel`s' numbers set the immutable pre-reduction state.
