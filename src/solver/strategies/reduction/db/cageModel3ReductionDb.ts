@@ -26,7 +26,11 @@ const YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.
 
 const YAML_SOURCE_ENCODING = 'utf-8';
 
-const REDUCTIONS_PER_COMBO_COUNT = Math.pow(2, 3 * 3);
+const NUM_OPTIONS_PER_COMBO_COUNT = 3;
+
+const CELL_COUNT = 3;
+
+const REDUCTIONS_PER_COMBO_COUNT = Math.pow(2, CELL_COUNT * NUM_OPTIONS_PER_COMBO_COUNT);
 
 export class CageModel3ReductionDb {
 
