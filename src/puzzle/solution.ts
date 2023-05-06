@@ -3,7 +3,7 @@ import { EOL } from 'os';
 /**
  * Numbers matrix (array of arrays) indexed by row and then by column.
  */
-type NumbersMatrix = ReadonlyArray<ReadonlyArray<number>>;
+type NumsMatrix = ReadonlyArray<ReadonlyArray<number>>;
 
 /**
  * Solution for Killer Sudoku `Puzzle` in the form of numbers matrix (array of arrays) indexed by row and then by column
@@ -22,7 +22,7 @@ export class Solution {
      * const lastNumberInSecondRow = solution.numbers[1][8];
      * ```
      */
-    readonly numbers: NumbersMatrix;
+    readonly numbers: NumsMatrix;
 
     private readonly _asString: string;
 
@@ -34,7 +34,7 @@ export class Solution {
      *
      * @param numbers - Numbers matrix (array of arrays) which should be indexed by row and then by column.
      */
-    constructor(numbers: NumbersMatrix) {
+    constructor(numbers: NumsMatrix) {
         this.numbers = numbers;
         this._asString = numbers.map(numRow => {
             return numRow.join(Solution.COLUMN_SEPARATOR);
