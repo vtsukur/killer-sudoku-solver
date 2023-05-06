@@ -5,7 +5,8 @@ import { Cell } from '../../../puzzle/cell';
 import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
-import { CombosSet, ReadonlySudokuNumsSet } from '../../sets';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CageModel3ReductionDb, ComboReductionState, ComboReductionStatesByComboByPNS } from './db/cageModel3ReductionDb';
