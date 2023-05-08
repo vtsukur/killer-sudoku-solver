@@ -29,7 +29,7 @@ type InlineTacticalReducer = (
  * within a {@link CageModel} of a {@link Cage} with 2 {@link Cell}s.
  *
  * Checks the validity of numbers given possible {@link Combo}s for the {@link CageModel}
- * and executes fast _inline reduction_ function according to the _present numbers_ state.
+ * and executes fast _inline reduction_ function according to the _present numbers state_.
  *
  * @public
  */
@@ -111,7 +111,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // by determining and running a particular pre-coded _inline reduction_ function
             // with hardcoded actions relevant to the current `Combo` numbers in the `CellModel`s.
             //
-            // Overall, there are 16 distinct permutations of _present numbers_ states
+            // Overall, there are 16 distinct permutations of _present numbers states_
             // for a particular `Combo` of a `CageModel` of a `Cage` with 2 `Cell`s.
             //
             // Each number in each `Cell` can be either absent (`0`) or present (`1`).
@@ -230,7 +230,7 @@ export class CageModel2Reducer implements CageModelReducer {
  * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | Input                                                                                 | Reducing Actions                                                      | Output                                                      |
  * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | _Present Numbers_ State | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
+ * | _Present Numbers State_ | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums | For `CellModel` 2        | For `CellModel` 1        | Delete `Combo`? | `CellModel` 2 - `Combo` Nums | `CellModel` 1 - `Combo` Nums |
  * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | 0b0000 =  0             | <none>                       | <none>                       | <none>                   | <none>                   | yes             | <none>                       | <none>                       |
  * | 0b0001 =  1             | <none>                       | `num1`                       | <none>                   | delete `num1`            | yes             | <none>                       | <none>                       |
@@ -251,73 +251,73 @@ export class CageModel2Reducer implements CageModelReducer {
  * | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  */
 const INLINE_TACTICAL_REDUCERS: ReadonlyArray<InlineTacticalReducer> = [
-    // Element index is the _present numbers_ state: `0b00_00 = 0`
+    // Element index is the _present numbers state_: `0b00_00 = 0`
     (_reduction, _cageM, combosSet, combo) => {
         combosSet.deleteCombo(combo);
     },
-    // Element index is the _present numbers_ state: `0b00_01 = 1`
+    // Element index is the _present numbers state_: `0b00_01 = 1`
     (reduction, cageM, combosSet, combo, cellM1, _cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // Element index is the _present numbers_ state: `0b00_10 = 2`
+    // Element index is the _present numbers state_: `0b00_10 = 2`
     (reduction, cageM, combosSet, combo, cellM1, _cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // Element index is the _present numbers_ state: `0b00_11 = 3`
+    // Element index is the _present numbers state_: `0b00_11 = 3`
     (reduction, cageM, combosSet, combo, cellM1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM1, combo, cageM);
     },
-    // Element index is the _present numbers_ state: `0b01_00 = 4`
+    // Element index is the _present numbers state_: `0b01_00 = 4`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // Element index is the _present numbers_ state: `0b01_01 = 5`
+    // Element index is the _present numbers state_: `0b01_01 = 5`
     (reduction, cageM, combosSet, combo, cellM1, cellM2, num1) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num1, cageM);
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // Element index is the _present numbers_ state: `0b01_10 = 6`
+    // Element index is the _present numbers state_: `0b01_10 = 6`
     NOTHING_TO_REDUCE,
-    // Element index is the _present numbers_ state: `0b01_11 = 7`
+    // Element index is the _present numbers state_: `0b01_11 = 7`
     (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, num1) => {
         reduction.deleteNumOpt(cellM1, num1, cageM);
     },
-    // Element index is the _present numbers_ state: `0b10_00 = 8`
+    // Element index is the _present numbers state_: `0b10_00 = 8`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // Element index is the _present numbers_ state: `0b10_01 = 9`
+    // Element index is the _present numbers state_: `0b10_01 = 9`
     NOTHING_TO_REDUCE,
-    // Element index is the _present numbers_ state: `0b10_10 = 10`
+    // Element index is the _present numbers state_: `0b10_10 = 10`
     (reduction, cageM, combosSet, combo, cellM1, cellM2, _num1, num2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteNumOpt(cellM1, num2, cageM);
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // Element index is the _present numbers_ state: `0b10_11 = 11`
+    // Element index is the _present numbers state_: `0b10_11 = 11`
     (reduction, cageM, _combosSet, _combo, cellM1, _cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM1, num2, cageM);
     },
-    // Element index is the _present numbers_ state: `0b11_00 = 12`
+    // Element index is the _present numbers state_: `0b11_00 = 12`
     (reduction, cageM, combosSet, combo, _cellM1, cellM2) => {
         combosSet.deleteCombo(combo);
         reduction.deleteComboNumOpts(cellM2, combo, cageM);
     },
-    // Element index is the _present numbers_ state: `0b11_01 = 13`
+    // Element index is the _present numbers state_: `0b11_01 = 13`
     (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, num1) => {
         reduction.deleteNumOpt(cellM2, num1, cageM);
     },
-    // Element index is the _present numbers_ state: `0b11_10 = 14`
+    // Element index is the _present numbers state_: `0b11_10 = 14`
     (reduction, cageM, _combosSet, _combo, _cellM1, cellM2, _num1, num2) => {
         reduction.deleteNumOpt(cellM2, num2, cageM);
     },
-    // Element index is the _present numbers_ state: `0b11_11 = 15`
+    // Element index is the _present numbers state_: `0b11_11 = 15`
     NOTHING_TO_REDUCE
 ];
 
