@@ -131,14 +131,14 @@ export class CageModel3Reducer implements CageModelReducer {
         let updatedCellM3NumsBits = 0;
 
         // Iterating over each _possible_ `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
-        for (const combo of this._combosSet.combos) {
+        for (const currentCombo of this._combosSet.combos) {
 
             //
             // Determining `ComboReductionState` relevant for the `Combo` numbers present in the `CellModel`s
             // through the `CageModel3ReductionDb` cache using bitwise arithmetic and just a few array access operations.
             // The output is showing if
             //
-            const reductionState = CageModel3Reducer.getReductionState(combo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
+            const reductionState = CageModel3Reducer.getReductionState(currentCombo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
 
             //
             // If the `ComboReductionState` is valid,
@@ -151,7 +151,7 @@ export class CageModel3Reducer implements CageModelReducer {
                 updatedCellM2NumsBits |= reductionState.cell2KeepNumsBits;
                 updatedCellM3NumsBits |= reductionState.cell3KeepNumsBits;
             } else {
-                this._combosSet.deleteCombo(combo);
+                this._combosSet.deleteCombo(currentCombo);
             }
         }
 
