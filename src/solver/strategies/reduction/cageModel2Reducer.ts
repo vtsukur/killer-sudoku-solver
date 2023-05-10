@@ -99,11 +99,11 @@ export class CageModel2Reducer implements CageModelReducer {
         // Storing possible numbers for `CellModel`s as bit masks
         // for efficient low-level check and manipulation of possible numbers.
         //
-        const cellM1NumsBits = this._cellM1NumsSet.bits;
-        const cellM2NumsBits = this._cellM2NumsSet.bits;
+        const currentCellM1NumsBits = this._cellM1NumsSet.bits;
+        const currentCellM2NumsBits = this._cellM2NumsSet.bits;
 
         // Iterating over each _possible_ `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
-        for (const combo of this._combosSet.combos) {
+        for (const currentCombo of this._combosSet.combos) {
             //
             // [PERFORMANCE]
             //
@@ -125,8 +125,8 @@ export class CageModel2Reducer implements CageModelReducer {
             //
 
             // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
-            const num1 = combo.number1;
-            const num2 = combo.number2;
+            const num1 = currentCombo.number1;
+            const num2 = currentCombo.number2;
 
             //
             // [PERFORMANCE]
@@ -187,14 +187,14 @@ export class CageModel2Reducer implements CageModelReducer {
             //
             const presentNumbersState =
                     // The first bit is set if the first `Combo` number is possible in `CellModel` 1.
-                    ((cellM1NumsBits & (1 << num1)) >> num1) |
+                    ((currentCellM1NumsBits & (1 << num1)) >> num1) |
                     // The second bit is set if the second `Combo` number is possible in `CellModel` 1.
-                    ((cellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
+                    ((currentCellM1NumsBits & (1 << num2)) >> (num2 - 1)) |
                     (
                         // The third bit is set if the first `Combo` number is possible in `CellModel` 2.
-                        ((cellM2NumsBits & (1 << num1)) >> num1) |
+                        ((currentCellM2NumsBits & (1 << num1)) >> num1) |
                         // The fourth bit is set if the second `Combo` number is possible in `CellModel` 2.
-                        ((cellM2NumsBits & (1 << num2)) >> (num2 - 1))
+                        ((currentCellM2NumsBits & (1 << num2)) >> (num2 - 1))
                     ) << 2;
 
             //
@@ -204,7 +204,7 @@ export class CageModel2Reducer implements CageModelReducer {
             // with hardcoded actions relevant to the `Combo` numbers present in the `CellModel`s.
             //
             INLINE_TACTICAL_REDUCERS[presentNumbersState](
-                    reduction, this._cageM, this._combosSet, combo,
+                    reduction, this._cageM, this._combosSet, currentCombo,
                     this._cellM1, this._cellM2,
                     num1, num2
             );
