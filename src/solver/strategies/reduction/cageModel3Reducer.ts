@@ -118,6 +118,10 @@ export class CageModel3Reducer implements CageModelReducer {
         //            `updatedCellM*NumsBits` accumulate _updated possible_ numbers for each `CellModel`.
         //            Pre-calculated reduction states define the _updated possible_ numbers
         //            according to the _currently possible_ `currentCellM*NumsBits`.
+        //  - After all `Combo`s are checked, the _updated possible_ `updatedCellM*NumsBits`
+        //    are set as the new _currently possible_ `currentCellM*NumsBits`.
+        //  - The _updated possible_ `updatedCellM*NumsBits` are set as the new _currently possible_
+        //    `CellModel`s' numbers.
         //
 
         // Storing currently possible `CellModel`s' numbers as bit masks (pre-reduction).
