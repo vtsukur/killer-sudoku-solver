@@ -103,14 +103,21 @@ export class CageModel3Reducer implements CageModelReducer {
         //
         // The reduction works as follows:
         //
-        //  - All _currently possible_ `CellModel`s' numbers set the immutable pre-reduction state.
-        //  - All _future possible_ `CellModel`s' numbers set the mutable post-reduction state initially holding _no_ numbers for all `CellModel`s
-        //      (next steps of the algorithm will update it with the numbers which are still possible for each `CellModel`)
+        //  - All _currently possible_ `CellModel`s' numbers
+        //    set the immutable pre-reduction state in `cellM*NumsBits`.
+        //  - All _future possible_ `CellModel`s' numbers
+        //    set the mutable post-reduction state in `updatedCellM*NumsBits`
+        //    initially holding *no* numbers for all `CellModel`s.
+        //    The following algorithm steps will update it
+        //    with the numbers that are possible for each `CellModel`.
         //  - For each `Combo` the `CageModel` considers as _currently possible_:
-        //    - The logic checks whether `CellModel`s can accomodate such a `Combo` according to the _currently possible numbers_:
-        //      - If not, such a `Combo` is deleted from the list of currently possible `Combo`s.
-        //      - If yes, such a `Combo` is kept in the list of currently possible `Combo`s
-        //          and the _future possible_ numbers for each `CellModel` are extended to include the relevant `Combo` numbers according to the currently present ones by using pre-calculated states.
+        //      - The logic checks whether `CellModel`s can accommodate
+        //        such a `Combo` according to the _currently possible numbers_:
+        //          - If not, such a `Combo` is deleted from the list of currently possible `Combo`s.
+        //          - If yes, such a `Combo` remains _currently possible_.
+        //            `updatedCellM*NumsBits` accumulate _future possible_ numbers for each `CellModel`.
+        //            Pre-calculated reduction states define the _future possible_ numbers
+        //            according to the _currently possible_ numbers in the `CellModel`s.
         //
 
         // Storing current (pre-reduction) `CellModel`s' numbers as bit masks.
