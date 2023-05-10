@@ -120,12 +120,12 @@ export class CageModel3Reducer implements CageModelReducer {
         //            according to the _currently possible_ `currentCellM*NumsBits`.
         //
 
-        // Storing current (pre-reduction) `CellModel`s' numbers as bit masks.
+        // Storing currently possible `CellModel`s' numbers as bit masks (pre-reduction).
         const currentCellM1NumsBits = this._cellM1NumsSet.bits;
         const currentCellM2NumsBits = this._cellM2NumsSet.bits;
         const currentCellM3NumsBits = this._cellM3NumsSet.bits;
 
-        // Initializing bit masks for the updated (post-reduction) `CellModel`s' numbers.
+        // Initializing bit masks for the _updated possible_ `CellModel`s' numbers (post-reduction).
         let updatedCellM1NumsBits = 0;
         let updatedCellM2NumsBits = 0;
         let updatedCellM3NumsBits = 0;
