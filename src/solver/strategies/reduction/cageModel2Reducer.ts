@@ -102,7 +102,7 @@ export class CageModel2Reducer implements CageModelReducer {
         const cellM1NumsBits = this._cellM1NumsSet.bits;
         const cellM2NumsBits = this._cellM2NumsSet.bits;
 
-        // Iterating over each possible `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
+        // Iterating over each _possible_ `Combo` (there are up to 4 `Combo`s for a `Cage` with 2 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
             //
             // [PERFORMANCE]
