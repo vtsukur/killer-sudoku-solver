@@ -154,7 +154,7 @@ export class CageModel3Reducer implements CageModelReducer {
             }
         }
 
-        // Reflecting updated numbers for all `CellModel`s in the `MasterModelReduction`.
+        // Reflecting _updated possible_ numbers for all `CellModel`s in the `MasterModelReduction`.
         reduction.tryReduceNumOptsBits(this._cellM1, updatedCellM1NumsBits, this._cageM);
         reduction.tryReduceNumOptsBits(this._cellM2, updatedCellM2NumsBits, this._cageM);
         reduction.tryReduceNumOptsBits(this._cellM3, updatedCellM3NumsBits, this._cageM);
