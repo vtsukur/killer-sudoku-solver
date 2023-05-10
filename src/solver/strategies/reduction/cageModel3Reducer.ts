@@ -104,26 +104,26 @@ export class CageModel3Reducer implements CageModelReducer {
         // The reduction works as follows:
         //
         //  - All _currently possible_ `CellModel`s' numbers
-        //    set the immutable pre-reduction state in `cellM*NumsBits`.
-        //  - All _future possible_ `CellModel`s' numbers
+        //    set the immutable pre-reduction state in `currentCellM*NumsBits`.
+        //  - All _updated possible_ `CellModel`s' numbers
         //    set the mutable post-reduction state in `updatedCellM*NumsBits`
         //    initially holding *no* numbers for all `CellModel`s.
         //    The following algorithm steps will update it
         //    with the numbers that are possible for each `CellModel`.
         //  - For each `Combo` the `CageModel` considers as _currently possible_:
         //      - The logic checks whether `CellModel`s can accommodate
-        //        such a `Combo` according to the _currently possible numbers_:
+        //        such a `Combo` according to their _currently possible_ numbers:
         //          - If not, such a `Combo` is deleted from the list of currently possible `Combo`s.
         //          - If yes, such a `Combo` remains _currently possible_.
-        //            `updatedCellM*NumsBits` accumulate _future possible_ numbers for each `CellModel`.
-        //            Pre-calculated reduction states define the _future possible_ numbers
-        //            according to the _currently possible_ numbers in the `CellModel`s.
+        //            `updatedCellM*NumsBits` accumulate _updated possible_ numbers for each `CellModel`.
+        //            Pre-calculated reduction states define the _updated possible_ numbers
+        //            according to the _currently possible_ `currentCellM*NumsBits`.
         //
 
         // Storing current (pre-reduction) `CellModel`s' numbers as bit masks.
-        const cellM1NumsBits = this._cellM1NumsSet.bits;
-        const cellM2NumsBits = this._cellM2NumsSet.bits;
-        const cellM3NumsBits = this._cellM3NumsSet.bits;
+        const currentCellM1NumsBits = this._cellM1NumsSet.bits;
+        const currentCellM2NumsBits = this._cellM2NumsSet.bits;
+        const currentCellM3NumsBits = this._cellM3NumsSet.bits;
 
         // Initializing bit masks for the updated (post-reduction) `CellModel`s' numbers.
         let updatedCellM1NumsBits = 0;
@@ -138,7 +138,7 @@ export class CageModel3Reducer implements CageModelReducer {
             // through the `CageModel3ReductionDb` cache using bitwise arithmetic and just a few array access operations.
             // The output is showing if
             //
-            const reductionState = CageModel3Reducer.getReductionState(combo, cellM1NumsBits, cellM2NumsBits, cellM3NumsBits);
+            const reductionState = CageModel3Reducer.getReductionState(combo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
 
             //
             // If the `ComboReductionState` is valid,
