@@ -130,7 +130,7 @@ export class CageModel3Reducer implements CageModelReducer {
         let updatedCellM2NumsBits = 0;
         let updatedCellM3NumsBits = 0;
 
-        // Iterating over each possible `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
+        // Iterating over each _possible_ `Combo` (there are up to 8 `Combo`s for a `Cage` with 3 `Cell`s) ...
         for (const combo of this._combosSet.combos) {
 
             //
