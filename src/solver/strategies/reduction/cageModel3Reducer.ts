@@ -109,7 +109,7 @@ export class CageModel3Reducer implements CageModelReducer {
         //    set the mutable post-reduction state in `updatedCellM*NumsBits`
         //    initially holding *no* numbers for all `CellModel`s.
         //    The following algorithm steps will update it
-        //    with the numbers that are possible for each `CellModel`.
+        //    with the still possible numbers for each `CellModel`.
         //  - For each `Combo` the `CageModel` considers as _currently possible_:
         //      - The logic checks whether `CellModel`s can accommodate
         //        such a `Combo` according to their _currently possible_ numbers:
@@ -134,9 +134,8 @@ export class CageModel3Reducer implements CageModelReducer {
         for (const currentCombo of this._combosSet.combos) {
 
             //
-            // Determining `ComboReductionState` relevant for the `Combo` numbers present in the `CellModel`s
+            // Determining `ComboReductionState` for the _currently possible_ `Combo` numbers in the `CellModel`s
             // through the `CageModel3ReductionDb` cache using bitwise arithmetic and just a few array access operations.
-            // The output is showing if
             //
             const reductionState = CageModel3Reducer.getReductionState(currentCombo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
 
