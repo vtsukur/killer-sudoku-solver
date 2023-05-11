@@ -3,6 +3,7 @@ import { parse } from 'yaml';
 import { SumCombinatorics } from '../../../math';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
+import { UTF8_ENCODING } from '../../../../util/files';
 
 export type ComboReductionState = {
     readonly isValid: boolean;
@@ -23,8 +24,6 @@ const INVALID_REDUCTION_STATE: ComboReductionState = {
 };
 
 const YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
-
-const YAML_SOURCE_ENCODING = 'utf-8';
 
 const NUM_OPTIONS_PER_COMBO_COUNT = 3;
 
@@ -47,7 +46,7 @@ export class CageModel3ReductionDb {
     }
 
     private static readFromYamlSourceSync(): CageSizeNReductionsDb {
-        return parse(fs.readFileSync(YAML_SOURCE_PATH, YAML_SOURCE_ENCODING)) as CageSizeNReductionsDb;
+        return parse(fs.readFileSync(YAML_SOURCE_PATH, UTF8_ENCODING)) as CageSizeNReductionsDb;
     }
 
     private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
