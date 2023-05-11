@@ -6,9 +6,9 @@ import { CageSizeNReductionsDb } from './reductionDb';
 
 export type ComboReductionState = {
     readonly isValid: boolean;
-    readonly cell1KeepNumsBits: number;
-    readonly cell2KeepNumsBits: number;
-    readonly cell3KeepNumsBits: number;
+    readonly keepCell1NumsBits: number;
+    readonly keepCell2NumsBits: number;
+    readonly keepCell3NumsBits: number;
 };
 
 export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
@@ -17,9 +17,9 @@ export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReduction
 
 const INVALID_REDUCTION_STATE: ComboReductionState = {
     isValid: false,
-    cell1KeepNumsBits: 0,
-    cell2KeepNumsBits: 0,
-    cell3KeepNumsBits: 0
+    keepCell1NumsBits: 0,
+    keepCell2NumsBits: 0,
+    keepCell3NumsBits: 0
 };
 
 const YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
@@ -61,14 +61,14 @@ export class CageModel3ReductionDb {
                 for (const entry of comboReductions.entries) {
                     comboReductionStates[entry.state] = (entry.actions) ? {
                         isValid: true,
-                        cell1KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bits,
-                        cell2KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bits,
-                        cell3KeepNumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bits
+                        keepCell1NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bits,
+                        keepCell2NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bits,
+                        keepCell3NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bits
                     } : {
                         isValid: true,
-                        cell1KeepNumsBits: comboNumsBits,
-                        cell2KeepNumsBits: comboNumsBits,
-                        cell3KeepNumsBits: comboNumsBits
+                        keepCell1NumsBits: comboNumsBits,
+                        keepCell2NumsBits: comboNumsBits,
+                        keepCell3NumsBits: comboNumsBits
                     };
                 }
                 return comboReductionStates;

@@ -150,9 +150,9 @@ export class CageModel3Reducer implements CageModelReducer {
             // Otherwise, delete the `Combo`.
             //
             if (reductionState.isValid) {
-                updatedCellM1NumsBits |= reductionState.cell1KeepNumsBits;
-                updatedCellM2NumsBits |= reductionState.cell2KeepNumsBits;
-                updatedCellM3NumsBits |= reductionState.cell3KeepNumsBits;
+                updatedCellM1NumsBits |= reductionState.keepCell1NumsBits;
+                updatedCellM2NumsBits |= reductionState.keepCell2NumsBits;
+                updatedCellM3NumsBits |= reductionState.keepCell3NumsBits;
             } else {
                 this._combosSet.deleteCombo(currentCombo);
             }
