@@ -12,6 +12,7 @@ import { CageModel3FullReducer } from '../../../../../src/solver/strategies/redu
 import { House } from '../../../../../src/puzzle/house';
 import { CageSizeNReductionsDb, ComboReductions, ReductionActions, ReductionEntry, SumReductions } from '../../../../../src/solver/strategies/reduction/db/reductionDb';
 import { stringify } from 'yaml';
+import { SRC_SOLVER_PATH } from '../../../../../src/util/files';
 
 const log = logFactory.withLabel('reductionDbGenerator');
 
@@ -23,9 +24,9 @@ describe('ReductionDb', () => {
     });
 
     const generateForSizeN = (cageSize: number) => {
-        const yamlDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
+        const yamlDbPath = `${SRC_SOLVER_PATH}/strategies/reduction/db/cage${cageSize}_reductions.yaml`;
 
-        const csvDbPath = `./src/solver/strategies/reduction/db/cage${cageSize}_reductions.csv`;
+        const csvDbPath = `${SRC_SOLVER_PATH}/strategies/reduction/db/cage${cageSize}_reductions.csv`;
         fs.rmSync(csvDbPath, {
             force: true
         });

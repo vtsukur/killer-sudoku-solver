@@ -3,7 +3,7 @@ import { parse } from 'yaml';
 import { SumCombinatorics } from '../../../math';
 import { SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
-import { UTF8_ENCODING } from '../../../../util/files';
+import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../../util/files';
 
 export type ComboReductionState = {
     readonly isValid: boolean;
@@ -23,7 +23,7 @@ const INVALID_REDUCTION_STATE: ComboReductionState = {
     keepCell3NumsBits: 0
 };
 
-const YAML_SOURCE_PATH = './src/solver/strategies/reduction/db/cage3_reductions.yaml';
+const YAML_SOURCE_PATH = `${SRC_SOLVER_PATH}/strategies/reduction/db/cage3_reductions.yaml`;
 
 const NUM_OPTIONS_PER_COMBO_COUNT = 3;
 
