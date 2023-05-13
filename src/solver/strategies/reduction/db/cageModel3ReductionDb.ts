@@ -16,12 +16,12 @@ export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<Combo
 
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
-const INVALID_REDUCTION_STATE: ComboReductionState = {
+const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
     isValid: false,
     keepCell1NumsBits: 0,
     keepCell2NumsBits: 0,
     keepCell3NumsBits: 0
-};
+});
 
 const YAML_SOURCE_PATH = `${SRC_SOLVER_PATH}/strategies/reduction/db/cage3_reductions.yaml`;
 
