@@ -1,15 +1,37 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
 import { SumCombinatorics } from '../../../math';
-import { SudokuNumsSet } from '../../../sets';
+import { Bits32, SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../../util/files';
 
+/**
+ * The state of a reduction of a {@link Cage} with 3 {@link Cell}s
+ * for a particular {@link Combo} and
+ * particular sets of _possible numbers_ for each {@link Cell} in a {@link Cage}.
+ */
 export type ComboReductionState = {
+
+    /**
+     * Whether the reduction is valid.
+     */
     readonly isValid: boolean;
-    readonly keepCell1NumsBits: number;
-    readonly keepCell2NumsBits: number;
-    readonly keepCell3NumsBits: number;
+
+    /**
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 1.
+     */
+    readonly keepCell1NumsBits: Bits32;
+
+    /**
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 2.
+     */
+    readonly keepCell2NumsBits: Bits32;
+
+    /**
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 3.
+     */
+    readonly keepCell3NumsBits: Bits32;
+
 };
 
 export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
