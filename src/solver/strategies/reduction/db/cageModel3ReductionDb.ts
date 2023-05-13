@@ -18,17 +18,20 @@ export type ComboReductionState = {
     readonly isValid: boolean;
 
     /**
-     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 1.
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 1
+     * after reduction.
      */
     readonly keepCell1NumsBits: Bits32;
 
     /**
-     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 2.
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 2
+     * after reduction.
      */
     readonly keepCell2NumsBits: Bits32;
 
     /**
-     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 3.
+     * The bits of the {@link SudokuNumsSet} to keep in {@link Cell} 3
+     * after reduction.
      */
     readonly keepCell3NumsBits: Bits32;
 
