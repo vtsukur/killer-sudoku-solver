@@ -191,6 +191,7 @@ export class CageModel3ReductionDb {
                             newActionableComboReductionState(comboNumsBits, entry.actions.deleteNums) :
                             newNonActionableComboReductionState(comboNumsBits);
                 }
+
                 return comboReductionStates;
             });
         });
