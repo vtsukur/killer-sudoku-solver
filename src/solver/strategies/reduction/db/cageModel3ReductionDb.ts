@@ -37,6 +37,17 @@ export type ComboReductionState = {
 
 };
 
+/**
+ * Creates a new {@link ComboReductionState}, which should result in an _actionable reduction_,
+ * meaning deletion of _possible numbers_ is necessary for at least one {@link Cell}.
+ *
+ * @param comboNumsBits - Bits of the {@link Combo}'s {@link SudokuNumsSet}.
+ * @param deleteNums - The numbers to delete from the {@link Cell}s.
+ * The first index is the {@link Cell} index in the range of `[0, 2]`.
+ * The second index is the number to delete from the {@link Cell}.
+ *
+ * @returns New {@link ComboReductionState}, which should result in an _actionable reduction_.
+ */
 const newActionableComboReductionState = (comboNumsBits: Bits32, deleteNums: ReadonlyArray<ReadonlyArray<number>>): ComboReductionState => {
     return newValidComboReductionState(
         comboNumsBits & ~new SudokuNumsSet(deleteNums[0]).bits,
