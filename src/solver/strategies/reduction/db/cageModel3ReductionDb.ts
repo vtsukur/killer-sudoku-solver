@@ -171,7 +171,7 @@ const CELL_COUNT = 3;
  * The total number of _possible {@link Combo} numbers states_ (or _{@link Combo} PNSs_),
  * which is `2 ^ (3 * 3) = 2 ^ 9 = 512`.
  */
-const PNS_VARIATION_COUNT = Math.pow(2, CELL_COUNT * COMBO_NUM_COUNT);
+const PNS_COUNT_PER_COMBO = Math.pow(2, CELL_COUNT * COMBO_NUM_COUNT);
 
 export class CageModel3ReductionDb {
 
@@ -198,7 +198,7 @@ export class CageModel3ReductionDb {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
                 const comboNumsBits = Bits32Set.bitsOf(comboReductions.combo);
 
-                const comboReductionStates = new Array<ComboReductionState>(PNS_VARIATION_COUNT).fill(INVALID_REDUCTION_STATE);
+                const comboReductionStates = new Array<ComboReductionState>(PNS_COUNT_PER_COMBO).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
                     comboReductionStates[entry.state] = (entry.actions) ?
                             newActionableComboReductionState(comboNumsBits, entry.actions.deleteNums) :
