@@ -37,8 +37,31 @@ export type ComboReductionState = {
 
 };
 
+/**
+ * The readonly array of the states of reductions of {@link Cage}s with 3 {@link Cell}s
+ * indexed by the index of the {@link Combo} within the {@link SumCombinatorics}
+ * and by the numeric representation of _present numbers state_ of the {@link Cage}.
+ *
+ * The first index is the index of the {@link Combo} within the {@link SumCombinatorics}.
+ *
+ * The second index is the numeric representation of _present numbers state_ of the {@link Cage}.
+ *
+ * The value is the {@link ComboReductionState} for the {@link Cage}.
+ */
 export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
 
+/**
+ * The readonly array of {@link ComboReductionStatesByComboByPNS}s
+ * indexed by the sum of the {@link Cage}.
+ *
+ * The first index is the sum of the {@link Cage}.
+ *
+ * The second index is the index of the {@link Combo} within the {@link SumCombinatorics}.
+ *
+ * The third index is the numeric representation of _present numbers state_ of the {@link Cage}.
+ *
+ * The value is the {@link ComboReductionState} for the {@link Cage}.
+ */
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
 const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
