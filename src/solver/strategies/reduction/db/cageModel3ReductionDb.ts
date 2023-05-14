@@ -16,6 +16,8 @@ import { CageSizeNReductionsDb } from './reductionDb';
  * The state of a reduction of a {@link Cage} with 3 {@link Cell}s
  * for a particular {@link Combo} and
  * particular sets of _possible numbers_ for each {@link Cell} in a {@link Cage}.
+ *
+ * @public
  */
 export type ComboReductionState = {
 
@@ -120,6 +122,8 @@ const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
  * according to the _{@link Combo} PNS_.
+ *
+ * @public
  */
 export type ComboReductionStatesByPNS = ReadonlyArray<ComboReductionState>;
 
@@ -134,6 +138,8 @@ export type ComboReductionStatesByPNS = ReadonlyArray<ComboReductionState>;
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
  * according to the _{@link Combo} PNS_.
+ *
+ * @public
  */
 export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionStatesByPNS>;
 
@@ -149,6 +155,8 @@ export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionState
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
  * according to the _{@link Combo} PNS_.
+ *
+ * @public
  */
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
@@ -173,6 +181,11 @@ const CELL_COUNT = 3;
  */
 const PNS_COUNT_PER_COMBO = Math.pow(2, CELL_COUNT * COMBO_NUM_COUNT);
 
+/**
+ * In-memory database of all states of reductions of {@link Cage}s with 3 {@link Cell}s.
+ *
+ * @public
+ */
 export class CageModel3ReductionDb {
 
     /* istanbul ignore next */
