@@ -37,6 +37,11 @@ export type ComboReductionState = {
 
 };
 
+/**
+ * The invalid state of a reduction of a {@link Cage} with 3 {@link Cell}s
+ * for a particular {@link Combo} and
+ * particular sets of _possible numbers_ for each {@link Cell} in a {@link Cage}.
+ */
 const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
     isValid: false,
     keepCell1NumsBits: 0,
