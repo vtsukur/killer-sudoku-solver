@@ -4,6 +4,7 @@ import { SumCombinatorics } from '../../../math';
 import { Bits32, SudokuNumsSet } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../../util/files';
+import { Bits32Set } from '../../../sets/bits32Set';
 
 /**
  * The state of a reduction of a {@link Cage} with 3 {@link Cell}s
@@ -51,9 +52,9 @@ export type ComboReductionState = {
  */
 const newActionableComboReductionState = (comboNumsBits: Bits32, deleteNums: ReadonlyArray<ReadonlyArray<number>>): ComboReductionState => {
     return newValidComboReductionState(
-        comboNumsBits & ~new SudokuNumsSet(deleteNums[0]).bits,
-        comboNumsBits & ~new SudokuNumsSet(deleteNums[1]).bits,
-        comboNumsBits & ~new SudokuNumsSet(deleteNums[2]).bits
+        comboNumsBits & ~Bits32Set.bitsOf(deleteNums[0]),
+        comboNumsBits & ~Bits32Set.bitsOf(deleteNums[1]),
+        comboNumsBits & ~Bits32Set.bitsOf(deleteNums[2])
     );
 };
 

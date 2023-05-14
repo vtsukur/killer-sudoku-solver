@@ -44,23 +44,31 @@ export abstract class Bits32Set<
         if (typeof val === 'number') {
             this._bits = val;
         } else if (Array.isArray(val)) {
-            for (const num of val) {
-                //
-                // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
-                //
-                // Examples:
-                //  - for `num = 1`, `bits` will be bitwise OR-ed with `0b000000010`;
-                //  - for `num = 2`, `bits` will be bitwise OR-ed with `0b000000100`;
-                //  - ...
-                //  - for `num = 9`, `bits` will be bitwise OR-ed with `0b100000000`;
-                //
-                // For `num = 1` and `num = 4` `bits` will be `0b000010010`.
-                //
-                this._bits |= 1 << num;
-            }
+            this._bits = Bits32Set.bitsOf(val);
         } else {
             this._bits = (val as ROSET).bits;
         }
+    }
+
+    static bitsOf(val: ReadonlyArray<number>) {
+        let bits = 0;
+
+        for (const num of val) {
+            //
+            // Applying bitwise OR with left-wise shift to mark bit at position `num` as `1`.
+            //
+            // Examples:
+            //  - for `num = 1`, `bits` will be bitwise OR-ed with `0b000000010`;
+            //  - for `num = 2`, `bits` will be bitwise OR-ed with `0b000000100`;
+            //  - ...
+            //  - for `num = 9`, `bits` will be bitwise OR-ed with `0b100000000`;
+            //
+            // For `num = 1` and `num = 4` `bits` will be `0b000010010`.
+            //
+            bits |= 1 << num;
+        }
+
+        return bits;
     }
 
     /**
