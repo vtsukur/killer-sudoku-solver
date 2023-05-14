@@ -39,28 +39,42 @@ export type ComboReductionState = {
 
 /**
  * The read-only array of the states of reductions of {@link Cage}s with 3 {@link Cell}s
- * indexed by the index of the {@link Combo} within the {@link SumCombinatorics}
- * and by the numeric representation of the _present numbers state_ (or PNS) of the {@link Cage}.
+ * for a particular {@link Combo}.
+ *
+ * The index is the numeric representation of the {@link Cage}'s
+ * _present {@link Combo} numbers state_ (or PNS).
+ *
+ * The value is the {@link ComboReductionState} for the {@link Cage}
+ * according to the {@link Combo} _PNS_.
+ */
+export type ComboReductionStatesByPNS = ReadonlyArray<ComboReductionState>;
+
+/**
+ * The read-only array of the states of reductions of {@link Cage}s with 3 {@link Cell}s
+ * for a particular {@link Cage} / {@link Combo} sum.
  *
  * The first index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
- * The second index is the numeric representation of the _present numbers state_ of the {@link Cage}.
+ * The second index is the numeric representation of the {@link Cage}'s
+ * _present {@link Combo} numbers state_ (or PNS).
  *
- * The value is the {@link ComboReductionState} for the {@link Cage}.
+ * The value is the {@link ComboReductionState} for the {@link Cage}
+ * according to the {@link Combo} _PNS_.
  */
-export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<ComboReductionState>>;
+export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionStatesByPNS>;
 
 /**
- * The read-only array of {@link ComboReductionStatesByComboByPNS}s
- * indexed by the sum of the {@link Cage}.
+ * The read-only array of all states of reductions of {@link Cage}s with 3 {@link Cell}s.
  *
  * The first index is the sum of the {@link Cage}.
  *
  * The second index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
- * The third index is the numeric representation of the _present numbers state_ (or PNS) of the {@link Cage}.
+ * The third index is the numeric representation of the {@link Cage}'s
+ * _present {@link Combo} numbers state_ (or PNS).
  *
- * The value is the {@link ComboReductionState} for the {@link Cage}.
+ * The value is the {@link ComboReductionState} for the {@link Cage}
+ * according to the {@link Combo} _PNS_.
  */
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
