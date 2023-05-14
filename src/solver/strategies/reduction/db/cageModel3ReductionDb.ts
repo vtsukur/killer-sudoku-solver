@@ -54,10 +54,10 @@ const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
  * for a particular {@link Combo}.
  *
  * The index is the numeric representation of the {@link Cage}'s
- * _present {@link Combo} numbers state_ (or PNS).
+ * _present {@link Combo} numbers state_ (or _{@link Combo} PNS_).
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
- * according to the {@link Combo} _PNS_.
+ * according to the _{@link Combo} PNS_.
  */
 export type ComboReductionStatesByPNS = ReadonlyArray<ComboReductionState>;
 
@@ -68,10 +68,10 @@ export type ComboReductionStatesByPNS = ReadonlyArray<ComboReductionState>;
  * The first index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
  * The second index is the numeric representation of the {@link Cage}'s
- * _present {@link Combo} numbers state_ (or PNS).
+ * _present {@link Combo} numbers state_ (or _{@link Combo} PNS_).
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
- * according to the {@link Combo} _PNS_.
+ * according to the _{@link Combo} PNS_.
  */
 export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionStatesByPNS>;
 
@@ -83,10 +83,10 @@ export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionState
  * The second index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
  * The third index is the numeric representation of the {@link Cage}'s
- * _present {@link Combo} numbers state_ (or PNS).
+ * _present {@link Combo} numbers state_ (or _{@link Combo} PNS_).
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}
- * according to the {@link Combo} _PNS_.
+ * according to the _{@link Combo} PNS_.
  */
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
 
