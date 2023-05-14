@@ -37,15 +37,6 @@ export type ComboReductionState = {
 
 };
 
-const newValidComboReductionState = (keepCell1NumsBits: Bits32, keepCell2NumsBits: Bits32, keepCell3NumsBits: Bits32): ComboReductionState => {
-    return Object.freeze({
-        isValid: true,
-        keepCell1NumsBits,
-        keepCell2NumsBits,
-        keepCell3NumsBits
-    });
-};
-
 const newActionableComboReductionState = (comboNumsBits: Bits32, deleteNums: ReadonlyArray<ReadonlyArray<number>>): ComboReductionState => {
     return newValidComboReductionState(
         comboNumsBits & ~new SudokuNumsSet(deleteNums[0]).bits,
@@ -60,6 +51,15 @@ const newNonActionableComboReductionState = (comboNumsBits: Bits32): ComboReduct
         comboNumsBits,
         comboNumsBits
     );
+};
+
+const newValidComboReductionState = (keepCell1NumsBits: Bits32, keepCell2NumsBits: Bits32, keepCell3NumsBits: Bits32): ComboReductionState => {
+    return Object.freeze({
+        isValid: true,
+        keepCell1NumsBits,
+        keepCell2NumsBits,
+        keepCell3NumsBits
+    });
 };
 
 /**
