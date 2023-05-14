@@ -9,7 +9,7 @@ import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet, ReadonlySudokuNumsSet, SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CageModel3ReductionDb, ComboReductionState, ComboReductionStatesByComboByPNS } from './db/cageModel3ReductionDb';
+import { CageModel3ReductionDb, CageComboReduction, CageComboReductionsByComboByPNS } from './db/cageModel3ReductionDb';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
@@ -67,9 +67,9 @@ export class CageModel3Reducer implements CageModelReducer {
     private readonly _cellM3NumsSet: ReadonlySudokuNumsSet;
 
     /**
-     * Cache for {@link ComboReductionState}s of the {@link CageModel}'s {@link Cage} sum.
+     * Cache for {@link CageComboReduction}s of the {@link CageModel}'s {@link Cage} sum.
      */
-    private readonly _combosReductionStates: ComboReductionStatesByComboByPNS;
+    private readonly _combosReductionStates: CageComboReductionsByComboByPNS;
 
     /**
      * Constructs a new reducer of _possible numbers_ for {@link CellModel}s
@@ -93,7 +93,7 @@ export class CageModel3Reducer implements CageModelReducer {
         this._cellM2NumsSet = this._cellM2._numOptsSet;
         this._cellM3 = cageM.cellMs[2];
         this._cellM3NumsSet = this._cellM3._numOptsSet;
-        this._combosReductionStates = CageModel3ReductionDb.STATES[cageM.cage.sum];
+        this._combosReductionStates = CageModel3ReductionDb.REDUCTIONS_BY_SUM_BY_COMBO_BY_PNS[cageM.cage.sum];
     }
 
     /**
@@ -248,7 +248,7 @@ export class CageModel3Reducer implements CageModelReducer {
         // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
         // through the `CageModel3ReductionDb` cache using only two array access operations.
         //
-        return CageModel3ReductionDb.STATES[combo.sum][combo.index][presentNumbersState];
+        return CageModel3ReductionDb.REDUCTIONS_BY_SUM_BY_COMBO_BY_PNS[combo.sum][combo.index][presentNumbersState];
     }
 
 }
