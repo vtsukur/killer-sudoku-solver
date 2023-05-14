@@ -40,7 +40,7 @@ export type ComboReductionState = {
 /**
  * The read-only array of the states of reductions of {@link Cage}s with 3 {@link Cell}s
  * indexed by the index of the {@link Combo} within the {@link SumCombinatorics}
- * and by the numeric representation of the _present numbers state_ of the {@link Cage}.
+ * and by the numeric representation of the _present numbers state_ (or PNS) of the {@link Cage}.
  *
  * The first index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
@@ -58,7 +58,7 @@ export type ComboReductionStatesByComboByPNS = ReadonlyArray<ReadonlyArray<Combo
  *
  * The second index is the index of the {@link Combo} within the {@link SumCombinatorics}.
  *
- * The third index is the numeric representation of the _present numbers state_ of the {@link Cage}.
+ * The third index is the numeric representation of the _present numbers state_ (or PNS) of the {@link Cage}.
  *
  * The value is the {@link ComboReductionState} for the {@link Cage}.
  */
