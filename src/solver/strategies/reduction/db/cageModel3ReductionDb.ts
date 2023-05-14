@@ -84,9 +84,9 @@ const newNonActionableComboReductionState = (comboNumsBits: Bits32): ComboReduct
 /**
  * Creates a new valid {@link ComboReductionState}.
  *
- * @param keepCell1NumsBits - Bits of the first {@link Cell}'s {@link SudokuNumsSet}.
- * @param keepCell2NumsBits - Bits of the second {@link Cell}'s {@link SudokuNumsSet}.
- * @param keepCell3NumsBits - Bits of the third {@link Cell}'s {@link SudokuNumsSet}.
+ * @param keepCell1NumsBits - Bits of the first {@link Cell}'s {@link SudokuNumsSet} to retain after the reduction.
+ * @param keepCell2NumsBits - Bits of the second {@link Cell}'s {@link SudokuNumsSet} to retain after the reduction.
+ * @param keepCell3NumsBits - Bits of the third {@link Cell}'s {@link SudokuNumsSet} to retain after the reduction.
  *
  * @returns New {@link ComboReductionState}.
  */
