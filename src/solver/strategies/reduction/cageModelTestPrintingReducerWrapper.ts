@@ -1,14 +1,13 @@
-import * as fs from 'node:fs';
 import { compile } from 'ejs';
 import { CageModel } from '../../models/elements/cageModel';
 import { SudokuNumsSet } from '../../sets';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
-import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../util/files';
+import { SRC_SOLVER_PATH, readTextFileSync } from '../../../util/files';
 
 const UNIT_TEST_EJS_TEMPLATE_PATH = `${SRC_SOLVER_PATH}/strategies/reduction/cageModelUnitTest.ejs`;
 
-const template = compile(fs.readFileSync(UNIT_TEST_EJS_TEMPLATE_PATH, UTF8_ENCODING));
+const template = compile(readTextFileSync(UNIT_TEST_EJS_TEMPLATE_PATH));
 
 let instance = 1;
 
