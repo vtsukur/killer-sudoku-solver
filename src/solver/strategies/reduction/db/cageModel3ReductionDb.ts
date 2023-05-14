@@ -74,6 +74,15 @@ const newNonActionableComboReductionState = (comboNumsBits: Bits32): ComboReduct
     );
 };
 
+/**
+ * Creates a new valid {@link ComboReductionState}.
+ *
+ * @param keepCell1NumsBits - Bits of the first {@link Cell}'s {@link SudokuNumsSet}.
+ * @param keepCell2NumsBits - Bits of the second {@link Cell}'s {@link SudokuNumsSet}.
+ * @param keepCell3NumsBits - Bits of the third {@link Cell}'s {@link SudokuNumsSet}.
+ *
+ * @returns New {@link ComboReductionState}.
+ */
 const newValidComboReductionState = (keepCell1NumsBits: Bits32, keepCell2NumsBits: Bits32, keepCell3NumsBits: Bits32): ComboReductionState => {
     return Object.freeze({
         isValid: true,
