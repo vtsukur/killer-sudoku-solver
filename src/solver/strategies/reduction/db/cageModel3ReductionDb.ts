@@ -37,6 +37,31 @@ export type ComboReductionState = {
 
 };
 
+const newValidComboReductionState = (keepCell1NumsBits: Bits32, keepCell2NumsBits: Bits32, keepCell3NumsBits: Bits32): ComboReductionState => {
+    return Object.freeze({
+        isValid: true,
+        keepCell1NumsBits,
+        keepCell2NumsBits,
+        keepCell3NumsBits
+    });
+};
+
+const newActionableComboReductionState = (comboNumsBits: Bits32, deleteNums: ReadonlyArray<ReadonlyArray<number>>): ComboReductionState => {
+    return newValidComboReductionState(
+        comboNumsBits & ~new SudokuNumsSet(deleteNums[0]).bits,
+        comboNumsBits & ~new SudokuNumsSet(deleteNums[1]).bits,
+        comboNumsBits & ~new SudokuNumsSet(deleteNums[2]).bits
+    );
+};
+
+const newNonActionableComboReductionState = (comboNumsBits: Bits32): ComboReductionState => {
+    return newValidComboReductionState(
+        comboNumsBits,
+        comboNumsBits,
+        comboNumsBits
+    );
+};
+
 /**
  * The invalid state of a reduction of a {@link Cage} with 3 {@link Cell}s
  * for a particular {@link Combo} and
@@ -125,17 +150,9 @@ export class CageModel3ReductionDb {
 
                 const comboReductionStates = new Array<ComboReductionState>(REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {
-                    comboReductionStates[entry.state] = (entry.actions) ? {
-                        isValid: true,
-                        keepCell1NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[0]).bits,
-                        keepCell2NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[1]).bits,
-                        keepCell3NumsBits: comboNumsBits & ~new SudokuNumsSet(entry.actions.deleteNums[2]).bits
-                    } : {
-                        isValid: true,
-                        keepCell1NumsBits: comboNumsBits,
-                        keepCell2NumsBits: comboNumsBits,
-                        keepCell3NumsBits: comboNumsBits
-                    };
+                    comboReductionStates[entry.state] = (entry.actions) ?
+                            newActionableComboReductionState(comboNumsBits, entry.actions.deleteNums) :
+                            newNonActionableComboReductionState(comboNumsBits);
                 }
                 return comboReductionStates;
             });
