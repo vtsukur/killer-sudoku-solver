@@ -177,7 +177,7 @@ export class CageModel3ReductionDb {
 
         sourceDb.forEach(sumReductions => {
             states[sumReductions.sum] = sumReductions.combos.map(comboReductions => {
-                const comboNumsBits = new SudokuNumsSet(comboReductions.combo).bits;
+                const comboNumsBits = Bits32Set.bitsOf(comboReductions.combo);
 
                 const comboReductionStates = new Array<ComboReductionState>(REDUCTIONS_PER_COMBO_COUNT).fill(INVALID_REDUCTION_STATE);
                 for (const entry of comboReductions.entries) {

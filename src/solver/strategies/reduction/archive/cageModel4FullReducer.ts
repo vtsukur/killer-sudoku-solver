@@ -2,6 +2,7 @@ import { Combo } from '../../../math';
 import { CageModel } from '../../../models/elements/cageModel';
 import { CellModel } from '../../../models/elements/cellModel';
 import { SudokuNumsSet } from '../../../sets';
+import { Bits32Set } from '../../../sets/bits32Set';
 import { CageModelReducer } from '../cageModelReducer';
 import { MasterModelReduction } from '../masterModelReduction';
 
@@ -109,7 +110,7 @@ export class CageModel4FullReducer implements CageModelReducer {
             has = lastCellM.hasNumOpt(lastNum);
             if (has) {
                 context.numbersStack[CELL_COUNT - 1] = lastNum;
-                const combo = Combo.BY_NUMS_BITS[new SudokuNumsSet(context.numbersStack).bits];
+                const combo = Combo.BY_NUMS_BITS[Bits32Set.bitsOf(context.numbersStack)];
                 this._cageM.comboSet.addCombo(combo);
             }
         } else {
