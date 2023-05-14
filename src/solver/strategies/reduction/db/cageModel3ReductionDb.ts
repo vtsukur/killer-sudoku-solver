@@ -1,10 +1,9 @@
-import * as fs from 'node:fs';
 import { parse } from 'yaml';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cage } from '../../../../puzzle/cage';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Cell } from '../../../../puzzle/cell';
-import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../../util/files';
+import { SRC_SOLVER_PATH, readTextFileSync } from '../../../../util/files';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Combo, SumCombinatorics } from '../../../math';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -214,7 +213,7 @@ export class CageModel3ReductionDb {
     }
 
     private static readFromYamlSourceSync(): CageSizeNReductionsDb {
-        return parse(fs.readFileSync(YAML_SOURCE_PATH, UTF8_ENCODING)) as CageSizeNReductionsDb;
+        return parse(readTextFileSync(YAML_SOURCE_PATH)) as CageSizeNReductionsDb;
     }
 
     private static buildStatesFrom(sourceDb: CageSizeNReductionsDb) {
