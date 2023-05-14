@@ -37,6 +37,13 @@ export type ComboReductionState = {
 
 };
 
+const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
+    isValid: false,
+    keepCell1NumsBits: 0,
+    keepCell2NumsBits: 0,
+    keepCell3NumsBits: 0
+});
+
 /**
  * The read-only array of the states of reductions of {@link Cage}s with 3 {@link Cell}s
  * for a particular {@link Combo}.
@@ -77,13 +84,6 @@ export type ComboReductionStatesByComboByPNS = ReadonlyArray<ComboReductionState
  * according to the {@link Combo} _PNS_.
  */
 export type ComboReductionStatesBySumByComboByPNS = ReadonlyArray<ComboReductionStatesByComboByPNS>;
-
-const INVALID_REDUCTION_STATE: ComboReductionState = Object.freeze({
-    isValid: false,
-    keepCell1NumsBits: 0,
-    keepCell2NumsBits: 0,
-    keepCell3NumsBits: 0
-});
 
 const YAML_SOURCE_PATH = `${SRC_SOLVER_PATH}/strategies/reduction/db/cage3_reductions.yaml`;
 
