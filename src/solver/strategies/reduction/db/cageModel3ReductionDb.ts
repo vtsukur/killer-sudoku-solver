@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import { parse } from 'yaml';
 import { SumCombinatorics } from '../../../math';
-import { Bits32, SudokuNumsSet } from '../../../sets';
+import { Bits32 } from '../../../sets';
 import { CageSizeNReductionsDb } from './reductionDb';
 import { SRC_SOLVER_PATH, UTF8_ENCODING } from '../../../../util/files';
 import { Bits32Set } from '../../../sets/bits32Set';
