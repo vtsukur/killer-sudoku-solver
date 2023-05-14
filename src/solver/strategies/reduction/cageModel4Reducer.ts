@@ -85,15 +85,15 @@ export class CageModel4Reducer implements CageModelReducer {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
 
                 const reducedCombo = Combo.BY_NUMS_BITS[combo.numsBits & ~(1 << num)];
-                const reductionState = CageModel3Reducer.getReductionState(
+                const reduction = CageModel3Reducer.getReduction(
                         reducedCombo,
                         cageModel3CellM1NumBits,
                         cageModel3CellM2NumBits,
                         cageModel3CellM3NumBits);
-                if (reductionState.isValid) {
-                    cageModel3CellM1ActualNumBits |= reductionState.keepCell1NumsBits;
-                    cageModel3CellM2ActualNumBits |= reductionState.keepCell2NumsBits;
-                    cageModel3CellM3ActualNumBits |= reductionState.keepCell3NumsBits;
+                if (reduction.isValid) {
+                    cageModel3CellM1ActualNumBits |= reduction.keepCell1NumsBits;
+                    cageModel3CellM2ActualNumBits |= reduction.keepCell2NumsBits;
+                    cageModel3CellM3ActualNumBits |= reduction.keepCell3NumsBits;
                     combosBits |= 1 << combo.index;
                     minNumCountCellMNumBits |= 1 << num;
                 }

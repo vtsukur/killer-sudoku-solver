@@ -69,7 +69,7 @@ export class CageModel3Reducer implements CageModelReducer {
     /**
      * Cache for {@link CageComboReduction}s of the {@link CageModel}'s {@link Cage} sum.
      */
-    private readonly _combosReductionStates: CageComboReductionsByComboByPNS;
+    private readonly _combosReductions: CageComboReductionsByComboByPNS;
 
     /**
      * Constructs a new reducer of _possible numbers_ for {@link CellModel}s
@@ -93,7 +93,7 @@ export class CageModel3Reducer implements CageModelReducer {
         this._cellM2NumsSet = this._cellM2._numOptsSet;
         this._cellM3 = cageM.cellMs[2];
         this._cellM3NumsSet = this._cellM3._numOptsSet;
-        this._combosReductionStates = CageModel3ReductionDb.REDUCTIONS_BY_SUM_BY_COMBO_BY_PNS[cageM.cage.sum];
+        this._combosReductions = CageModel3ReductionDb.REDUCTIONS_BY_SUM_BY_COMBO_BY_PNS[cageM.cage.sum];
     }
 
     /**
@@ -138,21 +138,21 @@ export class CageModel3Reducer implements CageModelReducer {
         for (const currentCombo of this._combosSet.combos) {
 
             //
-            // Determining `ComboReductionState` for the _currently possible `Combo` numbers_ in the `CellModel`s
+            // Determining `CageComboReduction` for the _currently possible `Combo` numbers_ in the `CellModel`s
             // through the `CageModel3ReductionDb` cache using bitwise arithmetic and just a few array access operations.
             //
-            const reductionState = CageModel3Reducer.getReductionState(currentCombo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
+            const reduction = CageModel3Reducer.getReduction(currentCombo, currentCellM1NumsBits, currentCellM2NumsBits, currentCellM3NumsBits);
 
             //
-            // If the `ComboReductionState` is valid,
+            // If the `CageComboReduction` is valid,
             // then `Combo` is still relevant, and updated numbers for `CellModel`s
-            // should include the _possible numbers_ kept post-reduction for this `ComboReductionState`.
+            // should include the _possible numbers_ kept post-reduction for this `CageComboReduction`.
             // Otherwise, delete the `Combo`.
             //
-            if (reductionState.isValid) {
-                updatedCellM1NumsBits |= reductionState.keepCell1NumsBits;
-                updatedCellM2NumsBits |= reductionState.keepCell2NumsBits;
-                updatedCellM3NumsBits |= reductionState.keepCell3NumsBits;
+            if (reduction.isValid) {
+                updatedCellM1NumsBits |= reduction.keepCell1NumsBits;
+                updatedCellM2NumsBits |= reduction.keepCell2NumsBits;
+                updatedCellM3NumsBits |= reduction.keepCell3NumsBits;
             } else {
                 this._combosSet.deleteCombo(currentCombo);
             }
@@ -164,7 +164,7 @@ export class CageModel3Reducer implements CageModelReducer {
         reduction.tryReduceNumOptsBits(this._cellM3, updatedCellM3NumsBits, this._cageM);
     }
 
-    static getReductionState(combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
+    static getReduction(combo: Combo, cellM1NumsBits: number, cellM2NumsBits: number, cellM3NumsBits: number) {
         // [PERFORMANCE] Storing `Combo`'s unique numbers to access the object once for each number.
         const num1 = combo.number1;
         const num2 = combo.number2;
@@ -245,7 +245,7 @@ export class CageModel3Reducer implements CageModelReducer {
         //
         // [PERFORMANCE]
         //
-        // Determining `ComboReductionState` relevant to the `Combo` numbers present in the `CellModel`s
+        // Determining `CageComboReduction` relevant to the `Combo` numbers present in the `CellModel`s
         // through the `CageModel3ReductionDb` cache using only two array access operations.
         //
         return CageModel3ReductionDb.REDUCTIONS_BY_SUM_BY_COMBO_BY_PNS[combo.sum][combo.index][presentNumbersState];
