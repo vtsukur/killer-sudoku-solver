@@ -193,6 +193,19 @@ export class CageModel3ReductionDb {
         throw new Error('Non-contructible');
     }
 
+    /**
+     * The read-only array of all states of reductions of {@link Cage}s with 3 {@link Cell}s.
+     *
+     * The first index is the sum of the {@link Cage}.
+     *
+     * The second index is the index of the {@link Combo} within the {@link SumCombinatorics}.
+     *
+     * The third index is the numeric representation of the {@link Cage}'s
+     * _present {@link Combo} numbers state_ (or _{@link Combo} PNS_).
+     *
+     * The value is the {@link ComboReductionState} for the {@link Cage}
+     * according to the _{@link Combo} PNS_.
+     */
     static readonly STATES: ComboReductionStatesBySumByComboByPNS = this.readStates();
 
     private static readStates(): ComboReductionStatesBySumByComboByPNS {
