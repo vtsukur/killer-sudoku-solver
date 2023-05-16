@@ -7,16 +7,18 @@ import { CellModel } from '../../models/elements/cellModel';
 import { MasterModelReduction } from './masterModelReduction';
 
 /**
- * Reduces possible numbers for {@link CellModel}s within a {@link CageModel}
- * by checking the validity of numbers given possible {@link Combo}s for the {@link CageModel}.
+ * Reduces _possible numbers_ for {@link CellModel}s within a {@link CageModel}
+ * by checking the validity of _currently possible numbers_
+ * given _possible {@link Combo}s_ for the {@link CageModel}.
  *
  * @public
  */
 export interface CageModelReducer {
 
     /**
-     * Reduces possible numbers for {@link CellModel}s
-     * by checking the validity of numbers given possible {@link Combo}s for the {@link CageModel}.
+     * Reduces _possible numbers_ for {@link CellModel}s
+     * by checking the validity of _currently possible numbers_
+     * given _possible {@link Combo}s_ for the {@link CageModel}.
      *
      * @param reduction - {@link MasterModelReduction} that tracks reduction state.
      */
