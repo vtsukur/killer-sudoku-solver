@@ -124,7 +124,7 @@ const INVALID_CAGE_COMBO_REDUCTION: CageComboReduction = Object.freeze({
  *
  * @public
  */
-export type CageComboReductionsByPNS = ReadonlyArray<CageComboReduction>;
+type CageComboReductionsByPNS = ReadonlyArray<CageComboReduction>;
 
 /**
  * The read-only array of reductions of {@link Cage}s with 3 {@link Cell}s
@@ -157,7 +157,7 @@ export type CageComboReductionsByComboByPNS = ReadonlyArray<CageComboReductionsB
  *
  * @public
  */
-export type CageComboReductionsBySumByComboByPNS = ReadonlyArray<CageComboReductionsByComboByPNS>;
+type CageComboReductionsBySumByComboByPNS = ReadonlyArray<CageComboReductionsByComboByPNS>;
 
 /**
  * Path to the YAML source file of the {@link CageModel3ReductionDb}.
