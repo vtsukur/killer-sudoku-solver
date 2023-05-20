@@ -23,7 +23,7 @@ describe('Performance tests for `CageModel3Reducer`', () => {
                 reduction.tryReduceNumOpts(cageM.cellMs[2], SudokuNumsSet.of(1, 3));
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3 ]);
 
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 5),
                     Combo.of(1, 3, 4)
                 ]);
@@ -32,7 +32,7 @@ describe('Performance tests for `CageModel3Reducer`', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 5),
                     Combo.of(1, 3, 4)
                 ]);
@@ -52,7 +52,7 @@ describe('Performance tests for `CageModel3Reducer`', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 4, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6, 7, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 8, 9),
                     // Deleted: Combo.of(3, 7, 9),
                     // Deleted: Combo.of(4, 6, 9),

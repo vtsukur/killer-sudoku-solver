@@ -33,7 +33,7 @@ export class CageModel {
     private _firstCell;
     private _cellCount;
     sumCombinatorics: SumCombinatorics;
-    readonly comboSet: CombosSet;
+    readonly combosSet: CombosSet;
     private _reducer?: CageModelReducer;
 
     isFirstReduction = true;
@@ -45,9 +45,9 @@ export class CageModel {
         this._cellCount = cage.cellCount;
         this.sumCombinatorics = SumCombinatorics.BY_COUNT_BY_SUM[this.cage.cellCount][this.cage.sum];
         if (comboSet) {
-            this.comboSet = comboSet.clone();
+            this.combosSet = comboSet.clone();
         } else {
-            this.comboSet = this.newCombosSet();
+            this.combosSet = this.newCombosSet();
         }
         this.updateReducers();
     }
@@ -87,11 +87,11 @@ export class CageModel {
     }
 
     deepCopyWithSameCellModels() {
-        return new CageModel(this.cage, [...this.cellMs], this.comboSet);
+        return new CageModel(this.cage, [...this.cellMs], this.combosSet);
     }
 
     initialReduce(reduction?: MasterModelReduction) {
-        const nums = this.comboSet.fill();
+        const nums = this.combosSet.fill();
         if (reduction) {
             for (const cellM of this.cellMs) {
                 reduction.tryReduceNumOpts(cellM, nums);
@@ -120,7 +120,7 @@ export class CageModel {
     }
 
     reduceCombos(combos: ReadonlyCombosSet, reduction: MasterModelReduction) {
-        const nums = this.comboSet.reduce(combos);
+        const nums = this.combosSet.reduce(combos);
         for (const cellM of this.cellMs) {
             reduction.tryReduceNumOpts(cellM, nums, this);
         }
@@ -170,7 +170,7 @@ export class CageModel {
             if (cells.length === 1) {
                 clue.singleCellForNum = cells[0];
                 const singleCellForNumCombos = [];
-                for (const combo of this.comboSet.combos) {
+                for (const combo of this.combosSet.combos) {
                     if (combo.has(num)) {
                         singleCellForNumCombos.push(combo);
                     }
@@ -178,7 +178,7 @@ export class CageModel {
                 clue.singleCellForNumCombos = singleCellForNumCombos;
             }
             if (placement.isWithinHouse || cells.length === 1) {
-                clue.presentInAllCombos = Array.from(this.comboSet.combos).every(combo => {
+                clue.presentInAllCombos = Array.from(this.combosSet.combos).every(combo => {
                     return combo.has(num);
                 });
                 clues.push(clue);
@@ -189,16 +189,16 @@ export class CageModel {
     }
 
     reduceToCombinationsContaining(withNum: number, reduction: MasterModelReduction) {
-        if (this.hasSingleCombination() || !this.comboSet.size) return;
+        if (this.hasSingleCombination() || !this.combosSet.size) return;
 
         const deleteCombos = [];
         const newNumOptions = SudokuNumsSet.newEmpty();
 
-        for (const combo of this.comboSet.combos) {
+        for (const combo of this.combosSet.combos) {
             if (combo.numsSet.has(withNum)) {
                 newNumOptions.addAll(combo.numsSet);
             } else {
-                this.comboSet.deleteCombo(combo);
+                this.combosSet.deleteCombo(combo);
                 deleteCombos.push(combo);
             }
         }
@@ -211,7 +211,7 @@ export class CageModel {
     }
 
     hasSingleCombination() {
-        return this.comboSet.size === 1;
+        return this.combosSet.size === 1;
     }
 
     get cellCount() {
@@ -219,11 +219,11 @@ export class CageModel {
     }
 
     get combos() {
-        return Array.from(this.comboSet.combos);
+        return Array.from(this.combosSet.combos);
     }
 
     get comboCount() {
-        return this.comboSet.size;
+        return this.combosSet.size;
     }
 
 }

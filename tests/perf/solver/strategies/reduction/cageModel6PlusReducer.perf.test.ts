@@ -26,7 +26,7 @@ describe('Performance tests for `CageModel6PlusReducer`', () => {
                 expect(cageM.cellMs[4].numOpts()).toEqual([ 1, 2, 7, 8 ]);
                 expect(cageM.cellMs[5].numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
 
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 2, 3, 4, 8, 9),
                     // Deleted: Combo.of(1, 2, 3, 5, 7, 9),
                     Combo.of(1, 2, 4, 5, 7, 8)

@@ -64,11 +64,11 @@ export const doRunFunctionalAndPerformanceTests = (
     // to avoid impact on the reduction results that should be stable.
     //
     i = 0;
-    const referenceCageMCombosSet = cageM.comboSet.bits;
+    const referenceCageMCombosSet = cageM.combosSet.bits;
     const cellMsNumOptsValues = cageM.cellMs.map(cellM => cellM._numOptsSet.bits);
     while (i++ < 10) {
         reducer.reduce(reduction);
-        expect(cageM.comboSet.bits).toBe(referenceCageMCombosSet);
+        expect(cageM.combosSet.bits).toBe(referenceCageMCombosSet);
         cageM.cellMs.forEach((cellM, index) => {
             expect(cellM._numOptsSet.bits).toBe(cellMsNumOptsValues[index]);
         });

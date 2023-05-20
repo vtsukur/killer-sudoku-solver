@@ -36,14 +36,14 @@ export class CageModelTestPrintingReducerWrapper implements CageModelReducer {
         const numsDeletedBeforeReduction = this._cageM.cellMs.map(cellM => {
             return new SudokuNumsSet(reduction.deletedNumOptsOf(cellM)); // 1, 2
         });
-        const combosBeforeReduction = this._cageM.comboSet.clone();
+        const combosBeforeReduction = this._cageM.combosSet.clone();
 
         this._delegate.reduce(reduction);
 
         const numsDeletedByReduction = this._cageM.cellMs.map((cellM, index) => {
             return new SudokuNumsSet(reduction.deletedNumOptsOf(cellM)).deleteAll(numsDeletedBeforeReduction[index]);
         });
-        const combosAfterReduction = this._cageM.comboSet;
+        const combosAfterReduction = this._cageM.combosSet;
         if (numsDeletedByReduction.some(numsSet => numsSet.isNotEmpty)) {
             const testCode = template({
                 instance: instance++,

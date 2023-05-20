@@ -17,7 +17,7 @@ describe('`CageModel2Reducer`s', () => {
 
     beforeEach(() => {
         cageM = createAndInitCageM(2, 11);
-        cageMCombosSet = cageM.comboSet;
+        cageMCombosSet = cageM.combosSet;
         cellMs = cageM.cellMs;
         reduction = new MasterModelReduction();
     });

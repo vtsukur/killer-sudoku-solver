@@ -82,7 +82,7 @@ export class CageModel4FullReducer implements CageModelReducer {
             }
         };
 
-        this._cageM.comboSet.clear();
+        this._cageM.combosSet.clear();
 
         this._cellMs.forEach(cellM => {
             context.processCell(cellM, 0, () => {
@@ -110,7 +110,7 @@ export class CageModel4FullReducer implements CageModelReducer {
             if (has) {
                 context.numbersStack[CELL_COUNT - 1] = lastNum;
                 const combo = Combo.BY_NUMS_BITS[Bits32Set.bitsOf(context.numbersStack)];
-                this._cageM.comboSet.addCombo(combo);
+                this._cageM.combosSet.addCombo(combo);
             }
         } else {
             this._cellMs.forEach(cellM => {

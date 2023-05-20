@@ -17,7 +17,7 @@ describe('`CageModel3Reducer`s', () => {
 
     const createAndInitCageMAndReduction = (sum: number) => {
         cageM = createAndInitCageM(3, sum);
-        cageMCombosSet = cageM.comboSet;
+        cageMCombosSet = cageM.combosSet;
         cellMs = cageM.cellMs;
         reduction = new MasterModelReduction();
         return cageM;
@@ -52,7 +52,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 3, 4, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5, 6, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 4, 5, 6, 7, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 8, 9),
                     Combo.of(3, 7, 9),
                     Combo.of(4, 6, 9),
@@ -77,7 +77,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 3, 4, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5, 6, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 3, 4, 5, 6, 7, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 7, 9),
                     Combo.of(2, 6, 9),
                     Combo.of(2, 7, 8),
@@ -105,7 +105,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 5, 6, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4, 5, 6, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 5, 9),
                     Combo.of(1, 6, 8),
                     Combo.of(2, 4, 9),
@@ -131,7 +131,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 3, 4, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 4, 7, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 2, 3, 4, 5, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 8, 9),
                     Combo.of(2, 7, 9),
                     // Deleted: Combo.of(3, 6, 9),
@@ -159,7 +159,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 3, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2, 3, 4, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 2, 3, 4, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 9),
                     Combo.of(1, 3, 8),
                     Combo.of(3, 4, 5)
@@ -182,7 +182,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 3, 4, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2, 3, 4, 5, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 3, 4, 5, 6, 7, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 6, 9),
                     Combo.of(1, 7, 8),
                     Combo.of(2, 5, 9),
@@ -211,7 +211,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 2, 3, 8 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 3, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 6, 9),
                     Combo.of(2, 5, 9),
                     // Deleted: Combo.of(2, 6, 8),
@@ -237,7 +237,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 3, 8, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 3, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(3, 4, 9),
                     Combo.of(3, 5, 8),
                     // Deleted: Combo.of(4, 5, 7)
@@ -261,7 +261,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 7, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 7, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4, 7, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(4, 7, 9),
                     // Deleted: Combo.of(5, 7, 8)
                 ]);
@@ -284,7 +284,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 3, 4, 5, 6, 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 2, 4, 5, 7 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 8),
                     Combo.of(1, 3, 7),
                     Combo.of(1, 4, 6),
@@ -315,7 +315,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 3 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 3, 9),
                     // Deleted: Combo.of(1, 4, 8),
                     // Deleted: Combo.of(2, 4, 7),
@@ -340,7 +340,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 8, 9),
                     // Deleted: Combo.of(2, 7, 9),
                     // Deleted: Combo.of(3, 7, 8),
@@ -365,7 +365,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 3 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 7, 9),
                     Combo.of(2, 6, 9),
                     // Deleted: Combo.of(2, 7, 8),
@@ -393,7 +393,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 6, 7, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3, 4, 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 8, 9),
                     // Deleted: Combo.of(2, 7, 9),
                     // Deleted: Combo.of(3, 6, 9),
@@ -421,7 +421,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 4, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6, 7, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 8, 9),
                     // Deleted: Combo.of(3, 7, 9),
                     // Deleted: Combo.of(4, 6, 9),
@@ -447,7 +447,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 3 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(2, 5, 9),
                     Combo.of(3, 4, 9),
                     // Deleted: Combo.of(3, 5, 8)
@@ -471,7 +471,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 3, 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3, 8, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 9),
                     Combo.of(1, 3, 8)
                 ]);
@@ -494,7 +494,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 6, 7, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 3, 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 8, 9),
                     Combo.of(3, 7, 8),
                     Combo.of(4, 6, 8)
@@ -518,7 +518,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 6, 9),
                     // Deleted: Combo.of(3, 6, 8)
                 ]);
@@ -541,7 +541,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 8, 9),
                     // Deleted: Combo.of(4, 7, 8),
                     Combo.of(5, 6, 8)
@@ -565,7 +565,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 8, 9)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 1, 9 ]);
@@ -587,7 +587,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 3 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 3, 9)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toHaveLength(0);
@@ -609,7 +609,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 9),
                     // Deleted: Combo.of(1, 3, 8)
                 ]);
@@ -632,7 +632,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(2, 8, 9),
                     Combo.of(5, 6, 8)
                 ]);
@@ -655,7 +655,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 6 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 8, 9),
                     Combo.of(4, 6, 8)
                 ]);
@@ -678,7 +678,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 2, 7 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 7 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 7, 9),
                     Combo.of(2, 7, 8)
                 ]);
@@ -701,7 +701,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 5, 6, 8 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2, 5 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 2, 8),
                     // Deleted: Combo.of(1, 3, 7),
                     Combo.of(1, 4, 6),
@@ -726,7 +726,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 2, 5, 8, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 5, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 5, 6, 7, 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 6, 9),
                     Combo.of(1, 7, 8),
                     Combo.of(2, 5, 9),
@@ -754,7 +754,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 5, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 5, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 1, 5 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 5, 9),
                     // Deleted: Combo.of(2, 5, 8),
                     // Deleted: Combo.of(3, 4, 8)
@@ -778,7 +778,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 5, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 5, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 2, 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 6, 9),
                     // Deleted: Combo.of(1, 7, 8),
                     Combo.of(2, 5, 9)
@@ -802,7 +802,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 5 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 5, 9)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 5 ]);
@@ -824,7 +824,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 9 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 6, 9),
                     // Deleted: Combo.of(2, 5, 9)
                 ]);
@@ -847,7 +847,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 5, 6 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1, 2, 5 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 2, 8),
                     Combo.of(1, 4, 6),
                     Combo.of(2, 4, 5)
@@ -871,7 +871,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2, 5 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 2, 5 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     // Deleted: Combo.of(1, 4, 6),
                     Combo.of(2, 4, 5)
                 ]);
@@ -894,7 +894,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 2 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 5 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 4 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(2, 4, 5)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toHaveLength(0);
@@ -916,7 +916,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 9 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 1 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 6 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(1, 6, 9)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 1 ]);
@@ -938,7 +938,7 @@ describe('`CageModel3Reducer`s', () => {
                 expect(cageM.cellMs[0].numOpts()).toEqual([ 4, 7 ]);
                 expect(cageM.cellMs[1].numOpts()).toEqual([ 4, 7 ]);
                 expect(cageM.cellMs[2].numOpts()).toEqual([ 9 ]);
-                expect(Array.from(cageM.comboSet.combos)).toEqual([
+                expect(Array.from(cageM.combosSet.combos)).toEqual([
                     Combo.of(4, 7, 9)
                 ]);
                 expect(reduction.deletedNumOptsOf(cageM.cellMs[0]).nums).toEqual([ 9 ]);

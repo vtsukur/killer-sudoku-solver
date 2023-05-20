@@ -50,7 +50,7 @@ export class LockableCageModel extends CageModel implements Lockable {
         for (const cellM of this._lockableCellMs) {
             cellM.lock();
         }
-        (this.comboSet as LockableCombosSet).lock();
+        (this.combosSet as LockableCombosSet).lock();
     }
 
 }

@@ -40,7 +40,7 @@ export class CageModel3FullReducer implements CageModelReducer {
         ];
 
         const cellMs = this._cageM.cellMs;
-        const combosSet = this._cageM.comboSet;
+        const combosSet = this._cageM.combosSet;
 
         for (const cellM1 of cellMs) {
             const cellM1Index = cellMs.findIndex(c => c === cellM1);

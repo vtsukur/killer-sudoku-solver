@@ -22,7 +22,7 @@ export class CageModel6PlusReducer implements CageModelReducer {
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
-        this._combosSet = cageM.comboSet;
+        this._combosSet = cageM.combosSet;
         this._cellMs = cageM.cellMs;
     }
 

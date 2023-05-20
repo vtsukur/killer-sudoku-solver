@@ -82,7 +82,7 @@ export class CageModel2Reducer implements CageModelReducer {
         // Caching references for faster access in the `reduce` method.
         // These references do *not* change across the `CageModel`'s lifetime.
         //
-        this._combosSet = cageM.comboSet;
+        this._combosSet = cageM.combosSet;
         this._cellM1 = cageM.cellMs[0];
         this._cellM1NumsSet = this._cellM1._numOptsSet;
         this._cellM2 = cageM.cellMs[1];
