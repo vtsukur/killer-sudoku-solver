@@ -71,23 +71,31 @@ export class CageModel4Reducer implements CageModelReducer {
      * @see CageModelReducer.reduce
      */
     reduce(reduction: MasterModelReduction): void {
+        //
+        // The reduction works as follows:
+        //
+        //  - Algorithm selects `CellModel` with the minimum amount of _currently possible numbers_.
+        //    Such a `CellModel` is called `minPossibleNumsCellM`.
+        //    Fixating such a `CellModel` is one of the keys to the combinatorics performance
+        //    as it reduces the amount of _currently possible numbers_ to check.
+        //
+
+        // Finding `CellModel` with the minimum amount of _currently possible numbers_.
         let minPossibleNumsCellM = this._firstCellM;
         let minPossibleNumsCellMIndex = 0;
         let minPossibleNums = this._firstCellM._numOptsSet.nums;
         let i = 1;
         while (i < CAGE_SIZE) {
-            const currentCellM = this._cellMs[i];
-            const currentNumCountNums = currentCellM._numOptsSet.nums;
-            if (currentNumCountNums.length < minPossibleNums.length) {
-                minPossibleNumsCellM = currentCellM;
+            const cellM = this._cellMs[i];
+            const possibleCellMNums = cellM._numOptsSet.nums;
+            if (possibleCellMNums.length < minPossibleNums.length) {
+                minPossibleNumsCellM = cellM;
                 minPossibleNumsCellMIndex = i;
-                minPossibleNums = currentNumCountNums;
+                minPossibleNums = possibleCellMNums;
             }
 
             ++i;
         }
-
-        let minNumCountCellMNumBits = 0;
 
         const indices = CAGE_3_CELL_M_INDICES[minPossibleNumsCellMIndex];
 
@@ -107,6 +115,7 @@ export class CageModel4Reducer implements CageModelReducer {
         const updatedCombosSet = this._combosSet.clear();
 
         let combosBits = 0;
+        let minNumCountCellMNumBits = 0;
         for (const num of minPossibleNums) {
             for (const combo of combosBeforeReduction) {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
