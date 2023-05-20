@@ -14,6 +14,16 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
     [ 0, 1, 2 ]
 ];
 
+/**
+ * High-performance implementation of reducer of _possible numbers_ for {@link CellModel}s
+ * within a {@link CageModel} of a {@link Cage} with 4 {@link Cell}s.
+ *
+ * Checks the validity of numbers given _possible {@link Combo}s_ for the {@link CageModel}
+ * and does reduction for individual {@link Combo}s
+ * reusing {@link CageModel3Reducer} for combinatorics performance.
+ *
+ * @public
+ */
 export class CageModel4Reducer implements CageModelReducer {
 
     private readonly _cageM: CageModel;
