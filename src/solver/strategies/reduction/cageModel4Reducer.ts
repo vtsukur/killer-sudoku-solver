@@ -10,7 +10,11 @@ import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
 
+/**
+ * Static size of a {@link Cage} with 4 {@link Cell}s.
+ */
 const CAGE_SIZE = 4;
+
 const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
     [ 1, 2, 3 ],
     [ 0, 2, 3 ],
