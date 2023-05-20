@@ -50,8 +50,6 @@ export class CageModel4Reducer implements CageModelReducer {
      */
     private readonly _firstCellM: CellModel;
 
-    private readonly _sum: number;
-
     /**
      * Constructs a new reducer of possible numbers for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 4 {@link Cell}s.
@@ -63,7 +61,6 @@ export class CageModel4Reducer implements CageModelReducer {
         this._combosSet = cageM.comboSet;
         this._cellMs = cageM.cellMs;
         this._firstCellM = cageM.cellMs[0];
-        this._sum = cageM.cage.sum;
     }
 
     /**
