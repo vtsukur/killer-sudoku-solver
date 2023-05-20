@@ -51,10 +51,10 @@ export class CageModel4Reducer implements CageModelReducer {
     private readonly _firstCellM: CellModel;
 
     /**
-     * Constructs a new reducer of possible numbers for {@link CellModel}s
+     * Constructs a new reducer of _possible numbers_ for {@link CellModel}s
      * within a {@link CageModel} of a {@link Cage} with 4 {@link Cell}s.
      *
-     * @param cageM — The {@link CageModel} to reduce.
+     * @param cageM — {@link CageModel} to reduce.
      */
     constructor(cageM: CageModel) {
         this._cageM = cageM;
