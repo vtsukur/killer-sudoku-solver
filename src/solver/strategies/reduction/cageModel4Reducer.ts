@@ -1,10 +1,14 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cage } from '../../../puzzle/cage';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Cell } from '../../../puzzle/cell';
+import { Combo } from '../../math';
 import { CageModel } from '../../models/elements/cageModel';
 import { CellModel } from '../../models/elements/cellModel';
 import { CombosSet } from '../../sets';
 import { CageModel3Reducer } from './cageModel3Reducer';
 import { CageModelReducer } from './cageModelReducer';
 import { MasterModelReduction } from './masterModelReduction';
-import { Combo } from '../../math';
 
 const CAGE_SIZE = 4;
 const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
