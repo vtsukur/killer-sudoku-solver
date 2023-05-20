@@ -96,19 +96,19 @@ export class CageModel4Reducer implements CageModelReducer {
             ++i;
         }
 
-        const indices = CAGE_3_CELL_M_INDICES[minPossibleNumsCellMIndex];
+        const idxs = CAGE_3_CELL_M_INDICES[minPossibleNumsCellMIndex];
 
-        const cageModel3CellM1 = this._cellMs[indices[0]];
-        const cageModel3CellM1NumBits = cageModel3CellM1._numOptsSet.bits;
-        let cageModel3CellM1ActualNumBits = 0;
+        const cageM3_cellM1 = this._cellMs[idxs[0]];
+        const cageM3_cellM1_currentNumsBits = cageM3_cellM1._numOptsSet.bits;
+        let cageM3_cellM1_updatedNumBits = 0;
 
-        const cageModel3CellM2 = this._cellMs[indices[1]];
-        const cageModel3CellM2NumBits = cageModel3CellM2._numOptsSet.bits;
-        let cageModel3CellM2ActualNumBits = 0;
+        const cageM3_cellM2 = this._cellMs[idxs[1]];
+        const cageM3_cellM2_currentNumsBits = cageM3_cellM2._numOptsSet.bits;
+        let cageM3_cellM2_updatedNumBits = 0;
 
-        const cageModel3CellM3 = this._cellMs[indices[2]];
-        const cageModel3CellM3NumBits = cageModel3CellM3._numOptsSet.bits;
-        let cageModel3CellM3ActualNumBits = 0;
+        const cageM3_cellM3 = this._cellMs[idxs[2]];
+        const cageM3_cellM3_currentNumsBits = cageM3_cellM3._numOptsSet.bits;
+        let cageM3_cellM3_updatedNumBits = 0;
 
         const combosBeforeReduction = this._combosSet.combos;
         const updatedCombosSet = this._combosSet.clear();
@@ -122,13 +122,13 @@ export class CageModel4Reducer implements CageModelReducer {
                 const reducedCombo = Combo.BY_NUMS_BITS[combo.numsBits & ~(1 << num)];
                 const reduction = CageModel3Reducer.getReduction(
                         reducedCombo,
-                        cageModel3CellM1NumBits,
-                        cageModel3CellM2NumBits,
-                        cageModel3CellM3NumBits);
+                        cageM3_cellM1_currentNumsBits,
+                        cageM3_cellM2_currentNumsBits,
+                        cageM3_cellM3_currentNumsBits);
                 if (reduction.isValid) {
-                    cageModel3CellM1ActualNumBits |= reduction.keepCell1NumsBits;
-                    cageModel3CellM2ActualNumBits |= reduction.keepCell2NumsBits;
-                    cageModel3CellM3ActualNumBits |= reduction.keepCell3NumsBits;
+                    cageM3_cellM1_updatedNumBits |= reduction.keepCell1NumsBits;
+                    cageM3_cellM2_updatedNumBits |= reduction.keepCell2NumsBits;
+                    cageM3_cellM3_updatedNumBits |= reduction.keepCell3NumsBits;
                     combosBits |= 1 << combo.index;
                     minNumCountCellMNumBits |= 1 << num;
                 }
@@ -137,9 +137,9 @@ export class CageModel4Reducer implements CageModelReducer {
         updatedCombosSet.setCombosBits(combosBits);
 
         reduction.tryReduceNumOptsBits(minPossibleNumsCellM, minNumCountCellMNumBits, this._cageM);
-        reduction.tryReduceNumOptsBits(cageModel3CellM1, cageModel3CellM1ActualNumBits, this._cageM);
-        reduction.tryReduceNumOptsBits(cageModel3CellM2, cageModel3CellM2ActualNumBits, this._cageM);
-        reduction.tryReduceNumOptsBits(cageModel3CellM3, cageModel3CellM3ActualNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(cageM3_cellM1, cageM3_cellM1_updatedNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(cageM3_cellM2, cageM3_cellM2_updatedNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(cageM3_cellM3, cageM3_cellM3_updatedNumBits, this._cageM);
     }
 
 }
