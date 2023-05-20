@@ -74,10 +74,9 @@ export class CageModel4Reducer implements CageModelReducer {
         //
         // The reduction works as follows:
         //
-        //  - Algorithm selects `CellModel` with the minimum amount of _currently possible numbers_.
-        //    Such a `CellModel` is called `minPossibleNumsCellM`.
-        //    Fixating such a `CellModel` is one of the keys to the combinatorics performance
-        //    as it reduces the amount of _currently possible numbers_ to check.
+        //  - The algorithm selects `CellModel` with the minimum amount of
+        //    _currently possible numbers_ calling it `minPossibleNumsCellM`.
+        //    Fixating such a `CellModel` reduces iteration count.
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
