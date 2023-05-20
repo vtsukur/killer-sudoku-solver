@@ -31,7 +31,7 @@ export interface CageModelReducer {
      * by checking the validity of _currently possible numbers_
      * given _possible {@link Combo}s_ for the {@link CageModel}.
      *
-     * @param reduction - {@link MasterModelReduction} that tracks reduction state.
+     * @param reduction - {@link MasterModelReduction} which should reflect the reduction action.
      */
     reduce(reduction: MasterModelReduction): void;
 
