@@ -30,12 +30,24 @@ const CAGE_3_CELL_M_INDICES: ReadonlyArray<ReadonlyArray<number>> = [
  */
 export class CageModel4Reducer implements CageModelReducer {
 
+    /**
+     * {@link CageModel} to reduce.
+     */
     private readonly _cageM: CageModel;
 
+    /**
+     * Cache for the {@link CageModel}'s {@link CombosSet}.
+     */
     private readonly _combosSet: CombosSet;
 
+    /**
+     * Cache for the {@link CellModel}s of the {@link CageModel}.
+     */
     private readonly _cellMs: ReadonlyArray<CellModel>;
 
+    /**
+     * Cache for the first {@link CellModel} of the {@link CageModel}.
+     */
     private readonly _firstCellM: CellModel;
 
     private readonly _sum: number;
