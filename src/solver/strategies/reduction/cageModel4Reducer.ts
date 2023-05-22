@@ -88,7 +88,7 @@ export class CageModel4Reducer implements CageModelReducer {
         //    _updated possible numbers_ of the `cageM3_cellM1`, `cageM3_cellM2`, and `cageM3_cellM3` respectively.
         //  - The algorithm saves _currently possible `Combo`s_ to the `currentCombos`
         //    for the target `CageModel` and clears the `CombosSet` of the `CageModel`.
-        //  - `updatedCombosBits` will accumulate _updated possible `Combo`s_ for the target `CageModel`.
+        //    `updatedCombosBits` will accumulate _updated possible `Combo`s_ for the target `CageModel`.
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
