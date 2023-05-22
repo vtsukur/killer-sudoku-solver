@@ -80,17 +80,17 @@ export class CageModel4Reducer implements CageModelReducer {
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
-        let minPossibleNums_cellM = this._firstCellM;
         let minPossibleNums_cellMIndex = 0;
+        let minPossibleNums_cellM = this._firstCellM;
         let minPossibleNums = minPossibleNums_cellM._numOptsSet.nums;
         let i = 1;
         while (i < CAGE_SIZE) {
-            const cellM = this._cellMs[i];
-            const possibleCellMNums = cellM._numOptsSet.nums;
-            if (possibleCellMNums.length < minPossibleNums.length) {
-                minPossibleNums_cellM = cellM;
+            const possibleNums_cellM = this._cellMs[i];
+            const possibleNums = possibleNums_cellM._numOptsSet.nums;
+            if (possibleNums.length < minPossibleNums.length) {
                 minPossibleNums_cellMIndex = i;
-                minPossibleNums = possibleCellMNums;
+                minPossibleNums_cellM = possibleNums_cellM;
+                minPossibleNums = possibleNums;
             }
 
             ++i;
