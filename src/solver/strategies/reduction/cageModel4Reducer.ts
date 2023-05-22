@@ -80,23 +80,23 @@ export class CageModel4Reducer implements CageModelReducer {
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
-        let minPossibleNumsCellM = this._firstCellM;
-        let minPossibleNumsCellMIndex = 0;
+        let minPossibleNums_cellM = this._firstCellM;
+        let minPossibleNums_cellMIndex = 0;
         let minPossibleNums = this._firstCellM._numOptsSet.nums;
         let i = 1;
         while (i < CAGE_SIZE) {
             const cellM = this._cellMs[i];
             const possibleCellMNums = cellM._numOptsSet.nums;
             if (possibleCellMNums.length < minPossibleNums.length) {
-                minPossibleNumsCellM = cellM;
-                minPossibleNumsCellMIndex = i;
+                minPossibleNums_cellM = cellM;
+                minPossibleNums_cellMIndex = i;
                 minPossibleNums = possibleCellMNums;
             }
 
             ++i;
         }
 
-        const idxs = CAGE_3_CELL_M_INDICES[minPossibleNumsCellMIndex];
+        const idxs = CAGE_3_CELL_M_INDICES[minPossibleNums_cellMIndex];
 
         const cageM3_cellM1 = this._cellMs[idxs[0]];
         const cageM3_cellM1_currentNumsBits = cageM3_cellM1._numOptsSet.bits;
@@ -136,7 +136,7 @@ export class CageModel4Reducer implements CageModelReducer {
         }
         updatedCombosSet.setCombosBits(combosBits);
 
-        reduction.tryReduceNumOptsBits(minPossibleNumsCellM, minNumCountCellMNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(minPossibleNums_cellM, minNumCountCellMNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM1, cageM3_cellM1_updatedNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM2, cageM3_cellM2_updatedNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM3, cageM3_cellM3_updatedNumBits, this._cageM);
