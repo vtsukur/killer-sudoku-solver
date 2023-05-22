@@ -80,22 +80,22 @@ export class CageModel4Reducer implements CageModelReducer {
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
-        let minPossibleNums_cellMIndex = 0;
-        let minPossibleNums_cellM = this._firstCellM;
-        let minPossibleNums = minPossibleNums_cellM._numOptsSet.nums;
+        let minNums_cellMIndex = 0;
+        let minNums_cellM = this._firstCellM;
+        let minNums = minNums_cellM._numOptsSet.nums;
         let i = 1;
         while (i < CAGE_SIZE) {
-            const possibleNums_cellM = this._cellMs[i];
-            const possibleNums = possibleNums_cellM._numOptsSet.nums;
-            if (possibleNums.length < minPossibleNums.length) {
-                minPossibleNums_cellMIndex = i;
-                minPossibleNums_cellM = possibleNums_cellM;
-                minPossibleNums = possibleNums;
+            const nums_cellM = this._cellMs[i];
+            const nums = nums_cellM._numOptsSet.nums;
+            if (nums.length < minNums.length) {
+                minNums_cellMIndex = i;
+                minNums_cellM = nums_cellM;
+                minNums = nums;
             }
             ++i;
         }
 
-        const idxs = CAGE_3_CELL_M_INDICES[minPossibleNums_cellMIndex];
+        const idxs = CAGE_3_CELL_M_INDICES[minNums_cellMIndex];
 
         const cageM3_cellM1 = this._cellMs[idxs[0]];
         const cageM3_cellM1_currentNumsBits = cageM3_cellM1._numOptsSet.bits;
@@ -114,7 +114,7 @@ export class CageModel4Reducer implements CageModelReducer {
 
         let combosBits = 0;
         let minNumCountCellMNumBits = 0;
-        for (const num of minPossibleNums) {
+        for (const num of minNums) {
             for (const combo of combosBeforeReduction) {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
 
@@ -135,7 +135,7 @@ export class CageModel4Reducer implements CageModelReducer {
         }
         updatedCombosSet.setCombosBits(combosBits);
 
-        reduction.tryReduceNumOptsBits(minPossibleNums_cellM, minNumCountCellMNumBits, this._cageM);
+        reduction.tryReduceNumOptsBits(minNums_cellM, minNumCountCellMNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM1, cageM3_cellM1_updatedNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM2, cageM3_cellM2_updatedNumBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM3, cageM3_cellM3_updatedNumBits, this._cageM);
