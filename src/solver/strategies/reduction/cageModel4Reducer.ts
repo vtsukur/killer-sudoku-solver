@@ -88,6 +88,7 @@ export class CageModel4Reducer implements CageModelReducer {
         //    _updated possible numbers_ of the `cageM3_cellM1`, `cageM3_cellM2`, and `cageM3_cellM3` respectively.
         //  - The algorithm saves _currently possible `Combo`s_ to the `currentCombos`
         //    for the target `CageModel` and clears the `CombosSet` of the `CageModel`.
+        //  - `updatedCombosBits` will accumulate _updated possible `Combo`s_ for the target `CageModel`.
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
@@ -137,7 +138,7 @@ export class CageModel4Reducer implements CageModelReducer {
         // and initializing bits for the _updated possible `Combo`s_.
         //
         const updatedCombosSet = this._combosSet.clear();
-        let combosBits = 0;
+        let updatedCombosBits = 0;
 
         for (const num of minNums) {
             for (const combo of currentCombos) {
@@ -153,12 +154,12 @@ export class CageModel4Reducer implements CageModelReducer {
                     cageM3_cellM1_updatedNumsBits |= reduction.keepCell1NumsBits;
                     cageM3_cellM2_updatedNumsBits |= reduction.keepCell2NumsBits;
                     cageM3_cellM3_updatedNumsBits |= reduction.keepCell3NumsBits;
-                    combosBits |= 1 << combo.index;
+                    updatedCombosBits |= 1 << combo.index;
                     minNums_cellM_updatedNumsBits |= 1 << num;
                 }
             }
         }
-        updatedCombosSet.setCombosBits(combosBits);
+        updatedCombosSet.setCombosBits(updatedCombosBits);
 
         reduction.tryReduceNumOptsBits(minNums_cellM, minNums_cellM_updatedNumsBits, this._cageM);
         reduction.tryReduceNumOptsBits(cageM3_cellM1, cageM3_cellM1_updatedNumsBits, this._cageM);
