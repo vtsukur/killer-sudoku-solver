@@ -123,14 +123,14 @@ export class CageModel4Reducer implements CageModelReducer {
         const cageM3_cellM3 = this._cellMs[idxs[2]];
         const cageM3_cellM3_currentNumsBits = cageM3_cellM3._numOptsSet.bits;
 
-        // Capturing _currently possible `Combo`s_ for the target `CageModel`.
-        const currentCombos = this._combosSet.combos;
-
         // Initializing bits for the _updated possible numbers_ of the target `CageModel`.
         let minNums_cellM_updatedNumsBits = 0;
         let cageM3_cellM1_updatedNumsBits = 0;
         let cageM3_cellM2_updatedNumsBits = 0;
         let cageM3_cellM3_updatedNumsBits = 0;
+
+        // Capturing _currently possible `Combo`s_ for the target `CageModel`.
+        const currentCombos = this._combosSet.combos;
 
         //
         // Clearing _currently possible `Combo`s_ for the target `CageModel`
