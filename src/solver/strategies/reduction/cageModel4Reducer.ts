@@ -77,6 +77,10 @@ export class CageModel4Reducer implements CageModelReducer {
         //  - The algorithm selects `CellModel` with the minimum amount of
         //    _currently possible numbers_ calling it `minPossibleNumsCellM`.
         //    Fixating such a `CellModel` reduces iteration count.
+        //  - The rest of the `CellModel`s form a virtual sub-`Cage` with 3 `Cell`s
+        //    These `CellModel`s have the names `cageM3_cellM1`, `cageM3_cellM2`, and `cageM3_cellM3`.
+        //    The algorithm will apply `CageModel3Reducer` techniques to these `CellModel`s
+        //    for efficient reduction.
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
@@ -95,23 +99,29 @@ export class CageModel4Reducer implements CageModelReducer {
             ++i;
         }
 
+        // Capturing precomputed indices of the `CellModel`s of the virtual sub-`Cage` with 3 `Cell`s.
         const idxs = CAGE_3_CELL_M_INDICES[minNums_cellMIndex];
+
+        //
+        // Capturing `CellModel`s of the virtual sub-`Cage` with 3 `Cell`s
+        // and their _currently possible numbers_.
+        //
 
         const cageM3_cellM1 = this._cellMs[idxs[0]];
         const cageM3_cellM1_currentNumsBits = cageM3_cellM1._numOptsSet.bits;
-        let cageM3_cellM1_updatedNumBits = 0;
 
         const cageM3_cellM2 = this._cellMs[idxs[1]];
         const cageM3_cellM2_currentNumsBits = cageM3_cellM2._numOptsSet.bits;
-        let cageM3_cellM2_updatedNumBits = 0;
 
         const cageM3_cellM3 = this._cellMs[idxs[2]];
         const cageM3_cellM3_currentNumsBits = cageM3_cellM3._numOptsSet.bits;
-        let cageM3_cellM3_updatedNumBits = 0;
 
         const combosBeforeReduction = this._combosSet.combos;
         const updatedCombosSet = this._combosSet.clear();
 
+        let cageM3_cellM1_updatedNumBits = 0;
+        let cageM3_cellM2_updatedNumBits = 0;
+        let cageM3_cellM3_updatedNumBits = 0;
         let combosBits = 0;
         let minNumCountCellMNumBits = 0;
         for (const num of minNums) {
