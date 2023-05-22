@@ -81,6 +81,7 @@ export class CageModel4Reducer implements CageModelReducer {
         //    These `CellModel`s have the names `cageM3_cellM1`, `cageM3_cellM2`, and `cageM3_cellM3`.
         //    The algorithm will apply `CageModel3Reducer` techniques to these `CellModel`s
         //    for efficient reduction.
+        //  - The algorithm saves _currently possible `Combo`s_ to the `currentCombos`.
         //
 
         // Finding `CellModel` with the minimum amount of _currently possible numbers_.
@@ -116,7 +117,9 @@ export class CageModel4Reducer implements CageModelReducer {
         const cageM3_cellM3 = this._cellMs[idxs[2]];
         const cageM3_cellM3_currentNumsBits = cageM3_cellM3._numOptsSet.bits;
 
-        const combosBeforeReduction = this._combosSet.combos;
+        // Capturing _currently possible `Combo`s_ for the target `CageModel`.
+        const currentCombos = this._combosSet.combos;
+
         const updatedCombosSet = this._combosSet.clear();
 
         let cageM3_cellM1_updatedNumBits = 0;
@@ -125,7 +128,7 @@ export class CageModel4Reducer implements CageModelReducer {
         let combosBits = 0;
         let minNumCountCellMNumBits = 0;
         for (const num of minNums) {
-            for (const combo of combosBeforeReduction) {
+            for (const combo of currentCombos) {
                 if ((combo.numsBits & (1 << num)) === 0) continue;
 
                 const reducedCombo = Combo.BY_NUMS_BITS[combo.numsBits & ~(1 << num)];
