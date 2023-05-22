@@ -92,7 +92,6 @@ export class CageModel4Reducer implements CageModelReducer {
                 minPossibleNums_cellM = possibleNums_cellM;
                 minPossibleNums = possibleNums;
             }
-
             ++i;
         }
 
